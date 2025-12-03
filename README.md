@@ -51,6 +51,7 @@ Open [http://localhost:3000](http://localhost:3000) and connect your first repos
 | Guide                                      | Description                   |
 | ------------------------------------------ | ----------------------------- |
 | [Getting Started](docs/GETTING_STARTED.md) | Quick start and configuration |
+| [OAuth Setup](docs/OAUTH_SETUP.md)         | GitHub, GitLab, Bitbucket OAuth |
 | [Development](docs/DEVELOPMENT.md)         | Build and run locally         |
 | [Contributing](docs/CONTRIBUTING.md)       | How to contribute             |
 | [Deployment](docs/DEPLOY.md)               | Deploy to Fly.io              |
