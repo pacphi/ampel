@@ -1,0 +1,27 @@
+pub mod auto_merge_rule;
+pub mod ci_check;
+pub mod git_provider;
+pub mod health_score;
+pub mod notification_preferences;
+pub mod organization;
+pub mod pr_metrics;
+pub mod pull_request;
+pub mod repository;
+pub mod review;
+pub mod team;
+pub mod team_member;
+pub mod user;
+
+pub use auto_merge_rule::Entity as AutoMergeRuleEntity;
+pub use ci_check::Entity as CICheckEntity;
+pub use git_provider::Entity as GitProviderEntity;
+pub use health_score::Entity as HealthScoreEntity;
+pub use notification_preferences::Entity as NotificationPreferencesEntity;
+pub use organization::Entity as OrganizationEntity;
+pub use pr_metrics::Entity as PrMetricsEntity;
+pub use pull_request::Entity as PullRequestEntity;
+pub use repository::Entity as RepositoryEntity;
+pub use review::Entity as ReviewEntity;
+pub use team::Entity as TeamEntity;
+pub use team_member::Entity as TeamMemberEntity;
+pub use user::Entity as UserEntity;

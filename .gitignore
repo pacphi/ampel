@@ -1,0 +1,39 @@
+# Rust
+/target/
+Cargo.lock
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build artifacts
+*.pdb
+
+# Database
+*.db
+*.sqlite
+
+# Coverage
+coverage/
+*.lcov

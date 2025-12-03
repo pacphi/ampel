@@ -1,0 +1,60 @@
+[package]
+name = "ampel-api"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "ampel-api"
+path = "src/main.rs"
+
+[dependencies]
+# Async
+tokio.workspace = true
+async-trait.workspace = true
+
+# Web framework
+axum.workspace = true
+axum-extra.workspace = true
+tower.workspace = true
+tower-http.workspace = true
+
+# Serialization
+serde.workspace = true
+serde_json.workspace = true
+
+# Validation
+validator.workspace = true
+
+# Database
+sea-orm.workspace = true
+
+# HTTP Client
+reqwest.workspace = true
+
+# Utilities
+uuid.workspace = true
+chrono.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+config.workspace = true
+dotenvy.workspace = true
+url.workspace = true
+
+# Auth
+jsonwebtoken.workspace = true
+
+# API Documentation
+utoipa.workspace = true
+utoipa-swagger-ui.workspace = true
+
+# Internal
+ampel-core.workspace = true
+ampel-db.workspace = true
+ampel-providers.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util", "macros"] }
+tower = { workspace = true, features = ["util"] }

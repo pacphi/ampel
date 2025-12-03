@@ -1,0 +1,72 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/ampel-api",
+    "crates/ampel-core",
+    "crates/ampel-db",
+    "crates/ampel-providers",
+    "crates/ampel-worker",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/yourusername/ampel"
+
+[workspace.dependencies]
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+async-trait = "0.1"
+
+# Web framework
+axum = "0.7"
+axum-extra = { version = "0.9", features = ["typed-header", "cookie"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "trace", "compression-gzip"] }
+
+# Database
+sea-orm = { version = "1.0", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros"] }
+sea-orm-migration = "1.0"
+
+# Background jobs
+apalis = "0.6"
+apalis-cron = "0.6"
+
+# Git providers
+octocrab = "0.41"
+reqwest = { version = "0.12", features = ["json", "rustls-tls"] }
+
+# Auth & Security
+jsonwebtoken = "9"
+argon2 = "0.5"
+aes-gcm = "0.10"
+rand = "0.8"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Validation
+validator = { version = "0.18", features = ["derive"] }
+
+# Utilities
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "1"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+config = "0.14"
+dotenvy = "0.15"
+url = "2"
+base64 = "0.22"
+
+# API Documentation
+utoipa = { version = "4", features = ["axum_extras"] }
+utoipa-swagger-ui = { version = "7", features = ["axum"] }
+
+# Internal crates
+ampel-core = { path = "crates/ampel-core" }
+ampel-db = { path = "crates/ampel-db" }
+ampel-providers = { path = "crates/ampel-providers" }
