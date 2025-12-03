@@ -1,6 +1,7 @@
 # OAuth Provider Setup Guide
 
-This guide walks you through setting up OAuth applications for GitHub, GitLab, and Bitbucket to use with Ampel. By the end, you'll have the client IDs, secrets, and redirect URLs configured in your `.env` file.
+This guide walks you through setting up OAuth applications for GitHub, GitLab, and Bitbucket to use with Ampel.
+By the end, you'll have the client IDs, secrets, and redirect URLs configured in your `.env` file.
 
 ## Table of Contents
 
@@ -26,7 +27,8 @@ Before you begin, make sure you have:
 
 ## Understanding OAuth
 
-OAuth allows Ampel to access your repositories and pull requests without storing your password. Instead, you create an "OAuth application" on each platform, which gives you:
+OAuth allows Ampel to access your repositories and pull requests without storing your password.
+Instead, you create an "OAuth application" on each platform, which gives you:
 
 | Term | Also Called | Description |
 |------|-------------|-------------|
@@ -56,7 +58,8 @@ OAuth allows Ampel to access your repositories and pull requests without storing
 | **Application description** | Optional: "PR management dashboard" |
 | **Authorization callback URL** | `http://localhost:8080/api/oauth/github/callback` |
 
-> **Note:** GitHub only allows ONE callback URL per OAuth app. For production, you'll need to create a separate OAuth app with your production callback URL.
+> **Note:** GitHub only allows ONE callback URL per OAuth app. For production,
+> you'll need to create a separate OAuth app with your production callback URL.
 
 ### Step 3: Register and Get Credentials
 
@@ -92,6 +95,7 @@ GitLab allows creating applications at three levels: user, group, or instance-wi
 ### Step 1: Navigate to Applications
 
 **For a personal application:**
+
 1. Log in to [GitLab](https://gitlab.com) (or your self-hosted instance)
 2. Click your **avatar** (top-left)
 3. Select **Edit profile**
@@ -99,6 +103,7 @@ GitLab allows creating applications at three levels: user, group, or instance-wi
 5. Click **Add new application**
 
 **For a group application:**
+
 1. Go to your group
 2. Click **Settings** > **Applications**
 3. Click **Add new application**
@@ -143,6 +148,7 @@ GITLAB_REDIRECT_URI=http://localhost:8080/api/oauth/gitlab/callback
 ### Renewing a Lost Secret (GitLab 15.9+)
 
 If you lose your secret:
+
 1. Go back to **Applications**
 2. Find your application
 3. Click **Renew secret**
@@ -186,6 +192,7 @@ Under **Permissions**, check these scopes:
 | **Pull requests** | Read | Access pull request data |
 
 For write access (commenting, approving):
+
 | Category | Permission | Purpose |
 |----------|------------|---------|
 | **Pull requests** | Write | Comment, approve, merge PRs |
@@ -292,18 +299,22 @@ If a secret is exposed:
 ### Common Issues
 
 **"Redirect URI mismatch" error**
+
 - The callback URL in your `.env` must exactly match what's registered in the OAuth app
 - Check for trailing slashes, http vs https, and port numbers
 
 **"Invalid client" error**
+
 - Verify your Client ID is correct (copy-paste to avoid typos)
 - Ensure the OAuth app hasn't been deleted
 
 **"Invalid client secret" error**
+
 - Secrets are shown only once - if lost, generate a new one
 - Check for extra whitespace when copying
 
 **OAuth app not appearing**
+
 - GitHub: Check you're looking at the right account/organization
 - GitLab: Ensure you have the correct permissions on the group/instance
 - Bitbucket: OAuth consumers are per-workspace, not per-account
@@ -311,6 +322,7 @@ If a secret is exposed:
 ### Verifying Your Setup
 
 Test each provider's OAuth flow:
+
 1. Start Ampel with `make dev-api` and `make dev-frontend`
 2. Navigate to the login page
 3. Click each provider's connect button
@@ -324,17 +336,20 @@ Test each provider's OAuth flow:
 ### Official Documentation
 
 **GitHub:**
+
 - [Creating an OAuth App](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app)
 - [Best Practices for OAuth Apps](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/best-practices-for-creating-an-oauth-app)
 - [Authenticating with OAuth Apps](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authenticating-to-the-rest-api-with-an-oauth-app)
 - [OAuth Scopes](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps)
 
 **GitLab:**
+
 - [Configure GitLab as OAuth Provider](https://docs.gitlab.com/integration/oauth_provider/)
 - [OAuth 2.0 API](https://docs.gitlab.com/api/oauth2/)
 - [Application Scopes](https://docs.gitlab.com/ee/integration/oauth_provider.html#configure-as-an-oauth-20-provider)
 
 **Bitbucket:**
+
 - [Use OAuth on Bitbucket Cloud](https://support.atlassian.com/bitbucket-cloud/docs/use-oauth-on-bitbucket-cloud/)
 - [OAuth 2.0 Documentation](https://developer.atlassian.com/cloud/bitbucket/oauth-2/)
 - [REST API Scopes](https://developer.atlassian.com/cloud/bitbucket/bitbucket-cloud-rest-api-scopes/)
