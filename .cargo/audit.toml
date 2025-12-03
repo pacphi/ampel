@@ -1,0 +1,10 @@
+# Cargo audit configuration
+# https://docs.rs/rustsec/latest/rustsec/database/struct.Database.html
+
+[advisories]
+# RUSTSEC-2023-0071: rsa crate timing sidechannel vulnerability
+# Status: No fix available
+# This is a transitive dependency from sqlx-mysql (via sea-orm's sqlx feature).
+# Since this project uses PostgreSQL (not MySQL), this vulnerability does not
+# affect the application. Ignoring until an upstream fix is available.
+ignore = ["RUSTSEC-2023-0071"]
