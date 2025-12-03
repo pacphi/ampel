@@ -8,10 +8,11 @@ Ampel is a unified PR management dashboard that consolidates pull requests from 
 
 ## Tech Stack
 
-- **Backend**: Rust (Axum, SeaORM, Apalis for background jobs, Tokio async runtime)
+- **Backend**: Rust 1.91+ (Axum, SeaORM, Apalis for background jobs, Tokio async runtime)
 - **Frontend**: React 19 + TypeScript, Vite, TanStack Query, shadcn/ui, Tailwind CSS
 - **Database**: PostgreSQL 16, Redis 7 for caching
 - **Package Manager**: pnpm 9.14.2
+- **Rust Version**: 1.91.1 (pinned in CI and Docker images)
 
 ## Commands
 
