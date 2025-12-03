@@ -1,6 +1,7 @@
 # Rust
 /target/
-Cargo.lock
+# Note: Cargo.lock IS committed for applications (reproducible builds)
+# Only libraries should ignore Cargo.lock
 
 # Node
 node_modules/

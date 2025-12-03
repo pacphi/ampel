@@ -1,27 +1,49 @@
-# Build stage
-FROM node:20-alpine as builder
+# syntax=docker/dockerfile:1
+
+# =============================================================================
+# Stage 1: Dependencies - Install and cache node modules
+# =============================================================================
+FROM node:20-alpine AS deps
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@9.14.2 --activate
 
 WORKDIR /app
 
-# Copy package files
+# Copy package files first for better caching
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
 
-# Install dependencies
-RUN pnpm install --frozen-lockfile
+# Install dependencies with cache mount for pnpm store
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
+    pnpm install --frozen-lockfile
+
+# =============================================================================
+# Stage 2: Builder - Build the application
+# =============================================================================
+FROM node:20-alpine AS builder
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@9.14.2 --activate
+
+WORKDIR /app
+
+# Copy node_modules from deps stage
+COPY --from=deps /app/node_modules ./node_modules
 
 # Copy source code
 COPY frontend/ ./
 
-# Build
+# Build arguments for environment configuration
 ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
+
+# Build the application
 RUN pnpm run build
 
-# Production stage
-FROM nginx:alpine
+# =============================================================================
+# Stage 3: Production - Serve with nginx
+# =============================================================================
+FROM nginx:alpine AS runtime
 
 # Copy built assets
 COPY --from=builder /app/dist /usr/share/nginx/html

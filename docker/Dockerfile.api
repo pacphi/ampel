@@ -1,41 +1,53 @@
-# Build stage
-FROM rust:1.75-bookworm as builder
+# syntax=docker/dockerfile:1
 
+# =============================================================================
+# Stage 1: Chef - Prepare recipe for dependency caching
+# Uses cargo-chef to create a dependency-only build layer
+# =============================================================================
+FROM rust:1.83-bookworm AS chef
+RUN cargo install cargo-chef
 WORKDIR /app
 
-# Install dependencies
+# =============================================================================
+# Stage 2: Planner - Analyze dependencies
+# =============================================================================
+FROM chef AS planner
+COPY Cargo.toml Cargo.lock ./
+COPY crates ./crates
+RUN cargo chef prepare --recipe-path recipe.json
+
+# =============================================================================
+# Stage 3: Builder - Build dependencies and application
+# Uses BuildKit cache mounts for faster rebuilds
+# =============================================================================
+FROM chef AS builder
+
+# Install build dependencies
 RUN apt-get update && apt-get install -y \
     pkg-config \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy manifests
+# Copy the recipe and build dependencies first (cached layer)
+COPY --from=planner /app/recipe.json recipe.json
+RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
+    --mount=type=cache,target=/usr/local/cargo/git,sharing=locked \
+    --mount=type=cache,target=/app/target,sharing=locked \
+    cargo chef cook --release --recipe-path recipe.json
+
+# Copy source code and build the actual binary
 COPY Cargo.toml Cargo.lock ./
 COPY crates ./crates
+RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
+    --mount=type=cache,target=/usr/local/cargo/git,sharing=locked \
+    --mount=type=cache,target=/app/target,sharing=locked \
+    cargo build --release --bin ampel-api && \
+    cp /app/target/release/ampel-api /app/ampel-api
 
-# Build dependencies (for caching)
-RUN mkdir -p crates/ampel-api/src && \
-    echo "fn main() {}" > crates/ampel-api/src/main.rs && \
-    mkdir -p crates/ampel-worker/src && \
-    echo "fn main() {}" > crates/ampel-worker/src/main.rs && \
-    mkdir -p crates/ampel-core/src && \
-    echo "" > crates/ampel-core/src/lib.rs && \
-    mkdir -p crates/ampel-db/src && \
-    echo "" > crates/ampel-db/src/lib.rs && \
-    mkdir -p crates/ampel-providers/src && \
-    echo "" > crates/ampel-providers/src/lib.rs
-
-RUN cargo build --release --bin ampel-api
-
-# Copy actual source code
-COPY crates ./crates
-
-# Build the actual binary
-RUN touch crates/ampel-api/src/main.rs && \
-    cargo build --release --bin ampel-api
-
-# Runtime stage
-FROM debian:bookworm-slim
+# =============================================================================
+# Stage 4: Runtime - Minimal production image
+# =============================================================================
+FROM debian:bookworm-slim AS runtime
 
 WORKDIR /app
 
@@ -46,9 +58,9 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy binary from builder
-COPY --from=builder /app/target/release/ampel-api /usr/local/bin/ampel-api
+COPY --from=builder /app/ampel-api /usr/local/bin/ampel-api
 
-# Create non-root user
+# Create non-root user for security
 RUN useradd -m -u 1000 ampel
 USER ampel
 
