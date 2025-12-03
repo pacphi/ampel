@@ -1,22 +1,13 @@
 import apiClient from './client';
-import type { ApiResponse, AuthTokens, User } from '@/types';
+import type { ApiResponse, AuthTokens, User, OAuthUrlResponse } from '@/types';
+
+export type OAuthProvider = 'github' | 'google';
 
 export const authApi = {
-  async register(email: string, password: string, displayName?: string): Promise<AuthTokens> {
-    const response = await apiClient.post<ApiResponse<AuthTokens>>('/auth/register', {
-      email,
-      password,
-      displayName,
-    });
-    return response.data.data!;
-  },
-
-  async login(email: string, password: string): Promise<AuthTokens> {
-    const response = await apiClient.post<ApiResponse<AuthTokens>>('/auth/login', {
-      email,
-      password,
-    });
-    return response.data.data!;
+  // Social login methods
+  async getOAuthUrl(provider: OAuthProvider): Promise<string> {
+    const response = await apiClient.post<ApiResponse<OAuthUrlResponse>>(`/auth/${provider}/url`);
+    return response.data.data!.url;
   },
 
   async refresh(refreshToken: string): Promise<AuthTokens> {

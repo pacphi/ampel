@@ -41,6 +41,22 @@ impl GitLabProvider {
         }
     }
 
+    /// Create a provider with a custom base URL (for self-hosted GitLab or PAT-only auth)
+    pub fn new_with_base_url(base_url: Option<String>) -> Self {
+        let client = Client::builder()
+            .user_agent("Ampel/1.0")
+            .build()
+            .expect("Failed to create HTTP client");
+
+        Self {
+            client,
+            client_id: String::new(),
+            client_secret: String::new(),
+            redirect_uri: String::new(),
+            base_url: base_url.unwrap_or_else(|| "https://gitlab.com".to_string()),
+        }
+    }
+
     fn api_url(&self, path: &str) -> String {
         format!("{}/api/v4{}", self.base_url, path)
     }

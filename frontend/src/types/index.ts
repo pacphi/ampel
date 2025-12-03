@@ -122,10 +122,23 @@ export interface Review {
 export interface ProviderConnection {
   id: string;
   provider: GitProvider;
+  connectionName: string;
   providerUsername: string;
-  scopes: string[];
-  tokenExpiresAt?: string;
+  baseUrl?: string;
+  isValidated: boolean;
+  validationError?: string;
   createdAt: string;
+}
+
+export interface AddConnectionRequest {
+  provider: GitProvider;
+  connectionName: string;
+  accessToken: string;
+  baseUrl?: string;
+}
+
+export interface OAuthUrlResponse {
+  url: string;
 }
 
 export interface DashboardSummary {

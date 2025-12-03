@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { authApi } from '@/api/auth';
+import { authApi, type OAuthProvider } from '@/api/auth';
 import type { User } from '@/types';
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, displayName?: string) => Promise<void>;
+  loginWithOAuth: (provider: OAuthProvider) => Promise<void>;
+  handleOAuthCallback: (accessToken: string, refreshToken: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -38,17 +38,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [refreshUser]);
 
-  const login = async (email: string, password: string) => {
-    const tokens = await authApi.login(email, password);
-    localStorage.setItem('accessToken', tokens.accessToken);
-    localStorage.setItem('refreshToken', tokens.refreshToken);
-    await refreshUser();
+  const loginWithOAuth = async (provider: OAuthProvider) => {
+    const url = await authApi.getOAuthUrl(provider);
+    window.location.href = url;
   };
 
-  const register = async (email: string, password: string, displayName?: string) => {
-    const tokens = await authApi.register(email, password, displayName);
-    localStorage.setItem('accessToken', tokens.accessToken);
-    localStorage.setItem('refreshToken', tokens.refreshToken);
+  const handleOAuthCallback = async (accessToken: string, refreshToken: string) => {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
     await refreshUser();
   };
 
@@ -68,8 +65,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         isLoading,
         isAuthenticated: !!user,
-        login,
-        register,
+        loginWithOAuth,
+        handleOAuthCallback,
         logout,
         refreshUser,
       }}

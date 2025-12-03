@@ -11,7 +11,7 @@ use ampel_core::models::{
     AddRepositoryRequest, AmpelStatus, DiscoveredRepository, GitProvider, Repository,
     RepositoryWithStatus,
 };
-use ampel_db::entities::git_provider;
+use ampel_db::entities::provider_connection;
 use ampel_db::queries::{PrQueries, RepoQueries};
 
 use crate::extractors::{AuthUser, ValidatedJson};
@@ -102,13 +102,13 @@ pub async fn discover_repositories(
         .parse()
         .map_err(|_| ApiError::bad_request("Invalid provider"))?;
 
-    // Get provider connection
-    let connection = git_provider::Entity::find()
-        .filter(git_provider::Column::UserId.eq(auth.user_id))
-        .filter(git_provider::Column::Provider.eq(provider_type.to_string()))
+    // Get provider connection (first available for this provider)
+    let connection = provider_connection::Entity::find()
+        .filter(provider_connection::Column::UserId.eq(auth.user_id))
+        .filter(provider_connection::Column::Provider.eq(provider_type.to_string()))
         .one(&state.db)
         .await?
-        .ok_or_else(|| ApiError::bad_request("Provider not connected"))?;
+        .ok_or_else(|| ApiError::bad_request("No connection for this provider"))?;
 
     // Decrypt access token
     let access_token = state
@@ -135,13 +135,13 @@ pub async fn add_repository(
     auth: AuthUser,
     ValidatedJson(req): ValidatedJson<AddRepositoryRequest>,
 ) -> Result<(StatusCode, Json<ApiResponse<Repository>>), ApiError> {
-    // Get provider connection
-    let connection = git_provider::Entity::find()
-        .filter(git_provider::Column::UserId.eq(auth.user_id))
-        .filter(git_provider::Column::Provider.eq(req.provider.to_string()))
+    // Get provider connection (first available for this provider)
+    let connection = provider_connection::Entity::find()
+        .filter(provider_connection::Column::UserId.eq(auth.user_id))
+        .filter(provider_connection::Column::Provider.eq(req.provider.to_string()))
         .one(&state.db)
         .await?
-        .ok_or_else(|| ApiError::bad_request("Provider not connected"))?;
+        .ok_or_else(|| ApiError::bad_request("No connection for this provider"))?;
 
     // Decrypt access token
     let access_token = state
@@ -175,10 +175,11 @@ pub async fn add_repository(
         return Err(ApiError::bad_request("Repository already added"));
     }
 
-    // Create repository
+    // Create repository with connection binding
     let repo = RepoQueries::create(
         &state.db,
         auth.user_id,
+        Some(connection.id), // Bind to the connection that was used
         req.provider.to_string(),
         discovered.provider_id,
         discovered.owner,

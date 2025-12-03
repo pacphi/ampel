@@ -9,6 +9,14 @@ pub struct Config {
     pub jwt_access_expiry_minutes: i64,
     pub jwt_refresh_expiry_days: i64,
     pub encryption_key: String,
+    // User authentication OAuth (for logging INTO Ampel)
+    pub github_auth_client_id: String,
+    pub github_auth_client_secret: String,
+    pub github_auth_redirect_uri: String,
+    pub google_client_id: String,
+    pub google_client_secret: String,
+    pub google_redirect_uri: String,
+    // Legacy provider OAuth (kept for ProviderFactory compatibility)
     pub github_client_id: String,
     pub github_client_secret: String,
     pub github_redirect_uri: String,
@@ -41,6 +49,14 @@ impl Config {
                 .parse()
                 .expect("JWT_REFRESH_EXPIRY_DAYS must be a number"),
             encryption_key: std::env::var("ENCRYPTION_KEY").expect("ENCRYPTION_KEY must be set"),
+            // User authentication OAuth
+            github_auth_client_id: std::env::var("GITHUB_AUTH_CLIENT_ID").unwrap_or_default(),
+            github_auth_client_secret: std::env::var("GITHUB_AUTH_CLIENT_SECRET").unwrap_or_default(),
+            github_auth_redirect_uri: std::env::var("GITHUB_AUTH_REDIRECT_URI").unwrap_or_default(),
+            google_client_id: std::env::var("GOOGLE_CLIENT_ID").unwrap_or_default(),
+            google_client_secret: std::env::var("GOOGLE_CLIENT_SECRET").unwrap_or_default(),
+            google_redirect_uri: std::env::var("GOOGLE_REDIRECT_URI").unwrap_or_default(),
+            // Legacy provider OAuth (for ProviderFactory)
             github_client_id: std::env::var("GITHUB_CLIENT_ID").unwrap_or_default(),
             github_client_secret: std::env::var("GITHUB_CLIENT_SECRET").unwrap_or_default(),
             github_redirect_uri: std::env::var("GITHUB_REDIRECT_URI").unwrap_or_default(),

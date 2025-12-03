@@ -22,20 +22,19 @@ impl UserQueries {
         Entity::find().filter(Column::Email.eq(email)).one(db).await
     }
 
-    /// Create a new user
+    /// Create a new user (OAuth-based, no password)
     pub async fn create(
         db: &DatabaseConnection,
         email: String,
-        password_hash: String,
         display_name: Option<String>,
+        avatar_url: Option<String>,
     ) -> Result<Model, DbErr> {
         let now = Utc::now();
         let user = ActiveModel {
             id: Set(Uuid::new_v4()),
             email: Set(email),
-            password_hash: Set(password_hash),
             display_name: Set(display_name),
-            avatar_url: Set(None),
+            avatar_url: Set(avatar_url),
             created_at: Set(now),
             updated_at: Set(now),
         };
@@ -73,23 +72,6 @@ impl UserQueries {
 
         let mut active: ActiveModel = user.into();
         active.avatar_url = Set(avatar_url);
-        active.updated_at = Set(Utc::now());
-        active.update(db).await
-    }
-
-    /// Update user password
-    pub async fn update_password(
-        db: &DatabaseConnection,
-        id: Uuid,
-        password_hash: String,
-    ) -> Result<Model, DbErr> {
-        let user = Entity::find_by_id(id)
-            .one(db)
-            .await?
-            .ok_or(DbErr::RecordNotFound("User not found".to_string()))?;
-
-        let mut active: ActiveModel = user.into();
-        active.password_hash = Set(password_hash);
         active.updated_at = Set(Utc::now());
         active.update(db).await
     }

@@ -9,7 +9,7 @@ use ampel_core::models::{
     AmpelStatus, CICheck, GitProvider, MergeRequest, PaginatedResponse, PullRequest,
     PullRequestFilter, PullRequestWithDetails, Review,
 };
-use ampel_db::entities::git_provider;
+use ampel_db::entities::provider_connection;
 use ampel_db::queries::{CICheckQueries, PrQueries, RepoQueries, ReviewQueries};
 
 use crate::extractors::AuthUser;
@@ -196,9 +196,9 @@ pub async fn merge_pull_request(
         .map_err(|_| ApiError::internal("Invalid provider"))?;
 
     // Get provider connection
-    let connection = git_provider::Entity::find()
-        .filter(git_provider::Column::UserId.eq(auth.user_id))
-        .filter(git_provider::Column::Provider.eq(provider_type.to_string()))
+    let connection = provider_connection::Entity::find()
+        .filter(provider_connection::Column::UserId.eq(auth.user_id))
+        .filter(provider_connection::Column::Provider.eq(provider_type.to_string()))
         .one(&state.db)
         .await?
         .ok_or_else(|| ApiError::bad_request("Provider not connected"))?;
@@ -278,9 +278,9 @@ pub async fn refresh_pull_request(
         .map_err(|_| ApiError::internal("Invalid provider"))?;
 
     // Get provider connection
-    let connection = git_provider::Entity::find()
-        .filter(git_provider::Column::UserId.eq(auth.user_id))
-        .filter(git_provider::Column::Provider.eq(provider_type.to_string()))
+    let connection = provider_connection::Entity::find()
+        .filter(provider_connection::Column::UserId.eq(auth.user_id))
+        .filter(provider_connection::Column::Provider.eq(provider_type.to_string()))
         .one(&state.db)
         .await?
         .ok_or_else(|| ApiError::bad_request("Provider not connected"))?;

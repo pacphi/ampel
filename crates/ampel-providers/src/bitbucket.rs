@@ -17,6 +17,7 @@ pub struct BitbucketProvider {
     client_id: String,
     client_secret: String,
     redirect_uri: String,
+    base_url: String,
 }
 
 impl BitbucketProvider {
@@ -31,11 +32,41 @@ impl BitbucketProvider {
             client_id,
             client_secret,
             redirect_uri,
+            base_url: "https://api.bitbucket.org/2.0".to_string(),
+        }
+    }
+
+    /// Create a provider with a custom base URL (for Bitbucket Server/DC or PAT-only auth)
+    pub fn new_with_base_url(base_url: Option<String>) -> Self {
+        let client = Client::builder()
+            .user_agent("Ampel/1.0")
+            .build()
+            .expect("Failed to create HTTP client");
+
+        // Bitbucket Server uses different API paths
+        let base_url = base_url.map_or_else(
+            || "https://api.bitbucket.org/2.0".to_string(),
+            |url| {
+                if url.contains("api.bitbucket.org") {
+                    url
+                } else {
+                    // Bitbucket Server/Data Center API path
+                    format!("{}/rest/api/1.0", url.trim_end_matches('/'))
+                }
+            },
+        );
+
+        Self {
+            client,
+            client_id: String::new(),
+            client_secret: String::new(),
+            redirect_uri: String::new(),
+            base_url,
         }
     }
 
     fn api_url(&self, path: &str) -> String {
-        format!("https://api.bitbucket.org/2.0{}", path)
+        format!("{}{}", self.base_url, path)
     }
 }
 

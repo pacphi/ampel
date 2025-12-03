@@ -47,6 +47,7 @@ impl RepoQueries {
     pub async fn create(
         db: &DatabaseConnection,
         user_id: Uuid,
+        connection_id: Option<Uuid>,
         provider: String,
         provider_id: String,
         owner: String,
@@ -63,6 +64,7 @@ impl RepoQueries {
         let repo = ActiveModel {
             id: Set(Uuid::new_v4()),
             user_id: Set(user_id),
+            connection_id: Set(connection_id),
             provider: Set(provider),
             provider_id: Set(provider_id),
             owner: Set(owner),

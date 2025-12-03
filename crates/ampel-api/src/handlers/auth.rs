@@ -1,79 +1,15 @@
 use axum::{extract::State, http::StatusCode, Json};
 
-use ampel_core::models::{
-    AuthTokens, CreateUserRequest, LoginRequest, RefreshTokenRequest, UserResponse,
-};
+use ampel_core::models::{AuthTokens, RefreshTokenRequest, UserResponse};
 use ampel_db::queries::UserQueries;
 
-use crate::extractors::{AuthUser, ValidatedJson};
+use crate::extractors::AuthUser;
 use crate::handlers::{ApiError, ApiResponse};
 use crate::AppState;
 
-/// Register a new user
-pub async fn register(
-    State(state): State<AppState>,
-    ValidatedJson(req): ValidatedJson<CreateUserRequest>,
-) -> Result<(StatusCode, Json<ApiResponse<AuthTokens>>), ApiError> {
-    // Check if user already exists
-    if UserQueries::find_by_email(&state.db, &req.email)
-        .await?
-        .is_some()
-    {
-        return Err(ApiError::bad_request("Email already registered"));
-    }
-
-    // Hash password
-    let password_hash = state
-        .auth_service
-        .hash_password(&req.password)
-        .map_err(|e| ApiError::internal(e.to_string()))?;
-
-    // Create user
-    let user = UserQueries::create(
-        &state.db,
-        req.email.clone(),
-        password_hash,
-        req.display_name,
-    )
-    .await?;
-
-    // Generate tokens
-    let tokens = state
-        .auth_service
-        .generate_tokens(user.id, &user.email)
-        .map_err(|e| ApiError::internal(e.to_string()))?;
-
-    Ok((StatusCode::CREATED, Json(ApiResponse::success(tokens))))
-}
-
-/// Login with email and password
-pub async fn login(
-    State(state): State<AppState>,
-    ValidatedJson(req): ValidatedJson<LoginRequest>,
-) -> Result<Json<ApiResponse<AuthTokens>>, ApiError> {
-    // Find user
-    let user = UserQueries::find_by_email(&state.db, &req.email)
-        .await?
-        .ok_or_else(|| ApiError::unauthorized("Invalid email or password"))?;
-
-    // Verify password
-    let valid = state
-        .auth_service
-        .verify_password(&req.password, &user.password_hash)
-        .map_err(|e| ApiError::internal(e.to_string()))?;
-
-    if !valid {
-        return Err(ApiError::unauthorized("Invalid email or password"));
-    }
-
-    // Generate tokens
-    let tokens = state
-        .auth_service
-        .generate_tokens(user.id, &user.email)
-        .map_err(|e| ApiError::internal(e.to_string()))?;
-
-    Ok(Json(ApiResponse::success(tokens)))
-}
+// Note: Register and Login endpoints have been removed.
+// User authentication is now OAuth-only via GitHub/Google social login.
+// Social auth endpoints will be added in a future update.
 
 /// Refresh access token
 pub async fn refresh(

@@ -54,6 +54,7 @@ utoipa-swagger-ui.workspace = true
 ampel-core.workspace = true
 ampel-db.workspace = true
 ampel-providers.workspace = true
+urlencoding = "2.1.3"
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
