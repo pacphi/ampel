@@ -1,10 +1,7 @@
 use std::net::SocketAddr;
 
 use axum::http::{header, Method};
-use tower_http::{
-    cors::CorsLayer,
-    trace::TraceLayer,
-};
+use tower_http::{cors::CorsLayer, trace::TraceLayer};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 use ampel_api::{routes, AppState, Config};
