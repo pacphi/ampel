@@ -17,6 +17,7 @@ pub struct GitHubProvider {
     client_id: String,
     client_secret: String,
     redirect_uri: String,
+    base_url: String,
 }
 
 impl GitHubProvider {
@@ -31,11 +32,41 @@ impl GitHubProvider {
             client_id,
             client_secret,
             redirect_uri,
+            base_url: "https://api.github.com".to_string(),
+        }
+    }
+
+    /// Create a provider with a custom base URL (for GitHub Enterprise or PAT-only auth)
+    pub fn new_with_base_url(base_url: Option<String>) -> Self {
+        let client = Client::builder()
+            .user_agent("Ampel/1.0")
+            .build()
+            .expect("Failed to create HTTP client");
+
+        // For GitHub Enterprise, the API URL is typically /api/v3 on the base
+        let base_url = base_url.map_or_else(
+            || "https://api.github.com".to_string(),
+            |url| {
+                if url.contains("api.github.com") {
+                    url
+                } else {
+                    // GitHub Enterprise Server API path
+                    format!("{}/api/v3", url.trim_end_matches('/'))
+                }
+            },
+        );
+
+        Self {
+            client,
+            client_id: String::new(),
+            client_secret: String::new(),
+            redirect_uri: String::new(),
+            base_url,
         }
     }
 
     fn api_url(&self, path: &str) -> String {
-        format!("https://api.github.com{}", path)
+        format!("{}{}", self.base_url, path)
     }
 }
 

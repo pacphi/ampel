@@ -4,7 +4,7 @@ import { AuthProvider } from '@/hooks/useAuth';
 import { ThemeProvider } from '@/hooks/useTheme';
 import Layout from '@/components/layout/Layout';
 import Login from '@/pages/Login';
-import Register from '@/pages/Register';
+import AuthCallback from '@/pages/AuthCallback';
 import Dashboard from '@/pages/Dashboard';
 import Repositories from '@/pages/Repositories';
 import Analytics from '@/pages/Analytics';
@@ -17,7 +17,7 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route
             path="/"
             element={

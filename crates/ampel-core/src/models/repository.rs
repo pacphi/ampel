@@ -40,6 +40,7 @@ impl std::str::FromStr for GitProvider {
 pub struct Repository {
     pub id: Uuid,
     pub user_id: Uuid,
+    pub connection_id: Option<Uuid>, // Which PAT connection is used to access this repo
     pub provider: GitProvider,
     pub provider_id: String,
     pub owner: String,
@@ -88,17 +89,21 @@ pub struct RepositoryGroup {
     pub created_at: DateTime<Utc>,
 }
 
+/// PAT-based connection to a Git provider
+/// Users can have multiple connections per provider with different names
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProviderConnection {
     pub id: Uuid,
     pub user_id: Uuid,
     pub provider: GitProvider,
+    pub connection_name: String, // User-defined name: "work-github", "personal-gitlab"
     pub provider_user_id: String,
     pub provider_username: String,
     pub access_token_encrypted: Vec<u8>,
-    pub refresh_token_encrypted: Option<Vec<u8>>,
-    pub token_expires_at: Option<DateTime<Utc>>,
-    pub scopes: Vec<String>,
+    pub scopes: Option<Vec<String>>,
+    pub base_url: Option<String>,        // For self-hosted: https://github.mycompany.com
+    pub is_validated: bool,
+    pub validation_error: Option<String>,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
@@ -107,9 +112,11 @@ pub struct ProviderConnection {
 pub struct ProviderConnectionResponse {
     pub id: Uuid,
     pub provider: GitProvider,
+    pub connection_name: String,
     pub provider_username: String,
-    pub scopes: Vec<String>,
-    pub token_expires_at: Option<DateTime<Utc>>,
+    pub base_url: Option<String>,
+    pub is_validated: bool,
+    pub validation_error: Option<String>,
     pub created_at: DateTime<Utc>,
 }
 
@@ -118,12 +125,33 @@ impl From<ProviderConnection> for ProviderConnectionResponse {
         Self {
             id: conn.id,
             provider: conn.provider,
+            connection_name: conn.connection_name,
             provider_username: conn.provider_username,
-            scopes: conn.scopes,
-            token_expires_at: conn.token_expires_at,
+            base_url: conn.base_url,
+            is_validated: conn.is_validated,
+            validation_error: conn.validation_error,
             created_at: conn.created_at,
         }
     }
+}
+
+/// Request to add a new PAT connection
+#[derive(Debug, Clone, Serialize, Deserialize, Validate)]
+pub struct AddConnectionRequest {
+    pub provider: GitProvider,
+    #[validate(length(min = 1, max = 100, message = "Connection name must be 1-100 characters"))]
+    pub connection_name: String,
+    #[validate(length(min = 1, message = "Access token is required"))]
+    pub access_token: String,
+    pub base_url: Option<String>, // For self-hosted instances
+}
+
+/// Request to update an existing connection
+#[derive(Debug, Clone, Serialize, Deserialize, Validate)]
+pub struct UpdateConnectionRequest {
+    #[validate(length(min = 1, max = 100, message = "Connection name must be 1-100 characters"))]
+    pub connection_name: Option<String>,
+    pub access_token: Option<String>, // For rotating the PAT
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

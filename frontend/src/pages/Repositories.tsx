@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   useRepositories,
   useAddRepository,
@@ -6,20 +7,20 @@ import {
   useDiscoverRepositories,
 } from '@/hooks/useRepositories';
 import { useQuery } from '@tanstack/react-query';
-import { oauthApi } from '@/api/oauth';
+import { connectionsApi } from '@/api/connections';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import StatusBadge from '@/components/dashboard/StatusBadge';
 import { useToast } from '@/components/ui/use-toast';
-import type { GitProvider, DiscoveredRepository } from '@/types';
-import { Plus, Trash2, ExternalLink, Search, Github, RefreshCw } from 'lucide-react';
+import type { GitProvider, DiscoveredRepository, ProviderConnection } from '@/types';
+import { Plus, Trash2, ExternalLink, Search, Github, RefreshCw, Settings } from 'lucide-react';
 
 export default function Repositories() {
   const { data: repositories, isLoading } = useRepositories();
   const { data: connections } = useQuery({
-    queryKey: ['oauth', 'connections'],
-    queryFn: () => oauthApi.listConnections(),
+    queryKey: ['connections'],
+    queryFn: () => connectionsApi.list(),
   });
   const addRepository = useAddRepository();
   const removeRepository = useRemoveRepository();
@@ -69,20 +70,6 @@ export default function Repositories() {
     }
   };
 
-  const handleConnectProvider = async (provider: GitProvider) => {
-    try {
-      const url = await oauthApi.getOAuthUrl(provider);
-      window.location.href = url;
-    } catch (error: unknown) {
-      const axiosError = error as { response?: { data?: { error?: string } } };
-      toast({
-        variant: 'destructive',
-        title: 'Failed to connect',
-        description: axiosError.response?.data?.error || 'An error occurred',
-      });
-    }
-  };
-
   const filteredRepos = repositories?.filter(
     (repo) =>
       repo.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -90,7 +77,7 @@ export default function Repositories() {
   );
 
   const isProviderConnected = (provider: GitProvider) =>
-    connections?.some((c) => c.provider === provider);
+    connections?.some((c: ProviderConnection) => c.provider === provider);
 
   const filteredDiscovered = discoveredRepos?.filter(
     (repo) =>
@@ -103,30 +90,45 @@ export default function Repositories() {
         <h1 className="text-2xl font-bold">Repositories</h1>
       </div>
 
-      {/* Provider Connection */}
+      {/* Provider Selection */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Connect Providers</CardTitle>
+          <CardTitle className="text-lg">Select Provider</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-4">
-            {(['github', 'gitlab', 'bitbucket'] as GitProvider[]).map((provider) => (
-              <Button
-                key={provider}
-                variant={isProviderConnected(provider) ? 'default' : 'outline'}
-                onClick={() =>
-                  isProviderConnected(provider)
-                    ? setSelectedProvider(provider)
-                    : handleConnectProvider(provider)
-                }
-                className="capitalize"
-              >
-                <Github className="h-4 w-4 mr-2" />
-                {provider}
-                {isProviderConnected(provider) && ' (Connected)'}
+          <div className="flex gap-4 flex-wrap">
+            {(['github', 'gitlab', 'bitbucket'] as GitProvider[]).map((provider) => {
+              const connected = isProviderConnected(provider);
+              return (
+                <Button
+                  key={provider}
+                  variant={selectedProvider === provider ? 'default' : 'outline'}
+                  onClick={() => connected && setSelectedProvider(provider)}
+                  disabled={!connected}
+                  className="capitalize"
+                >
+                  <Github className="h-4 w-4 mr-2" />
+                  {provider}
+                  {connected && ' (Connected)'}
+                </Button>
+              );
+            })}
+            <Link to="/settings/connections">
+              <Button variant="ghost" size="sm">
+                <Settings className="h-4 w-4 mr-2" />
+                Manage Connections
               </Button>
-            ))}
+            </Link>
           </div>
+          {!connections?.length && (
+            <p className="text-sm text-muted-foreground mt-4">
+              No connections found.{' '}
+              <Link to="/settings/connections" className="text-primary hover:underline">
+                Add a connection
+              </Link>{' '}
+              to start discovering repositories.
+            </p>
+          )}
         </CardContent>
       </Card>
 

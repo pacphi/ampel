@@ -4,7 +4,8 @@ use axum::{
 };
 
 use crate::handlers::{
-    analytics, auth, bot_rules, dashboard, notifications, oauth, pull_requests, repositories, teams,
+    analytics, auth, bot_rules, connections, dashboard, notifications, pull_requests, repositories,
+    social_auth, teams,
 };
 use crate::AppState;
 
@@ -12,20 +13,29 @@ pub fn create_router(state: AppState) -> Router {
     Router::new()
         // Health check
         .route("/health", get(health_check))
-        // Auth routes (public)
-        .route("/api/auth/register", post(auth::register))
-        .route("/api/auth/login", post(auth::login))
-        .route("/api/auth/refresh", post(auth::refresh))
+        // Social auth routes (public - for logging into Ampel)
+        .route("/api/auth/github/url", post(social_auth::github_auth_url))
+        .route("/api/auth/github/callback", get(social_auth::github_auth_callback))
+        .route("/api/auth/google/url", post(social_auth::google_auth_url))
+        .route("/api/auth/google/callback", get(social_auth::google_auth_callback))
         // Auth routes (protected)
+        .route("/api/auth/refresh", post(auth::refresh))
         .route("/api/auth/me", get(auth::me))
         .route("/api/auth/logout", post(auth::logout))
-        // OAuth routes
-        .route("/api/oauth/:provider/url", get(oauth::get_oauth_url))
-        .route("/api/oauth/:provider/callback", get(oauth::oauth_callback))
-        .route("/api/oauth/connections", get(oauth::list_connections))
+        // PAT Connection routes
         .route(
-            "/api/oauth/connections/:provider",
-            delete(oauth::disconnect_provider),
+            "/api/connections",
+            get(connections::list_connections).post(connections::add_connection),
+        )
+        .route(
+            "/api/connections/:id",
+            get(connections::get_connection)
+                .put(connections::update_connection)
+                .delete(connections::delete_connection),
+        )
+        .route(
+            "/api/connections/:id/validate",
+            post(connections::validate_connection),
         )
         // Repository routes
         .route("/api/repositories", get(repositories::list_repositories))

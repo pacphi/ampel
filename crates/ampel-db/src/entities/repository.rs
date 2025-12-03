@@ -7,6 +7,7 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
     pub user_id: Uuid,
+    pub connection_id: Option<Uuid>, // Which PAT connection is used to access this repo
     pub provider: String,    // github, gitlab, bitbucket
     pub provider_id: String, // ID from the provider
     pub owner: String,
@@ -32,6 +33,12 @@ pub enum Relation {
         to = "super::user::Column::Id"
     )]
     User,
+    #[sea_orm(
+        belongs_to = "super::provider_connection::Entity",
+        from = "Column::ConnectionId",
+        to = "super::provider_connection::Column::Id"
+    )]
+    ProviderConnection,
     #[sea_orm(has_many = "super::pull_request::Entity")]
     PullRequests,
 }
@@ -39,6 +46,12 @@ pub enum Relation {
 impl Related<super::user::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::User.def()
+    }
+}
+
+impl Related<super::provider_connection::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::ProviderConnection.def()
     }
 }
 
@@ -55,6 +68,7 @@ impl From<Model> for ampel_core::models::Repository {
         Self {
             id: model.id,
             user_id: model.user_id,
+            connection_id: model.connection_id,
             provider: model
                 .provider
                 .parse()

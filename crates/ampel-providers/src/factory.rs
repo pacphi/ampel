@@ -76,4 +76,19 @@ impl ProviderFactory {
             self.create(Provider::Bitbucket),
         ]
     }
+
+    /// Create a provider instance with a custom base URL (for self-hosted instances or PAT auth)
+    /// OAuth credentials are not used when a base URL is provided - the provider only needs
+    /// the access token for API calls.
+    pub fn create_with_base_url(
+        &self,
+        provider: Provider,
+        base_url: Option<String>,
+    ) -> Arc<dyn GitProvider> {
+        match provider {
+            Provider::GitHub => Arc::new(GitHubProvider::new_with_base_url(base_url)),
+            Provider::GitLab => Arc::new(GitLabProvider::new_with_base_url(base_url)),
+            Provider::Bitbucket => Arc::new(BitbucketProvider::new_with_base_url(base_url)),
+        }
+    }
 }

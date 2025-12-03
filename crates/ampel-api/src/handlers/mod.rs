@@ -1,11 +1,12 @@
 pub mod analytics;
 pub mod auth;
 pub mod bot_rules;
+pub mod connections;
 pub mod dashboard;
 pub mod notifications;
-pub mod oauth;
 pub mod pull_requests;
 pub mod repositories;
+pub mod social_auth;
 pub mod teams;
 
 use axum::{http::StatusCode, response::IntoResponse, Json};

@@ -1,35 +1,59 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use validator::Validate;
 
+/// User account - authenticates via OAuth (GitHub/Google), no password
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct User {
     pub id: Uuid,
     pub email: String,
-    pub password_hash: String,
     pub display_name: Option<String>,
     pub avatar_url: Option<String>,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Validate)]
-pub struct CreateUserRequest {
-    #[validate(email(message = "Invalid email address"))]
-    pub email: String,
-    #[validate(length(min = 8, message = "Password must be at least 8 characters"))]
-    pub password: String,
-    #[validate(length(min = 1, max = 100, message = "Display name must be 1-100 characters"))]
-    pub display_name: Option<String>,
+/// OAuth account linked to a user for social login
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct UserOauthAccount {
+    pub id: Uuid,
+    pub user_id: Uuid,
+    pub provider: String,         // "github", "google"
+    pub provider_user_id: String,
+    pub provider_email: Option<String>,
+    pub provider_username: Option<String>,
+    pub avatar_url: Option<String>,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Validate)]
-pub struct LoginRequest {
-    #[validate(email(message = "Invalid email address"))]
-    pub email: String,
-    #[validate(length(min = 1, message = "Password is required"))]
-    pub password: String,
+/// Supported OAuth providers for user authentication
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum OAuthProvider {
+    GitHub,
+    Google,
+}
+
+impl std::fmt::Display for OAuthProvider {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            OAuthProvider::GitHub => write!(f, "github"),
+            OAuthProvider::Google => write!(f, "google"),
+        }
+    }
+}
+
+impl std::str::FromStr for OAuthProvider {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "github" => Ok(OAuthProvider::GitHub),
+            "google" => Ok(OAuthProvider::Google),
+            _ => Err(format!("Unknown OAuth provider: {}", s)),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

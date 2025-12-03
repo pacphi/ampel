@@ -1,22 +1,18 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
+/// OAuth accounts used for user authentication to Ampel (GitHub, Google social login)
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Serialize, Deserialize)]
-#[sea_orm(table_name = "git_providers")]
+#[sea_orm(table_name = "user_oauth_accounts")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
     pub user_id: Uuid,
-    pub provider: String, // github, gitlab, bitbucket
-    pub provider_user_id: String,
-    pub provider_username: String,
-    #[sea_orm(column_type = "VarBinary(StringLen::None)")]
-    pub access_token_encrypted: Vec<u8>,
-    #[sea_orm(column_type = "VarBinary(StringLen::None)", nullable)]
-    pub refresh_token_encrypted: Option<Vec<u8>>,
-    pub token_expires_at: Option<DateTimeUtc>,
-    pub scopes: String,               // JSON array stored as string
-    pub instance_url: Option<String>, // For self-hosted GitLab/Bitbucket
+    pub provider: String,         // "github", "google"
+    pub provider_user_id: String, // Provider's unique user ID
+    pub provider_email: Option<String>,
+    pub provider_username: Option<String>,
+    pub avatar_url: Option<String>,
     pub created_at: DateTimeUtc,
     pub updated_at: DateTimeUtc,
 }

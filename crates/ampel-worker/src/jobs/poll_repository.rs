@@ -5,7 +5,7 @@ use uuid::Uuid;
 
 use ampel_core::models::GitProvider;
 use ampel_db::encryption::EncryptionService;
-use ampel_db::entities::{git_provider, repository};
+use ampel_db::entities::{provider_connection, repository};
 use ampel_db::queries::{CICheckQueries, PrQueries, RepoQueries, ReviewQueries};
 use ampel_providers::ProviderFactory;
 
@@ -93,13 +93,21 @@ impl PollRepositoryJob {
             .parse()
             .map_err(|e: String| anyhow::anyhow!(e))?;
 
-        // Get provider connection for the repo owner
-        let connection = git_provider::Entity::find()
-            .filter(git_provider::Column::UserId.eq(repo.user_id))
-            .filter(git_provider::Column::Provider.eq(&repo.provider))
-            .one(db)
-            .await?
-            .ok_or_else(|| anyhow::anyhow!("Provider connection not found"))?;
+        // Get provider connection - prefer the repo's bound connection, fall back to any connection
+        let connection = if let Some(connection_id) = repo.connection_id {
+            provider_connection::Entity::find_by_id(connection_id)
+                .one(db)
+                .await?
+                .ok_or_else(|| anyhow::anyhow!("Bound connection not found"))?
+        } else {
+            // Fall back to first connection for this user + provider
+            provider_connection::Entity::find()
+                .filter(provider_connection::Column::UserId.eq(repo.user_id))
+                .filter(provider_connection::Column::Provider.eq(&repo.provider))
+                .one(db)
+                .await?
+                .ok_or_else(|| anyhow::anyhow!("No connection found for provider"))?
+        };
 
         // Decrypt access token
         let access_token = encryption_service.decrypt(&connection.access_token_encrypted)?;
