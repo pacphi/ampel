@@ -4,14 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Ampel is a unified PR management dashboard that consolidates pull requests from GitHub, GitLab, and Bitbucket into a single interface using a traffic light system (green=ready to merge, yellow=in progress, red=blocked).
+Ampel is a unified PR management dashboard that consolidates pull requests from GitHub, GitLab,
+and Bitbucket into a single interface using a traffic light system (green=ready to merge,
+yellow=in progress, red=blocked).
 
 ## Tech Stack
 
 - **Backend**: Rust 1.91+ (Axum, SeaORM, Apalis for background jobs, Tokio async runtime)
 - **Frontend**: React 19 + TypeScript, Vite, TanStack Query, shadcn/ui, Tailwind CSS
 - **Database**: PostgreSQL 16, Redis 7 for caching
-- **Package Manager**: pnpm 9.14.2
+- **Package Manager**: pnpm 10.24.0
 - **Rust Version**: 1.91.1 (pinned in CI and Docker images)
 
 ## Commands
@@ -50,7 +52,7 @@ make docker-down        # Stop services
 
 ### Crate Structure (Rust Backend)
 
-```
+```text
 crates/
 ├── ampel-api/          # REST API (Axum handlers, routes, middleware)
 ├── ampel-core/         # Business logic and domain models
@@ -62,6 +64,7 @@ crates/
 ### Provider Abstraction
 
 Git providers implement a trait-based abstraction in `ampel-providers`:
+
 ```rust
 #[async_trait]
 pub trait GitProvider: Send + Sync {
@@ -72,7 +75,7 @@ pub trait GitProvider: Send + Sync {
 
 ### Frontend Structure
 
-```
+```text
 frontend/src/
 ├── api/                # Axios-based API client functions
 ├── components/
@@ -96,6 +99,7 @@ frontend/src/
 ### Database Models
 
 Core entity relationships:
+
 - Users → Organizations (many-to-many) → Teams → Repositories → PullRequests
 - PullRequests have: ci_statuses, reviews, ampel_status (green/yellow/red)
 

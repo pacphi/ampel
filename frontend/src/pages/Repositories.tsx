@@ -13,7 +13,8 @@ import { Input } from '@/components/ui/input';
 import StatusBadge from '@/components/dashboard/StatusBadge';
 import { useToast } from '@/components/ui/use-toast';
 import type { GitProvider, DiscoveredRepository } from '@/types';
-import { Plus, Trash2, ExternalLink, Search, Github, RefreshCw } from 'lucide-react';
+import { Plus, PlusCircle, Trash2, ExternalLink, Search, RefreshCw } from 'lucide-react';
+import { GithubIcon, GitlabIcon, BitbucketIcon } from '@/components/icons/ProviderIcons';
 
 export default function Repositories() {
   const { data: repositories, isLoading } = useRepositories();
@@ -27,6 +28,7 @@ export default function Repositories() {
 
   const [selectedProvider, setSelectedProvider] = useState<GitProvider | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isAddingAll, setIsAddingAll] = useState(false);
 
   const { data: discoveredRepos, isLoading: discovering } =
     useDiscoverRepositories(selectedProvider);
@@ -69,6 +71,42 @@ export default function Repositories() {
     }
   };
 
+  const handleAddAll = async (repos: DiscoveredRepository[]) => {
+    if (repos.length === 0) return;
+
+    setIsAddingAll(true);
+    let successCount = 0;
+    let failCount = 0;
+
+    for (const repo of repos) {
+      try {
+        await addRepository.mutateAsync({
+          provider: repo.provider,
+          owner: repo.owner,
+          name: repo.name,
+        });
+        successCount++;
+      } catch {
+        failCount++;
+      }
+    }
+
+    setIsAddingAll(false);
+
+    if (successCount > 0) {
+      toast({
+        title: 'Repositories added',
+        description: `${successCount} ${successCount === 1 ? 'repository' : 'repositories'} added to your watchlist${failCount > 0 ? `, ${failCount} failed` : ''}`,
+      });
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Failed to add repositories',
+        description: 'Could not add any repositories',
+      });
+    }
+  };
+
   const handleConnectProvider = async (provider: GitProvider) => {
     try {
       const url = await oauthApi.getOAuthUrl(provider);
@@ -94,7 +132,12 @@ export default function Repositories() {
 
   const filteredDiscovered = discoveredRepos?.filter(
     (repo) =>
-      !repositories?.some((r) => r.provider === repo.provider && r.providerId === repo.providerId)
+      !repositories?.some(
+        (r) => r.provider === repo.provider && r.providerId === repo.providerId
+      ) &&
+      (searchQuery === '' ||
+        repo.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        repo.owner.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (
@@ -110,22 +153,30 @@ export default function Repositories() {
         </CardHeader>
         <CardContent>
           <div className="flex gap-4">
-            {(['github', 'gitlab', 'bitbucket'] as GitProvider[]).map((provider) => (
-              <Button
-                key={provider}
-                variant={isProviderConnected(provider) ? 'default' : 'outline'}
-                onClick={() =>
-                  isProviderConnected(provider)
-                    ? setSelectedProvider(provider)
-                    : handleConnectProvider(provider)
-                }
-                className="capitalize"
-              >
-                <Github className="h-4 w-4 mr-2" />
-                {provider}
-                {isProviderConnected(provider) && ' (Connected)'}
-              </Button>
-            ))}
+            {(['github', 'gitlab', 'bitbucket'] as GitProvider[]).map((provider) => {
+              const ProviderIcon =
+                provider === 'github'
+                  ? GithubIcon
+                  : provider === 'gitlab'
+                    ? GitlabIcon
+                    : BitbucketIcon;
+              return (
+                <Button
+                  key={provider}
+                  variant={isProviderConnected(provider) ? 'default' : 'outline'}
+                  onClick={() =>
+                    isProviderConnected(provider)
+                      ? setSelectedProvider(provider)
+                      : handleConnectProvider(provider)
+                  }
+                  className="capitalize"
+                >
+                  <ProviderIcon className="h-4 w-4 mr-2" />
+                  {provider}
+                  {isProviderConnected(provider) && ' (Connected)'}
+                </Button>
+              );
+            })}
           </div>
         </CardContent>
       </Card>
@@ -135,9 +186,26 @@ export default function Repositories() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-lg capitalize">Add from {selectedProvider}</CardTitle>
-            <Button variant="ghost" size="sm" onClick={() => setSelectedProvider(null)}>
-              Close
-            </Button>
+            <div className="flex items-center gap-2">
+              {filteredDiscovered && filteredDiscovered.length > 0 && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleAddAll(filteredDiscovered)}
+                  disabled={isAddingAll || addRepository.isPending}
+                >
+                  {isAddingAll ? (
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <PlusCircle className="h-4 w-4 mr-2" />
+                  )}
+                  Add all ({filteredDiscovered.length})
+                </Button>
+              )}
+              <Button variant="ghost" size="sm" onClick={() => setSelectedProvider(null)}>
+                Close
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             {discovering ? (

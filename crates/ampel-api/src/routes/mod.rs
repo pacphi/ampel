@@ -4,7 +4,8 @@ use axum::{
 };
 
 use crate::handlers::{
-    analytics, auth, bot_rules, dashboard, notifications, oauth, pull_requests, repositories, teams,
+    analytics, auth, bot_rules, bulk_merge, dashboard, notifications, oauth, pr_filters,
+    pull_requests, repositories, teams, user_settings,
 };
 use crate::AppState;
 
@@ -17,7 +18,7 @@ pub fn create_router(state: AppState) -> Router {
         .route("/api/auth/login", post(auth::login))
         .route("/api/auth/refresh", post(auth::refresh))
         // Auth routes (protected)
-        .route("/api/auth/me", get(auth::me))
+        .route("/api/auth/me", get(auth::me).put(auth::update_me))
         .route("/api/auth/logout", post(auth::logout))
         // OAuth routes
         .route("/api/oauth/:provider/url", get(oauth::get_oauth_url))
@@ -81,6 +82,19 @@ pub fn create_router(state: AppState) -> Router {
             "/api/notifications/test-slack",
             post(notifications::test_slack_webhook),
         )
+        .route(
+            "/api/notifications/test-email",
+            post(notifications::test_email_smtp),
+        )
+        // User settings routes (behavior config)
+        .route(
+            "/api/settings/behavior",
+            get(user_settings::get_settings).put(user_settings::update_settings),
+        )
+        // Bulk merge routes
+        .route("/api/merge/bulk", post(bulk_merge::bulk_merge))
+        .route("/api/merge/operations", get(bulk_merge::list_operations))
+        .route("/api/merge/operations/:id", get(bulk_merge::get_operation))
         // Bot/Auto-merge routes
         .route(
             "/api/repositories/:repo_id/auto-merge",
@@ -88,6 +102,12 @@ pub fn create_router(state: AppState) -> Router {
                 .put(bot_rules::upsert_auto_merge_rule)
                 .delete(bot_rules::delete_auto_merge_rule),
         )
+        // PR Filters routes (global user settings)
+        .route(
+            "/api/pr-filters",
+            get(pr_filters::get_pr_filters).put(pr_filters::update_pr_filters),
+        )
+        .route("/api/pr-filters/reset", post(pr_filters::reset_pr_filters))
         // Analytics routes
         .route(
             "/api/analytics/summary",

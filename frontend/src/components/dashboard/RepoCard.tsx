@@ -2,28 +2,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import StatusBadge from './StatusBadge';
 import { formatRelativeTime } from '@/lib/utils';
 import type { RepositoryWithStatus } from '@/types';
-import { Github, ExternalLink, GitPullRequest } from 'lucide-react';
+import { ExternalLink, GitPullRequest } from 'lucide-react';
+import { GithubIcon, GitlabIcon, BitbucketIcon } from '@/components/icons/ProviderIcons';
 
 interface RepoCardProps {
   repository: RepositoryWithStatus;
 }
 
 const providerIcons = {
-  github: Github,
-  gitlab: () => (
-    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M22.65 14.39L12 22.13 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51A.42.42 0 0 1 4.82 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.49h8.1l2.44-7.51A.42.42 0 0 1 18.6 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.51L23 13.45a.84.84 0 0 1-.35.94z" />
-    </svg>
-  ),
-  bitbucket: () => (
-    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M.778 1.211a.768.768 0 0 0-.768.892l3.263 19.81c.084.5.515.868 1.022.879H19.95a.772.772 0 0 0 .77-.646l3.27-20.03a.768.768 0 0 0-.768-.892zM14.52 15.53H9.522L8.17 8.466h7.561z" />
-    </svg>
-  ),
+  github: GithubIcon,
+  gitlab: GitlabIcon,
+  bitbucket: BitbucketIcon,
 };
 
 export default function RepoCard({ repository }: RepoCardProps) {
-  const ProviderIcon = providerIcons[repository.provider] || Github;
+  const ProviderIcon = providerIcons[repository.provider] || GithubIcon;
 
   return (
     <Card className="hover:shadow-md transition-shadow">

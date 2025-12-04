@@ -16,6 +16,19 @@ pub struct Model {
     pub notify_on_review_requested: bool,
     pub digest_frequency: String, // none, daily, weekly
     pub updated_at: DateTimeUtc,
+    // Email SMTP settings
+    pub smtp_host: Option<String>,
+    pub smtp_port: Option<i32>,
+    pub smtp_username: Option<String>,
+    #[serde(skip_serializing)]
+    pub smtp_password_encrypted: Option<Vec<u8>>,
+    pub smtp_from_email: Option<String>,
+    pub smtp_to_emails: Option<String>, // JSON array stored as text
+    pub smtp_use_tls: bool,
+    // Merge notification settings
+    pub notify_on_merge_success: bool,
+    pub notify_on_merge_failure: bool,
+    pub slack_channel: Option<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

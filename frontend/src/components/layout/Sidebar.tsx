@@ -1,10 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, GitBranch, Settings, CircleDot, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, GitBranch, GitMerge, Settings, CircleDot, BarChart3 } from 'lucide-react';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Repositories', href: '/repositories', icon: GitBranch },
+  { name: 'Merge', href: '/merge', icon: GitMerge },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];

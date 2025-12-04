@@ -756,7 +756,7 @@ primary_region = "sjc"
 
 ```dockerfile
 # Build stage
-FROM rust:1.75-bookworm AS builder
+FROM rust:1.91-bookworm AS builder
 
 WORKDIR /app
 COPY . .

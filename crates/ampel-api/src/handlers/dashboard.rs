@@ -9,6 +9,7 @@ use crate::handlers::{ApiError, ApiResponse};
 use crate::AppState;
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DashboardSummary {
     pub total_repositories: i32,
     pub total_open_prs: i32,
@@ -17,6 +18,7 @@ pub struct DashboardSummary {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct StatusCounts {
     pub green: i32,
     pub yellow: i32,
@@ -24,6 +26,7 @@ pub struct StatusCounts {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProviderCounts {
     pub github: i32,
     pub gitlab: i32,

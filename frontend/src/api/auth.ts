@@ -34,4 +34,9 @@ export const authApi = {
   async logout(): Promise<void> {
     await apiClient.post('/auth/logout');
   },
+
+  async updateProfile(data: { email?: string; displayName?: string }): Promise<User> {
+    const response = await apiClient.put<ApiResponse<User>>('/auth/me', data);
+    return response.data.data!;
+  },
 };

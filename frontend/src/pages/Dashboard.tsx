@@ -1,13 +1,43 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { dashboardApi } from '@/api/dashboard';
+import { pullRequestsApi } from '@/api/pullRequests';
+import { settingsApi } from '@/api/settings';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import GridView from '@/components/dashboard/GridView';
 import ListView from '@/components/dashboard/ListView';
+import PRListView from '@/components/dashboard/PRListView';
 import { Grid, List, RefreshCw, GitPullRequest, Boxes } from 'lucide-react';
+import type { PullRequestWithDetails } from '@/types';
 
-type ViewMode = 'grid' | 'list';
+type ViewMode = 'grid' | 'list' | 'prs';
+
+// Calculate if a PR is ready to merge (same logic as Merge page)
+function isReadyToMerge(pr: PullRequestWithDetails, skipReviewRequirement: boolean): boolean {
+  // Must not be draft and have no conflicts
+  if (pr.isDraft || pr.hasConflicts) return false;
+
+  // If green status, always ready
+  if (pr.status === 'green') return true;
+
+  // If skipReviewRequirement is enabled and status is yellow, check if review is the only blocker
+  if (skipReviewRequirement && pr.status === 'yellow') {
+    // Check for non-review blockers
+    const hasCIFailed =
+      pr.ciChecks?.some(
+        (c) =>
+          c.status === 'completed' && (c.conclusion === 'failure' || c.conclusion === 'timed_out')
+      ) || false;
+    const hasCIPending =
+      pr.ciChecks?.some((c) => c.status === 'queued' || c.status === 'in_progress') || false;
+
+    // If no CI issues, then the only blocker must be review-related, so it's ready
+    return !hasCIFailed && !hasCIPending;
+  }
+
+  return false;
+}
 
 export default function Dashboard() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -26,6 +56,25 @@ export default function Dashboard() {
     queryFn: () => dashboardApi.getGrid(),
   });
 
+  // Fetch PRs and settings to calculate accurate "Ready to Merge" count
+  const { data: prsData } = useQuery({
+    queryKey: ['pull-requests'],
+    queryFn: () => pullRequestsApi.list(1, 100),
+  });
+
+  const { data: settings } = useQuery({
+    queryKey: ['user-settings', 'behavior'],
+    queryFn: () => settingsApi.getBehavior(),
+    staleTime: 60000,
+  });
+
+  // Calculate "Ready to Merge" count based on user's skipReviewRequirement setting
+  const readyToMergeCount = useMemo(() => {
+    const prs = prsData?.data || [];
+    const skipReviewRequirement = settings?.skipReviewRequirement || false;
+    return prs.filter((pr) => isReadyToMerge(pr, skipReviewRequirement)).length;
+  }, [prsData, settings]);
+
   const isLoading = summaryLoading || reposLoading;
 
   return (
@@ -42,6 +91,7 @@ export default function Dashboard() {
               variant={viewMode === 'grid' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setViewMode('grid')}
+              title="Repository grid view"
             >
               <Grid className="h-4 w-4" />
             </Button>
@@ -49,8 +99,17 @@ export default function Dashboard() {
               variant={viewMode === 'list' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setViewMode('list')}
+              title="Repository list view"
             >
               <List className="h-4 w-4" />
+            </Button>
+            <Button
+              variant={viewMode === 'prs' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('prs')}
+              title="Pull requests view"
+            >
+              <GitPullRequest className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -83,7 +142,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-ampel-green">
-              {isLoading ? '-' : summary?.statusCounts.green}
+              {isLoading ? '-' : readyToMergeCount}
             </div>
           </CardContent>
         </Card>
@@ -100,8 +159,10 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      {/* Repository View */}
-      {isLoading ? (
+      {/* Repository/PR View */}
+      {viewMode === 'prs' ? (
+        <PRListView />
+      ) : isLoading ? (
         <div className="flex items-center justify-center py-12">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>

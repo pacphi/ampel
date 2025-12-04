@@ -311,6 +311,10 @@ impl GitProvider for GitHubProvider {
             .header("Authorization", format!("Bearer {}", access_token))
             .header("Accept", "application/vnd.github+json")
             .query(&[
+                (
+                    "affiliation",
+                    "owner,collaborator,organization_member".to_string(),
+                ),
                 ("page", page.to_string()),
                 ("per_page", per_page.to_string()),
                 ("sort", "updated".to_string()),

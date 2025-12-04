@@ -118,13 +118,42 @@ pub async fn discover_repositories(
 
     let provider = state.provider_factory.create(provider_type);
 
-    let page = query.page.unwrap_or(1);
-    let per_page = query.per_page.unwrap_or(30);
+    // If no specific page requested, fetch all repositories by paginating through all pages
+    let repos = if query.page.is_none() {
+        let per_page = 100; // Use max allowed by GitHub
+        let mut all_repos = Vec::new();
+        let mut page = 1;
 
-    let repos = provider
-        .list_repositories(&access_token, page, per_page)
-        .await
-        .map_err(|e| ApiError::internal(format!("Provider error: {}", e)))?;
+        loop {
+            let page_repos = provider
+                .list_repositories(&access_token, page, per_page)
+                .await
+                .map_err(|e| ApiError::internal(format!("Provider error: {}", e)))?;
+
+            let count = page_repos.len();
+            all_repos.extend(page_repos);
+
+            // If we got fewer than per_page, we've reached the last page
+            if count < per_page as usize {
+                break;
+            }
+            page += 1;
+
+            // Safety limit to prevent infinite loops (1000 repos max)
+            if page > 10 {
+                break;
+            }
+        }
+        all_repos
+    } else {
+        let page = query.page.unwrap_or(1);
+        let per_page = query.per_page.unwrap_or(30);
+
+        provider
+            .list_repositories(&access_token, page, per_page)
+            .await
+            .map_err(|e| ApiError::internal(format!("Provider error: {}", e)))?
+    };
 
     Ok(Json(ApiResponse::success(repos)))
 }

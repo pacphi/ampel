@@ -37,6 +37,7 @@ impl std::str::FromStr for GitProvider {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Repository {
     pub id: Uuid,
     pub user_id: Uuid,
@@ -57,6 +58,7 @@ pub struct Repository {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RepositoryWithStatus {
     #[serde(flatten)]
     pub repository: Repository,
@@ -104,6 +106,7 @@ pub struct ProviderConnection {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProviderConnectionResponse {
     pub id: Uuid,
     pub provider: GitProvider,
@@ -127,6 +130,7 @@ impl From<ProviderConnection> for ProviderConnectionResponse {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DiscoveredRepository {
     pub provider: GitProvider,
     pub provider_id: String,

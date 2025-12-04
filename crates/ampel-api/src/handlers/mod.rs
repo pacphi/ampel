@@ -1,12 +1,15 @@
 pub mod analytics;
 pub mod auth;
 pub mod bot_rules;
+pub mod bulk_merge;
 pub mod dashboard;
 pub mod notifications;
 pub mod oauth;
+pub mod pr_filters;
 pub mod pull_requests;
 pub mod repositories;
 pub mod teams;
+pub mod user_settings;
 
 use axum::{http::StatusCode, response::IntoResponse, Json};
 use serde::Serialize;

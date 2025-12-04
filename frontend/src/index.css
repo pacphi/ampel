@@ -1,6 +1,10 @@
 @import 'tailwindcss';
 
 @theme {
+  --color-ampel-green: #22c55e;
+  --color-ampel-yellow: #eab308;
+  --color-ampel-red: #ef4444;
+
   --color-background: hsl(0 0% 100%);
   --color-foreground: hsl(222.2 84% 4.9%);
   --color-card: hsl(0 0% 100%);

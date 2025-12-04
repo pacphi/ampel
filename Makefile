@@ -10,7 +10,7 @@
 .PHONY: audit audit-backend audit-frontend
 .PHONY: outdated outdated-backend outdated-frontend
 .PHONY: upgrade upgrade-backend upgrade-frontend upgrade-latest
-.PHONY: docker docker-build docker-up docker-down docker-logs
+.PHONY: docker docker-build docker-up docker-down docker-restart docker-logs
 .PHONY: deploy deploy-fly
 .PHONY: gh-ci gh-release gh-watch gh-runs gh-status
 
@@ -55,6 +55,7 @@ help:
 	@echo "  docker-build     - Build all Docker images"
 	@echo "  docker-up        - Start all services with Docker Compose"
 	@echo "  docker-down      - Stop all Docker services"
+	@echo "  docker-restart   - Restart services with rebuild (down + up --build)"
 	@echo "  docker-logs      - View Docker logs"
 	@echo ""
 	@echo "Deployment:"
@@ -279,6 +280,10 @@ docker-up:
 docker-down:
 	@echo "==> Stopping Docker services..."
 	cd docker && docker compose down
+
+docker-restart:
+	@echo "==> Restarting Docker services with rebuild..."
+	cd docker && docker compose down && docker compose up -d --build
 
 docker-logs:
 	cd docker && docker compose logs -f

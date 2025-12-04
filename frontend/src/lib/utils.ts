@@ -13,9 +13,15 @@ export function formatDate(date: string | Date): string {
   });
 }
 
-export function formatRelativeTime(date: string | Date): string {
-  const now = new Date();
+export function formatRelativeTime(date: string | Date | null | undefined): string {
+  if (!date) return '';
+
   const then = new Date(date);
+
+  // Check for invalid date
+  if (isNaN(then.getTime())) return '';
+
+  const now = new Date();
   const diffMs = now.getTime() - then.getTime();
   const diffSec = Math.floor(diffMs / 1000);
   const diffMin = Math.floor(diffSec / 60);

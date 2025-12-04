@@ -33,6 +33,7 @@ pub struct LoginRequest {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct UserResponse {
     pub id: Uuid,
     pub email: String,
@@ -54,6 +55,7 @@ impl From<User> for UserResponse {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct AuthTokens {
     pub access_token: String,
     pub refresh_token: String,
@@ -80,4 +82,13 @@ pub enum TokenType {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RefreshTokenRequest {
     pub refresh_token: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Validate)]
+#[serde(rename_all = "camelCase")]
+pub struct UpdateProfileRequest {
+    #[validate(email(message = "Invalid email address"))]
+    pub email: Option<String>,
+    #[validate(length(max = 100, message = "Display name must be at most 100 characters"))]
+    pub display_name: Option<String>,
 }

@@ -25,7 +25,8 @@ export default function Header() {
         .map((n) => n[0])
         .join('')
         .toUpperCase()
-    : user?.email?.[0]?.toUpperCase() || 'U';
+        .slice(0, 2)
+    : 'U';
 
   return (
     <header className="flex h-16 items-center justify-between border-b bg-card px-6">
@@ -41,9 +42,11 @@ export default function Header() {
             <AvatarImage src={user?.avatarUrl} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
-          <div className="hidden sm:block">
-            <p className="text-sm font-medium">{user?.displayName || user?.email}</p>
-          </div>
+          {user?.displayName && (
+            <div className="hidden sm:block">
+              <p className="text-sm font-medium">{user.displayName}</p>
+            </div>
+          )}
         </div>
         <Button variant="ghost" size="icon" onClick={handleLogout}>
           <LogOut className="h-5 w-5" />

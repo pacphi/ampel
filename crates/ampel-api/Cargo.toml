@@ -50,6 +50,9 @@ jsonwebtoken.workspace = true
 utoipa.workspace = true
 utoipa-swagger-ui.workspace = true
 
+# Email
+lettre.workspace = true
+
 # Internal
 ampel-core.workspace = true
 ampel-db.workspace = true

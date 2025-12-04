@@ -94,6 +94,32 @@ impl UserQueries {
         active.update(db).await
     }
 
+    /// Update user profile (email and/or display name)
+    pub async fn update_profile(
+        db: &DatabaseConnection,
+        id: Uuid,
+        email: Option<String>,
+        display_name: Option<Option<String>>,
+    ) -> Result<Model, DbErr> {
+        let user = Entity::find_by_id(id)
+            .one(db)
+            .await?
+            .ok_or(DbErr::RecordNotFound("User not found".to_string()))?;
+
+        let mut active: ActiveModel = user.into();
+
+        if let Some(new_email) = email {
+            active.email = Set(new_email);
+        }
+
+        if let Some(new_display_name) = display_name {
+            active.display_name = Set(new_display_name);
+        }
+
+        active.updated_at = Set(Utc::now());
+        active.update(db).await
+    }
+
     /// Delete user
     pub async fn delete(db: &DatabaseConnection, id: Uuid) -> Result<(), DbErr> {
         Entity::delete_by_id(id).exec(db).await?;

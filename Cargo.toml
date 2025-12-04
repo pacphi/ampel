@@ -66,6 +66,9 @@ base64 = "0.22"
 utoipa = { version = "4", features = ["axum_extras"] }
 utoipa-swagger-ui = { version = "7", features = ["axum"] }
 
+# Email
+lettre = { version = "0.11", default-features = false, features = ["tokio1", "tokio1-rustls-tls", "smtp-transport", "builder"] }
+
 # Internal crates
 ampel-core = { path = "crates/ampel-core" }
 ampel-db = { path = "crates/ampel-db" }

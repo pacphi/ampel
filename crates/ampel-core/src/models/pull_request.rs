@@ -5,6 +5,7 @@ use uuid::Uuid;
 use super::{AmpelStatus, GitProvider};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PullRequest {
     pub id: Uuid,
     pub repository_id: Uuid,
@@ -53,6 +54,7 @@ impl std::fmt::Display for PullRequestState {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PullRequestWithDetails {
     #[serde(flatten)]
     pub pull_request: PullRequest,
@@ -64,6 +66,7 @@ pub struct PullRequestWithDetails {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CICheck {
     pub id: Uuid,
     pub pull_request_id: Uuid,
@@ -97,6 +100,7 @@ pub enum CICheckConclusion {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Review {
     pub id: Uuid,
     pub pull_request_id: Uuid,
@@ -151,6 +155,7 @@ pub enum SortOrder {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PaginatedResponse<T> {
     pub data: Vec<T>,
     pub total: i64,

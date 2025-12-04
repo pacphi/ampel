@@ -48,15 +48,15 @@ Open [http://localhost:3000](http://localhost:3000) and connect your first repos
 
 ## Documentation
 
-| Guide                                      | Description                   |
-| ------------------------------------------ | ----------------------------- |
-| [Getting Started](docs/GETTING_STARTED.md) | Quick start and configuration |
+| Guide                                      | Description                     |
+| ------------------------------------------ | ------------------------------- |
+| [Getting Started](docs/GETTING_STARTED.md) | Quick start and configuration   |
 | [OAuth Setup](docs/OAUTH_SETUP.md)         | GitHub, GitLab, Bitbucket OAuth |
-| [Development](docs/DEVELOPMENT.md)         | Build and run locally         |
-| [Contributing](docs/CONTRIBUTING.md)       | How to contribute             |
-| [Deployment](docs/DEPLOY.md)               | Deploy to Fly.io              |
-| [Docker](docs/RUN.md)                      | Run with Docker               |
-| [Releases](docs/RELEASE.md)                | Release process               |
+| [Development](docs/DEVELOPMENT.md)         | Build and run locally           |
+| [Contributing](docs/CONTRIBUTING.md)       | How to contribute               |
+| [Deployment](docs/DEPLOY.md)               | Deploy to Fly.io                |
+| [Docker](docs/RUN.md)                      | Run with Docker                 |
+| [Releases](docs/RELEASE.md)                | Release process                 |
 
 **Planning & Architecture:**
 
@@ -81,4 +81,4 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-*Built with 🚦 by the Ampel team*
+_Built with 🚦 by the Ampel team_

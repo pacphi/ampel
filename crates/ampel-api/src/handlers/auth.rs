@@ -1,7 +1,8 @@
 use axum::{extract::State, http::StatusCode, Json};
 
 use ampel_core::models::{
-    AuthTokens, CreateUserRequest, LoginRequest, RefreshTokenRequest, UserResponse,
+    AuthTokens, CreateUserRequest, LoginRequest, RefreshTokenRequest, UpdateProfileRequest,
+    UserResponse,
 };
 use ampel_db::queries::UserQueries;
 
@@ -108,6 +109,36 @@ pub async fn me(
     let user = UserQueries::find_by_id(&state.db, auth.user_id)
         .await?
         .ok_or_else(|| ApiError::not_found("User not found"))?;
+
+    let response: UserResponse = ampel_core::models::User::from(user).into();
+    Ok(Json(ApiResponse::success(response)))
+}
+
+/// Update current user profile
+pub async fn update_me(
+    State(state): State<AppState>,
+    auth: AuthUser,
+    ValidatedJson(req): ValidatedJson<UpdateProfileRequest>,
+) -> Result<Json<ApiResponse<UserResponse>>, ApiError> {
+    // If email is being changed, check it's not already taken
+    if let Some(ref new_email) = req.email {
+        if let Some(existing) = UserQueries::find_by_email(&state.db, new_email).await? {
+            if existing.id != auth.user_id {
+                return Err(ApiError::bad_request("Email already in use"));
+            }
+        }
+    }
+
+    // Convert display_name to Option<Option<String>> for the query
+    // Some(value) means update, None means don't change
+    let display_name_update = if req.display_name.is_some() {
+        Some(req.display_name)
+    } else {
+        None
+    };
+
+    let user = UserQueries::update_profile(&state.db, auth.user_id, req.email, display_name_update)
+        .await?;
 
     let response: UserResponse = ampel_core::models::User::from(user).into();
     Ok(Json(ApiResponse::success(response)))

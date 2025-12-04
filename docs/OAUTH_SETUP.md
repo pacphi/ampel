@@ -30,11 +30,11 @@ Before you begin, make sure you have:
 OAuth allows Ampel to access your repositories and pull requests without storing your password.
 Instead, you create an "OAuth application" on each platform, which gives you:
 
-| Term | Also Called | Description |
-|------|-------------|-------------|
-| **Client ID** | Application ID, Key | Public identifier for your app |
-| **Client Secret** | Secret | Private key (keep this secure!) |
-| **Redirect URI** | Callback URL | Where users return after authorizing |
+| Term              | Also Called         | Description                          |
+| ----------------- | ------------------- | ------------------------------------ |
+| **Client ID**     | Application ID, Key | Public identifier for your app       |
+| **Client Secret** | Secret              | Private key (keep this secure!)      |
+| **Redirect URI**  | Callback URL        | Where users return after authorizing |
 
 ---
 
@@ -51,12 +51,12 @@ Instead, you create an "OAuth application" on each platform, which gives you:
 
 ### Step 2: Fill in Application Details
 
-| Field | Value |
-|-------|-------|
-| **Application name** | `Ampel` (or your preferred name) |
-| **Homepage URL** | `http://localhost:5173` (development) or your production URL |
-| **Application description** | Optional: "PR management dashboard" |
-| **Authorization callback URL** | `http://localhost:8080/api/oauth/github/callback` |
+| Field                          | Value                                                        |
+| ------------------------------ | ------------------------------------------------------------ |
+| **Application name**           | `Ampel` (or your preferred name)                             |
+| **Homepage URL**               | `http://localhost:5173` (development) or your production URL |
+| **Application description**    | Optional: "PR management dashboard"                          |
+| **Authorization callback URL** | `http://localhost:8080/api/oauth/github/callback`            |
 
 > **Note:** GitHub only allows ONE callback URL per OAuth app. For production,
 > you'll need to create a separate OAuth app with your production callback URL.
@@ -80,11 +80,11 @@ GITHUB_REDIRECT_URI=http://localhost:8080/api/oauth/github/callback
 
 Ampel requests these scopes during authorization:
 
-| Scope | Purpose |
-|-------|---------|
-| `repo` | Access repositories and pull requests |
-| `read:user` | Read user profile information |
-| `read:org` | List organizations the user belongs to |
+| Scope       | Purpose                                |
+| ----------- | -------------------------------------- |
+| `repo`      | Access repositories and pull requests  |
+| `read:user` | Read user profile information          |
+| `read:org`  | List organizations the user belongs to |
 
 ---
 
@@ -110,9 +110,9 @@ GitLab allows creating applications at three levels: user, group, or instance-wi
 
 ### Step 2: Fill in Application Details
 
-| Field | Value |
-|-------|-------|
-| **Name** | `Ampel` |
+| Field            | Value                                             |
+| ---------------- | ------------------------------------------------- |
+| **Name**         | `Ampel`                                           |
 | **Redirect URI** | `http://localhost:8080/api/oauth/gitlab/callback` |
 | **Confidential** | Check this box (recommended for server-side apps) |
 
@@ -120,12 +120,12 @@ GitLab allows creating applications at three levels: user, group, or instance-wi
 
 Check the following scopes:
 
-| Scope | Purpose |
-|-------|---------|
-| `api` | Full API access (for repositories and MRs) |
-| `read_user` | Read user profile |
-| `read_repository` | Read repository contents |
-| `openid` | OpenID Connect authentication |
+| Scope             | Purpose                                    |
+| ----------------- | ------------------------------------------ |
+| `api`             | Full API access (for repositories and MRs) |
+| `read_user`       | Read user profile                          |
+| `read_repository` | Read repository contents                   |
+| `openid`          | OpenID Connect authentication              |
 
 ### Step 4: Save and Get Credentials
 
@@ -174,28 +174,28 @@ Bitbucket uses "OAuth consumers" which are created at the workspace level.
 
 ### Step 2: Fill in Consumer Details
 
-| Field | Value |
-|-------|-------|
-| **Name** | `Ampel` |
-| **Description** | Optional: "PR management dashboard" |
+| Field            | Value                                                |
+| ---------------- | ---------------------------------------------------- |
+| **Name**         | `Ampel`                                              |
+| **Description**  | Optional: "PR management dashboard"                  |
 | **Callback URL** | `http://localhost:8080/api/oauth/bitbucket/callback` |
-| **URL** | Optional: Your app homepage |
+| **URL**          | Optional: Your app homepage                          |
 
 ### Step 3: Select Permissions
 
 Under **Permissions**, check these scopes:
 
-| Category | Permission | Purpose |
-|----------|------------|---------|
-| **Account** | Read | Read user profile |
-| **Repositories** | Read | List repositories |
-| **Pull requests** | Read | Access pull request data |
+| Category          | Permission | Purpose                  |
+| ----------------- | ---------- | ------------------------ |
+| **Account**       | Read       | Read user profile        |
+| **Repositories**  | Read       | List repositories        |
+| **Pull requests** | Read       | Access pull request data |
 
 For write access (commenting, approving):
 
-| Category | Permission | Purpose |
-|----------|------------|---------|
-| **Pull requests** | Write | Comment, approve, merge PRs |
+| Category          | Permission | Purpose                     |
+| ----------------- | ---------- | --------------------------- |
+| **Pull requests** | Write      | Comment, approve, merge PRs |
 
 ### Step 4: Save and Get Credentials
 
@@ -277,10 +277,10 @@ Remember: GitHub requires separate OAuth apps for development and production URL
 
 Only request the scopes your application actually needs:
 
-| Provider | Minimum Scopes for PR Dashboard |
-|----------|----------------------------------|
-| GitHub | `repo`, `read:user` |
-| GitLab | `api`, `read_user` |
+| Provider  | Minimum Scopes for PR Dashboard                     |
+| --------- | --------------------------------------------------- |
+| GitHub    | `repo`, `read:user`                                 |
+| GitLab    | `api`, `read_user`                                  |
 | Bitbucket | Account:Read, Repositories:Read, Pull requests:Read |
 
 ### Handling Compromised Secrets
@@ -363,14 +363,14 @@ Test each provider's OAuth flow:
 
 ## Quick Reference Card
 
-| Provider | Settings Location | Callback URL Format |
-|----------|-------------------|---------------------|
-| GitHub | Settings > Developer settings > OAuth Apps | `/api/oauth/github/callback` |
-| GitLab | Profile > Applications | `/api/oauth/gitlab/callback` |
-| Bitbucket | Workspace > Settings > OAuth consumers | `/api/oauth/bitbucket/callback` |
+| Provider  | Settings Location                          | Callback URL Format             |
+| --------- | ------------------------------------------ | ------------------------------- |
+| GitHub    | Settings > Developer settings > OAuth Apps | `/api/oauth/github/callback`    |
+| GitLab    | Profile > Applications                     | `/api/oauth/gitlab/callback`    |
+| Bitbucket | Workspace > Settings > OAuth consumers     | `/api/oauth/bitbucket/callback` |
 
-| Provider | Client ID Field | Secret Field |
-|----------|-----------------|--------------|
-| GitHub | Client ID | Client Secret |
-| GitLab | Application ID | Secret |
-| Bitbucket | Key | Secret |
+| Provider  | Client ID Field | Secret Field  |
+| --------- | --------------- | ------------- |
+| GitHub    | Client ID       | Client Secret |
+| GitLab    | Application ID  | Secret        |
+| Bitbucket | Key             | Secret        |
