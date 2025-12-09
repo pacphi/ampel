@@ -137,7 +137,9 @@ struct GitHubReview {
 
 #[derive(Debug, Serialize)]
 struct GitHubMergeRequest {
+    #[serde(skip_serializing_if = "Option::is_none")]
     commit_title: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     commit_message: Option<String>,
     merge_method: String,
 }
@@ -146,6 +148,11 @@ struct GitHubMergeRequest {
 struct GitHubMergeResponse {
     merged: bool,
     sha: Option<String>,
+    message: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct GitHubErrorResponse {
     message: String,
 }
 
@@ -622,24 +629,21 @@ impl GitProvider for GitHubProvider {
             .send()
             .await?;
 
-        if response.status() == 405 {
-            return Err(ProviderError::ApiError {
-                status_code: 405,
-                message: "Pull request is not mergeable".to_string(),
-            });
-        }
-
-        if response.status() == 409 {
-            return Err(ProviderError::ApiError {
-                status_code: 409,
-                message: "Merge conflict or head branch was modified".to_string(),
-            });
-        }
-
         if !response.status().is_success() {
+            let status_code = response.status().as_u16();
+            // Try to extract the actual error message from GitHub's response
+            let message = match response.json::<GitHubErrorResponse>().await {
+                Ok(error_response) => error_response.message,
+                Err(_) => match status_code {
+                    405 => "Pull request is not mergeable".to_string(),
+                    409 => "Merge conflict or head branch was modified".to_string(),
+                    422 => "Pull request cannot be merged (check status checks and reviews)".to_string(),
+                    _ => "Failed to merge pull request".to_string(),
+                },
+            };
             return Err(ProviderError::ApiError {
-                status_code: response.status().as_u16(),
-                message: "Failed to merge pull request".to_string(),
+                status_code,
+                message,
             });
         }
 
