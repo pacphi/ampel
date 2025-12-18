@@ -46,7 +46,7 @@ export function MergeResultsDialog({ open, onOpenChange, results }: MergeResults
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Merge Results</DialogTitle>
           <DialogDescription>
@@ -79,7 +79,7 @@ export function MergeResultsDialog({ open, onOpenChange, results }: MergeResults
         {/* Results List */}
         <div className="space-y-2">
           {results.results.map((result, index) => (
-            <div key={index} className="flex items-center gap-3 p-3 rounded-lg border">
+            <div key={index} className="flex items-start gap-3 p-3 rounded-lg border">
               {getStatusIcon(result.status)}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">

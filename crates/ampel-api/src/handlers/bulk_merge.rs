@@ -164,31 +164,7 @@ pub async fn bulk_merge(
                 .await?
                 .unwrap();
 
-            // Check if PR is still open
-            if pr.state != "open" {
-                let result = MergeItemResult {
-                    pull_request_id: pr.id,
-                    repository_name: repo.full_name.clone(),
-                    pr_number: pr.number,
-                    pr_title: pr.title.clone(),
-                    status: "skipped".to_string(),
-                    error_message: Some("PR is not open".to_string()),
-                    merge_sha: None,
-                };
-                results.push(result);
-                skipped_count += 1;
-                MergeOperationItemQueries::update_status(
-                    &state.db,
-                    item.id,
-                    "skipped",
-                    Some("PR is not open".to_string()),
-                    None,
-                )
-                .await?;
-                continue;
-            }
-
-            // Get provider and token
+            // Get provider and token first - we need these for the pre-flight check
             let provider_type: GitProvider = repo
                 .provider
                 .parse()
@@ -256,8 +232,84 @@ pub async fn bulk_merge(
                 }
             };
 
-            // Attempt merge
             let provider = state.provider_factory.create(provider_type);
+
+            // Pre-flight check: verify PR is still open on the provider
+            // This catches cases where the local DB is stale (PR was closed/merged externally)
+            let fresh_pr = match provider
+                .get_pull_request(&access_token, &repo.owner, &repo.name, pr.number)
+                .await
+            {
+                Ok(fresh) => fresh,
+                Err(e) => {
+                    let result = MergeItemResult {
+                        pull_request_id: pr.id,
+                        repository_name: repo.full_name.clone(),
+                        pr_number: pr.number,
+                        pr_title: pr.title.clone(),
+                        status: "failed".to_string(),
+                        error_message: Some(format!("Failed to verify PR state: {}", e)),
+                        merge_sha: None,
+                    };
+                    results.push(result);
+                    failed_count += 1;
+                    MergeOperationItemQueries::update_status(
+                        &state.db,
+                        item.id,
+                        "failed",
+                        Some(format!("Failed to verify PR state: {}", e)),
+                        None,
+                    )
+                    .await?;
+                    continue;
+                }
+            };
+
+            // Check if PR is still open (either locally or from fresh data)
+            if pr.state != "open" || fresh_pr.state != "open" {
+                // Update local state if stale
+                if pr.state == "open" && fresh_pr.state != "open" {
+                    PrQueries::update_state(
+                        &state.db,
+                        pr.id,
+                        fresh_pr.state.clone(),
+                        fresh_pr.merged_at,
+                        fresh_pr.closed_at,
+                    )
+                    .await?;
+                }
+
+                let status_msg = if fresh_pr.state == "merged" {
+                    "PR was already merged"
+                } else if fresh_pr.state == "closed" {
+                    "PR was closed"
+                } else {
+                    "PR is not open"
+                };
+
+                let result = MergeItemResult {
+                    pull_request_id: pr.id,
+                    repository_name: repo.full_name.clone(),
+                    pr_number: pr.number,
+                    pr_title: pr.title.clone(),
+                    status: "skipped".to_string(),
+                    error_message: Some(status_msg.to_string()),
+                    merge_sha: None,
+                };
+                results.push(result);
+                skipped_count += 1;
+                MergeOperationItemQueries::update_status(
+                    &state.db,
+                    item.id,
+                    "skipped",
+                    Some(status_msg.to_string()),
+                    None,
+                )
+                .await?;
+                continue;
+            }
+
+            // Attempt merge (provider and access_token already obtained above)
             let merge_request = MergeRequest {
                 strategy: merge_strategy,
                 commit_title: None,

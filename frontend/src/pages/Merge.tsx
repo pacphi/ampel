@@ -82,9 +82,7 @@ function getBlockers(pr: PullRequestWithDetails, skipReviewRequirement = false) 
       (c) =>
         c.status === 'completed' && (c.conclusion === 'failure' || c.conclusion === 'timed_out')
     );
-    const hasPending = pr.ciChecks.some(
-      (c) => c.status === 'queued' || c.status === 'in_progress'
-    );
+    const hasPending = pr.ciChecks.some((c) => c.status === 'queued' || c.status === 'in_progress');
 
     if (hasFailed) {
       blockers.push({
@@ -426,10 +424,7 @@ export default function Merge() {
                     {group.prs.map((pr) => {
                       const blockers = getBlockers(pr, skipReviewRequirement);
                       return (
-                        <div
-                          key={pr.id}
-                          className="flex items-center gap-4 p-3 rounded-lg border"
-                        >
+                        <div key={pr.id} className="flex items-center gap-4 p-3 rounded-lg border">
                           {getStatusIcon(pr)}
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">

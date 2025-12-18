@@ -15,6 +15,7 @@ pub struct User {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Validate)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateUserRequest {
     #[validate(email(message = "Invalid email address"))]
     pub email: String,
@@ -80,6 +81,7 @@ pub enum TokenType {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RefreshTokenRequest {
     pub refresh_token: String,
 }
