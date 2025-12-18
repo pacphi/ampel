@@ -46,9 +46,7 @@ function getBlockers(pr: PullRequestWithDetails, skipReviewRequirement = false) 
       (c) =>
         c.status === 'completed' && (c.conclusion === 'failure' || c.conclusion === 'timed_out')
     );
-    const hasPending = pr.ciChecks.some(
-      (c) => c.status === 'queued' || c.status === 'in_progress'
-    );
+    const hasPending = pr.ciChecks.some((c) => c.status === 'queued' || c.status === 'in_progress');
 
     if (hasFailed) {
       blockers.push({ label: 'CI failed', type: 'error', icon: <X className="h-3 w-3" /> });
