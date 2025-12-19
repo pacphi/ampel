@@ -6,7 +6,7 @@ import {
   useDiscoverRepositories,
 } from '@/hooks/useRepositories';
 import { useQuery } from '@tanstack/react-query';
-import { oauthApi } from '@/api/oauth';
+import { accountsApi } from '@/api/accounts';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -18,9 +18,9 @@ import { GithubIcon, GitlabIcon, BitbucketIcon } from '@/components/icons/Provid
 
 export default function Repositories() {
   const { data: repositories, isLoading } = useRepositories();
-  const { data: connections } = useQuery({
-    queryKey: ['oauth', 'connections'],
-    queryFn: () => oauthApi.listConnections(),
+  const { data: accounts } = useQuery({
+    queryKey: ['accounts'],
+    queryFn: () => accountsApi.listAccounts(),
   });
   const addRepository = useAddRepository();
   const removeRepository = useRemoveRepository();
@@ -107,18 +107,9 @@ export default function Repositories() {
     }
   };
 
-  const handleConnectProvider = async (provider: GitProvider) => {
-    try {
-      const url = await oauthApi.getOAuthUrl(provider);
-      window.location.href = url;
-    } catch (error: unknown) {
-      const axiosError = error as { response?: { data?: { error?: string } } };
-      toast({
-        variant: 'destructive',
-        title: 'Failed to connect',
-        description: axiosError.response?.data?.error || 'An error occurred',
-      });
-    }
+  const handleConnectProvider = () => {
+    // Navigate to accounts page to add a new account
+    window.location.href = '/settings/accounts/add';
   };
 
   const filteredRepos = repositories?.filter(
@@ -128,7 +119,7 @@ export default function Repositories() {
   );
 
   const isProviderConnected = (provider: GitProvider) =>
-    connections?.some((c) => c.provider === provider);
+    accounts?.some((a) => a.provider === provider && a.isActive);
 
   const filteredDiscovered = discoveredRepos?.filter(
     (repo) =>
@@ -167,7 +158,7 @@ export default function Repositories() {
                   onClick={() =>
                     isProviderConnected(provider)
                       ? setSelectedProvider(provider)
-                      : handleConnectProvider(provider)
+                      : handleConnectProvider()
                   }
                   className="capitalize"
                 >

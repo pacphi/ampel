@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { oauthApi } from '@/api/oauth';
 import { authApi } from '@/api/auth';
 import { prFiltersApi, type PrFilter } from '@/api/prFilters';
 import { useAuth } from '@/hooks/useAuth';
@@ -10,11 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
-import type { GitProvider } from '@/types';
 import {
   User,
-  Link2,
-  Unlink,
   Eye,
   EyeOff,
   Pencil,
@@ -26,7 +22,6 @@ import {
   Bell,
   Settings2,
 } from 'lucide-react';
-import { GithubIcon, GitlabIcon, BitbucketIcon } from '@/components/icons/ProviderIcons';
 import { NotificationsSettings } from '@/components/settings/NotificationsSettings';
 import { BehaviorSettings } from '@/components/settings/BehaviorSettings';
 import { AccountsListPage } from './settings/AccountsListPage';
@@ -38,7 +33,6 @@ function SettingsNav() {
 
   const links = [
     { href: '/settings', label: 'Profile', icon: User },
-    { href: '/settings/connections', label: 'Connections', icon: Link2 },
     { href: '/settings/accounts', label: 'Accounts', icon: User },
     { href: '/settings/filters', label: 'Filters', icon: Filter },
     { href: '/settings/notifications', label: 'Notifications', icon: Bell },
@@ -224,123 +218,6 @@ function ProfileSettings() {
               : 'Unknown'}
           </p>
         </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function ConnectionsSettings() {
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-
-  const { data: connections, isLoading } = useQuery({
-    queryKey: ['oauth', 'connections'],
-    queryFn: () => oauthApi.listConnections(),
-  });
-
-  const disconnectMutation = useMutation({
-    mutationFn: (provider: GitProvider) => oauthApi.disconnect(provider),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['oauth', 'connections'] });
-      toast({
-        title: 'Disconnected',
-        description: 'Provider has been disconnected',
-      });
-    },
-    onError: (error: unknown) => {
-      const axiosError = error as { response?: { data?: { error?: string } } };
-      toast({
-        variant: 'destructive',
-        title: 'Failed to disconnect',
-        description: axiosError.response?.data?.error || 'An error occurred',
-      });
-    },
-  });
-
-  const handleConnect = async (provider: GitProvider) => {
-    try {
-      const url = await oauthApi.getOAuthUrl(provider);
-      window.location.href = url;
-    } catch (error: unknown) {
-      const axiosError = error as { response?: { data?: { error?: string } } };
-      toast({
-        variant: 'destructive',
-        title: 'Failed to connect',
-        description: axiosError.response?.data?.error || 'An error occurred',
-      });
-    }
-  };
-
-  const providers: { id: GitProvider; name: string }[] = [
-    { id: 'github', name: 'GitHub' },
-    { id: 'gitlab', name: 'GitLab' },
-    { id: 'bitbucket', name: 'Bitbucket' },
-  ];
-
-  const isConnected = (provider: GitProvider) => connections?.some((c) => c.provider === provider);
-
-  const getConnection = (provider: GitProvider) =>
-    connections?.find((c) => c.provider === provider);
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Provider Connections</CardTitle>
-        <CardDescription>Connect your Git providers to access repositories</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {isLoading ? (
-          <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {providers.map((provider) => {
-              const connected = isConnected(provider.id);
-              const connection = getConnection(provider.id);
-              const ProviderIcon =
-                provider.id === 'github'
-                  ? GithubIcon
-                  : provider.id === 'gitlab'
-                    ? GitlabIcon
-                    : BitbucketIcon;
-
-              return (
-                <div
-                  key={provider.id}
-                  className="flex items-center justify-between p-4 rounded-lg border"
-                >
-                  <div className="flex items-center gap-4">
-                    <ProviderIcon className="h-8 w-8" />
-                    <div>
-                      <p className="font-medium">{provider.name}</p>
-                      {connected && connection && (
-                        <p className="text-sm text-muted-foreground">
-                          Connected as @{connection.providerUsername}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  {connected ? (
-                    <Button
-                      variant="outline"
-                      onClick={() => disconnectMutation.mutate(provider.id)}
-                      disabled={disconnectMutation.isPending}
-                    >
-                      <Unlink className="h-4 w-4 mr-2" />
-                      Disconnect
-                    </Button>
-                  ) : (
-                    <Button onClick={() => handleConnect(provider.id)}>
-                      <Link2 className="h-4 w-4 mr-2" />
-                      Connect
-                    </Button>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
       </CardContent>
     </Card>
   );
@@ -565,7 +442,6 @@ export default function Settings() {
         <div>
           <Routes>
             <Route index element={<ProfileSettings />} />
-            <Route path="connections" element={<ConnectionsSettings />} />
             <Route path="accounts" element={<AccountsListPage />} />
             <Route path="accounts/add" element={<AddAccountPage />} />
             <Route path="accounts/:id/edit" element={<EditAccountPage />} />
