@@ -139,8 +139,8 @@ Duration: 90 minutes
 
 **Challenged Assumptions**:
 
-- We assume: ****\_\_\_****. But what if: ****\_\_\_****?
-- We assume: ****\_\_\_****. But what if: ****\_\_\_****?
+- We assume: \***\*\_\_\_\*\***. But what if: \***\*\_\_\_\*\***?
+- We assume: \***\*\_\_\_\*\***. But what if: \***\*\_\_\_\*\***?
 
 **"What Could Go Wrong" Scenarios**:
 

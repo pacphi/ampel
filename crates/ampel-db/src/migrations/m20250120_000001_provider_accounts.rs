@@ -55,7 +55,9 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(ProviderAccounts::AuthUsername).string())
                     .col(ColumnDef::new(ProviderAccounts::Scopes).text())
-                    .col(ColumnDef::new(ProviderAccounts::TokenExpiresAt).timestamp_with_time_zone())
+                    .col(
+                        ColumnDef::new(ProviderAccounts::TokenExpiresAt).timestamp_with_time_zone(),
+                    )
                     .col(
                         ColumnDef::new(ProviderAccounts::LastValidatedAt)
                             .timestamp_with_time_zone(),

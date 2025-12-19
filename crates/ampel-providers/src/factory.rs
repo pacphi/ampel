@@ -13,11 +13,7 @@ impl ProviderFactory {
     }
 
     /// Create a provider instance for the given type and optional instance URL
-    pub fn create(
-        &self,
-        provider: Provider,
-        instance_url: Option<String>,
-    ) -> Arc<dyn GitProvider> {
+    pub fn create(&self, provider: Provider, instance_url: Option<String>) -> Arc<dyn GitProvider> {
         match provider {
             Provider::GitHub => Arc::new(GitHubProvider::new(instance_url)),
             Provider::GitLab => Arc::new(GitLabProvider::new(instance_url)),

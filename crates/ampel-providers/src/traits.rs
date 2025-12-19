@@ -183,5 +183,8 @@ pub trait GitProvider: Send + Sync {
     ) -> ProviderResult<MergeResult>;
 
     /// Get current rate limit status
-    async fn get_rate_limit(&self, credentials: &ProviderCredentials) -> ProviderResult<RateLimitInfo>;
+    async fn get_rate_limit(
+        &self,
+        credentials: &ProviderCredentials,
+    ) -> ProviderResult<RateLimitInfo>;
 }

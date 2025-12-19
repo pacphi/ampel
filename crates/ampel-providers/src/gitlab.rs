@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials,
-    ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderPullRequest,
+    ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
 };
 use ampel_core::models::{
     DiscoveredRepository, GitProvider as Provider, MergeRequest, MergeStrategy,
@@ -654,7 +654,10 @@ impl GitProvider for GitLabProvider {
         })
     }
 
-    async fn get_rate_limit(&self, _credentials: &ProviderCredentials) -> ProviderResult<RateLimitInfo> {
+    async fn get_rate_limit(
+        &self,
+        _credentials: &ProviderCredentials,
+    ) -> ProviderResult<RateLimitInfo> {
         // GitLab uses different rate limiting approach
         Ok(RateLimitInfo {
             limit: 2000,

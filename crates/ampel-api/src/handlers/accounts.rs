@@ -5,8 +5,7 @@ use axum::{
 };
 use chrono::Utc;
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, EntityTrait, PaginatorTrait, QueryFilter, Set,
-    TransactionTrait,
+    ActiveModelTrait, ColumnTrait, EntityTrait, PaginatorTrait, QueryFilter, Set, TransactionTrait,
 };
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -193,9 +192,7 @@ pub async fn add_account(
     let existing = provider_account::Entity::find()
         .filter(provider_account::Column::UserId.eq(auth.user_id))
         .filter(provider_account::Column::Provider.eq(&request.provider))
-        .filter(
-            provider_account::Column::InstanceUrl.eq(request.instance_url.as_ref().cloned()),
-        )
+        .filter(provider_account::Column::InstanceUrl.eq(request.instance_url.as_ref().cloned()))
         .filter(provider_account::Column::ProviderUserId.eq(&provider_user_id))
         .one(&state.db)
         .await?;
@@ -216,9 +213,7 @@ pub async fn add_account(
     let is_first = provider_account::Entity::find()
         .filter(provider_account::Column::UserId.eq(auth.user_id))
         .filter(provider_account::Column::Provider.eq(&request.provider))
-        .filter(
-            provider_account::Column::InstanceUrl.eq(request.instance_url.as_ref().cloned()),
-        )
+        .filter(provider_account::Column::InstanceUrl.eq(request.instance_url.as_ref().cloned()))
         .count(&state.db)
         .await?
         == 0;
@@ -419,7 +414,10 @@ pub async fn delete_account(
 
     // Set provider_account_id to NULL for all repositories using this account
     repository::Entity::update_many()
-        .col_expr(repository::Column::ProviderAccountId, sea_orm::sea_query::Expr::value(Option::<Uuid>::None))
+        .col_expr(
+            repository::Column::ProviderAccountId,
+            sea_orm::sea_query::Expr::value(Option::<Uuid>::None),
+        )
         .filter(repository::Column::ProviderAccountId.eq(account_id))
         .exec(&txn)
         .await?;
@@ -556,12 +554,13 @@ pub async fn set_default_account(
 
     // Unset previous default for this provider and instance
     provider_account::Entity::update_many()
-        .col_expr(provider_account::Column::IsDefault, sea_orm::sea_query::Expr::value(false))
+        .col_expr(
+            provider_account::Column::IsDefault,
+            sea_orm::sea_query::Expr::value(false),
+        )
         .filter(provider_account::Column::UserId.eq(auth.user_id))
         .filter(provider_account::Column::Provider.eq(&account.provider))
-        .filter(
-            provider_account::Column::InstanceUrl.eq(account.instance_url.as_ref().cloned()),
-        )
+        .filter(provider_account::Column::InstanceUrl.eq(account.instance_url.as_ref().cloned()))
         .filter(provider_account::Column::IsDefault.eq(true))
         .exec(&txn)
         .await?;

@@ -198,7 +198,7 @@ pub async fn merge_pull_request(
     // Get provider account
     let account = provider_account::Entity::find_by_id(
         repo.provider_account_id
-            .ok_or(ApiError::bad_request("Repository not linked to account"))?
+            .ok_or(ApiError::bad_request("Repository not linked to account"))?,
     )
     .one(&state.db)
     .await?
@@ -216,16 +216,12 @@ pub async fn merge_pull_request(
         username: account.auth_username.clone(),
     };
 
-    let provider = state.provider_factory.create(provider_type, account.instance_url.clone());
+    let provider = state
+        .provider_factory
+        .create(provider_type, account.instance_url.clone());
 
     let result = provider
-        .merge_pull_request(
-            &credentials,
-            &repo.owner,
-            &repo.name,
-            pr.number,
-            &merge_req,
-        )
+        .merge_pull_request(&credentials, &repo.owner, &repo.name, pr.number, &merge_req)
         .await
         .map_err(|e| ApiError::bad_request(format!("Merge failed: {}", e)))?;
 
@@ -287,7 +283,7 @@ pub async fn refresh_pull_request(
     // Get provider account
     let account = provider_account::Entity::find_by_id(
         repo.provider_account_id
-            .ok_or(ApiError::bad_request("Repository not linked to account"))?
+            .ok_or(ApiError::bad_request("Repository not linked to account"))?,
     )
     .one(&state.db)
     .await?
@@ -305,7 +301,9 @@ pub async fn refresh_pull_request(
         username: account.auth_username.clone(),
     };
 
-    let provider = state.provider_factory.create(provider_type, account.instance_url.clone());
+    let provider = state
+        .provider_factory
+        .create(provider_type, account.instance_url.clone());
 
     // Fetch fresh PR data
     let fresh_pr = provider

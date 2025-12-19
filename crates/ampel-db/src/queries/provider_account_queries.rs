@@ -11,10 +11,7 @@ pub struct ProviderAccountQueries;
 
 impl ProviderAccountQueries {
     /// Find all provider accounts for a user
-    pub async fn find_by_user(
-        db: &DatabaseConnection,
-        user_id: Uuid,
-    ) -> Result<Vec<Model>, DbErr> {
+    pub async fn find_by_user(db: &DatabaseConnection, user_id: Uuid) -> Result<Vec<Model>, DbErr> {
         Entity::find()
             .filter(Column::UserId.eq(user_id))
             .all(db)
@@ -22,10 +19,7 @@ impl ProviderAccountQueries {
     }
 
     /// Find provider account by ID
-    pub async fn find_by_id(
-        db: &DatabaseConnection,
-        id: Uuid,
-    ) -> Result<Option<Model>, DbErr> {
+    pub async fn find_by_id(db: &DatabaseConnection, id: Uuid) -> Result<Option<Model>, DbErr> {
         Entity::find_by_id(id).one(db).await
     }
 
@@ -98,7 +92,10 @@ impl ProviderAccountQueries {
         // Unset all other defaults for this user/provider/instance combination
         let mut unset_query = Entity::update_many()
             .col_expr(Column::IsDefault, sea_orm::sea_query::Expr::value(false))
-            .col_expr(Column::UpdatedAt, sea_orm::sea_query::Expr::value(Utc::now()))
+            .col_expr(
+                Column::UpdatedAt,
+                sea_orm::sea_query::Expr::value(Utc::now()),
+            )
             .filter(Column::UserId.eq(user_id))
             .filter(Column::Provider.eq(&account.provider))
             .filter(Column::IsDefault.eq(true));

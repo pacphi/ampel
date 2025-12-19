@@ -6,8 +6,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials,
-    ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderPullRequest,
+    ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
 };
 use ampel_core::models::{
     DiscoveredRepository, GitProvider as Provider, MergeRequest, MergeStrategy,
@@ -265,7 +265,7 @@ impl GitProvider for BitbucketProvider {
             username: Some(user.username.clone()),
             email: None, // Bitbucket requires separate API call for email
             avatar_url: user.links.avatar.as_ref().map(|a| a.href.clone()),
-            scopes: vec![], // Bitbucket doesn't expose scopes in API response
+            scopes: vec![],   // Bitbucket doesn't expose scopes in API response
             expires_at: None, // App Passwords don't expire by default
             error_message: None,
         })
@@ -714,7 +714,10 @@ impl GitProvider for BitbucketProvider {
         })
     }
 
-    async fn get_rate_limit(&self, _credentials: &ProviderCredentials) -> ProviderResult<RateLimitInfo> {
+    async fn get_rate_limit(
+        &self,
+        _credentials: &ProviderCredentials,
+    ) -> ProviderResult<RateLimitInfo> {
         // Bitbucket uses different rate limiting approach
         Ok(RateLimitInfo {
             limit: 1000,

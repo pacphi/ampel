@@ -123,7 +123,9 @@ pub async fn discover_repositories(
         username: account.auth_username.clone(),
     };
 
-    let provider = state.provider_factory.create(provider_type, account.instance_url.clone());
+    let provider = state
+        .provider_factory
+        .create(provider_type, account.instance_url.clone());
 
     // If no specific page requested, fetch all repositories by paginating through all pages
     let repos = if query.page.is_none() {
@@ -192,7 +194,9 @@ pub async fn add_repository(
         username: account.auth_username.clone(),
     };
 
-    let provider = state.provider_factory.create(req.provider, account.instance_url.clone());
+    let provider = state
+        .provider_factory
+        .create(req.provider, account.instance_url.clone());
 
     // Fetch repository details from provider
     let discovered = provider

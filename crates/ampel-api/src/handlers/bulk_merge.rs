@@ -172,12 +172,10 @@ pub async fn bulk_merge(
 
             // Get provider account
             let account = match repo.provider_account_id {
-                Some(account_id) => {
-                    provider_account::Entity::find_by_id(account_id)
-                        .one(&state.db)
-                        .await?
-                        .ok_or_else(|| ApiError::not_found("Provider account not found"))?
-                }
+                Some(account_id) => provider_account::Entity::find_by_id(account_id)
+                    .one(&state.db)
+                    .await?
+                    .ok_or_else(|| ApiError::not_found("Provider account not found"))?,
                 None => {
                     let result = MergeItemResult {
                         pull_request_id: pr.id,
@@ -238,7 +236,9 @@ pub async fn bulk_merge(
                 username: account.auth_username.clone(),
             };
 
-            let provider = state.provider_factory.create(provider_type, account.instance_url.clone());
+            let provider = state
+                .provider_factory
+                .create(provider_type, account.instance_url.clone());
 
             // Pre-flight check: verify PR is still open on the provider
             // This catches cases where the local DB is stale (PR was closed/merged externally)

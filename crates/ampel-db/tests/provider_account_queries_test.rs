@@ -54,7 +54,10 @@ async fn create_test_provider_account(
         updated_at: Set(now),
     };
 
-    account.insert(db).await.expect("Failed to create test account")
+    account
+        .insert(db)
+        .await
+        .expect("Failed to create test account")
 }
 
 #[tokio::test]
@@ -110,7 +113,10 @@ async fn test_find_default_for_provider() {
         .await
         .expect("Failed to query");
 
-    assert!(result_gitlab.is_none(), "Should not find default for GitLab");
+    assert!(
+        result_gitlab.is_none(),
+        "Should not find default for GitLab"
+    );
 }
 
 #[tokio::test]
@@ -305,10 +311,9 @@ async fn test_find_by_user_and_provider() {
     create_test_provider_account(&db, user_id, "gitlab", "GitLab 1", true).await;
 
     // Query GitHub accounts
-    let github_accounts =
-        ProviderAccountQueries::find_by_user_and_provider(&db, user_id, "github")
-            .await
-            .expect("Failed to find accounts");
+    let github_accounts = ProviderAccountQueries::find_by_user_and_provider(&db, user_id, "github")
+        .await
+        .expect("Failed to find accounts");
 
     assert_eq!(github_accounts.len(), 2, "Should have 2 GitHub accounts");
 
@@ -318,10 +323,9 @@ async fn test_find_by_user_and_provider() {
     }
 
     // Query GitLab accounts
-    let gitlab_accounts =
-        ProviderAccountQueries::find_by_user_and_provider(&db, user_id, "gitlab")
-            .await
-            .expect("Failed to find accounts");
+    let gitlab_accounts = ProviderAccountQueries::find_by_user_and_provider(&db, user_id, "gitlab")
+        .await
+        .expect("Failed to find accounts");
 
     assert_eq!(gitlab_accounts.len(), 1, "Should have 1 GitLab account");
 }

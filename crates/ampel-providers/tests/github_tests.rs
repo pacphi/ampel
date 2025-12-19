@@ -6,7 +6,10 @@ fn test_github_provider_cloud() {
     let provider = GitHubProvider::new(None);
 
     // Test provider type and instance URL
-    assert_eq!(provider.provider_type(), ampel_core::models::GitProvider::GitHub);
+    assert_eq!(
+        provider.provider_type(),
+        ampel_core::models::GitProvider::GitHub
+    );
     assert_eq!(provider.instance_url(), None);
 }
 
@@ -56,6 +59,10 @@ fn test_github_cloud_instance() {
 
 #[test]
 fn test_github_enterprise_instance() {
-    let provider_enterprise = GitHubProvider::new(Some("https://github.enterprise.com/api/v3".to_string()));
-    assert_eq!(provider_enterprise.instance_url(), Some("https://github.enterprise.com/api/v3"));
+    let provider_enterprise =
+        GitHubProvider::new(Some("https://github.enterprise.com/api/v3".to_string()));
+    assert_eq!(
+        provider_enterprise.instance_url(),
+        Some("https://github.enterprise.com/api/v3")
+    );
 }

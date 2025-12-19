@@ -4,7 +4,10 @@ use ampel_providers::traits::{GitProvider, ProviderCredentials};
 #[test]
 fn test_bitbucket_provider_type() {
     let provider = BitbucketProvider::new(None);
-    assert_eq!(provider.provider_type(), ampel_core::models::GitProvider::Bitbucket);
+    assert_eq!(
+        provider.provider_type(),
+        ampel_core::models::GitProvider::Bitbucket
+    );
 }
 
 #[test]
@@ -16,7 +19,10 @@ fn test_bitbucket_cloud_instance() {
 #[test]
 fn test_bitbucket_self_hosted_instance() {
     let provider = BitbucketProvider::new(Some("https://bitbucket.company.com/api".to_string()));
-    assert_eq!(provider.instance_url(), Some("https://bitbucket.company.com/api"));
+    assert_eq!(
+        provider.instance_url(),
+        Some("https://bitbucket.company.com/api")
+    );
 }
 
 #[test]
@@ -74,4 +80,3 @@ async fn test_bitbucket_validate_credentials_empty_username() {
         .unwrap()
         .contains("Bitbucket App Passwords require a username"));
 }
-
