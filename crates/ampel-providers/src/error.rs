@@ -28,6 +28,9 @@ pub enum ProviderError {
 
     #[error("Configuration error: {0}")]
     ConfigError(String),
+
+    #[error("Operation not supported: {0}")]
+    NotSupported(String),
 }
 
 impl From<reqwest::Error> for ProviderError {

@@ -25,6 +25,7 @@ thiserror.workspace = true
 anyhow.workspace = true
 tracing.workspace = true
 urlencoding = "2"
+base64.workspace = true
 
 # Internal
 ampel-core.workspace = true

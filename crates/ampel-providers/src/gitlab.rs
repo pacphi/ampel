@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, OAuthToken, ProviderCICheck, ProviderPullRequest, ProviderReview,
-    ProviderUser, RateLimitInfo,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials,
+    ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
 };
 use ampel_core::models::{
     DiscoveredRepository, GitProvider as Provider, MergeRequest, MergeStrategy,
@@ -14,19 +14,11 @@ use ampel_core::models::{
 
 pub struct GitLabProvider {
     client: Client,
-    client_id: String,
-    client_secret: String,
-    redirect_uri: String,
     base_url: String,
 }
 
 impl GitLabProvider {
-    pub fn new(
-        client_id: String,
-        client_secret: String,
-        redirect_uri: String,
-        base_url: Option<String>,
-    ) -> Self {
+    pub fn new(instance_url: Option<String>) -> Self {
         let client = Client::builder()
             .user_agent("Ampel/1.0")
             .build()
@@ -34,25 +26,19 @@ impl GitLabProvider {
 
         Self {
             client,
-            client_id,
-            client_secret,
-            redirect_uri,
-            base_url: base_url.unwrap_or_else(|| "https://gitlab.com".to_string()),
+            base_url: instance_url.unwrap_or_else(|| "https://gitlab.com".to_string()),
         }
     }
 
     fn api_url(&self, path: &str) -> String {
         format!("{}/api/v4{}", self.base_url, path)
     }
-}
 
-#[derive(Debug, Deserialize)]
-struct GitLabTokenResponse {
-    access_token: String,
-    token_type: String,
-    refresh_token: Option<String>,
-    expires_in: Option<i64>,
-    scope: Option<String>,
+    fn auth_header(&self, credentials: &ProviderCredentials) -> String {
+        match credentials {
+            ProviderCredentials::Pat { token, .. } => format!("Bearer {}", token),
+        }
+    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -172,98 +158,70 @@ impl GitProvider for GitLabProvider {
         Provider::GitLab
     }
 
-    fn get_oauth_url(&self, state: &str) -> String {
-        format!(
-            "{}/oauth/authorize?client_id={}&redirect_uri={}&response_type=code&scope=api%20read_user%20read_api&state={}",
-            self.base_url,
-            self.client_id,
-            urlencoding::encode(&self.redirect_uri),
-            state
-        )
-    }
-
-    async fn exchange_code(&self, code: &str) -> ProviderResult<OAuthToken> {
-        let response = self
-            .client
-            .post(format!("{}/oauth/token", self.base_url))
-            .form(&[
-                ("client_id", &self.client_id),
-                ("client_secret", &self.client_secret),
-                ("code", &code.to_string()),
-                ("grant_type", &"authorization_code".to_string()),
-                ("redirect_uri", &self.redirect_uri),
-            ])
-            .send()
-            .await?;
-
-        if !response.status().is_success() {
-            return Err(ProviderError::AuthenticationFailed(
-                "Failed to exchange code".to_string(),
-            ));
+    fn instance_url(&self) -> Option<&str> {
+        if self.base_url == "https://gitlab.com" {
+            None
+        } else {
+            Some(&self.base_url)
         }
-
-        let token: GitLabTokenResponse = response.json().await?;
-        let expires_at = token
-            .expires_in
-            .map(|secs| Utc::now() + chrono::Duration::seconds(secs));
-
-        Ok(OAuthToken {
-            access_token: token.access_token,
-            refresh_token: token.refresh_token,
-            token_type: token.token_type,
-            expires_at,
-            scopes: token
-                .scope
-                .unwrap_or_default()
-                .split(' ')
-                .map(|s| s.to_string())
-                .collect(),
-        })
     }
 
-    async fn refresh_token(&self, refresh_token: &str) -> ProviderResult<OAuthToken> {
-        let response = self
-            .client
-            .post(format!("{}/oauth/token", self.base_url))
-            .form(&[
-                ("client_id", &self.client_id),
-                ("client_secret", &self.client_secret),
-                ("refresh_token", &refresh_token.to_string()),
-                ("grant_type", &"refresh_token".to_string()),
-            ])
-            .send()
-            .await?;
-
-        if !response.status().is_success() {
-            return Err(ProviderError::AuthenticationFailed(
-                "Failed to refresh token".to_string(),
-            ));
-        }
-
-        let token: GitLabTokenResponse = response.json().await?;
-        let expires_at = token
-            .expires_in
-            .map(|secs| Utc::now() + chrono::Duration::seconds(secs));
-
-        Ok(OAuthToken {
-            access_token: token.access_token,
-            refresh_token: token.refresh_token,
-            token_type: token.token_type,
-            expires_at,
-            scopes: token
-                .scope
-                .unwrap_or_default()
-                .split(' ')
-                .map(|s| s.to_string())
-                .collect(),
-        })
-    }
-
-    async fn get_user(&self, access_token: &str) -> ProviderResult<ProviderUser> {
+    async fn validate_credentials(
+        &self,
+        credentials: &ProviderCredentials,
+    ) -> ProviderResult<TokenValidation> {
         let response = self
             .client
             .get(self.api_url("/user"))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
+            .send()
+            .await?;
+
+        if response.status() == 401 {
+            return Ok(TokenValidation {
+                is_valid: false,
+                user_id: None,
+                username: None,
+                email: None,
+                avatar_url: None,
+                scopes: vec![],
+                expires_at: None,
+                error_message: Some("Invalid or expired token".to_string()),
+            });
+        }
+
+        if !response.status().is_success() {
+            return Ok(TokenValidation {
+                is_valid: false,
+                user_id: None,
+                username: None,
+                email: None,
+                avatar_url: None,
+                scopes: vec![],
+                expires_at: None,
+                error_message: Some(format!("API error: {}", response.status())),
+            });
+        }
+
+        let user: GitLabUser = response.json().await?;
+
+        Ok(TokenValidation {
+            is_valid: true,
+            user_id: Some(user.id.to_string()),
+            username: Some(user.username),
+            email: user.email,
+            avatar_url: user.avatar_url,
+            scopes: vec!["api".to_string(), "read_user".to_string()],
+            expires_at: None,
+            error_message: None,
+        })
+    }
+
+    async fn get_user(&self, credentials: &ProviderCredentials) -> ProviderResult<ProviderUser> {
+        let response = self
+            .client
+            .get(self.api_url("/user"))
+            .header("Authorization", self.auth_header(credentials))
             .send()
             .await?;
 
@@ -292,14 +250,14 @@ impl GitProvider for GitLabProvider {
 
     async fn list_repositories(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         page: i32,
         per_page: i32,
     ) -> ProviderResult<Vec<DiscoveredRepository>> {
         let response = self
             .client
             .get(self.api_url("/projects"))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .query(&[
                 ("membership", "true"),
                 ("page", &page.to_string()),
@@ -349,7 +307,7 @@ impl GitProvider for GitLabProvider {
 
     async fn get_repository(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
     ) -> ProviderResult<DiscoveredRepository> {
@@ -359,7 +317,7 @@ impl GitProvider for GitLabProvider {
         let response = self
             .client
             .get(self.api_url(&format!("/projects/{}", encoded_path)))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .send()
             .await?;
 
@@ -395,7 +353,7 @@ impl GitProvider for GitLabProvider {
 
     async fn list_pull_requests(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         state: Option<&str>,
@@ -413,7 +371,7 @@ impl GitProvider for GitLabProvider {
         let response = self
             .client
             .get(self.api_url(&format!("/projects/{}/merge_requests", encoded_path)))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .query(&[("state", gitlab_state), ("per_page", "100")])
             .send()
             .await?;
@@ -466,7 +424,7 @@ impl GitProvider for GitLabProvider {
 
     async fn get_pull_request(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         number: i32,
@@ -480,7 +438,7 @@ impl GitProvider for GitLabProvider {
                 "/projects/{}/merge_requests/{}",
                 encoded_path, number
             )))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .send()
             .await?;
 
@@ -533,7 +491,7 @@ impl GitProvider for GitLabProvider {
 
     async fn get_ci_checks(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         pr_number: i32,
@@ -548,7 +506,7 @@ impl GitProvider for GitLabProvider {
                 "/projects/{}/merge_requests/{}/pipelines",
                 encoded_path, pr_number
             )))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .send()
             .await?;
 
@@ -570,7 +528,7 @@ impl GitProvider for GitLabProvider {
                 "/projects/{}/pipelines/{}/jobs",
                 encoded_path, pipeline_id
             )))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .send()
             .await?;
 
@@ -607,7 +565,7 @@ impl GitProvider for GitLabProvider {
 
     async fn get_reviews(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         pr_number: i32,
@@ -622,7 +580,7 @@ impl GitProvider for GitLabProvider {
                 "/projects/{}/merge_requests/{}/approvals",
                 encoded_path, pr_number
             )))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .send()
             .await?;
 
@@ -648,7 +606,7 @@ impl GitProvider for GitLabProvider {
 
     async fn merge_pull_request(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         pr_number: i32,
@@ -670,7 +628,7 @@ impl GitProvider for GitLabProvider {
                 "/projects/{}/merge_requests/{}/merge",
                 encoded_path, pr_number
             )))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .json(&body)
             .send()
             .await?;
@@ -696,7 +654,7 @@ impl GitProvider for GitLabProvider {
         })
     }
 
-    async fn get_rate_limit(&self, _access_token: &str) -> ProviderResult<RateLimitInfo> {
+    async fn get_rate_limit(&self, _credentials: &ProviderCredentials) -> ProviderResult<RateLimitInfo> {
         // GitLab uses different rate limiting approach
         Ok(RateLimitInfo {
             limit: 2000,

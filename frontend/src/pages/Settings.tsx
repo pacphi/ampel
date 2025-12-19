@@ -29,6 +29,9 @@ import {
 import { GithubIcon, GitlabIcon, BitbucketIcon } from '@/components/icons/ProviderIcons';
 import { NotificationsSettings } from '@/components/settings/NotificationsSettings';
 import { BehaviorSettings } from '@/components/settings/BehaviorSettings';
+import { AccountsListPage } from './settings/AccountsListPage';
+import { AddAccountPage } from './settings/AddAccountPage';
+import { EditAccountPage } from './settings/EditAccountPage';
 
 function SettingsNav() {
   const location = useLocation();
@@ -36,6 +39,7 @@ function SettingsNav() {
   const links = [
     { href: '/settings', label: 'Profile', icon: User },
     { href: '/settings/connections', label: 'Connections', icon: Link2 },
+    { href: '/settings/accounts', label: 'Accounts', icon: User },
     { href: '/settings/filters', label: 'Filters', icon: Filter },
     { href: '/settings/notifications', label: 'Notifications', icon: Bell },
     { href: '/settings/behavior', label: 'Behavior', icon: Settings2 },
@@ -44,7 +48,9 @@ function SettingsNav() {
   return (
     <nav className="space-y-1">
       {links.map((link) => {
-        const isActive = location.pathname === link.href;
+        const isActive =
+          location.pathname === link.href ||
+          (link.href !== '/settings' && location.pathname.startsWith(link.href + '/'));
         return (
           <Link
             key={link.href}
@@ -560,6 +566,9 @@ export default function Settings() {
           <Routes>
             <Route index element={<ProfileSettings />} />
             <Route path="connections" element={<ConnectionsSettings />} />
+            <Route path="accounts" element={<AccountsListPage />} />
+            <Route path="accounts/add" element={<AddAccountPage />} />
+            <Route path="accounts/:id/edit" element={<EditAccountPage />} />
             <Route path="filters" element={<FiltersSettings />} />
             <Route path="notifications" element={<NotificationsSettings />} />
             <Route path="behavior" element={<BehaviorSettings />} />

@@ -9,7 +9,7 @@ mod jobs;
 
 use jobs::{
     cleanup::CleanupJob, health_score::HealthScoreJob, metrics_collection::MetricsCollectionJob,
-    poll_repository::PollRepositoryJob, refresh_token::RefreshTokenJob,
+    poll_repository::PollRepositoryJob,
 };
 
 #[derive(Clone)]
@@ -49,18 +49,7 @@ async fn main() -> anyhow::Result<()> {
             .expect("Invalid encryption key"),
     );
 
-    let provider_factory = Arc::new(ampel_providers::ProviderFactory::new(
-        std::env::var("GITHUB_CLIENT_ID").unwrap_or_default(),
-        std::env::var("GITHUB_CLIENT_SECRET").unwrap_or_default(),
-        std::env::var("GITHUB_REDIRECT_URI").unwrap_or_default(),
-        std::env::var("GITLAB_CLIENT_ID").unwrap_or_default(),
-        std::env::var("GITLAB_CLIENT_SECRET").unwrap_or_default(),
-        std::env::var("GITLAB_REDIRECT_URI").unwrap_or_default(),
-        std::env::var("GITLAB_BASE_URL").ok(),
-        std::env::var("BITBUCKET_CLIENT_ID").unwrap_or_default(),
-        std::env::var("BITBUCKET_CLIENT_SECRET").unwrap_or_default(),
-        std::env::var("BITBUCKET_REDIRECT_URI").unwrap_or_default(),
-    ));
+    let provider_factory = Arc::new(ampel_providers::ProviderFactory::new());
 
     let state = WorkerState {
         db,
@@ -78,15 +67,6 @@ async fn main() -> anyhow::Result<()> {
                     apalis_cron::Schedule::from_str("0 * * * * *").unwrap(),
                 ))
                 .build_fn(poll_repositories)
-        })
-        .register({
-            WorkerBuilder::new("refresh-tokens")
-                .data(state.clone())
-                .backend(CronStream::new(
-                    // Run every 30 minutes
-                    apalis_cron::Schedule::from_str("0 */30 * * * *").unwrap(),
-                ))
-                .build_fn(refresh_tokens)
         })
         .register({
             WorkerBuilder::new("cleanup")
@@ -136,24 +116,6 @@ async fn poll_repositories(_job: PollRepositoryJob, state: Data<WorkerState>) ->
         .await
     {
         tracing::error!("Poll job failed: {}", e);
-    }
-
-    Ok(())
-}
-
-async fn refresh_tokens(_job: RefreshTokenJob, state: Data<WorkerState>) -> Result<(), Error> {
-    tracing::info!("Running token refresh job");
-
-    let job = jobs::refresh_token::RefreshTokenJob;
-    if let Err(e) = job
-        .execute(
-            &state.db,
-            &state.encryption_service,
-            &state.provider_factory,
-        )
-        .await
-    {
-        tracing::error!("Token refresh job failed: {}", e);
     }
 
     Ok(())

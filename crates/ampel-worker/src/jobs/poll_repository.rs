@@ -1,11 +1,11 @@
 use chrono::{DateTime, Duration, Utc};
-use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, QueryOrder, QuerySelect};
+use sea_orm::{DatabaseConnection, EntityTrait, QueryOrder, QuerySelect};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use ampel_core::models::GitProvider;
 use ampel_db::encryption::EncryptionService;
-use ampel_db::entities::{git_provider, repository};
+use ampel_db::entities::{provider_account, repository};
 use ampel_db::queries::{CICheckQueries, PrQueries, RepoQueries, ReviewQueries};
 use ampel_providers::ProviderFactory;
 
@@ -93,22 +93,30 @@ impl PollRepositoryJob {
             .parse()
             .map_err(|e: String| anyhow::anyhow!(e))?;
 
-        // Get provider connection for the repo owner
-        let connection = git_provider::Entity::find()
-            .filter(git_provider::Column::UserId.eq(repo.user_id))
-            .filter(git_provider::Column::Provider.eq(&repo.provider))
+        // Get provider account
+        let account_id = repo
+            .provider_account_id
+            .ok_or_else(|| anyhow::anyhow!("Repository has no associated provider account"))?;
+
+        let account = provider_account::Entity::find_by_id(account_id)
             .one(db)
             .await?
-            .ok_or_else(|| anyhow::anyhow!("Provider connection not found"))?;
+            .ok_or_else(|| anyhow::anyhow!("Provider account not found"))?;
 
         // Decrypt access token
-        let access_token = encryption_service.decrypt(&connection.access_token_encrypted)?;
+        let access_token = encryption_service.decrypt(&account.access_token_encrypted)?;
 
-        let provider = provider_factory.create(provider_type);
+        // Create credentials
+        let credentials = ampel_providers::traits::ProviderCredentials::Pat {
+            token: access_token.clone(),
+            username: account.auth_username.clone(),
+        };
+
+        let provider = provider_factory.create(provider_type, account.instance_url.clone());
 
         // Fetch open PRs from provider
         let prs = provider
-            .list_pull_requests(&access_token, &repo.owner, &repo.name, Some("open"))
+            .list_pull_requests(&credentials, &repo.owner, &repo.name, Some("open"))
             .await?;
 
         tracing::debug!(
@@ -151,7 +159,7 @@ impl PollRepositoryJob {
 
             // Fetch and update CI checks
             match provider
-                .get_ci_checks(&access_token, &repo.owner, &repo.name, pr.number)
+                .get_ci_checks(&credentials, &repo.owner, &repo.name, pr.number)
                 .await
             {
                 Ok(checks) => {
@@ -182,7 +190,7 @@ impl PollRepositoryJob {
 
             // Fetch and update reviews
             match provider
-                .get_reviews(&access_token, &repo.owner, &repo.name, pr.number)
+                .get_reviews(&credentials, &repo.owner, &repo.name, pr.number)
                 .await
             {
                 Ok(reviews) => {

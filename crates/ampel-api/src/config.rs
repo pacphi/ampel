@@ -9,16 +9,6 @@ pub struct Config {
     pub jwt_access_expiry_minutes: i64,
     pub jwt_refresh_expiry_days: i64,
     pub encryption_key: String,
-    pub github_client_id: String,
-    pub github_client_secret: String,
-    pub github_redirect_uri: String,
-    pub gitlab_client_id: String,
-    pub gitlab_client_secret: String,
-    pub gitlab_redirect_uri: String,
-    pub gitlab_base_url: Option<String>,
-    pub bitbucket_client_id: String,
-    pub bitbucket_client_secret: String,
-    pub bitbucket_redirect_uri: String,
     pub cors_origins: Vec<String>,
 }
 
@@ -41,16 +31,6 @@ impl Config {
                 .parse()
                 .expect("JWT_REFRESH_EXPIRY_DAYS must be a number"),
             encryption_key: std::env::var("ENCRYPTION_KEY").expect("ENCRYPTION_KEY must be set"),
-            github_client_id: std::env::var("GITHUB_CLIENT_ID").unwrap_or_default(),
-            github_client_secret: std::env::var("GITHUB_CLIENT_SECRET").unwrap_or_default(),
-            github_redirect_uri: std::env::var("GITHUB_REDIRECT_URI").unwrap_or_default(),
-            gitlab_client_id: std::env::var("GITLAB_CLIENT_ID").unwrap_or_default(),
-            gitlab_client_secret: std::env::var("GITLAB_CLIENT_SECRET").unwrap_or_default(),
-            gitlab_redirect_uri: std::env::var("GITLAB_REDIRECT_URI").unwrap_or_default(),
-            gitlab_base_url: std::env::var("GITLAB_BASE_URL").ok(),
-            bitbucket_client_id: std::env::var("BITBUCKET_CLIENT_ID").unwrap_or_default(),
-            bitbucket_client_secret: std::env::var("BITBUCKET_CLIENT_SECRET").unwrap_or_default(),
-            bitbucket_redirect_uri: std::env::var("BITBUCKET_REDIRECT_URI").unwrap_or_default(),
             cors_origins: std::env::var("CORS_ORIGINS")
                 .unwrap_or_else(|_| "http://localhost:3000".to_string())
                 .split(',')

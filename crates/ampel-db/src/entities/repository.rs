@@ -20,6 +20,7 @@ pub struct Model {
     pub poll_interval_seconds: i32,
     pub last_polled_at: Option<DateTimeUtc>,
     pub group_id: Option<Uuid>,
+    pub provider_account_id: Option<Uuid>, // Link to provider_account for multi-account support
     pub created_at: DateTimeUtc,
     pub updated_at: DateTimeUtc,
 }
@@ -34,6 +35,12 @@ pub enum Relation {
     User,
     #[sea_orm(has_many = "super::pull_request::Entity")]
     PullRequests,
+    #[sea_orm(
+        belongs_to = "super::provider_account::Entity",
+        from = "Column::ProviderAccountId",
+        to = "super::provider_account::Column::Id"
+    )]
+    ProviderAccount,
 }
 
 impl Related<super::user::Entity> for Entity {
@@ -45,6 +52,12 @@ impl Related<super::user::Entity> for Entity {
 impl Related<super::pull_request::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::PullRequests.def()
+    }
+}
+
+impl Related<super::provider_account::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::ProviderAccount.def()
     }
 }
 

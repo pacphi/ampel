@@ -11,7 +11,7 @@ use ampel_core::models::{
     AddRepositoryRequest, AmpelStatus, DiscoveredRepository, GitProvider, Repository,
     RepositoryWithStatus,
 };
-use ampel_db::entities::git_provider;
+use ampel_db::entities::provider_account;
 use ampel_db::queries::{PrQueries, RepoQueries};
 
 use crate::extractors::{AuthUser, ValidatedJson};
@@ -102,10 +102,11 @@ pub async fn discover_repositories(
         .parse()
         .map_err(|_| ApiError::bad_request("Invalid provider"))?;
 
-    // Get provider connection
-    let connection = git_provider::Entity::find()
-        .filter(git_provider::Column::UserId.eq(auth.user_id))
-        .filter(git_provider::Column::Provider.eq(provider_type.to_string()))
+    // Get provider account
+    let account = provider_account::Entity::find()
+        .filter(provider_account::Column::UserId.eq(auth.user_id))
+        .filter(provider_account::Column::Provider.eq(provider_type.to_string()))
+        .filter(provider_account::Column::IsDefault.eq(true))
         .one(&state.db)
         .await?
         .ok_or_else(|| ApiError::bad_request("Provider not connected"))?;
@@ -113,10 +114,16 @@ pub async fn discover_repositories(
     // Decrypt access token
     let access_token = state
         .encryption_service
-        .decrypt(&connection.access_token_encrypted)
+        .decrypt(&account.access_token_encrypted)
         .map_err(|e| ApiError::internal(format!("Failed to decrypt token: {}", e)))?;
 
-    let provider = state.provider_factory.create(provider_type);
+    // Create credentials
+    let credentials = ampel_providers::traits::ProviderCredentials::Pat {
+        token: access_token,
+        username: account.auth_username.clone(),
+    };
+
+    let provider = state.provider_factory.create(provider_type, account.instance_url.clone());
 
     // If no specific page requested, fetch all repositories by paginating through all pages
     let repos = if query.page.is_none() {
@@ -126,7 +133,7 @@ pub async fn discover_repositories(
 
         loop {
             let page_repos = provider
-                .list_repositories(&access_token, page, per_page)
+                .list_repositories(&credentials, page, per_page)
                 .await
                 .map_err(|e| ApiError::internal(format!("Provider error: {}", e)))?;
 
@@ -150,7 +157,7 @@ pub async fn discover_repositories(
         let per_page = query.per_page.unwrap_or(30);
 
         provider
-            .list_repositories(&access_token, page, per_page)
+            .list_repositories(&credentials, page, per_page)
             .await
             .map_err(|e| ApiError::internal(format!("Provider error: {}", e)))?
     };
@@ -164,10 +171,11 @@ pub async fn add_repository(
     auth: AuthUser,
     ValidatedJson(req): ValidatedJson<AddRepositoryRequest>,
 ) -> Result<(StatusCode, Json<ApiResponse<Repository>>), ApiError> {
-    // Get provider connection
-    let connection = git_provider::Entity::find()
-        .filter(git_provider::Column::UserId.eq(auth.user_id))
-        .filter(git_provider::Column::Provider.eq(req.provider.to_string()))
+    // Get provider account
+    let account = provider_account::Entity::find()
+        .filter(provider_account::Column::UserId.eq(auth.user_id))
+        .filter(provider_account::Column::Provider.eq(req.provider.to_string()))
+        .filter(provider_account::Column::IsDefault.eq(true))
         .one(&state.db)
         .await?
         .ok_or_else(|| ApiError::bad_request("Provider not connected"))?;
@@ -175,14 +183,20 @@ pub async fn add_repository(
     // Decrypt access token
     let access_token = state
         .encryption_service
-        .decrypt(&connection.access_token_encrypted)
+        .decrypt(&account.access_token_encrypted)
         .map_err(|e| ApiError::internal(format!("Failed to decrypt token: {}", e)))?;
 
-    let provider = state.provider_factory.create(req.provider);
+    // Create credentials
+    let credentials = ampel_providers::traits::ProviderCredentials::Pat {
+        token: access_token,
+        username: account.auth_username.clone(),
+    };
+
+    let provider = state.provider_factory.create(req.provider, account.instance_url.clone());
 
     // Fetch repository details from provider
     let discovered = provider
-        .get_repository(&access_token, &req.owner, &req.name)
+        .get_repository(&credentials, &req.owner, &req.name)
         .await
         .map_err(|e| match e {
             ampel_providers::ProviderError::NotFound(_) => {

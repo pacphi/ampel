@@ -82,74 +82,6 @@ impl MigrationTrait for Migration {
             )
             .await?;
 
-        // Git providers (OAuth connections) table
-        manager
-            .create_table(
-                Table::create()
-                    .table(GitProviders::Table)
-                    .if_not_exists()
-                    .col(
-                        ColumnDef::new(GitProviders::Id)
-                            .uuid()
-                            .not_null()
-                            .primary_key(),
-                    )
-                    .col(ColumnDef::new(GitProviders::UserId).uuid().not_null())
-                    .col(ColumnDef::new(GitProviders::Provider).string().not_null())
-                    .col(
-                        ColumnDef::new(GitProviders::ProviderUserId)
-                            .string()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(GitProviders::ProviderUsername)
-                            .string()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(GitProviders::AccessTokenEncrypted)
-                            .binary()
-                            .not_null(),
-                    )
-                    .col(ColumnDef::new(GitProviders::RefreshTokenEncrypted).binary())
-                    .col(ColumnDef::new(GitProviders::TokenExpiresAt).timestamp_with_time_zone())
-                    .col(ColumnDef::new(GitProviders::Scopes).string().not_null())
-                    .col(ColumnDef::new(GitProviders::InstanceUrl).string())
-                    .col(
-                        ColumnDef::new(GitProviders::CreatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null()
-                            .default(Expr::current_timestamp()),
-                    )
-                    .col(
-                        ColumnDef::new(GitProviders::UpdatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null()
-                            .default(Expr::current_timestamp()),
-                    )
-                    .foreign_key(
-                        ForeignKey::create()
-                            .from(GitProviders::Table, GitProviders::UserId)
-                            .to(Users::Table, Users::Id)
-                            .on_delete(ForeignKeyAction::Cascade),
-                    )
-                    .to_owned(),
-            )
-            .await?;
-
-        // Unique constraint: one connection per provider per user
-        manager
-            .create_index(
-                Index::create()
-                    .name("idx_git_providers_user_provider")
-                    .table(GitProviders::Table)
-                    .col(GitProviders::UserId)
-                    .col(GitProviders::Provider)
-                    .unique()
-                    .to_owned(),
-            )
-            .await?;
-
         // Repositories table
         manager
             .create_table(
@@ -449,9 +381,6 @@ impl MigrationTrait for Migration {
             .drop_table(Table::drop().table(Repositories::Table).to_owned())
             .await?;
         manager
-            .drop_table(Table::drop().table(GitProviders::Table).to_owned())
-            .await?;
-        manager
             .drop_table(Table::drop().table(Organizations::Table).to_owned())
             .await?;
         manager
@@ -482,23 +411,6 @@ enum Organizations {
     Slug,
     Description,
     LogoUrl,
-    CreatedAt,
-    UpdatedAt,
-}
-
-#[derive(DeriveIden)]
-enum GitProviders {
-    Table,
-    Id,
-    UserId,
-    Provider,
-    ProviderUserId,
-    ProviderUsername,
-    AccessTokenEncrypted,
-    RefreshTokenEncrypted,
-    TokenExpiresAt,
-    Scopes,
-    InstanceUrl,
     CreatedAt,
     UpdatedAt,
 }

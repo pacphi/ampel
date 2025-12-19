@@ -75,6 +75,7 @@ impl RepoQueries {
             is_archived: Set(is_archived),
             poll_interval_seconds: Set(poll_interval_seconds),
             last_polled_at: Set(None),
+            provider_account_id: Set(None),
             group_id: Set(None),
             created_at: Set(now),
             updated_at: Set(now),

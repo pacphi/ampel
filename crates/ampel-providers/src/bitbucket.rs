@@ -1,12 +1,13 @@
 use async_trait::async_trait;
+use base64::{engine::general_purpose::STANDARD as BASE64, Engine as _};
 use chrono::{DateTime, Utc};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, OAuthToken, ProviderCICheck, ProviderPullRequest, ProviderReview,
-    ProviderUser, RateLimitInfo,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials,
+    ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
 };
 use ampel_core::models::{
     DiscoveredRepository, GitProvider as Provider, MergeRequest, MergeStrategy,
@@ -14,38 +15,41 @@ use ampel_core::models::{
 
 pub struct BitbucketProvider {
     client: Client,
-    client_id: String,
-    client_secret: String,
-    redirect_uri: String,
+    base_url: String,
 }
 
 impl BitbucketProvider {
-    pub fn new(client_id: String, client_secret: String, redirect_uri: String) -> Self {
+    /// Create a new Bitbucket provider instance
+    ///
+    /// # Arguments
+    /// * `instance_url` - Optional base URL for Bitbucket Server/Data Center.
+    ///   Defaults to "https://api.bitbucket.org/2.0" for Bitbucket Cloud
+    pub fn new(instance_url: Option<String>) -> Self {
         let client = Client::builder()
             .user_agent("Ampel/1.0")
             .build()
             .expect("Failed to create HTTP client");
 
-        Self {
-            client,
-            client_id,
-            client_secret,
-            redirect_uri,
-        }
+        let base_url = instance_url.unwrap_or_else(|| "https://api.bitbucket.org/2.0".to_string());
+
+        Self { client, base_url }
     }
 
     fn api_url(&self, path: &str) -> String {
-        format!("https://api.bitbucket.org/2.0{}", path)
+        format!("{}{}", self.base_url, path)
     }
-}
 
-#[derive(Debug, Deserialize)]
-struct BitbucketTokenResponse {
-    access_token: String,
-    token_type: String,
-    refresh_token: Option<String>,
-    expires_in: Option<i64>,
-    scopes: Option<String>,
+    /// Generate appropriate authentication header for PAT (App Password)
+    fn auth_header(&self, credentials: &ProviderCredentials) -> String {
+        match credentials {
+            ProviderCredentials::Pat { token, username } => {
+                // Bitbucket App Passwords require Basic Auth with username:token
+                let username = username.as_deref().unwrap_or("");
+                let auth = BASE64.encode(format!("{}:{}", username, token));
+                format!("Basic {}", auth)
+            }
+        }
+    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -191,95 +195,87 @@ impl GitProvider for BitbucketProvider {
         Provider::Bitbucket
     }
 
-    fn get_oauth_url(&self, state: &str) -> String {
-        format!(
-            "https://bitbucket.org/site/oauth2/authorize?client_id={}&redirect_uri={}&response_type=code&state={}",
-            self.client_id,
-            urlencoding::encode(&self.redirect_uri),
-            state
-        )
+    fn instance_url(&self) -> Option<&str> {
+        if self.base_url == "https://api.bitbucket.org/2.0" {
+            None // Cloud version
+        } else {
+            Some(&self.base_url)
+        }
     }
 
-    async fn exchange_code(&self, code: &str) -> ProviderResult<OAuthToken> {
-        let response = self
-            .client
-            .post("https://bitbucket.org/site/oauth2/access_token")
-            .basic_auth(&self.client_id, Some(&self.client_secret))
-            .form(&[
-                ("grant_type", "authorization_code"),
-                ("code", code),
-                ("redirect_uri", &self.redirect_uri),
-            ])
-            .send()
-            .await?;
-
-        if !response.status().is_success() {
-            return Err(ProviderError::AuthenticationFailed(
-                "Failed to exchange code".to_string(),
-            ));
+    async fn validate_credentials(
+        &self,
+        credentials: &ProviderCredentials,
+    ) -> ProviderResult<TokenValidation> {
+        // For PAT with Bitbucket, username is required
+        let ProviderCredentials::Pat { username, .. } = credentials;
+        if username.is_none() || username.as_ref().unwrap().is_empty() {
+            return Ok(TokenValidation {
+                is_valid: false,
+                user_id: None,
+                username: None,
+                email: None,
+                avatar_url: None,
+                scopes: vec![],
+                expires_at: None,
+                error_message: Some(
+                    "Bitbucket App Passwords require a username for Basic Auth".to_string(),
+                ),
+            });
         }
 
-        let token: BitbucketTokenResponse = response.json().await?;
-        let expires_at = token
-            .expires_in
-            .map(|secs| Utc::now() + chrono::Duration::seconds(secs));
-
-        Ok(OAuthToken {
-            access_token: token.access_token,
-            refresh_token: token.refresh_token,
-            token_type: token.token_type,
-            expires_at,
-            scopes: token
-                .scopes
-                .unwrap_or_default()
-                .split(' ')
-                .map(|s| s.to_string())
-                .collect(),
-        })
-    }
-
-    async fn refresh_token(&self, refresh_token: &str) -> ProviderResult<OAuthToken> {
-        let response = self
-            .client
-            .post("https://bitbucket.org/site/oauth2/access_token")
-            .basic_auth(&self.client_id, Some(&self.client_secret))
-            .form(&[
-                ("grant_type", "refresh_token"),
-                ("refresh_token", refresh_token),
-            ])
-            .send()
-            .await?;
-
-        if !response.status().is_success() {
-            return Err(ProviderError::AuthenticationFailed(
-                "Failed to refresh token".to_string(),
-            ));
-        }
-
-        let token: BitbucketTokenResponse = response.json().await?;
-        let expires_at = token
-            .expires_in
-            .map(|secs| Utc::now() + chrono::Duration::seconds(secs));
-
-        Ok(OAuthToken {
-            access_token: token.access_token,
-            refresh_token: token.refresh_token,
-            token_type: token.token_type,
-            expires_at,
-            scopes: token
-                .scopes
-                .unwrap_or_default()
-                .split(' ')
-                .map(|s| s.to_string())
-                .collect(),
-        })
-    }
-
-    async fn get_user(&self, access_token: &str) -> ProviderResult<ProviderUser> {
         let response = self
             .client
             .get(self.api_url("/user"))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
+            .send()
+            .await?;
+
+        if response.status() == 401 {
+            return Ok(TokenValidation {
+                is_valid: false,
+                user_id: None,
+                username: None,
+                email: None,
+                avatar_url: None,
+                scopes: vec![],
+                expires_at: None,
+                error_message: Some("Invalid or expired credentials".to_string()),
+            });
+        }
+
+        if !response.status().is_success() {
+            return Ok(TokenValidation {
+                is_valid: false,
+                user_id: None,
+                username: None,
+                email: None,
+                avatar_url: None,
+                scopes: vec![],
+                expires_at: None,
+                error_message: Some(format!("API error: {}", response.status())),
+            });
+        }
+
+        let user: BitbucketUser = response.json().await?;
+
+        Ok(TokenValidation {
+            is_valid: true,
+            user_id: Some(user.uuid.clone()),
+            username: Some(user.username.clone()),
+            email: None, // Bitbucket requires separate API call for email
+            avatar_url: user.links.avatar.as_ref().map(|a| a.href.clone()),
+            scopes: vec![], // Bitbucket doesn't expose scopes in API response
+            expires_at: None, // App Passwords don't expire by default
+            error_message: None,
+        })
+    }
+
+    async fn get_user(&self, credentials: &ProviderCredentials) -> ProviderResult<ProviderUser> {
+        let response = self
+            .client
+            .get(self.api_url("/user"))
+            .header("Authorization", self.auth_header(credentials))
             .send()
             .await?;
 
@@ -308,14 +304,14 @@ impl GitProvider for BitbucketProvider {
 
     async fn list_repositories(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         page: i32,
         per_page: i32,
     ) -> ProviderResult<Vec<DiscoveredRepository>> {
         let response = self
             .client
             .get(self.api_url("/repositories"))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .query(&[
                 ("role", "member"),
                 ("page", &page.to_string()),
@@ -371,14 +367,14 @@ impl GitProvider for BitbucketProvider {
 
     async fn get_repository(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
     ) -> ProviderResult<DiscoveredRepository> {
         let response = self
             .client
             .get(self.api_url(&format!("/repositories/{}/{}", owner, repo)))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .send()
             .await?;
 
@@ -417,7 +413,7 @@ impl GitProvider for BitbucketProvider {
 
     async fn list_pull_requests(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         state: Option<&str>,
@@ -433,7 +429,7 @@ impl GitProvider for BitbucketProvider {
         let response = self
             .client
             .get(self.api_url(&format!("/repositories/{}/{}/pullrequests", owner, repo)))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .query(&[("state", bb_state)])
             .send()
             .await?;
@@ -500,7 +496,7 @@ impl GitProvider for BitbucketProvider {
 
     async fn get_pull_request(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         number: i32,
@@ -511,7 +507,7 @@ impl GitProvider for BitbucketProvider {
                 "/repositories/{}/{}/pullrequests/{}",
                 owner, repo, number
             )))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .send()
             .await?;
 
@@ -577,7 +573,7 @@ impl GitProvider for BitbucketProvider {
 
     async fn get_ci_checks(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         _pr_number: i32,
@@ -586,7 +582,7 @@ impl GitProvider for BitbucketProvider {
         let response = self
             .client
             .get(self.api_url(&format!("/repositories/{}/{}/pipelines/", owner, repo)))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .query(&[("sort", "-created_on"), ("pagelen", "5")])
             .send()
             .await?;
@@ -630,7 +626,7 @@ impl GitProvider for BitbucketProvider {
 
     async fn get_reviews(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         pr_number: i32,
@@ -642,7 +638,7 @@ impl GitProvider for BitbucketProvider {
                 "/repositories/{}/{}/pullrequests/{}/activity",
                 owner, repo, pr_number
             )))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .send()
             .await?;
 
@@ -675,7 +671,7 @@ impl GitProvider for BitbucketProvider {
 
     async fn merge_pull_request(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         pr_number: i32,
@@ -699,7 +695,7 @@ impl GitProvider for BitbucketProvider {
                 "/repositories/{}/{}/pullrequests/{}/merge",
                 owner, repo, pr_number
             )))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .json(&body)
             .send()
             .await?;
@@ -718,7 +714,7 @@ impl GitProvider for BitbucketProvider {
         })
     }
 
-    async fn get_rate_limit(&self, _access_token: &str) -> ProviderResult<RateLimitInfo> {
+    async fn get_rate_limit(&self, _credentials: &ProviderCredentials) -> ProviderResult<RateLimitInfo> {
         // Bitbucket uses different rate limiting approach
         Ok(RateLimitInfo {
             limit: 1000,

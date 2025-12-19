@@ -1,0 +1,11 @@
+node_modules/
+target/
+.cargo/
+.agentic-qe/
+.claude/
+memory/
+frontend/node_modules/
+frontend/dist/
+frontend/.cargo/
+~/.cargo/
+**/~/**
