@@ -233,6 +233,7 @@ pub async fn add_repository(
         discovered.is_private,
         discovered.is_archived,
         req.poll_interval_seconds.unwrap_or(300),
+        Some(account.id),
     )
     .await?;
 

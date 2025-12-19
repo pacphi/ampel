@@ -17,10 +17,10 @@ export function useRepository(id: string) {
   });
 }
 
-export function useDiscoverRepositories(provider: GitProvider | null, page = 1) {
+export function useDiscoverRepositories(provider: GitProvider | null) {
   return useQuery({
-    queryKey: ['discover-repositories', provider, page],
-    queryFn: () => repositoriesApi.discover(provider!, page),
+    queryKey: ['discover-repositories', provider],
+    queryFn: () => repositoriesApi.discover(provider!),
     enabled: !!provider,
   });
 }

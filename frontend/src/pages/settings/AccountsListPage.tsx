@@ -96,7 +96,7 @@ export function AccountsListPage() {
   });
 
   const handleEdit = (account: ProviderAccount) => {
-    navigate(`/settings/accounts/edit/${account.id}`);
+    navigate(`/settings/accounts/${account.id}/edit`);
   };
 
   const handleDelete = (account: ProviderAccount) => {

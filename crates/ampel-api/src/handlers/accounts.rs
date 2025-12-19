@@ -24,6 +24,7 @@ use crate::AppState;
 // ============================================================================
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct AddAccountRequest {
     pub provider: String,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -36,6 +37,7 @@ pub struct AddAccountRequest {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct UpdateAccountRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub account_label: Option<String>,
@@ -50,6 +52,7 @@ pub struct UpdateAccountRequest {
 // ============================================================================
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProviderAccountResponse {
     pub id: Uuid,
     pub provider: String,
@@ -98,6 +101,7 @@ impl ProviderAccountResponse {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ValidationResult {
     pub is_valid: bool,
     pub validation_status: String,
