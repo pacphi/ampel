@@ -1,10 +1,25 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { pullRequestsApi, type MergeRequest } from '@/api/pullRequests';
 
 export function usePullRequests(page = 1, perPage = 20) {
   return useQuery({
     queryKey: ['pull-requests', page, perPage],
     queryFn: () => pullRequestsApi.list(page, perPage),
+  });
+}
+
+export function useInfinitePullRequests(perPage = 20) {
+  return useInfiniteQuery({
+    queryKey: ['pull-requests', 'infinite'],
+    queryFn: ({ pageParam = 1 }) => pullRequestsApi.list(pageParam, perPage),
+    getNextPageParam: (lastPage, allPages) => {
+      const currentCount = allPages.reduce((sum, page) => sum + page.data.length, 0);
+      if (currentCount < lastPage.total) {
+        return allPages.length + 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
   });
 }
 

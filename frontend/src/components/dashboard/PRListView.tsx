@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { pullRequestsApi } from '@/api/pullRequests';
 import { mergeApi, type BulkMergeRequest } from '@/api/merge';
 import { settingsApi } from '@/api/settings';
+import { useInfinitePullRequests } from '@/hooks/usePullRequests';
 import PRCard from './PRCard';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import type { AmpelStatus } from '@/types';
-import { GitMerge, Loader2, CheckSquare, Square, Filter } from 'lucide-react';
+import { GitMerge, Loader2, CheckSquare, Square, Filter, ChevronDown } from 'lucide-react';
 import { MergeResultsDialog } from '@/components/merge/MergeResultsDialog';
 import type { BulkMergeResponse } from '@/api/merge';
 
@@ -30,12 +30,21 @@ export default function PRListView({ filterStatus }: PRListViewProps) {
     staleTime: 60000,
   });
 
-  const { data: prsData, isLoading } = useQuery({
-    queryKey: ['pull-requests'],
-    queryFn: () => pullRequestsApi.list(1, 100),
-  });
+  const {
+    data: prsData,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfinitePullRequests(20);
 
-  const prs = prsData?.data || [];
+  // Flatten all pages into a single array
+  const prs = useMemo(() => {
+    return prsData?.pages.flatMap((page) => page.data) || [];
+  }, [prsData]);
+
+  // Get total count from the first page
+  const totalPrs = prsData?.pages[0]?.total || 0;
 
   const filteredPrs = statusFilter === 'all' ? prs : prs.filter((pr) => pr.status === statusFilter);
 
@@ -124,7 +133,7 @@ export default function PRListView({ filterStatus }: PRListViewProps) {
             onChange={(e) => setStatusFilter(e.target.value as AmpelStatus | 'all')}
             className="text-sm border rounded-md px-2 py-1 bg-background"
           >
-            <option value="all">All PRs ({prs.length})</option>
+            <option value="all">All PRs ({totalPrs})</option>
             <option value="green">Ready ({prs.filter((p) => p.status === 'green').length})</option>
             <option value="yellow">
               Pending ({prs.filter((p) => p.status === 'yellow').length})
@@ -173,31 +182,63 @@ export default function PRListView({ filterStatus }: PRListViewProps) {
           <p className="text-muted-foreground">No pull requests found</p>
         </div>
       ) : (
-        <div className="space-y-2">
-          {filteredPrs.map((pr) => {
-            const isMergeable =
-              pr.status === 'green' && pr.isMergeable !== false && !pr.hasConflicts;
-            return (
-              <div key={pr.id} className="flex items-start gap-2">
-                {isMergeable && (
-                  <button
-                    onClick={() => toggleSelect(pr.id)}
-                    className="mt-4 text-muted-foreground hover:text-foreground"
-                  >
-                    {selectedPrs.has(pr.id) ? (
-                      <CheckSquare className="h-5 w-5" />
-                    ) : (
-                      <Square className="h-5 w-5" />
-                    )}
-                  </button>
-                )}
-                <div className={isMergeable ? 'flex-1' : 'flex-1 ml-7'}>
-                  <PRCard pr={pr} skipReviewRequirement={settings?.skipReviewRequirement} />
+        <>
+          <div className="space-y-2">
+            {filteredPrs.map((pr) => {
+              const isMergeable =
+                pr.status === 'green' && pr.isMergeable !== false && !pr.hasConflicts;
+              return (
+                <div key={pr.id} className="flex items-start gap-2">
+                  {isMergeable && (
+                    <button
+                      onClick={() => toggleSelect(pr.id)}
+                      className="mt-4 text-muted-foreground hover:text-foreground"
+                    >
+                      {selectedPrs.has(pr.id) ? (
+                        <CheckSquare className="h-5 w-5" />
+                      ) : (
+                        <Square className="h-5 w-5" />
+                      )}
+                    </button>
+                  )}
+                  <div className={isMergeable ? 'flex-1' : 'flex-1 ml-7'}>
+                    <PRCard pr={pr} skipReviewRequirement={settings?.skipReviewRequirement} />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+
+          {/* Load More Button */}
+          {hasNextPage && (
+            <div className="flex justify-center pt-4">
+              <Button
+                variant="outline"
+                onClick={() => fetchNextPage()}
+                disabled={isFetchingNextPage}
+              >
+                {isFetchingNextPage ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-4 w-4 mr-2" />
+                    Load more PRs ({totalPrs - prs.length} remaining)
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+
+          {/* Showing all message */}
+          {!hasNextPage && prs.length > 0 && (
+            <div className="text-center pt-4">
+              <p className="text-sm text-muted-foreground">Showing all {totalPrs} PRs</p>
+            </div>
+          )}
+        </>
       )}
 
       {/* Merge Results Dialog */}

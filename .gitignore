@@ -72,3 +72,6 @@ aqe
 
 # archived
 .archives/
+
+# Prevent undefined directory from misconfigured CARGO_HOME/RUSTUP_HOME
+undefined/
