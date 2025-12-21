@@ -2,7 +2,6 @@
 ///
 /// This module organizes all integration tests for the database layer.
 /// Each test file focuses on a specific domain or query module.
-
 // Re-export common test utilities
 #[path = "../common/mod.rs"]
 mod common;

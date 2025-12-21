@@ -2,7 +2,6 @@
 ///
 /// This module provides helpers for setting up isolated test databases,
 /// running migrations, and cleaning up after tests.
-
 pub mod fixtures;
 
 use sea_orm::{ConnectionTrait, Database, DatabaseConnection, DbErr};
@@ -124,17 +123,12 @@ impl TestDb {
         std::env::var("USE_POSTGRES_TESTS").is_ok()
     }
 
-    /// Check if running in CI environment
-    fn is_ci_environment() -> bool {
-        std::env::var("CI").is_ok() || std::env::var("GITHUB_ACTIONS").is_ok()
-    }
-
     /// Run database migrations
     ///
     /// This sets up all required tables for testing.
     pub async fn run_migrations(&self) -> Result<(), DbErr> {
-        use sea_orm_migration::MigratorTrait;
         use ampel_db::migrations::Migrator;
+        use sea_orm_migration::MigratorTrait;
 
         Migrator::up(&self.connection, None).await
     }
@@ -220,8 +214,13 @@ impl Drop for TestDb {
 #[macro_export]
 macro_rules! setup_test_db {
     () => {{
-        let test_db = $crate::common::TestDb::new().await.expect("Failed to create test database");
-        test_db.run_migrations().await.expect("Failed to run migrations");
+        let test_db = $crate::common::TestDb::new()
+            .await
+            .expect("Failed to create test database");
+        test_db
+            .run_migrations()
+            .await
+            .expect("Failed to run migrations");
         test_db
     }};
 }
@@ -230,9 +229,16 @@ macro_rules! setup_test_db {
 #[macro_export]
 macro_rules! setup_test_db_with {
     ($setup:expr) => {{
-        let test_db = $crate::common::TestDb::new().await.expect("Failed to create test database");
-        test_db.run_migrations().await.expect("Failed to run migrations");
-        $setup(&test_db.connection).await.expect("Failed to run custom setup");
+        let test_db = $crate::common::TestDb::new()
+            .await
+            .expect("Failed to create test database");
+        test_db
+            .run_migrations()
+            .await
+            .expect("Failed to run migrations");
+        $setup(&test_db.connection)
+            .await
+            .expect("Failed to run custom setup");
         test_db
     }};
 }

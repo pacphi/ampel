@@ -219,6 +219,7 @@ audit: audit-backend audit-frontend
 
 audit-backend:
 	@echo "==> Auditing backend dependencies..."
+	@command -v cargo-audit >/dev/null 2>&1 || { echo "Installing cargo-audit..."; cargo install cargo-audit; }
 	cargo audit
 
 audit-frontend:
@@ -238,7 +239,7 @@ outdated-backend:
 
 outdated-frontend:
 	@echo "==> Checking for outdated frontend dependencies..."
-	cd frontend && pnpm outdated
+	-cd frontend && pnpm outdated
 
 upgrade: upgrade-backend upgrade-frontend
 

@@ -2,7 +2,6 @@
 ///
 /// These tests verify the database layer works correctly with real SQLite databases.
 /// Each test runs in complete isolation with its own database instance.
-
 use ampel_db::entities::provider_account::Entity;
 use ampel_db::queries::ProviderAccountQueries;
 use sea_orm::{DbErr, EntityTrait};
@@ -14,7 +13,10 @@ use super::common::TestDb;
 #[tokio::test]
 async fn test_find_by_user() {
     let test_db = TestDb::new().await.expect("Failed to create test DB");
-    test_db.run_migrations().await.expect("Failed to run migrations");
+    test_db
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations");
     let db = test_db.connection();
 
     let user = create_test_user(db, "test@example.com", "testuser")
@@ -58,7 +60,10 @@ async fn test_find_by_user() {
 #[tokio::test]
 async fn test_find_default_for_provider() {
     let test_db = TestDb::new().await.expect("Failed to create test DB");
-    test_db.run_migrations().await.expect("Failed to run migrations");
+    test_db
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations");
     let db = test_db.connection();
 
     let user = create_test_user(db, "test@example.com", "testuser")
@@ -100,7 +105,10 @@ async fn test_find_default_for_provider() {
 #[tokio::test]
 async fn test_set_default_clears_previous() {
     let test_db = TestDb::new().await.expect("Failed to create test DB");
-    test_db.run_migrations().await.expect("Failed to run migrations");
+    test_db
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations");
     let db = test_db.connection();
 
     let user = create_test_user(db, "test@example.com", "testuser")
@@ -151,7 +159,10 @@ async fn test_set_default_clears_previous() {
 #[tokio::test]
 async fn test_set_default_unauthorized() {
     let test_db = TestDb::new().await.expect("Failed to create test DB");
-    test_db.run_migrations().await.expect("Failed to run migrations");
+    test_db
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations");
     let db = test_db.connection();
 
     let user = create_test_user(db, "test@example.com", "testuser")
@@ -181,7 +192,10 @@ async fn test_set_default_unauthorized() {
 #[tokio::test]
 async fn test_count_by_user_and_provider() {
     let test_db = TestDb::new().await.expect("Failed to create test DB");
-    test_db.run_migrations().await.expect("Failed to run migrations");
+    test_db
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations");
     let db = test_db.connection();
 
     let user = create_test_user(db, "test@example.com", "testuser")
@@ -230,7 +244,10 @@ async fn test_count_by_user_and_provider() {
 #[tokio::test]
 async fn test_update_validation_status() {
     let test_db = TestDb::new().await.expect("Failed to create test DB");
-    test_db.run_migrations().await.expect("Failed to run migrations");
+    test_db
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations");
     let db = test_db.connection();
 
     let user = create_test_user(db, "test@example.com", "testuser")
@@ -260,7 +277,10 @@ async fn test_update_validation_status() {
 #[tokio::test]
 async fn test_find_active_by_user() {
     let test_db = TestDb::new().await.expect("Failed to create test DB");
-    test_db.run_migrations().await.expect("Failed to run migrations");
+    test_db
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations");
     let db = test_db.connection();
 
     let user = create_test_user(db, "test@example.com", "testuser")
@@ -301,7 +321,10 @@ async fn test_find_active_by_user() {
 #[tokio::test]
 async fn test_delete_account_unauthorized() {
     let test_db = TestDb::new().await.expect("Failed to create test DB");
-    test_db.run_migrations().await.expect("Failed to run migrations");
+    test_db
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations");
     let db = test_db.connection();
 
     let user = create_test_user(db, "test@example.com", "testuser")
@@ -334,7 +357,10 @@ async fn test_delete_account_unauthorized() {
 #[tokio::test]
 async fn test_delete_account_success() {
     let test_db = TestDb::new().await.expect("Failed to create test DB");
-    test_db.run_migrations().await.expect("Failed to run migrations");
+    test_db
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations");
     let db = test_db.connection();
 
     let user = create_test_user(db, "test@example.com", "testuser")
@@ -360,7 +386,10 @@ async fn test_delete_account_success() {
 #[tokio::test]
 async fn test_find_by_user_and_provider() {
     let test_db = TestDb::new().await.expect("Failed to create test DB");
-    test_db.run_migrations().await.expect("Failed to run migrations");
+    test_db
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations");
     let db = test_db.connection();
 
     let user = create_test_user(db, "test@example.com", "testuser")
@@ -379,10 +408,9 @@ async fn test_find_by_user_and_provider() {
         .unwrap();
 
     // Query GitHub accounts
-    let github_accounts =
-        ProviderAccountQueries::find_by_user_and_provider(db, user.id, "github")
-            .await
-            .expect("Failed to find accounts");
+    let github_accounts = ProviderAccountQueries::find_by_user_and_provider(db, user.id, "github")
+        .await
+        .expect("Failed to find accounts");
 
     assert_eq!(github_accounts.len(), 2, "Should have 2 GitHub accounts");
 
@@ -392,10 +420,9 @@ async fn test_find_by_user_and_provider() {
     }
 
     // Query GitLab accounts
-    let gitlab_accounts =
-        ProviderAccountQueries::find_by_user_and_provider(db, user.id, "gitlab")
-            .await
-            .expect("Failed to find accounts");
+    let gitlab_accounts = ProviderAccountQueries::find_by_user_and_provider(db, user.id, "gitlab")
+        .await
+        .expect("Failed to find accounts");
 
     assert_eq!(gitlab_accounts.len(), 1, "Should have 1 GitLab account");
 
@@ -408,8 +435,14 @@ async fn test_parallel_test_isolation() {
     let test_db1 = TestDb::new().await.expect("Failed to create test DB 1");
     let test_db2 = TestDb::new().await.expect("Failed to create test DB 2");
 
-    test_db1.run_migrations().await.expect("Failed to run migrations 1");
-    test_db2.run_migrations().await.expect("Failed to run migrations 2");
+    test_db1
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations 1");
+    test_db2
+        .run_migrations()
+        .await
+        .expect("Failed to run migrations 2");
 
     let user1 = create_test_user(test_db1.connection(), "user1@example.com", "user1")
         .await

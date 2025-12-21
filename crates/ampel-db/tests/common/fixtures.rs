@@ -2,8 +2,9 @@
 ///
 /// This module provides helper functions to create consistent test data
 /// across different test suites.
-
-use ampel_db::entities::provider_account::{ActiveModel as ProviderAccountActiveModel, Model as ProviderAccountModel};
+use ampel_db::entities::provider_account::{
+    ActiveModel as ProviderAccountActiveModel, Model as ProviderAccountModel,
+};
 use ampel_db::entities::user::{ActiveModel as UserActiveModel, Model as UserModel};
 use chrono::Utc;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, Set};
@@ -17,6 +18,7 @@ pub struct UserFixture {
     password_hash: String,
 }
 
+#[allow(dead_code)]
 impl UserFixture {
     pub fn new(email: impl Into<String>, display_name: impl Into<String>) -> Self {
         Self {
@@ -72,6 +74,7 @@ pub struct ProviderAccountFixture {
     validation_status: String,
 }
 
+#[allow(dead_code)]
 impl ProviderAccountFixture {
     pub fn new(
         user_id: Uuid,
@@ -118,7 +121,7 @@ impl ProviderAccountFixture {
         self
     }
 
-    pub fn as_default(mut self) -> Self {
+    pub fn set_default(mut self) -> Self {
         self.is_default = true;
         self
     }
@@ -188,7 +191,7 @@ pub async fn create_test_provider_account(
 ) -> Result<ProviderAccountModel, sea_orm::DbErr> {
     let mut fixture = ProviderAccountFixture::new(user_id, provider, label);
     if is_default {
-        fixture = fixture.as_default();
+        fixture = fixture.set_default();
     }
     fixture.create(db).await
 }
@@ -211,7 +214,10 @@ mod tests {
 
         assert_eq!(user.email, "test@example.com");
         assert_eq!(user.display_name, Some("Test User".to_string()));
-        assert_eq!(user.avatar_url, Some("https://example.com/avatar.png".to_string()));
+        assert_eq!(
+            user.avatar_url,
+            Some("https://example.com/avatar.png".to_string())
+        );
     }
 
     #[tokio::test]
@@ -224,7 +230,7 @@ mod tests {
             .unwrap();
 
         let account = ProviderAccountFixture::new(user.id, "github", "Work Account")
-            .as_default()
+            .set_default()
             .create(test_db.connection())
             .await
             .unwrap();
