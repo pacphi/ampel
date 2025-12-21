@@ -8,20 +8,26 @@ afterEach(() => {
   cleanup();
 });
 
-// Mock window.matchMedia
+// Mock window.matchMedia - must be defined before any tests run
+const mockMatchMedia = vi.fn().mockImplementation((query: string) => ({
+  matches: false,
+  media: query,
+  onchange: null,
+  addListener: vi.fn(),
+  removeListener: vi.fn(),
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+  dispatchEvent: vi.fn(),
+}));
+
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
+  configurable: true,
+  value: mockMatchMedia,
 });
+
+// Ensure matchMedia is available globally
+globalThis.matchMedia = mockMatchMedia as unknown as typeof globalThis.matchMedia;
 
 // Mock IntersectionObserver
 class MockIntersectionObserver implements IntersectionObserver {

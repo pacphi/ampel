@@ -18,7 +18,17 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
-      exclude: ['node_modules/', 'tests/', '**/*.d.ts', '**/*.config.*', '**/mockData/**', 'dist/'],
+      exclude: [
+        'node_modules/',
+        'tests/',
+        '**/*.d.ts',
+        '**/*.config.*',
+        '**/mockData/**',
+        'dist/',
+        'src/components/ui/**', // shadcn/ui components - third-party library code
+        'src/main.tsx', // Entry point - just renders the app
+        'src/vite-env.d.ts',
+      ],
       all: true,
       lines: 80,
       functions: 75,
