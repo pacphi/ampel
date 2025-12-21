@@ -165,7 +165,7 @@ lint-backend:
 
 lint-frontend:
 	@echo "==> Linting frontend..."
-	cd frontend && pnpm run lint
+	cd frontend && pnpm run lint && pnpm run type-check
 
 lint-docs:
 	@echo "==> Linting markdown files..."

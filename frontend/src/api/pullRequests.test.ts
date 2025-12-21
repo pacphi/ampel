@@ -11,7 +11,7 @@ vi.mock('./client', () => ({
   },
 }));
 
-const mockedApiClient = vi.mocked(apiClient);
+const mockedApiClient = vi.mocked(apiClient, true);
 
 describe('pullRequestsApi', () => {
   const mockPullRequest: PullRequestWithDetails = {
