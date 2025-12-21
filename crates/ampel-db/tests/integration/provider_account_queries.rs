@@ -1,11 +1,39 @@
-/// Integration tests for provider account queries
-///
-/// These tests verify the database layer works correctly with real databases.
-/// Each test runs in complete isolation with its own database instance.
-///
-/// Note: These tests require PostgreSQL because migrations use PostgreSQL-specific
-/// features (ALTER TABLE ADD FOREIGN KEY, partial unique indexes). Tests are
-/// automatically skipped when running in SQLite mode.
+//! Integration tests for provider account queries
+//!
+//! These tests verify the database layer works correctly with real databases.
+//! Each test runs in complete isolation with its own database instance.
+//!
+//! ## Prerequisites
+//!
+//! - PostgreSQL database (or tests will be skipped)
+//! - Environment variables:
+//!   - `DATABASE_URL` or `TEST_DATABASE_URL`
+//!   - `JWT_SECRET`
+//!   - `ENCRYPTION_KEY`
+//!
+//! ## Running These Tests
+//!
+//! ```bash
+//! # Run all integration tests for this crate
+//! cargo test -p ampel-db --test integration
+//!
+//! # Run specific test
+//! cargo test test_find_by_user
+//!
+//! # With PostgreSQL
+//! export DATABASE_URL="postgres://ampel:ampel@localhost:5432/ampel_test"
+//! cargo test
+//! ```
+//!
+//! ## Note
+//!
+//! Tests are automatically skipped when running in SQLite mode because
+//! migrations use PostgreSQL-specific features:
+//! - `ALTER TABLE ADD COLUMN` with `FOREIGN KEY` constraint
+//! - Partial unique indexes with `WHERE` clause
+//!
+//! See [The Rust Book - Test Organization](https://doc.rust-lang.org/book/ch11-03-test-organization.html)
+//! for more on integration test structure.
 use ampel_db::entities::provider_account::Entity;
 use ampel_db::queries::ProviderAccountQueries;
 use sea_orm::{DbErr, EntityTrait};

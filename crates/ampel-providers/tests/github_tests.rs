@@ -1,3 +1,21 @@
+//! Unit tests for GitHub provider
+//!
+//! These tests verify the GitHub provider implementation without making
+//! actual API calls. They test provider configuration, credential handling,
+//! and basic functionality.
+//!
+//! ## Running These Tests
+//!
+//! ```bash
+//! # Run all provider tests
+//! cargo test -p ampel-providers
+//!
+//! # Run only GitHub tests
+//! cargo test -p ampel-providers --test github_tests
+//! ```
+//!
+//! For integration tests that make real API calls, see the integration test suite.
+
 use ampel_providers::github::GitHubProvider;
 use ampel_providers::traits::{GitProvider, ProviderCredentials, TokenValidation};
 

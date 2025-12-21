@@ -47,7 +47,7 @@ impl PollRepositoryJob {
         Ok(())
     }
 
-    async fn find_repos_to_poll(
+    pub async fn find_repos_to_poll(
         &self,
         db: &DatabaseConnection,
     ) -> anyhow::Result<Vec<repository::Model>> {

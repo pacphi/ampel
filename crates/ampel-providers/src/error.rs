@@ -1,6 +1,6 @@
 use thiserror::Error;
 
-#[derive(Error, Debug)]
+#[derive(Error, Debug, Clone)]
 pub enum ProviderError {
     #[error("Authentication failed: {0}")]
     AuthenticationFailed(String),

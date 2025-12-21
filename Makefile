@@ -4,7 +4,7 @@
 .PHONY: help
 .PHONY: install build build-release clean
 .PHONY: dev dev-api dev-worker dev-frontend
-.PHONY: test test-backend test-frontend
+.PHONY: test test-backend test-frontend test-coverage test-backend-coverage test-frontend-coverage
 .PHONY: lint lint-backend lint-frontend lint-docs lint-fix lint-fix-backend lint-fix-frontend lint-fix-docs
 .PHONY: format format-backend format-frontend format-docs format-check format-check-docs
 .PHONY: audit audit-backend audit-frontend
@@ -40,6 +40,9 @@ help:
 	@echo "  test             - Run all tests"
 	@echo "  test-backend     - Run backend tests only"
 	@echo "  test-frontend    - Run frontend tests only"
+	@echo "  test-coverage    - Run all tests with coverage reports"
+	@echo "  test-backend-coverage  - Backend tests with coverage (auto-installs tarpaulin)"
+	@echo "  test-frontend-coverage - Frontend tests with coverage"
 	@echo ""
 	@echo "Code Quality:"
 	@echo "  lint             - Run all linters"
@@ -152,6 +155,35 @@ test-backend:
 test-frontend:
 	@echo "==> Running frontend tests..."
 	cd frontend && pnpm run test -- --run
+
+# Coverage targets - auto-install tools if missing
+test-coverage: test-backend-coverage test-frontend-coverage
+	@echo ""
+	@echo "==> Coverage reports generated:"
+	@echo "    Backend:  coverage/cobertura.xml, coverage/tarpaulin-report.html"
+	@echo "    Frontend: frontend/coverage/"
+
+test-backend-coverage:
+	@echo "==> Running backend tests with coverage..."
+	@command -v cargo-tarpaulin >/dev/null 2>&1 || { \
+		echo "Installing cargo-tarpaulin..."; \
+		cargo install cargo-tarpaulin --locked; \
+	}
+	@mkdir -p coverage
+	cargo tarpaulin \
+		--all-features \
+		--workspace \
+		--timeout 300 \
+		--out Html Xml \
+		--output-dir coverage
+	@echo ""
+	@echo "==> Backend coverage report: coverage/tarpaulin-report.html"
+
+test-frontend-coverage:
+	@echo "==> Running frontend tests with coverage..."
+	cd frontend && pnpm run test -- --run --coverage
+	@echo ""
+	@echo "==> Frontend coverage report: frontend/coverage/"
 
 # =============================================================================
 # Code Quality

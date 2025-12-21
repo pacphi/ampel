@@ -7,9 +7,7 @@
 mod common;
 
 // Test modules
+mod pr_queries;
 mod provider_account_queries;
-
-// Additional test modules can be added here as needed:
-// mod user_queries;
-// mod repository_queries;
-// mod pull_request_queries;
+mod repo_queries;
+mod user_queries;

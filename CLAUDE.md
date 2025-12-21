@@ -31,9 +31,9 @@ make build              # Build all (debug)
 make build-release      # Build all (release)
 
 # Testing
-make test               # Run all tests
-make test-backend       # cargo test --all-features
-make test-frontend      # vitest --run
+make test               # Run all tests (backend + frontend)
+make test-backend       # Backend tests: cargo test --all-features
+make test-frontend      # Frontend tests: vitest --run
 
 # Code Quality
 make lint               # Run all linters
@@ -47,6 +47,8 @@ make format-check       # Check formatting without changes
 make docker-up          # Start all services
 make docker-down        # Stop services
 ```
+
+**See [docs/TESTING.md](docs/TESTING.md) for comprehensive testing documentation.**
 
 ## Architecture
 
@@ -109,6 +111,48 @@ Core entity relationships:
 - Worker: `crates/ampel-worker/src/main.rs`
 - Frontend: `frontend/src/main.tsx`
 - API Docs: `/api/docs` (Swagger UI via utoipa)
+
+## Testing
+
+### Quick Reference
+
+```bash
+make test               # Run all tests
+make test-backend       # Backend only (cargo test --all-features)
+make test-frontend      # Frontend only (vitest --run)
+```
+
+### Test Organization
+
+- **Backend Unit Tests**: In `#[cfg(test)]` modules alongside source code
+- **Backend Integration Tests**: In `crates/*/tests/` directories
+- **Frontend Tests**: Co-located with components or in `__tests__/` directories
+
+### Database Testing
+
+Backend integration tests support both PostgreSQL and SQLite:
+
+- **PostgreSQL** (CI default): Full feature testing with migrations
+- **SQLite** (Fast local): Quick unit tests, auto-skips migration-dependent tests
+
+```bash
+# Use PostgreSQL for tests
+export DATABASE_URL="postgres://ampel:ampel@localhost:5432/ampel_test"
+export TEST_DATABASE_TYPE=postgres
+cargo test --all-features
+
+# Use SQLite for tests (default if no DATABASE_URL)
+export DATABASE_URL="sqlite::memory:"
+cargo test --all-features
+```
+
+### Coverage Goals
+
+- **Target**: 80% code coverage
+- **Focus**: Critical paths (auth, data validation, business logic)
+- **CI**: Automatic coverage reports on pull requests
+
+**For detailed testing guide, see [docs/TESTING.md](docs/TESTING.md)**
 
 ## Environment Setup
 
