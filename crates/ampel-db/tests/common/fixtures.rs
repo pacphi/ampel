@@ -203,6 +203,10 @@ mod tests {
 
     #[tokio::test]
     async fn test_user_fixture() {
+        if TestDb::skip_if_sqlite() {
+            return;
+        }
+
         let test_db = TestDb::new().await.unwrap();
         test_db.run_migrations().await.unwrap();
 
@@ -222,6 +226,10 @@ mod tests {
 
     #[tokio::test]
     async fn test_provider_account_fixture() {
+        if TestDb::skip_if_sqlite() {
+            return;
+        }
+
         let test_db = TestDb::new().await.unwrap();
         test_db.run_migrations().await.unwrap();
 

@@ -123,9 +123,35 @@ impl TestDb {
         std::env::var("USE_POSTGRES_TESTS").is_ok()
     }
 
+    /// Check if the current test environment supports migrations
+    ///
+    /// Migrations require PostgreSQL because they use features not supported by SQLite:
+    /// - ALTER TABLE ADD COLUMN with FOREIGN KEY
+    /// - Partial unique indexes with WHERE clause
+    ///
+    /// Returns true if PostgreSQL is being used, false if SQLite.
+    pub fn supports_migrations() -> bool {
+        Self::should_use_postgres()
+    }
+
+    /// Skip test if migrations are not supported
+    ///
+    /// Call this at the start of tests that require migrations.
+    /// Returns true if the test should be skipped (SQLite mode).
+    pub fn skip_if_sqlite() -> bool {
+        if !Self::supports_migrations() {
+            eprintln!("Skipping test: requires PostgreSQL (migrations not SQLite-compatible)");
+            true
+        } else {
+            false
+        }
+    }
+
     /// Run database migrations
     ///
     /// This sets up all required tables for testing.
+    /// Note: Migrations require PostgreSQL. Use `skip_if_sqlite()` to skip tests
+    /// that require migrations when running in SQLite mode.
     pub async fn run_migrations(&self) -> Result<(), DbErr> {
         use ampel_db::migrations::Migrator;
         use sea_orm_migration::MigratorTrait;
@@ -266,11 +292,24 @@ mod tests {
         let test_db1 = TestDb::new().await.unwrap();
         let test_db2 = TestDb::new().await.unwrap();
 
-        // Each should have its own connection
-        assert_ne!(
-            format!("{:?}", test_db1.connection),
-            format!("{:?}", test_db2.connection)
-        );
+        // Each should have its own unique identifier (db_name for Postgres, file_path for SQLite)
+        // We verify isolation by checking these identifiers differ
+        match (&test_db1.db_name, &test_db2.db_name) {
+            (Some(name1), Some(name2)) => {
+                // PostgreSQL: database names should differ
+                assert_ne!(name1, name2, "PostgreSQL databases should have different names");
+            }
+            (None, None) => {
+                // SQLite: file paths should differ
+                match (&test_db1.file_path, &test_db2.file_path) {
+                    (Some(path1), Some(path2)) => {
+                        assert_ne!(path1, path2, "SQLite databases should have different file paths");
+                    }
+                    _ => panic!("SQLite databases should have file paths"),
+                }
+            }
+            _ => panic!("Both databases should use the same backend"),
+        }
 
         test_db1.cleanup().await;
         test_db2.cleanup().await;

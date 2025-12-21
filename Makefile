@@ -8,6 +8,7 @@
 .PHONY: lint lint-backend lint-frontend lint-docs lint-fix lint-fix-backend lint-fix-frontend lint-fix-docs
 .PHONY: format format-backend format-frontend format-docs format-check format-check-docs
 .PHONY: audit audit-backend audit-frontend
+.PHONY: license-check license-check-backend license-check-frontend
 .PHONY: outdated outdated-backend outdated-frontend
 .PHONY: upgrade upgrade-backend upgrade-frontend upgrade-latest
 .PHONY: docker docker-build docker-up docker-down docker-restart docker-logs
@@ -48,6 +49,7 @@ help:
 	@echo ""
 	@echo "Security & Dependencies:"
 	@echo "  audit            - Run security audits"
+	@echo "  license-check    - Check license compliance"
 	@echo "  outdated         - List outdated dependencies"
 	@echo "  upgrade          - Upgrade dependencies to latest compatible"
 	@echo ""
@@ -225,6 +227,17 @@ audit-backend:
 audit-frontend:
 	@echo "==> Auditing frontend dependencies..."
 	cd frontend && pnpm audit
+
+license-check: license-check-backend license-check-frontend
+
+license-check-backend:
+	@echo "==> Checking backend license compliance..."
+	@command -v cargo-deny >/dev/null 2>&1 || { echo "Installing cargo-deny..."; cargo install cargo-deny; }
+	cargo deny check licenses
+
+license-check-frontend:
+	@echo "==> Checking frontend license compliance..."
+	cd frontend && npx license-checker --summary
 
 # =============================================================================
 # Dependency Management

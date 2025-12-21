@@ -1,7 +1,11 @@
 /// Integration tests for provider account queries
 ///
-/// These tests verify the database layer works correctly with real SQLite databases.
+/// These tests verify the database layer works correctly with real databases.
 /// Each test runs in complete isolation with its own database instance.
+///
+/// Note: These tests require PostgreSQL because migrations use PostgreSQL-specific
+/// features (ALTER TABLE ADD FOREIGN KEY, partial unique indexes). Tests are
+/// automatically skipped when running in SQLite mode.
 use ampel_db::entities::provider_account::Entity;
 use ampel_db::queries::ProviderAccountQueries;
 use sea_orm::{DbErr, EntityTrait};
@@ -12,6 +16,10 @@ use super::common::TestDb;
 
 #[tokio::test]
 async fn test_find_by_user() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+
     let test_db = TestDb::new().await.expect("Failed to create test DB");
     test_db
         .run_migrations()
@@ -59,6 +67,10 @@ async fn test_find_by_user() {
 
 #[tokio::test]
 async fn test_find_default_for_provider() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+
     let test_db = TestDb::new().await.expect("Failed to create test DB");
     test_db
         .run_migrations()
@@ -104,6 +116,10 @@ async fn test_find_default_for_provider() {
 
 #[tokio::test]
 async fn test_set_default_clears_previous() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+
     let test_db = TestDb::new().await.expect("Failed to create test DB");
     test_db
         .run_migrations()
@@ -158,6 +174,10 @@ async fn test_set_default_clears_previous() {
 
 #[tokio::test]
 async fn test_set_default_unauthorized() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+
     let test_db = TestDb::new().await.expect("Failed to create test DB");
     test_db
         .run_migrations()
@@ -191,6 +211,10 @@ async fn test_set_default_unauthorized() {
 
 #[tokio::test]
 async fn test_count_by_user_and_provider() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+
     let test_db = TestDb::new().await.expect("Failed to create test DB");
     test_db
         .run_migrations()
@@ -243,6 +267,10 @@ async fn test_count_by_user_and_provider() {
 
 #[tokio::test]
 async fn test_update_validation_status() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+
     let test_db = TestDb::new().await.expect("Failed to create test DB");
     test_db
         .run_migrations()
@@ -276,6 +304,10 @@ async fn test_update_validation_status() {
 
 #[tokio::test]
 async fn test_find_active_by_user() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+
     let test_db = TestDb::new().await.expect("Failed to create test DB");
     test_db
         .run_migrations()
@@ -320,6 +352,10 @@ async fn test_find_active_by_user() {
 
 #[tokio::test]
 async fn test_delete_account_unauthorized() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+
     let test_db = TestDb::new().await.expect("Failed to create test DB");
     test_db
         .run_migrations()
@@ -356,6 +392,10 @@ async fn test_delete_account_unauthorized() {
 
 #[tokio::test]
 async fn test_delete_account_success() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+
     let test_db = TestDb::new().await.expect("Failed to create test DB");
     test_db
         .run_migrations()
@@ -385,6 +425,10 @@ async fn test_delete_account_success() {
 
 #[tokio::test]
 async fn test_find_by_user_and_provider() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+
     let test_db = TestDb::new().await.expect("Failed to create test DB");
     test_db
         .run_migrations()
@@ -431,6 +475,10 @@ async fn test_find_by_user_and_provider() {
 
 #[tokio::test]
 async fn test_parallel_test_isolation() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+
     // This test verifies that parallel test execution doesn't cause conflicts
     let test_db1 = TestDb::new().await.expect("Failed to create test DB 1");
     let test_db2 = TestDb::new().await.expect("Failed to create test DB 2");
