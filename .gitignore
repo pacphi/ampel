@@ -69,3 +69,6 @@ hive-mind-prompt-*.txt
 # agentic-qe generated files
 .agentic-qe
 aqe
+
+# archived
+.archives/

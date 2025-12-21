@@ -1,0 +1,31 @@
+# Cargo configuration for Ampel project
+
+[build]
+# Use all available CPU cores for parallel compilation
+jobs = -1
+
+[term]
+# Enhanced terminal output
+verbose = false
+color = 'auto'
+
+# Test configuration
+[target.'cfg(test)']
+rustflags = ["-C", "opt-level=1"]
+
+# CI-specific optimizations
+[env]
+# Detect CI environment
+CI = { value = "", relative = false }
+
+# Parallel test execution
+[test]
+# Run tests in parallel by default
+threads = 4
+
+# SQLite-specific optimizations for tests
+[target.'cfg(all(test, target_os = "linux"))']
+rustflags = [
+    "-C", "opt-level=1",
+    "-C", "debug-assertions=on",
+]

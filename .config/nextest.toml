@@ -1,0 +1,79 @@
+# cargo-nextest configuration for Ampel project
+# Documentation: https://nexte.st/book/configuration.html
+
+[profile.default]
+# Run tests with 4 threads by default
+test-threads = 4
+# Retry flaky tests up to 2 times
+retries = 2
+# Fail fast on first error (disable for comprehensive test runs)
+fail-fast = false
+# Show detailed output for failures
+failure-output = "immediate-final"
+# Hide successful test output to reduce noise
+success-output = "never"
+# Set timeout for individual tests
+slow-timeout = { period = "60s", terminate-after = 2 }
+
+[profile.ci]
+# CI-specific configuration for GitHub Actions
+test-threads = 4
+retries = 3
+fail-fast = false
+failure-output = "immediate-final"
+success-output = "never"
+# Longer timeout for CI environment
+slow-timeout = { period = "120s", terminate-after = 3 }
+# Enable JUnit output for CI reporting
+status-level = "all"
+
+[profile.ci.junit]
+# Generate JUnit XML reports for CI integration
+path = "target/nextest/ci/junit.xml"
+
+[profile.fast]
+# Fast profile for local development
+test-threads = 8
+retries = 0
+fail-fast = true
+failure-output = "immediate"
+success-output = "never"
+slow-timeout = { period = "30s" }
+
+[profile.coverage]
+# Profile for test coverage analysis
+test-threads = 1
+retries = 0
+fail-fast = false
+failure-output = "final"
+success-output = "never"
+
+# Test groups for filtering
+[test-groups]
+# Unit tests use SQLite in-memory
+unit = { max-threads = 4 }
+# Integration tests use PostgreSQL
+integration = { max-threads = 2 }
+
+# Override settings for specific tests
+[[profile.default.overrides]]
+# Database tests need more time
+filter = 'test(.*db.*) | test(.*database.*)'
+slow-timeout = { period = "90s", terminate-after = 2 }
+
+[[profile.default.overrides]]
+# API integration tests need more time and sequential execution
+filter = 'test(.*integration.*) | test(.*api.*)'
+slow-timeout = { period = "120s", terminate-after = 3 }
+threads-required = 1
+
+[[profile.ci.overrides]]
+# In CI, give database tests even more time
+filter = 'test(.*db.*) | test(.*database.*)'
+slow-timeout = { period = "180s", terminate-after = 3 }
+
+[[profile.ci.overrides]]
+# Retry integration tests more aggressively in CI
+filter = 'test(.*integration.*)'
+retries = 5
+slow-timeout = { period = "240s", terminate-after = 4 }
