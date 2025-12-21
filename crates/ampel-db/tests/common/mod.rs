@@ -297,13 +297,19 @@ mod tests {
         match (&test_db1.db_name, &test_db2.db_name) {
             (Some(name1), Some(name2)) => {
                 // PostgreSQL: database names should differ
-                assert_ne!(name1, name2, "PostgreSQL databases should have different names");
+                assert_ne!(
+                    name1, name2,
+                    "PostgreSQL databases should have different names"
+                );
             }
             (None, None) => {
                 // SQLite: file paths should differ
                 match (&test_db1.file_path, &test_db2.file_path) {
                     (Some(path1), Some(path2)) => {
-                        assert_ne!(path1, path2, "SQLite databases should have different file paths");
+                        assert_ne!(
+                            path1, path2,
+                            "SQLite databases should have different file paths"
+                        );
                     }
                     _ => panic!("SQLite databases should have file paths"),
                 }
