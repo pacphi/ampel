@@ -1,0 +1,317 @@
+name: Deploy to Fly.io
+
+# Trigger on push to main branch or manual workflow dispatch
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'crates/**'
+      - 'frontend/**'
+      - 'fly/**'
+      - 'docker/Dockerfile.*'
+      - 'docker/nginx.conf'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+  workflow_dispatch:
+    inputs:
+      deploy_api:
+        description: 'Deploy API server'
+        type: boolean
+        default: true
+      deploy_worker:
+        description: 'Deploy Worker service'
+        type: boolean
+        default: true
+      deploy_frontend:
+        description: 'Deploy Frontend'
+        type: boolean
+        default: true
+      run_migrations:
+        description: 'Run database migrations'
+        type: boolean
+        default: true
+
+# Prevent concurrent deployments
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  RUST_VERSION: '1.91.1'
+  NODE_VERSION: '20'
+  PNPM_VERSION: '10.24.0'
+
+jobs:
+  # Detect which components have changed
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+      fly_config: ${{ steps.filter.outputs.fly_config }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'crates/**'
+              - 'Cargo.toml'
+              - 'Cargo.lock'
+              - 'docker/Dockerfile.api'
+              - 'docker/Dockerfile.worker'
+              - 'fly/fly.api.toml'
+              - 'fly/fly.worker.toml'
+            frontend:
+              - 'frontend/**'
+              - 'docker/Dockerfile.frontend'
+              - 'fly/fly.frontend.toml'
+              - 'fly/nginx.conf'
+            fly_config:
+              - 'fly/**'
+      - 'docker/Dockerfile.*'
+      - 'docker/nginx.conf'
+
+  # Test backend before deployment
+  test-backend:
+    name: Test Backend
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.backend == 'true' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          components: rustfmt, clippy
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+
+      - name: Run cargo check
+        run: cargo check --all-features --workspace
+
+      - name: Run backend tests
+        run: cargo test --all-features --workspace
+        env:
+          DATABASE_URL: sqlite::memory:
+
+      - name: Run clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+  # Test frontend before deployment
+  test-frontend:
+    name: Test Frontend
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Cache pnpm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('frontend/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install frontend dependencies
+        run: cd frontend && pnpm install --frozen-lockfile
+
+      - name: Run frontend linter
+        run: cd frontend && pnpm run lint
+
+      - name: Run frontend tests
+        run: cd frontend && pnpm run test --run
+
+      - name: Build frontend
+        run: cd frontend && pnpm run build
+        env:
+          VITE_API_URL: https://ampel-api.fly.dev
+
+  # Deploy API server
+  deploy-api:
+    name: Deploy API Server
+    needs: [changes, test-backend]
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      (needs.test-backend.result == 'success' || needs.test-backend.result == 'skipped') &&
+      (needs.changes.outputs.backend == 'true' || github.event.inputs.deploy_api == 'true')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy API to Fly.io
+        run: |
+          flyctl deploy \
+            --config fly/fly.api.toml \
+            --dockerfile docker/Dockerfile.api \
+            --remote-only \
+            --strategy rolling \
+            --wait-timeout 300
+
+      - name: Verify API deployment
+        run: |
+          echo "Checking API status..."
+          flyctl status --app ampel-api
+          echo "Checking health..."
+          flyctl checks list --app ampel-api
+          echo "Testing health endpoint..."
+          sleep 10
+          curl --retry 5 --retry-delay 5 --fail https://ampel-api.fly.dev/health
+
+  # Deploy Worker service
+  deploy-worker:
+    name: Deploy Worker Service
+    needs: [changes, test-backend]
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      (needs.test-backend.result == 'success' || needs.test-backend.result == 'skipped') &&
+      (needs.changes.outputs.backend == 'true' || github.event.inputs.deploy_worker == 'true')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy Worker to Fly.io
+        run: |
+          flyctl deploy \
+            --config fly/fly.worker.toml \
+            --dockerfile docker/Dockerfile.worker \
+            --remote-only \
+            --strategy rolling \
+            --wait-timeout 300
+
+      - name: Verify Worker deployment
+        run: |
+          echo "Checking Worker status..."
+          flyctl status --app ampel-worker
+
+  # Deploy Frontend
+  deploy-frontend:
+    name: Deploy Frontend
+    needs: [changes, test-frontend]
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      (needs.test-frontend.result == 'success' || needs.test-frontend.result == 'skipped') &&
+      (needs.changes.outputs.frontend == 'true' || github.event.inputs.deploy_frontend == 'true')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy Frontend to Fly.io
+        run: |
+          flyctl deploy \
+            --config fly/fly.frontend.toml \
+            --dockerfile docker/Dockerfile.frontend \
+            --build-arg VITE_API_URL=${{ secrets.VITE_API_URL || 'https://ampel-api.fly.dev' }} \
+            --remote-only \
+            --strategy rolling \
+            --wait-timeout 300
+
+      - name: Verify Frontend deployment
+        run: |
+          echo "Checking Frontend status..."
+          flyctl status --app ampel-frontend
+          echo "Checking health..."
+          flyctl checks list --app ampel-frontend
+          echo "Testing frontend..."
+          sleep 10
+          curl --retry 5 --retry-delay 5 --fail https://ampel-frontend.fly.dev/health
+
+  # Database migrations (run after API deployment)
+  migrate-database:
+    name: Run Database Migrations
+    needs: deploy-api
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      needs.deploy-api.result == 'success' &&
+      (github.event.inputs.run_migrations != 'false')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Run migrations
+        run: |
+          echo "Running database migrations..."
+          flyctl ssh console --app ampel-api -C "/app/ampel-api migrate run" || true
+
+      - name: Verify migrations
+        run: |
+          echo "Checking migration status..."
+          flyctl ssh console --app ampel-api -C "/app/ampel-api migrate status" || true
+
+  # Summary job
+  deployment-summary:
+    name: Deployment Summary
+    needs: [deploy-api, deploy-worker, deploy-frontend, migrate-database]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Generate deployment summary
+        run: |
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| API Server | ${{ needs.deploy-api.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Worker | ${{ needs.deploy-worker.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Frontend | ${{ needs.deploy-frontend.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Migrations | ${{ needs.migrate-database.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Application URLs" >> $GITHUB_STEP_SUMMARY
+          echo "- Frontend: https://ampel-frontend.fly.dev" >> $GITHUB_STEP_SUMMARY
+          echo "- API: https://ampel-api.fly.dev" >> $GITHUB_STEP_SUMMARY
+          echo "- Health: https://ampel-api.fly.dev/health" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check overall status
+        run: |
+          if [[ "${{ needs.deploy-api.result }}" == "failure" ]] || \
+             [[ "${{ needs.deploy-worker.result }}" == "failure" ]] || \
+             [[ "${{ needs.deploy-frontend.result }}" == "failure" ]]; then
+            echo "::error::One or more deployments failed"
+            exit 1
+          fi
+          echo "All deployments completed successfully!"

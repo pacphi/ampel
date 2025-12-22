@@ -28,9 +28,8 @@ Edit `.env` with required values:
 JWT_SECRET=$(openssl rand -hex 32)
 ENCRYPTION_KEY=$(openssl rand -base64 32)
 
-# Optional: Add OAuth credentials
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
+# Personal Access Tokens (PATs) are configured via UI after login
+# See docs/PAT_SETUP.md for instructions
 ```
 
 ### 3. Start All Services
@@ -134,24 +133,12 @@ docker compose exec api /usr/local/bin/ampel-api --version
 
 ### Optional Variables
 
-| Variable                  | Default | Description                   |
-| ------------------------- | ------- | ----------------------------- |
-| `GITHUB_CLIENT_ID`        | -       | GitHub OAuth client ID        |
-| `GITHUB_CLIENT_SECRET`    | -       | GitHub OAuth client secret    |
-| `GITLAB_CLIENT_ID`        | -       | GitLab OAuth client ID        |
-| `GITLAB_CLIENT_SECRET`    | -       | GitLab OAuth client secret    |
-| `BITBUCKET_CLIENT_ID`     | -       | Bitbucket OAuth client key    |
-| `BITBUCKET_CLIENT_SECRET` | -       | Bitbucket OAuth client secret |
+| Variable       | Default | Description          |
+| -------------- | ------- | -------------------- |
+| `RUST_LOG`     | `info`  | Log level            |
+| `CORS_ORIGINS` | -       | Allowed CORS origins |
 
-### Setting OAuth Redirect URIs
-
-For Docker deployment, use:
-
-```bash
-GITHUB_REDIRECT_URI=http://localhost:8080/api/oauth/github/callback
-GITLAB_REDIRECT_URI=http://localhost:8080/api/oauth/gitlab/callback
-BITBUCKET_REDIRECT_URI=http://localhost:8080/api/oauth/bitbucket/callback
-```
+**Note**: Personal Access Tokens (PATs) are managed per-user via the UI. See [PAT_SETUP.md](PAT_SETUP.md) for setup instructions.
 
 ## Production Configuration
 

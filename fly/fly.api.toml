@@ -1,0 +1,42 @@
+# Fly.io configuration for Ampel API Server
+# Documentation: https://fly.io/docs/reference/configuration/
+
+app = "ampel-api"
+primary_region = "iad"  # Ashburn, Virginia (change if needed)
+
+# Build configuration
+[build]
+  dockerfile = "docker/Dockerfile.api"
+
+# Environment variables (non-sensitive)
+# Secrets (DATABASE_URL, REDIS_URL, JWT_SECRET, etc.) set via `fly secrets set`
+[env]
+  RUST_LOG = "info"
+  PORT = "8080"
+  RUST_BACKTRACE = "1"
+
+# HTTP service configuration
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+# Health check configuration
+[[http_service.checks]]
+  grace_period = "10s"
+  interval = "30s"
+  method = "GET"
+  timeout = "5s"
+  path = "/health"
+
+# VM resources
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+
+# Process groups
+[processes]
+  app = "/app/ampel-api"

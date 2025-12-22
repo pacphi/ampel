@@ -105,14 +105,111 @@ frontend/
 
 ## Coverage
 
-**Target**: 80% code coverage
+**Target**: 80% code coverage across the project
+
+Coverage is automatically tracked via [Codecov](https://codecov.io) and reported on all pull requests. We use:
+
+- **Backend**: cargo-tarpaulin for Rust code coverage
+- **Frontend**: Vitest's built-in coverage (v8 provider)
+- **CI Integration**: Automatic coverage reporting on PRs with thresholds
+
+### Quick Commands
 
 ```bash
-# Backend coverage
-cargo tarpaulin --all-features --workspace --out Html
+# Run all tests with coverage reports
+make test-coverage
 
-# Frontend coverage
-cd frontend && pnpm test -- --run --coverage
+# Backend coverage only
+make test-backend-coverage
+
+# Frontend coverage only
+make test-frontend-coverage
+```
+
+### Detailed Coverage Commands
+
+#### Backend Coverage (Rust)
+
+```bash
+# Auto-installs cargo-tarpaulin if not present
+cargo tarpaulin \
+  --all-features \
+  --workspace \
+  --timeout 300 \
+  --out Html Xml \
+  --output-dir coverage
+
+# View HTML report
+open coverage/tarpaulin-report.html  # macOS
+xdg-open coverage/tarpaulin-report.html  # Linux
+```
+
+#### Frontend Coverage (TypeScript/React)
+
+```bash
+cd frontend
+
+# Run tests with coverage
+pnpm test -- --run --coverage
+
+# View HTML report
+open coverage/index.html  # macOS
+xdg-open coverage/index.html  # Linux
+```
+
+### Coverage Thresholds
+
+Our Codecov configuration enforces these thresholds:
+
+| Component       | Target | Threshold | Description                       |
+| --------------- | ------ | --------- | --------------------------------- |
+| **Project**     | 80%    | ±2%       | Overall project coverage          |
+| **Patch (New)** | 70%    | ±1%       | New code in pull requests         |
+| ampel-api       | 75%    | ±2%       | API server routes and handlers    |
+| ampel-core      | 85%    | ±2%       | Business logic (highest standard) |
+| ampel-db        | 80%    | ±2%       | Database queries and migrations   |
+| ampel-providers | 75%    | ±2%       | Git provider integrations         |
+| ampel-worker    | 70%    | ±2%       | Background job processing         |
+| frontend        | 75%    | ±2%       | React components and UI logic     |
+
+### Coverage in CI/CD
+
+Coverage is automatically:
+
+1. **Collected** on every PR via GitHub Actions
+2. **Reported** to Codecov with backend/frontend flags
+3. **Commented** on PRs showing coverage changes
+4. **Blocked** if coverage drops below thresholds
+
+#### Understanding Coverage Status
+
+Pull request coverage comments show:
+
+- 🟢 **Green (≥80%)**: Excellent coverage, target met
+- 🟡 **Yellow (60-79%)**: Acceptable coverage, could improve
+- 🔴 **Red (<60%)**: Needs improvement, add more tests
+
+### Local Coverage Workflow
+
+```bash
+# 1. Make code changes
+vim crates/ampel-core/src/lib.rs
+
+# 2. Write tests
+vim crates/ampel-core/tests/integration_tests.rs
+
+# 3. Run tests with coverage
+make test-backend-coverage
+
+# 4. Check HTML report
+open coverage/tarpaulin-report.html
+
+# 5. Improve coverage until green (≥80%)
+# Add more tests...
+
+# 6. Commit and push - CI will verify coverage
+git add . && git commit -m "Add feature with tests"
+git push
 ```
 
 ## Best Practices

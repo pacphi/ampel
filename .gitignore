@@ -75,3 +75,17 @@ aqe
 
 # Prevent undefined directory from misconfigured CARGO_HOME/RUSTUP_HOME
 undefined/
+
+# Coverage output directories
+/coverage/
+/frontend/coverage/
+
+# Coverage report files
+*.profraw
+*.profdata
+cobertura.xml
+lcov.info
+tarpaulin-report.html
+
+# Test result files
+test-results.json

@@ -4,7 +4,7 @@ use axum::http::{header, Method};
 use tower_http::{cors::CorsLayer, trace::TraceLayer};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-use ampel_api::{routes, AppState, Config};
+use ampel_api::{observability, routes, AppState, Config};
 use ampel_core::services::AuthService;
 use ampel_db::{encryption::EncryptionService, init_database, run_migrations};
 use ampel_providers::ProviderFactory;
@@ -24,6 +24,10 @@ async fn main() -> anyhow::Result<()> {
         .init();
 
     tracing::info!("Starting Ampel API server...");
+
+    // Initialize metrics
+    let metrics_handle = observability::init_metrics();
+    tracing::info!("Metrics exporter initialized");
 
     // Load configuration
     let config = Config::from_env();
@@ -56,6 +60,7 @@ async fn main() -> anyhow::Result<()> {
         encryption_service,
         provider_factory,
         config.clone(),
+        metrics_handle,
     );
 
     // Configure CORS

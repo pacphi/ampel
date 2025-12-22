@@ -1,4 +1,7 @@
 # syntax=docker/dockerfile:1
+# Dockerfile for Ampel React Frontend
+# Multi-stage build: Node.js for build, nginx for serving
+# Optimized with BuildKit cache mounts and security best practices
 
 # =============================================================================
 # Stage 1: Dependencies - Install and cache node modules
@@ -34,7 +37,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY frontend/ ./
 
 # Build arguments for environment configuration
-ARG VITE_API_URL
+ARG VITE_API_URL=https://ampel-api.fly.dev
 ENV VITE_API_URL=${VITE_API_URL}
 
 # Build the application
@@ -43,14 +46,31 @@ RUN pnpm run build
 # =============================================================================
 # Stage 3: Production - Serve with nginx
 # =============================================================================
-FROM nginx:alpine AS runtime
+FROM nginx:1.27-alpine AS runtime
 
-# Copy built assets
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Copy nginx config
+# Copy custom nginx configuration
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+# Copy built static files from builder
+COPY --from=builder /app/dist /usr/share/nginx/html
 
+# Create nginx user and set permissions for security
+RUN chown -R nginx:nginx /usr/share/nginx/html && \
+    chmod -R 755 /usr/share/nginx/html && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    touch /var/run/nginx.pid && \
+    chown -R nginx:nginx /var/run/nginx.pid
+
+# Switch to non-root user
+USER nginx
+
+# Expose port (8080 for Fly.io, 80 for local docker-compose)
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
+
+# Start nginx
 CMD ["nginx", "-g", "daemon off;"]

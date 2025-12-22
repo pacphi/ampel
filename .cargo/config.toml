@@ -29,3 +29,20 @@ rustflags = [
     "-C", "opt-level=1",
     "-C", "debug-assertions=on",
 ]
+
+# Tarpaulin coverage configuration
+[tarpaulin]
+# Exclude certain files/directories from coverage
+exclude = [
+    "*/tests/*",
+    "*/benches/*",
+    "*/examples/*",
+]
+# Count tests in coverage
+count_tests = false
+# Follow links when scanning for source files
+follow_exec = true
+# Ignore panics in coverage
+ignore_panics = true
+# Timeout per test in seconds
+timeout = 300

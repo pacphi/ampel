@@ -4,6 +4,10 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+[features]
+default = []
+openapi = []
+
 [[bin]]
 name = "ampel-api"
 path = "src/main.rs"
@@ -39,9 +43,18 @@ thiserror.workspace = true
 anyhow.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
+tracing-opentelemetry.workspace = true
+opentelemetry.workspace = true
+opentelemetry_sdk.workspace = true
+opentelemetry-otlp.workspace = true
 config.workspace = true
 dotenvy.workspace = true
 url.workspace = true
+
+# Metrics
+metrics.workspace = true
+metrics-exporter-prometheus.workspace = true
+metrics-util.workspace = true
 
 # Auth
 jsonwebtoken.workspace = true

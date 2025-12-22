@@ -54,7 +54,7 @@ Create or update `CHANGELOG.md`:
 ### Added
 
 - Initial release
-- GitHub, GitLab, Bitbucket OAuth integration
+- GitHub, GitLab, Bitbucket PAT authentication
 - PR dashboard with traffic light status
 - Repository health scoring
 - Team management

@@ -38,12 +38,11 @@ Edit `.env` with your settings:
 DATABASE_URL=postgres://ampel:ampel@localhost:5432/ampel
 JWT_SECRET=your-secret-key-minimum-32-characters-long
 
-# Generate encryption key
+# Generate encryption key for PAT storage
 ENCRYPTION_KEY=$(openssl rand -base64 32)
 
-# Optional: OAuth providers (add your credentials)
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
+# Personal Access Tokens (add via UI after login)
+# See docs/PAT_SETUP.md for instructions on creating PATs
 ```
 
 ### 3. Install Dependencies
@@ -395,18 +394,14 @@ pnpm install
 
 ## Environment Variables Reference
 
-| Variable                  | Required | Default   | Description                             |
-| ------------------------- | -------- | --------- | --------------------------------------- |
-| `DATABASE_URL`            | Yes      | -         | PostgreSQL connection string            |
-| `JWT_SECRET`              | Yes      | -         | JWT signing secret (min 32 chars)       |
-| `ENCRYPTION_KEY`          | Yes      | -         | Base64 32-byte key for token encryption |
-| `HOST`                    | No       | `0.0.0.0` | API server bind address                 |
-| `PORT`                    | No       | `8080`    | API server port                         |
-| `RUST_LOG`                | No       | `info`    | Log level                               |
-| `CORS_ORIGINS`            | No       | -         | Comma-separated allowed origins         |
-| `GITHUB_CLIENT_ID`        | No       | -         | GitHub OAuth app client ID              |
-| `GITHUB_CLIENT_SECRET`    | No       | -         | GitHub OAuth app secret                 |
-| `GITLAB_CLIENT_ID`        | No       | -         | GitLab OAuth app client ID              |
-| `GITLAB_CLIENT_SECRET`    | No       | -         | GitLab OAuth app secret                 |
-| `BITBUCKET_CLIENT_ID`     | No       | -         | Bitbucket OAuth app key                 |
-| `BITBUCKET_CLIENT_SECRET` | No       | -         | Bitbucket OAuth app secret              |
+| Variable         | Required | Default   | Description                           |
+| ---------------- | -------- | --------- | ------------------------------------- |
+| `DATABASE_URL`   | Yes      | -         | PostgreSQL connection string          |
+| `JWT_SECRET`     | Yes      | -         | JWT signing secret (min 32 chars)     |
+| `ENCRYPTION_KEY` | Yes      | -         | Base64 32-byte key for PAT encryption |
+| `HOST`           | No       | `0.0.0.0` | API server bind address               |
+| `PORT`           | No       | `8080`    | API server port                       |
+| `RUST_LOG`       | No       | `info`    | Log level                             |
+| `CORS_ORIGINS`   | No       | -         | Comma-separated allowed origins       |
+
+**Note**: Personal Access Tokens are configured per-user via the UI. See [PAT_SETUP.md](PAT_SETUP.md) for details.

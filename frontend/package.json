@@ -39,6 +39,7 @@
     "react-router-dom": "^7.11.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "web-vitals": "^5.1.0",
     "zod": "^4.2.1"
   },
   "devDependencies": {

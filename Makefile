@@ -414,3 +414,6 @@ gh-runs: _check-gh
 # View CI workflow status
 gh-status: _check-gh
 	@gh run list --workflow=ci.yml --limit 5
+
+# Monitoring targets
+include Makefile.monitoring
