@@ -1,0 +1,30 @@
+# Lychee ignore file
+# https://lychee.cli.rs/usage/cli/#ignoring-links
+
+# Claude Code configuration files (may contain template links)
+.claude/**
+
+# Cargo registry cache (third-party dependencies)
+~/.cargo/**
+**/~/.cargo/**
+docker/~/**
+frontend/~/**
+
+# Build artifacts
+target/**
+
+# Node modules
+node_modules/**
+
+# Local development URLs
+http://localhost*
+https://localhost*
+http://127.0.0.1*
+https://127.0.0.1*
+
+# Placeholder URLs in templates
+https://your-custom-domain.com
+https://your-app-name.fly.dev
+
+# Archive documentation (may contain outdated links)
+docs/.archives/**

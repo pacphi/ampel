@@ -47,6 +47,9 @@ jobs:
             --include-fragments
             --exclude-path node_modules
             --exclude-path .git
+            --exclude-path .claude
+            --exclude-path 'docs/.archives'
+            --exclude-path target
             '**/*.md'
           format: markdown
           output: lychee-internal.md
@@ -90,6 +93,9 @@ jobs:
             --scheme http
             --exclude-path node_modules
             --exclude-path .git
+            --exclude-path .claude
+            --exclude-path 'docs/.archives'
+            --exclude-path target
             --exclude '^http://localhost'
             --exclude '^https://localhost'
             --timeout 20
