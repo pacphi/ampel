@@ -375,7 +375,11 @@ async fn test_update_state() {
 
     assert_eq!(updated.state, "merged");
     assert!(updated.merged_at.is_some());
-    assert_eq!(updated.merged_at.unwrap(), merged_time);
+    // PostgreSQL TIMESTAMPTZ has microsecond precision, so truncate nanoseconds
+    assert_eq!(
+        updated.merged_at.unwrap().trunc_subsecs(6),
+        merged_time.trunc_subsecs(6)
+    );
     assert!(updated.closed_at.is_none());
 
     test_db.cleanup().await;
@@ -412,7 +416,11 @@ async fn test_update_state_closed() {
     assert_eq!(updated.state, "closed");
     assert!(updated.merged_at.is_none());
     assert!(updated.closed_at.is_some());
-    assert_eq!(updated.closed_at.unwrap(), closed_time);
+    // PostgreSQL TIMESTAMPTZ has microsecond precision, so truncate nanoseconds
+    assert_eq!(
+        updated.closed_at.unwrap().trunc_subsecs(6),
+        closed_time.trunc_subsecs(6)
+    );
 
     test_db.cleanup().await;
 }
