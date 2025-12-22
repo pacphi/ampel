@@ -243,7 +243,7 @@ fly dashboard -a ampel-api
   path = "/metrics"
 ```
 
-See [docs/observability/OBSERVABILITY.md](../docs/observability/OBSERVABILITY.md#flyio-monitoring) for details.
+See [docs/observability/OBSERVABILITY.md](../docs/observability/OBSERVABILITY.md) for details.
 
 ## Resources
 
