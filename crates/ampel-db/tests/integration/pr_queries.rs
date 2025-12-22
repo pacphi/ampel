@@ -7,7 +7,7 @@
 /// features (ALTER TABLE ADD FOREIGN KEY, partial unique indexes). Tests are
 /// automatically skipped when running in SQLite mode.
 use ampel_db::queries::PrQueries;
-use chrono::Utc;
+use chrono::{SubsecRound, Utc};
 use sea_orm::DbErr;
 
 // Import test utilities from parent module
