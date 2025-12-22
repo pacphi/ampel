@@ -275,6 +275,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [backend-unit-test, backend-integration-test]
     if: github.event_name == 'pull_request'
+    env:
+      # Disable sccache for tarpaulin - it doesn't work with RUSTC_WRAPPER
+      RUSTC_WRAPPER: ""
 
     services:
       postgres:
