@@ -380,8 +380,10 @@ async fn test_cleanup_boundary_30_days() {
         .await
         .expect("Failed to create repo");
 
-    // Create PR closed exactly at 30 days (should be preserved - boundary case)
-    let at_boundary = Utc::now() - Duration::days(30);
+    // Create PR closed at 29 days and 23 hours (should be preserved - safely within 30-day window)
+    // Note: We use 29 days + 23 hours instead of exactly 30 days to avoid race conditions
+    // between timestamp creation and cleanup execution (which calculates its own Utc::now())
+    let at_boundary = Utc::now() - Duration::days(29) - Duration::hours(23);
     let boundary_pr = create_test_pull_request(db, repo.id, 1, "closed", Some(at_boundary))
         .await
         .expect("Failed to create boundary PR");
@@ -397,14 +399,14 @@ async fn test_cleanup_boundary_30_days() {
     let result: Result<(), anyhow::Error> = job.execute(db).await;
     assert!(result.is_ok(), "Cleanup should succeed");
 
-    // Verify boundary PR was NOT deleted (exactly 30 days)
+    // Verify boundary PR was NOT deleted (within 30-day window)
     let boundary_pr_after = pull_request::Entity::find_by_id(boundary_pr.id)
         .one(db)
         .await
         .expect("Failed to query PR");
     assert!(
         boundary_pr_after.is_some(),
-        "PR at exactly 30 days should NOT be deleted"
+        "PR within 30-day window should NOT be deleted"
     );
 
     // Verify old PR WAS deleted (31 days)
