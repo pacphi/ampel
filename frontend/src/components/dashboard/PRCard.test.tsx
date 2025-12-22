@@ -115,9 +115,8 @@ describe('PRCard', () => {
 
       renderPRCard(pr);
 
-      expect(screen.getByText('feature/new-feature')).toBeInTheDocument();
-      expect(screen.getByText('→')).toBeInTheDocument();
-      expect(screen.getByText('develop')).toBeInTheDocument();
+      // Branch info is rendered as a single span: "sourceBranch → targetBranch"
+      expect(screen.getByText(/feature\/new-feature → develop/)).toBeInTheDocument();
     });
 
     it('renders code changes statistics', () => {
@@ -195,7 +194,8 @@ describe('PRCard', () => {
 
       const { container } = renderPRCard(pr);
 
-      const statusBadge = container.querySelector('[data-status="green"]');
+      // StatusBadge uses bg-ampel-* classes instead of data-status attribute
+      const statusBadge = container.querySelector('span.bg-ampel-green');
       expect(statusBadge).toBeTruthy();
     });
 
@@ -210,7 +210,8 @@ describe('PRCard', () => {
 
       const { container } = renderPRCard(pr);
 
-      const statusBadge = container.querySelector('[data-status="yellow"]');
+      // StatusBadge uses bg-ampel-* classes instead of data-status attribute
+      const statusBadge = container.querySelector('span.bg-ampel-yellow');
       expect(statusBadge).toBeTruthy();
     });
 
@@ -225,7 +226,8 @@ describe('PRCard', () => {
 
       const { container } = renderPRCard(pr);
 
-      const statusBadge = container.querySelector('[data-status="red"]');
+      // StatusBadge uses bg-ampel-* classes instead of data-status attribute
+      const statusBadge = container.querySelector('span.bg-ampel-red');
       expect(statusBadge).toBeTruthy();
     });
   });

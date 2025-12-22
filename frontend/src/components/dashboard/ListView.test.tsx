@@ -59,8 +59,9 @@ describe('ListView', () => {
 
       renderListView(repositories);
 
-      expect(screen.getByText('owner1/repo1')).toBeInTheDocument();
-      expect(screen.getByText('owner2/repo2')).toBeInTheDocument();
+      // ListView displays name and owner separately, not fullName
+      expect(screen.getByText('repo1')).toBeInTheDocument();
+      expect(screen.getByText('repo2')).toBeInTheDocument();
     });
 
     it('displays table headers', () => {
@@ -211,8 +212,9 @@ describe('ListView', () => {
 
       const { container } = renderListView(repositories);
 
-      const greenBadge = container.querySelector('[data-status="green"]');
-      const redBadge = container.querySelector('[data-status="red"]');
+      // StatusBadge uses bg-ampel-* classes instead of data-status attribute
+      const greenBadge = container.querySelector('span.bg-ampel-green');
+      const redBadge = container.querySelector('span.bg-ampel-red');
 
       expect(greenBadge).toBeInTheDocument();
       expect(redBadge).toBeInTheDocument();

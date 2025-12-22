@@ -91,21 +91,26 @@ describe('Settings', () => {
   });
 
   describe('Navigation', () => {
-    it('renders settings navigation', () => {
+    it('renders settings navigation', async () => {
       renderSettings();
 
-      expect(screen.getByText('Profile')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Profile')).toBeInTheDocument();
+      });
       expect(screen.getByText('Accounts')).toBeInTheDocument();
       expect(screen.getByText('Filters')).toBeInTheDocument();
       expect(screen.getByText('Notifications')).toBeInTheDocument();
       expect(screen.getByText('Behavior')).toBeInTheDocument();
     });
 
-    it('highlights active nav item', () => {
+    it('highlights active nav item', async () => {
       renderSettings('/settings');
 
-      const profileLink = screen.getByText('Profile').closest('a');
-      expect(profileLink?.className).toContain('bg-primary');
+      await waitFor(() => {
+        const profileLink = screen.getByRole('link', { name: /profile/i });
+        expect(profileLink).toBeInTheDocument();
+        expect(profileLink.className).toContain('bg-primary');
+      });
     });
 
     it('navigates to filters page', async () => {
@@ -131,14 +136,18 @@ describe('Settings', () => {
     it('displays user profile information', () => {
       renderSettings();
 
-      expect(screen.getByText('test@example.com')).toBeInTheDocument();
+      // Email is masked by default, display name is shown
       expect(screen.getByText('Test User')).toBeInTheDocument();
+      // Email should be masked
+      expect(screen.getByText(/t\*\*\*t@example\.com/)).toBeInTheDocument();
     });
 
     it('masks email by default', () => {
       renderSettings();
 
-      expect(screen.getByText(/t\*\*\*t@example\.com/)).toBeInTheDocument();
+      // The email is masked using the maskEmail function
+      // For test@example.com, local part is "test" -> "t**t"
+      expect(screen.getByText(/t\*\*t@example\.com/)).toBeInTheDocument();
     });
 
     it('shows email when eye button is clicked', async () => {
@@ -216,8 +225,9 @@ describe('Settings', () => {
         expect(screen.queryByPlaceholderText('Enter your email')).not.toBeInTheDocument();
       });
 
-      // Original email should be displayed
-      expect(screen.getByText(/t\*\*\*t@example\.com/)).toBeInTheDocument();
+      // Original masked email should be displayed
+      // For test@example.com, local part is "test" -> "t**t"
+      expect(screen.getByText(/t\*\*t@example\.com/)).toBeInTheDocument();
     });
 
     it('shows error toast on update failure', async () => {

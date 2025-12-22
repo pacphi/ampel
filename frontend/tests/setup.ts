@@ -51,6 +51,16 @@ class MockResizeObserver implements ResizeObserver {
 }
 globalThis.ResizeObserver = MockResizeObserver;
 
+// Mock PointerCapture methods (required for Radix UI Select)
+if (typeof HTMLElement !== 'undefined') {
+  HTMLElement.prototype.hasPointerCapture = vi.fn().mockReturnValue(false);
+  HTMLElement.prototype.setPointerCapture = vi.fn();
+  HTMLElement.prototype.releasePointerCapture = vi.fn();
+}
+
+// Mock scrollIntoView (required for Radix UI Select)
+Element.prototype.scrollIntoView = vi.fn();
+
 // Mock localStorage
 const localStorageMock = (() => {
   let store: Record<string, string> = {};

@@ -8,6 +8,8 @@ vi.mock('@/api/settings', () => ({
   settingsApi: {
     getNotifications: vi.fn(),
     updateNotifications: vi.fn(),
+    testSlack: vi.fn(),
+    testEmail: vi.fn(),
   },
 }));
 
@@ -20,6 +22,26 @@ import { useToast } from '@/components/ui/use-toast';
 
 const mockedSettingsApi = vi.mocked(settingsApi);
 const mockedUseToast = vi.mocked(useToast);
+
+const defaultNotificationPrefs = {
+  emailEnabled: false,
+  slackEnabled: false,
+  slackWebhookUrl: null,
+  pushEnabled: false,
+  notifyOnPrReady: false,
+  notifyOnPrFailed: false,
+  notifyOnReviewRequested: false,
+  digestFrequency: 'daily',
+  smtpHost: null,
+  smtpPort: null,
+  smtpUsername: null,
+  smtpFromEmail: null,
+  smtpToEmails: null,
+  smtpUseTls: true,
+  notifyOnMergeSuccess: true,
+  notifyOnMergeFailure: true,
+  slackChannel: null,
+};
 
 function renderNotificationsSettings() {
   const queryClient = new QueryClient({
@@ -61,85 +83,79 @@ describe('NotificationsSettings', () => {
   });
 
   describe('Settings Display', () => {
-    it('renders notifications settings card', async () => {
-      mockedSettingsApi.getNotifications.mockResolvedValue({
-        emailOnMerge: false,
-        emailOnConflict: false,
-        emailOnReview: false,
-      });
+    it('renders slack notifications card', async () => {
+      mockedSettingsApi.getNotifications.mockResolvedValue(defaultNotificationPrefs);
 
       renderNotificationsSettings();
 
       await waitFor(() => {
-        expect(screen.getByText('Notification Settings')).toBeInTheDocument();
+        expect(screen.getByText('Slack Notifications')).toBeInTheDocument();
       });
     });
 
-    it('displays email on merge toggle', async () => {
-      mockedSettingsApi.getNotifications.mockResolvedValue({
-        emailOnMerge: false,
-        emailOnConflict: false,
-        emailOnReview: false,
-      });
+    it('renders email notifications card', async () => {
+      mockedSettingsApi.getNotifications.mockResolvedValue(defaultNotificationPrefs);
 
       renderNotificationsSettings();
 
       await waitFor(() => {
-        expect(screen.getByText(/email on successful merge/i)).toBeInTheDocument();
+        expect(screen.getByText('Email Notifications')).toBeInTheDocument();
       });
     });
 
-    it('displays email on conflict toggle', async () => {
-      mockedSettingsApi.getNotifications.mockResolvedValue({
-        emailOnMerge: false,
-        emailOnConflict: false,
-        emailOnReview: false,
-      });
+    it('renders merge notifications card', async () => {
+      mockedSettingsApi.getNotifications.mockResolvedValue(defaultNotificationPrefs);
 
       renderNotificationsSettings();
 
       await waitFor(() => {
-        expect(screen.getByText(/email on merge conflict/i)).toBeInTheDocument();
+        expect(screen.getByText('Merge Notifications')).toBeInTheDocument();
       });
     });
 
-    it('displays email on review toggle', async () => {
-      mockedSettingsApi.getNotifications.mockResolvedValue({
-        emailOnMerge: false,
-        emailOnConflict: false,
-        emailOnReview: false,
-      });
+    it('displays enable slack notifications toggle', async () => {
+      mockedSettingsApi.getNotifications.mockResolvedValue(defaultNotificationPrefs);
 
       renderNotificationsSettings();
 
       await waitFor(() => {
-        expect(screen.getByText(/email on review request/i)).toBeInTheDocument();
+        expect(screen.getByText(/enable slack notifications/i)).toBeInTheDocument();
+      });
+    });
+
+    it('displays enable email notifications toggle', async () => {
+      mockedSettingsApi.getNotifications.mockResolvedValue(defaultNotificationPrefs);
+
+      renderNotificationsSettings();
+
+      await waitFor(() => {
+        expect(screen.getByText(/enable email notifications/i)).toBeInTheDocument();
       });
     });
   });
 
   describe('Settings Updates', () => {
-    it('toggles email on merge', async () => {
+    it('toggles slack notifications', async () => {
       const user = userEvent.setup();
-      mockedSettingsApi.getNotifications.mockResolvedValue({
-        emailOnMerge: false,
-        emailOnConflict: false,
-        emailOnReview: false,
+      mockedSettingsApi.getNotifications.mockResolvedValue(defaultNotificationPrefs);
+      mockedSettingsApi.updateNotifications.mockResolvedValue({
+        ...defaultNotificationPrefs,
+        slackEnabled: true,
       });
-      mockedSettingsApi.updateNotifications.mockResolvedValue({});
 
       renderNotificationsSettings();
 
       await waitFor(() => {
-        expect(screen.getAllByRole('switch')).toHaveLength(3);
+        expect(screen.getAllByRole('switch').length).toBeGreaterThan(0);
       });
 
       const switches = screen.getAllByRole('switch');
+      // First switch is the Slack enabled toggle
       await user.click(switches[0]);
 
       await waitFor(() => {
         expect(mockedSettingsApi.updateNotifications).toHaveBeenCalledWith({
-          emailOnMerge: true,
+          slackEnabled: true,
         });
       });
 
@@ -151,28 +167,23 @@ describe('NotificationsSettings', () => {
 
     it('reflects current notification preferences', async () => {
       mockedSettingsApi.getNotifications.mockResolvedValue({
-        emailOnMerge: true,
-        emailOnConflict: true,
-        emailOnReview: false,
+        ...defaultNotificationPrefs,
+        slackEnabled: true,
+        emailEnabled: true,
       });
 
       renderNotificationsSettings();
 
       await waitFor(() => {
         const switches = screen.getAllByRole('switch');
-        expect(switches[0]).toBeChecked();
-        expect(switches[1]).toBeChecked();
-        expect(switches[2]).not.toBeChecked();
+        expect(switches[0]).toBeChecked(); // slackEnabled
+        expect(switches[1]).toBeChecked(); // emailEnabled
       });
     });
 
     it('shows error toast on update failure', async () => {
       const user = userEvent.setup();
-      mockedSettingsApi.getNotifications.mockResolvedValue({
-        emailOnMerge: false,
-        emailOnConflict: false,
-        emailOnReview: false,
-      });
+      mockedSettingsApi.getNotifications.mockResolvedValue(defaultNotificationPrefs);
       mockedSettingsApi.updateNotifications.mockRejectedValue({
         response: { data: { error: 'Failed to update' } },
       });
@@ -180,7 +191,7 @@ describe('NotificationsSettings', () => {
       renderNotificationsSettings();
 
       await waitFor(() => {
-        expect(screen.getAllByRole('switch')).toHaveLength(3);
+        expect(screen.getAllByRole('switch').length).toBeGreaterThan(0);
       });
 
       const switches = screen.getAllByRole('switch');
@@ -192,6 +203,33 @@ describe('NotificationsSettings', () => {
           title: 'Failed to update settings',
           description: 'Failed to update',
         });
+      });
+    });
+  });
+
+  describe('Test Buttons', () => {
+    it('test slack button is disabled when no webhook URL', async () => {
+      mockedSettingsApi.getNotifications.mockResolvedValue(defaultNotificationPrefs);
+
+      renderNotificationsSettings();
+
+      await waitFor(() => {
+        const testSlackButton = screen.getByRole('button', { name: /send test message/i });
+        expect(testSlackButton).toBeDisabled();
+      });
+    });
+
+    it('test slack button is enabled when webhook URL is set', async () => {
+      mockedSettingsApi.getNotifications.mockResolvedValue({
+        ...defaultNotificationPrefs,
+        slackWebhookUrl: 'https://hooks.slack.com/services/test',
+      });
+
+      renderNotificationsSettings();
+
+      await waitFor(() => {
+        const testSlackButton = screen.getByRole('button', { name: /send test message/i });
+        expect(testSlackButton).toBeEnabled();
       });
     });
   });

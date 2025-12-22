@@ -21,6 +21,14 @@ import { useToast } from '@/components/ui/use-toast';
 const mockedSettingsApi = vi.mocked(settingsApi);
 const mockedUseToast = vi.mocked(useToast);
 
+const defaultBehaviorSettings = {
+  mergeDelaySeconds: 5,
+  requireApproval: false,
+  deleteBranchesDefault: false,
+  defaultMergeStrategy: 'squash' as const,
+  skipReviewRequirement: false,
+};
+
 function renderBehaviorSettings() {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -61,40 +69,18 @@ describe('BehaviorSettings', () => {
   });
 
   describe('Settings Display', () => {
-    it('renders behavior settings card', async () => {
-      mockedSettingsApi.getBehavior.mockResolvedValue({
-        skipReviewRequirement: false,
-        defaultMergeStrategy: 'squash',
-        deleteBranchesDefault: false,
-      });
+    it('renders merge behavior settings card', async () => {
+      mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
 
       renderBehaviorSettings();
 
       await waitFor(() => {
-        expect(screen.getByText('Behavior Settings')).toBeInTheDocument();
-      });
-    });
-
-    it('displays skip review requirement toggle', async () => {
-      mockedSettingsApi.getBehavior.mockResolvedValue({
-        skipReviewRequirement: false,
-        defaultMergeStrategy: 'squash',
-        deleteBranchesDefault: false,
-      });
-
-      renderBehaviorSettings();
-
-      await waitFor(() => {
-        expect(screen.getByText(/skip review requirement/i)).toBeInTheDocument();
+        expect(screen.getByText('Merge Behavior')).toBeInTheDocument();
       });
     });
 
     it('displays default merge strategy selector', async () => {
-      mockedSettingsApi.getBehavior.mockResolvedValue({
-        skipReviewRequirement: false,
-        defaultMergeStrategy: 'squash',
-        deleteBranchesDefault: false,
-      });
+      mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
 
       renderBehaviorSettings();
 
@@ -104,43 +90,58 @@ describe('BehaviorSettings', () => {
     });
 
     it('displays delete branches toggle', async () => {
-      mockedSettingsApi.getBehavior.mockResolvedValue({
-        skipReviewRequirement: false,
-        defaultMergeStrategy: 'squash',
-        deleteBranchesDefault: false,
-      });
+      mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
 
       renderBehaviorSettings();
 
       await waitFor(() => {
-        expect(screen.getByText(/delete branches by default/i)).toBeInTheDocument();
+        expect(screen.getByText(/delete branches after merge/i)).toBeInTheDocument();
+      });
+    });
+
+    it('displays require approval toggle', async () => {
+      mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
+
+      renderBehaviorSettings();
+
+      await waitFor(() => {
+        expect(screen.getByText(/require approval before merge/i)).toBeInTheDocument();
+      });
+    });
+
+    it('displays allow merge without reviews toggle', async () => {
+      mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
+
+      renderBehaviorSettings();
+
+      await waitFor(() => {
+        expect(screen.getByText(/allow merge without reviews/i)).toBeInTheDocument();
       });
     });
   });
 
   describe('Settings Updates', () => {
-    it('toggles skip review requirement', async () => {
+    it('toggles delete branches setting', async () => {
       const user = userEvent.setup();
-      mockedSettingsApi.getBehavior.mockResolvedValue({
-        skipReviewRequirement: false,
-        defaultMergeStrategy: 'squash',
-        deleteBranchesDefault: false,
+      mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
+      mockedSettingsApi.updateBehavior.mockResolvedValue({
+        ...defaultBehaviorSettings,
+        deleteBranchesDefault: true,
       });
-      mockedSettingsApi.updateBehavior.mockResolvedValue({});
 
       renderBehaviorSettings();
 
       await waitFor(() => {
-        expect(screen.getByRole('switch')).toBeInTheDocument();
+        expect(screen.getAllByRole('switch').length).toBe(3);
       });
 
       const switches = screen.getAllByRole('switch');
-      const skipReviewSwitch = switches[0];
-      await user.click(skipReviewSwitch);
+      // First switch is deleteBranchesDefault
+      await user.click(switches[0]);
 
       await waitFor(() => {
         expect(mockedSettingsApi.updateBehavior).toHaveBeenCalledWith({
-          skipReviewRequirement: true,
+          deleteBranchesDefault: true,
         });
       });
 
@@ -152,12 +153,11 @@ describe('BehaviorSettings', () => {
 
     it('changes merge strategy', async () => {
       const user = userEvent.setup();
-      mockedSettingsApi.getBehavior.mockResolvedValue({
-        skipReviewRequirement: false,
-        defaultMergeStrategy: 'squash',
-        deleteBranchesDefault: false,
+      mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
+      mockedSettingsApi.updateBehavior.mockResolvedValue({
+        ...defaultBehaviorSettings,
+        defaultMergeStrategy: 'rebase',
       });
-      mockedSettingsApi.updateBehavior.mockResolvedValue({});
 
       renderBehaviorSettings();
 
@@ -168,7 +168,7 @@ describe('BehaviorSettings', () => {
       const strategyButton = screen.getByRole('combobox');
       await user.click(strategyButton);
 
-      const rebaseOption = await screen.findByText('Rebase and merge');
+      const rebaseOption = await screen.findByRole('option', { name: /rebase and merge/i });
       await user.click(rebaseOption);
 
       await waitFor(() => {
@@ -178,39 +178,59 @@ describe('BehaviorSettings', () => {
       });
     });
 
-    it('toggles delete branches default', async () => {
+    it('toggles require approval setting', async () => {
       const user = userEvent.setup();
-      mockedSettingsApi.getBehavior.mockResolvedValue({
-        skipReviewRequirement: false,
-        defaultMergeStrategy: 'squash',
-        deleteBranchesDefault: false,
+      mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
+      mockedSettingsApi.updateBehavior.mockResolvedValue({
+        ...defaultBehaviorSettings,
+        requireApproval: true,
       });
-      mockedSettingsApi.updateBehavior.mockResolvedValue({});
 
       renderBehaviorSettings();
 
       await waitFor(() => {
-        expect(screen.getAllByRole('switch')).toHaveLength(2);
+        expect(screen.getAllByRole('switch').length).toBe(3);
       });
 
       const switches = screen.getAllByRole('switch');
-      const deleteBranchSwitch = switches[1];
-      await user.click(deleteBranchSwitch);
+      // Second switch is requireApproval
+      await user.click(switches[1]);
 
       await waitFor(() => {
         expect(mockedSettingsApi.updateBehavior).toHaveBeenCalledWith({
-          deleteBranchesDefault: true,
+          requireApproval: true,
+        });
+      });
+    });
+
+    it('toggles skip review requirement setting', async () => {
+      const user = userEvent.setup();
+      mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
+      mockedSettingsApi.updateBehavior.mockResolvedValue({
+        ...defaultBehaviorSettings,
+        skipReviewRequirement: true,
+      });
+
+      renderBehaviorSettings();
+
+      await waitFor(() => {
+        expect(screen.getAllByRole('switch').length).toBe(3);
+      });
+
+      const switches = screen.getAllByRole('switch');
+      // Third switch is skipReviewRequirement
+      await user.click(switches[2]);
+
+      await waitFor(() => {
+        expect(mockedSettingsApi.updateBehavior).toHaveBeenCalledWith({
+          skipReviewRequirement: true,
         });
       });
     });
 
     it('shows error toast on update failure', async () => {
       const user = userEvent.setup();
-      mockedSettingsApi.getBehavior.mockResolvedValue({
-        skipReviewRequirement: false,
-        defaultMergeStrategy: 'squash',
-        deleteBranchesDefault: false,
-      });
+      mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
       mockedSettingsApi.updateBehavior.mockRejectedValue({
         response: { data: { error: 'Update failed' } },
       });
@@ -218,7 +238,7 @@ describe('BehaviorSettings', () => {
       renderBehaviorSettings();
 
       await waitFor(() => {
-        expect(screen.getByRole('switch')).toBeInTheDocument();
+        expect(screen.getAllByRole('switch').length).toBe(3);
       });
 
       const switches = screen.getAllByRole('switch');
@@ -237,9 +257,11 @@ describe('BehaviorSettings', () => {
   describe('Setting Values', () => {
     it('reflects current settings state', async () => {
       mockedSettingsApi.getBehavior.mockResolvedValue({
+        ...defaultBehaviorSettings,
+        deleteBranchesDefault: true,
+        requireApproval: true,
         skipReviewRequirement: true,
         defaultMergeStrategy: 'rebase',
-        deleteBranchesDefault: true,
       });
 
       renderBehaviorSettings();
@@ -249,8 +271,9 @@ describe('BehaviorSettings', () => {
       });
 
       const switches = screen.getAllByRole('switch');
-      expect(switches[0]).toBeChecked();
-      expect(switches[1]).toBeChecked();
+      expect(switches[0]).toBeChecked(); // deleteBranchesDefault
+      expect(switches[1]).toBeChecked(); // requireApproval
+      expect(switches[2]).toBeChecked(); // skipReviewRequirement
     });
   });
 });

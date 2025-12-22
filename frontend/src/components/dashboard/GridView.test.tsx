@@ -69,9 +69,10 @@ describe('GridView', () => {
 
       renderGridView(repositories);
 
-      expect(screen.getByText('owner1/repo1')).toBeInTheDocument();
-      expect(screen.getByText('owner2/repo2')).toBeInTheDocument();
-      expect(screen.getByText('owner3/repo3')).toBeInTheDocument();
+      // RepoCard displays name and owner separately, not fullName
+      expect(screen.getByText('repo1')).toBeInTheDocument();
+      expect(screen.getByText('repo2')).toBeInTheDocument();
+      expect(screen.getByText('repo3')).toBeInTheDocument();
     });
 
     it('applies grid layout classes', () => {
@@ -109,9 +110,9 @@ describe('GridView', () => {
 
       renderGridView(repositories);
 
-      // Check that we have all 10 repositories
+      // Check that we have all 10 repositories - RepoCard displays name separately
       repositories.forEach((repo) => {
-        expect(screen.getByText(repo.fullName)).toBeInTheDocument();
+        expect(screen.getByText(repo.name)).toBeInTheDocument();
       });
     });
   });

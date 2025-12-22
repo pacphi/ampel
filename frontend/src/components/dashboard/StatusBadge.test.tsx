@@ -7,43 +7,57 @@ describe('StatusBadge', () => {
     it('renders green status with correct color', () => {
       const { container } = render(<StatusBadge status="green" />);
 
-      const badge = container.firstChild;
-      expect(badge).toHaveAttribute('data-status', 'green');
-      expect(badge).toHaveClass('bg-ampel-green');
+      // The badge is wrapped in a flex container, the actual dot is the span inside
+      const dot = container.querySelector('span.rounded-full');
+      expect(dot).toBeInTheDocument();
+      expect(dot).toHaveClass('bg-ampel-green');
     });
 
     it('renders yellow status with correct color', () => {
       const { container } = render(<StatusBadge status="yellow" />);
 
-      const badge = container.firstChild;
-      expect(badge).toHaveAttribute('data-status', 'yellow');
-      expect(badge).toHaveClass('bg-ampel-yellow');
+      const dot = container.querySelector('span.rounded-full');
+      expect(dot).toBeInTheDocument();
+      expect(dot).toHaveClass('bg-ampel-yellow');
     });
 
     it('renders red status with correct color', () => {
       const { container } = render(<StatusBadge status="red" />);
 
-      const badge = container.firstChild;
-      expect(badge).toHaveAttribute('data-status', 'red');
-      expect(badge).toHaveClass('bg-ampel-red');
+      const dot = container.querySelector('span.rounded-full');
+      expect(dot).toBeInTheDocument();
+      expect(dot).toHaveClass('bg-ampel-red');
+    });
+
+    it('returns null for none status', () => {
+      const { container } = render(<StatusBadge status="none" />);
+      expect(container.firstChild).toBeNull();
     });
   });
 
   describe('Size Variants', () => {
-    it('renders small size by default', () => {
+    it('renders medium size by default', () => {
       const { container } = render(<StatusBadge status="green" />);
 
-      const badge = container.firstChild;
-      expect(badge).toHaveClass('h-3');
-      expect(badge).toHaveClass('w-3');
+      const dot = container.querySelector('span.rounded-full');
+      expect(dot).toHaveClass('h-3');
+      expect(dot).toHaveClass('w-3');
+    });
+
+    it('renders small size when specified', () => {
+      const { container } = render(<StatusBadge status="green" size="sm" />);
+
+      const dot = container.querySelector('span.rounded-full');
+      expect(dot).toHaveClass('h-2');
+      expect(dot).toHaveClass('w-2');
     });
 
     it('renders large size when specified', () => {
       const { container } = render(<StatusBadge status="green" size="lg" />);
 
-      const badge = container.firstChild;
-      expect(badge).toHaveClass('h-4');
-      expect(badge).toHaveClass('w-4');
+      const dot = container.querySelector('span.rounded-full');
+      expect(dot).toHaveClass('h-4');
+      expect(dot).toHaveClass('w-4');
     });
   });
 
@@ -80,11 +94,12 @@ describe('StatusBadge', () => {
   });
 
   describe('Accessibility', () => {
-    it('is a circular shape', () => {
+    it('dot is a circular shape', () => {
       const { container } = render(<StatusBadge status="green" />);
 
-      const badge = container.firstChild;
-      expect(badge).toHaveClass('rounded-full');
+      const dot = container.querySelector('span.rounded-full');
+      expect(dot).toBeInTheDocument();
+      expect(dot).toHaveClass('rounded-full');
     });
 
     it('has proper semantic structure with label', () => {
@@ -92,6 +107,16 @@ describe('StatusBadge', () => {
 
       const container = screen.getByText('Ready').closest('div');
       expect(container).toBeInTheDocument();
+    });
+
+    it('has tooltip with description', () => {
+      const { container } = render(<StatusBadge status="green" />);
+
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveAttribute(
+        'title',
+        'Ready to merge - CI passed, approved, no conflicts'
+      );
     });
   });
 });
