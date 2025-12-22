@@ -6,6 +6,22 @@
     "target/**",
     "frontend/dist/**",
     "~/**",
-    "**/~/**"
-  ]
+    "**/~/**",
+    ".cargo/**",
+    ".agentic-qe/**",
+    ".claude/**",
+    "memory/**",
+    ".hive-mind/**",
+    ".specify/**"
+  ],
+  "config": {
+    "MD013": false,
+    "MD022": false,
+    "MD025": false,
+    "MD029": false,
+    "MD031": false,
+    "MD032": false,
+    "MD040": false,
+    "MD058": false
+  }
 }

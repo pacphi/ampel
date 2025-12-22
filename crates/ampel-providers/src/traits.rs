@@ -12,14 +12,28 @@ pub struct RateLimitInfo {
     pub reset_at: DateTime<Utc>,
 }
 
-/// OAuth token information
+/// Authentication credentials for a provider
 #[derive(Debug, Clone)]
-pub struct OAuthToken {
-    pub access_token: String,
-    pub refresh_token: Option<String>,
-    pub token_type: String,
-    pub expires_at: Option<DateTime<Utc>>,
+pub enum ProviderCredentials {
+    /// Personal Access Token authentication
+    Pat {
+        token: String,
+        /// For Bitbucket: username for Basic Auth
+        username: Option<String>,
+    },
+}
+
+/// Token validation result
+#[derive(Debug, Clone, Default)]
+pub struct TokenValidation {
+    pub is_valid: bool,
+    pub user_id: Option<String>,
+    pub username: Option<String>,
+    pub email: Option<String>,
+    pub avatar_url: Option<String>,
     pub scopes: Vec<String>,
+    pub expires_at: Option<DateTime<Utc>>,
+    pub error_message: Option<String>,
 }
 
 /// User info from OAuth provider
@@ -94,22 +108,22 @@ pub trait GitProvider: Send + Sync {
     /// Get the provider type
     fn provider_type(&self) -> Provider;
 
-    /// Get OAuth authorization URL
-    fn get_oauth_url(&self, state: &str) -> String;
+    /// Get the instance URL (None for cloud providers)
+    fn instance_url(&self) -> Option<&str>;
 
-    /// Exchange OAuth code for tokens
-    async fn exchange_code(&self, code: &str) -> ProviderResult<OAuthToken>;
-
-    /// Refresh OAuth token
-    async fn refresh_token(&self, refresh_token: &str) -> ProviderResult<OAuthToken>;
+    /// Validate credentials and return user info
+    async fn validate_credentials(
+        &self,
+        credentials: &ProviderCredentials,
+    ) -> ProviderResult<TokenValidation>;
 
     /// Get authenticated user info
-    async fn get_user(&self, access_token: &str) -> ProviderResult<ProviderUser>;
+    async fn get_user(&self, credentials: &ProviderCredentials) -> ProviderResult<ProviderUser>;
 
     /// List repositories accessible to the user
     async fn list_repositories(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         page: i32,
         per_page: i32,
     ) -> ProviderResult<Vec<DiscoveredRepository>>;
@@ -117,7 +131,7 @@ pub trait GitProvider: Send + Sync {
     /// Get a specific repository
     async fn get_repository(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
     ) -> ProviderResult<DiscoveredRepository>;
@@ -125,7 +139,7 @@ pub trait GitProvider: Send + Sync {
     /// List pull requests for a repository
     async fn list_pull_requests(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         state: Option<&str>,
@@ -134,7 +148,7 @@ pub trait GitProvider: Send + Sync {
     /// Get a specific pull request
     async fn get_pull_request(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         number: i32,
@@ -143,7 +157,7 @@ pub trait GitProvider: Send + Sync {
     /// Get CI checks for a pull request
     async fn get_ci_checks(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         pr_number: i32,
@@ -152,7 +166,7 @@ pub trait GitProvider: Send + Sync {
     /// Get reviews for a pull request
     async fn get_reviews(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         pr_number: i32,
@@ -161,7 +175,7 @@ pub trait GitProvider: Send + Sync {
     /// Merge a pull request
     async fn merge_pull_request(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         pr_number: i32,
@@ -169,5 +183,8 @@ pub trait GitProvider: Send + Sync {
     ) -> ProviderResult<MergeResult>;
 
     /// Get current rate limit status
-    async fn get_rate_limit(&self, access_token: &str) -> ProviderResult<RateLimitInfo>;
+    async fn get_rate_limit(
+        &self,
+        credentials: &ProviderCredentials,
+    ) -> ProviderResult<RateLimitInfo>;
 }

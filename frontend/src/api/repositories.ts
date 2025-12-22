@@ -18,11 +18,11 @@ export const repositoriesApi = {
     return response.data.data!;
   },
 
-  async discover(provider: GitProvider, page = 1, perPage = 30): Promise<DiscoveredRepository[]> {
+  async discover(provider: GitProvider): Promise<DiscoveredRepository[]> {
     const response = await apiClient.get<ApiResponse<DiscoveredRepository[]>>(
       '/repositories/discover',
       {
-        params: { provider, page, perPage },
+        params: { provider },
       }
     );
     return response.data.data!;

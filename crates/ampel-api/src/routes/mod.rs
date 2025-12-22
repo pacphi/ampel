@@ -4,7 +4,7 @@ use axum::{
 };
 
 use crate::handlers::{
-    analytics, auth, bot_rules, bulk_merge, dashboard, notifications, oauth, pr_filters,
+    accounts, analytics, auth, bot_rules, bulk_merge, dashboard, notifications, pr_filters,
     pull_requests, repositories, teams, user_settings,
 };
 use crate::AppState;
@@ -20,13 +20,24 @@ pub fn create_router(state: AppState) -> Router {
         // Auth routes (protected)
         .route("/api/auth/me", get(auth::me).put(auth::update_me))
         .route("/api/auth/logout", post(auth::logout))
-        // OAuth routes
-        .route("/api/oauth/:provider/url", get(oauth::get_oauth_url))
-        .route("/api/oauth/:provider/callback", get(oauth::oauth_callback))
-        .route("/api/oauth/connections", get(oauth::list_connections))
+        // Account management routes (PAT-based multi-account support)
         .route(
-            "/api/oauth/connections/:provider",
-            delete(oauth::disconnect_provider),
+            "/api/accounts",
+            get(accounts::list_accounts).post(accounts::add_account),
+        )
+        .route(
+            "/api/accounts/:id",
+            get(accounts::get_account)
+                .patch(accounts::update_account)
+                .delete(accounts::delete_account),
+        )
+        .route(
+            "/api/accounts/:id/validate",
+            post(accounts::validate_account),
+        )
+        .route(
+            "/api/accounts/:id/set-default",
+            post(accounts::set_default_account),
         )
         // Repository routes
         .route("/api/repositories", get(repositories::list_repositories))

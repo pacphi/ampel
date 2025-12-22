@@ -8,7 +8,14 @@ import globals from 'globals';
 export default [
   js.configs.recommended,
   {
-    ignores: ['dist/**', 'eslint.config.js', 'node_modules/**'],
+    ignores: [
+      'dist/**',
+      'eslint.config.js',
+      'node_modules/**',
+      '**/.cargo/**',
+      '**/target/**',
+      '**/.rustup/**',
+    ],
   },
   {
     files: ['**/*.{ts,tsx}'],
@@ -37,7 +44,10 @@ export default [
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',
-        { allowConstantExport: true, allowExportNames: ['useAuth', 'useTheme', 'buttonVariants'] },
+        {
+          allowConstantExport: true,
+          allowExportNames: ['useAuth', 'useTheme', 'buttonVariants', 'badgeVariants'],
+        },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],

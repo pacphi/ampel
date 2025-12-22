@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, OAuthToken, ProviderCICheck, ProviderPullRequest, ProviderReview,
-    ProviderUser, RateLimitInfo,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderPullRequest,
+    ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
 };
 use ampel_core::models::{
     DiscoveredRepository, GitProvider as Provider, MergeRequest, MergeStrategy,
@@ -14,38 +14,31 @@ use ampel_core::models::{
 
 pub struct GitHubProvider {
     client: Client,
-    client_id: String,
-    client_secret: String,
-    redirect_uri: String,
+    base_url: String,
 }
 
 impl GitHubProvider {
-    pub fn new(client_id: String, client_secret: String, redirect_uri: String) -> Self {
+    pub fn new(instance_url: Option<String>) -> Self {
         let client = Client::builder()
             .user_agent("Ampel/1.0")
             .build()
             .expect("Failed to create HTTP client");
 
-        Self {
-            client,
-            client_id,
-            client_secret,
-            redirect_uri,
-        }
+        // Support GitHub Enterprise
+        let base_url = instance_url.unwrap_or_else(|| "https://api.github.com".to_string());
+
+        Self { client, base_url }
     }
 
     fn api_url(&self, path: &str) -> String {
-        format!("https://api.github.com{}", path)
+        format!("{}{}", self.base_url, path)
     }
-}
 
-#[derive(Debug, Deserialize)]
-struct GitHubTokenResponse {
-    access_token: String,
-    token_type: String,
-    scope: String,
-    refresh_token: Option<String>,
-    expires_in: Option<i64>,
+    fn auth_header(&self, credentials: &ProviderCredentials) -> String {
+        match credentials {
+            ProviderCredentials::Pat { token, .. } => format!("Bearer {}", token),
+        }
+    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -189,96 +182,75 @@ impl GitProvider for GitHubProvider {
         Provider::GitHub
     }
 
-    fn get_oauth_url(&self, state: &str) -> String {
-        format!(
-            "https://github.com/login/oauth/authorize?client_id={}&redirect_uri={}&scope=repo%20read:user%20user:email&state={}",
-            self.client_id,
-            urlencoding::encode(&self.redirect_uri),
-            state
-        )
-    }
-
-    async fn exchange_code(&self, code: &str) -> ProviderResult<OAuthToken> {
-        let response = self
-            .client
-            .post("https://github.com/login/oauth/access_token")
-            .header("Accept", "application/json")
-            .form(&[
-                ("client_id", &self.client_id),
-                ("client_secret", &self.client_secret),
-                ("code", &code.to_string()),
-                ("redirect_uri", &self.redirect_uri),
-            ])
-            .send()
-            .await?;
-
-        if !response.status().is_success() {
-            return Err(ProviderError::AuthenticationFailed(
-                "Failed to exchange code".to_string(),
-            ));
+    fn instance_url(&self) -> Option<&str> {
+        if self.base_url == "https://api.github.com" {
+            None
+        } else {
+            Some(&self.base_url)
         }
-
-        let token: GitHubTokenResponse = response.json().await?;
-        let expires_at = token
-            .expires_in
-            .map(|secs| Utc::now() + chrono::Duration::seconds(secs));
-
-        Ok(OAuthToken {
-            access_token: token.access_token,
-            refresh_token: token.refresh_token,
-            token_type: token.token_type,
-            expires_at,
-            scopes: token
-                .scope
-                .split(',')
-                .map(|s| s.trim().to_string())
-                .collect(),
-        })
     }
 
-    async fn refresh_token(&self, refresh_token: &str) -> ProviderResult<OAuthToken> {
-        let response = self
-            .client
-            .post("https://github.com/login/oauth/access_token")
-            .header("Accept", "application/json")
-            .form(&[
-                ("client_id", &self.client_id),
-                ("client_secret", &self.client_secret),
-                ("grant_type", &"refresh_token".to_string()),
-                ("refresh_token", &refresh_token.to_string()),
-            ])
-            .send()
-            .await?;
-
-        if !response.status().is_success() {
-            return Err(ProviderError::AuthenticationFailed(
-                "Failed to refresh token".to_string(),
-            ));
-        }
-
-        let token: GitHubTokenResponse = response.json().await?;
-        let expires_at = token
-            .expires_in
-            .map(|secs| Utc::now() + chrono::Duration::seconds(secs));
-
-        Ok(OAuthToken {
-            access_token: token.access_token,
-            refresh_token: token.refresh_token,
-            token_type: token.token_type,
-            expires_at,
-            scopes: token
-                .scope
-                .split(',')
-                .map(|s| s.trim().to_string())
-                .collect(),
-        })
-    }
-
-    async fn get_user(&self, access_token: &str) -> ProviderResult<ProviderUser> {
+    async fn validate_credentials(
+        &self,
+        credentials: &ProviderCredentials,
+    ) -> ProviderResult<TokenValidation> {
         let response = self
             .client
             .get(self.api_url("/user"))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .send()
+            .await?;
+
+        if response.status() == 401 {
+            return Ok(TokenValidation {
+                is_valid: false,
+                user_id: None,
+                username: None,
+                email: None,
+                avatar_url: None,
+                scopes: vec![],
+                expires_at: None,
+                error_message: Some("Invalid or expired token".into()),
+            });
+        }
+
+        if !response.status().is_success() {
+            return Ok(TokenValidation {
+                is_valid: false,
+                user_id: None,
+                username: None,
+                email: None,
+                avatar_url: None,
+                scopes: vec![],
+                expires_at: None,
+                error_message: Some(format!("API error: {}", response.status())),
+            });
+        }
+
+        let user: GitHubUser = response.json().await?;
+
+        // Get scopes from X-OAuth-Scopes header (for classic PATs)
+        // Fine-grained PATs don't expose scopes in headers
+        let scopes = vec!["repo".into(), "read:user".into()]; // Assume standard scopes
+
+        Ok(TokenValidation {
+            is_valid: true,
+            user_id: Some(user.id.to_string()),
+            username: Some(user.login),
+            email: user.email,
+            avatar_url: user.avatar_url,
+            scopes,
+            expires_at: None, // GitHub doesn't expose in API
+            error_message: None,
+        })
+    }
+
+    async fn get_user(&self, credentials: &ProviderCredentials) -> ProviderResult<ProviderUser> {
+        let response = self
+            .client
+            .get(self.api_url("/user"))
+            .header("Authorization", self.auth_header(credentials))
             .header("Accept", "application/vnd.github+json")
             .send()
             .await?;
@@ -308,14 +280,14 @@ impl GitProvider for GitHubProvider {
 
     async fn list_repositories(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         page: i32,
         per_page: i32,
     ) -> ProviderResult<Vec<DiscoveredRepository>> {
         let response = self
             .client
             .get(self.api_url("/user/repos"))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .header("Accept", "application/vnd.github+json")
             .query(&[
                 (
@@ -357,14 +329,14 @@ impl GitProvider for GitHubProvider {
 
     async fn get_repository(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
     ) -> ProviderResult<DiscoveredRepository> {
         let response = self
             .client
             .get(self.api_url(&format!("/repos/{}/{}", owner, repo)))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .header("Accept", "application/vnd.github+json")
             .send()
             .await?;
@@ -401,7 +373,7 @@ impl GitProvider for GitHubProvider {
 
     async fn list_pull_requests(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         state: Option<&str>,
@@ -410,7 +382,7 @@ impl GitProvider for GitHubProvider {
         let response = self
             .client
             .get(self.api_url(&format!("/repos/{}/{}/pulls", owner, repo)))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .header("Accept", "application/vnd.github+json")
             .query(&[("state", state), ("per_page", "100")])
             .send()
@@ -456,7 +428,7 @@ impl GitProvider for GitHubProvider {
 
     async fn get_pull_request(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         number: i32,
@@ -464,7 +436,7 @@ impl GitProvider for GitHubProvider {
         let response = self
             .client
             .get(self.api_url(&format!("/repos/{}/{}/pulls/{}", owner, repo, number)))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .header("Accept", "application/vnd.github+json")
             .send()
             .await?;
@@ -513,14 +485,14 @@ impl GitProvider for GitHubProvider {
 
     async fn get_ci_checks(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         pr_number: i32,
     ) -> ProviderResult<Vec<ProviderCICheck>> {
         // First get the PR to get the head SHA
         let pr = self
-            .get_pull_request(access_token, owner, repo, pr_number)
+            .get_pull_request(credentials, owner, repo, pr_number)
             .await?;
 
         let response = self
@@ -529,7 +501,7 @@ impl GitProvider for GitHubProvider {
                 "/repos/{}/{}/commits/{}/check-runs",
                 owner, repo, pr.source_branch
             )))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .header("Accept", "application/vnd.github+json")
             .send()
             .await?;
@@ -557,7 +529,7 @@ impl GitProvider for GitHubProvider {
 
     async fn get_reviews(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         pr_number: i32,
@@ -568,7 +540,7 @@ impl GitProvider for GitHubProvider {
                 "/repos/{}/{}/pulls/{}/reviews",
                 owner, repo, pr_number
             )))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .header("Accept", "application/vnd.github+json")
             .send()
             .await?;
@@ -599,7 +571,7 @@ impl GitProvider for GitHubProvider {
 
     async fn merge_pull_request(
         &self,
-        access_token: &str,
+        credentials: &ProviderCredentials,
         owner: &str,
         repo: &str,
         pr_number: i32,
@@ -623,7 +595,7 @@ impl GitProvider for GitHubProvider {
                 "/repos/{}/{}/pulls/{}/merge",
                 owner, repo, pr_number
             )))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .header("Accept", "application/vnd.github+json")
             .json(&body)
             .send()
@@ -657,11 +629,14 @@ impl GitProvider for GitHubProvider {
         })
     }
 
-    async fn get_rate_limit(&self, access_token: &str) -> ProviderResult<RateLimitInfo> {
+    async fn get_rate_limit(
+        &self,
+        credentials: &ProviderCredentials,
+    ) -> ProviderResult<RateLimitInfo> {
         let response = self
             .client
             .get(self.api_url("/rate_limit"))
-            .header("Authorization", format!("Bearer {}", access_token))
+            .header("Authorization", self.auth_header(credentials))
             .header("Accept", "application/vnd.github+json")
             .send()
             .await?;

@@ -11,7 +11,7 @@ use tokio::time::sleep;
 use uuid::Uuid;
 
 use ampel_core::models::{GitProvider, MergeRequest, MergeStrategy};
-use ampel_db::entities::git_provider;
+use ampel_db::entities::provider_account;
 use ampel_db::queries::{
     MergeOperationItemQueries, MergeOperationQueries, PrQueries, RepoQueries, UserSettingsQueries,
 };
@@ -170,14 +170,12 @@ pub async fn bulk_merge(
                 .parse()
                 .map_err(|_| ApiError::internal("Invalid provider"))?;
 
-            let connection = git_provider::Entity::find()
-                .filter(git_provider::Column::UserId.eq(auth.user_id))
-                .filter(git_provider::Column::Provider.eq(provider_type.to_string()))
-                .one(&state.db)
-                .await?;
-
-            let connection = match connection {
-                Some(c) => c,
+            // Get provider account
+            let account = match repo.provider_account_id {
+                Some(account_id) => provider_account::Entity::find_by_id(account_id)
+                    .one(&state.db)
+                    .await?
+                    .ok_or_else(|| ApiError::not_found("Provider account not found"))?,
                 None => {
                     let result = MergeItemResult {
                         pull_request_id: pr.id,
@@ -185,7 +183,7 @@ pub async fn bulk_merge(
                         pr_number: pr.number,
                         pr_title: pr.title.clone(),
                         status: "failed".to_string(),
-                        error_message: Some("Provider not connected".to_string()),
+                        error_message: Some("Repository not linked to account".to_string()),
                         merge_sha: None,
                     };
                     results.push(result);
@@ -194,7 +192,7 @@ pub async fn bulk_merge(
                         &state.db,
                         item.id,
                         "failed",
-                        Some("Provider not connected".to_string()),
+                        Some("Repository not linked to account".to_string()),
                         None,
                     )
                     .await?;
@@ -205,7 +203,7 @@ pub async fn bulk_merge(
             // Decrypt token
             let access_token = match state
                 .encryption_service
-                .decrypt(&connection.access_token_encrypted)
+                .decrypt(&account.access_token_encrypted)
             {
                 Ok(t) => t,
                 Err(e) => {
@@ -232,12 +230,20 @@ pub async fn bulk_merge(
                 }
             };
 
-            let provider = state.provider_factory.create(provider_type);
+            // Create credentials for provider calls
+            let credentials = ampel_providers::traits::ProviderCredentials::Pat {
+                token: access_token.clone(),
+                username: account.auth_username.clone(),
+            };
+
+            let provider = state
+                .provider_factory
+                .create(provider_type, account.instance_url.clone());
 
             // Pre-flight check: verify PR is still open on the provider
             // This catches cases where the local DB is stale (PR was closed/merged externally)
             let fresh_pr = match provider
-                .get_pull_request(&access_token, &repo.owner, &repo.name, pr.number)
+                .get_pull_request(&credentials, &repo.owner, &repo.name, pr.number)
                 .await
             {
                 Ok(fresh) => fresh,
@@ -309,7 +315,7 @@ pub async fn bulk_merge(
                 continue;
             }
 
-            // Attempt merge (provider and access_token already obtained above)
+            // Attempt merge (provider and credentials already obtained above)
             let merge_request = MergeRequest {
                 strategy: merge_strategy,
                 commit_title: None,
@@ -319,7 +325,7 @@ pub async fn bulk_merge(
 
             match provider
                 .merge_pull_request(
-                    &access_token,
+                    &credentials,
                     &repo.owner,
                     &repo.name,
                     pr.number,

@@ -119,15 +119,6 @@ export interface Review {
   submittedAt: string;
 }
 
-export interface ProviderConnection {
-  id: string;
-  provider: GitProvider;
-  providerUsername: string;
-  scopes: string[];
-  tokenExpiresAt?: string;
-  createdAt: string;
-}
-
 export interface DashboardSummary {
   totalRepositories: number;
   totalOpenPrs: number;

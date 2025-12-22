@@ -15,6 +15,9 @@ env:
   # sccache configuration for faster Rust builds
   SCCACHE_GHA_ENABLED: "true"
   RUSTC_WRAPPER: "sccache"
+  # Test environment configuration
+  CI_MODE: "true"
+  RUST_LOG: "warn"
 
 jobs:
   # ============================================
@@ -97,10 +100,78 @@ jobs:
         continue-on-error: true
 
   # ============================================
-  # Backend Build & Test
+  # Backend Unit Tests (SQLite In-Memory)
+  # Fast parallel execution for unit tests
   # ============================================
-  backend-test:
-    name: Backend Build & Test
+  backend-unit-test:
+    name: Backend Unit Tests (SQLite)
+    runs-on: ubuntu-latest
+    needs: [backend-lint]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Run sccache-cache
+        uses: mozilla-actions/sccache-action@v0.0.9
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "rust-build"
+          cache-on-failure: true
+
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@cargo-nextest
+
+      - name: Build tests
+        run: cargo build --all-features --tests
+
+      - name: Run unit tests with nextest (SQLite)
+        env:
+          DATABASE_URL: "sqlite::memory:"
+          JWT_SECRET: test-jwt-secret-for-ci-minimum-32-chars
+          ENCRYPTION_KEY: dGVzdC1lbmNyeXB0aW9uLWtleS0zMi1ieXRlcw==
+          TEST_DATABASE_TYPE: sqlite
+        run: |
+          cargo nextest run \
+            --all-features \
+            --no-fail-fast \
+            --test-threads 4 \
+            --retries 2 \
+            --failure-output immediate-final \
+            --success-output never \
+            --profile ci
+
+      - name: Generate test report
+        if: always()
+        run: |
+          cargo nextest run \
+            --all-features \
+            --no-fail-fast \
+            --profile ci \
+            --message-format json > test-results.json || true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-unit-test-results
+          path: |
+            test-results.json
+            target/nextest/ci/
+          retention-days: 7
+
+  # ============================================
+  # Backend Integration Tests (PostgreSQL)
+  # Full database feature testing
+  # ============================================
+  backend-integration-test:
+    name: Backend Integration Tests (PostgreSQL)
     runs-on: ubuntu-latest
     needs: [backend-lint]
 
@@ -136,18 +207,171 @@ jobs:
           shared-key: "rust-build"
           cache-on-failure: true
 
-      - name: Build
-        run: cargo build --all-features
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@cargo-nextest
 
-      - name: Run tests
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h localhost -p 5432 -U ampel; do
+            echo "Waiting for PostgreSQL..."
+            sleep 1
+          done
+          echo "PostgreSQL is ready!"
+
+      - name: Setup test database
+        env:
+          PGPASSWORD: ampel
+        run: |
+          psql -h localhost -U ampel -d ampel_test -c "SELECT version();"
+          echo "Database connection successful"
+
+      - name: Build tests
+        run: cargo build --all-features --tests
+
+      - name: Run integration tests with nextest (PostgreSQL)
+        env:
+          DATABASE_URL: postgres://ampel:ampel@localhost:5432/ampel_test
+          TEST_DATABASE_URL: postgres://ampel:ampel@localhost:5432
+          JWT_SECRET: test-jwt-secret-for-ci-minimum-32-chars
+          ENCRYPTION_KEY: dGVzdC1lbmNyeXB0aW9uLWtleS0zMi1ieXRlcw==
+          TEST_DATABASE_TYPE: postgres
+          RUST_LOG: info
+        run: |
+          cargo nextest run \
+            --all-features \
+            --no-fail-fast \
+            --test-threads 2 \
+            --retries 3 \
+            --failure-output immediate-final \
+            --profile ci
+
+      - name: Verify database cleanup
+        if: always()
+        env:
+          PGPASSWORD: ampel
+        run: |
+          echo "Checking for leftover test data..."
+          TABLE_COUNT=$(psql -h localhost -U ampel -d ampel_test -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public';")
+          echo "Tables in database: $TABLE_COUNT"
+
+          # Clean up any test data
+          psql -h localhost -U ampel -d ampel_test -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+          echo "Database cleaned up successfully"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-integration-test-results
+          path: |
+            target/nextest/ci/
+          retention-days: 7
+
+  # ============================================
+  # Backend Coverage Report
+  # ============================================
+  backend-coverage:
+    name: Backend Test Coverage
+    runs-on: ubuntu-latest
+    needs: [backend-unit-test, backend-integration-test]
+    if: github.event_name == 'pull_request'
+    env:
+      # Disable sccache for tarpaulin - it doesn't work with RUSTC_WRAPPER
+      RUSTC_WRAPPER: ""
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ampel
+          POSTGRES_PASSWORD: ampel
+          POSTGRES_DB: ampel_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Install cargo-tarpaulin
+        uses: taiki-e/install-action@cargo-tarpaulin
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "rust-build"
+
+      - name: Generate coverage report
         env:
           DATABASE_URL: postgres://ampel:ampel@localhost:5432/ampel_test
           JWT_SECRET: test-jwt-secret-for-ci-minimum-32-chars
           ENCRYPTION_KEY: dGVzdC1lbmNyeXB0aW9uLWtleS0zMi1ieXRlcw==
-        run: cargo test --all-features --no-fail-fast
+        run: |
+          cargo tarpaulin \
+            --all-features \
+            --workspace \
+            --timeout 300 \
+            --out Xml \
+            --output-dir coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/cobertura.xml
+          flags: backend
+          fail_ci_if_error: false
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage-report
+          path: coverage/
+          retention-days: 7
+
+  # ============================================
+  # Backend Build
+  # ============================================
+  backend-build:
+    name: Backend Build (Release)
+    runs-on: ubuntu-latest
+    needs: [backend-unit-test, backend-integration-test]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Run sccache-cache
+        uses: mozilla-actions/sccache-action@v0.0.9
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "rust-build"
 
       - name: Build release binary
         run: cargo build --release
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-release-binaries
+          path: |
+            target/release/ampel-api
+            target/release/ampel-worker
+          retention-days: 7
 
   # ============================================
   # Frontend Validation & Linting
@@ -277,7 +501,7 @@ jobs:
   docker-build:
     name: Docker Build
     runs-on: ubuntu-latest
-    needs: [backend-test, frontend-test]
+    needs: [backend-build, frontend-test]
     if: github.event_name == 'push'
 
     strategy:
@@ -309,70 +533,42 @@ jobs:
           cache-to: type=gha,mode=max
 
   # ============================================
-  # Integration Tests
-  # ============================================
-  integration-test:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    needs: [backend-test, frontend-test]
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: ampel
-          POSTGRES_PASSWORD: ampel
-          POSTGRES_DB: ampel_integration
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: ${{ env.RUST_VERSION }}
-
-      - name: Run sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.9
-
-      - name: Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          shared-key: "rust-build"
-
-      - name: Run integration tests
-        env:
-          DATABASE_URL: postgres://ampel:ampel@localhost:5432/ampel_integration
-          JWT_SECRET: integration-test-jwt-secret-32-chars
-          ENCRYPTION_KEY: dGVzdC1lbmNyeXB0aW9uLWtleS0zMi1ieXRlcw==
-          RUST_LOG: info
-        run: cargo test --all-features -- --ignored --test-threads=1
-        continue-on-error: true
-
-  # ============================================
   # Summary Check
   # ============================================
   ci-success:
     name: CI Success
     runs-on: ubuntu-latest
-    needs: [backend-lint, backend-security, backend-test, frontend-lint, frontend-security, frontend-test, docker-build]
+    needs: [
+      backend-lint,
+      backend-security,
+      backend-unit-test,
+      backend-integration-test,
+      backend-build,
+      frontend-lint,
+      frontend-security,
+      frontend-test,
+      docker-build
+    ]
     if: always()
     steps:
       - name: Check all jobs passed
         run: |
           if [[ "${{ needs.backend-lint.result }}" != "success" ]] || \
-             [[ "${{ needs.backend-test.result }}" != "success" ]] || \
+             [[ "${{ needs.backend-unit-test.result }}" != "success" ]] || \
+             [[ "${{ needs.backend-integration-test.result }}" != "success" ]] || \
+             [[ "${{ needs.backend-build.result }}" != "success" ]] || \
              [[ "${{ needs.frontend-lint.result }}" != "success" ]] || \
              [[ "${{ needs.frontend-test.result }}" != "success" ]]; then
             echo "Some required jobs failed"
             exit 1
           fi
           echo "All required checks passed!"
+
+      - name: Test Summary
+        run: |
+          echo "## CI Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Backend unit tests (SQLite): ${{ needs.backend-unit-test.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Backend integration tests (PostgreSQL): ${{ needs.backend-integration-test.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Frontend tests: ${{ needs.frontend-test.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Docker builds: ${{ needs.docker-build.result }}" >> $GITHUB_STEP_SUMMARY

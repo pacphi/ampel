@@ -1,6 +1,6 @@
 use thiserror::Error;
 
-#[derive(Error, Debug)]
+#[derive(Error, Debug, Clone)]
 pub enum ProviderError {
     #[error("Authentication failed: {0}")]
     AuthenticationFailed(String),
@@ -28,6 +28,9 @@ pub enum ProviderError {
 
     #[error("Configuration error: {0}")]
     ConfigError(String),
+
+    #[error("Operation not supported: {0}")]
+    NotSupported(String),
 }
 
 impl From<reqwest::Error> for ProviderError {

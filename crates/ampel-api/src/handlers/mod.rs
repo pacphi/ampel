@@ -1,10 +1,10 @@
+pub mod accounts;
 pub mod analytics;
 pub mod auth;
 pub mod bot_rules;
 pub mod bulk_merge;
 pub mod dashboard;
 pub mod notifications;
-pub mod oauth;
 pub mod pr_filters;
 pub mod pull_requests;
 pub mod repositories;
@@ -70,6 +70,10 @@ impl ApiError {
 
     pub fn internal(message: impl Into<String>) -> Self {
         Self::new(StatusCode::INTERNAL_SERVER_ERROR, message)
+    }
+
+    pub fn conflict(message: impl Into<String>) -> Self {
+        Self::new(StatusCode::CONFLICT, message)
     }
 }
 

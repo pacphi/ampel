@@ -47,18 +47,7 @@ async fn main() -> anyhow::Result<()> {
     let encryption_service =
         EncryptionService::from_base64_key(&config.encryption_key).expect("Invalid encryption key");
 
-    let provider_factory = ProviderFactory::new(
-        config.github_client_id.clone(),
-        config.github_client_secret.clone(),
-        config.github_redirect_uri.clone(),
-        config.gitlab_client_id.clone(),
-        config.gitlab_client_secret.clone(),
-        config.gitlab_redirect_uri.clone(),
-        config.gitlab_base_url.clone(),
-        config.bitbucket_client_id.clone(),
-        config.bitbucket_client_secret.clone(),
-        config.bitbucket_redirect_uri.clone(),
-    );
+    let provider_factory = ProviderFactory::new();
 
     // Create app state
     let state = AppState::new(

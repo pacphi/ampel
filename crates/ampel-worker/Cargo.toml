@@ -4,6 +4,9 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+[lib]
+path = "src/lib.rs"
+
 [[bin]]
 name = "ampel-worker"
 path = "src/main.rs"
@@ -41,3 +44,4 @@ ampel-providers.workspace = true
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
+sea-orm-migration.workspace = true

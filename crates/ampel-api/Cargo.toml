@@ -61,3 +61,4 @@ ampel-providers.workspace = true
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
 tower = { workspace = true, features = ["util"] }
+sea-orm-migration.workspace = true

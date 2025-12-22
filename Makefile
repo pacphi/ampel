@@ -4,10 +4,11 @@
 .PHONY: help
 .PHONY: install build build-release clean
 .PHONY: dev dev-api dev-worker dev-frontend
-.PHONY: test test-backend test-frontend
+.PHONY: test test-backend test-frontend test-coverage test-backend-coverage test-frontend-coverage
 .PHONY: lint lint-backend lint-frontend lint-docs lint-fix lint-fix-backend lint-fix-frontend lint-fix-docs
 .PHONY: format format-backend format-frontend format-docs format-check format-check-docs
 .PHONY: audit audit-backend audit-frontend
+.PHONY: license-check license-check-backend license-check-frontend
 .PHONY: outdated outdated-backend outdated-frontend
 .PHONY: upgrade upgrade-backend upgrade-frontend upgrade-latest
 .PHONY: docker docker-build docker-up docker-down docker-restart docker-logs
@@ -39,6 +40,9 @@ help:
 	@echo "  test             - Run all tests"
 	@echo "  test-backend     - Run backend tests only"
 	@echo "  test-frontend    - Run frontend tests only"
+	@echo "  test-coverage    - Run all tests with coverage reports"
+	@echo "  test-backend-coverage  - Backend tests with coverage (auto-installs tarpaulin)"
+	@echo "  test-frontend-coverage - Frontend tests with coverage"
 	@echo ""
 	@echo "Code Quality:"
 	@echo "  lint             - Run all linters"
@@ -48,6 +52,7 @@ help:
 	@echo ""
 	@echo "Security & Dependencies:"
 	@echo "  audit            - Run security audits"
+	@echo "  license-check    - Check license compliance"
 	@echo "  outdated         - List outdated dependencies"
 	@echo "  upgrade          - Upgrade dependencies to latest compatible"
 	@echo ""
@@ -151,6 +156,35 @@ test-frontend:
 	@echo "==> Running frontend tests..."
 	cd frontend && pnpm run test -- --run
 
+# Coverage targets - auto-install tools if missing
+test-coverage: test-backend-coverage test-frontend-coverage
+	@echo ""
+	@echo "==> Coverage reports generated:"
+	@echo "    Backend:  coverage/cobertura.xml, coverage/tarpaulin-report.html"
+	@echo "    Frontend: frontend/coverage/"
+
+test-backend-coverage:
+	@echo "==> Running backend tests with coverage..."
+	@command -v cargo-tarpaulin >/dev/null 2>&1 || { \
+		echo "Installing cargo-tarpaulin..."; \
+		cargo install cargo-tarpaulin --locked; \
+	}
+	@mkdir -p coverage
+	cargo tarpaulin \
+		--all-features \
+		--workspace \
+		--timeout 300 \
+		--out Html Xml \
+		--output-dir coverage
+	@echo ""
+	@echo "==> Backend coverage report: coverage/tarpaulin-report.html"
+
+test-frontend-coverage:
+	@echo "==> Running frontend tests with coverage..."
+	cd frontend && pnpm run test -- --run --coverage
+	@echo ""
+	@echo "==> Frontend coverage report: frontend/coverage/"
+
 # =============================================================================
 # Code Quality
 # =============================================================================
@@ -163,7 +197,7 @@ lint-backend:
 
 lint-frontend:
 	@echo "==> Linting frontend..."
-	cd frontend && pnpm run lint
+	cd frontend && pnpm run lint && pnpm run type-check
 
 lint-docs:
 	@echo "==> Linting markdown files..."
@@ -219,11 +253,23 @@ audit: audit-backend audit-frontend
 
 audit-backend:
 	@echo "==> Auditing backend dependencies..."
+	@command -v cargo-audit >/dev/null 2>&1 || { echo "Installing cargo-audit..."; cargo install cargo-audit; }
 	cargo audit
 
 audit-frontend:
 	@echo "==> Auditing frontend dependencies..."
 	cd frontend && pnpm audit
+
+license-check: license-check-backend license-check-frontend
+
+license-check-backend:
+	@echo "==> Checking backend license compliance..."
+	@command -v cargo-deny >/dev/null 2>&1 || { echo "Installing cargo-deny..."; cargo install cargo-deny; }
+	cargo deny check licenses
+
+license-check-frontend:
+	@echo "==> Checking frontend license compliance..."
+	cd frontend && npx license-checker --summary
 
 # =============================================================================
 # Dependency Management
@@ -238,7 +284,7 @@ outdated-backend:
 
 outdated-frontend:
 	@echo "==> Checking for outdated frontend dependencies..."
-	cd frontend && pnpm outdated
+	-cd frontend && pnpm outdated
 
 upgrade: upgrade-backend upgrade-frontend
 

@@ -2,14 +2,14 @@ use axum::{
     extract::{Path, Query, State},
     Json,
 };
-use sea_orm::{ColumnTrait, EntityTrait, QueryFilter};
+use sea_orm::EntityTrait;
 use uuid::Uuid;
 
 use ampel_core::models::{
     AmpelStatus, CICheck, GitProvider, MergeRequest, PaginatedResponse, PullRequest,
     PullRequestFilter, PullRequestWithDetails, Review,
 };
-use ampel_db::entities::git_provider;
+use ampel_db::entities::provider_account;
 use ampel_db::queries::{CICheckQueries, PrQueries, RepoQueries, ReviewQueries};
 
 use crate::extractors::AuthUser;
@@ -195,30 +195,33 @@ pub async fn merge_pull_request(
         .parse()
         .map_err(|_| ApiError::internal("Invalid provider"))?;
 
-    // Get provider connection
-    let connection = git_provider::Entity::find()
-        .filter(git_provider::Column::UserId.eq(auth.user_id))
-        .filter(git_provider::Column::Provider.eq(provider_type.to_string()))
-        .one(&state.db)
-        .await?
-        .ok_or_else(|| ApiError::bad_request("Provider not connected"))?;
+    // Get provider account
+    let account = provider_account::Entity::find_by_id(
+        repo.provider_account_id
+            .ok_or(ApiError::bad_request("Repository not linked to account"))?,
+    )
+    .one(&state.db)
+    .await?
+    .ok_or(ApiError::not_found("Provider account not found"))?;
 
     // Decrypt access token
     let access_token = state
         .encryption_service
-        .decrypt(&connection.access_token_encrypted)
+        .decrypt(&account.access_token_encrypted)
         .map_err(|e| ApiError::internal(format!("Failed to decrypt token: {}", e)))?;
 
-    let provider = state.provider_factory.create(provider_type);
+    // Create credentials
+    let credentials = ampel_providers::traits::ProviderCredentials::Pat {
+        token: access_token,
+        username: account.auth_username.clone(),
+    };
+
+    let provider = state
+        .provider_factory
+        .create(provider_type, account.instance_url.clone());
 
     let result = provider
-        .merge_pull_request(
-            &access_token,
-            &repo.owner,
-            &repo.name,
-            pr.number,
-            &merge_req,
-        )
+        .merge_pull_request(&credentials, &repo.owner, &repo.name, pr.number, &merge_req)
         .await
         .map_err(|e| ApiError::bad_request(format!("Merge failed: {}", e)))?;
 
@@ -277,25 +280,34 @@ pub async fn refresh_pull_request(
         .parse()
         .map_err(|_| ApiError::internal("Invalid provider"))?;
 
-    // Get provider connection
-    let connection = git_provider::Entity::find()
-        .filter(git_provider::Column::UserId.eq(auth.user_id))
-        .filter(git_provider::Column::Provider.eq(provider_type.to_string()))
-        .one(&state.db)
-        .await?
-        .ok_or_else(|| ApiError::bad_request("Provider not connected"))?;
+    // Get provider account
+    let account = provider_account::Entity::find_by_id(
+        repo.provider_account_id
+            .ok_or(ApiError::bad_request("Repository not linked to account"))?,
+    )
+    .one(&state.db)
+    .await?
+    .ok_or(ApiError::not_found("Provider account not found"))?;
 
     // Decrypt access token
     let access_token = state
         .encryption_service
-        .decrypt(&connection.access_token_encrypted)
+        .decrypt(&account.access_token_encrypted)
         .map_err(|e| ApiError::internal(format!("Failed to decrypt token: {}", e)))?;
 
-    let provider = state.provider_factory.create(provider_type);
+    // Create credentials
+    let credentials = ampel_providers::traits::ProviderCredentials::Pat {
+        token: access_token.clone(),
+        username: account.auth_username.clone(),
+    };
+
+    let provider = state
+        .provider_factory
+        .create(provider_type, account.instance_url.clone());
 
     // Fetch fresh PR data
     let fresh_pr = provider
-        .get_pull_request(&access_token, &repo.owner, &repo.name, pr.number)
+        .get_pull_request(&credentials, &repo.owner, &repo.name, pr.number)
         .await
         .map_err(|e| ApiError::internal(format!("Provider error: {}", e)))?;
 
@@ -333,7 +345,7 @@ pub async fn refresh_pull_request(
     // Fetch and update CI checks
     CICheckQueries::delete_by_pull_request(&state.db, pr_id).await?;
     let fresh_checks = provider
-        .get_ci_checks(&access_token, &repo.owner, &repo.name, pr.number)
+        .get_ci_checks(&credentials, &repo.owner, &repo.name, pr.number)
         .await
         .unwrap_or_default();
 
@@ -357,7 +369,7 @@ pub async fn refresh_pull_request(
     // Fetch and update reviews
     ReviewQueries::delete_by_pull_request(&state.db, pr_id).await?;
     let fresh_reviews = provider
-        .get_reviews(&access_token, &repo.owner, &repo.name, pr.number)
+        .get_reviews(&credentials, &repo.owner, &repo.name, pr.number)
         .await
         .unwrap_or_default();
 

@@ -25,8 +25,8 @@ axum-extra = { version = "0.9", features = ["typed-header", "cookie"] }
 tower = "0.4"
 tower-http = { version = "0.5", features = ["cors", "trace", "compression-gzip"] }
 
-# Database
-sea-orm = { version = "1.0", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros"] }
+# Database - SQLite support added for testing
+sea-orm = { version = "1.0", features = ["sqlx-postgres", "sqlx-sqlite", "runtime-tokio-rustls", "macros"] }
 sea-orm-migration = "1.0"
 
 # Background jobs
@@ -63,8 +63,8 @@ url = "2"
 base64 = "0.22"
 
 # API Documentation
-utoipa = { version = "4", features = ["axum_extras"] }
-utoipa-swagger-ui = { version = "7", features = ["axum"] }
+utoipa = { version = "5", features = ["axum_extras"] }
+utoipa-swagger-ui = { version = "9", features = ["axum"] }
 
 # Email
 lettre = { version = "0.11", default-features = false, features = ["tokio1", "tokio1-rustls-tls", "smtp-transport", "builder"] }
@@ -73,3 +73,7 @@ lettre = { version = "0.11", default-features = false, features = ["tokio1", "to
 ampel-core = { path = "crates/ampel-core" }
 ampel-db = { path = "crates/ampel-db" }
 ampel-providers = { path = "crates/ampel-providers" }
+
+# Test profile optimizations
+[profile.test]
+opt-level = 1  # Faster test compilation with minimal optimization

@@ -57,9 +57,10 @@ export default function Dashboard() {
   });
 
   // Fetch PRs and settings to calculate accurate "Ready to Merge" count
+  // Using a high limit to ensure we get all PRs for accurate counting
   const { data: prsData } = useQuery({
     queryKey: ['pull-requests'],
-    queryFn: () => pullRequestsApi.list(1, 100),
+    queryFn: () => pullRequestsApi.list(1, 1000),
   });
 
   const { data: settings } = useQuery({

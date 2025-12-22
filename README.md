@@ -48,21 +48,21 @@ Open [http://localhost:3000](http://localhost:3000) and connect your first repos
 
 ## Documentation
 
-| Guide                                      | Description                     |
-| ------------------------------------------ | ------------------------------- |
-| [Getting Started](docs/GETTING_STARTED.md) | Quick start and configuration   |
-| [OAuth Setup](docs/OAUTH_SETUP.md)         | GitHub, GitLab, Bitbucket OAuth |
-| [Development](docs/DEVELOPMENT.md)         | Build and run locally           |
-| [Contributing](docs/CONTRIBUTING.md)       | How to contribute               |
-| [Deployment](docs/DEPLOY.md)               | Deploy to Fly.io                |
-| [Docker](docs/RUN.md)                      | Run with Docker                 |
-| [Releases](docs/RELEASE.md)                | Release process                 |
+| Guide                                      | Description                          |
+| ------------------------------------------ | ------------------------------------ |
+| [Getting Started](docs/GETTING_STARTED.md) | Quick start and configuration        |
+| [PAT Setup](docs/PAT_SETUP.md)             | GitHub, GitLab, Bitbucket PAT tokens |
+| [Development](docs/DEVELOPMENT.md)         | Build and run locally                |
+| [Testing](docs/TESTING.md)                 | Testing strategy and guides          |
+| [Contributing](docs/CONTRIBUTING.md)       | How to contribute                    |
+| [Deployment](docs/DEPLOY.md)               | Deploy to Fly.io                     |
+| [Docker](docs/RUN.md)                      | Run with Docker                      |
+| [Releases](docs/RELEASE.md)                | Release process                      |
 
 **Planning & Architecture:**
 
 - [Product Spec](docs/planning/PRODUCT_SPEC.md) — Features and requirements
 - [Architecture](docs/planning/ARCHITECTURE.md) — System design
-- [Implementation Plan](docs/planning/IMPLEMENTATION_PLAN.md) — Roadmap
 
 ## Built With
 

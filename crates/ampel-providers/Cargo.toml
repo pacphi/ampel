@@ -25,6 +25,7 @@ thiserror.workspace = true
 anyhow.workspace = true
 tracing.workspace = true
 urlencoding = "2"
+base64.workspace = true
 
 # Internal
 ampel-core.workspace = true
@@ -32,3 +33,6 @@ ampel-core.workspace = true
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
 wiremock = "0.6"
+
+[features]
+test-utils = []
