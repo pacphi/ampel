@@ -124,7 +124,7 @@ jobs:
       - name: Run backend tests
         run: cargo test --all-features --workspace
         env:
-          DATABASE_URL: sqlite::memory:
+          DATABASE_URL: 'sqlite::memory:'
 
       - name: Run clippy
         run: cargo clippy --all-targets --all-features -- -D warnings
