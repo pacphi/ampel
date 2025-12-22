@@ -367,15 +367,36 @@ fly secrets import --app ampel-api < .env.production
    - Create secret: `FLY_API_TOKEN`
    - Paste the token value (including `FlyV1` prefix)
 
-### GitHub Workflow
+### Deploy Workflow (`.github/workflows/deploy.yml`)
 
-The workflow at `.github/workflows/deploy.yml` provides:
+The deploy workflow is **cost-conscious by design** - it only triggers on pushes to the `production` branch (not `main`), preventing accidental deployments from development work.
+
+**Automatic Triggers:**
+
+- Push to `production` branch with changes to:
+  - `crates/**`, `frontend/**`, `fly/**`
+  - `docker/Dockerfile.*`, `Cargo.toml`, `Cargo.lock`
+
+**Manual Dispatch Options:**
+
+| Option            | Description                                    | Default      |
+| ----------------- | ---------------------------------------------- | ------------ |
+| `environment`     | Target environment (`production` or `staging`) | `production` |
+| `deploy_api`      | Deploy API server                              | `true`       |
+| `deploy_worker`   | Deploy Worker service                          | `true`       |
+| `deploy_frontend` | Deploy Frontend                                | `true`       |
+| `run_migrations`  | Run database migrations                        | `true`       |
+| `skip_tests`      | Skip tests (use with caution)                  | `false`      |
+| `force_deploy`    | Force deploy even without changes              | `false`      |
+
+**Features:**
 
 - **Test jobs** before deployment (backend + frontend)
 - **Path-based triggers** - only deploys changed components
 - **Rolling deployment strategy** for zero-downtime
 - **Automatic database migrations** after API deployment
 - **Deployment verification** with health checks
+- **Multi-environment support** - `ampel-*` (production) or `ampel-staging-*` (staging)
 
 **Required GitHub Secrets:**
 
@@ -388,6 +409,49 @@ The workflow at `.github/workflows/deploy.yml` provides:
 | Secret         | Description                 |
 | -------------- | --------------------------- |
 | `VITE_API_URL` | API URL for frontend builds |
+
+### Undeploy Workflow (`.github/workflows/undeploy.yml`)
+
+The undeploy workflow allows you to **destroy or scale down** the Fly.io environment to save costs when not in use.
+
+**⚠️ This is a manual-only workflow** - it requires explicit confirmation to prevent accidental destruction.
+
+**Options:**
+
+| Option                | Description                                       | Default   |
+| --------------------- | ------------------------------------------------- | --------- |
+| `environment`         | Target environment (`staging` or `production`)    | `staging` |
+| `destroy_api`         | Destroy API server                                | `true`    |
+| `destroy_worker`      | Destroy Worker service                            | `true`    |
+| `destroy_frontend`    | Destroy Frontend                                  | `true`    |
+| `destroy_database`    | Destroy database (**DANGEROUS** - data loss!)     | `false`   |
+| `confirm_destruction` | Must type "DESTROY" to proceed                    | Required  |
+| `scale_to_zero`       | Scale to zero instead of destroying (cost-saving) | `false`   |
+
+**Scale to Zero Mode:**
+
+Instead of destroying apps, you can scale them to zero instances:
+
+- Stops all compute costs
+- Preserves app configuration and secrets
+- Can be restored by running the deploy workflow
+
+```bash
+# Equivalent manual commands
+flyctl scale count 0 --app ampel-api --yes
+flyctl scale count 0 --app ampel-worker --yes
+flyctl scale count 0 --app ampel-frontend --yes
+```
+
+**To restore after scale-to-zero:**
+
+Run the deploy workflow with `force_deploy: true`, or manually:
+
+```bash
+flyctl scale count 1 --app ampel-api
+flyctl scale count 1 --app ampel-worker
+flyctl scale count 1 --app ampel-frontend
+```
 
 > **Reference**: [Fly.io + GitHub Actions](https://fly.io/docs/launch/continuous-deployment-with-github-actions/)
 
@@ -699,9 +763,10 @@ Before going to production:
 
 ### CI/CD
 
-| File                           | Purpose                       |
-| ------------------------------ | ----------------------------- |
-| `.github/workflows/deploy.yml` | GitHub Actions CI/CD workflow |
+| File                             | Purpose                                     |
+| -------------------------------- | ------------------------------------------- |
+| `.github/workflows/deploy.yml`   | Deploy to Fly.io (triggers on `production`) |
+| `.github/workflows/undeploy.yml` | Destroy or scale-to-zero Fly.io environment |
 
 ### Supplementary Documentation
 

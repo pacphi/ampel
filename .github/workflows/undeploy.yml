@@ -1,0 +1,233 @@
+name: Undeploy from Fly.io
+
+# Manual workflow dispatch only - destructive action requires explicit trigger
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment to destroy'
+        type: choice
+        options:
+          - staging
+          - production
+        default: staging
+        required: true
+      destroy_api:
+        description: 'Destroy API server'
+        type: boolean
+        default: true
+      destroy_worker:
+        description: 'Destroy Worker service'
+        type: boolean
+        default: true
+      destroy_frontend:
+        description: 'Destroy Frontend'
+        type: boolean
+        default: true
+      destroy_database:
+        description: 'Destroy database (DANGEROUS - data loss!)'
+        type: boolean
+        default: false
+      confirm_destruction:
+        description: 'Type "DESTROY" to confirm (required)'
+        type: string
+        required: true
+      scale_to_zero:
+        description: 'Scale to zero instead of destroying (cost-saving alternative)'
+        type: boolean
+        default: false
+
+# Prevent concurrent operations
+concurrency:
+  group: undeploy-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
+
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  APP_PREFIX: ${{ github.event.inputs.environment == 'staging' && 'ampel-staging' || 'ampel' }}
+
+jobs:
+  # Validation job - ensures user confirms destruction
+  validate:
+    name: Validate Destruction Request
+    runs-on: ubuntu-latest
+    outputs:
+      confirmed: ${{ steps.check.outputs.confirmed }}
+    steps:
+      - name: Check confirmation
+        id: check
+        run: |
+          if [[ "${{ github.event.inputs.confirm_destruction }}" != "DESTROY" ]]; then
+            echo "::error::Destruction not confirmed. You must type 'DESTROY' to proceed."
+            echo "confirmed=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          echo "confirmed=true" >> $GITHUB_OUTPUT
+          echo "✅ Destruction confirmed for environment: ${{ github.event.inputs.environment }}"
+
+      - name: Warn about production
+        if: github.event.inputs.environment == 'production'
+        run: |
+          echo "::warning::⚠️ You are about to destroy the PRODUCTION environment!"
+          echo "::warning::This action is irreversible and will cause service downtime."
+
+  # Scale to zero (cost-saving alternative to destruction)
+  scale-to-zero:
+    name: Scale to Zero
+    needs: validate
+    runs-on: ubuntu-latest
+    if: |
+      needs.validate.outputs.confirmed == 'true' &&
+      github.event.inputs.scale_to_zero == 'true'
+    steps:
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Scale API to zero
+        if: github.event.inputs.destroy_api == 'true'
+        run: |
+          echo "Scaling ${{ env.APP_PREFIX }}-api to zero..."
+          flyctl scale count 0 --app ${{ env.APP_PREFIX }}-api --yes || echo "App may not exist"
+
+      - name: Scale Worker to zero
+        if: github.event.inputs.destroy_worker == 'true'
+        run: |
+          echo "Scaling ${{ env.APP_PREFIX }}-worker to zero..."
+          flyctl scale count 0 --app ${{ env.APP_PREFIX }}-worker --yes || echo "App may not exist"
+
+      - name: Scale Frontend to zero
+        if: github.event.inputs.destroy_frontend == 'true'
+        run: |
+          echo "Scaling ${{ env.APP_PREFIX }}-frontend to zero..."
+          flyctl scale count 0 --app ${{ env.APP_PREFIX }}-frontend --yes || echo "App may not exist"
+
+      - name: Summary
+        run: |
+          echo "## Scale to Zero Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment**: ${{ github.event.inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Apps have been scaled to zero instances. They will not incur compute costs but can be scaled back up." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "To restore, run the deploy workflow or use:" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo "flyctl scale count 1 --app ${{ env.APP_PREFIX }}-api" >> $GITHUB_STEP_SUMMARY
+          echo "flyctl scale count 1 --app ${{ env.APP_PREFIX }}-worker" >> $GITHUB_STEP_SUMMARY
+          echo "flyctl scale count 1 --app ${{ env.APP_PREFIX }}-frontend" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+  # Destroy API server
+  destroy-api:
+    name: Destroy API Server
+    needs: validate
+    runs-on: ubuntu-latest
+    if: |
+      needs.validate.outputs.confirmed == 'true' &&
+      github.event.inputs.destroy_api == 'true' &&
+      github.event.inputs.scale_to_zero != 'true'
+    steps:
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Destroy API app
+        run: |
+          echo "Destroying ${{ env.APP_PREFIX }}-api..."
+          flyctl apps destroy ${{ env.APP_PREFIX }}-api --yes || echo "App may not exist or already destroyed"
+
+  # Destroy Worker service
+  destroy-worker:
+    name: Destroy Worker Service
+    needs: validate
+    runs-on: ubuntu-latest
+    if: |
+      needs.validate.outputs.confirmed == 'true' &&
+      github.event.inputs.destroy_worker == 'true' &&
+      github.event.inputs.scale_to_zero != 'true'
+    steps:
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Destroy Worker app
+        run: |
+          echo "Destroying ${{ env.APP_PREFIX }}-worker..."
+          flyctl apps destroy ${{ env.APP_PREFIX }}-worker --yes || echo "App may not exist or already destroyed"
+
+  # Destroy Frontend
+  destroy-frontend:
+    name: Destroy Frontend
+    needs: validate
+    runs-on: ubuntu-latest
+    if: |
+      needs.validate.outputs.confirmed == 'true' &&
+      github.event.inputs.destroy_frontend == 'true' &&
+      github.event.inputs.scale_to_zero != 'true'
+    steps:
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Destroy Frontend app
+        run: |
+          echo "Destroying ${{ env.APP_PREFIX }}-frontend..."
+          flyctl apps destroy ${{ env.APP_PREFIX }}-frontend --yes || echo "App may not exist or already destroyed"
+
+  # Destroy Database (DANGEROUS)
+  destroy-database:
+    name: Destroy Database
+    needs: [validate, destroy-api, destroy-worker]
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      needs.validate.outputs.confirmed == 'true' &&
+      github.event.inputs.destroy_database == 'true' &&
+      github.event.inputs.scale_to_zero != 'true'
+    steps:
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Double-check database destruction
+        run: |
+          echo "::warning::⚠️ DESTROYING DATABASE - ALL DATA WILL BE LOST!"
+          echo "Waiting 10 seconds before proceeding..."
+          sleep 10
+
+      - name: Destroy Postgres database
+        run: |
+          echo "Destroying ${{ env.APP_PREFIX }}-db..."
+          flyctl postgres destroy ${{ env.APP_PREFIX }}-db --yes || echo "Database may not exist or already destroyed"
+
+  # Summary job
+  destruction-summary:
+    name: Destruction Summary
+    needs: [validate, scale-to-zero, destroy-api, destroy-worker, destroy-frontend, destroy-database]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## Undeploy Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment**: ${{ github.event.inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Mode**: ${{ github.event.inputs.scale_to_zero == 'true' && 'Scale to Zero' || 'Destroy' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Action | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|--------|" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ github.event.inputs.scale_to_zero }}" == "true" ]]; then
+            echo "| API | Scale to Zero | ${{ needs.scale-to-zero.result }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Worker | Scale to Zero | ${{ needs.scale-to-zero.result }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Frontend | Scale to Zero | ${{ needs.scale-to-zero.result }} |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| API | Destroy | ${{ needs.destroy-api.result }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Worker | Destroy | ${{ needs.destroy-worker.result }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Frontend | Destroy | ${{ needs.destroy-frontend.result }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Database | Destroy | ${{ needs.destroy-database.result }} |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Final status
+        run: |
+          echo ""
+          echo "Environment ${{ github.event.inputs.environment }} has been processed."
+          if [[ "${{ github.event.inputs.scale_to_zero }}" == "true" ]]; then
+            echo "Apps scaled to zero - can be restored with deploy workflow."
+          else
+            echo "Apps destroyed - must be recreated with deploy workflow."
+          fi

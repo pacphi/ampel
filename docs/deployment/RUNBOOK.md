@@ -63,13 +63,15 @@ fly apps restart ampel-api
 
 ### Standard Deployment (via CI/CD)
 
-1. Push code to `main` branch
+1. Push code to `production` branch (or merge PR into `production`)
 2. GitHub Actions automatically runs tests
 3. If tests pass, deploys to Fly.io
 4. Monitor deployment:
    ```bash
    fly logs --app ampel-api -f
    ```
+
+> **Note**: The deploy workflow only triggers on the `production` branch to prevent accidental deployments. Use manual workflow dispatch for staging deployments or when deploying from other branches.
 
 ### Manual Deployment
 
@@ -658,5 +660,84 @@ LIMIT 10;
 
 ---
 
-**Runbook Version**: 1.0
+## Cost Management & Teardown
+
+### Scale to Zero (Temporary Shutdown)
+
+To stop compute costs while preserving configuration:
+
+**Via GitHub Actions (Recommended):**
+
+1. Go to Actions → "Undeploy from Fly.io"
+2. Click "Run workflow"
+3. Set `scale_to_zero: true`
+4. Type "DESTROY" in confirmation field
+5. Run workflow
+
+**Via CLI:**
+
+```bash
+# Scale all apps to zero instances
+fly scale count 0 --app ampel-api --yes
+fly scale count 0 --app ampel-worker --yes
+fly scale count 0 --app ampel-frontend --yes
+
+# Verify
+fly status --app ampel-api
+```
+
+**To restore:**
+
+```bash
+fly scale count 1 --app ampel-api
+fly scale count 1 --app ampel-worker
+fly scale count 1 --app ampel-frontend
+```
+
+Or run the deploy workflow with `force_deploy: true`.
+
+### Complete Environment Teardown
+
+**⚠️ WARNING: This destroys all apps and optionally the database. Data loss is permanent.**
+
+**Via GitHub Actions:**
+
+1. Go to Actions → "Undeploy from Fly.io"
+2. Click "Run workflow"
+3. Select environment (`staging` or `production`)
+4. Check components to destroy
+5. Type "DESTROY" in confirmation field
+6. Run workflow
+
+**Via CLI:**
+
+```bash
+# Destroy apps (preserves database)
+fly apps destroy ampel-api --yes
+fly apps destroy ampel-worker --yes
+fly apps destroy ampel-frontend --yes
+
+# DANGEROUS: Destroy database (all data lost)
+fly postgres destroy ampel-db --yes
+
+# DANGEROUS: Destroy Redis
+fly redis destroy ampel-redis --yes
+```
+
+### Cost Monitoring
+
+```bash
+# Check billing
+fly billing show
+
+# Check app resource usage
+fly vm status --app ampel-api
+
+# List all apps in org
+fly apps list --org ampel-org
+```
+
+---
+
+**Runbook Version**: 1.1
 **Next Review Date**: 2025-03-22

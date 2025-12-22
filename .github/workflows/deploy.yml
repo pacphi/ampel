@@ -1,10 +1,11 @@
 name: Deploy to Fly.io
 
-# Trigger on push to main branch or manual workflow dispatch
+# Trigger on push to production branch or manual workflow dispatch
+# Cost-conscious: Only deploys on explicit push to production branch
 on:
   push:
     branches:
-      - main
+      - production
     paths:
       - 'crates/**'
       - 'frontend/**'
@@ -15,6 +16,13 @@ on:
       - 'Cargo.lock'
   workflow_dispatch:
     inputs:
+      environment:
+        description: 'Target environment'
+        type: choice
+        options:
+          - production
+          - staging
+        default: production
       deploy_api:
         description: 'Deploy API server'
         type: boolean
@@ -31,10 +39,18 @@ on:
         description: 'Run database migrations'
         type: boolean
         default: true
+      skip_tests:
+        description: 'Skip tests (use with caution)'
+        type: boolean
+        default: false
+      force_deploy:
+        description: 'Force deploy even without changes'
+        type: boolean
+        default: false
 
 # Prevent concurrent deployments
 concurrency:
-  group: deploy-${{ github.ref }}
+  group: deploy-${{ github.event.inputs.environment || 'production' }}-${{ github.ref }}
   cancel-in-progress: false
 
 env:
@@ -42,6 +58,8 @@ env:
   RUST_VERSION: '1.91.1'
   NODE_VERSION: '20'
   PNPM_VERSION: '10.24.0'
+  # App name prefix - change for different environments
+  APP_PREFIX: ${{ github.event.inputs.environment == 'staging' && 'ampel-staging' || 'ampel' }}
 
 jobs:
   # Detect which components have changed
@@ -74,15 +92,17 @@ jobs:
               - 'fly/nginx.conf'
             fly_config:
               - 'fly/**'
-      - 'docker/Dockerfile.*'
-      - 'docker/nginx.conf'
+              - 'docker/Dockerfile.*'
+              - 'docker/nginx.conf'
 
   # Test backend before deployment
   test-backend:
     name: Test Backend
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.backend == 'true' || github.event_name == 'workflow_dispatch'
+    if: |
+      (needs.changes.outputs.backend == 'true' || github.event.inputs.force_deploy == 'true') &&
+      github.event.inputs.skip_tests != 'true'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -114,7 +134,9 @@ jobs:
     name: Test Frontend
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.frontend == 'true' || github.event_name == 'workflow_dispatch'
+    if: |
+      (needs.changes.outputs.frontend == 'true' || github.event.inputs.force_deploy == 'true') &&
+      github.event.inputs.skip_tests != 'true'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -154,7 +176,7 @@ jobs:
       - name: Build frontend
         run: cd frontend && pnpm run build
         env:
-          VITE_API_URL: https://ampel-api.fly.dev
+          VITE_API_URL: https://${{ env.APP_PREFIX }}-api.fly.dev
 
   # Deploy API server
   deploy-api:
@@ -164,7 +186,7 @@ jobs:
     if: |
       always() &&
       (needs.test-backend.result == 'success' || needs.test-backend.result == 'skipped') &&
-      (needs.changes.outputs.backend == 'true' || github.event.inputs.deploy_api == 'true')
+      (needs.changes.outputs.backend == 'true' || github.event.inputs.deploy_api == 'true' || github.event.inputs.force_deploy == 'true')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -177,6 +199,7 @@ jobs:
           flyctl deploy \
             --config fly/fly.api.toml \
             --dockerfile docker/Dockerfile.api \
+            --app ${{ env.APP_PREFIX }}-api \
             --remote-only \
             --strategy rolling \
             --wait-timeout 300
@@ -184,12 +207,12 @@ jobs:
       - name: Verify API deployment
         run: |
           echo "Checking API status..."
-          flyctl status --app ampel-api
+          flyctl status --app ${{ env.APP_PREFIX }}-api
           echo "Checking health..."
-          flyctl checks list --app ampel-api
+          flyctl checks list --app ${{ env.APP_PREFIX }}-api
           echo "Testing health endpoint..."
           sleep 10
-          curl --retry 5 --retry-delay 5 --fail https://ampel-api.fly.dev/health
+          curl --retry 5 --retry-delay 5 --fail https://${{ env.APP_PREFIX }}-api.fly.dev/health
 
   # Deploy Worker service
   deploy-worker:
@@ -199,7 +222,7 @@ jobs:
     if: |
       always() &&
       (needs.test-backend.result == 'success' || needs.test-backend.result == 'skipped') &&
-      (needs.changes.outputs.backend == 'true' || github.event.inputs.deploy_worker == 'true')
+      (needs.changes.outputs.backend == 'true' || github.event.inputs.deploy_worker == 'true' || github.event.inputs.force_deploy == 'true')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -212,6 +235,7 @@ jobs:
           flyctl deploy \
             --config fly/fly.worker.toml \
             --dockerfile docker/Dockerfile.worker \
+            --app ${{ env.APP_PREFIX }}-worker \
             --remote-only \
             --strategy rolling \
             --wait-timeout 300
@@ -219,7 +243,7 @@ jobs:
       - name: Verify Worker deployment
         run: |
           echo "Checking Worker status..."
-          flyctl status --app ampel-worker
+          flyctl status --app ${{ env.APP_PREFIX }}-worker
 
   # Deploy Frontend
   deploy-frontend:
@@ -229,7 +253,7 @@ jobs:
     if: |
       always() &&
       (needs.test-frontend.result == 'success' || needs.test-frontend.result == 'skipped') &&
-      (needs.changes.outputs.frontend == 'true' || github.event.inputs.deploy_frontend == 'true')
+      (needs.changes.outputs.frontend == 'true' || github.event.inputs.deploy_frontend == 'true' || github.event.inputs.force_deploy == 'true')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -242,7 +266,8 @@ jobs:
           flyctl deploy \
             --config fly/fly.frontend.toml \
             --dockerfile docker/Dockerfile.frontend \
-            --build-arg VITE_API_URL=${{ secrets.VITE_API_URL || 'https://ampel-api.fly.dev' }} \
+            --app ${{ env.APP_PREFIX }}-frontend \
+            --build-arg VITE_API_URL=${{ secrets.VITE_API_URL || format('https://{0}-api.fly.dev', env.APP_PREFIX) }} \
             --remote-only \
             --strategy rolling \
             --wait-timeout 300
@@ -250,12 +275,12 @@ jobs:
       - name: Verify Frontend deployment
         run: |
           echo "Checking Frontend status..."
-          flyctl status --app ampel-frontend
+          flyctl status --app ${{ env.APP_PREFIX }}-frontend
           echo "Checking health..."
-          flyctl checks list --app ampel-frontend
+          flyctl checks list --app ${{ env.APP_PREFIX }}-frontend
           echo "Testing frontend..."
           sleep 10
-          curl --retry 5 --retry-delay 5 --fail https://ampel-frontend.fly.dev/health
+          curl --retry 5 --retry-delay 5 --fail https://${{ env.APP_PREFIX }}-frontend.fly.dev/health
 
   # Database migrations (run after API deployment)
   migrate-database:
@@ -276,12 +301,12 @@ jobs:
       - name: Run migrations
         run: |
           echo "Running database migrations..."
-          flyctl ssh console --app ampel-api -C "/app/ampel-api migrate run" || true
+          flyctl ssh console --app ${{ env.APP_PREFIX }}-api -C "/app/ampel-api migrate run" || true
 
       - name: Verify migrations
         run: |
           echo "Checking migration status..."
-          flyctl ssh console --app ampel-api -C "/app/ampel-api migrate status" || true
+          flyctl ssh console --app ${{ env.APP_PREFIX }}-api -C "/app/ampel-api migrate status" || true
 
   # Summary job
   deployment-summary:
@@ -294,6 +319,9 @@ jobs:
         run: |
           echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment**: ${{ github.event.inputs.environment || 'production' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| API Server | ${{ needs.deploy-api.result }} |" >> $GITHUB_STEP_SUMMARY
@@ -302,9 +330,9 @@ jobs:
           echo "| Migrations | ${{ needs.migrate-database.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Application URLs" >> $GITHUB_STEP_SUMMARY
-          echo "- Frontend: https://ampel-frontend.fly.dev" >> $GITHUB_STEP_SUMMARY
-          echo "- API: https://ampel-api.fly.dev" >> $GITHUB_STEP_SUMMARY
-          echo "- Health: https://ampel-api.fly.dev/health" >> $GITHUB_STEP_SUMMARY
+          echo "- Frontend: https://${{ env.APP_PREFIX }}-frontend.fly.dev" >> $GITHUB_STEP_SUMMARY
+          echo "- API: https://${{ env.APP_PREFIX }}-api.fly.dev" >> $GITHUB_STEP_SUMMARY
+          echo "- Health: https://${{ env.APP_PREFIX }}-api.fly.dev/health" >> $GITHUB_STEP_SUMMARY
 
       - name: Check overall status
         run: |
