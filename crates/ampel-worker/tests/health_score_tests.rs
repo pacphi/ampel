@@ -335,21 +335,23 @@ async fn test_health_score_with_good_metrics() {
         .expect("Failed to create repo");
 
     // Create PRs with good metrics (fast merge/review times)
+    // merged_at must be within last 7 days for throughput calculation
     let now = Utc::now();
     for i in 1..=15 {
-        let pr = create_test_pull_request(db, repo.id, i, "merged", now - Duration::days(20))
+        let pr = create_test_pull_request(db, repo.id, i, "merged", now - Duration::days(10))
             .await
             .expect("Failed to create PR");
 
         // Fast merge time: 2 hours (7200 seconds)
         // Fast review time: 30 minutes (1800 seconds)
+        // Merged within last 7 days to count toward throughput
         create_test_pr_metrics(
             db,
             pr.id,
             repo.id,
             Some(7200),
             Some(1800),
-            now - Duration::days(15),
+            now - Duration::days(3),
         )
         .await
         .expect("Failed to create metrics");
@@ -374,10 +376,11 @@ async fn test_health_score_with_good_metrics() {
     assert!(score.avg_time_to_merge.is_some());
     assert!(score.avg_review_time.is_some());
     assert_eq!(score.stale_pr_count, Some(0));
-    // 15 PRs merged in last 30 days, all within last 7 days window would be counted
-    assert!(
-        score.pr_throughput.unwrap_or(0) >= 10,
-        "Should have high throughput"
+    // 15 PRs merged within last 7 days should all be counted in throughput
+    assert_eq!(
+        score.pr_throughput,
+        Some(15),
+        "Should have throughput of 15 (all PRs merged in last 7 days)"
     );
 
     test_db.cleanup().await;

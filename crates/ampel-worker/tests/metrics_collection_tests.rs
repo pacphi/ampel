@@ -169,13 +169,14 @@ async fn test_metrics_collection_basic() {
         .expect("Failed to create repo");
 
     // Create merged PR
+    // Created 10 hours ago, merged 10 hours later (now) = 10 hour merge time
     let created = Utc::now() - Duration::hours(10);
-    let merged = Utc::now() - Duration::hours(2);
+    let merged = created + Duration::hours(10); // 10 hours after creation
     let pr = create_test_pull_request(db, repo.id, 1, "merged", "author1", created, Some(merged))
         .await
         .expect("Failed to create PR");
 
-    // Add review
+    // Add review 1 hour after creation
     let review_time = created + Duration::hours(1);
     create_test_review(db, pr.id, "reviewer1", "approved", review_time)
         .await
