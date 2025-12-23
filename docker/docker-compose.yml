@@ -69,6 +69,7 @@ services:
       dockerfile: docker/Dockerfile.frontend
       args:
         VITE_API_URL: http://localhost:8080/api
+        NGINX_CONFIG: nginx.dev.conf  # Use permissive config for local development
     ports:
       - "3000:8080"  # Map to 8080: non-root nginx user cannot bind to port 80
     depends_on:

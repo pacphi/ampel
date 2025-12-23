@@ -11,7 +11,7 @@ on:
       - 'frontend/**'
       - 'fly/**'
       - 'docker/Dockerfile.*'
-      - 'docker/nginx.conf'
+      - 'docker/nginx.*.conf'
       - 'Cargo.toml'
       - 'Cargo.lock'
   workflow_dispatch:
@@ -88,12 +88,12 @@ jobs:
             frontend:
               - 'frontend/**'
               - 'docker/Dockerfile.frontend'
-              - 'docker/nginx.conf'
+              - 'docker/nginx.*.conf'
               - 'fly/fly.frontend.toml'
             fly_config:
               - 'fly/**'
               - 'docker/Dockerfile.*'
-              - 'docker/nginx.conf'
+              - 'docker/nginx.*.conf'
 
   # Test backend before deployment
   test-backend:
@@ -268,6 +268,7 @@ jobs:
             --dockerfile docker/Dockerfile.frontend \
             --app ${{ env.APP_PREFIX }}-frontend \
             --build-arg VITE_API_URL=${{ secrets.VITE_API_URL || format('https://{0}-api.fly.dev', env.APP_PREFIX) }} \
+            --build-arg NGINX_CONFIG=nginx.prod.conf \
             --remote-only \
             --strategy rolling \
             --wait-timeout 300

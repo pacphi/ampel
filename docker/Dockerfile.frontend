@@ -48,8 +48,12 @@ RUN pnpm run build
 # =============================================================================
 FROM nginx:1.27-alpine AS runtime
 
-# Copy custom nginx configuration
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+# Build argument to select nginx configuration
+# Use nginx.dev.conf for local development, nginx.prod.conf for production
+ARG NGINX_CONFIG=nginx.prod.conf
+
+# Copy custom nginx configuration based on build argument
+COPY docker/${NGINX_CONFIG} /etc/nginx/conf.d/default.conf
 
 # Copy built static files from builder
 COPY --from=builder /app/dist /usr/share/nginx/html
@@ -59,6 +63,8 @@ RUN chown -R nginx:nginx /usr/share/nginx/html && \
     chmod -R 755 /usr/share/nginx/html && \
     chown -R nginx:nginx /var/cache/nginx && \
     chown -R nginx:nginx /var/log/nginx && \
+    chown nginx:nginx /etc/nginx/conf.d/default.conf && \
+    chmod 644 /etc/nginx/conf.d/default.conf && \
     touch /var/run/nginx.pid && \
     chown -R nginx:nginx /var/run/nginx.pid
 

@@ -89,6 +89,23 @@ frontend/src/
 └── types/              # TypeScript interfaces
 ```
 
+### Nginx Configuration (Dual Environment Setup)
+
+The project uses separate nginx configurations for development and production:
+
+- **`docker/nginx.dev.conf`**: Permissive CSP for local Docker development
+  - Allows `localhost:*` and `127.0.0.1:*` connections
+  - Includes `'unsafe-eval'` for development tools
+  - Used by `docker-compose.yml` via `NGINX_CONFIG` build arg
+  - Fixes Firefox blocking issues when frontend (port 3000) calls API (port 8080)
+
+- **`docker/nginx.prod.conf`**: Strict CSP for Fly.io production deployment
+  - Only allows connections to production API domains
+  - Removes unsafe directives
+  - Used by `.github/workflows/deploy.yml` for Fly.io deployments
+
+**Important**: Never deploy `nginx.dev.conf` to production. The GitHub Actions workflow automatically uses `nginx.prod.conf` for all Fly.io deployments.
+
 ### Key Patterns
 
 - **State Management**: TanStack Query for server state caching
