@@ -100,7 +100,8 @@ describe('Settings', () => {
         expect(profileElements.length).toBeGreaterThanOrEqual(1);
       });
       expect(screen.getByText('Accounts')).toBeInTheDocument();
-      expect(screen.getByText('Filters')).toBeInTheDocument();
+      expect(screen.getByText('PR Filters')).toBeInTheDocument();
+      expect(screen.getByText('Repository Filters')).toBeInTheDocument();
       expect(screen.getByText('Notifications')).toBeInTheDocument();
       expect(screen.getByText('Behavior')).toBeInTheDocument();
     });
@@ -115,7 +116,7 @@ describe('Settings', () => {
       });
     });
 
-    it('navigates to filters page', async () => {
+    it('navigates to PR filters page', async () => {
       const user = userEvent.setup();
       mockedPrFiltersApi.get.mockResolvedValue({
         allowedActors: ['dependabot[bot]'],
@@ -125,11 +126,12 @@ describe('Settings', () => {
 
       renderSettings();
 
-      const filtersLink = screen.getByText('Filters');
+      const filtersLink = screen.getByText('PR Filters');
       await user.click(filtersLink);
 
       await waitFor(() => {
-        expect(screen.getByText('PR Filters')).toBeInTheDocument();
+        // Card title should show 'PR Filters'
+        expect(screen.getByRole('heading', { name: 'PR Filters' })).toBeInTheDocument();
       });
     });
   });
@@ -271,7 +273,7 @@ describe('Settings', () => {
 
       renderSettings();
 
-      const filtersLink = screen.getByText('Filters');
+      const filtersLink = screen.getByText('PR Filters');
       await user.click(filtersLink);
 
       await waitFor(() => {
@@ -295,7 +297,7 @@ describe('Settings', () => {
 
       renderSettings();
 
-      const filtersLink = screen.getByText('Filters');
+      const filtersLink = screen.getByText('PR Filters');
       await user.click(filtersLink);
 
       await waitFor(() => {
@@ -331,7 +333,7 @@ describe('Settings', () => {
 
       renderSettings();
 
-      const filtersLink = screen.getByText('Filters');
+      const filtersLink = screen.getByText('PR Filters');
       await user.click(filtersLink);
 
       await waitFor(() => {
@@ -361,7 +363,7 @@ describe('Settings', () => {
 
       renderSettings();
 
-      const filtersLink = screen.getByText('Filters');
+      const filtersLink = screen.getByText('PR Filters');
       await user.click(filtersLink);
 
       await waitFor(() => {
@@ -392,7 +394,7 @@ describe('Settings', () => {
 
       renderSettings();
 
-      const filtersLink = screen.getByText('Filters');
+      const filtersLink = screen.getByText('PR Filters');
       await user.click(filtersLink);
 
       await waitFor(() => {

@@ -1,4 +1,5 @@
 import StatusBadge from './StatusBadge';
+import RepositoryStatusIcons from './RepositoryStatusIcons';
 import { formatRelativeTime } from '@/lib/utils';
 import type { RepositoryWithStatus } from '@/types';
 import { ExternalLink, GitPullRequest } from 'lucide-react';
@@ -26,6 +27,7 @@ export default function ListView({ repositories }: ListViewProps) {
           <tr className="border-b bg-muted/50">
             <th className="px-4 py-3 text-left text-sm font-medium">Status</th>
             <th className="px-4 py-3 text-left text-sm font-medium">Repository</th>
+            <th className="px-4 py-3 text-left text-sm font-medium">Visibility</th>
             <th className="px-4 py-3 text-left text-sm font-medium">Provider</th>
             <th className="px-4 py-3 text-left text-sm font-medium">PRs</th>
             <th className="px-4 py-3 text-left text-sm font-medium">Last Updated</th>
@@ -43,6 +45,13 @@ export default function ListView({ repositories }: ListViewProps) {
                   <p className="font-medium">{repo.name}</p>
                   <p className="text-sm text-muted-foreground">{repo.owner}</p>
                 </div>
+              </td>
+              <td className="px-4 py-3">
+                <RepositoryStatusIcons
+                  isPrivate={repo.isPrivate}
+                  isArchived={repo.isArchived}
+                  size="md"
+                />
               </td>
               <td className="px-4 py-3 capitalize">{repo.provider}</td>
               <td className="px-4 py-3">

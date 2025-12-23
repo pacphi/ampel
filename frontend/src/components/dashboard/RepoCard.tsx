@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import StatusBadge from './StatusBadge';
+import RepositoryStatusIcons from './RepositoryStatusIcons';
 import { formatRelativeTime } from '@/lib/utils';
 import type { RepositoryWithStatus } from '@/types';
 import { ExternalLink, GitPullRequest } from 'lucide-react';
@@ -25,6 +26,11 @@ export default function RepoCard({ repository }: RepoCardProps) {
           <div className="flex items-center gap-2">
             <StatusBadge status={repository.status} size="lg" />
             <ProviderIcon className="h-4 w-4 text-muted-foreground" />
+            <RepositoryStatusIcons
+              isPrivate={repository.isPrivate}
+              isArchived={repository.isArchived}
+              size="md"
+            />
           </div>
           <a
             href={repository.url}

@@ -10,6 +10,7 @@ import ListView from '@/components/dashboard/ListView';
 import PRListView from '@/components/dashboard/PRListView';
 import { Grid, List, RefreshCw, GitPullRequest, Boxes } from 'lucide-react';
 import type { PullRequestWithDetails } from '@/types';
+import { useRepositoryFilters } from '@/hooks/useRepositoryFilters';
 
 type ViewMode = 'grid' | 'list' | 'prs';
 
@@ -41,6 +42,7 @@ function isReadyToMerge(pr: PullRequestWithDetails, skipReviewRequirement: boole
 
 export default function Dashboard() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const { filterRepositories } = useRepositoryFilters();
 
   const { data: summary, isLoading: summaryLoading } = useQuery({
     queryKey: ['dashboard', 'summary'],
@@ -77,6 +79,11 @@ export default function Dashboard() {
   }, [prsData, settings]);
 
   const isLoading = summaryLoading || reposLoading;
+
+  // Apply visibility filters to repositories
+  const filteredRepositories = useMemo(() => {
+    return filterRepositories(repositories || []);
+  }, [repositories, filterRepositories]);
 
   return (
     <div className="space-y-6">
@@ -168,9 +175,9 @@ export default function Dashboard() {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
       ) : viewMode === 'grid' ? (
-        <GridView repositories={repositories || []} />
+        <GridView repositories={filteredRepositories} />
       ) : (
-        <ListView repositories={repositories || []} />
+        <ListView repositories={filteredRepositories} />
       )}
     </div>
   );
