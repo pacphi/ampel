@@ -110,7 +110,10 @@ pub fn create_router(state: AppState) -> Router {
         // Bulk merge routes
         .route("/api/merge/bulk", post(bulk_merge::bulk_merge))
         .route("/api/merge/operations", get(bulk_merge::list_operations))
-        .route("/api/merge/operations/:operation_id", get(bulk_merge::get_operation))
+        .route(
+            "/api/merge/operations/:operation_id",
+            get(bulk_merge::get_operation),
+        )
         // Bot/Auto-merge routes
         .route(
             "/api/repositories/:repo_id/auto-merge",

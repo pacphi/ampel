@@ -744,16 +744,16 @@ Before going to production:
 
 ### Deployment Configuration
 
-| File                         | Purpose                                                |
-| ---------------------------- | ------------------------------------------------------ |
-| `fly/fly.api.toml`           | API server Fly.io configuration                        |
-| `fly/fly.worker.toml`        | Worker Fly.io configuration                            |
-| `fly/fly.frontend.toml`      | Frontend Fly.io configuration                          |
-| `docker/Dockerfile.api`      | API multi-stage build with cargo-chef                  |
-| `docker/Dockerfile.worker`   | Worker multi-stage build                               |
-| `docker/Dockerfile.frontend` | Frontend build with nginx                              |
-| `docker/nginx.conf`          | Shared nginx config (local dev + Fly.io production)    |
-| `docker/docker-compose.yml`  | Local development orchestration                        |
+| File                         | Purpose                                             |
+| ---------------------------- | --------------------------------------------------- |
+| `fly/fly.api.toml`           | API server Fly.io configuration                     |
+| `fly/fly.worker.toml`        | Worker Fly.io configuration                         |
+| `fly/fly.frontend.toml`      | Frontend Fly.io configuration                       |
+| `docker/Dockerfile.api`      | API multi-stage build with cargo-chef               |
+| `docker/Dockerfile.worker`   | Worker multi-stage build                            |
+| `docker/Dockerfile.frontend` | Frontend build with nginx                           |
+| `docker/nginx.conf`          | Shared nginx config (local dev + Fly.io production) |
+| `docker/docker-compose.yml`  | Local development orchestration                     |
 
 ### CI/CD
 

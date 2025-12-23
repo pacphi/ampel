@@ -75,6 +75,7 @@ The frontend service maps **host port 3000** to **container port 8080**. This co
 - This aligns with Fly.io's default port expectations for production deployment
 
 **References:**
+
 - [Fly.io nginx port configuration](https://fly.io/docs/app-guides/global-nginx-proxy/) - Fly.io expects port 8080 by default
 - [nginx-unprivileged official image](https://github.com/nginx/docker-nginx-unprivileged) - Uses port 8080 as standard
 - [Running nginx as non-root](https://support.tools/nginx-root-non-root/) - Security best practices
