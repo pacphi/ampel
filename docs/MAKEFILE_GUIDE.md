@@ -45,15 +45,16 @@ make install build-release
 
 ### Most Common Commands
 
-| Command             | Description                    | When to Use                                  |
-| ------------------- | ------------------------------ | -------------------------------------------- |
-| `make help`         | Show all available commands    | When you forget a command                    |
-| `make install`      | Install all dependencies       | First time setup, after pulling changes      |
-| `make dev-api`      | Start API server               | Backend development                          |
-| `make dev-frontend` | Start frontend dev server      | Frontend development                         |
-| `make test`         | Run all tests                  | Before committing code                       |
-| `make lint-fix`     | Auto-fix code issues           | Before committing, during development        |
-| `make docker-up`    | Start all services with Docker | Full-stack development, testing integrations |
+| Command                 | Description                           | When to Use                                  |
+| ----------------------- | ------------------------------------- | -------------------------------------------- |
+| `make help`             | Show all available commands           | When you forget a command                    |
+| `make install`          | Install all dependencies              | First time setup, after pulling changes      |
+| `make dev-api`          | Start API server                      | Backend development                          |
+| `make dev-frontend`     | Start frontend dev server             | Frontend development                         |
+| `make test`             | Run all tests                         | Before committing code                       |
+| `make test-integration` | Run integration tests with PostgreSQL | Mimicking CI locally                         |
+| `make lint-fix`         | Auto-fix code issues                  | Before committing, during development        |
+| `make docker-up`        | Start all services with Docker        | Full-stack development, testing integrations |
 
 ### Common Workflows
 
@@ -496,6 +497,59 @@ cargo test test_login    # Specific test
 cargo test --lib         # Only unit tests
 cargo test --test integration  # Only integration tests
 ```
+
+---
+
+### `make test-integration`
+
+Runs **integration tests with PostgreSQL** using the same configuration as CI.
+
+**What it does:**
+
+- Installs `cargo-nextest` if not present
+- Starts PostgreSQL via Docker Compose
+- Creates `ampel_test` database if needed
+- Sources `JWT_SECRET` and `ENCRYPTION_KEY` from `.env`
+- Runs tests with retries and parallel execution (same as GitHub Actions)
+
+**When to use:**
+
+- Validating changes pass CI before pushing
+- Testing PostgreSQL-specific code paths (skipped in SQLite mode)
+- Debugging CI failures locally
+
+**Prerequisites:**
+
+- Docker installed and running
+- `.env` file configured with `JWT_SECRET` and `ENCRYPTION_KEY`
+
+**Example:**
+
+```bash
+$ make test-integration
+==> Running integration tests with PostgreSQL (CI mode)...
+Waiting for PostgreSQL to be ready...
+────────────
+ Nextest run ID abc123 with nextest profile: default
+    Starting 200 tests across 24 binaries
+        PASS [   0.234s] ampel-api::auth_tests test_login_success
+        PASS [   0.123s] ampel-api::auth_tests test_register_success
+...
+   Summary [  45.678s] 200 tests run: 200 passed, 0 skipped
+```
+
+**Test configuration (mirrors CI):**
+
+- `--all-features`: Enable all Cargo features
+- `--no-fail-fast`: Run all tests even if some fail
+- `--test-threads 2`: Run 2 tests in parallel
+- `--retries 3`: Retry flaky tests up to 3 times
+
+**Troubleshooting:**
+
+- **"Cannot connect to Docker"**: Ensure Docker daemon is running
+- **Database errors**: Run `make docker-down` then try again
+- **Missing secrets**: Ensure `.env` has `JWT_SECRET` and `ENCRYPTION_KEY`
 
 ---
 
@@ -1561,6 +1615,9 @@ make dev-worker       # Terminal 3 (if needed)
 make format
 make lint-fix
 make test
+
+# Match CI locally (PostgreSQL integration tests)
+make test-integration
 
 # Deployment
 make build-release
