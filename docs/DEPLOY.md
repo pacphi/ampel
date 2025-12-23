@@ -226,19 +226,14 @@ All deployment configuration files are in the `fly/` directory:
 fly/
 ├── fly.api.toml        # API server configuration
 ├── fly.worker.toml     # Worker configuration
-├── fly.frontend.toml   # Frontend configuration
-├── fly/               # Fly.io deployment configs
-│   ├── fly.api.toml
-│   ├── fly.worker.toml
-│   ├── fly.frontend.toml
-│   └── nginx.conf
-├── docker/            # Docker build assets
-│   ├── Dockerfile.api
-│   ├── Dockerfile.worker
-│   ├── Dockerfile.frontend
-│   ├── docker-compose.yml
-│   └── nginx.conf
-└── nginx.conf          # nginx configuration for SPA
+└── fly.frontend.toml   # Frontend configuration
+
+docker/
+├── Dockerfile.api      # API multi-stage build
+├── Dockerfile.worker   # Worker build
+├── Dockerfile.frontend # Frontend build with nginx
+├── docker-compose.yml  # Local development orchestration
+└── nginx.conf          # Shared nginx config (used by both local and Fly.io)
 ```
 
 ### Deploy API Server
@@ -749,17 +744,16 @@ Before going to production:
 
 ### Deployment Configuration
 
-| File                         | Purpose                                       |
-| ---------------------------- | --------------------------------------------- |
-| `fly/fly.api.toml`           | API server Fly.io configuration               |
-| `fly/fly.worker.toml`        | Worker Fly.io configuration                   |
-| `fly/fly.frontend.toml`      | Frontend Fly.io configuration                 |
-| `fly/nginx.conf`             | Fly.io-specific nginx configuration           |
-| `docker/Dockerfile.api`      | API multi-stage build with cargo-chef         |
-| `docker/Dockerfile.worker`   | Worker multi-stage build                      |
-| `docker/Dockerfile.frontend` | Frontend build with nginx                     |
-| `docker/nginx.conf`          | nginx SPA configuration with security headers |
-| `docker/docker-compose.yml`  | Local development orchestration               |
+| File                         | Purpose                                                |
+| ---------------------------- | ------------------------------------------------------ |
+| `fly/fly.api.toml`           | API server Fly.io configuration                        |
+| `fly/fly.worker.toml`        | Worker Fly.io configuration                            |
+| `fly/fly.frontend.toml`      | Frontend Fly.io configuration                          |
+| `docker/Dockerfile.api`      | API multi-stage build with cargo-chef                  |
+| `docker/Dockerfile.worker`   | Worker multi-stage build                               |
+| `docker/Dockerfile.frontend` | Frontend build with nginx                              |
+| `docker/nginx.conf`          | Shared nginx config (local dev + Fly.io production)    |
+| `docker/docker-compose.yml`  | Local development orchestration                        |
 
 ### CI/CD
 

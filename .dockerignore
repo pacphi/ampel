@@ -44,7 +44,6 @@ LICENSE
 .gitlab-ci.yml
 .travis.yml
 fly/
-docker/
 
 # Temporary files
 tmp/
@@ -57,7 +56,6 @@ temp/
 *.db
 
 # Cargo specific
-Cargo.lock
 .cargo/
 
 # pnpm specific

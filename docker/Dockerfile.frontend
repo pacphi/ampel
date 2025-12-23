@@ -62,15 +62,22 @@ RUN chown -R nginx:nginx /usr/share/nginx/html && \
     touch /var/run/nginx.pid && \
     chown -R nginx:nginx /var/run/nginx.pid
 
-# Switch to non-root user
+# Switch to non-root user (security best practice)
+# Non-root users cannot bind to privileged ports (<1024)
+# Reference: https://support.tools/nginx-root-non-root/
 USER nginx
 
-# Expose port (8080 for Fly.io, 80 for local docker-compose)
+# Expose port 8080 (required for non-root nginx)
+# Cannot use port 80 because non-root users cannot bind to ports below 1024
+# Port 8080 is the standard for unprivileged nginx containers
+# References:
+# - https://github.com/nginx/docker-nginx-unprivileged
+# - https://fly.io/docs/app-guides/global-nginx-proxy/
 EXPOSE 8080
 
-# Health check
+# Health check (use 127.0.0.1 instead of localhost to avoid IPv6 resolution issues in Alpine)
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:8080/health || exit 1
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]

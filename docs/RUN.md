@@ -49,17 +49,35 @@ docker compose up -d
 - **API**: http://localhost:8080/api
 - **API Docs**: http://localhost:8080/swagger-ui
 
+> **Note**: The frontend container runs nginx on port 8080 internally (security requirement for non-root user), which Docker maps to localhost:3000. See [Port Configuration](#port-configuration) for details.
+
 ## Docker Compose Services
 
 The `docker-compose.yml` includes:
 
-| Service    | Port | Description              |
-| ---------- | ---- | ------------------------ |
-| `postgres` | 5432 | PostgreSQL database      |
-| `redis`    | 6379 | Redis (for job queues)   |
-| `api`      | 8080 | Ampel REST API           |
-| `worker`   | -    | Background job processor |
-| `frontend` | 3000 | React web application    |
+| Service    | Port (Host:Container) | Description              |
+| ---------- | --------------------- | ------------------------ |
+| `postgres` | 5432:5432             | PostgreSQL database      |
+| `redis`    | 6379:6379             | Redis (for job queues)   |
+| `api`      | 8080:8080             | Ampel REST API           |
+| `worker`   | -                     | Background job processor |
+| `frontend` | 3000:8080             | React web application    |
+
+### Port Configuration
+
+The frontend service maps **host port 3000** to **container port 8080**. This configuration is required for security:
+
+**Why port 8080 internally?**
+
+- The frontend container runs nginx as a **non-root user** (`USER nginx` in Dockerfile.frontend:66)
+- Non-root users cannot bind to privileged ports below 1024 (including port 80)
+- Port 8080 is the industry standard for unprivileged nginx containers
+- This aligns with Fly.io's default port expectations for production deployment
+
+**References:**
+- [Fly.io nginx port configuration](https://fly.io/docs/app-guides/global-nginx-proxy/) - Fly.io expects port 8080 by default
+- [nginx-unprivileged official image](https://github.com/nginx/docker-nginx-unprivileged) - Uses port 8080 as standard
+- [Running nginx as non-root](https://support.tools/nginx-root-non-root/) - Security best practices
 
 ## Common Operations
 
@@ -246,10 +264,12 @@ docker run -d \
 ```bash
 docker run -d \
   --name ampel-frontend \
-  -p 3000:80 \
+  -p 3000:8080 \
   -e VITE_API_URL=http://api-host:8080/api \
   ampel-frontend:latest
 ```
+
+**Note**: The frontend uses port 8080 internally (not 80) because it runs as a non-root user for security.
 
 ## Troubleshooting
 

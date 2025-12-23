@@ -88,8 +88,8 @@ jobs:
             frontend:
               - 'frontend/**'
               - 'docker/Dockerfile.frontend'
+              - 'docker/nginx.conf'
               - 'fly/fly.frontend.toml'
-              - 'fly/nginx.conf'
             fly_config:
               - 'fly/**'
               - 'docker/Dockerfile.*'
