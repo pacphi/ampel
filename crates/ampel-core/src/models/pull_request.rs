@@ -157,7 +157,7 @@ pub enum SortOrder {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PaginatedResponse<T> {
-    pub data: Vec<T>,
+    pub items: Vec<T>,
     pub total: i64,
     pub page: i32,
     pub per_page: i32,
@@ -165,10 +165,10 @@ pub struct PaginatedResponse<T> {
 }
 
 impl<T> PaginatedResponse<T> {
-    pub fn new(data: Vec<T>, total: i64, page: i32, per_page: i32) -> Self {
+    pub fn new(items: Vec<T>, total: i64, page: i32, per_page: i32) -> Self {
         let total_pages = ((total as f64) / (per_page as f64)).ceil() as i32;
         Self {
-            data,
+            items,
             total,
             page,
             per_page,

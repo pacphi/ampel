@@ -71,7 +71,7 @@ export default function Dashboard() {
 
   // Calculate "Ready to Merge" count based on user's skipReviewRequirement setting
   const readyToMergeCount = useMemo(() => {
-    const prs = prsData?.data || [];
+    const prs = prsData?.items || [];
     const skipReviewRequirement = settings?.skipReviewRequirement || false;
     return prs.filter((pr) => isReadyToMerge(pr, skipReviewRequirement)).length;
   }, [prsData, settings]);

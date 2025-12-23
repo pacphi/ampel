@@ -40,7 +40,7 @@ export default function PRListView({ filterStatus }: PRListViewProps) {
 
   // Flatten all pages into a single array
   const prs = useMemo(() => {
-    return prsData?.pages.flatMap((page) => page.data) || [];
+    return prsData?.pages.flatMap((page) => page.items) || [];
   }, [prsData]);
 
   // Get total count from the first page

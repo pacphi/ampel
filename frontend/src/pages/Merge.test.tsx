@@ -79,7 +79,7 @@ describe('Merge', () => {
   describe('Page Header', () => {
     it('renders page title and description', async () => {
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [],
+        items: [],
         total: 0,
         page: 1,
         pageSize: 100,
@@ -105,7 +105,7 @@ describe('Merge', () => {
   describe('Merge Options', () => {
     it('renders merge strategy selector', async () => {
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [],
+        items: [],
         total: 0,
         page: 1,
         pageSize: 100,
@@ -127,7 +127,7 @@ describe('Merge', () => {
 
     it('renders delete branch toggle', async () => {
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [],
+        items: [],
         total: 0,
         page: 1,
         pageSize: 100,
@@ -147,7 +147,7 @@ describe('Merge', () => {
 
     it('applies settings defaults', async () => {
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [],
+        items: [],
         total: 0,
         page: 1,
         pageSize: 100,
@@ -172,7 +172,7 @@ describe('Merge', () => {
   describe('Mergeable PRs', () => {
     it('shows empty state when no mergeable PRs', async () => {
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [
+        items: [
           {
             id: '1',
             number: 123,
@@ -206,7 +206,7 @@ describe('Merge', () => {
 
     it('displays mergeable PRs grouped by repository', async () => {
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [
+        items: [
           {
             id: '1',
             number: 123,
@@ -257,7 +257,7 @@ describe('Merge', () => {
 
     it('allows yellow PRs when skipReviewRequirement is enabled', async () => {
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [
+        items: [
           {
             id: '1',
             number: 123,
@@ -298,7 +298,7 @@ describe('Merge', () => {
     it('selects individual PR when clicked', async () => {
       const user = userEvent.setup();
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [
+        items: [
           {
             id: '1',
             number: 123,
@@ -348,7 +348,7 @@ describe('Merge', () => {
     it('selects all PRs when select all is clicked', async () => {
       const user = userEvent.setup();
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [
+        items: [
           {
             id: '1',
             number: 123,
@@ -405,7 +405,7 @@ describe('Merge', () => {
     it('merges selected PRs successfully', async () => {
       const user = userEvent.setup();
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [
+        items: [
           {
             id: '1',
             number: 123,
@@ -464,7 +464,7 @@ describe('Merge', () => {
     it('shows error toast on merge failure', async () => {
       const user = userEvent.setup();
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [
+        items: [
           {
             id: '1',
             number: 123,
@@ -517,7 +517,7 @@ describe('Merge', () => {
   describe('Blockers Display', () => {
     it('shows blockers for non-mergeable PRs', async () => {
       mockedPullRequestsApi.list.mockResolvedValue({
-        data: [
+        items: [
           {
             id: '1',
             number: 123,

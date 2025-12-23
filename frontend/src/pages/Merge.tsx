@@ -159,7 +159,7 @@ export default function Merge() {
     queryFn: () => pullRequestsApi.list(1, 100),
   });
 
-  const prs = prsResponse?.data || [];
+  const prs = prsResponse?.items || [];
   const skipReviewRequirement = settings?.skipReviewRequirement || false;
 
   // Filter to only mergeable PRs

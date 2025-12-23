@@ -52,7 +52,7 @@ describe('pullRequestsApi', () => {
   describe('list', () => {
     it('should list pull requests with default pagination', async () => {
       const mockResponse: PaginatedResponse<PullRequestWithDetails> = {
-        data: [mockPullRequest],
+        items: [mockPullRequest],
         total: 1,
         page: 1,
         perPage: 20,
@@ -73,7 +73,7 @@ describe('pullRequestsApi', () => {
 
     it('should list pull requests with custom pagination', async () => {
       const mockResponse: PaginatedResponse<PullRequestWithDetails> = {
-        data: [mockPullRequest],
+        items: [mockPullRequest],
         total: 50,
         page: 2,
         perPage: 10,

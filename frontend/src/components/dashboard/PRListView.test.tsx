@@ -93,7 +93,7 @@ describe('PRListView', () => {
   describe('Empty State', () => {
     it('shows empty state when no PRs', async () => {
       mockedUseInfinitePullRequests.mockReturnValue({
-        data: { pages: [{ data: [], total: 0 }], pageParams: [] },
+        data: { pages: [{ items: [], total: 0 }], pageParams: [] },
         isLoading: false,
         isFetchingNextPage: false,
         hasNextPage: false,
@@ -152,7 +152,7 @@ describe('PRListView', () => {
       ];
 
       mockedUseInfinitePullRequests.mockReturnValue({
-        data: { pages: [{ data: mockPRs, total: 2 }], pageParams: [] },
+        data: { pages: [{ items: mockPRs, total: 2 }], pageParams: [] },
         isLoading: false,
         isFetchingNextPage: false,
         hasNextPage: false,
@@ -194,7 +194,7 @@ describe('PRListView', () => {
       ];
 
       mockedUseInfinitePullRequests.mockReturnValue({
-        data: { pages: [{ data: mockPRs, total: 2 }], pageParams: [] },
+        data: { pages: [{ items: mockPRs, total: 2 }], pageParams: [] },
         isLoading: false,
         isFetchingNextPage: false,
         hasNextPage: false,
@@ -251,7 +251,7 @@ describe('PRListView', () => {
       ];
 
       mockedUseInfinitePullRequests.mockReturnValue({
-        data: { pages: [{ data: mockPRs, total: 3 }], pageParams: [] },
+        data: { pages: [{ items: mockPRs, total: 3 }], pageParams: [] },
         isLoading: false,
         isFetchingNextPage: false,
         hasNextPage: false,
@@ -294,7 +294,7 @@ describe('PRListView', () => {
       ];
 
       mockedUseInfinitePullRequests.mockReturnValue({
-        data: { pages: [{ data: mockPRs, total: 1 }], pageParams: [] },
+        data: { pages: [{ items: mockPRs, total: 1 }], pageParams: [] },
         isLoading: false,
         isFetchingNextPage: false,
         hasNextPage: false,
@@ -343,7 +343,7 @@ describe('PRListView', () => {
       ];
 
       mockedUseInfinitePullRequests.mockReturnValue({
-        data: { pages: [{ data: mockPRs, total: 2 }], pageParams: [] },
+        data: { pages: [{ items: mockPRs, total: 2 }], pageParams: [] },
         isLoading: false,
         isFetchingNextPage: false,
         hasNextPage: false,
@@ -381,7 +381,7 @@ describe('PRListView', () => {
       ];
 
       mockedUseInfinitePullRequests.mockReturnValue({
-        data: { pages: [{ data: mockPRs, total: 1 }], pageParams: [] },
+        data: { pages: [{ items: mockPRs, total: 1 }], pageParams: [] },
         isLoading: false,
         isFetchingNextPage: false,
         hasNextPage: false,
@@ -438,7 +438,7 @@ describe('PRListView', () => {
       ];
 
       mockedUseInfinitePullRequests.mockReturnValue({
-        data: { pages: [{ data: mockPRs, total: 1 }], pageParams: [] },
+        data: { pages: [{ items: mockPRs, total: 1 }], pageParams: [] },
         isLoading: false,
         isFetchingNextPage: false,
         hasNextPage: false,
@@ -489,7 +489,7 @@ describe('PRListView', () => {
       ];
 
       mockedUseInfinitePullRequests.mockReturnValue({
-        data: { pages: [{ data: mockPRs, total: 50 }], pageParams: [] },
+        data: { pages: [{ items: mockPRs, total: 50 }], pageParams: [] },
         isLoading: false,
         isFetchingNextPage: false,
         hasNextPage: true,
@@ -519,7 +519,7 @@ describe('PRListView', () => {
       ];
 
       mockedUseInfinitePullRequests.mockReturnValue({
-        data: { pages: [{ data: mockPRs, total: 50 }], pageParams: [] },
+        data: { pages: [{ items: mockPRs, total: 50 }], pageParams: [] },
         isLoading: false,
         isFetchingNextPage: false,
         hasNextPage: true,

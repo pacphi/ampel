@@ -13,7 +13,7 @@ export function useInfinitePullRequests(perPage = 20) {
     queryKey: ['pull-requests', 'infinite'],
     queryFn: ({ pageParam = 1 }) => pullRequestsApi.list(pageParam, perPage),
     getNextPageParam: (lastPage, allPages) => {
-      const currentCount = allPages.reduce((sum, page) => sum + page.data.length, 0);
+      const currentCount = allPages.reduce((sum, page) => sum + page.items.length, 0);
       if (currentCount < lastPage.total) {
         return allPages.length + 1;
       }
