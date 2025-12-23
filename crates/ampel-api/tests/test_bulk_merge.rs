@@ -53,7 +53,7 @@ async fn test_bulk_merge_empty_list() {
 
     let request = Request::builder()
         .method("POST")
-        .uri("/api/bulk-merge")
+        .uri("/api/merge/bulk")
         .header(header::AUTHORIZATION, format!("Bearer {}", token))
         .header(header::CONTENT_TYPE, "application/json")
         .body(Body::from(
@@ -104,7 +104,7 @@ async fn test_bulk_merge_too_many_prs() {
 
     let request = Request::builder()
         .method("POST")
-        .uri("/api/bulk-merge")
+        .uri("/api/merge/bulk")
         .header(header::AUTHORIZATION, format!("Bearer {}", token))
         .header(header::CONTENT_TYPE, "application/json")
         .body(Body::from(
@@ -150,7 +150,7 @@ async fn test_bulk_merge_nonexistent_pr() {
     let fake_uuid = "550e8400-e29b-41d4-a716-446655440000";
     let request = Request::builder()
         .method("POST")
-        .uri("/api/bulk-merge")
+        .uri("/api/merge/bulk")
         .header(header::AUTHORIZATION, format!("Bearer {}", token))
         .header(header::CONTENT_TYPE, "application/json")
         .body(Body::from(
@@ -191,7 +191,7 @@ async fn test_bulk_merge_requires_auth() {
 
     let request = Request::builder()
         .method("POST")
-        .uri("/api/bulk-merge")
+        .uri("/api/merge/bulk")
         .header(header::CONTENT_TYPE, "application/json")
         .body(Body::from(
             json!({
@@ -225,7 +225,7 @@ async fn test_get_operation_not_found() {
     let fake_uuid = "550e8400-e29b-41d4-a716-446655440000";
     let request = Request::builder()
         .method("GET")
-        .uri(format!("/api/bulk-merge/{}", fake_uuid))
+        .uri(format!("/api/merge/operations/{}", fake_uuid))
         .header(header::AUTHORIZATION, format!("Bearer {}", token))
         .body(Body::empty())
         .unwrap();
@@ -253,7 +253,7 @@ async fn test_list_operations_empty() {
 
     let request = Request::builder()
         .method("GET")
-        .uri("/api/bulk-merge")
+        .uri("/api/merge/operations")
         .header(header::AUTHORIZATION, format!("Bearer {}", token))
         .body(Body::empty())
         .unwrap();
@@ -290,7 +290,7 @@ async fn test_list_operations_with_pagination() {
 
     let request = Request::builder()
         .method("GET")
-        .uri("/api/bulk-merge?page=1&perPage=5")
+        .uri("/api/merge/operations?page=1&perPage=5")
         .header(header::AUTHORIZATION, format!("Bearer {}", token))
         .body(Body::empty())
         .unwrap();
