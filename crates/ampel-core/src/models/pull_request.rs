@@ -122,6 +122,7 @@ pub enum ReviewState {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PullRequestFilter {
     pub provider: Option<GitProvider>,
     pub status: Option<AmpelStatus>,
@@ -178,6 +179,7 @@ impl<T> PaginatedResponse<T> {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct MergeRequest {
     pub strategy: MergeStrategy,
     pub commit_title: Option<String>,
