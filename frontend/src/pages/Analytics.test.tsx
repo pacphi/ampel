@@ -86,7 +86,7 @@ describe('Analytics', () => {
       mockedAnalyticsApi.getSummary.mockReturnValue(new Promise(() => {}));
       mockedAnalyticsApi.getHealthOverview.mockReturnValue(new Promise(() => {}));
 
-      const { container } = renderAnalytics();
+      renderAnalytics();
 
       // Summary cards show "-" while loading
       expect(screen.getAllByText('-').length).toBeGreaterThan(0);

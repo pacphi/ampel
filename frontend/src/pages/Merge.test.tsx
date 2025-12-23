@@ -329,7 +329,11 @@ describe('Merge', () => {
         expect(screen.getByText('Test PR')).toBeInTheDocument();
       });
 
-      const prRow = screen.getByText('Test PR').closest('div');
+      // Find the PR row by looking for the container with the checkbox
+      // The title is nested several divs deep, so we need to find the row container
+      const prTitle = screen.getByText('Test PR');
+      // Go up until we find the div with the checkbox input
+      let prRow = prTitle.closest('.flex.items-center.gap-4.p-3');
       expect(prRow).toBeInTheDocument();
 
       const checkbox = prRow?.querySelector('input[type="checkbox"]');

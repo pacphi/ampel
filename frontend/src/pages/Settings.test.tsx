@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
@@ -95,7 +95,9 @@ describe('Settings', () => {
       renderSettings();
 
       await waitFor(() => {
-        expect(screen.getByText('Profile')).toBeInTheDocument();
+        // Profile appears in both nav and card title, so use getAllByText
+        const profileElements = screen.getAllByText('Profile');
+        expect(profileElements.length).toBeGreaterThanOrEqual(1);
       });
       expect(screen.getByText('Accounts')).toBeInTheDocument();
       expect(screen.getByText('Filters')).toBeInTheDocument();
@@ -138,15 +140,15 @@ describe('Settings', () => {
 
       // Email is masked by default, display name is shown
       expect(screen.getByText('Test User')).toBeInTheDocument();
-      // Email should be masked
-      expect(screen.getByText(/t\*\*\*t@example\.com/)).toBeInTheDocument();
+      // Email should be masked: "test" -> t + ** + t = t**t
+      expect(screen.getByText(/t\*\*t@example\.com/)).toBeInTheDocument();
     });
 
     it('masks email by default', () => {
       renderSettings();
 
       // The email is masked using the maskEmail function
-      // For test@example.com, local part is "test" -> "t**t"
+      // For test@example.com, local part is "test" (4 chars) -> t + **(length-2) + t = t**t
       expect(screen.getByText(/t\*\*t@example\.com/)).toBeInTheDocument();
     });
 
@@ -301,14 +303,14 @@ describe('Settings', () => {
       });
 
       const actorInput = screen.getByPlaceholderText(/e\.g\., dependabot/i);
-      await user.type(actorInput, 'newbot[bot]');
+      await user.type(actorInput, 'renovate-bot');
 
       const addButton = screen.getAllByRole('button', { name: /add/i })[0];
       await user.click(addButton);
 
       await waitFor(() => {
         expect(mockedPrFiltersApi.update).toHaveBeenCalledWith({
-          allowedActors: ['dependabot[bot]', 'newbot[bot]'],
+          allowedActors: ['dependabot[bot]', 'renovate-bot'],
         });
       });
 
@@ -398,7 +400,8 @@ describe('Settings', () => {
       });
 
       const maxAgeInput = screen.getByPlaceholderText(/e\.g\., 30/i);
-      await user.type(maxAgeInput, '45');
+      // Use fireEvent.change to set value directly (avoids controlled input reset issues)
+      fireEvent.change(maxAgeInput, { target: { value: '45' } });
 
       await waitFor(() => {
         expect(mockedPrFiltersApi.update).toHaveBeenCalledWith({

@@ -135,8 +135,6 @@ export default function Merge() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [strategy, setStrategy] = useState<'merge' | 'squash' | 'rebase'>('squash');
-  const [deleteBranch, setDeleteBranch] = useState(false);
   const [mergeResults, setMergeResults] = useState<BulkMergeResponse | null>(null);
   const [showResults, setShowResults] = useState(false);
 
@@ -147,13 +145,13 @@ export default function Merge() {
     staleTime: 60000,
   });
 
-  // Apply settings defaults
-  useState(() => {
-    if (settings) {
-      setStrategy(settings.defaultMergeStrategy);
-      setDeleteBranch(settings.deleteBranchesDefault);
-    }
-  });
+  // State with defaults - initialized with fallbacks, updated via user actions
+  const [strategy, setStrategy] = useState<'merge' | 'squash' | 'rebase' | null>(null);
+  const [deleteBranch, setDeleteBranch] = useState<boolean | null>(null);
+
+  // Derive effective values: use user selection if set, otherwise use settings defaults
+  const effectiveStrategy = strategy ?? settings?.defaultMergeStrategy ?? 'squash';
+  const effectiveDeleteBranch = deleteBranch ?? settings?.deleteBranchesDefault ?? false;
 
   // Fetch all PRs
   const { data: prsResponse, isLoading } = useQuery({
@@ -236,8 +234,8 @@ export default function Merge() {
 
     bulkMergeMutation.mutate({
       pullRequestIds: Array.from(selectedIds),
-      strategy,
-      deleteBranch,
+      strategy: effectiveStrategy,
+      deleteBranch: effectiveDeleteBranch,
     });
   };
 
@@ -278,7 +276,10 @@ export default function Merge() {
           <div className="flex flex-wrap gap-6">
             <div className="space-y-2">
               <Label>Merge Strategy</Label>
-              <Select value={strategy} onValueChange={(v) => setStrategy(v as typeof strategy)}>
+              <Select
+                value={effectiveStrategy}
+                onValueChange={(v) => setStrategy(v as 'merge' | 'squash' | 'rebase')}
+              >
                 <SelectTrigger className="w-[200px]">
                   <SelectValue />
                 </SelectTrigger>
@@ -291,7 +292,11 @@ export default function Merge() {
             </div>
 
             <div className="flex items-center gap-3 pt-6">
-              <Switch id="delete-branch" checked={deleteBranch} onCheckedChange={setDeleteBranch} />
+              <Switch
+                id="delete-branch"
+                checked={effectiveDeleteBranch}
+                onCheckedChange={setDeleteBranch}
+              />
               <Label htmlFor="delete-branch">Delete branches after merge</Label>
             </div>
           </div>

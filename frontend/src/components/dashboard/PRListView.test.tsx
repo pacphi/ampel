@@ -204,7 +204,9 @@ describe('PRListView', () => {
       const { container } = renderPRListView();
 
       await waitFor(() => {
-        expect(screen.getByText(/Mergeable PR/i)).toBeInTheDocument();
+        // Multiple elements may contain "Mergeable PR" text - use getAllByText
+        const elements = screen.getAllByText(/Mergeable PR/i);
+        expect(elements.length).toBeGreaterThanOrEqual(1);
       });
 
       // Look for checkbox buttons (lucide Square/CheckSquare icons)
