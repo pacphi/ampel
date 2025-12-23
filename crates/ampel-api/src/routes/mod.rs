@@ -54,7 +54,7 @@ pub fn create_router(state: AppState) -> Router {
         .route(
             "/api/repositories/:id",
             get(repositories::get_repository)
-                .put(repositories::update_repository)
+                .patch(repositories::update_repository)
                 .delete(repositories::remove_repository),
         )
         // Pull request routes
