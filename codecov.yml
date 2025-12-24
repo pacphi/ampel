@@ -1,0 +1,123 @@
+# Codecov Configuration for Ampel
+# Documentation: https://docs.codecov.com/docs/codecov-yaml
+
+coverage:
+  status:
+    # Project-level coverage requirements
+    project:
+      default:
+        target: 80%        # Target coverage percentage
+        threshold: 2%      # Allow 2% drop before failing
+        base: auto         # Compare against base branch
+        informational: false  # Fail if coverage drops below threshold
+
+    # Patch-level coverage requirements (new code in PR)
+    patch:
+      default:
+        target: 70%        # Require 70% coverage on new code
+        threshold: 1%      # Allow 1% variance
+        informational: false
+
+  # Coverage precision (decimal places)
+  precision: 2
+  round: down
+  range: "60...90"  # Yellow at 60%, green at 90%
+
+# Comment configuration for pull requests
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default  # Update existing comment
+  require_changes: true  # Only comment if coverage changed
+  require_base: false
+  require_head: true
+
+# Ignore these files/patterns from coverage
+ignore:
+  - "**/*.test.rs"
+  - "**/*.test.ts"
+  - "**/*.test.tsx"
+  - "**/tests/**"
+  - "**/mockData/**"
+  - "frontend/src/components/ui/**"  # shadcn/ui - third-party
+  - "frontend/src/vite-env.d.ts"
+  - "frontend/src/main.tsx"
+  - "crates/*/benches/**"
+  - "crates/*/examples/**"
+  - "target/**"
+  - "dist/**"
+  - "node_modules/**"
+  - "*.config.*"
+  - "**/*.d.ts"
+
+# Flag configuration to track backend/frontend separately
+flags:
+  backend:
+    paths:
+      - crates/
+    carryforward: true  # Keep previous coverage if new run fails
+
+  frontend:
+    paths:
+      - frontend/src/
+    carryforward: true
+
+# GitHub checks configuration
+github_checks:
+  annotations: true  # Show coverage annotations in PR
+
+# Notification settings
+slack:
+  enabled: false
+
+# Coverage thresholds for different components
+component_management:
+  individual_components:
+    # Backend crates
+    - component_id: ampel-api
+      name: "API Server"
+      paths:
+        - crates/ampel-api/src/**
+      thresholds:
+        - target: 75%
+          threshold: 2%
+
+    - component_id: ampel-core
+      name: "Business Logic"
+      paths:
+        - crates/ampel-core/src/**
+      thresholds:
+        - target: 85%  # Higher threshold for core logic
+          threshold: 2%
+
+    - component_id: ampel-db
+      name: "Database Layer"
+      paths:
+        - crates/ampel-db/src/**
+      thresholds:
+        - target: 80%
+          threshold: 2%
+
+    - component_id: ampel-providers
+      name: "Git Providers"
+      paths:
+        - crates/ampel-providers/src/**
+      thresholds:
+        - target: 75%
+          threshold: 2%
+
+    - component_id: ampel-worker
+      name: "Background Worker"
+      paths:
+        - crates/ampel-worker/src/**
+      thresholds:
+        - target: 70%
+          threshold: 2%
+
+    # Frontend components
+    - component_id: frontend
+      name: "Frontend"
+      paths:
+        - frontend/src/**
+      thresholds:
+        - target: 75%
+          threshold: 2%

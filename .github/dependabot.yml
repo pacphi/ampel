@@ -1,0 +1,153 @@
+# Dependabot configuration for Ampel
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # ===========================================
+  # Backend: Rust/Cargo dependencies
+  # ===========================================
+  - package-ecosystem: "cargo"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    commit-message:
+      prefix: "deps(rust)"
+    labels:
+      - "dependencies"
+      - "rust"
+    open-pull-requests-limit: 10
+    groups:
+      # Group minor/patch updates to reduce PR noise
+      rust-minor:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Keep major updates separate for review
+      rust-major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+    ignore:
+      # Ignore pre-release versions
+      - dependency-name: "*"
+        update-types: ["version-update:semver-prerelease"]
+
+  # ===========================================
+  # Frontend: npm/pnpm dependencies
+  # ===========================================
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    commit-message:
+      prefix: "deps(frontend)"
+    labels:
+      - "dependencies"
+      - "frontend"
+    open-pull-requests-limit: 10
+    groups:
+      # Group React ecosystem updates
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "react-router*"
+          - "@types/react*"
+      # Group TanStack updates
+      tanstack:
+        patterns:
+          - "@tanstack/*"
+      # Group testing dependencies
+      testing:
+        patterns:
+          - "vitest"
+          - "@testing-library/*"
+          - "@vitest/*"
+          - "jsdom"
+      # Group build tools
+      build-tools:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+          - "typescript"
+          - "tailwindcss"
+          - "postcss"
+          - "autoprefixer"
+      # Group linting/formatting
+      linting:
+        patterns:
+          - "eslint*"
+          - "@eslint/*"
+          - "prettier"
+          - "@typescript-eslint/*"
+      # Group minor/patch for everything else
+      npm-minor:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "react*"
+          - "@tanstack/*"
+          - "vitest"
+          - "@testing-library/*"
+          - "vite"
+          - "eslint*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # ===========================================
+  # Docker: Base image updates
+  # ===========================================
+  - package-ecosystem: "docker"
+    directory: "/docker"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "06:00"
+      timezone: "UTC"
+    commit-message:
+      prefix: "deps(docker)"
+    labels:
+      - "dependencies"
+      - "docker"
+    open-pull-requests-limit: 5
+
+  # ===========================================
+  # GitHub Actions: Workflow dependencies
+  # ===========================================
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    commit-message:
+      prefix: "deps(actions)"
+    labels:
+      - "dependencies"
+      - "ci"
+    open-pull-requests-limit: 5
+    groups:
+      # Group all action updates together
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+registries:
+  docker-hub:
+    type: docker-registry
+    url: https://registry.hub.docker.com
+    replaces-base: true

@@ -10,6 +10,7 @@ This document covers all aspects of testing the Rust backend, including unit tes
 - [Database Testing](#database-testing)
 - [Test Utilities](#test-utilities)
 - [Writing Tests](#writing-tests)
+- [Worker Testing](#worker-testing)
 - [Best Practices](#best-practices)
 - [Debugging](#debugging)
 - [Coverage](#coverage)
@@ -19,7 +20,7 @@ This document covers all aspects of testing the Rust backend, including unit tes
 The backend uses Rust's built-in testing framework with additional tooling:
 
 - **Test Runner**: `cargo test` (standard) or `cargo-nextest` (faster, parallel)
-- **Coverage**: `cargo-tarpaulin`
+- **Coverage**: `cargo-llvm-cov` (LLVM source-based coverage, 5-10x faster than tarpaulin)
 - **Database**: PostgreSQL for integration tests, SQLite for fast unit tests
 
 ### Testing Philosophy
@@ -381,6 +382,51 @@ Every test file should have module-level documentation:
 //! ```
 ````
 
+## Worker Testing
+
+The `ampel-worker` crate contains background job processing tests that require special patterns for testing asynchronous job execution, database interactions, and time-based operations.
+
+### Worker Test Organization
+
+Worker tests are located in `crates/ampel-worker/tests/` and cover:
+
+- **Job Execution**: Testing individual job implementations (poll_repository, cleanup, health_score, metrics_collection)
+- **Database Operations**: Verifying job-specific database queries and updates
+- **Time-Based Logic**: Testing jobs that depend on timestamps and durations
+- **Error Handling**: Ensuring jobs handle failures gracefully and support retries
+
+### Running Worker Tests
+
+```bash
+# All worker tests
+cargo test -p ampel-worker --all-features
+
+# Specific test file
+cargo test -p ampel-worker --test health_score_tests --all-features
+
+# With PostgreSQL (required for migrations)
+export DATABASE_URL="postgres://ampel:ampel@localhost:5432/ampel_test"
+export TEST_DATABASE_TYPE=postgres
+cargo test -p ampel-worker --all-features
+```
+
+### Comprehensive Testing Guide
+
+For detailed worker testing patterns, best practices, and comprehensive examples, see:
+
+📖 **[Worker Test Patterns Guide](WORKER-TEST-PATTERNS.md)**
+
+This guide covers:
+
+- Test structure and organization
+- Database setup with TestDb helper
+- Time-based testing patterns (chrono::Duration)
+- Mock data builders for PRs, reviews, and CI checks
+- Bot detection testing
+- Health score calculation testing
+- Metrics collection validation
+- Common test utilities and fixtures
+
 ## Best Practices
 
 ### DO
@@ -473,15 +519,19 @@ println!("Database at: {:?}", test_db.file_path);
 ### Generate Coverage
 
 ```bash
-# Install cargo-tarpaulin
-cargo install cargo-tarpaulin
+# Install cargo-llvm-cov (auto-installs via Makefile)
+cargo install cargo-llvm-cov --locked
+rustup component add llvm-tools-preview
 
-# Generate coverage
-cargo tarpaulin --all-features --workspace --out Html --output-dir coverage
+# Generate coverage with HTML report
+cargo llvm-cov --all-features --workspace --html --output-dir coverage
+
+# Generate LCOV format for CI integration
+cargo llvm-cov --all-features --workspace --lcov --output-path coverage/lcov.info
 
 # Open report
-open coverage/index.html  # macOS
-xdg-open coverage/index.html  # Linux
+open coverage/html/index.html  # macOS
+xdg-open coverage/html/index.html  # Linux
 ```
 
 ### Coverage Targets
@@ -561,4 +611,4 @@ ALTER USER ampel CREATEDB;
 - [Tokio Testing Guide](https://tokio.rs/tokio/topics/testing)
 - [SeaORM Testing](https://www.sea-ql.org/SeaORM/docs/write-test/testing/)
 - [cargo-nextest](https://nexte.st/)
-- [cargo-tarpaulin](https://github.com/xd009642/tarpaulin)
+- [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov)

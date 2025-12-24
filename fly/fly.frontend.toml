@@ -1,0 +1,39 @@
+# Fly.io configuration for Ampel React Frontend
+# Documentation: https://fly.io/docs/reference/configuration/
+
+app = "ampel-frontend"
+primary_region = "iad"  # Ashburn, Virginia (change if needed)
+
+# Build configuration
+[build]
+  dockerfile = "docker/Dockerfile.frontend"
+
+# Environment variables
+[env]
+  NODE_ENV = "production"
+
+# HTTP service configuration
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+# Health check configuration
+[[http_service.checks]]
+  grace_period = "5s"
+  interval = "30s"
+  method = "GET"
+  timeout = "5s"
+  path = "/health"
+
+# VM resources (frontend can use minimal resources)
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+
+# Process configuration
+[processes]
+  app = "nginx -g 'daemon off;'"

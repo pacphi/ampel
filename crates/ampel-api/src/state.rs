@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use metrics_exporter_prometheus::PrometheusHandle;
 use sea_orm::DatabaseConnection;
 
 use ampel_core::services::AuthService;
@@ -15,6 +16,7 @@ pub struct AppState {
     pub encryption_service: Arc<EncryptionService>,
     pub provider_factory: Arc<ProviderFactory>,
     pub config: Arc<Config>,
+    pub metrics_handle: PrometheusHandle,
 }
 
 impl AppState {
@@ -24,6 +26,7 @@ impl AppState {
         encryption_service: EncryptionService,
         provider_factory: ProviderFactory,
         config: Config,
+        metrics_handle: PrometheusHandle,
     ) -> Self {
         Self {
             db,
@@ -31,6 +34,7 @@ impl AppState {
             encryption_service: Arc::new(encryption_service),
             provider_factory: Arc::new(provider_factory),
             config: Arc::new(config),
+            metrics_handle,
         }
     }
 }

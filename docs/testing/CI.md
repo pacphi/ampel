@@ -143,7 +143,7 @@ docker-build:
 
 ```yaml
 backend-coverage:
-  tool: cargo-tarpaulin
+  tool: cargo-llvm-cov
   database: PostgreSQL (required)
   upload: Codecov
 ```
@@ -314,7 +314,7 @@ docker compose up -d postgres
 make test-backend
 
 # 3. Generate coverage
-cargo tarpaulin --all-features --workspace
+cargo llvm-cov --all-features --workspace --html --output-dir coverage
 
 # 4. Run all CI checks
 make ci
@@ -482,18 +482,18 @@ Same configuration as GitHub Actions
 
 ## Summary
 
-| Use Case        | Command                                      | Speed  |
-| --------------- | -------------------------------------------- | ------ |
-| Quick check     | `cargo nextest run --profile fast`           | 2s     |
-| Pre-commit      | `make test-backend`                          | 5s     |
-| Full validation | `docker compose up -d && cargo nextest run`  | 30-60s |
-| Coverage        | `cargo tarpaulin --all-features --workspace` | 2-3min |
-| CI emulation    | `cargo nextest run --profile ci`             | 30-60s |
+| Use Case        | Command                                     | Speed  |
+| --------------- | ------------------------------------------- | ------ |
+| Quick check     | `cargo nextest run --profile fast`          | 2s     |
+| Pre-commit      | `make test-backend`                         | 5s     |
+| Full validation | `docker compose up -d && cargo nextest run` | 30-60s |
+| Coverage        | `cargo llvm-cov --all-features --workspace` | 30-60s |
+| CI emulation    | `cargo nextest run --profile ci`            | 30-60s |
 
 ## References
 
 - [cargo-nextest Documentation](https://nexte.st/)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [sccache](https://github.com/mozilla/sccache)
-- [cargo-tarpaulin](https://github.com/xd009642/tarpaulin)
+- [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov)
 - [Codecov](https://codecov.io/)

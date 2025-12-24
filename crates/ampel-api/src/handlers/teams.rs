@@ -15,6 +15,7 @@ use crate::handlers::{ApiError, ApiResponse};
 use crate::AppState;
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct TeamResponse {
     pub id: Uuid,
     pub organization_id: Uuid,
@@ -26,6 +27,7 @@ pub struct TeamResponse {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CreateTeamRequest {
     pub organization_id: Uuid,
     pub name: String,
@@ -33,6 +35,7 @@ pub struct CreateTeamRequest {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct AddMemberRequest {
     pub user_id: Uuid,
     pub role: String, // admin, member, viewer

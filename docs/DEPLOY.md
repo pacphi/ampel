@@ -1,202 +1,456 @@
-# Deploying to Fly.io
+# Deploying Ampel to Fly.io
 
-This guide covers deploying Ampel to [Fly.io](https://fly.io) using their VM-based infrastructure.
+This guide provides comprehensive instructions for deploying Ampel to [Fly.io](https://fly.io) using their global application platform with managed databases, private networking, and automated deployments.
+
+## Table of Contents
+
+- [Architecture Overview](#architecture-overview)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Infrastructure Setup](#infrastructure-setup)
+- [Application Deployment](#application-deployment)
+- [Secrets Management](#secrets-management)
+- [CI/CD with GitHub Actions](#cicd-with-github-actions)
+- [Custom Domain Setup](#custom-domain-setup)
+- [Monitoring and Operations](#monitoring-and-operations)
+- [Scaling](#scaling)
+- [Troubleshooting](#troubleshooting)
+- [Cost Estimation](#cost-estimation)
+- [References](#references)
+
+---
+
+## Architecture Overview
+
+Ampel deploys as three separate Fly.io applications connected via private networking:
+
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│                      Fly.io Organization                        │
+│                                                                 │
+│  ┌────────────────┐  ┌────────────────┐  ┌──────────────────┐   │
+│  │    Frontend    │  │   API Server   │  │     Worker       │   │
+│  │    (nginx)     │  │  (Rust/Axum)   │  │  (Rust/Apalis)   │   │
+│  │   Port: 8080   │  │   Port: 8080   │  │  No Public Port  │   │
+│  │  Public HTTPS  │  │  Public HTTPS  │  │  Internal Only   │   │
+│  └────────────────┘  └────────────────┘  └──────────────────┘   │
+│          │                   │                    │             │
+│          └───────────────────┼────────────────────┘             │
+│                              │                                  │
+│                   6PN Private Network (fdaa::/48)               │
+│                              │                                  │
+│         ┌────────────────────┼────────────────────┐             │
+│         │                    │                    │             │
+│  ┌──────┴───────┐    ┌───────┴───────┐     ┌──────┴──────┐      │
+│  │   Managed    │    │    Upstash    │     │ Fly Metrics │      │
+│  │  PostgreSQL  │    │     Redis     │     │  Dashboard  │      │
+│  └──────────────┘    └───────────────┘     └─────────────┘      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Service Communication:**
+
+| From     | To         | Network      | URL Pattern                        |
+| -------- | ---------- | ------------ | ---------------------------------- |
+| Frontend | API        | Public HTTPS | `https://ampel-api.fly.dev/api`    |
+| API      | PostgreSQL | Private 6PN  | `postgres://ampel-db.flycast:5432` |
+| API      | Redis      | Private 6PN  | `redis://ampel-redis.flycast:6379` |
+| Worker   | PostgreSQL | Private 6PN  | `postgres://ampel-db.flycast:5432` |
+| Worker   | Redis      | Private 6PN  | `redis://ampel-redis.flycast:6379` |
+
+> **Reference**: [Fly.io Private Networking](https://fly.io/docs/networking/private-networking/)
+
+---
 
 ## Prerequisites
 
-- [Fly CLI](https://fly.io/docs/getting-started/installing-flyctl/) installed
-- Fly.io account (sign up at https://fly.io)
-- Docker installed locally
+### Required Tools
 
-## Initial Setup
+1. **Fly CLI (flyctl)** - Install from [fly.io/docs/flyctl/install](https://fly.io/docs/flyctl/install/):
 
-### 1. Authenticate with Fly
+   ```bash
+   # macOS/Linux
+   curl -L https://fly.io/install.sh | sh
+
+   # Windows (PowerShell)
+   pwsh -Command "iwr https://fly.io/install.ps1 -useb | iex"
+
+   # Homebrew
+   brew install flyctl
+   ```
+
+2. **Docker** - For local testing of deployment images
+
+3. **Fly.io Account** - Sign up at [fly.io](https://fly.io)
+
+### Authentication
 
 ```bash
+# Login to Fly.io
 fly auth login
+
+# Verify authentication
+fly auth whoami
 ```
 
-### 2. Create Fly Applications
+---
 
-Create three apps: one for API, one for worker, and one for frontend.
+## Quick Start
+
+For experienced users, here's the minimal deployment sequence:
 
 ```bash
-# API server
-fly apps create ampel-api
+# 1. Create organization and apps
+fly orgs create ampel-org
+fly apps create ampel-api --org ampel-org
+fly apps create ampel-worker --org ampel-org
+fly apps create ampel-frontend --org ampel-org
 
-# Background worker
-fly apps create ampel-worker
+# 2. Create PostgreSQL database
+fly postgres create --name ampel-db --org ampel-org --region iad
+
+# 3. Create Redis
+fly redis create --name ampel-redis --org ampel-org --region iad
+
+# 4. Set secrets (see Secrets Management section for full list)
+fly secrets set --app ampel-api \
+  DATABASE_URL="postgres://..." \
+  REDIS_URL="redis://..." \
+  JWT_SECRET="$(openssl rand -hex 32)"
+
+# 5. Deploy all services
+fly deploy --config fly/fly.api.toml --remote-only
+fly deploy --config fly/fly.worker.toml --remote-only
+fly deploy --config fly/fly.frontend.toml --remote-only
+```
+
+---
+
+## Infrastructure Setup
+
+### 1. Create Fly.io Organization
+
+```bash
+# Create organization
+fly orgs create ampel-org
+
+# List organizations
+fly orgs list
+
+# Set default organization
+fly orgs select ampel-org
+```
+
+### 2. Provision Managed PostgreSQL
+
+Fly.io Managed Postgres provides high-availability PostgreSQL with automatic backups.
+
+```bash
+fly postgres create \
+  --name ampel-db \
+  --org ampel-org \
+  --region iad \
+  --vm-size shared-cpu-1x \
+  --volume-size 10
+```
+
+**Configuration options:**
+
+| Option          | Recommended     | Notes                           |
+| --------------- | --------------- | ------------------------------- |
+| `--region`      | `iad`           | Ashburn, VA - good for US users |
+| `--vm-size`     | `shared-cpu-1x` | Start small, scale as needed    |
+| `--volume-size` | `10`            | 10GB storage, expandable        |
+
+After creation, save the connection credentials displayed. Connect and set up:
+
+```bash
+# Connect to database
+fly postgres connect --app ampel-db
+
+# Create database and extensions
+CREATE DATABASE ampel;
+\c ampel
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pg_trgm";
+\q
+```
+
+> **Reference**: [Fly.io Managed Postgres](https://fly.io/docs/postgres/)
+
+### 3. Provision Upstash Redis
+
+Upstash Redis provides serverless Redis with per-request pricing.
+
+```bash
+fly redis create \
+  --name ampel-redis \
+  --org ampel-org \
+  --region iad
+```
+
+Test the connection:
+
+```bash
+fly redis connect --app ampel-redis
+PING
+# Should return: PONG
+```
+
+> **Reference**: [Upstash for Redis on Fly.io](https://fly.io/docs/upstash/redis/)
+
+### 4. Create Application Entries
+
+Create Fly.io apps without deploying:
+
+```bash
+# API Server
+fly apps create ampel-api --org ampel-org
+
+# Background Worker
+fly apps create ampel-worker --org ampel-org
 
 # Frontend
-fly apps create ampel-frontend
+fly apps create ampel-frontend --org ampel-org
 ```
 
-## Database Setup
+---
 
-### Create PostgreSQL Database
+## Application Deployment
 
-```bash
-fly postgres create --name ampel-db
+### Deployment Files
+
+All deployment configuration files are in the `fly/` directory:
+
+```text
+fly/
+├── fly.api.toml        # API server configuration
+├── fly.worker.toml     # Worker configuration
+└── fly.frontend.toml   # Frontend configuration
+
+docker/
+├── Dockerfile.api      # API multi-stage build
+├── Dockerfile.worker   # Worker build
+├── Dockerfile.frontend # Frontend build with nginx
+├── docker-compose.yml  # Local development orchestration
+└── nginx.conf          # Shared nginx config (used by both local and Fly.io)
 ```
 
-When prompted, choose:
-
-- Region: Your preferred region (e.g., `iad` for Virginia)
-- Configuration: Start with `Development` for testing, `Production` for live
-
-### Attach Database to Apps
-
-```bash
-fly postgres attach ampel-db --app ampel-api
-fly postgres attach ampel-db --app ampel-worker
-```
-
-This automatically sets `DATABASE_URL` as a secret on both apps.
-
-## Configuration Files
-
-### API (`fly.api.toml`)
-
-Create `fly.api.toml` in the project root:
-
-```toml
-app = "ampel-api"
-primary_region = "iad"
-
-[build]
-  dockerfile = "docker/Dockerfile.api"
-
-[env]
-  HOST = "0.0.0.0"
-  PORT = "8080"
-  RUST_LOG = "info,ampel=debug"
-
-[http_service]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 1
-
-[[http_service.checks]]
-  grace_period = "10s"
-  interval = "30s"
-  method = "GET"
-  path = "/health"
-  timeout = "5s"
-
-[[vm]]
-  cpu_kind = "shared"
-  cpus = 1
-  memory_mb = 512
-```
-
-### Worker (`fly.worker.toml`)
-
-Create `fly.worker.toml`:
-
-```toml
-app = "ampel-worker"
-primary_region = "iad"
-
-[build]
-  dockerfile = "docker/Dockerfile.worker"
-
-[env]
-  RUST_LOG = "info,ampel=debug"
-
-[[vm]]
-  cpu_kind = "shared"
-  cpus = 1
-  memory_mb = 512
-
-[processes]
-  worker = "/usr/local/bin/ampel-worker"
-```
-
-### Frontend (`fly.frontend.toml`)
-
-Create `fly.frontend.toml`:
-
-```toml
-app = "ampel-frontend"
-primary_region = "iad"
-
-[build]
-  dockerfile = "docker/Dockerfile.frontend"
-  [build.args]
-    VITE_API_URL = "https://ampel-api.fly.dev/api"
-
-[http_service]
-  internal_port = 80
-  force_https = true
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 1
-
-[[vm]]
-  cpu_kind = "shared"
-  cpus = 1
-  memory_mb = 256
-```
-
-## Secrets Configuration
-
-Set required secrets for the API:
-
-```bash
-# JWT secret (generate a secure key)
-fly secrets set JWT_SECRET="$(openssl rand -hex 32)" --app ampel-api
-
-# Encryption key for OAuth tokens
-fly secrets set ENCRYPTION_KEY="$(openssl rand -base64 32)" --app ampel-api
-
-# GitHub OAuth (if using)
-fly secrets set GITHUB_CLIENT_ID="your-client-id" --app ampel-api
-fly secrets set GITHUB_CLIENT_SECRET="your-client-secret" --app ampel-api
-fly secrets set GITHUB_REDIRECT_URI="https://ampel-api.fly.dev/api/oauth/github/callback" --app ampel-api
-
-# GitLab OAuth (if using)
-fly secrets set GITLAB_CLIENT_ID="your-client-id" --app ampel-api
-fly secrets set GITLAB_CLIENT_SECRET="your-client-secret" --app ampel-api
-fly secrets set GITLAB_REDIRECT_URI="https://ampel-api.fly.dev/api/oauth/gitlab/callback" --app ampel-api
-
-# Bitbucket OAuth (if using)
-fly secrets set BITBUCKET_CLIENT_ID="your-client-id" --app ampel-api
-fly secrets set BITBUCKET_CLIENT_SECRET="your-client-secret" --app ampel-api
-fly secrets set BITBUCKET_REDIRECT_URI="https://ampel-api.fly.dev/api/oauth/bitbucket/callback" --app ampel-api
-
-# CORS origins
-fly secrets set CORS_ORIGINS="https://ampel-frontend.fly.dev" --app ampel-api
-```
-
-Set secrets for the worker:
-
-```bash
-fly secrets set ENCRYPTION_KEY="$(fly secrets list --app ampel-api | grep ENCRYPTION_KEY)" --app ampel-worker
-
-# Copy OAuth secrets if worker needs them
-fly secrets set GITHUB_CLIENT_ID="your-client-id" --app ampel-worker
-fly secrets set GITHUB_CLIENT_SECRET="your-client-secret" --app ampel-worker
-# ... repeat for other providers
-```
-
-## Deployment
-
-### Deploy All Services
+### Deploy API Server
 
 ```bash
 # Deploy API
-fly deploy --config fly.api.toml
+fly deploy --config fly/fly.api.toml --remote-only
 
-# Deploy Worker
-fly deploy --config fly.worker.toml
+# Verify deployment
+fly status --app ampel-api
+fly logs --app ampel-api
 
-# Deploy Frontend
-fly deploy --config fly.frontend.toml
+# Test health endpoint
+curl https://ampel-api.fly.dev/health
 ```
 
-### Deployment Script
+### Deploy Worker
+
+```bash
+# Deploy Worker
+fly deploy --config fly/fly.worker.toml --remote-only
+
+# Verify deployment
+fly status --app ampel-worker
+fly logs --app ampel-worker
+```
+
+### Deploy Frontend
+
+```bash
+# Deploy Frontend (set API URL at build time)
+fly deploy --config fly/fly.frontend.toml \
+  --build-arg VITE_API_URL=https://ampel-api.fly.dev \
+  --remote-only
+
+# Verify deployment
+fly status --app ampel-frontend
+curl https://ampel-frontend.fly.dev
+```
+
+### Run Database Migrations
+
+```bash
+# Run migrations via SSH
+fly ssh console --app ampel-api -C "/app/ampel-api migrate run"
+
+# Check migration status
+fly ssh console --app ampel-api -C "/app/ampel-api migrate status"
+```
+
+---
+
+## Secrets Management
+
+Fly.io stores secrets encrypted and injects them as environment variables at runtime.
+
+> **Reference**: [Fly.io Secrets](https://fly.io/docs/apps/secrets/)
+
+### Generate Secure Keys
+
+```bash
+# Generate 256-bit random keys
+openssl rand -hex 32
+```
+
+### API Server Secrets
+
+```bash
+fly secrets set --app ampel-api \
+  DATABASE_URL="postgres://postgres:<PASSWORD>@ampel-db.flycast:5432/ampel" \
+  REDIS_URL="redis://default:<PASSWORD>@ampel-redis.flycast:6379" \
+  JWT_SECRET="<RANDOM_256_BIT_KEY>" \
+  ENCRYPTION_KEY="<RANDOM_256_BIT_KEY>" \
+  CORS_ORIGINS="https://ampel-frontend.fly.dev"
+```
+
+**Note**: Personal Access Tokens (PATs) are configured per-user through the UI after deployment. See [PAT_SETUP.md](PAT_SETUP.md) for instructions.
+
+### Worker Secrets
+
+```bash
+fly secrets set --app ampel-worker \
+  DATABASE_URL="postgres://postgres:<PASSWORD>@ampel-db.flycast:5432/ampel" \
+  REDIS_URL="redis://default:<PASSWORD>@ampel-redis.flycast:6379" \
+  ENCRYPTION_KEY="<SAME_AS_API>"
+```
+
+### Verify Secrets
+
+```bash
+# List secret names (values are encrypted)
+fly secrets list --app ampel-api
+```
+
+### Bulk Import from File
+
+Create `.env.production` (DO NOT COMMIT):
+
+```env
+DATABASE_URL=postgres://postgres:xxx@ampel-db.flycast:5432/ampel
+REDIS_URL=redis://default:xxx@ampel-redis.flycast:6379
+JWT_SECRET=xxx
+ENCRYPTION_KEY=xxx
+```
+
+Import:
+
+```bash
+fly secrets import --app ampel-api < .env.production
+```
+
+---
+
+## CI/CD with GitHub Actions
+
+### Setup Deploy Token
+
+1. Generate a Fly.io deploy token:
+
+   ```bash
+   fly tokens create deploy --name github-actions -x 999999h
+   ```
+
+2. Add to GitHub repository secrets:
+   - Go to: Repository → Settings → Secrets and variables → Actions
+   - Create secret: `FLY_API_TOKEN`
+   - Paste the token value (including `FlyV1` prefix)
+
+### Deploy Workflow (`.github/workflows/deploy.yml`)
+
+The deploy workflow is **cost-conscious by design** - it only triggers on pushes to the `production` branch (not `main`), preventing accidental deployments from development work.
+
+**Automatic Triggers:**
+
+- Push to `production` branch with changes to:
+  - `crates/**`, `frontend/**`, `fly/**`
+  - `docker/Dockerfile.*`, `Cargo.toml`, `Cargo.lock`
+
+**Manual Dispatch Options:**
+
+| Option            | Description                                    | Default      |
+| ----------------- | ---------------------------------------------- | ------------ |
+| `environment`     | Target environment (`production` or `staging`) | `production` |
+| `deploy_api`      | Deploy API server                              | `true`       |
+| `deploy_worker`   | Deploy Worker service                          | `true`       |
+| `deploy_frontend` | Deploy Frontend                                | `true`       |
+| `run_migrations`  | Run database migrations                        | `true`       |
+| `skip_tests`      | Skip tests (use with caution)                  | `false`      |
+| `force_deploy`    | Force deploy even without changes              | `false`      |
+
+**Features:**
+
+- **Test jobs** before deployment (backend + frontend)
+- **Path-based triggers** - only deploys changed components
+- **Rolling deployment strategy** for zero-downtime
+- **Automatic database migrations** after API deployment
+- **Deployment verification** with health checks
+- **Multi-environment support** - `ampel-*` (production) or `ampel-staging-*` (staging)
+
+**Required GitHub Secrets:**
+
+| Secret          | Description         |
+| --------------- | ------------------- |
+| `FLY_API_TOKEN` | Fly.io deploy token |
+
+**Optional Secrets (for build-time injection):**
+
+| Secret         | Description                 |
+| -------------- | --------------------------- |
+| `VITE_API_URL` | API URL for frontend builds |
+
+### Undeploy Workflow (`.github/workflows/undeploy.yml`)
+
+The undeploy workflow allows you to **destroy or scale down** the Fly.io environment to save costs when not in use.
+
+**⚠️ This is a manual-only workflow** - it requires explicit confirmation to prevent accidental destruction.
+
+**Options:**
+
+| Option                | Description                                       | Default   |
+| --------------------- | ------------------------------------------------- | --------- |
+| `environment`         | Target environment (`staging` or `production`)    | `staging` |
+| `destroy_api`         | Destroy API server                                | `true`    |
+| `destroy_worker`      | Destroy Worker service                            | `true`    |
+| `destroy_frontend`    | Destroy Frontend                                  | `true`    |
+| `destroy_database`    | Destroy database (**DANGEROUS** - data loss!)     | `false`   |
+| `confirm_destruction` | Must type "DESTROY" to proceed                    | Required  |
+| `scale_to_zero`       | Scale to zero instead of destroying (cost-saving) | `false`   |
+
+**Scale to Zero Mode:**
+
+Instead of destroying apps, you can scale them to zero instances:
+
+- Stops all compute costs
+- Preserves app configuration and secrets
+- Can be restored by running the deploy workflow
+
+```bash
+# Equivalent manual commands
+flyctl scale count 0 --app ampel-api --yes
+flyctl scale count 0 --app ampel-worker --yes
+flyctl scale count 0 --app ampel-frontend --yes
+```
+
+**To restore after scale-to-zero:**
+
+Run the deploy workflow with `force_deploy: true`, or manually:
+
+```bash
+flyctl scale count 1 --app ampel-api
+flyctl scale count 1 --app ampel-worker
+flyctl scale count 1 --app ampel-frontend
+```
+
+> **Reference**: [Fly.io + GitHub Actions](https://fly.io/docs/launch/continuous-deployment-with-github-actions/)
+
+### Manual Deployment Script
 
 Create `scripts/deploy-fly.sh`:
 
@@ -207,181 +461,319 @@ set -e
 echo "Deploying Ampel to Fly.io..."
 
 echo "Deploying API..."
-fly deploy --config fly.api.toml
+fly deploy --config fly/fly.api.toml --remote-only
+
+echo "Running migrations..."
+fly ssh console --app ampel-api -C "/app/ampel-api migrate run"
 
 echo "Deploying Worker..."
-fly deploy --config fly.worker.toml
+fly deploy --config fly/fly.worker.toml --remote-only
 
 echo "Deploying Frontend..."
-fly deploy --config fly.frontend.toml
+fly deploy --config fly/fly.frontend.toml \
+  --build-arg VITE_API_URL=https://ampel-api.fly.dev \
+  --remote-only
 
 echo "Deployment complete!"
-echo "API: https://ampel-api.fly.dev"
 echo "Frontend: https://ampel-frontend.fly.dev"
+echo "API: https://ampel-api.fly.dev"
 ```
 
-Make it executable:
-
-```bash
-chmod +x scripts/deploy-fly.sh
-```
+---
 
 ## Custom Domain Setup
 
-### Add Custom Domain
+### Add Custom Domains
 
 ```bash
-# For frontend
-fly certs add www.your-domain.com --app ampel-frontend
-fly certs add your-domain.com --app ampel-frontend
+# Frontend domain
+fly certs add ampel.example.com --app ampel-frontend
 
-# For API
-fly certs add api.your-domain.com --app ampel-api
+# API domain
+fly certs add api.ampel.example.com --app ampel-api
 ```
 
 ### DNS Configuration
 
-Add these DNS records at your domain registrar:
+Add DNS records at your registrar:
 
-| Type  | Name | Value                                         |
-| ----- | ---- | --------------------------------------------- |
-| CNAME | www  | ampel-frontend.fly.dev                        |
-| CNAME | api  | ampel-api.fly.dev                             |
-| A     | @    | (IP from `fly ips list --app ampel-frontend`) |
+| Type  | Name           | Value                    |
+| ----- | -------------- | ------------------------ |
+| CNAME | `@` or `ampel` | `ampel-frontend.fly.dev` |
+| CNAME | `api`          | `ampel-api.fly.dev`      |
 
-### Update CORS and OAuth
-
-After setting up custom domains:
+### Update Configuration After Domain Setup
 
 ```bash
-# Update CORS
-fly secrets set CORS_ORIGINS="https://your-domain.com,https://www.your-domain.com" --app ampel-api
-
-# Update OAuth redirect URIs
-fly secrets set GITHUB_REDIRECT_URI="https://api.your-domain.com/api/oauth/github/callback" --app ampel-api
-# ... repeat for other providers
+# Update CORS origins
+fly secrets set --app ampel-api \
+  CORS_ORIGINS="https://ampel.example.com,https://www.ampel.example.com"
 ```
 
-## Monitoring
+> **Reference**: [Fly.io Custom Domains](https://fly.io/docs/networking/custom-domain/)
+
+---
+
+## Monitoring and Operations
 
 ### View Logs
 
 ```bash
-# API logs
+# Real-time logs
+fly logs --app ampel-api -f
+
+# Last 100 lines
 fly logs --app ampel-api
 
-# Worker logs
-fly logs --app ampel-worker
-
-# Frontend logs
-fly logs --app ampel-frontend
+# Filter by machine
+fly logs --app ampel-api --machine <machine-id>
 ```
 
-### Check Status
+### Check Application Status
 
 ```bash
+# Status overview
 fly status --app ampel-api
-fly status --app ampel-worker
-fly status --app ampel-frontend
+
+# Health checks
+fly checks list --app ampel-api
+
+# Machine details
+fly machines list --app ampel-api
 ```
 
-### SSH into Machine
+### SSH Access
 
 ```bash
+# Interactive shell
 fly ssh console --app ampel-api
+
+# Run single command
+fly ssh console --app ampel-api -C "ls -la /app"
 ```
+
+### Database Operations
+
+```bash
+# Connect to PostgreSQL
+fly postgres connect --app ampel-db
+
+# Backup database
+fly postgres db backup --app ampel-db
+
+# List backups
+fly postgres db list --app ampel-db
+```
+
+### Restart Services
+
+```bash
+fly apps restart ampel-api
+fly apps restart ampel-worker
+fly apps restart ampel-frontend
+```
+
+---
 
 ## Scaling
 
-### Vertical Scaling (VM Size)
-
-Edit the `[[vm]]` section in your `fly.*.toml`:
-
-```toml
-[[vm]]
-  cpu_kind = "shared"
-  cpus = 2
-  memory_mb = 1024
-```
-
-Then redeploy.
-
-### Horizontal Scaling (Replicas)
+### Horizontal Scaling (Instances)
 
 ```bash
 # Scale API to 3 instances
 fly scale count 3 --app ampel-api
 
-# Scale to specific regions
-fly regions set iad lax --app ampel-api
+# Scale Worker to 2 instances
+fly scale count 2 --app ampel-worker
 ```
 
-## Database Management
-
-### Connect to Database
+### Vertical Scaling (Resources)
 
 ```bash
-fly postgres connect --app ampel-db
+# Upgrade VM size
+fly scale vm shared-cpu-2x --app ampel-api
+
+# Increase memory
+fly scale memory 1024 --app ampel-api
 ```
 
-### Run Migrations
-
-Migrations run automatically on API startup. For manual runs:
+### Regional Scaling
 
 ```bash
-# SSH into API machine
-fly ssh console --app ampel-api
+# Add instance in Frankfurt
+fly scale count 1 --region fra --app ampel-api
 
-# Run migrations
-./ampel-api migrate
+# List available regions
+fly platform regions
 ```
 
-### Backup Database
+### Auto-scaling Configuration
 
-```bash
-fly postgres backup create --app ampel-db
+Auto-scaling is configured in `fly.toml`:
+
+```toml
+[http_service]
+  auto_stop_machines = "stop"   # Stop idle machines
+  auto_start_machines = true    # Start on demand
+  min_machines_running = 1      # Minimum instances
 ```
+
+> **Reference**: [Fly.io Scaling](https://fly.io/docs/apps/scale-count/)
+
+---
 
 ## Troubleshooting
 
-### Check Machine Health
+### App Won't Start
 
 ```bash
-fly checks list --app ampel-api
+# Check logs for errors
+fly logs --app ampel-api
+
+# Verify secrets are set
+fly secrets list --app ampel-api
+
+# SSH and check binary
+fly ssh console --app ampel-api -C "ls -la /app"
 ```
 
-### Restart Machines
+### Database Connection Errors
 
 ```bash
-fly machines restart --app ampel-api
+# Verify DATABASE_URL uses .flycast address
+fly secrets list --app ampel-api | grep DATABASE
+
+# Test connection from app
+fly ssh console --app ampel-api -C "psql \$DATABASE_URL -c 'SELECT 1;'"
+
+# Check database status
+fly status --app ampel-db
 ```
 
-### View Recent Deploys
+### Health Checks Failing
 
 ```bash
+# Test health endpoint
+curl -v https://ampel-api.fly.dev/health
+
+# Check from inside machine
+fly ssh console --app ampel-api -C "curl localhost:8080/health"
+
+# Review health check config in fly.toml
+```
+
+### Rollback Deployment
+
+```bash
+# List releases
 fly releases --app ampel-api
-```
 
-### Rollback
-
-```bash
+# Rollback to previous version
 fly releases rollback --app ampel-api
+
+# Rollback to specific version
+fly releases rollback --app ampel-api --version 5
 ```
 
-## Cost Optimization
+---
 
-- Use `auto_stop_machines = true` for low-traffic apps
-- Start with `shared` CPU for development
-- Use `min_machines_running = 0` for non-critical services
-- Monitor usage with `fly dashboard`
+## Cost Estimation
 
-## Production Checklist
+### Monthly Costs (USD)
 
-- [ ] All secrets configured
-- [ ] Database properly sized
-- [ ] Custom domain with SSL
-- [ ] OAuth redirect URIs updated
-- [ ] CORS origins configured
-- [ ] Health checks passing
-- [ ] Monitoring/alerting set up
-- [ ] Backup strategy in place
+| Service            | Plan                 | Monthly Cost      |
+| ------------------ | -------------------- | ----------------- |
+| Managed PostgreSQL | Shared-1x, 1GB       | ~$15-20           |
+| PostgreSQL Storage | 10GB                 | ~$2.50            |
+| Upstash Redis      | Pay-per-request      | ~$0-10            |
+| API VM             | shared-cpu-1x, 512MB | ~$5-7             |
+| Worker VM          | shared-cpu-1x, 512MB | ~$5-7             |
+| Frontend VM        | shared-cpu-1x, 256MB | ~$3-5             |
+| **Total**          |                      | **~$30-50/month** |
+
+**Notes:**
+
+- Fly.io offers $5 free credit monthly for Hobby plan
+- VMs billed per-second when running
+- Auto-stop machines reduce costs significantly
+- Prices vary by region and actual usage
+
+> **Reference**: [Fly.io Pricing](https://fly.io/docs/about/pricing/)
+
+---
+
+## Security Checklist
+
+Before going to production:
+
+- [ ] All secrets stored in Fly.io vault (not in code)
+- [ ] Database uses private `.flycast` address
+- [ ] HTTPS enforced (`force_https = true`)
+- [ ] CORS origins restricted to frontend domain
+- [ ] Non-root user in Dockerfiles
+- [ ] PAT encryption key securely generated and stored
+- [ ] Security headers configured in nginx
+- [ ] Database backups enabled
+- [ ] `cargo audit` run for vulnerabilities
+
+---
+
+## References
+
+### Official Fly.io Documentation
+
+1. [Getting Started](https://fly.io/docs/getting-started/) - Initial setup guide
+2. [Fly.io Configuration Reference](https://fly.io/docs/reference/configuration/) - fly.toml specification
+3. [Managed Postgres](https://fly.io/docs/postgres/) - Database setup and management
+4. [Upstash Redis](https://fly.io/docs/upstash/redis/) - Redis configuration
+5. [Private Networking](https://fly.io/docs/networking/private-networking/) - 6PN setup
+6. [Secrets Management](https://fly.io/docs/apps/secrets/) - Secure configuration
+7. [Health Checks](https://fly.io/docs/reference/health-checks/) - Monitoring configuration
+8. [GitHub Actions Deployment](https://fly.io/docs/launch/continuous-deployment-with-github-actions/) - CI/CD setup
+9. [Rust on Fly.io](https://fly.io/docs/rust/) - Rust deployment patterns
+10. [Static Sites](https://fly.io/docs/languages-and-frameworks/static/) - Frontend deployment
+
+### Community Resources
+
+11. [Deploying Rust Axum apps](https://fly.io/docs/rust/frameworks/axum/) - Framework-specific guide
+12. [Fly.io Community Forum](https://community.fly.io/) - Community support
+
+---
+
+## File Reference
+
+### Deployment Configuration
+
+| File                         | Purpose                                             |
+| ---------------------------- | --------------------------------------------------- |
+| `fly/fly.api.toml`           | API server Fly.io configuration                     |
+| `fly/fly.worker.toml`        | Worker Fly.io configuration                         |
+| `fly/fly.frontend.toml`      | Frontend Fly.io configuration                       |
+| `docker/Dockerfile.api`      | API multi-stage build with cargo-chef               |
+| `docker/Dockerfile.worker`   | Worker multi-stage build                            |
+| `docker/Dockerfile.frontend` | Frontend build with nginx                           |
+| `docker/nginx.conf`          | Shared nginx config (local dev + Fly.io production) |
+| `docker/docker-compose.yml`  | Local development orchestration                     |
+
+### CI/CD
+
+| File                             | Purpose                                     |
+| -------------------------------- | ------------------------------------------- |
+| `.github/workflows/deploy.yml`   | Deploy to Fly.io (triggers on `production`) |
+| `.github/workflows/undeploy.yml` | Destroy or scale-to-zero Fly.io environment |
+
+### Supplementary Documentation
+
+| File                                  | Purpose                         |
+| ------------------------------------- | ------------------------------- |
+| `docs/deployment/RUNBOOK.md`          | Detailed operations runbook     |
+| `docs/deployment/SECRETS_TEMPLATE.md` | Secrets configuration templates |
+
+### Local Development (`docker/`)
+
+| File                         | Purpose                               |
+| ---------------------------- | ------------------------------------- |
+| `docker/docker-compose.yml`  | Local development environment         |
+| `docker/Dockerfile.api`      | Local API build (with BuildKit cache) |
+| `docker/Dockerfile.worker`   | Local worker build                    |
+| `docker/Dockerfile.frontend` | Local frontend build                  |

@@ -219,12 +219,16 @@ pub async fn create_test_app(db: DatabaseConnection) -> Router {
 
     let provider_factory = ProviderFactory::new();
 
+    // Create metrics handle for tests
+    let metrics_handle = ampel_api::init_metrics();
+
     let state = AppState::new(
         db,
         auth_service,
         encryption_service,
         provider_factory,
         config,
+        metrics_handle,
     );
 
     create_router(state)

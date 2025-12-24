@@ -21,9 +21,11 @@ import {
   RotateCcw,
   Bell,
   Settings2,
+  Boxes,
 } from 'lucide-react';
 import { NotificationsSettings } from '@/components/settings/NotificationsSettings';
 import { BehaviorSettings } from '@/components/settings/BehaviorSettings';
+import { RepositoryFilterSettings } from '@/components/settings/RepositoryFilterSettings';
 import { AccountsListPage } from './settings/AccountsListPage';
 import { AddAccountPage } from './settings/AddAccountPage';
 import { EditAccountPage } from './settings/EditAccountPage';
@@ -34,7 +36,8 @@ function SettingsNav() {
   const links = [
     { href: '/settings', label: 'Profile', icon: User },
     { href: '/settings/accounts', label: 'Accounts', icon: User },
-    { href: '/settings/filters', label: 'Filters', icon: Filter },
+    { href: '/settings/filters', label: 'PR Filters', icon: Filter },
+    { href: '/settings/repository-filters', label: 'Repository Filters', icon: Boxes },
     { href: '/settings/notifications', label: 'Notifications', icon: Bell },
     { href: '/settings/behavior', label: 'Behavior', icon: Settings2 },
   ];
@@ -446,6 +449,7 @@ export default function Settings() {
             <Route path="accounts/add" element={<AddAccountPage />} />
             <Route path="accounts/:id/edit" element={<EditAccountPage />} />
             <Route path="filters" element={<FiltersSettings />} />
+            <Route path="repository-filters" element={<RepositoryFilterSettings />} />
             <Route path="notifications" element={<NotificationsSettings />} />
             <Route path="behavior" element={<BehaviorSettings />} />
           </Routes>

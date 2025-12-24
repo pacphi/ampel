@@ -1,0 +1,73 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build artifacts
+target/
+dist/
+build/
+node_modules/
+.next/
+out/
+
+# Development and testing
+.env.local
+.env.development
+.env.test
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+__tests__/
+coverage/
+.coverage/
+*.log
+
+# Documentation and non-essential files
+README.md
+CHANGELOG.md
+docs/
+*.md
+LICENSE
+
+# CI/CD and deployment configs (not needed in image)
+.github/
+.gitlab-ci.yml
+.travis.yml
+fly/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Database files
+*.sqlite
+*.db
+
+# Cargo specific
+.cargo/
+
+# pnpm specific
+.pnpm-store/
+pnpm-debug.log
+
+# Frontend specific
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.turbo/
+
+# Monitoring and observability
+.swarm/
+.claude-flow/

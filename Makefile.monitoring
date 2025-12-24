@@ -1,0 +1,59 @@
+# Monitoring-specific make targets
+
+.PHONY: monitoring-up monitoring-down monitoring-logs monitoring-restart monitoring-clean
+
+# Start monitoring stack
+monitoring-up:
+	@echo "Starting monitoring stack..."
+	docker-compose -f docker/docker-compose.monitoring.yml up -d
+	@echo "Monitoring services started:"
+	@echo "  - Prometheus: http://localhost:9090"
+	@echo "  - Grafana: http://localhost:3000 (admin/admin)"
+	@echo "  - Postgres Exporter: http://localhost:9187/metrics"
+	@echo "  - Redis Exporter: http://localhost:9121/metrics"
+
+# Stop monitoring stack
+monitoring-down:
+	@echo "Stopping monitoring stack..."
+	docker-compose -f docker/docker-compose.monitoring.yml down
+
+# View monitoring logs
+monitoring-logs:
+	docker-compose -f docker/docker-compose.monitoring.yml logs -f
+
+# Restart monitoring services
+monitoring-restart:
+	@echo "Restarting monitoring stack..."
+	docker-compose -f docker/docker-compose.monitoring.yml restart
+
+# Clean monitoring data
+monitoring-clean:
+	@echo "Cleaning monitoring data..."
+	docker-compose -f docker/docker-compose.monitoring.yml down -v
+	@echo "Monitoring data cleaned"
+
+# Check monitoring health
+monitoring-health:
+	@echo "Checking monitoring services health..."
+	@curl -f http://localhost:9090/-/healthy && echo "Prometheus: OK" || echo "Prometheus: FAIL"
+	@curl -f http://localhost:3000/api/health && echo "Grafana: OK" || echo "Grafana: FAIL"
+	@curl -f http://localhost:9187/metrics > /dev/null && echo "Postgres Exporter: OK" || echo "Postgres Exporter: FAIL"
+	@curl -f http://localhost:9121/metrics > /dev/null && echo "Redis Exporter: OK" || echo "Redis Exporter: FAIL"
+
+# Import Grafana dashboards
+monitoring-import-dashboards:
+	@echo "Importing Grafana dashboards..."
+	@for dashboard in monitoring/grafana/dashboards/*.json; do \
+		curl -X POST http://admin:admin@localhost:3000/api/dashboards/db \
+		-H "Content-Type: application/json" \
+		-d @$$dashboard; \
+	done
+
+# Export Grafana dashboards
+monitoring-export-dashboards:
+	@echo "Exporting Grafana dashboards..."
+	@mkdir -p monitoring/grafana/dashboards/exports
+	@curl -s http://admin:admin@localhost:3000/api/search?type=dash-db | \
+		jq -r '.[] | .uid' | \
+		xargs -I {} curl -s http://admin:admin@localhost:3000/api/dashboards/uid/{} | \
+		jq '.dashboard' > monitoring/grafana/dashboards/exports/{}.json

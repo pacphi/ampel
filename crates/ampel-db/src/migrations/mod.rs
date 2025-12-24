@@ -4,6 +4,7 @@ mod m20250103_000003_pr_filters;
 mod m20250104_000004_merge_notifications;
 mod m20250105_000005_skip_review_setting;
 mod m20250120_000001_provider_accounts;
+mod m20251223_000001_repository_filters;
 
 use sea_orm_migration::prelude::*;
 
@@ -19,6 +20,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20250104_000004_merge_notifications::Migration),
             Box::new(m20250105_000005_skip_review_setting::Migration),
             Box::new(m20250120_000001_provider_accounts::Migration),
+            Box::new(m20251223_000001_repository_filters::Migration),
         ]
     }
 }

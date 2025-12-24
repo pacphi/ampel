@@ -1,4 +1,7 @@
 # syntax=docker/dockerfile:1
+# Dockerfile for Ampel Background Worker
+# Multi-stage build with cargo-chef for efficient layer caching
+# Shares dependency cache with API for faster builds
 
 # =============================================================================
 # Stage 1: Chef - Prepare recipe for dependency caching
@@ -51,17 +54,21 @@ FROM debian:bookworm-slim AS runtime
 
 WORKDIR /app
 
-# Install runtime dependencies
+# Install runtime dependencies (includes libpq5 for PostgreSQL)
 RUN apt-get update && apt-get install -y \
     ca-certificates \
     libssl3 \
+    libpq5 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy binary from builder
-COPY --from=builder /app/ampel-worker /usr/local/bin/ampel-worker
-
 # Create non-root user for security
-RUN useradd -m -u 1000 ampel
+RUN useradd -m -u 1000 ampel && \
+    chown -R ampel:ampel /app
+
+# Copy binary from builder
+COPY --from=builder --chown=ampel:ampel /app/ampel-worker /app/ampel-worker
+
 USER ampel
 
-CMD ["ampel-worker"]
+# Run the binary
+ENTRYPOINT ["/app/ampel-worker"]

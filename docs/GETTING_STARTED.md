@@ -84,21 +84,21 @@ See `make help` for the full list of available commands.
 
 ### Required Environment Variables
 
-| Variable         | Description                                           |
-| ---------------- | ----------------------------------------------------- |
-| `DATABASE_URL`   | PostgreSQL connection string                          |
-| `JWT_SECRET`     | Secret key for JWT tokens (min 32 chars)              |
-| `ENCRYPTION_KEY` | Base64-encoded 32-byte key for OAuth token encryption |
+| Variable         | Description                                   |
+| ---------------- | --------------------------------------------- |
+| `DATABASE_URL`   | PostgreSQL connection string                  |
+| `JWT_SECRET`     | Secret key for JWT tokens (min 32 chars)      |
+| `ENCRYPTION_KEY` | Base64-encoded 32-byte key for PAT encryption |
 
-### OAuth Providers (Optional)
+### Personal Access Tokens (PATs)
 
-Configure one or more Git providers:
+Connect Git providers using Personal Access Tokens:
 
-| Provider  | Variables                                                                  |
-| --------- | -------------------------------------------------------------------------- |
-| GitHub    | `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GITHUB_REDIRECT_URI`          |
-| GitLab    | `GITLAB_CLIENT_ID`, `GITLAB_CLIENT_SECRET`, `GITLAB_REDIRECT_URI`          |
-| Bitbucket | `BITBUCKET_CLIENT_ID`, `BITBUCKET_CLIENT_SECRET`, `BITBUCKET_REDIRECT_URI` |
+- **GitHub**: Create a PAT at `https://github.com/settings/tokens`
+- **GitLab**: Create a PAT at `https://gitlab.com/-/profile/personal_access_tokens`
+- **Bitbucket**: Create an App Password at `https://bitbucket.org/account/settings/app-passwords/`
+
+See [PAT_SETUP.md](PAT_SETUP.md) for detailed instructions on creating and configuring PATs.
 
 See `.env.example` for all configuration options.
 

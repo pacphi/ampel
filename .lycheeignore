@@ -1,0 +1,28 @@
+# Lychee ignore file
+# https://lychee.cli.rs/usage/cli/#ignoring-links
+# Note: Patterns are REGEX, not glob patterns
+
+# Claude Code configuration files (may contain template links)
+^file://.*\.claude/.*
+
+# Cargo registry cache (third-party dependencies)
+^file://.*~/\.cargo/.*
+^file://.*docker/~/.*
+^file://.*frontend/~/.*
+
+# Build artifacts
+^file://.*/target/.*
+
+# Node modules
+^file://.*/node_modules/.*
+
+# Local development URLs
+^https?://localhost.*
+^https?://127\.0\.0\.1.*
+
+# Placeholder URLs in templates
+^https://your-custom-domain\.com
+^https://your-app-name\.fly\.dev
+
+# Archive documentation (may contain outdated links)
+^file://.*docs/\.archives/.*

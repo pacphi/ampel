@@ -76,7 +76,7 @@ describe('usePullRequests hooks', () => {
   describe('usePullRequests', () => {
     it('should fetch pull requests with default pagination', async () => {
       const mockResponse: PaginatedResponse<PullRequestWithDetails> = {
-        data: [mockPullRequest],
+        items: [mockPullRequest],
         total: 1,
         page: 1,
         perPage: 20,
@@ -99,7 +99,7 @@ describe('usePullRequests hooks', () => {
 
     it('should fetch pull requests with custom pagination', async () => {
       const mockResponse: PaginatedResponse<PullRequestWithDetails> = {
-        data: [mockPullRequest],
+        items: [mockPullRequest],
         total: 50,
         page: 2,
         perPage: 10,

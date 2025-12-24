@@ -1,4 +1,5 @@
 use axum::{
+    middleware,
     routing::{delete, get, post},
     Router,
 };
@@ -7,12 +8,16 @@ use crate::handlers::{
     accounts, analytics, auth, bot_rules, bulk_merge, dashboard, notifications, pr_filters,
     pull_requests, repositories, teams, user_settings,
 };
-use crate::AppState;
+use crate::{
+    health_handler, metrics_handler, middleware::track_metrics, readiness_handler, AppState,
+};
 
 pub fn create_router(state: AppState) -> Router {
     Router::new()
-        // Health check
-        .route("/health", get(health_check))
+        // Observability routes (no auth required)
+        .route("/health", get(health_handler))
+        .route("/ready", get(readiness_handler))
+        .route("/metrics", get(metrics_handler))
         // Auth routes (public)
         .route("/api/auth/register", post(auth::register))
         .route("/api/auth/login", post(auth::login))
@@ -49,7 +54,7 @@ pub fn create_router(state: AppState) -> Router {
         .route(
             "/api/repositories/:id",
             get(repositories::get_repository)
-                .put(repositories::update_repository)
+                .patch(repositories::update_repository)
                 .delete(repositories::remove_repository),
         )
         // Pull request routes
@@ -105,7 +110,10 @@ pub fn create_router(state: AppState) -> Router {
         // Bulk merge routes
         .route("/api/merge/bulk", post(bulk_merge::bulk_merge))
         .route("/api/merge/operations", get(bulk_merge::list_operations))
-        .route("/api/merge/operations/:id", get(bulk_merge::get_operation))
+        .route(
+            "/api/merge/operations/:operation_id",
+            get(bulk_merge::get_operation),
+        )
         // Bot/Auto-merge routes
         .route(
             "/api/repositories/:repo_id/auto-merge",
@@ -129,9 +137,6 @@ pub fn create_router(state: AppState) -> Router {
             "/api/repositories/:repo_id/health",
             get(analytics::get_repository_health),
         )
+        .layer(middleware::from_fn(track_metrics))
         .with_state(state)
-}
-
-async fn health_check() -> &'static str {
-    "OK"
 }
