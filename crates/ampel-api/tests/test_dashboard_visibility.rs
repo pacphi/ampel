@@ -112,10 +112,7 @@ async fn create_pull_request(
         number: Set(pr_number),
         title: Set(format!("Test PR #{}", pr_number)),
         description: Set(Some("Test pull request".to_string())),
-        url: Set(format!(
-            "https://github.com/test/pr/{}",
-            Uuid::new_v4()
-        )),
+        url: Set(format!("https://github.com/test/pr/{}", Uuid::new_v4())),
         state: Set("open".to_string()),
         source_branch: Set("feature".to_string()),
         target_branch: Set("main".to_string()),

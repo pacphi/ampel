@@ -12,7 +12,8 @@
     ".claude/**",
     "memory/**",
     ".hive-mind/**",
-    ".specify/**"
+    ".specify/**",
+    "undefined/**"
   ],
   "config": {
     "MD013": false,
