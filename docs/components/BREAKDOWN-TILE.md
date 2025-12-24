@@ -27,6 +27,7 @@ The Dashboard uses combined tiles that display both summary counts and visibilit
 ### Current Architecture (v2.0)
 
 The Dashboard now uses **`SummaryBreakdownTile`** which combines:
+
 - Main count (e.g., "135 Total Repositories")
 - Visibility breakdown (Public/Private/Archived)
 
@@ -136,9 +137,7 @@ import SummaryBreakdownTile from '@/components/dashboard/SummaryBreakdownTile';
 import { dashboardApi } from '@/api/dashboard';
 
 // Green status icon component
-const GreenStatusIcon = () => (
-  <span className="h-3 w-3 rounded-full bg-ampel-green" />
-);
+const GreenStatusIcon = () => <span className="h-3 w-3 rounded-full bg-ampel-green" />;
 
 function ReadyToMergeTile() {
   const { data: summary, isLoading } = useQuery({
@@ -168,13 +167,9 @@ import { Boxes, GitPullRequest } from 'lucide-react';
 function DashboardSummaryRow() {
   const { data: summary, isLoading } = useDashboardSummary();
 
-  const GreenStatusIcon = () => (
-    <span className="h-3 w-3 rounded-full bg-ampel-green" />
-  );
+  const GreenStatusIcon = () => <span className="h-3 w-3 rounded-full bg-ampel-green" />;
 
-  const RedStatusIcon = () => (
-    <span className="h-3 w-3 rounded-full bg-ampel-red" />
-  );
+  const RedStatusIcon = () => <span className="h-3 w-3 rounded-full bg-ampel-red" />;
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -251,7 +246,7 @@ import { Boxes } from 'lucide-react';
   title="Repositories by Visibility"
   breakdown={{ public: 20, private: 15, archived: 5 }}
   icon={Boxes}
-/>
+/>;
 ```
 
 ---
@@ -294,13 +289,13 @@ import { Boxes } from 'lucide-react';
 
 ### Key Changes
 
-| Aspect | Before (v1.0) | After (v2.0) |
-|--------|---------------|--------------|
-| Layout | 2 rows, 8 tiles | 1 row, 4 tiles |
-| Component | Card + BreakdownTile | SummaryBreakdownTile |
-| Title | "Repositories by Visibility" | "Total Repositories" |
-| Count Display | Separate card | Integrated in tile |
-| Color Support | No | Yes (`countColor` prop) |
+| Aspect        | Before (v1.0)                | After (v2.0)            |
+| ------------- | ---------------------------- | ----------------------- |
+| Layout        | 2 rows, 8 tiles              | 1 row, 4 tiles          |
+| Component     | Card + BreakdownTile         | SummaryBreakdownTile    |
+| Title         | "Repositories by Visibility" | "Total Repositories"    |
+| Count Display | Separate card                | Integrated in tile      |
+| Color Support | No                           | Yes (`countColor` prop) |
 
 ---
 
@@ -308,11 +303,11 @@ import { Boxes } from 'lucide-react';
 
 ### Visibility Icons (Used in Components)
 
-| Visibility   | Icon       | Color Class      | Hex Color | Lucide Icon   |
-| ------------ | ---------- | ---------------- | --------- | ------------- |
-| **Public**   | Globe      | `text-green-600` | `#16a34a` | `<Globe />`   |
-| **Private**  | Lock       | `text-amber-600` | `#d97706` | `<Lock />`    |
-| **Archived** | Archive    | `text-gray-500`  | `#6b7280` | `<Archive />` |
+| Visibility   | Icon    | Color Class      | Hex Color | Lucide Icon   |
+| ------------ | ------- | ---------------- | --------- | ------------- |
+| **Public**   | Globe   | `text-green-600` | `#16a34a` | `<Globe />`   |
+| **Private**  | Lock    | `text-amber-600` | `#d97706` | `<Lock />`    |
+| **Archived** | Archive | `text-gray-500`  | `#6b7280` | `<Archive />` |
 
 ### Header Icons
 
@@ -395,9 +390,15 @@ module.exports = {
       {count}
     </div>
     <div role="list" aria-label="Visibility breakdown">
-      <div role="listitem" aria-label={`Public: ${breakdown.public}`}>...</div>
-      <div role="listitem" aria-label={`Private: ${breakdown.private}`}>...</div>
-      <div role="listitem" aria-label={`Archived: ${breakdown.archived}`}>...</div>
+      <div role="listitem" aria-label={`Public: ${breakdown.public}`}>
+        ...
+      </div>
+      <div role="listitem" aria-label={`Private: ${breakdown.private}`}>
+        ...
+      </div>
+      <div role="listitem" aria-label={`Archived: ${breakdown.archived}`}>
+        ...
+      </div>
     </div>
   </CardContent>
 </Card>

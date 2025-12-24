@@ -171,14 +171,18 @@ export default function SummaryBreakdownTile({
       </CardHeader>
       <CardContent>
         {/* Main Count */}
-        <div className={`text-2xl font-bold ${countColor || ''}`}>
-          {count}
-        </div>
+        <div className={`text-2xl font-bold ${countColor || ''}`}>{count}</div>
         {/* Visibility Breakdown */}
         <div className="space-y-2 pt-2 border-t">
-          <div><Globe /> Public: {breakdown.public}</div>
-          <div><Lock /> Private: {breakdown.private}</div>
-          <div><Archive /> Archived: {breakdown.archived}</div>
+          <div>
+            <Globe /> Public: {breakdown.public}
+          </div>
+          <div>
+            <Lock /> Private: {breakdown.private}
+          </div>
+          <div>
+            <Archive /> Archived: {breakdown.archived}
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -287,7 +291,7 @@ export default function SummaryBreakdownTile({
      breakdown={summary?.repositoryBreakdown || { public: 0, private: 0, archived: 0 }}
      icon={Boxes}
      isLoading={isLoading}
-     countColor="text-ampel-green"  // Optional: for colored counts
+     countColor="text-ampel-green" // Optional: for colored counts
    />
    ```
 
@@ -499,10 +503,10 @@ npm run test:e2e -- dashboard
 
 ## Version History
 
-| Version | Date       | Changes                                                           |
-| ------- | ---------- | ----------------------------------------------------------------- |
-| 2.0     | 2025-12-24 | Combined tiles: merged summary + breakdown into single component  |
-| 1.0     | 2025-12-24 | Initial implementation with 4 breakdown tiles                     |
+| Version | Date       | Changes                                                          |
+| ------- | ---------- | ---------------------------------------------------------------- |
+| 2.0     | 2025-12-24 | Combined tiles: merged summary + breakdown into single component |
+| 1.0     | 2025-12-24 | Initial implementation with 4 breakdown tiles                    |
 
 ### v2.0 Changes (Combined Tile Architecture)
 
