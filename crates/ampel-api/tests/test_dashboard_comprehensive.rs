@@ -21,9 +21,10 @@ use std::time::Instant;
 use tower::ServiceExt;
 use uuid::Uuid;
 
-/// Helper to register a user and return access token
+/// Helper to register a user and return access token and user_id
 async fn register_and_login(app: &axum::Router) -> (String, Uuid) {
-    let request = Request::builder()
+    // Register the user
+    let register_request = Request::builder()
         .method("POST")
         .uri("/api/auth/register")
         .header(header::CONTENT_TYPE, "application/json")
@@ -37,14 +38,32 @@ async fn register_and_login(app: &axum::Router) -> (String, Uuid) {
         ))
         .unwrap();
 
-    let response = app.clone().oneshot(request).await.unwrap();
-    let body = axum::body::to_bytes(response.into_body(), usize::MAX)
+    let register_response = app.clone().oneshot(register_request).await.unwrap();
+    let register_body = axum::body::to_bytes(register_response.into_body(), usize::MAX)
         .await
         .unwrap();
-    let json: Value = serde_json::from_slice(&body).unwrap();
+    let register_json: Value = serde_json::from_slice(&register_body).unwrap();
 
-    let token = json["data"]["accessToken"].as_str().unwrap().to_string();
-    let user_id = Uuid::parse_str(json["data"]["user"]["id"].as_str().unwrap()).unwrap();
+    let token = register_json["data"]["accessToken"]
+        .as_str()
+        .unwrap()
+        .to_string();
+
+    // Call /api/auth/me to get the user ID
+    let me_request = Request::builder()
+        .method("GET")
+        .uri("/api/auth/me")
+        .header(header::AUTHORIZATION, format!("Bearer {}", token))
+        .body(Body::empty())
+        .unwrap();
+
+    let me_response = app.clone().oneshot(me_request).await.unwrap();
+    let me_body = axum::body::to_bytes(me_response.into_body(), usize::MAX)
+        .await
+        .unwrap();
+    let me_json: Value = serde_json::from_slice(&me_body).unwrap();
+
+    let user_id = Uuid::parse_str(me_json["data"]["id"].as_str().unwrap()).unwrap();
     (token, user_id)
 }
 
