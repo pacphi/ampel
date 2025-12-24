@@ -132,64 +132,64 @@ RuVector is a distributed vector database in Rust combining multiple capabilitie
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                              AMPEL PLATFORM                                  │
+│                              AMPEL PLATFORM                                 │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────────────┐  │
-│  │   Frontend (UI)  │  │   API Gateway    │  │     Background Worker    │  │
-│  │                  │  │    (Axum)        │  │       (Apalis)           │  │
-│  │  - Suggestions   │  │                  │  │                          │  │
-│  │  - Workflow Edit │◄─┼─► REST Endpoints │◄─┼─► Repo Analysis Jobs     │  │
-│  │  - Deploy Config │  │                  │  │    Workflow Generation   │  │
-│  └────────┬─────────┘  └────────┬─────────┘  │    Deployment Jobs       │  │
-│           │                     │             └────────────┬─────────────┘  │
-│           │                     │                          │                │
-│  ─────────┼─────────────────────┼──────────────────────────┼────────────── │
-│           │                     │                          │                │
-│           ▼                     ▼                          ▼                │
-│  ┌──────────────────────────────────────────────────────────────────────┐  │
-│  │                    INTELLIGENCE LAYER (NEW)                           │  │
-│  ├──────────────────────────────────────────────────────────────────────┤  │
-│  │                                                                       │  │
-│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────┐   │  │
-│  │  │   Repository    │  │   CI Workflow   │  │    CD Workflow      │   │  │
-│  │  │  Intelligence   │  │    Generator    │  │     Generator       │   │  │
-│  │  │     Engine      │  │                 │  │                     │   │  │
-│  │  │                 │  │  ┌───────────┐  │  │  ┌───────────────┐  │   │  │
-│  │  │ - Tech Detect   │  │  │  GitHub   │  │  │  │   Fly.io      │  │   │  │
-│  │  │ - Embedding Gen │  │  │  Actions  │  │  │  │   Plugin      │  │   │  │
-│  │  │ - Pattern Match │  │  ├───────────┤  │  │  ├───────────────┤  │   │  │
-│  │  │ - CI/CD Detect  │  │  │  GitLab   │  │  │  │   AWS         │  │   │  │
-│  │  │                 │  │  │  CI/CD    │  │  │  │   Plugin      │  │   │  │
-│  │  └────────┬────────┘  │  ├───────────┤  │  │  ├───────────────┤  │   │  │
-│  │           │           │  │ Bitbucket │  │  │  │   GCP/Azure   │  │   │  │
-│  │           │           │  │ Pipelines │  │  │  │   Plugins     │  │   │  │
-│  │           │           │  └───────────┘  │  │  └───────────────┘  │   │  │
-│  │           │           └────────┬────────┘  └──────────┬──────────┘   │  │
-│  │           │                    │                      │              │  │
-│  └───────────┼────────────────────┼──────────────────────┼──────────────┘  │
-│              │                    │                      │                 │
-│  ────────────┼────────────────────┼──────────────────────┼────────────────│
-│              │                    │                      │                 │
-│              ▼                    ▼                      ▼                 │
-│  ┌──────────────────────────────────────────────────────────────────────┐  │
-│  │                         DATA LAYER                                    │  │
-│  ├──────────────────────────────────────────────────────────────────────┤  │
-│  │                                                                       │  │
-│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────┐   │  │
-│  │  │   PostgreSQL    │  │  RuVector/      │  │    Redis Cache      │   │  │
-│  │  │                 │  │  AgentDB        │  │                     │   │  │
-│  │  │ - Users         │  │                 │  │ - Embedding Cache   │   │  │
-│  │  │ - Repositories  │  │ - Tech Stack    │  │ - Template Cache    │   │  │
-│  │  │ - Credentials   │  │   Embeddings    │  │ - Rate Limit        │   │  │
-│  │  │ - Workflows     │  │ - Pattern DB    │  │                     │   │  │
-│  │  │ - Deploy Config │  │ - Skills        │  │                     │   │  │
-│  │  │                 │  │ - Learning      │  │                     │   │  │
-│  │  └─────────────────┘  └─────────────────┘  └─────────────────────┘   │  │
-│  │                                                                       │  │
-│  └──────────────────────────────────────────────────────────────────────┘  │
-│                                                                              │
-└──────────────────────────────────────────────────────────────────────────────┘
+│                                                                             │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────────────┐   │
+│  │   Frontend (UI)  │  │   API Gateway    │  │     Background Worker    │   │
+│  │                  │  │    (Axum)        │  │       (Apalis)           │   │
+│  │  - Suggestions   │  │                  │  │                          │   │
+│  │  - Workflow Edit │◄─┼─► REST Endpoints │◄─┼─► Repo Analysis Jobs     │   │
+│  │  - Deploy Config │  │                  │  │    Workflow Generation   │   │
+│  └────────┬─────────┘  └────────┬─────────┘  │    Deployment Jobs       │   │
+│           │                     │            └────────────┬─────────────┘   │
+│           │                     │                         │                 │
+│  ─────────┼─────────────────────┼─────────────────────────┼──────────────   │
+│           │                     │                         │                 │
+│           ▼                     ▼                         ▼                 │
+│  ┌──────────────────────────────────────────────────────────────────────┐   │
+│  │                    INTELLIGENCE LAYER (NEW)                          │   │
+│  ├──────────────────────────────────────────────────────────────────────┤   │
+│  │                                                                      │   │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────┐   │   │
+│  │  │   Repository    │  │   CI Workflow   │  │    CD Workflow      │   │   │
+│  │  │  Intelligence   │  │    Generator    │  │     Generator       │   │   │
+│  │  │     Engine      │  │                 │  │                     │   │   │
+│  │  │                 │  │  ┌───────────┐  │  │  ┌───────────────┐  │   │   │
+│  │  │ - Tech Detect   │  │  │  GitHub   │  │  │  │   Fly.io      │  │   │   │
+│  │  │ - Embedding Gen │  │  │  Actions  │  │  │  │   Plugin      │  │   │   │
+│  │  │ - Pattern Match │  │  ├───────────┤  │  │  ├───────────────┤  │   │   │
+│  │  │ - CI/CD Detect  │  │  │  GitLab   │  │  │  │   AWS         │  │   │   │
+│  │  │                 │  │  │  CI/CD    │  │  │  │   Plugin      │  │   │   │
+│  │  └────────┬────────┘  │  ├───────────┤  │  │  ├───────────────┤  │   │   │
+│  │           │           │  │ Bitbucket │  │  │  │   GCP/Azure   │  │   │   │
+│  │           │           │  │ Pipelines │  │  │  │   Plugins     │  │   │   │
+│  │           │           │  └───────────┘  │  │  └───────────────┘  │   │   │
+│  │           │           └────────┬────────┘  └──────────┬──────────┘   │   │
+│  │           │                    │                      │              │   │
+│  └───────────┼────────────────────┼──────────────────────┼──────────────┘   │
+│              │                    │                      │                  │
+│  ────────────┼────────────────────┼──────────────────────┼────────────────  │
+│              │                    │                      │                  │
+│              ▼                    ▼                      ▼                  │
+│  ┌──────────────────────────────────────────────────────────────────────┐   │
+│  │                         DATA LAYER                                   │   │
+│  ├──────────────────────────────────────────────────────────────────────┤   │
+│  │                                                                      │   │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────┐   │   │
+│  │  │   PostgreSQL    │  │  RuVector/      │  │    Redis Cache      │   │   │
+│  │  │                 │  │  AgentDB        │  │                     │   │   │
+│  │  │ - Users         │  │                 │  │ - Embedding Cache   │   │   │
+│  │  │ - Repositories  │  │ - Tech Stack    │  │ - Template Cache    │   │   │
+│  │  │ - Credentials   │  │   Embeddings    │  │ - Rate Limit        │   │   │
+│  │  │ - Workflows     │  │ - Pattern DB    │  │                     │   │   │
+│  │  │ - Deploy Config │  │ - Skills        │  │                     │   │   │
+│  │  │                 │  │ - Learning      │  │                     │   │   │
+│  │  └─────────────────┘  └─────────────────┘  └─────────────────────┘   │   │
+│  │                                                                      │   │
+│  └──────────────────────────────────────────────────────────────────────┘   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### 2.2 Data Flow
@@ -246,217 +246,793 @@ pub use patterns::{PatternMatcher, WorkflowPattern};
 
 #### 3.1.2 Tech Stack Detection
 
+Detection rules are **externalized as YAML configuration** with JSON Schema validation, enabling easy onboarding of new tech stacks without code changes.
+
+##### Detection Rules JSON Schema
+
+```json
+// config/schemas/detection-rules.schema.json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TechStackDetectionRules",
+  "description": "Schema for tech stack detection rules",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+$" },
+    "rules": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/DetectionRule" }
+    }
+  },
+  "required": ["version", "rules"],
+  "definitions": {
+    "DetectionRule": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "file_patterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "content_patterns": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "weight": { "type": "number", "minimum": 0, "maximum": 1 },
+        "detects": { "$ref": "#/definitions/DetectionTarget" },
+        "enabled": { "type": "boolean", "default": true }
+      },
+      "required": ["id", "name", "file_patterns", "weight", "detects"]
+    },
+    "DetectionTarget": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "language",
+            "framework",
+            "build_tool",
+            "test_framework",
+            "ci_workflow",
+            "cd_workflow"
+          ]
+        },
+        "value": { "type": "string" }
+      },
+      "required": ["type", "value"]
+    }
+  }
+}
+```
+
+##### Detection Rules Configuration File
+
+```yaml
+# config/detection-rules.yaml
+version: '1.0'
+
+rules:
+  # ============================================
+  # LANGUAGES
+  # ============================================
+  - id: lang-rust
+    name: Rust Language
+    description: Detect Rust projects via Cargo manifest
+    file_patterns:
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+    content_patterns:
+      - "\\[package\\]"
+    weight: 1.0
+    detects:
+      type: language
+      value: rust
+
+  - id: lang-javascript
+    name: JavaScript/Node.js
+    description: Detect Node.js projects via package.json
+    file_patterns:
+      - 'package.json'
+    content_patterns:
+      - '"dependencies"'
+      - '"devDependencies"'
+    weight: 1.0
+    detects:
+      type: language
+      value: javascript
+
+  - id: lang-typescript
+    name: TypeScript
+    description: Detect TypeScript projects
+    file_patterns:
+      - 'tsconfig.json'
+      - 'tsconfig.*.json'
+    content_patterns: []
+    weight: 0.95
+    detects:
+      type: language
+      value: typescript
+
+  - id: lang-python
+    name: Python
+    description: Detect Python projects
+    file_patterns:
+      - 'requirements.txt'
+      - 'pyproject.toml'
+      - 'setup.py'
+      - 'Pipfile'
+      - 'poetry.lock'
+    content_patterns: []
+    weight: 1.0
+    detects:
+      type: language
+      value: python
+
+  - id: lang-go
+    name: Go
+    description: Detect Go projects
+    file_patterns:
+      - 'go.mod'
+      - 'go.sum'
+    content_patterns:
+      - '^module '
+    weight: 1.0
+    detects:
+      type: language
+      value: go
+
+  - id: lang-java
+    name: Java
+    description: Detect Java projects
+    file_patterns:
+      - 'pom.xml'
+      - 'build.gradle'
+      - 'build.gradle.kts'
+    content_patterns: []
+    weight: 1.0
+    detects:
+      type: language
+      value: java
+
+  # ============================================
+  # FRAMEWORKS
+  # ============================================
+  - id: framework-react
+    name: React Framework
+    description: Detect React frontend framework
+    file_patterns:
+      - 'package.json'
+    content_patterns:
+      - '"react"\\s*:'
+    weight: 0.9
+    detects:
+      type: framework
+      value: react
+
+  - id: framework-vue
+    name: Vue.js Framework
+    description: Detect Vue.js frontend framework
+    file_patterns:
+      - 'package.json'
+    content_patterns:
+      - '"vue"\\s*:'
+    weight: 0.9
+    detects:
+      type: framework
+      value: vue
+
+  - id: framework-axum
+    name: Axum Framework
+    description: Detect Axum Rust web framework
+    file_patterns:
+      - 'Cargo.toml'
+    content_patterns:
+      - 'axum\s*='
+    weight: 0.9
+    detects:
+      type: framework
+      value: axum
+
+  - id: framework-actix
+    name: Actix-Web Framework
+    description: Detect Actix-Web Rust framework
+    file_patterns:
+      - 'Cargo.toml'
+    content_patterns:
+      - 'actix-web\s*='
+    weight: 0.9
+    detects:
+      type: framework
+      value: actix-web
+
+  - id: framework-django
+    name: Django Framework
+    description: Detect Django Python framework
+    file_patterns:
+      - 'requirements.txt'
+      - 'pyproject.toml'
+    content_patterns:
+      - 'django'
+      - 'Django'
+    weight: 0.9
+    detects:
+      type: framework
+      value: django
+
+  - id: framework-fastapi
+    name: FastAPI Framework
+    description: Detect FastAPI Python framework
+    file_patterns:
+      - 'requirements.txt'
+      - 'pyproject.toml'
+    content_patterns:
+      - 'fastapi'
+    weight: 0.9
+    detects:
+      type: framework
+      value: fastapi
+
+  # ============================================
+  # CI WORKFLOWS
+  # ============================================
+  - id: ci-github-actions
+    name: GitHub Actions CI
+    description: Detect existing GitHub Actions workflows
+    file_patterns:
+      - '.github/workflows/*.yml'
+      - '.github/workflows/*.yaml'
+    content_patterns:
+      - "on:\\s*\\[?(push|pull_request)"
+    weight: 1.0
+    detects:
+      type: ci_workflow
+      value: github
+
+  - id: ci-gitlab
+    name: GitLab CI/CD
+    description: Detect existing GitLab CI configuration
+    file_patterns:
+      - '.gitlab-ci.yml'
+    content_patterns:
+      - 'stages:'
+    weight: 1.0
+    detects:
+      type: ci_workflow
+      value: gitlab
+
+  - id: ci-bitbucket
+    name: Bitbucket Pipelines
+    description: Detect existing Bitbucket Pipelines
+    file_patterns:
+      - 'bitbucket-pipelines.yml'
+    content_patterns:
+      - 'pipelines:'
+    weight: 1.0
+    detects:
+      type: ci_workflow
+      value: bitbucket
+
+  # ============================================
+  # TEST FRAMEWORKS
+  # ============================================
+  - id: test-jest
+    name: Jest Testing
+    description: Detect Jest JavaScript testing framework
+    file_patterns:
+      - 'package.json'
+      - 'jest.config.js'
+      - 'jest.config.ts'
+    content_patterns:
+      - '"jest"'
+    weight: 0.85
+    detects:
+      type: test_framework
+      value: jest
+
+  - id: test-vitest
+    name: Vitest Testing
+    description: Detect Vitest testing framework
+    file_patterns:
+      - 'package.json'
+      - 'vitest.config.ts'
+    content_patterns:
+      - '"vitest"'
+    weight: 0.85
+    detects:
+      type: test_framework
+      value: vitest
+
+  - id: test-pytest
+    name: Pytest
+    description: Detect pytest Python testing
+    file_patterns:
+      - 'requirements.txt'
+      - 'pyproject.toml'
+      - 'pytest.ini'
+      - 'conftest.py'
+    content_patterns:
+      - 'pytest'
+    weight: 0.85
+    detects:
+      type: test_framework
+      value: pytest
+```
+
+##### Rust Implementation with YAML Loading and Validation
+
 ```rust
 // crates/ampel-intelligence/src/detection.rs
 
 use std::collections::HashMap;
+use std::path::{Path, PathBuf};
+use serde::{Deserialize, Serialize};
+use jsonschema::{JSONSchema, Draft};
 
 /// Detected technology stack for a repository
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DetectedTechStack {
-    /// Primary programming languages with confidence scores
     pub languages: Vec<(Language, f32)>,
-
-    /// Detected frameworks (e.g., React, Axum, Django)
     pub frameworks: Vec<DetectedFramework>,
-
-    /// Build tools (e.g., Cargo, npm, Gradle)
     pub build_tools: Vec<BuildTool>,
-
-    /// Test frameworks (e.g., Jest, pytest, cargo-test)
     pub test_frameworks: Vec<TestFramework>,
-
-    /// Package managers (e.g., npm, pip, cargo)
     pub package_managers: Vec<PackageManager>,
-
-    /// Detected CI/CD workflows
     pub existing_workflows: Vec<ExistingWorkflow>,
-
-    /// Docker/containerization detected
     pub containerization: Option<ContainerConfig>,
-
-    /// Confidence score (0.0 - 1.0)
     pub confidence: f32,
 }
 
-/// File pattern rules for detection
-#[derive(Debug, Clone)]
+/// Detection target from YAML config
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DetectionTarget {
+    #[serde(rename = "type")]
+    pub target_type: DetectionTargetType,
+    pub value: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DetectionTargetType {
+    Language,
+    Framework,
+    BuildTool,
+    TestFramework,
+    CiWorkflow,
+    CdWorkflow,
+}
+
+/// File pattern rules for detection (loaded from YAML)
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DetectionRule {
-    /// File patterns to match (glob)
+    pub id: String,
+    pub name: String,
+    #[serde(default)]
+    pub description: String,
     pub file_patterns: Vec<String>,
-
-    /// Content patterns to search (regex)
+    #[serde(default)]
     pub content_patterns: Vec<String>,
-
-    /// Weight for this rule
     pub weight: f32,
-
-    /// What this rule detects
     pub detects: DetectionTarget,
+    #[serde(default = "default_enabled")]
+    pub enabled: bool,
+}
+
+fn default_enabled() -> bool { true }
+
+/// Detection rules configuration
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DetectionRulesConfig {
+    pub version: String,
+    pub rules: Vec<DetectionRule>,
+}
+
+/// Configuration loader with schema validation
+pub struct DetectionConfigLoader {
+    schema: JSONSchema,
+    config_path: PathBuf,
+}
+
+impl DetectionConfigLoader {
+    /// Create loader with schema validation
+    pub fn new(config_dir: &Path) -> Result<Self, ConfigError> {
+        let schema_path = config_dir.join("schemas/detection-rules.schema.json");
+        let schema_content = std::fs::read_to_string(&schema_path)
+            .map_err(|e| ConfigError::SchemaLoad(e.to_string()))?;
+        let schema_value: serde_json::Value = serde_json::from_str(&schema_content)
+            .map_err(|e| ConfigError::SchemaLoad(e.to_string()))?;
+        let schema = JSONSchema::options()
+            .with_draft(Draft::Draft7)
+            .compile(&schema_value)
+            .map_err(|e| ConfigError::SchemaCompile(e.to_string()))?;
+
+        Ok(Self {
+            schema,
+            config_path: config_dir.join("detection-rules.yaml"),
+        })
+    }
+
+    /// Load and validate detection rules from YAML
+    pub fn load(&self) -> Result<DetectionRulesConfig, ConfigError> {
+        let yaml_content = std::fs::read_to_string(&self.config_path)
+            .map_err(|e| ConfigError::FileRead(self.config_path.clone(), e.to_string()))?;
+
+        // Parse YAML to JSON for validation
+        let config_value: serde_yaml::Value = serde_yaml::from_str(&yaml_content)
+            .map_err(|e| ConfigError::YamlParse(e.to_string()))?;
+        let json_value: serde_json::Value = serde_json::to_value(&config_value)
+            .map_err(|e| ConfigError::JsonConvert(e.to_string()))?;
+
+        // Validate against schema
+        let validation_result = self.schema.validate(&json_value);
+        if let Err(errors) = validation_result {
+            let error_messages: Vec<String> = errors
+                .map(|e| format!("{} at {}", e, e.instance_path))
+                .collect();
+            return Err(ConfigError::SchemaValidation(error_messages));
+        }
+
+        // Deserialize to config struct
+        let config: DetectionRulesConfig = serde_yaml::from_str(&yaml_content)
+            .map_err(|e| ConfigError::Deserialize(e.to_string()))?;
+
+        // Validate regex patterns
+        for rule in &config.rules {
+            for pattern in &rule.content_patterns {
+                regex::Regex::new(pattern)
+                    .map_err(|e| ConfigError::InvalidRegex(
+                        rule.id.clone(), pattern.clone(), e.to_string()
+                    ))?;
+            }
+        }
+
+        tracing::info!(
+            "Loaded {} detection rules from {}",
+            config.rules.iter().filter(|r| r.enabled).count(),
+            self.config_path.display()
+        );
+
+        Ok(config)
+    }
 }
 
 #[async_trait]
 pub trait TechStackDetector: Send + Sync {
-    /// Analyze repository and detect tech stack
     async fn detect(&self, repo_path: &Path) -> Result<DetectedTechStack, DetectionError>;
-
-    /// Check if CI workflow exists
-    async fn has_ci_workflow(&self, repo_path: &Path, provider: GitProvider)
-        -> Result<bool, DetectionError>;
-
-    /// Check if CD workflow exists
-    async fn has_cd_workflow(&self, repo_path: &Path, provider: GitProvider)
-        -> Result<bool, DetectionError>;
+    async fn has_ci_workflow(&self, repo_path: &Path, provider: GitProvider) -> Result<bool, DetectionError>;
+    async fn has_cd_workflow(&self, repo_path: &Path, provider: GitProvider) -> Result<bool, DetectionError>;
+    async fn reload_rules(&self) -> Result<(), DetectionError>;
 }
 
-/// Default detector implementation
+/// Default detector with externalized config
 pub struct DefaultTechStackDetector {
-    rules: Vec<DetectionRule>,
+    rules: Arc<RwLock<Vec<DetectionRule>>>,
+    config_loader: Arc<DetectionConfigLoader>,
     embedding_service: Arc<dyn EmbeddingService>,
 }
 
 impl DefaultTechStackDetector {
-    pub fn new(embedding_service: Arc<dyn EmbeddingService>) -> Self {
-        Self {
-            rules: Self::default_rules(),
+    pub fn new(
+        config_dir: &Path,
+        embedding_service: Arc<dyn EmbeddingService>,
+    ) -> Result<Self, DetectionError> {
+        let config_loader = Arc::new(DetectionConfigLoader::new(config_dir)?);
+        let config = config_loader.load()?;
+        let enabled_rules: Vec<DetectionRule> = config.rules
+            .into_iter()
+            .filter(|r| r.enabled)
+            .collect();
+
+        Ok(Self {
+            rules: Arc::new(RwLock::new(enabled_rules)),
+            config_loader,
             embedding_service,
-        }
+        })
     }
 
-    fn default_rules() -> Vec<DetectionRule> {
-        vec![
-            // Rust
-            DetectionRule {
-                file_patterns: vec!["Cargo.toml".into(), "Cargo.lock".into()],
-                content_patterns: vec![r"\[package\]".into()],
-                weight: 1.0,
-                detects: DetectionTarget::Language(Language::Rust),
-            },
-            // Node.js / JavaScript
-            DetectionRule {
-                file_patterns: vec!["package.json".into()],
-                content_patterns: vec![r#""dependencies""#.into()],
-                weight: 1.0,
-                detects: DetectionTarget::Language(Language::JavaScript),
-            },
-            // Python
-            DetectionRule {
-                file_patterns: vec![
-                    "requirements.txt".into(),
-                    "pyproject.toml".into(),
-                    "setup.py".into(),
-                ],
-                content_patterns: vec![],
-                weight: 1.0,
-                detects: DetectionTarget::Language(Language::Python),
-            },
-            // React Framework
-            DetectionRule {
-                file_patterns: vec!["package.json".into()],
-                content_patterns: vec![r#""react""#.into()],
-                weight: 0.9,
-                detects: DetectionTarget::Framework(Framework::React),
-            },
-            // Axum Framework
-            DetectionRule {
-                file_patterns: vec!["Cargo.toml".into()],
-                content_patterns: vec![r#"axum\s*="#.into()],
-                weight: 0.9,
-                detects: DetectionTarget::Framework(Framework::Axum),
-            },
-            // GitHub Actions CI
-            DetectionRule {
-                file_patterns: vec![".github/workflows/*.yml".into()],
-                content_patterns: vec![r"on:\s*\[?(push|pull_request)".into()],
-                weight: 1.0,
-                detects: DetectionTarget::CIWorkflow(GitProvider::GitHub),
-            },
-            // GitLab CI
-            DetectionRule {
-                file_patterns: vec![".gitlab-ci.yml".into()],
-                content_patterns: vec![r"stages:".into()],
-                weight: 1.0,
-                detects: DetectionTarget::CIWorkflow(GitProvider::GitLab),
-            },
-            // Bitbucket Pipelines
-            DetectionRule {
-                file_patterns: vec!["bitbucket-pipelines.yml".into()],
-                content_patterns: vec![r"pipelines:".into()],
-                weight: 1.0,
-                detects: DetectionTarget::CIWorkflow(GitProvider::Bitbucket),
-            },
-            // ... additional rules for frameworks, test tools, etc.
-        ]
+    /// Hot-reload rules from YAML config
+    pub async fn reload_rules(&self) -> Result<(), DetectionError> {
+        let config = self.config_loader.load()?;
+        let enabled_rules: Vec<DetectionRule> = config.rules
+            .into_iter()
+            .filter(|r| r.enabled)
+            .collect();
+        let mut rules = self.rules.write().await;
+        *rules = enabled_rules;
+        tracing::info!("Reloaded detection rules: {} active rules", rules.len());
+        Ok(())
     }
 }
 ```
 
 #### 3.1.3 Embedding Service
 
+Model selection and configuration is **externalized to YAML** to allow runtime model switching without code changes.
+
+##### Embedding Configuration Schema
+
+```json
+// config/schemas/embedding-config.schema.json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EmbeddingServiceConfig",
+  "description": "Configuration for embedding model selection",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string" },
+    "default_model": { "type": "string" },
+    "models": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/ModelConfig" }
+    },
+    "cache": { "$ref": "#/definitions/CacheConfig" }
+  },
+  "required": ["version", "default_model", "models"],
+  "definitions": {
+    "ModelConfig": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "provider": { "enum": ["fastembed", "ort", "candle"] },
+        "model_id": { "type": "string" },
+        "dimensions": { "type": "integer", "minimum": 1 },
+        "max_tokens": { "type": "integer" },
+        "use_case": { "type": "string" },
+        "quantized": { "type": "boolean", "default": false },
+        "show_download_progress": { "type": "boolean", "default": true }
+      },
+      "required": ["name", "provider", "model_id", "dimensions"]
+    },
+    "CacheConfig": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean", "default": true },
+        "max_entries": { "type": "integer", "default": 10000 },
+        "ttl_seconds": { "type": "integer", "default": 3600 }
+      }
+    }
+  }
+}
+```
+
+##### Embedding Configuration File
+
+```yaml
+# config/embedding-config.yaml
+version: '1.0'
+
+# Default model for general use
+default_model: all-minilm-l6-v2
+
+models:
+  # Fast, lightweight model for semantic search (recommended default)
+  all-minilm-l6-v2:
+    name: 'All-MiniLM-L6-v2'
+    provider: fastembed
+    model_id: 'sentence-transformers/all-MiniLM-L6-v2'
+    dimensions: 384
+    max_tokens: 256
+    use_case: 'General purpose semantic search, fast inference'
+    quantized: false
+    show_download_progress: true
+
+  # High-quality embeddings (slower, more accurate)
+  bge-small-en:
+    name: 'BGE Small English'
+    provider: fastembed
+    model_id: 'BAAI/bge-small-en-v1.5'
+    dimensions: 384
+    max_tokens: 512
+    use_case: 'Higher quality embeddings for similarity matching'
+    quantized: false
+    show_download_progress: true
+
+  # Code-specific embeddings
+  codebert:
+    name: 'CodeBERT'
+    provider: ort
+    model_id: 'microsoft/codebert-base'
+    dimensions: 768
+    max_tokens: 512
+    use_case: 'Code understanding and tech stack analysis'
+    quantized: false
+    show_download_progress: true
+
+  # Lightweight quantized model for resource-constrained environments
+  all-minilm-l6-v2-q:
+    name: 'All-MiniLM-L6-v2 Quantized'
+    provider: fastembed
+    model_id: 'sentence-transformers/all-MiniLM-L6-v2'
+    dimensions: 384
+    max_tokens: 256
+    use_case: 'Low memory footprint, edge deployment'
+    quantized: true
+    show_download_progress: true
+
+# Embedding cache configuration
+cache:
+  enabled: true
+  max_entries: 10000
+  ttl_seconds: 3600 # 1 hour
+```
+
+##### Rust Implementation with Config Loading
+
 ```rust
 // crates/ampel-intelligence/src/embedding.rs
 
 use fastembed::{TextEmbedding, EmbeddingModel, InitOptions};
+use std::path::Path;
+
+/// Embedding model configuration from YAML
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ModelConfig {
+    pub name: String,
+    pub provider: EmbeddingProvider,
+    pub model_id: String,
+    pub dimensions: usize,
+    #[serde(default)]
+    pub max_tokens: Option<usize>,
+    #[serde(default)]
+    pub use_case: Option<String>,
+    #[serde(default)]
+    pub quantized: bool,
+    #[serde(default = "default_show_progress")]
+    pub show_download_progress: bool,
+}
+
+fn default_show_progress() -> bool { true }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum EmbeddingProvider {
+    Fastembed,
+    Ort,
+    Candle,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CacheConfig {
+    #[serde(default = "default_cache_enabled")]
+    pub enabled: bool,
+    #[serde(default = "default_max_entries")]
+    pub max_entries: usize,
+    #[serde(default = "default_ttl")]
+    pub ttl_seconds: u64,
+}
+
+fn default_cache_enabled() -> bool { true }
+fn default_max_entries() -> usize { 10000 }
+fn default_ttl() -> u64 { 3600 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EmbeddingServiceConfig {
+    pub version: String,
+    pub default_model: String,
+    pub models: HashMap<String, ModelConfig>,
+    #[serde(default)]
+    pub cache: Option<CacheConfig>,
+}
+
+/// Configuration loader for embedding service
+pub struct EmbeddingConfigLoader {
+    config_path: PathBuf,
+}
+
+impl EmbeddingConfigLoader {
+    pub fn new(config_dir: &Path) -> Self {
+        Self {
+            config_path: config_dir.join("embedding-config.yaml"),
+        }
+    }
+
+    pub fn load(&self) -> Result<EmbeddingServiceConfig, ConfigError> {
+        let yaml_content = std::fs::read_to_string(&self.config_path)
+            .map_err(|e| ConfigError::FileRead(self.config_path.clone(), e.to_string()))?;
+        let config: EmbeddingServiceConfig = serde_yaml::from_str(&yaml_content)
+            .map_err(|e| ConfigError::Deserialize(e.to_string()))?;
+
+        // Validate default model exists
+        if !config.models.contains_key(&config.default_model) {
+            return Err(ConfigError::InvalidConfig(format!(
+                "Default model '{}' not found in models list",
+                config.default_model
+            )));
+        }
+
+        Ok(config)
+    }
+}
 
 /// Repository fingerprint as vector embedding
 #[derive(Debug, Clone)]
 pub struct RepositoryFingerprint {
-    /// Embedding vector (typically 384 dimensions for MiniLM)
     pub embedding: Vec<f32>,
-
-    /// Detected tech stack summary
     pub tech_stack: DetectedTechStack,
-
-    /// Repository metadata
     pub metadata: RepositoryMetadata,
-
-    /// Timestamp of analysis
     pub analyzed_at: DateTime<Utc>,
 }
 
 #[async_trait]
 pub trait EmbeddingService: Send + Sync {
-    /// Generate embedding for text
     async fn embed(&self, text: &str) -> Result<Vec<f32>, EmbeddingError>;
-
-    /// Generate embedding batch
     async fn embed_batch(&self, texts: &[String]) -> Result<Vec<Vec<f32>>, EmbeddingError>;
-
-    /// Generate repository fingerprint
-    async fn fingerprint(&self, tech_stack: &DetectedTechStack)
-        -> Result<RepositoryFingerprint, EmbeddingError>;
+    async fn fingerprint(&self, tech_stack: &DetectedTechStack) -> Result<RepositoryFingerprint, EmbeddingError>;
+    fn dimensions(&self) -> usize;
+    fn model_name(&self) -> &str;
 }
 
-/// ONNX-based embedding service using fastembed-rs
+/// ONNX-based embedding service with config-driven model selection
 pub struct OnnxEmbeddingService {
     model: TextEmbedding,
+    config: ModelConfig,
+    cache: Option<EmbeddingCache>,
 }
 
 impl OnnxEmbeddingService {
-    pub fn new() -> Result<Self, EmbeddingError> {
-        let model = TextEmbedding::try_new(
-            InitOptions::new(EmbeddingModel::AllMiniLML6V2)
-                .with_show_download_progress(true)
-        )?;
-
-        Ok(Self { model })
+    /// Create from configuration directory
+    pub fn from_config(config_dir: &Path) -> Result<Self, EmbeddingError> {
+        let loader = EmbeddingConfigLoader::new(config_dir);
+        let config = loader.load()?;
+        Self::with_model_config(
+            config.models.get(&config.default_model)
+                .ok_or(EmbeddingError::ModelNotFound(config.default_model.clone()))?
+                .clone(),
+            config.cache,
+        )
     }
 
-    pub fn with_model(model: EmbeddingModel) -> Result<Self, EmbeddingError> {
+    /// Create with specific model from config
+    pub fn from_config_with_model(config_dir: &Path, model_key: &str) -> Result<Self, EmbeddingError> {
+        let loader = EmbeddingConfigLoader::new(config_dir);
+        let config = loader.load()?;
+        let model_config = config.models.get(model_key)
+            .ok_or(EmbeddingError::ModelNotFound(model_key.to_string()))?
+            .clone();
+        Self::with_model_config(model_config, config.cache)
+    }
+
+    fn with_model_config(model_config: ModelConfig, cache_config: Option<CacheConfig>) -> Result<Self, EmbeddingError> {
+        let fastembed_model = match model_config.model_id.as_str() {
+            "sentence-transformers/all-MiniLM-L6-v2" => EmbeddingModel::AllMiniLML6V2,
+            "BAAI/bge-small-en-v1.5" => EmbeddingModel::BGESmallENV15,
+            "BAAI/bge-base-en-v1.5" => EmbeddingModel::BGEBaseENV15,
+            _ => return Err(EmbeddingError::UnsupportedModel(model_config.model_id.clone())),
+        };
+
         let model = TextEmbedding::try_new(
-            InitOptions::new(model)
-                .with_show_download_progress(true)
+            InitOptions::new(fastembed_model)
+                .with_show_download_progress(model_config.show_download_progress)
         )?;
 
-        Ok(Self { model })
+        let cache = cache_config.filter(|c| c.enabled).map(|c| {
+            EmbeddingCache::new(c.max_entries, Duration::from_secs(c.ttl_seconds))
+        });
+
+        Ok(Self { model, config: model_config, cache })
     }
 }
 
 #[async_trait]
 impl EmbeddingService for OnnxEmbeddingService {
     async fn embed(&self, text: &str) -> Result<Vec<f32>, EmbeddingError> {
+        // Check cache first
+        if let Some(cache) = &self.cache {
+            if let Some(cached) = cache.get(text).await {
+                return Ok(cached);
+            }
+        }
+
         let embeddings = self.model.embed(vec![text], None)?;
-        Ok(embeddings.into_iter().next().unwrap())
+        let embedding = embeddings.into_iter().next().unwrap();
+
+        // Store in cache
+        if let Some(cache) = &self.cache {
+            cache.insert(text.to_string(), embedding.clone()).await;
+        }
+
+        Ok(embedding)
     }
 
     async fn embed_batch(&self, texts: &[String]) -> Result<Vec<Vec<f32>>, EmbeddingError> {
@@ -464,24 +1040,12 @@ impl EmbeddingService for OnnxEmbeddingService {
         Ok(self.model.embed(texts, None)?)
     }
 
-    async fn fingerprint(&self, tech_stack: &DetectedTechStack)
-        -> Result<RepositoryFingerprint, EmbeddingError>
-    {
-        // Create descriptive text from tech stack
+    async fn fingerprint(&self, tech_stack: &DetectedTechStack) -> Result<RepositoryFingerprint, EmbeddingError> {
         let description = format!(
             "Repository using {} with frameworks {} and build tools {}",
-            tech_stack.languages.iter()
-                .map(|(l, _)| l.to_string())
-                .collect::<Vec<_>>()
-                .join(", "),
-            tech_stack.frameworks.iter()
-                .map(|f| f.name.clone())
-                .collect::<Vec<_>>()
-                .join(", "),
-            tech_stack.build_tools.iter()
-                .map(|b| b.to_string())
-                .collect::<Vec<_>>()
-                .join(", "),
+            tech_stack.languages.iter().map(|(l, _)| l.to_string()).collect::<Vec<_>>().join(", "),
+            tech_stack.frameworks.iter().map(|f| f.name.clone()).collect::<Vec<_>>().join(", "),
+            tech_stack.build_tools.iter().map(|b| b.to_string()).collect::<Vec<_>>().join(", "),
         );
 
         let embedding = self.embed(&description).await?;
@@ -492,6 +1056,14 @@ impl EmbeddingService for OnnxEmbeddingService {
             metadata: RepositoryMetadata::default(),
             analyzed_at: Utc::now(),
         })
+    }
+
+    fn dimensions(&self) -> usize {
+        self.config.dimensions
+    }
+
+    fn model_name(&self) -> &str {
+        &self.config.name
     }
 }
 ```
@@ -689,94 +1261,403 @@ pub struct GenerationOptions {
 
 #### 3.2.2 GitHub Actions Generator
 
+CI workflow templates are **externalized as YAML** with JSON Schema validation, enabling customization without code changes.
+
+##### CI Templates Schema
+
+```json
+// config/schemas/ci-templates.schema.json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CIWorkflowTemplates",
+  "description": "Schema for CI workflow template configuration",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string" },
+    "templates": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/LanguageTemplate" }
+    }
+  },
+  "required": ["version", "templates"],
+  "definitions": {
+    "LanguageTemplate": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "file_path": { "type": "string" },
+        "base_template": { "type": "string" },
+        "env": { "type": "object", "additionalProperties": { "type": "string" } },
+        "setup_steps": { "type": "array", "items": { "$ref": "#/definitions/Step" } },
+        "build_steps": { "type": "array", "items": { "$ref": "#/definitions/Step" } },
+        "test_steps": { "type": "array", "items": { "$ref": "#/definitions/Step" } },
+        "lint_steps": { "type": "array", "items": { "$ref": "#/definitions/Step" } },
+        "cache_config": { "$ref": "#/definitions/CacheConfig" },
+        "security_steps": { "type": "array", "items": { "$ref": "#/definitions/Step" } }
+      },
+      "required": ["name", "file_path", "build_steps"]
+    },
+    "Step": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "uses": { "type": "string" },
+        "run": { "type": "string" },
+        "with": { "type": "object" },
+        "env": { "type": "object" },
+        "if": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "CacheConfig": {
+      "type": "object",
+      "properties": {
+        "paths": { "type": "array", "items": { "type": "string" } },
+        "key_pattern": { "type": "string" },
+        "restore_keys": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
+```
+
+##### CI Templates Configuration
+
+```yaml
+# config/ci-templates.yaml
+version: '1.0'
+
+templates:
+  # ============================================
+  # RUST TEMPLATES
+  # ============================================
+  rust:
+    name: 'Rust CI'
+    file_path: '.github/workflows/ci.yml'
+    env:
+      CARGO_TERM_COLOR: 'always'
+      RUST_BACKTRACE: '1'
+
+    setup_steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v4'
+
+      - name: 'Install Rust toolchain'
+        uses: 'dtolnay/rust-action@stable'
+        with:
+          components: 'clippy, rustfmt'
+
+    cache_config:
+      paths:
+        - '~/.cargo/registry'
+        - '~/.cargo/git'
+        - 'target'
+      key_pattern: "${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}"
+      restore_keys:
+        - '${{ runner.os }}-cargo-'
+
+    lint_steps:
+      - name: 'Check formatting'
+        run: 'cargo fmt --all -- --check'
+
+      - name: 'Clippy'
+        run: 'cargo clippy --all-targets --all-features -- -D warnings'
+
+    build_steps:
+      - name: 'Build'
+        run: 'cargo build --all-features'
+
+    test_steps:
+      - name: 'Run tests'
+        run: 'cargo test --all-features'
+
+    security_steps:
+      - name: 'Security audit'
+        run: 'cargo audit'
+
+  # ============================================
+  # NODE.JS TEMPLATES
+  # ============================================
+  javascript:
+    name: 'Node.js CI'
+    file_path: '.github/workflows/ci.yml'
+    env:
+      CI: 'true'
+
+    setup_steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v4'
+
+      - name: 'Setup Node.js'
+        uses: 'actions/setup-node@v4'
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+    cache_config:
+      paths:
+        - '~/.npm'
+        - 'node_modules'
+      key_pattern: "${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}"
+      restore_keys:
+        - '${{ runner.os }}-node-'
+
+    lint_steps:
+      - name: 'Lint'
+        run: 'npm run lint'
+
+    build_steps:
+      - name: 'Install dependencies'
+        run: 'npm ci'
+
+      - name: 'Build'
+        run: 'npm run build'
+
+    test_steps:
+      - name: 'Run tests'
+        run: 'npm test'
+
+    security_steps:
+      - name: 'Audit dependencies'
+        run: 'npm audit --audit-level=high'
+
+  # ============================================
+  # PYTHON TEMPLATES
+  # ============================================
+  python:
+    name: 'Python CI'
+    file_path: '.github/workflows/ci.yml'
+
+    setup_steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v4'
+
+      - name: 'Setup Python'
+        uses: 'actions/setup-python@v5'
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+    cache_config:
+      paths:
+        - '~/.cache/pip'
+      key_pattern: "${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}"
+      restore_keys:
+        - '${{ runner.os }}-pip-'
+
+    lint_steps:
+      - name: 'Lint with ruff'
+        run: |
+          pip install ruff
+          ruff check .
+
+      - name: 'Type check with mypy'
+        run: |
+          pip install mypy
+          mypy .
+
+    build_steps:
+      - name: 'Install dependencies'
+        run: 'pip install -r requirements.txt'
+
+    test_steps:
+      - name: 'Run tests'
+        run: |
+          pip install pytest pytest-cov
+          pytest --cov=.
+
+    security_steps:
+      - name: 'Security scan'
+        run: |
+          pip install safety
+          safety check
+
+  # ============================================
+  # GO TEMPLATES
+  # ============================================
+  go:
+    name: 'Go CI'
+    file_path: '.github/workflows/ci.yml'
+
+    setup_steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v4'
+
+      - name: 'Setup Go'
+        uses: 'actions/setup-go@v5'
+        with:
+          go-version: '1.22'
+          cache: true
+
+    lint_steps:
+      - name: 'Lint with golangci-lint'
+        uses: 'golangci/golangci-lint-action@v4'
+        with:
+          version: 'latest'
+
+    build_steps:
+      - name: 'Build'
+        run: 'go build -v ./...'
+
+    test_steps:
+      - name: 'Run tests'
+        run: 'go test -v -race -coverprofile=coverage.out ./...'
+
+    security_steps:
+      - name: 'Security scan'
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck ./...
+```
+
+##### Rust Implementation with Template Loading
+
 ```rust
 // crates/ampel-intelligence/src/ci/github.rs
 
 use super::*;
+use handlebars::Handlebars;
 
-pub struct GitHubActionsGenerator {
-    templates: TemplateEngine,
+/// CI template configuration from YAML
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct LanguageTemplate {
+    pub name: String,
+    pub file_path: String,
+    #[serde(default)]
+    pub env: HashMap<String, String>,
+    #[serde(default)]
+    pub setup_steps: Vec<WorkflowStep>,
+    pub build_steps: Vec<WorkflowStep>,
+    #[serde(default)]
+    pub test_steps: Vec<WorkflowStep>,
+    #[serde(default)]
+    pub lint_steps: Vec<WorkflowStep>,
+    #[serde(default)]
+    pub cache_config: Option<CacheConfig>,
+    #[serde(default)]
+    pub security_steps: Vec<WorkflowStep>,
 }
 
-impl GitHubActionsGenerator {
-    pub fn new() -> Self {
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct WorkflowStep {
+    pub name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub uses: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub run: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", rename = "with")]
+    pub with_params: Option<HashMap<String, serde_yaml::Value>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub env: Option<HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none", rename = "if")]
+    pub condition: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CITemplatesConfig {
+    pub version: String,
+    pub templates: HashMap<String, LanguageTemplate>,
+}
+
+/// Template loader with schema validation
+pub struct CITemplateLoader {
+    config_path: PathBuf,
+}
+
+impl CITemplateLoader {
+    pub fn new(config_dir: &Path) -> Self {
         Self {
-            templates: TemplateEngine::new(),
+            config_path: config_dir.join("ci-templates.yaml"),
         }
     }
 
-    fn generate_rust_workflow(&self, options: &GenerationOptions) -> String {
-        let cache_section = if options.enable_caching {
-            r#"
-      - name: Cache cargo registry
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-
-"#
-        } else {
-            ""
-        };
+    pub fn load(&self) -> Result<CITemplatesConfig, ConfigError> {
+        let yaml_content = std::fs::read_to_string(&self.config_path)
+            .map_err(|e| ConfigError::FileRead(self.config_path.clone(), e.to_string()))?;
+        let config: CITemplatesConfig = serde_yaml::from_str(&yaml_content)
+            .map_err(|e| ConfigError::Deserialize(e.to_string()))?;
+        Ok(config)
+    }
+}
 
-        let security_section = if options.enable_security_scan {
-            r#"
-      - name: Security audit
-        run: cargo audit
-"#
-        } else {
-            ""
-        };
+/// GitHub Actions generator with externalized templates
+pub struct GitHubActionsGenerator {
+    templates: Arc<RwLock<CITemplatesConfig>>,
+    template_loader: Arc<CITemplateLoader>,
+}
 
-        format!(r#"name: CI
-
-on:
-  push:
-    branches: [{branches}]
-  pull_request:
-    branches: [{branches}]
-
-env:
-  CARGO_TERM_COLOR: always
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-action@stable
-        with:
-          components: clippy, rustfmt
-{cache}
-      - name: Check formatting
-        run: cargo fmt --all -- --check
-
-      - name: Clippy
-        run: cargo clippy --all-targets --all-features -- -D warnings
-
-      - name: Build
-        run: cargo build --all-features
-
-      - name: Run tests
-        run: cargo test --all-features
-{security}
-"#,
-            branches = options.trigger_branches.join(", "),
-            cache = cache_section,
-            security = security_section,
-        )
+impl GitHubActionsGenerator {
+    pub fn new(config_dir: &Path) -> Result<Self, ConfigError> {
+        let template_loader = Arc::new(CITemplateLoader::new(config_dir));
+        let templates = template_loader.load()?;
+        Ok(Self {
+            templates: Arc::new(RwLock::new(templates)),
+            template_loader,
+        })
     }
 
-    fn generate_nodejs_workflow(&self, options: &GenerationOptions) -> String {
-        // Similar implementation for Node.js projects
-        // ...
+    /// Hot-reload templates from config
+    pub async fn reload_templates(&self) -> Result<(), ConfigError> {
+        let config = self.template_loader.load()?;
+        let mut templates = self.templates.write().await;
+        *templates = config;
+        tracing::info!("Reloaded CI templates");
+        Ok(())
+    }
+
+    fn render_workflow(&self, template: &LanguageTemplate, options: &GenerationOptions) -> String {
+        let mut workflow = serde_yaml::Mapping::new();
+
+        // Name and triggers
+        workflow.insert("name".into(), template.name.clone().into());
+        let triggers = self.build_triggers(options);
+        workflow.insert("on".into(), triggers);
+
+        // Environment variables
+        if !template.env.is_empty() {
+            workflow.insert("env".into(), serde_yaml::to_value(&template.env).unwrap());
+        }
+
+        // Jobs
+        let jobs = self.build_jobs(template, options);
+        workflow.insert("jobs".into(), jobs);
+
+        serde_yaml::to_string(&workflow).unwrap()
+    }
+
+    fn build_jobs(&self, template: &LanguageTemplate, options: &GenerationOptions) -> serde_yaml::Value {
+        let mut steps = Vec::new();
+
+        // Setup steps
+        steps.extend(template.setup_steps.iter().cloned());
+
+        // Cache step (if enabled)
+        if options.enable_caching {
+            if let Some(cache) = &template.cache_config {
+                steps.push(self.build_cache_step(cache));
+            }
+        }
+
+        // Lint steps
+        steps.extend(template.lint_steps.iter().cloned());
+
+        // Build steps
+        steps.extend(template.build_steps.iter().cloned());
+
+        // Test steps
+        steps.extend(template.test_steps.iter().cloned());
+
+        // Security steps (if enabled)
+        if options.enable_security_scan {
+            steps.extend(template.security_steps.iter().cloned());
+        }
+
+        serde_yaml::to_value(json!({
+            "build": {
+                "runs-on": "ubuntu-latest",
+                "steps": steps
+            }
+        })).unwrap()
     }
 }
 
@@ -787,30 +1668,24 @@ impl CIWorkflowGenerator for GitHubActionsGenerator {
         tech_stack: &DetectedTechStack,
         options: &GenerationOptions,
     ) -> Result<GeneratedWorkflow, GenerationError> {
-        let content = match tech_stack.primary_language() {
-            Language::Rust => self.generate_rust_workflow(options),
-            Language::JavaScript | Language::TypeScript => {
-                self.generate_nodejs_workflow(options)
-            }
-            Language::Python => self.generate_python_workflow(options),
-            Language::Go => self.generate_go_workflow(options),
-            _ => return Err(GenerationError::UnsupportedLanguage),
-        };
+        let templates = self.templates.read().await;
+        let language_key = tech_stack.primary_language().to_string().to_lowercase();
+
+        let template = templates.templates.get(&language_key)
+            .ok_or(GenerationError::UnsupportedLanguage)?;
+
+        let content = self.render_workflow(template, options);
 
         Ok(GeneratedWorkflow {
-            file_path: ".github/workflows/ci.yml".into(),
+            file_path: template.file_path.clone(),
             content,
-            description: format!(
-                "CI workflow for {} project",
-                tech_stack.primary_language()
-            ),
+            description: format!("CI workflow for {} project", tech_stack.primary_language()),
             provider: GitProvider::GitHub,
             workflow_type: WorkflowType::CI,
         })
     }
 
     fn validate(&self, workflow: &str) -> Result<(), ValidationError> {
-        // Parse YAML and validate structure
         let _parsed: serde_yaml::Value = serde_yaml::from_str(workflow)?;
         Ok(())
     }
@@ -825,6 +1700,360 @@ impl CIWorkflowGenerator for GitHubActionsGenerator {
 
 #### 3.3.1 Deployment Provider Trait
 
+Deployment provider credential schemas and configurations are **externalized to YAML** for easy addition of new providers without code changes.
+
+##### Deployment Providers Schema
+
+```json
+// config/schemas/deployment-providers.schema.json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DeploymentProvidersConfig",
+  "description": "Schema for deployment provider configurations",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string" },
+    "providers": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/ProviderConfig" }
+    }
+  },
+  "required": ["version", "providers"],
+  "definitions": {
+    "ProviderConfig": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "api_base": { "type": "string", "format": "uri" },
+        "docs_url": { "type": "string", "format": "uri" },
+        "credential_schema": { "$ref": "#/definitions/CredentialSchema" },
+        "deployment_config": { "$ref": "#/definitions/DeploymentDefaults" },
+        "regions": { "type": "array", "items": { "$ref": "#/definitions/Region" } },
+        "supported_languages": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["id", "name", "credential_schema"]
+    },
+    "CredentialSchema": {
+      "type": "object",
+      "properties": {
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/CredentialField" }
+        }
+      }
+    },
+    "CredentialField": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "label": { "type": "string" },
+        "field_type": { "enum": ["api_token", "secret", "text", "select", "region"] },
+        "required": { "type": "boolean" },
+        "description": { "type": "string" },
+        "validation_pattern": { "type": "string" },
+        "options": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["name", "label", "field_type"]
+    },
+    "DeploymentDefaults": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "Region": {
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "location": { "type": "string" }
+      },
+      "required": ["code", "name"]
+    }
+  }
+}
+```
+
+##### Deployment Providers Configuration
+
+```yaml
+# config/deployment-providers.yaml
+version: '1.0'
+
+providers:
+  # ============================================
+  # FLY.IO
+  # ============================================
+  flyio:
+    id: 'flyio'
+    name: 'Fly.io'
+    description: 'Deploy globally distributed applications at the edge'
+    api_base: 'https://api.machines.dev'
+    docs_url: 'https://fly.io/docs/machines/api/'
+
+    credential_schema:
+      fields:
+        - name: 'api_token'
+          label: 'Fly.io API Token'
+          field_type: 'api_token'
+          required: true
+          description: "Generate with 'fly tokens deploy'"
+          validation_pattern: '^fm[12]_[A-Za-z0-9_-]+$'
+
+        - name: 'app_name'
+          label: 'Application Name'
+          field_type: 'text'
+          required: false
+          description: 'Leave blank to auto-generate from repo name'
+          validation_pattern: '^[a-z0-9-]+$'
+
+        - name: 'region'
+          label: 'Primary Region'
+          field_type: 'select'
+          required: true
+          description: 'Deployment region'
+          options: [] # Populated from regions list
+
+    regions:
+      - code: 'iad'
+        name: 'Ashburn, Virginia (US)'
+        location: 'US East'
+      - code: 'lax'
+        name: 'Los Angeles, California (US)'
+        location: 'US West'
+      - code: 'ord'
+        name: 'Chicago, Illinois (US)'
+        location: 'US Central'
+      - code: 'sjc'
+        name: 'San Jose, California (US)'
+        location: 'US West'
+      - code: 'ams'
+        name: 'Amsterdam, Netherlands'
+        location: 'Europe'
+      - code: 'lhr'
+        name: 'London, United Kingdom'
+        location: 'Europe'
+      - code: 'fra'
+        name: 'Frankfurt, Germany'
+        location: 'Europe'
+      - code: 'sin'
+        name: 'Singapore'
+        location: 'Asia Pacific'
+      - code: 'syd'
+        name: 'Sydney, Australia'
+        location: 'Australia'
+      - code: 'nrt'
+        name: 'Tokyo, Japan'
+        location: 'Asia Pacific'
+
+    deployment_config:
+      language_defaults:
+        rust:
+          internal_port: 8080
+          memory: '256mb'
+          cpu_kind: 'shared'
+          cpus: 1
+        javascript:
+          internal_port: 3000
+          memory: '256mb'
+          cpu_kind: 'shared'
+          cpus: 1
+        python:
+          internal_port: 8000
+          memory: '512mb'
+          cpu_kind: 'shared'
+          cpus: 1
+        go:
+          internal_port: 8080
+          memory: '256mb'
+          cpu_kind: 'shared'
+          cpus: 1
+
+    supported_languages:
+      - 'rust'
+      - 'javascript'
+      - 'typescript'
+      - 'python'
+      - 'go'
+      - 'java'
+
+  # ============================================
+  # AWS ECS
+  # ============================================
+  aws-ecs:
+    id: 'aws-ecs'
+    name: 'AWS ECS'
+    description: 'Amazon Elastic Container Service'
+    api_base: 'https://ecs.amazonaws.com'
+    docs_url: 'https://docs.aws.amazon.com/ecs/'
+
+    credential_schema:
+      fields:
+        - name: 'access_key_id'
+          label: 'AWS Access Key ID'
+          field_type: 'text'
+          required: true
+          description: 'AWS access key for programmatic access'
+          validation_pattern: '^[A-Z0-9]{20}$'
+
+        - name: 'secret_access_key'
+          label: 'AWS Secret Access Key'
+          field_type: 'secret'
+          required: true
+          description: 'Keep this confidential'
+
+        - name: 'region'
+          label: 'AWS Region'
+          field_type: 'select'
+          required: true
+          description: 'AWS deployment region'
+          options: []
+
+        - name: 'cluster_name'
+          label: 'ECS Cluster Name'
+          field_type: 'text'
+          required: false
+          description: 'Leave blank to create new cluster'
+
+    regions:
+      - code: 'us-east-1'
+        name: 'US East (N. Virginia)'
+        location: 'US East'
+      - code: 'us-west-2'
+        name: 'US West (Oregon)'
+        location: 'US West'
+      - code: 'eu-west-1'
+        name: 'Europe (Ireland)'
+        location: 'Europe'
+      - code: 'ap-southeast-1'
+        name: 'Asia Pacific (Singapore)'
+        location: 'Asia Pacific'
+
+    deployment_config:
+      task_cpu: '256'
+      task_memory: '512'
+      launch_type: 'FARGATE'
+
+    supported_languages:
+      - 'rust'
+      - 'javascript'
+      - 'typescript'
+      - 'python'
+      - 'go'
+      - 'java'
+
+  # ============================================
+  # GOOGLE CLOUD RUN
+  # ============================================
+  gcp-cloudrun:
+    id: 'gcp-cloudrun'
+    name: 'Google Cloud Run'
+    description: 'Serverless containers on Google Cloud'
+    api_base: 'https://run.googleapis.com'
+    docs_url: 'https://cloud.google.com/run/docs'
+
+    credential_schema:
+      fields:
+        - name: 'service_account_json'
+          label: 'Service Account JSON'
+          field_type: 'secret'
+          required: true
+          description: 'Service account key JSON for deployment'
+
+        - name: 'project_id'
+          label: 'GCP Project ID'
+          field_type: 'text'
+          required: true
+          description: 'Your Google Cloud project ID'
+          validation_pattern: '^[a-z][a-z0-9-]{4,28}[a-z0-9]$'
+
+        - name: 'region'
+          label: 'GCP Region'
+          field_type: 'select'
+          required: true
+          description: 'Cloud Run deployment region'
+          options: []
+
+    regions:
+      - code: 'us-central1'
+        name: 'Iowa'
+        location: 'US Central'
+      - code: 'us-east1'
+        name: 'South Carolina'
+        location: 'US East'
+      - code: 'europe-west1'
+        name: 'Belgium'
+        location: 'Europe'
+      - code: 'asia-east1'
+        name: 'Taiwan'
+        location: 'Asia Pacific'
+
+    deployment_config:
+      cpu: '1'
+      memory: '512Mi'
+      max_instances: 10
+      allow_unauthenticated: true
+
+    supported_languages:
+      - 'rust'
+      - 'javascript'
+      - 'typescript'
+      - 'python'
+      - 'go'
+      - 'java'
+
+  # ============================================
+  # DIGITAL OCEAN APP PLATFORM
+  # ============================================
+  digitalocean:
+    id: 'digitalocean'
+    name: 'DigitalOcean App Platform'
+    description: "Deploy apps quickly with DigitalOcean's PaaS"
+    api_base: 'https://api.digitalocean.com/v2'
+    docs_url: 'https://docs.digitalocean.com/products/app-platform/'
+
+    credential_schema:
+      fields:
+        - name: 'api_token'
+          label: 'DigitalOcean API Token'
+          field_type: 'api_token'
+          required: true
+          description: 'Personal access token with write access'
+
+        - name: 'region'
+          label: 'Deployment Region'
+          field_type: 'select'
+          required: true
+          description: 'App Platform region'
+          options: []
+
+    regions:
+      - code: 'nyc'
+        name: 'New York'
+        location: 'US East'
+      - code: 'sfo'
+        name: 'San Francisco'
+        location: 'US West'
+      - code: 'ams'
+        name: 'Amsterdam'
+        location: 'Europe'
+      - code: 'sgp'
+        name: 'Singapore'
+        location: 'Asia Pacific'
+
+    deployment_config:
+      instance_size_slug: 'basic-xxs'
+      instance_count: 1
+
+    supported_languages:
+      - 'javascript'
+      - 'typescript'
+      - 'python'
+      - 'go'
+```
+
+##### Rust Implementation with Config Loading
+
 ```rust
 // crates/ampel-intelligence/src/cd/mod.rs
 
@@ -834,40 +2063,81 @@ pub mod gcp;
 pub mod azure;
 pub mod digitalocean;
 
+/// Provider configuration from YAML
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ProviderConfig {
+    pub id: String,
+    pub name: String,
+    #[serde(default)]
+    pub description: Option<String>,
+    #[serde(default)]
+    pub api_base: Option<String>,
+    #[serde(default)]
+    pub docs_url: Option<String>,
+    pub credential_schema: CredentialSchema,
+    #[serde(default)]
+    pub deployment_config: Option<serde_yaml::Value>,
+    #[serde(default)]
+    pub regions: Vec<Region>,
+    #[serde(default)]
+    pub supported_languages: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Region {
+    pub code: String,
+    pub name: String,
+    #[serde(default)]
+    pub location: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DeploymentProvidersConfig {
+    pub version: String,
+    pub providers: HashMap<String, ProviderConfig>,
+}
+
+/// Configuration loader for deployment providers
+pub struct DeploymentProviderConfigLoader {
+    config_path: PathBuf,
+}
+
+impl DeploymentProviderConfigLoader {
+    pub fn new(config_dir: &Path) -> Self {
+        Self {
+            config_path: config_dir.join("deployment-providers.yaml"),
+        }
+    }
+
+    pub fn load(&self) -> Result<DeploymentProvidersConfig, ConfigError> {
+        let yaml_content = std::fs::read_to_string(&self.config_path)
+            .map_err(|e| ConfigError::FileRead(self.config_path.clone(), e.to_string()))?;
+        let config: DeploymentProvidersConfig = serde_yaml::from_str(&yaml_content)
+            .map_err(|e| ConfigError::Deserialize(e.to_string()))?;
+        Ok(config)
+    }
+}
+
 /// Deployment provider plugin interface
 #[async_trait]
 pub trait DeploymentProvider: Send + Sync {
-    /// Provider identifier
-    fn provider_id(&self) -> &'static str;
+    fn provider_id(&self) -> &str;
+    fn display_name(&self) -> &str;
+    fn credential_schema(&self) -> &CredentialSchema;
+    fn regions(&self) -> &[Region];
 
-    /// Human-readable name
-    fn display_name(&self) -> &'static str;
-
-    /// Required credentials schema
-    fn credential_schema(&self) -> CredentialSchema;
-
-    /// Validate credentials
-    async fn validate_credentials(
-        &self,
-        credentials: &ProviderCredentials,
-    ) -> Result<bool, DeploymentError>;
-
-    /// Generate deployment workflow
+    async fn validate_credentials(&self, credentials: &ProviderCredentials) -> Result<bool, DeploymentError>;
     async fn generate_workflow(
         &self,
         tech_stack: &DetectedTechStack,
         config: &DeploymentConfig,
         git_provider: GitProvider,
     ) -> Result<GeneratedWorkflow, DeploymentError>;
-
-    /// Generate configuration file (e.g., fly.toml, app.yaml)
     fn generate_config(
         &self,
         tech_stack: &DetectedTechStack,
         config: &DeploymentConfig,
     ) -> Result<Option<GeneratedFile>, DeploymentError>;
-
-    /// Execute deployment (for direct API deployments)
     async fn deploy(
         &self,
         credentials: &ProviderCredentials,
@@ -875,7 +2145,7 @@ pub trait DeploymentProvider: Send + Sync {
     ) -> Result<DeploymentResult, DeploymentError>;
 }
 
-/// Credential schema for UI generation
+/// Credential schema loaded from YAML
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CredentialSchema {
     pub fields: Vec<CredentialField>,
@@ -886,18 +2156,55 @@ pub struct CredentialField {
     pub name: String,
     pub label: String,
     pub field_type: CredentialFieldType,
+    #[serde(default)]
     pub required: bool,
-    pub description: String,
+    #[serde(default)]
+    pub description: Option<String>,
+    #[serde(default)]
     pub validation_pattern: Option<String>,
+    #[serde(default)]
+    pub options: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum CredentialFieldType {
     ApiToken,
     Secret,
     Text,
-    Select(Vec<String>),
+    Select,
     Region,
+}
+
+/// Config-driven provider base implementation
+pub struct ConfigDrivenProvider {
+    config: ProviderConfig,
+    client: reqwest::Client,
+}
+
+impl ConfigDrivenProvider {
+    pub fn from_config(config: ProviderConfig) -> Self {
+        Self {
+            config,
+            client: reqwest::Client::new(),
+        }
+    }
+
+    /// Merge region options into credential schema
+    pub fn credential_schema_with_regions(&self) -> CredentialSchema {
+        let mut schema = self.config.credential_schema.clone();
+        for field in &mut schema.fields {
+            if field.field_type == CredentialFieldType::Select && field.options.is_empty() {
+                // Populate from regions if field is region-type
+                if field.name == "region" {
+                    field.options = self.config.regions.iter()
+                        .map(|r| r.code.clone())
+                        .collect();
+                }
+            }
+        }
+        schema
+    }
 }
 ```
 
@@ -1984,6 +3291,288 @@ impl AuditService {
 }
 ```
 
+### 6.6 Quantum-Safe Encryption for Credential Storage
+
+Given the critical importance of protecting PATs, API tokens, and deployment credentials, Ampel adopts **post-quantum cryptography (PQC)** to ensure long-term security against future quantum computing threats. This is essential for a "harvest now, decrypt later" defense strategy.
+
+#### 6.6.1 Recommended Rust PQC Libraries
+
+Based on research into well-maintained, secure, and production-ready options:
+
+| Library                      | Description                                                             | Maintenance                | Security Level |
+| ---------------------------- | ----------------------------------------------------------------------- | -------------------------- | -------------- |
+| **`aws-lc-rs`**              | Amazon's production-grade cryptographic library with NIST ML-KEM/ML-DSA | AWS-backed, FIPS-validated | ⭐⭐⭐⭐⭐     |
+| **`pqcrypto`**               | Pure Rust wrappers for NIST PQC winners                                 | Well-maintained, audited   | ⭐⭐⭐⭐       |
+| **`libcrux`**                | Formally verified PQC implementations from Cryspen                      | Formally verified          | ⭐⭐⭐⭐⭐     |
+| **`oqs`** (liboqs-rust)      | Open Quantum Safe bindings                                              | Research-backed            | ⭐⭐⭐⭐       |
+| **RustCrypto ML-KEM/ML-DSA** | Pure Rust NIST standard implementations                                 | RustCrypto ecosystem       | ⭐⭐⭐⭐       |
+
+#### 6.6.2 Recommended Approach: Hybrid Encryption
+
+For maximum security, we implement **hybrid encryption** combining classical and post-quantum algorithms:
+
+```yaml
+# config/encryption-config.yaml
+version: '1.0'
+
+credential_encryption:
+  # Hybrid approach: combine classical + PQC for defense in depth
+  strategy: hybrid
+
+  classical:
+    algorithm: AES-256-GCM
+    key_derivation: Argon2id
+    library: ring # or aws-lc-rs
+
+  post_quantum:
+    # NIST-standardized algorithms (August 2024)
+    key_encapsulation: ML-KEM-768 # FIPS 203 (formerly Kyber)
+    digital_signature: ML-DSA-65 # FIPS 204 (formerly Dilithium)
+    library: aws-lc-rs # Production-ready, FIPS-validated
+
+  # Key hierarchy
+  key_hierarchy:
+    master_key:
+      storage: hardware_security_module # AWS CloudHSM or Azure Key Vault
+      rotation_days: 365
+    data_encryption_keys:
+      derivation: HKDF-SHA-384
+      rotation_days: 90
+    credential_keys:
+      per_tenant: true
+      rotation_days: 30
+```
+
+#### 6.6.3 Rust Implementation
+
+```rust
+// crates/ampel-core/src/crypto/hybrid_encryption.rs
+
+use aws_lc_rs::kem::{DecapsulationKey, EncapsulationKey, ML_KEM_768};
+use aws_lc_rs::aead::{Aead, LessSafeKey, AES_256_GCM, Nonce};
+use aws_lc_rs::hkdf::{Hkdf, HKDF_SHA384};
+use zeroize::Zeroizing;
+
+/// Hybrid encryption combining ML-KEM-768 with AES-256-GCM
+pub struct HybridEncryptionService {
+    /// Classical encryption key (existing AES-256-GCM)
+    classical_key: LessSafeKey,
+    /// Post-quantum key encapsulation mechanism
+    pq_encapsulation_key: EncapsulationKey<ML_KEM_768>,
+    pq_decapsulation_key: DecapsulationKey<ML_KEM_768>,
+}
+
+impl HybridEncryptionService {
+    /// Initialize with hybrid key generation
+    pub fn new(master_secret: &[u8]) -> Result<Self, CryptoError> {
+        // Derive classical key using Argon2id
+        let classical_key = Self::derive_classical_key(master_secret)?;
+
+        // Generate ML-KEM-768 keypair
+        let (decap_key, encap_key) = ML_KEM_768
+            .generate_key_pair()
+            .map_err(|_| CryptoError::KeyGeneration)?;
+
+        Ok(Self {
+            classical_key,
+            pq_encapsulation_key: encap_key,
+            pq_decapsulation_key: decap_key,
+        })
+    }
+
+    /// Encrypt credential with hybrid encryption
+    /// Returns: (pq_ciphertext, classical_ciphertext, nonce)
+    pub fn encrypt_credential(&self, plaintext: &[u8]) -> Result<HybridCiphertext, CryptoError> {
+        // Step 1: Generate shared secret via ML-KEM encapsulation
+        let (pq_ciphertext, shared_secret) = self.pq_encapsulation_key
+            .encapsulate()
+            .map_err(|_| CryptoError::Encapsulation)?;
+
+        // Step 2: Derive AES key from shared secret using HKDF
+        let hkdf = Hkdf::new(HKDF_SHA384, None, shared_secret.as_ref());
+        let mut derived_key = Zeroizing::new([0u8; 32]);
+        hkdf.expand(&[b"ampel-credential-encryption"], &mut *derived_key)
+            .map_err(|_| CryptoError::KeyDerivation)?;
+
+        // Step 3: Encrypt with AES-256-GCM using derived key
+        let aes_key = LessSafeKey::new(
+            aws_lc_rs::aead::UnboundKey::new(&AES_256_GCM, &*derived_key)
+                .map_err(|_| CryptoError::KeyCreation)?
+        );
+
+        let nonce = Self::generate_nonce()?;
+        let mut ciphertext = plaintext.to_vec();
+        aes_key.seal_in_place_append_tag(
+            Nonce::assume_unique_for_key(nonce),
+            aws_lc_rs::aead::Aad::empty(),
+            &mut ciphertext,
+        ).map_err(|_| CryptoError::Encryption)?;
+
+        Ok(HybridCiphertext {
+            pq_ciphertext: pq_ciphertext.as_ref().to_vec(),
+            classical_ciphertext: ciphertext,
+            nonce: nonce.to_vec(),
+            algorithm: "ML-KEM-768+AES-256-GCM".into(),
+        })
+    }
+
+    /// Decrypt credential with hybrid decryption
+    pub fn decrypt_credential(&self, ciphertext: &HybridCiphertext) -> Result<Zeroizing<Vec<u8>>, CryptoError> {
+        // Step 1: Decapsulate to recover shared secret
+        let shared_secret = self.pq_decapsulation_key
+            .decapsulate(&ciphertext.pq_ciphertext)
+            .map_err(|_| CryptoError::Decapsulation)?;
+
+        // Step 2: Derive AES key from shared secret
+        let hkdf = Hkdf::new(HKDF_SHA384, None, shared_secret.as_ref());
+        let mut derived_key = Zeroizing::new([0u8; 32]);
+        hkdf.expand(&[b"ampel-credential-encryption"], &mut *derived_key)
+            .map_err(|_| CryptoError::KeyDerivation)?;
+
+        // Step 3: Decrypt with AES-256-GCM
+        let aes_key = LessSafeKey::new(
+            aws_lc_rs::aead::UnboundKey::new(&AES_256_GCM, &*derived_key)
+                .map_err(|_| CryptoError::KeyCreation)?
+        );
+
+        let nonce_array: [u8; 12] = ciphertext.nonce.clone().try_into()
+            .map_err(|_| CryptoError::InvalidNonce)?;
+
+        let mut plaintext = ciphertext.classical_ciphertext.clone();
+        aes_key.open_in_place(
+            Nonce::assume_unique_for_key(nonce_array),
+            aws_lc_rs::aead::Aad::empty(),
+            &mut plaintext,
+        ).map_err(|_| CryptoError::Decryption)?;
+
+        // Remove authentication tag
+        plaintext.truncate(plaintext.len() - AES_256_GCM.tag_len());
+
+        Ok(Zeroizing::new(plaintext))
+    }
+}
+
+/// Hybrid ciphertext structure
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HybridCiphertext {
+    /// ML-KEM encapsulated ciphertext
+    pub pq_ciphertext: Vec<u8>,
+    /// AES-256-GCM encrypted data with authentication tag
+    pub classical_ciphertext: Vec<u8>,
+    /// Nonce for AES-GCM
+    pub nonce: Vec<u8>,
+    /// Algorithm identifier for future versioning
+    pub algorithm: String,
+}
+```
+
+#### 6.6.4 Key Management Best Practices
+
+```yaml
+# config/key-management.yaml
+version: '1.0'
+
+key_management:
+  # Hardware Security Module integration
+  hsm:
+    enabled: true
+    providers:
+      - type: aws_cloudhsm
+        region: us-east-1
+      - type: azure_key_vault
+        vault_name: ampel-credentials
+
+  # Key rotation schedule
+  rotation:
+    master_key:
+      frequency_days: 365
+      strategy: gradual # Allow time for re-encryption
+    data_encryption_key:
+      frequency_days: 90
+      automatic: true
+    per_tenant_keys:
+      frequency_days: 30
+      automatic: true
+
+  # Key escrow for disaster recovery
+  escrow:
+    enabled: true
+    split_threshold: 3 # Shamir secret sharing
+    total_shares: 5
+    storage:
+      - type: secure_backup
+        location: offline_vault
+      - type: geo_distributed
+        regions: [us-east-1, eu-west-1, ap-southeast-1]
+
+  # Zeroization policy
+  memory_protection:
+    zeroize_on_drop: true
+    mlock_sensitive: true
+    guard_pages: true
+```
+
+#### 6.6.5 Migration Strategy from Classical to Hybrid Encryption
+
+```rust
+// Migration service for transitioning existing credentials
+pub struct EncryptionMigrationService {
+    legacy_service: Arc<AesEncryptionService>,
+    hybrid_service: Arc<HybridEncryptionService>,
+}
+
+impl EncryptionMigrationService {
+    /// Migrate a single credential to hybrid encryption
+    pub async fn migrate_credential(&self, cred_id: Uuid) -> Result<(), MigrationError> {
+        // Read with legacy decryption
+        let legacy_ciphertext = self.db.get_encrypted_credential(cred_id).await?;
+        let plaintext = self.legacy_service.decrypt(&legacy_ciphertext)?;
+
+        // Re-encrypt with hybrid scheme
+        let hybrid_ciphertext = self.hybrid_service.encrypt_credential(&plaintext)?;
+
+        // Update with new ciphertext and mark as migrated
+        self.db.update_credential_encryption(
+            cred_id,
+            &hybrid_ciphertext,
+            EncryptionVersion::HybridV1,
+        ).await?;
+
+        tracing::info!(?cred_id, "Migrated credential to hybrid encryption");
+        Ok(())
+    }
+
+    /// Background job for gradual migration
+    pub async fn run_migration_batch(&self, batch_size: usize) -> MigrationStats {
+        let pending = self.db.get_credentials_needing_migration(batch_size).await?;
+
+        let mut stats = MigrationStats::default();
+        for cred_id in pending {
+            match self.migrate_credential(cred_id).await {
+                Ok(()) => stats.success += 1,
+                Err(e) => {
+                    stats.failures += 1;
+                    tracing::error!(?cred_id, ?e, "Migration failed");
+                }
+            }
+        }
+
+        stats
+    }
+}
+```
+
+#### 6.6.6 Security Considerations for PQC Implementation
+
+| Consideration               | Recommendation                                                                                          |
+| --------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Library Choice**          | Use `aws-lc-rs` for production (FIPS-validated) or `libcrux` for formally verified implementations      |
+| **Key Sizes**               | ML-KEM-768 provides NIST Security Level 3 (equivalent to AES-192); use ML-KEM-1024 for highest security |
+| **Hybrid Approach**         | Always combine PQC with classical crypto for defense in depth during transition period                  |
+| **Side-Channel Resistance** | Ensure constant-time implementations; `aws-lc-rs` and `libcrux` are designed for this                   |
+| **Memory Safety**           | Use `zeroize` crate to clear sensitive data; enable `mlock` for key material                            |
+| **NIST Standards**          | Target FIPS 203 (ML-KEM), FIPS 204 (ML-DSA), FIPS 205 (SLH-DSA) compliance                              |
+
 ---
 
 ## 7. Multi-tenancy Implementation
@@ -1992,43 +3581,43 @@ impl AuditService {
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                        TENANT ISOLATION                           │
+│                        TENANT ISOLATION                          │
 ├──────────────────────────────────────────────────────────────────┤
-│                                                                   │
-│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐            │
-│  │  User A     │   │  User B     │   │  User C     │            │
-│  │             │   │             │   │             │            │
-│  │ Repos: 5    │   │ Repos: 12   │   │ Repos: 3    │            │
-│  │ Creds: 2    │   │ Creds: 5    │   │ Creds: 1    │            │
-│  │ Analyses: 5 │   │ Analyses: 12│   │ Analyses: 3 │            │
-│  └──────┬──────┘   └──────┬──────┘   └──────┬──────┘            │
+│                                                                  │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐             │
+│  │  User A     │   │  User B     │   │  User C     │             │
+│  │             │   │             │   │             │             │
+│  │ Repos: 5    │   │ Repos: 12   │   │ Repos: 3    │             │
+│  │ Creds: 2    │   │ Creds: 5    │   │ Creds: 1    │             │
+│  │ Analyses: 5 │   │ Analyses: 12│   │ Analyses: 3 │             │
+│  └──────┬──────┘   └──────┬──────┘   └──────┬──────┘             │
 │         │                 │                 │                    │
 │         ▼                 ▼                 ▼                    │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                    PostgreSQL                             │   │
-│  │                                                           │   │
-│  │   All tables include user_id foreign key                 │   │
-│  │   Row-level security via application queries              │   │
-│  │                                                           │   │
-│  │   SELECT * FROM deployment_credentials                    │   │
-│  │   WHERE user_id = $current_user_id  -- Always enforced   │   │
-│  │                                                           │   │
-│  └──────────────────────────────────────────────────────────┘   │
-│                                                                   │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                    RuVector / AgentDB                     │   │
-│  │                                                           │   │
-│  │   Embeddings tagged with tenant_id in metadata           │   │
-│  │   Search queries filtered by tenant_id                    │   │
-│  │                                                           │   │
-│  │   // Store with tenant context                            │   │
-│  │   db.insert(embedding, { tenant_id: user_id, ... })      │   │
-│  │                                                           │   │
-│  │   // Query with tenant filter                             │   │
-│  │   db.search(query, { filter: { tenant_id: user_id } })   │   │
-│  │                                                           │   │
-│  └──────────────────────────────────────────────────────────┘   │
-│                                                                   │
+│  ┌──────────────────────────────────────────────────────────┐    │
+│  │                    PostgreSQL                            │    │
+│  │                                                          │    │
+│  │   All tables include user_id foreign key                 │    │
+│  │   Row-level security via application queries             │    │
+│  │                                                          │    │
+│  │   SELECT * FROM deployment_credentials                   │    │
+│  │   WHERE user_id = $current_user_id  -- Always enforced   │    │
+│  │                                                          │    │
+│  └──────────────────────────────────────────────────────────┘    │
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────────┐    │
+│  │                    RuVector / AgentDB                    │    │
+│  │                                                          │    │
+│  │   Embeddings tagged with tenant_id in metadata           │    │
+│  │   Search queries filtered by tenant_id                   │    │
+│  │                                                          │    │
+│  │   // Store with tenant context                           │    │
+│  │   db.insert(embedding, { tenant_id: user_id, ... })      │    │
+│  │                                                          │    │
+│  │   // Query with tenant filter                            │    │
+│  │   db.search(query, { filter: { tenant_id: user_id } })   │    │
+│  │                                                          │    │
+│  └──────────────────────────────────────────────────────────┘    │
+│                                                                  │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
@@ -2036,21 +3625,21 @@ impl AuditService {
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
-│                    CREDENTIAL HIERARCHY                         │
+│                    CREDENTIAL HIERARCHY                        │
 ├────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│   User Account                                                  │
-│   └── Default Fly.io Token (account-level, is_default=true)   │
+│                                                                │
+│   User Account                                                 │
+│   └── Default Fly.io Token (account-level, is_default=true)    │
 │       │                                                        │
 │       ├── Repository: my-api                                   │
-│       │   └── (uses account default)                          │
+│       │   └── (uses account default)                           │
 │       │                                                        │
 │       ├── Repository: client-app                               │
-│       │   └── Custom Fly.io Token (repo-level override)       │
+│       │   └── Custom Fly.io Token (repo-level override)        │
 │       │                                                        │
 │       └── Repository: internal-tool                            │
-│           └── (uses account default)                          │
-│                                                                 │
+│           └── (uses account default)                           │
+│                                                                │
 └────────────────────────────────────────────────────────────────┘
 ```
 
