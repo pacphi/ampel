@@ -318,6 +318,7 @@ jobs:
           JWT_SECRET: test-jwt-secret-for-ci-minimum-32-chars
           ENCRYPTION_KEY: dGVzdC1lbmNyeXB0aW9uLWtleS0zMi1ieXRlcw==
         run: |
+          mkdir -p coverage
           cargo llvm-cov \
             --all-features \
             --workspace \
