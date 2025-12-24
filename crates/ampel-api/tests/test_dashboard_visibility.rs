@@ -7,19 +7,23 @@ use axum::{
     body::Body,
     http::{header, Request, StatusCode},
 };
+use chrono::Utc;
 use common::{create_test_app, TestDb};
+use sea_orm::Set;
 use serde_json::{json, Value};
 use tower::ServiceExt;
+use uuid::Uuid;
 
-/// Helper to register a user and return access token
-async fn register_and_login(app: &axum::Router) -> String {
-    let request = Request::builder()
+/// Helper to register a user and return access token and user_id
+async fn register_and_login(app: &axum::Router) -> (String, Uuid) {
+    // Register the user
+    let register_request = Request::builder()
         .method("POST")
         .uri("/api/auth/register")
         .header(header::CONTENT_TYPE, "application/json")
         .body(Body::from(
             json!({
-                "email": "test@example.com",
+                "email": format!("test-{}@example.com", Uuid::new_v4()),
                 "password": "SecurePassword123!",
                 "displayName": "Test User"
             })
@@ -27,150 +31,160 @@ async fn register_and_login(app: &axum::Router) -> String {
         ))
         .unwrap();
 
-    let response = app.clone().oneshot(request).await.unwrap();
-    let body = axum::body::to_bytes(response.into_body(), usize::MAX)
+    let register_response = app.clone().oneshot(register_request).await.unwrap();
+    let register_body = axum::body::to_bytes(register_response.into_body(), usize::MAX)
         .await
         .unwrap();
-    let json: Value = serde_json::from_slice(&body).unwrap();
+    let register_json: Value = serde_json::from_slice(&register_body).unwrap();
 
-    json["data"]["accessToken"].as_str().unwrap().to_string()
-}
+    let token = register_json["data"]["accessToken"]
+        .as_str()
+        .unwrap()
+        .to_string();
 
-/// Helper to create an organization for the user
-async fn create_organization(app: &axum::Router, token: &str) -> i64 {
-    let request = Request::builder()
-        .method("POST")
-        .uri("/api/organizations")
+    // Call /api/auth/me to get the user ID
+    let me_request = Request::builder()
+        .method("GET")
+        .uri("/api/auth/me")
         .header(header::AUTHORIZATION, format!("Bearer {}", token))
-        .header(header::CONTENT_TYPE, "application/json")
-        .body(Body::from(
-            json!({
-                "name": "Test Organization",
-                "slug": "test-org"
-            })
-            .to_string(),
-        ))
+        .body(Body::empty())
         .unwrap();
 
-    let response = app.clone().oneshot(request).await.unwrap();
-    let body = axum::body::to_bytes(response.into_body(), usize::MAX)
+    let me_response = app.clone().oneshot(me_request).await.unwrap();
+    let me_body = axum::body::to_bytes(me_response.into_body(), usize::MAX)
         .await
         .unwrap();
-    let json: Value = serde_json::from_slice(&body).unwrap();
+    let me_json: Value = serde_json::from_slice(&me_body).unwrap();
 
-    json["data"]["id"].as_i64().unwrap()
+    let user_id = Uuid::parse_str(me_json["data"]["id"].as_str().unwrap()).unwrap();
+    (token, user_id)
 }
 
-/// Helper to create a repository with specific visibility
+/// Create a test repository directly in the database
 async fn create_repository(
-    app: &axum::Router,
-    token: &str,
-    org_id: i64,
+    db: &sea_orm::DatabaseConnection,
+    user_id: Uuid,
     name: &str,
     is_private: bool,
     is_archived: bool,
-) -> i64 {
-    let request = Request::builder()
-        .method("POST")
-        .uri("/api/repositories")
-        .header(header::AUTHORIZATION, format!("Bearer {}", token))
-        .header(header::CONTENT_TYPE, "application/json")
-        .body(Body::from(
-            json!({
-                "organizationId": org_id,
-                "provider": "github",
-                "externalId": format!("ext-{}", name),
-                "name": name,
-                "fullName": format!("test-org/{}", name),
-                "url": format!("https://github.com/test-org/{}", name),
-                "isPrivate": is_private,
-                "isArchived": is_archived
-            })
-            .to_string(),
-        ))
-        .unwrap();
+) -> ampel_db::entities::repository::Model {
+    use ampel_db::entities::repository::ActiveModel;
+    use sea_orm::ActiveModelTrait;
 
-    let response = app.clone().oneshot(request).await.unwrap();
-    let body = axum::body::to_bytes(response.into_body(), usize::MAX)
-        .await
-        .unwrap();
-    let json: Value = serde_json::from_slice(&body).unwrap();
+    let repo = ActiveModel {
+        id: Set(Uuid::new_v4()),
+        user_id: Set(user_id),
+        provider: Set("github".to_string()),
+        provider_id: Set(format!("repo-{}", Uuid::new_v4())),
+        owner: Set("test-owner".to_string()),
+        name: Set(name.to_string()),
+        full_name: Set(format!("owner/{}", name)),
+        description: Set(Some("Test repository".to_string())),
+        url: Set(format!("https://github.com/test-org/{}", name)),
+        default_branch: Set("main".to_string()),
+        is_private: Set(is_private),
+        is_archived: Set(is_archived),
+        poll_interval_seconds: Set(300),
+        last_polled_at: Set(Some(Utc::now())),
+        group_id: Set(None),
+        provider_account_id: Set(None),
+        created_at: Set(Utc::now()),
+        updated_at: Set(Utc::now()),
+    };
 
-    json["data"]["id"].as_i64().unwrap()
+    repo.insert(db).await.unwrap()
 }
 
-/// Helper to create a pull request
-async fn create_pull_request(app: &axum::Router, token: &str, repo_id: i64, pr_number: i64) -> i64 {
-    let request = Request::builder()
-        .method("POST")
-        .uri("/api/pull-requests")
-        .header(header::AUTHORIZATION, format!("Bearer {}", token))
-        .header(header::CONTENT_TYPE, "application/json")
-        .body(Body::from(
-            json!({
-                "repositoryId": repo_id,
-                "externalId": format!("pr-{}", pr_number),
-                "number": pr_number,
-                "title": format!("Test PR #{}", pr_number),
-                "url": format!("https://github.com/test-org/repo/pull/{}", pr_number),
-                "state": "open",
-                "isDraft": false,
-                "author": "test-author"
-            })
-            .to_string(),
-        ))
-        .unwrap();
+/// Create a test pull request directly in the database
+async fn create_pull_request(
+    db: &sea_orm::DatabaseConnection,
+    repository_id: Uuid,
+    pr_number: i32,
+) -> ampel_db::entities::pull_request::Model {
+    use ampel_db::entities::pull_request::ActiveModel;
+    use sea_orm::ActiveModelTrait;
 
-    let response = app.clone().oneshot(request).await.unwrap();
-    let body = axum::body::to_bytes(response.into_body(), usize::MAX)
-        .await
-        .unwrap();
-    let json: Value = serde_json::from_slice(&body).unwrap();
+    let pr = ActiveModel {
+        id: Set(Uuid::new_v4()),
+        repository_id: Set(repository_id),
+        provider: Set("github".to_string()),
+        provider_id: Set(format!("pr-{}", Uuid::new_v4())),
+        number: Set(pr_number),
+        title: Set(format!("Test PR #{}", pr_number)),
+        description: Set(Some("Test pull request".to_string())),
+        url: Set(format!(
+            "https://github.com/test/pr/{}",
+            Uuid::new_v4()
+        )),
+        state: Set("open".to_string()),
+        source_branch: Set("feature".to_string()),
+        target_branch: Set("main".to_string()),
+        author: Set("testuser".to_string()),
+        author_avatar_url: Set(Some("https://avatar.com/test".to_string())),
+        is_draft: Set(false),
+        is_mergeable: Set(Some(true)),
+        has_conflicts: Set(false),
+        additions: Set(10),
+        deletions: Set(5),
+        changed_files: Set(2),
+        commits_count: Set(1),
+        comments_count: Set(0),
+        created_at: Set(Utc::now()),
+        updated_at: Set(Utc::now()),
+        merged_at: Set(None),
+        closed_at: Set(None),
+        last_synced_at: Set(Utc::now()),
+    };
 
-    json["data"]["id"].as_i64().unwrap()
+    pr.insert(db).await.unwrap()
 }
 
-/// Helper to create a CI check with specific status
-async fn create_ci_check(app: &axum::Router, token: &str, pr_id: i64, name: &str, status: &str) {
-    let request = Request::builder()
-        .method("POST")
-        .uri("/api/ci-checks")
-        .header(header::AUTHORIZATION, format!("Bearer {}", token))
-        .header(header::CONTENT_TYPE, "application/json")
-        .body(Body::from(
-            json!({
-                "pullRequestId": pr_id,
-                "externalId": format!("check-{}", name),
-                "name": name,
-                "status": status,
-                "conclusion": status
-            })
-            .to_string(),
-        ))
-        .unwrap();
+/// Create CI check for PR directly in the database
+async fn create_ci_check(
+    db: &sea_orm::DatabaseConnection,
+    pr_id: Uuid,
+    name: &str,
+    status: &str,
+) -> ampel_db::entities::ci_check::Model {
+    use ampel_db::entities::ci_check::ActiveModel;
+    use sea_orm::ActiveModelTrait;
 
-    let _ = app.clone().oneshot(request).await.unwrap();
+    let check = ActiveModel {
+        id: Set(Uuid::new_v4()),
+        pull_request_id: Set(pr_id),
+        name: Set(name.to_string()),
+        status: Set("completed".to_string()),
+        conclusion: Set(Some(status.to_string())),
+        url: Set(Some("https://ci.example.com/build".to_string())),
+        started_at: Set(Some(Utc::now())),
+        completed_at: Set(Some(Utc::now())),
+        duration_seconds: Set(Some(60)),
+    };
+
+    check.insert(db).await.unwrap()
 }
 
-/// Helper to create a review with specific state
-async fn create_review(app: &axum::Router, token: &str, pr_id: i64, reviewer: &str, state: &str) {
-    let request = Request::builder()
-        .method("POST")
-        .uri("/api/reviews")
-        .header(header::AUTHORIZATION, format!("Bearer {}", token))
-        .header(header::CONTENT_TYPE, "application/json")
-        .body(Body::from(
-            json!({
-                "pullRequestId": pr_id,
-                "externalId": format!("review-{}", reviewer),
-                "reviewer": reviewer,
-                "state": state
-            })
-            .to_string(),
-        ))
-        .unwrap();
+/// Create review for PR directly in the database
+async fn create_review(
+    db: &sea_orm::DatabaseConnection,
+    pr_id: Uuid,
+    reviewer: &str,
+    state: &str,
+) -> ampel_db::entities::review::Model {
+    use ampel_db::entities::review::ActiveModel;
+    use sea_orm::ActiveModelTrait;
 
-    let _ = app.clone().oneshot(request).await.unwrap();
+    let review = ActiveModel {
+        id: Set(Uuid::new_v4()),
+        pull_request_id: Set(pr_id),
+        reviewer: Set(reviewer.to_string()),
+        reviewer_avatar_url: Set(Some("https://avatar.com/reviewer".to_string())),
+        state: Set(state.to_string()),
+        body: Set(Some("LGTM".to_string())),
+        submitted_at: Set(Utc::now()),
+    };
+
+    review.insert(db).await.unwrap()
 }
 
 #[tokio::test]
@@ -186,15 +200,13 @@ async fn test_all_public_repositories() {
         .expect("Failed to run migrations");
 
     let app = create_test_app(test_db.connection().clone()).await;
-    let token = register_and_login(&app).await;
-    let org_id = create_organization(&app, &token).await;
+    let (token, user_id) = register_and_login(&app).await;
 
     // Create 5 public repositories
     for i in 1..=5 {
         create_repository(
-            &app,
-            &token,
-            org_id,
+            test_db.connection(),
+            user_id,
             &format!("public-repo-{}", i),
             false,
             false,
@@ -238,15 +250,13 @@ async fn test_all_private_repositories() {
         .expect("Failed to run migrations");
 
     let app = create_test_app(test_db.connection().clone()).await;
-    let token = register_and_login(&app).await;
-    let org_id = create_organization(&app, &token).await;
+    let (token, user_id) = register_and_login(&app).await;
 
     // Create 3 private repositories
     for i in 1..=3 {
         create_repository(
-            &app,
-            &token,
-            org_id,
+            test_db.connection(),
+            user_id,
             &format!("private-repo-{}", i),
             true,
             false,
@@ -290,34 +300,39 @@ async fn test_mixed_visibility_with_prs() {
         .expect("Failed to run migrations");
 
     let app = create_test_app(test_db.connection().clone()).await;
-    let token = register_and_login(&app).await;
-    let org_id = create_organization(&app, &token).await;
+    let (token, user_id) = register_and_login(&app).await;
 
     // Create 2 public, 3 private, 1 archived repository
-    let public_repo1 = create_repository(&app, &token, org_id, "public-1", false, false).await;
-    let _public_repo2 = create_repository(&app, &token, org_id, "public-2", false, false).await;
-    let private_repo1 = create_repository(&app, &token, org_id, "private-1", true, false).await;
-    let _private_repo2 = create_repository(&app, &token, org_id, "private-2", true, false).await;
-    let _private_repo3 = create_repository(&app, &token, org_id, "private-3", true, false).await;
-    let archived_repo = create_repository(&app, &token, org_id, "archived-1", false, true).await;
+    let public_repo1 =
+        create_repository(test_db.connection(), user_id, "public-1", false, false).await;
+    let _public_repo2 =
+        create_repository(test_db.connection(), user_id, "public-2", false, false).await;
+    let private_repo1 =
+        create_repository(test_db.connection(), user_id, "private-1", true, false).await;
+    let _private_repo2 =
+        create_repository(test_db.connection(), user_id, "private-2", true, false).await;
+    let _private_repo3 =
+        create_repository(test_db.connection(), user_id, "private-3", true, false).await;
+    let archived_repo =
+        create_repository(test_db.connection(), user_id, "archived-1", false, true).await;
 
     // Create PRs with different statuses
     // Public repo 1: 1 green PR, 1 red PR
-    let pr1 = create_pull_request(&app, &token, public_repo1, 1).await;
-    create_ci_check(&app, &token, pr1, "ci-1", "success").await;
-    create_review(&app, &token, pr1, "reviewer-1", "approved").await;
+    let pr1 = create_pull_request(test_db.connection(), public_repo1.id, 1).await;
+    create_ci_check(test_db.connection(), pr1.id, "ci-1", "success").await;
+    create_review(test_db.connection(), pr1.id, "reviewer-1", "approved").await;
 
-    let pr2 = create_pull_request(&app, &token, public_repo1, 2).await;
-    create_ci_check(&app, &token, pr2, "ci-2", "failure").await;
+    let pr2 = create_pull_request(test_db.connection(), public_repo1.id, 2).await;
+    create_ci_check(test_db.connection(), pr2.id, "ci-2", "failure").await;
 
     // Private repo 1: 1 green PR
-    let pr3 = create_pull_request(&app, &token, private_repo1, 1).await;
-    create_ci_check(&app, &token, pr3, "ci-3", "success").await;
-    create_review(&app, &token, pr3, "reviewer-2", "approved").await;
+    let pr3 = create_pull_request(test_db.connection(), private_repo1.id, 1).await;
+    create_ci_check(test_db.connection(), pr3.id, "ci-3", "success").await;
+    create_review(test_db.connection(), pr3.id, "reviewer-2", "approved").await;
 
     // Archived repo: 1 yellow PR
-    let pr4 = create_pull_request(&app, &token, archived_repo, 1).await;
-    create_ci_check(&app, &token, pr4, "ci-4", "pending").await;
+    let pr4 = create_pull_request(test_db.connection(), archived_repo.id, 1).await;
+    create_ci_check(test_db.connection(), pr4.id, "ci-4", "pending").await;
 
     let request = Request::builder()
         .method("GET")
@@ -374,19 +389,19 @@ async fn test_archived_repositories_with_open_prs() {
         .expect("Failed to run migrations");
 
     let app = create_test_app(test_db.connection().clone()).await;
-    let token = register_and_login(&app).await;
-    let org_id = create_organization(&app, &token).await;
+    let (token, user_id) = register_and_login(&app).await;
 
     // Create archived repository with open PRs
-    let archived_repo = create_repository(&app, &token, org_id, "archived-repo", true, true).await;
+    let archived_repo =
+        create_repository(test_db.connection(), user_id, "archived-repo", true, true).await;
 
     // Create 2 PRs: 1 green, 1 red
-    let pr1 = create_pull_request(&app, &token, archived_repo, 1).await;
-    create_ci_check(&app, &token, pr1, "ci-1", "success").await;
-    create_review(&app, &token, pr1, "reviewer-1", "approved").await;
+    let pr1 = create_pull_request(test_db.connection(), archived_repo.id, 1).await;
+    create_ci_check(test_db.connection(), pr1.id, "ci-1", "success").await;
+    create_review(test_db.connection(), pr1.id, "reviewer-1", "approved").await;
 
-    let pr2 = create_pull_request(&app, &token, archived_repo, 2).await;
-    create_ci_check(&app, &token, pr2, "ci-2", "failure").await;
+    let pr2 = create_pull_request(test_db.connection(), archived_repo.id, 2).await;
+    create_ci_check(test_db.connection(), pr2.id, "ci-2", "failure").await;
 
     let request = Request::builder()
         .method("GET")
@@ -429,24 +444,26 @@ async fn test_breakdown_totals_match_top_level_counts() {
         .expect("Failed to run migrations");
 
     let app = create_test_app(test_db.connection().clone()).await;
-    let token = register_and_login(&app).await;
-    let org_id = create_organization(&app, &token).await;
+    let (token, user_id) = register_and_login(&app).await;
 
     // Create diverse set of repositories
-    let public_repo = create_repository(&app, &token, org_id, "public", false, false).await;
-    let private_repo = create_repository(&app, &token, org_id, "private", true, false).await;
-    let archived_repo = create_repository(&app, &token, org_id, "archived", false, true).await;
+    let public_repo =
+        create_repository(test_db.connection(), user_id, "public", false, false).await;
+    let private_repo =
+        create_repository(test_db.connection(), user_id, "private", true, false).await;
+    let archived_repo =
+        create_repository(test_db.connection(), user_id, "archived", false, true).await;
 
     // Create PRs with various statuses
-    let pr1 = create_pull_request(&app, &token, public_repo, 1).await;
-    create_ci_check(&app, &token, pr1, "ci-1", "success").await;
-    create_review(&app, &token, pr1, "reviewer-1", "approved").await;
+    let pr1 = create_pull_request(test_db.connection(), public_repo.id, 1).await;
+    create_ci_check(test_db.connection(), pr1.id, "ci-1", "success").await;
+    create_review(test_db.connection(), pr1.id, "reviewer-1", "approved").await;
 
-    let pr2 = create_pull_request(&app, &token, private_repo, 1).await;
-    create_ci_check(&app, &token, pr2, "ci-2", "failure").await;
+    let pr2 = create_pull_request(test_db.connection(), private_repo.id, 1).await;
+    create_ci_check(test_db.connection(), pr2.id, "ci-2", "failure").await;
 
-    let pr3 = create_pull_request(&app, &token, archived_repo, 1).await;
-    create_ci_check(&app, &token, pr3, "ci-3", "pending").await;
+    let pr3 = create_pull_request(test_db.connection(), archived_repo.id, 1).await;
+    create_ci_check(test_db.connection(), pr3.id, "ci-3", "pending").await;
 
     let request = Request::builder()
         .method("GET")
