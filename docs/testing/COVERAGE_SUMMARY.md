@@ -53,17 +53,23 @@ coverage:
 | Overall   | 80.38%   | 🟢     |
 ```
 
-### 3. Cargo Tarpaulin Configuration (`.cargo/config.toml`)
+### 3. Coverage Configuration
 
-**Purpose**: Configure cargo-tarpaulin coverage tool
+**Tool**: cargo-llvm-cov (LLVM source-based coverage)
 
-**Settings**:
+**Why cargo-llvm-cov?**
 
-- Exclude test/bench/example files from coverage
-- Don't count test code in coverage metrics
-- Follow symbolic links when scanning
-- Ignore panics in coverage calculation
-- 300-second timeout per test
+- **5-10x faster** than tarpaulin (compile-time instrumentation vs runtime ptrace)
+- **More accurate** coverage data using LLVM's instrumentation
+- **Better integration** with CI/CD pipelines
+- **Lower memory usage** during coverage collection
+
+**Installation**:
+
+```bash
+cargo install cargo-llvm-cov --locked
+rustup component add llvm-tools-preview
+```
 
 ### 4. Documentation Updates
 
@@ -158,7 +164,7 @@ make test-frontend-coverage
 
 ```bash
 # Backend HTML report
-open coverage/tarpaulin-report.html
+open coverage/html/index.html
 
 # Frontend HTML report
 open frontend/coverage/index.html
@@ -177,7 +183,7 @@ Coverage reports are uploaded as artifacts and available for:
 ### On Pull Request:
 
 1. **CI runs tests** with coverage collection
-   - Backend: `cargo tarpaulin` generates `cobertura.xml`
+   - Backend: `cargo llvm-cov` generates `codecov.json`
    - Frontend: `vitest --coverage` generates JSON summary
 
 2. **Coverage uploaded to Codecov**
@@ -261,7 +267,6 @@ Coverage reports are uploaded as artifacts and available for:
 All configuration is committed and version-controlled:
 
 - `/codecov.yml` - Codecov settings
-- `/.cargo/config.toml` - Tarpaulin settings
 - `/frontend/vitest.config.ts` - Vitest coverage settings
 - `/.github/workflows/ci.yml` - CI coverage jobs
 - `/.github/workflows/coverage-pr-comment.yml` - PR comment automation
@@ -269,5 +274,5 @@ All configuration is committed and version-controlled:
 ---
 
 **Implementation Date**: 2025-12-22
-**Last Updated**: 2025-12-22
+**Last Updated**: 2025-12-24
 **Status**: ✅ Complete and Ready for Use

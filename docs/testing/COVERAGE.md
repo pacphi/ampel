@@ -26,10 +26,10 @@ Ampel uses comprehensive test coverage tracking to ensure code quality and catch
                   ▼
 ┌─────────────────────────────────────────┐
 │        GitHub Actions CI                │
-│  ┌────────────┐      ┌──────────────┐  │
-│  │  Backend   │      │   Frontend   │  │
-│  │ (tarpaulin)│      │   (vitest)   │  │
-│  └────────────┘      └──────────────┘  │
+│  ┌────────────┐      ┌──────────────┐   │
+│  │  Backend   │      │   Frontend   │   │
+│  │ (llvm-cov) │      │   (vitest)   │   │
+│  └────────────┘      └──────────────┘   │
 └─────────────────────────────────────────┘
                   │
                   ▼
@@ -51,9 +51,16 @@ Ampel uses comprehensive test coverage tracking to ensure code quality and catch
 
 ## Coverage Tools
 
-### Backend: cargo-tarpaulin
+### Backend: cargo-llvm-cov
 
-[cargo-tarpaulin](https://github.com/xd009642/tarpaulin) is a code coverage reporting tool for Rust.
+[cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov) is a fast, LLVM-based code coverage tool for Rust. It uses LLVM source-based code coverage, which is 5-10x faster than ptrace-based tools like tarpaulin.
+
+**Why cargo-llvm-cov?**
+
+- **5-10x faster** than tarpaulin (compile-time instrumentation vs runtime ptrace)
+- **More accurate** coverage data using LLVM's instrumentation
+- **Better integration** with CI/CD pipelines
+- **Lower memory usage** during coverage collection
 
 **Installation**:
 
@@ -62,10 +69,9 @@ Ampel uses comprehensive test coverage tracking to ensure code quality and catch
 make test-backend-coverage
 
 # Manual installation
-cargo install cargo-tarpaulin --locked
+cargo install cargo-llvm-cov --locked
+rustup component add llvm-tools-preview
 ```
-
-**Configuration**: See `.cargo/config.toml` for tarpaulin settings.
 
 ### Frontend: Vitest Coverage
 
@@ -91,23 +97,22 @@ make test-frontend-coverage
 ### Backend Coverage (Detailed)
 
 ```bash
-# Run with default settings (HTML + XML reports)
-cargo tarpaulin --all-features --workspace --out Html Xml --output-dir coverage
+# Run with default settings (HTML + LCOV reports)
+cargo llvm-cov --all-features --workspace --html --output-dir coverage
+cargo llvm-cov --all-features --workspace --lcov --output-path coverage/lcov.info
 
 # Run with specific crate
-cargo tarpaulin --package ampel-core --out Html
+cargo llvm-cov --package ampel-core --html
 
-# Run with verbose output
-cargo tarpaulin --all-features --workspace --verbose --out Html
+# Run with text output (quick summary)
+cargo llvm-cov --all-features --workspace
 
-# Run excluding certain files
-cargo tarpaulin --all-features --workspace --out Html \
-  --exclude-files 'crates/*/tests/*' \
-  --exclude-files 'crates/*/benches/*'
+# Generate Codecov-compatible JSON output
+cargo llvm-cov --all-features --workspace --codecov --output-path coverage/codecov.json
 
 # View report
-open coverage/tarpaulin-report.html  # macOS
-xdg-open coverage/tarpaulin-report.html  # Linux
+open coverage/html/index.html  # macOS
+xdg-open coverage/html/index.html  # Linux
 ```
 
 ### Frontend Coverage (Detailed)
@@ -146,25 +151,32 @@ backend-coverage:
   name: Backend Test Coverage
   needs: [backend-unit-test, backend-integration-test]
   runs-on: ubuntu-latest
+  env:
+    RUSTC_WRAPPER: '' # Disable sccache for coverage
 
   steps:
     - uses: actions/checkout@v4
-    - name: Install cargo-tarpaulin
-      uses: taiki-e/install-action@cargo-tarpaulin
+
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@master
+      with:
+        components: llvm-tools-preview
+
+    - name: Install cargo-llvm-cov
+      uses: taiki-e/install-action@cargo-llvm-cov
 
     - name: Generate coverage
       run: |
-        cargo tarpaulin \
+        cargo llvm-cov \
           --all-features \
           --workspace \
-          --timeout 300 \
-          --out Xml \
-          --output-dir coverage
+          --codecov \
+          --output-path coverage/codecov.json
 
     - name: Upload to Codecov
       uses: codecov/codecov-action@v4
       with:
-        files: ./coverage/cobertura.xml
+        files: ./coverage/codecov.json
         flags: backend
 ```
 
@@ -208,7 +220,7 @@ Visit [codecov.io/gh/pacphi/ampel](https://codecov.io/gh/pacphi/ampel) to see:
 | Branch    | Percentage of executed conditional branches  | 75%  |
 | Statement | Percentage of executed statements (frontend) | 80%  |
 
-### Reading Tarpaulin Reports
+### Reading cargo-llvm-cov Reports
 
 **HTML Report Colors**:
 
@@ -219,8 +231,8 @@ Visit [codecov.io/gh/pacphi/ampel](https://codecov.io/gh/pacphi/ampel) to see:
 **Key Sections**:
 
 1. **Summary**: Overall coverage percentage
-2. **File List**: Coverage by file
-3. **Source View**: Line-by-line coverage
+2. **File List**: Coverage by file with percentages
+3. **Source View**: Line-by-line coverage with execution counts
 
 ### Reading Vitest Reports
 
@@ -237,7 +249,7 @@ Navigate to `frontend/coverage/index.html`:
 ```bash
 # Backend: Generate report and view uncovered lines
 make test-backend-coverage
-open coverage/tarpaulin-report.html
+open coverage/html/index.html
 
 # Frontend: View coverage in terminal
 cd frontend && pnpm test -- --run --coverage
@@ -335,7 +347,7 @@ async fn test_user_creation_duplicate_email() {
 make test-backend-coverage
 
 # 2. Identify gaps (red lines in HTML report)
-open coverage/tarpaulin-report.html
+open coverage/html/index.html
 
 # 3. Write tests for uncovered code
 vim crates/ampel-core/tests/integration_tests.rs
@@ -354,16 +366,13 @@ git push
 
 ## Troubleshooting
 
-### Backend: cargo-tarpaulin Issues
+### Backend: cargo-llvm-cov Issues
 
-#### Issue: Tarpaulin hangs or times out
+#### Issue: "llvm-tools-preview not installed"
 
 ```bash
-# Solution: Increase timeout
-cargo tarpaulin --all-features --workspace --timeout 600
-
-# Or exclude slow tests
-cargo tarpaulin --all-features --workspace --exclude-files '*slow_tests*'
+# Solution: Install the LLVM tools component
+rustup component add llvm-tools-preview
 ```
 
 #### Issue: "No coverage data generated"
@@ -372,16 +381,24 @@ cargo tarpaulin --all-features --workspace --exclude-files '*slow_tests*'
 # Solution: Ensure tests are actually running
 cargo test --all-features  # Verify tests pass first
 
-# Then run tarpaulin
-cargo tarpaulin --all-features --workspace --verbose
+# Then run coverage with verbose output
+cargo llvm-cov --all-features --workspace
 ```
 
 #### Issue: Coverage percentage seems wrong
 
 ```bash
 # Solution: Clean build and re-run
-cargo clean
+cargo llvm-cov clean --workspace
 make test-backend-coverage
+```
+
+#### Issue: Tests fail during coverage but pass normally
+
+```bash
+# Check for global state conflicts (common with metrics/loggers)
+# Ensure init functions are idempotent for parallel test execution
+cargo test --all-features -- --test-threads=1
 ```
 
 ### Frontend: Vitest Coverage Issues
@@ -453,7 +470,7 @@ Check `.github/workflows/ci.yml`:
 
 ## Additional Resources
 
-- [cargo-tarpaulin Documentation](https://github.com/xd009642/tarpaulin)
+- [cargo-llvm-cov Documentation](https://github.com/taiki-e/cargo-llvm-cov)
 - [Vitest Coverage Guide](https://vitest.dev/guide/coverage.html)
 - [Codecov Documentation](https://docs.codecov.com/)
 - [Backend Testing Guide](./BACKEND.md)
@@ -462,4 +479,4 @@ Check `.github/workflows/ci.yml`:
 
 ---
 
-**Last Updated:** 2025-12-22
+**Last Updated:** 2025-12-24

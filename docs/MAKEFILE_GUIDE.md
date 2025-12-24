@@ -591,10 +591,10 @@ Generates **code coverage reports** for both backend and frontend.
 
 **What it does:**
 
-- Installs `cargo-tarpaulin` if not present
-- Runs backend tests with coverage instrumentation
+- Installs `cargo-llvm-cov` if not present (5-10x faster than tarpaulin)
+- Runs backend tests with LLVM source-based coverage instrumentation
 - Runs frontend tests with coverage
-- Generates HTML and XML reports
+- Generates HTML and LCOV reports
 
 **When to use:**
 
@@ -606,16 +606,16 @@ Generates **code coverage reports** for both backend and frontend.
 
 ```bash
 $ make test-coverage
-==> Running backend tests with coverage...
-Installing cargo-tarpaulin...  # First time only
+==> Running backend tests with coverage (cargo-llvm-cov)...
+Installing cargo-llvm-cov...  # First time only
 [Progress...]
 
-==> Backend coverage report: coverage/tarpaulin-report.html
+==> Backend coverage report: coverage/html/index.html
 
 ==> Running frontend tests with coverage...
 
 ==> Coverage reports generated:
-    Backend:  coverage/cobertura.xml, coverage/tarpaulin-report.html
+    Backend:  coverage/lcov.info, coverage/html/
     Frontend: frontend/coverage/
 ```
 
@@ -623,7 +623,7 @@ Installing cargo-tarpaulin...  # First time only
 
 ```bash
 # Backend
-open coverage/tarpaulin-report.html
+open coverage/html/index.html
 
 # Frontend
 open frontend/coverage/index.html
@@ -637,7 +637,7 @@ open frontend/coverage/index.html
 
 **Troubleshooting:**
 
-- **Slow execution**: Coverage runs are 2-5x slower than normal tests
+- **Missing llvm-tools**: Run `rustup component add llvm-tools-preview`
 - **Missing coverage**: Ensure tests actually execute the code paths
 
 ---
@@ -646,7 +646,7 @@ open frontend/coverage/index.html
 
 Backend-only coverage report (faster than full coverage).
 
-**Output:** `coverage/tarpaulin-report.html` and `coverage/cobertura.xml`
+**Output:** `coverage/html/index.html` and `coverage/lcov.info`
 
 ---
 

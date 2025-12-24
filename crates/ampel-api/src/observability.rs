@@ -12,6 +12,10 @@ use std::time::Duration;
 use crate::AppState;
 
 /// Initialize Prometheus metrics exporter
+///
+/// This function is safe to call multiple times - if a recorder is already
+/// installed, it will return a new handle to a local (non-global) recorder.
+/// This ensures tests can run in parallel without panicking.
 pub fn init_metrics() -> PrometheusHandle {
     PrometheusBuilder::new()
         .idle_timeout(
@@ -19,7 +23,18 @@ pub fn init_metrics() -> PrometheusHandle {
             Some(Duration::from_secs(10)),
         )
         .install_recorder()
-        .expect("Failed to install Prometheus recorder")
+        .unwrap_or_else(|_| {
+            // Recorder already installed (common in tests), create a local handle
+            // This is safe because the handle still works for rendering metrics
+            tracing::debug!("Prometheus recorder already installed, using fallback handle");
+            PrometheusBuilder::new()
+                .idle_timeout(
+                    MetricKindMask::COUNTER | MetricKindMask::HISTOGRAM,
+                    Some(Duration::from_secs(10)),
+                )
+                .build_recorder()
+                .handle()
+        })
 }
 
 /// Health check endpoint

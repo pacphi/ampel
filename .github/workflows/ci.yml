@@ -269,6 +269,7 @@ jobs:
 
   # ============================================
   # Backend Coverage Report
+  # Uses cargo-llvm-cov for 5-10x faster coverage than tarpaulin
   # ============================================
   backend-coverage:
     name: Backend Test Coverage
@@ -276,7 +277,7 @@ jobs:
     needs: [backend-unit-test, backend-integration-test]
     if: github.event_name == 'pull_request'
     env:
-      # Disable sccache for tarpaulin - it doesn't work with RUSTC_WRAPPER
+      # Disable sccache for coverage - incompatible with RUSTC_WRAPPER
       RUSTC_WRAPPER: ""
 
     services:
@@ -301,14 +302,15 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ env.RUST_VERSION }}
+          components: llvm-tools-preview
 
-      - name: Install cargo-tarpaulin
-        uses: taiki-e/install-action@cargo-tarpaulin
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@cargo-llvm-cov
 
       - name: Rust cache
         uses: Swatinem/rust-cache@v2
         with:
-          shared-key: "rust-build"
+          shared-key: "rust-coverage"
 
       - name: Generate coverage report
         env:
@@ -316,17 +318,16 @@ jobs:
           JWT_SECRET: test-jwt-secret-for-ci-minimum-32-chars
           ENCRYPTION_KEY: dGVzdC1lbmNyeXB0aW9uLWtleS0zMi1ieXRlcw==
         run: |
-          cargo tarpaulin \
+          cargo llvm-cov \
             --all-features \
             --workspace \
-            --timeout 300 \
-            --out Xml \
-            --output-dir coverage
+            --codecov \
+            --output-path coverage/codecov.json
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          files: ./coverage/cobertura.xml
+          files: ./coverage/codecov.json
           flags: backend
           fail_ci_if_error: false
 

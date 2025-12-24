@@ -36,7 +36,7 @@ make test-frontend
 ### Backend (Rust)
 
 - **Framework**: `cargo test` / `cargo-nextest`
-- **Coverage**: `cargo-tarpaulin`
+- **Coverage**: `cargo-llvm-cov` (LLVM source-based coverage, 5-10x faster than tarpaulin)
 - **Database**: PostgreSQL (integration) / SQLite (unit tests)
 
 ```bash
@@ -109,7 +109,7 @@ frontend/
 
 Coverage is automatically tracked via [Codecov](https://codecov.io) and reported on all pull requests. We use:
 
-- **Backend**: cargo-tarpaulin for Rust code coverage
+- **Backend**: cargo-llvm-cov for Rust code coverage (LLVM source-based instrumentation)
 - **Frontend**: Vitest's built-in coverage (v8 provider)
 - **CI Integration**: Automatic coverage reporting on PRs with thresholds
 
@@ -131,17 +131,16 @@ make test-frontend-coverage
 #### Backend Coverage (Rust)
 
 ```bash
-# Auto-installs cargo-tarpaulin if not present
-cargo tarpaulin \
+# Auto-installs cargo-llvm-cov if not present
+cargo llvm-cov \
   --all-features \
   --workspace \
-  --timeout 300 \
-  --out Html Xml \
+  --html \
   --output-dir coverage
 
 # View HTML report
-open coverage/tarpaulin-report.html  # macOS
-xdg-open coverage/tarpaulin-report.html  # Linux
+open coverage/html/index.html  # macOS
+xdg-open coverage/html/index.html  # Linux
 ```
 
 #### Frontend Coverage (TypeScript/React)
@@ -202,7 +201,7 @@ vim crates/ampel-core/tests/integration_tests.rs
 make test-backend-coverage
 
 # 4. Check HTML report
-open coverage/tarpaulin-report.html
+open coverage/html/index.html
 
 # 5. Improve coverage until green (≥80%)
 # Add more tests...

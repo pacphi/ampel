@@ -42,7 +42,7 @@ help:
 	@echo "  test-frontend    - Run frontend tests only"
 	@echo "  test-integration - Run integration tests with PostgreSQL (same as CI)"
 	@echo "  test-coverage    - Run all tests with coverage reports"
-	@echo "  test-backend-coverage  - Backend tests with coverage (auto-installs tarpaulin)"
+	@echo "  test-backend-coverage  - Backend tests with coverage (uses cargo-llvm-cov)"
 	@echo "  test-frontend-coverage - Frontend tests with coverage"
 	@echo ""
 	@echo "Code Quality:"
@@ -188,27 +188,33 @@ test-frontend:
 	cd frontend && pnpm run test -- --run
 
 # Coverage targets - auto-install tools if missing
+# Uses cargo-llvm-cov for 5-10x faster coverage than tarpaulin
 test-coverage: test-backend-coverage test-frontend-coverage
 	@echo ""
 	@echo "==> Coverage reports generated:"
-	@echo "    Backend:  coverage/cobertura.xml, coverage/tarpaulin-report.html"
+	@echo "    Backend:  coverage/lcov.info, coverage/html/"
 	@echo "    Frontend: frontend/coverage/"
 
 test-backend-coverage:
-	@echo "==> Running backend tests with coverage..."
-	@command -v cargo-tarpaulin >/dev/null 2>&1 || { \
-		echo "Installing cargo-tarpaulin..."; \
-		cargo install cargo-tarpaulin --locked; \
+	@echo "==> Running backend tests with coverage (cargo-llvm-cov)..."
+	@command -v cargo-llvm-cov >/dev/null 2>&1 || { \
+		echo "Installing cargo-llvm-cov..."; \
+		cargo install cargo-llvm-cov --locked; \
 	}
+	@rustup component add llvm-tools-preview 2>/dev/null || true
 	@mkdir -p coverage
-	cargo tarpaulin \
+	cargo llvm-cov \
 		--all-features \
 		--workspace \
-		--timeout 300 \
-		--out Html Xml \
+		--html \
 		--output-dir coverage
+	cargo llvm-cov \
+		--all-features \
+		--workspace \
+		--lcov \
+		--output-path coverage/lcov.info
 	@echo ""
-	@echo "==> Backend coverage report: coverage/tarpaulin-report.html"
+	@echo "==> Backend coverage report: coverage/html/index.html"
 
 test-frontend-coverage:
 	@echo "==> Running frontend tests with coverage..."
