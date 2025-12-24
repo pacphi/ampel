@@ -12,6 +12,7 @@ pub mod teams;
 pub mod user_settings;
 
 use axum::{http::StatusCode, response::IntoResponse, Json};
+use metrics::counter;
 use serde::Serialize;
 
 /// Standard API response wrapper
@@ -96,6 +97,8 @@ impl From<ampel_core::AmpelError> for ApiError {
 impl From<sea_orm::DbErr> for ApiError {
     fn from(err: sea_orm::DbErr) -> Self {
         tracing::error!("Database error: {}", err);
+        // Record database error metric
+        counter!("ampel_dashboard_errors_total", "error_type" => "database").increment(1);
         ApiError::internal("Database error")
     }
 }

@@ -8,11 +8,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import GridView from '@/components/dashboard/GridView';
 import ListView from '@/components/dashboard/ListView';
 import PRListView from '@/components/dashboard/PRListView';
+import BreakdownTile from '@/components/dashboard/BreakdownTile';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { Grid, List, RefreshCw, GitPullRequest, Boxes } from 'lucide-react';
 import type { PullRequestWithDetails } from '@/types';
 import { useRepositoryFilters } from '@/hooks/useRepositoryFilters';
 
 type ViewMode = 'grid' | 'list' | 'prs';
+
+// Custom icon components for status indicators
+const GreenStatusIcon = () => <span className="h-3 w-3 rounded-full bg-ampel-green" />;
+const RedStatusIcon = () => <span className="h-3 w-3 rounded-full bg-ampel-red" />;
 
 // Calculate if a PR is ready to merge (same logic as Merge page)
 function isReadyToMerge(pr: PullRequestWithDetails, skipReviewRequirement: boolean): boolean {
@@ -165,6 +171,42 @@ export default function Dashboard() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Visibility Breakdown Tiles */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ErrorBoundary>
+          <BreakdownTile
+            title="Repositories by Visibility"
+            breakdown={summary?.repositoryBreakdown || { public: 0, private: 0, archived: 0 }}
+            icon={Boxes}
+            isLoading={isLoading}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <BreakdownTile
+            title="Open PRs by Visibility"
+            breakdown={summary?.openPrsBreakdown || { public: 0, private: 0, archived: 0 }}
+            icon={GitPullRequest}
+            isLoading={isLoading}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <BreakdownTile
+            title="Ready to Merge by Visibility"
+            breakdown={summary?.readyToMergeBreakdown || { public: 0, private: 0, archived: 0 }}
+            icon={GreenStatusIcon}
+            isLoading={isLoading}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <BreakdownTile
+            title="Needs Attention by Visibility"
+            breakdown={summary?.needsAttentionBreakdown || { public: 0, private: 0, archived: 0 }}
+            icon={RedStatusIcon}
+            isLoading={isLoading}
+          />
+        </ErrorBoundary>
       </div>
 
       {/* Repository/PR View */}

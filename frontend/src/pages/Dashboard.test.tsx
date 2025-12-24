@@ -427,4 +427,288 @@ describe('Dashboard', () => {
       expect(screen.getByText('repo2')).toBeInTheDocument();
     });
   });
+
+  describe('Visibility Breakdown Tiles', () => {
+    it('displays visibility breakdown tiles with correct data', async () => {
+      mockedDashboardApi.getSummary.mockResolvedValue({
+        totalRepositories: 20,
+        totalOpenPrs: 10,
+        statusCounts: { green: 5, yellow: 3, red: 2 },
+        providerCounts: { github: 15, gitlab: 3, bitbucket: 2 },
+        repositoryBreakdown: { public: 12, private: 6, archived: 2 },
+        openPrsBreakdown: { public: 6, private: 3, archived: 1 },
+        readyToMergeBreakdown: { public: 3, private: 2, archived: 0 },
+        needsAttentionBreakdown: { public: 1, private: 1, archived: 0 },
+      });
+      mockedDashboardApi.getGrid.mockResolvedValue([]);
+      mockedPullRequestsApi.list.mockResolvedValue({
+        data: [],
+        total: 0,
+        page: 1,
+        pageSize: 1000,
+      });
+      mockedSettingsApi.getBehavior.mockResolvedValue({
+        skipReviewRequirement: false,
+        defaultMergeStrategy: 'squash',
+        deleteBranchesDefault: false,
+      });
+
+      renderDashboard();
+
+      await waitFor(() => {
+        expect(screen.getByText('Repositories by Visibility')).toBeInTheDocument();
+      });
+
+      expect(screen.getByText('Open PRs by Visibility')).toBeInTheDocument();
+      expect(screen.getByText('Ready to Merge by Visibility')).toBeInTheDocument();
+      expect(screen.getByText('Needs Attention by Visibility')).toBeInTheDocument();
+    });
+
+    it('displays correct breakdown counts from API data', async () => {
+      mockedDashboardApi.getSummary.mockResolvedValue({
+        totalRepositories: 20,
+        totalOpenPrs: 10,
+        statusCounts: { green: 5, yellow: 3, red: 2 },
+        providerCounts: { github: 15, gitlab: 3, bitbucket: 2 },
+        repositoryBreakdown: { public: 12, private: 6, archived: 2 },
+        openPrsBreakdown: { public: 6, private: 3, archived: 1 },
+        readyToMergeBreakdown: { public: 3, private: 2, archived: 0 },
+        needsAttentionBreakdown: { public: 1, private: 1, archived: 0 },
+      });
+      mockedDashboardApi.getGrid.mockResolvedValue([]);
+      mockedPullRequestsApi.list.mockResolvedValue({
+        data: [],
+        total: 0,
+        page: 1,
+        pageSize: 1000,
+      });
+      mockedSettingsApi.getBehavior.mockResolvedValue({
+        skipReviewRequirement: false,
+        defaultMergeStrategy: 'squash',
+        deleteBranchesDefault: false,
+      });
+
+      renderDashboard();
+
+      await waitFor(() => {
+        expect(screen.getByText('20')).toBeInTheDocument();
+      });
+
+      // Repository breakdown
+      expect(screen.getByText('12')).toBeInTheDocument(); // public repos
+
+      // The numbers might appear multiple times, so we check they exist
+      const sixElements = screen.getAllByText('6');
+      expect(sixElements.length).toBeGreaterThan(0); // private repos + public PRs
+
+      const twoElements = screen.getAllByText('2');
+      expect(twoElements.length).toBeGreaterThan(0); // archived repos
+    });
+
+    it('displays breakdown tiles below summary cards', async () => {
+      mockedDashboardApi.getSummary.mockResolvedValue({
+        totalRepositories: 20,
+        totalOpenPrs: 10,
+        statusCounts: { green: 5, yellow: 3, red: 2 },
+        providerCounts: { github: 15, gitlab: 3, bitbucket: 2 },
+        repositoryBreakdown: { public: 12, private: 6, archived: 2 },
+        openPrsBreakdown: { public: 6, private: 3, archived: 1 },
+        readyToMergeBreakdown: { public: 3, private: 2, archived: 0 },
+        needsAttentionBreakdown: { public: 1, private: 1, archived: 0 },
+      });
+      mockedDashboardApi.getGrid.mockResolvedValue([]);
+      mockedPullRequestsApi.list.mockResolvedValue({
+        data: [],
+        total: 0,
+        page: 1,
+        pageSize: 1000,
+      });
+      mockedSettingsApi.getBehavior.mockResolvedValue({
+        skipReviewRequirement: false,
+        defaultMergeStrategy: 'squash',
+        deleteBranchesDefault: false,
+      });
+
+      renderDashboard();
+
+      await waitFor(() => {
+        expect(screen.getByText('Total Repositories')).toBeInTheDocument();
+      });
+
+      // Both summary and breakdown tiles should be present
+      expect(screen.getByText('Open PRs')).toBeInTheDocument();
+      expect(screen.getByText('Open PRs by Visibility')).toBeInTheDocument();
+    });
+
+    it('shows loading state in breakdown tiles', async () => {
+      mockedDashboardApi.getSummary.mockReturnValue(new Promise(() => {}));
+      mockedDashboardApi.getGrid.mockReturnValue(new Promise(() => {}));
+      mockedPullRequestsApi.list.mockReturnValue(new Promise(() => {}));
+      mockedSettingsApi.getBehavior.mockReturnValue(new Promise(() => {}));
+
+      const { container } = renderDashboard();
+
+      // Wait for component to render
+      await waitFor(() => {
+        expect(screen.getByText('Dashboard')).toBeInTheDocument();
+      });
+
+      // Check for spinner in breakdown tiles (they use animate-spin)
+      const spinners = container.querySelectorAll('.animate-spin');
+      expect(spinners.length).toBeGreaterThan(0);
+    });
+
+    it('handles missing breakdown data gracefully', async () => {
+      // API returns summary without breakdown fields
+      mockedDashboardApi.getSummary.mockResolvedValue({
+        totalRepositories: 10,
+        totalOpenPrs: 5,
+        statusCounts: { green: 2, yellow: 2, red: 1 },
+        providerCounts: { github: 8, gitlab: 1, bitbucket: 1 },
+        // No breakdown fields
+      });
+      mockedDashboardApi.getGrid.mockResolvedValue([]);
+      mockedPullRequestsApi.list.mockResolvedValue({
+        data: [],
+        total: 0,
+        page: 1,
+        pageSize: 1000,
+      });
+      mockedSettingsApi.getBehavior.mockResolvedValue({
+        skipReviewRequirement: false,
+        defaultMergeStrategy: 'squash',
+        deleteBranchesDefault: false,
+      });
+
+      renderDashboard();
+
+      await waitFor(() => {
+        expect(screen.getByText('10')).toBeInTheDocument();
+      });
+
+      // Breakdown tiles should still render with zeros
+      expect(screen.getByText('Repositories by Visibility')).toBeInTheDocument();
+      expect(screen.getByText('Open PRs by Visibility')).toBeInTheDocument();
+    });
+
+    it('displays all zero counts when no repositories exist', async () => {
+      mockedDashboardApi.getSummary.mockResolvedValue({
+        totalRepositories: 0,
+        totalOpenPrs: 0,
+        statusCounts: { green: 0, yellow: 0, red: 0 },
+        providerCounts: { github: 0, gitlab: 0, bitbucket: 0 },
+        repositoryBreakdown: { public: 0, private: 0, archived: 0 },
+        openPrsBreakdown: { public: 0, private: 0, archived: 0 },
+        readyToMergeBreakdown: { public: 0, private: 0, archived: 0 },
+        needsAttentionBreakdown: { public: 0, private: 0, archived: 0 },
+      });
+      mockedDashboardApi.getGrid.mockResolvedValue([]);
+      mockedPullRequestsApi.list.mockResolvedValue({
+        data: [],
+        total: 0,
+        page: 1,
+        pageSize: 1000,
+      });
+      mockedSettingsApi.getBehavior.mockResolvedValue({
+        skipReviewRequirement: false,
+        defaultMergeStrategy: 'squash',
+        deleteBranchesDefault: false,
+      });
+
+      renderDashboard();
+
+      await waitFor(() => {
+        expect(screen.getByText('No repositories found')).toBeInTheDocument();
+      });
+
+      // All breakdown tiles should show zeros
+      const zeroElements = screen.getAllByText('0');
+      expect(zeroElements.length).toBeGreaterThan(0);
+    });
+
+    it('displays correct icon labels in breakdown tiles', async () => {
+      mockedDashboardApi.getSummary.mockResolvedValue({
+        totalRepositories: 20,
+        totalOpenPrs: 10,
+        statusCounts: { green: 5, yellow: 3, red: 2 },
+        providerCounts: { github: 15, gitlab: 3, bitbucket: 2 },
+        repositoryBreakdown: { public: 12, private: 6, archived: 2 },
+        openPrsBreakdown: { public: 6, private: 3, archived: 1 },
+        readyToMergeBreakdown: { public: 3, private: 2, archived: 0 },
+        needsAttentionBreakdown: { public: 1, private: 1, archived: 0 },
+      });
+      mockedDashboardApi.getGrid.mockResolvedValue([]);
+      mockedPullRequestsApi.list.mockResolvedValue({
+        data: [],
+        total: 0,
+        page: 1,
+        pageSize: 1000,
+      });
+      mockedSettingsApi.getBehavior.mockResolvedValue({
+        skipReviewRequirement: false,
+        defaultMergeStrategy: 'squash',
+        deleteBranchesDefault: false,
+      });
+
+      renderDashboard();
+
+      await waitFor(() => {
+        expect(screen.getByText('Repositories by Visibility')).toBeInTheDocument();
+        expect(screen.getByText('Open PRs by Visibility')).toBeInTheDocument();
+        expect(screen.getByText('Ready to Merge by Visibility')).toBeInTheDocument();
+        expect(screen.getByText('Needs Attention by Visibility')).toBeInTheDocument();
+      });
+
+      // Each breakdown tile should have Public, Private, and Archived labels
+      // Wait for labels to appear
+      await waitFor(() => {
+        const publicLabels = screen.queryAllByText('Public');
+        expect(publicLabels.length).toBeGreaterThan(0);
+      });
+
+      const publicLabels = screen.getAllByText('Public');
+      const privateLabels = screen.getAllByText('Private');
+      const archivedLabels = screen.getAllByText('Archived');
+
+      // Should have 4 breakdown tiles, each with these labels
+      expect(publicLabels.length).toBe(4);
+      expect(privateLabels.length).toBe(4);
+      expect(archivedLabels.length).toBe(4);
+    });
+
+    it('maintains responsive layout with breakdown tiles', async () => {
+      mockedDashboardApi.getSummary.mockResolvedValue({
+        totalRepositories: 20,
+        totalOpenPrs: 10,
+        statusCounts: { green: 5, yellow: 3, red: 2 },
+        providerCounts: { github: 15, gitlab: 3, bitbucket: 2 },
+        repositoryBreakdown: { public: 12, private: 6, archived: 2 },
+        openPrsBreakdown: { public: 6, private: 3, archived: 1 },
+        readyToMergeBreakdown: { public: 3, private: 2, archived: 0 },
+        needsAttentionBreakdown: { public: 1, private: 1, archived: 0 },
+      });
+      mockedDashboardApi.getGrid.mockResolvedValue([]);
+      mockedPullRequestsApi.list.mockResolvedValue({
+        data: [],
+        total: 0,
+        page: 1,
+        pageSize: 1000,
+      });
+      mockedSettingsApi.getBehavior.mockResolvedValue({
+        skipReviewRequirement: false,
+        defaultMergeStrategy: 'squash',
+        deleteBranchesDefault: false,
+      });
+
+      const { container } = renderDashboard();
+
+      await waitFor(() => {
+        expect(screen.getByText('Repositories by Visibility')).toBeInTheDocument();
+      });
+
+      // Check for grid layout classes
+      const grids = container.querySelectorAll('.grid');
+      expect(grids.length).toBeGreaterThan(0);
+    });
+  });
 });

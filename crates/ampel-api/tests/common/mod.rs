@@ -224,6 +224,7 @@ pub async fn create_test_app(db: DatabaseConnection) -> Router {
 
     let state = AppState::new(
         db,
+        None, // No Redis for tests
         auth_service,
         encryption_service,
         provider_factory,
@@ -238,6 +239,7 @@ pub async fn create_test_app(db: DatabaseConnection) -> Router {
 fn create_test_config() -> Config {
     Config {
         database_url: "postgresql://test".to_string(), // Not used in tests (we pass connection directly)
+        redis_url: None,                               // No Redis for tests
         host: "127.0.0.1".to_string(),
         port: 8080,
         jwt_secret: "test-secret-key-at-least-32-chars-long!!!".to_string(),
