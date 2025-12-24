@@ -1,7 +1,7 @@
-# BreakdownTile Component Documentation
+# Dashboard Tile Components Documentation
 
-**Component**: `BreakdownTile`
-**Location**: `frontend/src/components/dashboard/BreakdownTile.tsx`
+**Components**: `SummaryBreakdownTile`, `BreakdownTile`
+**Location**: `frontend/src/components/dashboard/`
 **Feature**: Repository Visibility Breakdown Tiles
 **Status**: Implemented
 
@@ -10,22 +10,45 @@
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Component API](#component-api)
-3. [Usage Examples](#usage-examples)
-4. [Icon Patterns](#icon-patterns)
-5. [Styling](#styling)
-6. [Accessibility](#accessibility)
-7. [Testing](#testing)
+2. [SummaryBreakdownTile Component](#summarybreakdowntile-component)
+3. [BreakdownTile Component (Legacy)](#breakdowntile-component-legacy)
+4. [Migration Guide](#migration-guide)
+5. [Icon Patterns](#icon-patterns)
+6. [Styling](#styling)
+7. [Accessibility](#accessibility)
+8. [Testing](#testing)
 
 ---
 
 ## Overview
 
-The `BreakdownTile` component displays a count breakdown of repositories or pull requests by visibility type (public, private, archived). It's designed for use in the dashboard to provide granular insights into the distribution of repositories and PRs.
+The Dashboard uses combined tiles that display both summary counts and visibility breakdowns in a single card. This provides a compact, information-dense view while maintaining readability.
+
+### Current Architecture (v2.0)
+
+The Dashboard now uses **`SummaryBreakdownTile`** which combines:
+- Main count (e.g., "135 Total Repositories")
+- Visibility breakdown (Public/Private/Archived)
+
+```
+┌─────────────────────────────┐
+│ Total Repositories     📦   │  ← Title + Icon
+├─────────────────────────────┤
+│                             │
+│     135                     │  ← Main Count
+│                             │
+│─────────────────────────────│
+│  🌐 Public          104     │  ← Breakdown
+│  🔒 Private          17     │
+│  📦 Archived         14     │
+└─────────────────────────────┘
+```
 
 ### Features
 
-- Displays counts for public, private, and archived items
+- Displays main count prominently at top
+- Shows visibility breakdown (public, private, archived) below
+- Optional count color (e.g., green for "Ready to Merge")
 - Uses consistent iconography (Globe, Lock, Archive)
 - Supports loading state with spinner
 - Fully accessible with ARIA labels
@@ -34,23 +57,31 @@ The `BreakdownTile` component displays a count breakdown of repositories or pull
 
 ---
 
-## Component API
+## SummaryBreakdownTile Component
+
+**File**: `frontend/src/components/dashboard/SummaryBreakdownTile.tsx`
 
 ### Props
 
 ```typescript
-interface BreakdownTileProps {
+interface SummaryBreakdownTileProps {
   /** Tile title displayed in the card header */
   title: string;
+
+  /** Main count to display prominently */
+  count: number;
 
   /** Visibility breakdown data containing public, private, and archived counts */
   breakdown: VisibilityBreakdown;
 
   /** Icon component to display in the card header */
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string }>;
 
   /** Whether to show loading state (optional, defaults to false) */
   isLoading?: boolean;
+
+  /** Optional Tailwind color class for the count (e.g., "text-ampel-green") */
+  countColor?: string;
 }
 ```
 
@@ -71,110 +102,118 @@ export interface VisibilityBreakdown {
 
 ---
 
-## Usage Examples
+### Usage Examples
 
-### Example 1: Basic Usage
+#### Example 1: Basic Usage
 
 ```tsx
-import BreakdownTile from '@/components/dashboard/BreakdownTile';
+import SummaryBreakdownTile from '@/components/dashboard/SummaryBreakdownTile';
 import { Boxes } from 'lucide-react';
 
 function DashboardPage() {
   const breakdown = {
-    public: 20,
-    private: 15,
-    archived: 5,
+    public: 104,
+    private: 17,
+    archived: 14,
   };
 
-  return <BreakdownTile title="Repositories by Visibility" breakdown={breakdown} icon={Boxes} />;
+  return (
+    <SummaryBreakdownTile
+      title="Total Repositories"
+      count={135}
+      breakdown={breakdown}
+      icon={Boxes}
+    />
+  );
 }
 ```
 
-### Example 2: With API Data
+#### Example 2: With Color and API Data
 
 ```tsx
 import { useQuery } from '@tanstack/react-query';
-import BreakdownTile from '@/components/dashboard/BreakdownTile';
-import { GitPullRequest } from 'lucide-react';
+import SummaryBreakdownTile from '@/components/dashboard/SummaryBreakdownTile';
 import { dashboardApi } from '@/api/dashboard';
 
-function PullRequestBreakdown() {
+// Green status icon component
+const GreenStatusIcon = () => (
+  <span className="h-3 w-3 rounded-full bg-ampel-green" />
+);
+
+function ReadyToMergeTile() {
   const { data: summary, isLoading } = useQuery({
     queryKey: ['dashboard', 'summary'],
     queryFn: () => dashboardApi.getSummary(),
   });
 
   return (
-    <BreakdownTile
-      title="Open PRs by Visibility"
-      breakdown={summary?.openPrsBreakdown || { public: 0, private: 0, archived: 0 }}
-      icon={GitPullRequest}
+    <SummaryBreakdownTile
+      title="Ready to Merge"
+      count={summary?.statusCounts.green || 0}
+      breakdown={summary?.readyToMergeBreakdown || { public: 0, private: 0, archived: 0 }}
+      icon={GreenStatusIcon}
       isLoading={isLoading}
+      countColor="text-ampel-green"
     />
   );
 }
 ```
 
-### Example 3: Grid Layout (All Breakdown Tiles)
+#### Example 3: Complete Dashboard Grid (All 4 Tiles)
 
 ```tsx
-import BreakdownTile from '@/components/dashboard/BreakdownTile';
+import SummaryBreakdownTile from '@/components/dashboard/SummaryBreakdownTile';
 import { Boxes, GitPullRequest } from 'lucide-react';
 
-function DashboardBreakdownRow() {
+function DashboardSummaryRow() {
   const { data: summary, isLoading } = useDashboardSummary();
+
+  const GreenStatusIcon = () => (
+    <span className="h-3 w-3 rounded-full bg-ampel-green" />
+  );
+
+  const RedStatusIcon = () => (
+    <span className="h-3 w-3 rounded-full bg-ampel-red" />
+  );
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {/* Repository Breakdown */}
-      <BreakdownTile
-        title="Repositories by Visibility"
+      {/* Total Repositories */}
+      <SummaryBreakdownTile
+        title="Total Repositories"
+        count={summary?.totalRepositories || 0}
         breakdown={summary?.repositoryBreakdown || { public: 0, private: 0, archived: 0 }}
         icon={Boxes}
         isLoading={isLoading}
       />
 
-      {/* Open PRs Breakdown */}
-      <BreakdownTile
-        title="Open PRs by Visibility"
+      {/* Open PRs */}
+      <SummaryBreakdownTile
+        title="Open PRs"
+        count={summary?.totalOpenPrs || 0}
         breakdown={summary?.openPrsBreakdown || { public: 0, private: 0, archived: 0 }}
         icon={GitPullRequest}
         isLoading={isLoading}
       />
 
-      {/* Ready to Merge Breakdown */}
-      <BreakdownTile
-        title="Ready to Merge by Visibility"
-        breakdown={summary?.readyToMergeBreakdown || { public: 0, private: 0, archived: 0 }}
-        icon={() => <span className="h-3 w-3 rounded-full bg-ampel-green" />}
+      {/* Ready to Merge */}
+      <SummaryBreakdownTile
+        title="Ready to Merge"
+        count={readyToMergeCount}
+        breakdown={readyToMergeBreakdown}
+        icon={GreenStatusIcon}
         isLoading={isLoading}
+        countColor="text-ampel-green"
       />
 
-      {/* Needs Attention Breakdown */}
-      <BreakdownTile
-        title="Needs Attention by Visibility"
-        breakdown={summary?.needsAttentionBreakdown || { public: 0, private: 0, archived: 0 }}
-        icon={() => <span className="h-3 w-3 rounded-full bg-ampel-red" />}
+      {/* Needs Attention */}
+      <SummaryBreakdownTile
+        title="Needs Attention"
+        count={summary?.statusCounts.red || 0}
+        breakdown={needsAttentionBreakdown}
+        icon={RedStatusIcon}
         isLoading={isLoading}
-      />
-    </div>
-  );
-}
-```
-
-### Example 4: Custom Styling
-
-```tsx
-import BreakdownTile from '@/components/dashboard/BreakdownTile';
-import { Boxes } from 'lucide-react';
-
-function CustomStyledTile() {
-  return (
-    <div className="max-w-sm">
-      <BreakdownTile
-        title="My Repositories"
-        breakdown={{ public: 10, private: 5, archived: 2 }}
-        icon={Boxes}
+        countColor="text-ampel-red"
       />
     </div>
   );
@@ -183,50 +222,124 @@ function CustomStyledTile() {
 
 ---
 
+## BreakdownTile Component (Legacy)
+
+**File**: `frontend/src/components/dashboard/BreakdownTile.tsx`
+
+> **Note**: This component is still available but is no longer used on the main Dashboard.
+> The Dashboard now uses `SummaryBreakdownTile` which combines summary + breakdown in one tile.
+> `BreakdownTile` may still be useful for other pages that need only breakdown display.
+
+### Props
+
+```typescript
+interface BreakdownTileProps {
+  title: string;
+  breakdown: VisibilityBreakdown;
+  icon: LucideIcon;
+  isLoading?: boolean;
+}
+```
+
+### Basic Usage
+
+```tsx
+import BreakdownTile from '@/components/dashboard/BreakdownTile';
+import { Boxes } from 'lucide-react';
+
+<BreakdownTile
+  title="Repositories by Visibility"
+  breakdown={{ public: 20, private: 15, archived: 5 }}
+  icon={Boxes}
+/>
+```
+
+---
+
+## Migration Guide
+
+### From Separate Tiles to Combined Tiles
+
+**Before (v1.0)** - Two rows, 8 tiles total:
+
+```tsx
+{/* Row 1: Summary Cards */}
+<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <Card>Total Repositories: 135</Card>
+  <Card>Open PRs: 107</Card>
+  <Card>Ready to Merge: 39</Card>
+  <Card>Needs Attention: 69</Card>
+</div>
+
+{/* Row 2: Breakdown Tiles */}
+<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <BreakdownTile title="Repositories by Visibility" ... />
+  <BreakdownTile title="Open PRs by Visibility" ... />
+  <BreakdownTile title="Ready to Merge by Visibility" ... />
+  <BreakdownTile title="Needs Attention by Visibility" ... />
+</div>
+```
+
+**After (v2.0)** - Single row, 4 combined tiles:
+
+```tsx
+{/* Combined Summary + Breakdown Tiles */}
+<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <SummaryBreakdownTile title="Total Repositories" count={135} breakdown={...} ... />
+  <SummaryBreakdownTile title="Open PRs" count={107} breakdown={...} ... />
+  <SummaryBreakdownTile title="Ready to Merge" count={39} breakdown={...} countColor="text-ampel-green" />
+  <SummaryBreakdownTile title="Needs Attention" count={69} breakdown={...} countColor="text-ampel-red" />
+</div>
+```
+
+### Key Changes
+
+| Aspect | Before (v1.0) | After (v2.0) |
+|--------|---------------|--------------|
+| Layout | 2 rows, 8 tiles | 1 row, 4 tiles |
+| Component | Card + BreakdownTile | SummaryBreakdownTile |
+| Title | "Repositories by Visibility" | "Total Repositories" |
+| Count Display | Separate card | Integrated in tile |
+| Color Support | No | Yes (`countColor` prop) |
+
+---
+
 ## Icon Patterns
 
-The BreakdownTile component uses consistent iconography for visibility types:
-
-### Visibility Icons (Used in Component)
+### Visibility Icons (Used in Components)
 
 | Visibility   | Icon       | Color Class      | Hex Color | Lucide Icon   |
 | ------------ | ---------- | ---------------- | --------- | ------------- |
-| **Public**   | 🌐 Globe   | `text-green-600` | `#16a34a` | `<Globe />`   |
-| **Private**  | 🔒 Lock    | `text-amber-600` | `#d97706` | `<Lock />`    |
-| **Archived** | 📦 Archive | `text-gray-500`  | `#6b7280` | `<Archive />` |
+| **Public**   | Globe      | `text-green-600` | `#16a34a` | `<Globe />`   |
+| **Private**  | Lock       | `text-amber-600` | `#d97706` | `<Lock />`    |
+| **Archived** | Archive    | `text-gray-500`  | `#6b7280` | `<Archive />` |
 
-### Header Icon (Prop)
-
-The `icon` prop accepts any Lucide React icon or custom icon component:
+### Header Icons
 
 ```tsx
 // Standard Lucide icons
-import { Boxes, GitPullRequest, FolderGit2 } from 'lucide-react';
+import { Boxes, GitPullRequest } from 'lucide-react';
 
-<BreakdownTile icon={Boxes} ... />
-<BreakdownTile icon={GitPullRequest} ... />
-<BreakdownTile icon={FolderGit2} ... />
+<SummaryBreakdownTile icon={Boxes} ... />
+<SummaryBreakdownTile icon={GitPullRequest} ... />
 
 // Custom status indicators
-<BreakdownTile
-  icon={() => <span className="h-3 w-3 rounded-full bg-ampel-green" />}
-  ...
-/>
+const GreenStatusIcon = () => (
+  <span className="h-3 w-3 rounded-full bg-ampel-green" />
+);
+<SummaryBreakdownTile icon={GreenStatusIcon} ... />
 ```
 
 ### Icon Size Guidelines
 
 - **Header Icon**: `h-4 w-4` (16px)
 - **Visibility Icons**: `h-3.5 w-3.5` (14px)
-- Maintains consistent sizing across all tiles
 
 ---
 
 ## Styling
 
 ### Color System
-
-The component follows Ampel's color system defined in Tailwind config:
 
 ```typescript
 // tailwind.config.js
@@ -247,14 +360,15 @@ module.exports = {
 
 ```
 ┌─────────────────────────────┐
-│ Repositories by Visibility  │  ← CardTitle (text-sm font-medium)
-│                       📦     │  ← Icon (h-4 w-4 text-muted-foreground)
+│ Total Repositories     📦   │  ← CardHeader (text-sm font-medium)
 ├─────────────────────────────┤
 │                             │
-│  🌐 Public          20      │  ← text-sm, gap-2
-│  🔒 Private         15      │  ← justify-between
-│  📦 Archived         5      │  ← font-semibold (count)
+│       135                   │  ← Main count (text-2xl font-bold)
 │                             │
+│─────────────────────────────│  ← Border separator
+│  🌐 Public          104     │  ← Breakdown items (text-sm)
+│  🔒 Private          17     │
+│  📦 Archived         14     │
 └─────────────────────────────┘
 ```
 
@@ -264,44 +378,30 @@ module.exports = {
 - **Tablet (640px - 1024px)**: 2 columns
 - **Desktop (> 1024px)**: 4 columns
 
-```tsx
-// Grid layout automatically adjusts
-<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-  <BreakdownTile ... />
-  <BreakdownTile ... />
-  <BreakdownTile ... />
-  <BreakdownTile ... />
-</div>
-```
-
 ---
 
 ## Accessibility
 
 ### ARIA Labels
 
-The component includes proper ARIA labels for screen readers:
-
 ```tsx
-<Card role="region" aria-label={`${title} breakdown by visibility`}>
+<Card role="region" aria-label={`${title} summary with visibility breakdown`}>
   <CardContent>
-    <div className="space-y-2" role="list" aria-label="Visibility breakdown">
-      <div role="listitem" aria-label={`Public repositories: ${breakdown.public}`}>
-        <Globe className="h-3.5 w-3.5 text-green-600" aria-hidden="true" />
-        <span className="text-muted-foreground">Public</span>
-        <span className="font-semibold">{breakdown.public}</span>
-      </div>
-      {/* Similar for Private and Archived */}
+    <div
+      className={`text-2xl font-bold ${countColor || ''}`}
+      role="status"
+      aria-label={`${title}: ${count}`}
+    >
+      {count}
+    </div>
+    <div role="list" aria-label="Visibility breakdown">
+      <div role="listitem" aria-label={`Public: ${breakdown.public}`}>...</div>
+      <div role="listitem" aria-label={`Private: ${breakdown.private}`}>...</div>
+      <div role="listitem" aria-label={`Archived: ${breakdown.archived}`}>...</div>
     </div>
   </CardContent>
 </Card>
 ```
-
-### Keyboard Navigation
-
-- Tiles are static informational cards (no interactive elements)
-- No keyboard focus required
-- Screen readers announce title and counts on page load
 
 ### Color Contrast
 
@@ -309,127 +409,37 @@ All colors meet WCAG AA compliance (4.5:1 contrast ratio):
 
 | Color | Hex       | Contrast Ratio | WCAG AA |
 | ----- | --------- | -------------- | ------- |
-| Green | `#16a34a` | 4.5:1          | ✅ Pass |
-| Amber | `#d97706` | 4.5:1          | ✅ Pass |
-| Gray  | `#6b7280` | 4.5:1          | ✅ Pass |
+| Green | `#16a34a` | 4.5:1          | Pass    |
+| Amber | `#d97706` | 4.5:1          | Pass    |
+| Gray  | `#6b7280` | 4.5:1          | Pass    |
 
 ---
 
 ## Testing
 
-### Unit Tests
+### Test File
 
-```typescript
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import BreakdownTile from './BreakdownTile';
-import { Boxes } from 'lucide-react';
-
-describe('BreakdownTile', () => {
-  const mockBreakdown = {
-    public: 10,
-    private: 5,
-    archived: 2,
-  };
-
-  it('renders title correctly', () => {
-    render(
-      <BreakdownTile
-        title="Test Breakdown"
-        breakdown={mockBreakdown}
-        icon={Boxes}
-      />
-    );
-    expect(screen.getByText('Test Breakdown')).toBeInTheDocument();
-  });
-
-  it('displays all visibility counts', () => {
-    render(
-      <BreakdownTile
-        title="Repositories"
-        breakdown={mockBreakdown}
-        icon={Boxes}
-      />
-    );
-
-    expect(screen.getByText('10')).toBeInTheDocument(); // Public
-    expect(screen.getByText('5')).toBeInTheDocument();  // Private
-    expect(screen.getByText('2')).toBeInTheDocument();  // Archived
-  });
-
-  it('shows loading state when isLoading is true', () => {
-    render(
-      <BreakdownTile
-        title="Loading Test"
-        breakdown={mockBreakdown}
-        icon={Boxes}
-        isLoading={true}
-      />
-    );
-
-    // Should show spinner, not counts
-    expect(screen.queryByText('10')).not.toBeInTheDocument();
-    // Can test for spinner class if needed
-  });
-
-  it('displays correct icon labels', () => {
-    render(
-      <BreakdownTile
-        title="Repos"
-        breakdown={mockBreakdown}
-        icon={Boxes}
-      />
-    );
-
-    expect(screen.getByText('Public')).toBeInTheDocument();
-    expect(screen.getByText('Private')).toBeInTheDocument();
-    expect(screen.getByText('Archived')).toBeInTheDocument();
-  });
-
-  it('handles zero counts gracefully', () => {
-    render(
-      <BreakdownTile
-        title="Empty"
-        breakdown={{ public: 0, private: 0, archived: 0 }}
-        icon={Boxes}
-      />
-    );
-
-    const zeros = screen.getAllByText('0');
-    expect(zeros).toHaveLength(3); // All three visibility types
-  });
-});
+```
+frontend/src/components/dashboard/SummaryBreakdownTile.test.tsx
 ```
 
-### Integration Tests
+### Test Categories
 
-```typescript
-import { render, screen, waitFor } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Dashboard from './Dashboard';
+1. **Component Rendering** - Title, count, icon display
+2. **Visibility Counts** - All breakdown values displayed
+3. **Loading State** - Spinner shown, values hidden
+4. **Count Color** - Custom color classes applied
+5. **Accessibility** - ARIA labels, roles, screen reader support
+6. **Edge Cases** - Zero values, large numbers
 
-it('displays visibility breakdown tiles with API data', async () => {
-  const queryClient = new QueryClient();
-  const mockSummary = {
-    totalRepositories: 35,
-    repositoryBreakdown: { public: 20, private: 12, archived: 3 },
-    // ... other fields
-  };
+### Running Tests
 
-  // Mock API
-  jest.spyOn(dashboardApi, 'getSummary').mockResolvedValue(mockSummary);
+```bash
+# Run all frontend tests
+pnpm test
 
-  render(
-    <QueryClientProvider client={queryClient}>
-      <Dashboard />
-    </QueryClientProvider>
-  );
-
-  await waitFor(() => {
-    expect(screen.getByText('Repositories by Visibility')).toBeInTheDocument();
-    expect(screen.getByText('20')).toBeInTheDocument(); // Public count
-  });
-});
+# Run specific component tests
+pnpm test -- SummaryBreakdownTile
 ```
 
 ---
@@ -437,6 +447,7 @@ it('displays visibility breakdown tiles with API data', async () => {
 ## Related Documentation
 
 - [Dashboard Visibility Breakdown API](/docs/api/DASHBOARD-VISIBILITY-BREAKDOWN.md)
+- [Visibility Breakdown Feature](/docs/features/VISIBILITY-BREAKDOWN-TILES.md)
 - [Visibility Breakdown Implementation Plan](/docs/planning/VISIBILITY-BREAKDOWN-TILES-IMPLEMENTATION.md)
 - [shadcn/ui Card Component](https://ui.shadcn.com/docs/components/card)
 - [Lucide Icons](https://lucide.dev/)
@@ -444,4 +455,4 @@ it('displays visibility breakdown tiles with API data', async () => {
 ---
 
 **Component Maintained By**: Frontend Team
-**Questions?**: See [CLAUDE.md](/CLAUDE.md) for AI assistant guidance
+**Last Updated**: 2025-12-24

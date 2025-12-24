@@ -2,8 +2,9 @@
 
 **Feature Name**: Repository Visibility Breakdown Tiles
 **Status**: Implemented
-**Version**: 1.0
+**Version**: 2.0
 **Date**: 2025-12-24
+**Last Updated**: 2025-12-24 (Combined tile architecture)
 
 ---
 
@@ -18,7 +19,9 @@
 
 ## Overview
 
-The Visibility Breakdown Tiles feature provides users with detailed insights into how their repositories and pull requests are distributed across visibility types (public, private, archived). This feature enhances the dashboard by adding a second row of breakdown tiles below the main summary cards.
+The Visibility Breakdown Tiles feature provides users with detailed insights into how their repositories and pull requests are distributed across visibility types (public, private, archived).
+
+**As of v2.0**, the dashboard uses **combined tiles** that integrate both the summary count and visibility breakdown in a single card, providing a compact, information-dense view.
 
 ### What It Solves
 
@@ -31,24 +34,28 @@ The Visibility Breakdown Tiles feature provides users with detailed insights int
 
 ## Feature Components
 
-### 1. Dashboard Tiles
+### 1. Dashboard Tiles (v2.0 - Combined Architecture)
 
-Four new breakdown tiles are displayed in a second row below the main summary:
+Four combined tiles display both summary counts and visibility breakdowns in a single row:
 
-1. **Repositories by Visibility**
-   - Shows total count breakdown: Public / Private / Archived
+1. **Total Repositories**
+   - Main count prominently displayed (e.g., "135")
+   - Visibility breakdown below: Public / Private / Archived
    - Icon: Boxes (📦)
 
-2. **Open PRs by Visibility**
-   - Shows open PR count breakdown by repository visibility
+2. **Open PRs**
+   - Main count prominently displayed (e.g., "107")
+   - Visibility breakdown by repository type
    - Icon: GitPullRequest (↔️)
 
-3. **Ready to Merge by Visibility**
-   - Shows green-status PR breakdown by repository visibility
+3. **Ready to Merge**
+   - Main count in green (e.g., "39")
+   - Visibility breakdown by repository type
    - Icon: Green circle (●)
 
-4. **Needs Attention by Visibility**
-   - Shows red-status PR breakdown by repository visibility
+4. **Needs Attention**
+   - Main count in red (e.g., "69")
+   - Visibility breakdown by repository type
    - Icon: Red circle (●)
 
 ### 2. Data Flow
@@ -64,6 +71,9 @@ Four new breakdown tiles are displayed in a second row below the main summary:
 ┌────────────────────────┐
 │ DashboardSummary       │
 ├────────────────────────┤
+│ • totalRepositories    │
+│ • totalOpenPrs         │
+│ • statusCounts         │
 │ • repositoryBreakdown  │
 │ • openPrsBreakdown     │
 │ • readyToMerge...      │
@@ -71,10 +81,11 @@ Four new breakdown tiles are displayed in a second row below the main summary:
 └────────┬───────────────┘
          │
          ▼
-┌────────────────────┐
-│ BreakdownTile ×4   │
-│ (React Component)  │
-└────────────────────┘
+┌─────────────────────────┐
+│ SummaryBreakdownTile ×4 │
+│ (React Component)       │
+│ Shows count + breakdown │
+└─────────────────────────┘
 ```
 
 ### 3. Icon System
@@ -132,22 +143,26 @@ if repo.is_archived {
 
 ### Frontend (React/TypeScript)
 
-**Component**: `frontend/src/components/dashboard/BreakdownTile.tsx`
+**Component**: `frontend/src/components/dashboard/SummaryBreakdownTile.tsx`
 
 ```tsx
-interface BreakdownTileProps {
+interface SummaryBreakdownTileProps {
   title: string;
+  count: number;
   breakdown: VisibilityBreakdown;
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string }>;
   isLoading?: boolean;
+  countColor?: string;
 }
 
-export default function BreakdownTile({
+export default function SummaryBreakdownTile({
   title,
+  count,
   breakdown,
   icon: Icon,
   isLoading,
-}: BreakdownTileProps) {
+  countColor,
+}: SummaryBreakdownTileProps) {
   return (
     <Card>
       <CardHeader>
@@ -155,16 +170,15 @@ export default function BreakdownTile({
         <Icon />
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
-          <div>
-            <Globe /> Public: {breakdown.public}
-          </div>
-          <div>
-            <Lock /> Private: {breakdown.private}
-          </div>
-          <div>
-            <Archive /> Archived: {breakdown.archived}
-          </div>
+        {/* Main Count */}
+        <div className={`text-2xl font-bold ${countColor || ''}`}>
+          {count}
+        </div>
+        {/* Visibility Breakdown */}
+        <div className="space-y-2 pt-2 border-t">
+          <div><Globe /> Public: {breakdown.public}</div>
+          <div><Lock /> Private: {breakdown.private}</div>
+          <div><Archive /> Archived: {breakdown.archived}</div>
         </div>
       </CardContent>
     </Card>
@@ -176,13 +190,22 @@ export default function BreakdownTile({
 
 ```tsx
 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-  <BreakdownTile
-    title="Repositories by Visibility"
-    breakdown={summary?.repositoryBreakdown}
+  <SummaryBreakdownTile
+    title="Total Repositories"
+    count={summary?.totalRepositories || 0}
+    breakdown={summary?.repositoryBreakdown || { public: 0, private: 0, archived: 0 }}
     icon={Boxes}
     isLoading={isLoading}
   />
-  {/* ... 3 more tiles */}
+  <SummaryBreakdownTile
+    title="Ready to Merge"
+    count={readyToMergeCount}
+    breakdown={readyToMergeBreakdown}
+    icon={GreenStatusIcon}
+    isLoading={isLoading}
+    countColor="text-ampel-green"
+  />
+  {/* ... 2 more tiles */}
 </div>
 ```
 
@@ -237,8 +260,8 @@ export default function BreakdownTile({
 ### For Users
 
 1. **View Dashboard**: Navigate to the main dashboard
-2. **Top Row**: See summary tiles (Total Repos, Open PRs, Ready to Merge, Needs Attention)
-3. **Second Row**: See breakdown tiles showing visibility distribution
+2. **Combined Tiles**: Each tile shows both the main count and visibility breakdown
+3. **Color Coding**: Green counts = Ready to merge, Red counts = Needs attention
 4. **Understand Icons**:
    - 🌐 Globe = Public repositories
    - 🔒 Lock = Private repositories
@@ -255,14 +278,16 @@ export default function BreakdownTile({
    });
    ```
 
-2. **Display Breakdown Tile**:
+2. **Display Combined Tile**:
 
    ```tsx
-   <BreakdownTile
-     title="Your Title"
+   <SummaryBreakdownTile
+     title="Total Repositories"
+     count={summary?.totalRepositories || 0}
      breakdown={summary?.repositoryBreakdown || { public: 0, private: 0, archived: 0 }}
-     icon={YourIcon}
+     icon={Boxes}
      isLoading={isLoading}
+     countColor="text-ampel-green"  // Optional: for colored counts
    />
    ```
 
@@ -474,9 +499,18 @@ npm run test:e2e -- dashboard
 
 ## Version History
 
-| Version | Date       | Changes                                       |
-| ------- | ---------- | --------------------------------------------- |
-| 1.0     | 2025-12-24 | Initial implementation with 4 breakdown tiles |
+| Version | Date       | Changes                                                           |
+| ------- | ---------- | ----------------------------------------------------------------- |
+| 2.0     | 2025-12-24 | Combined tiles: merged summary + breakdown into single component  |
+| 1.0     | 2025-12-24 | Initial implementation with 4 breakdown tiles                     |
+
+### v2.0 Changes (Combined Tile Architecture)
+
+- **New Component**: `SummaryBreakdownTile` replaces separate Card + BreakdownTile
+- **Layout**: Single row of 4 tiles (was 2 rows of 4 tiles each)
+- **Features**: Added `count` and `countColor` props for main count display
+- **Calculated Breakdowns**: "Ready to Merge" and "Needs Attention" breakdowns now calculated on frontend to respect user's `skipReviewRequirement` setting
+- **Accessibility**: Enhanced ARIA labels for combined display
 
 ---
 

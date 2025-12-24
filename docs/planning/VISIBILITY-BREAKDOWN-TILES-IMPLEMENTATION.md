@@ -1,21 +1,38 @@
 # Technical Implementation: Repository Visibility Breakdown Tiles
 
-**Document Version**: 3.0 (Consolidated)
+**Document Version**: 4.0 (Combined Tile Architecture)
 **Created**: 2025-12-24
-**Last Updated**: 2025-12-24 13:09 UTC
+**Last Updated**: 2025-12-24 (v2.0 Combined Tiles)
 **Status**: ✅ **COMPLETED & PRODUCTION READY**
 **Implementation Branch**: feature/visibility-breakdown-dashboard-enhancement
-**Completion Date**: 2025-12-24 12:35 UTC
+**Completion Date**: 2025-12-24
+
+---
+
+## v2.0 Architecture Update
+
+> **IMPORTANT**: As of v2.0, the dashboard uses a **combined tile architecture** where each tile
+> displays both the summary count AND the visibility breakdown in a single card. This replaces
+> the previous two-row layout (summary cards + breakdown tiles).
+
+### Key Changes in v2.0
+
+- **New Component**: `SummaryBreakdownTile` combines count + breakdown
+- **Layout**: Single row of 4 tiles (was 2 rows of 8 tiles)
+- **Props**: Added `count` and `countColor` for integrated display
+- **Calculated Breakdowns**: "Ready to Merge" and "Needs Attention" breakdowns calculated on frontend
+- **Reason**: Respects user's `skipReviewRequirement` setting for accurate counts
 
 ---
 
 ## Document Status & History
 
-| Version | Date       | Status      | Description                            |
-| ------- | ---------- | ----------- | -------------------------------------- |
-| 1.0     | 2025-12-24 | Planning    | Initial specification and requirements |
-| 2.0     | 2025-12-24 | In Progress | Implementation tracking updates        |
-| 3.0     | 2025-12-24 | Completed   | Consolidated final documentation       |
+| Version | Date       | Status      | Description                                              |
+| ------- | ---------- | ----------- | -------------------------------------------------------- |
+| 1.0     | 2025-12-24 | Planning    | Initial specification and requirements                   |
+| 2.0     | 2025-12-24 | In Progress | Implementation tracking updates                          |
+| 3.0     | 2025-12-24 | Completed   | Consolidated final documentation                         |
+| 4.0     | 2025-12-24 | Completed   | Combined tile architecture (SummaryBreakdownTile)        |
 
 **Development Timeline**: ~6 hours total development time
 **Total Code Changes**: 11 files modified, 685 lines added
@@ -1501,11 +1518,13 @@ All identified risks have been mitigated:
 
 ### Appendix A: Code File Summary
 
-#### New Files Created (2)
+#### New Files Created (v2.0)
 
 ```
-frontend/src/components/dashboard/BreakdownTile.tsx (73 lines)
-frontend/src/components/dashboard/BreakdownTile.test.tsx (316 lines)
+frontend/src/components/dashboard/SummaryBreakdownTile.tsx (93 lines)
+frontend/src/components/dashboard/SummaryBreakdownTile.test.tsx (200+ lines)
+frontend/src/components/dashboard/BreakdownTile.tsx (73 lines) - Legacy, still available
+frontend/src/components/dashboard/BreakdownTile.test.tsx (316 lines) - Legacy tests
 ```
 
 #### Modified Files (9)

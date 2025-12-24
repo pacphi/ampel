@@ -60,13 +60,13 @@ describe('Dashboard', () => {
       mockedPullRequestsApi.list.mockReturnValue(new Promise(() => {}));
       mockedSettingsApi.getBehavior.mockReturnValue(new Promise(() => {}));
 
-      renderDashboard();
+      const { container } = renderDashboard();
 
       expect(screen.getByText('Dashboard')).toBeInTheDocument();
       expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
-      // Summary cards show "-" while loading
-      const cards = screen.getAllByText('-');
-      expect(cards.length).toBeGreaterThan(0);
+      // Combined tiles show spinners while loading
+      const spinners = container.querySelectorAll('.animate-spin');
+      expect(spinners.length).toBeGreaterThan(0);
     });
   });
 
@@ -428,8 +428,8 @@ describe('Dashboard', () => {
     });
   });
 
-  describe('Visibility Breakdown Tiles', () => {
-    it('displays visibility breakdown tiles with correct data', async () => {
+  describe('Combined Summary + Breakdown Tiles', () => {
+    it('displays combined summary and breakdown tiles', async () => {
       mockedDashboardApi.getSummary.mockResolvedValue({
         totalRepositories: 20,
         totalOpenPrs: 10,
@@ -455,13 +455,14 @@ describe('Dashboard', () => {
 
       renderDashboard();
 
+      // Combined tiles have main titles (no separate "by Visibility" titles)
       await waitFor(() => {
-        expect(screen.getByText('Repositories by Visibility')).toBeInTheDocument();
+        expect(screen.getByText('Total Repositories')).toBeInTheDocument();
       });
 
-      expect(screen.getByText('Open PRs by Visibility')).toBeInTheDocument();
-      expect(screen.getByText('Ready to Merge by Visibility')).toBeInTheDocument();
-      expect(screen.getByText('Needs Attention by Visibility')).toBeInTheDocument();
+      expect(screen.getByText('Open PRs')).toBeInTheDocument();
+      expect(screen.getByText('Ready to Merge')).toBeInTheDocument();
+      expect(screen.getByText('Needs Attention')).toBeInTheDocument();
     });
 
     it('displays correct breakdown counts from API data', async () => {
@@ -502,45 +503,10 @@ describe('Dashboard', () => {
       expect(sixElements.length).toBeGreaterThan(0); // private repos + public PRs
 
       const twoElements = screen.getAllByText('2');
-      expect(twoElements.length).toBeGreaterThan(0); // archived repos
+      expect(twoElements.length).toBeGreaterThan(0); // archived repos + red status
     });
 
-    it('displays breakdown tiles below summary cards', async () => {
-      mockedDashboardApi.getSummary.mockResolvedValue({
-        totalRepositories: 20,
-        totalOpenPrs: 10,
-        statusCounts: { green: 5, yellow: 3, red: 2 },
-        providerCounts: { github: 15, gitlab: 3, bitbucket: 2 },
-        repositoryBreakdown: { public: 12, private: 6, archived: 2 },
-        openPrsBreakdown: { public: 6, private: 3, archived: 1 },
-        readyToMergeBreakdown: { public: 3, private: 2, archived: 0 },
-        needsAttentionBreakdown: { public: 1, private: 1, archived: 0 },
-      });
-      mockedDashboardApi.getGrid.mockResolvedValue([]);
-      mockedPullRequestsApi.list.mockResolvedValue({
-        data: [],
-        total: 0,
-        page: 1,
-        pageSize: 1000,
-      });
-      mockedSettingsApi.getBehavior.mockResolvedValue({
-        skipReviewRequirement: false,
-        defaultMergeStrategy: 'squash',
-        deleteBranchesDefault: false,
-      });
-
-      renderDashboard();
-
-      await waitFor(() => {
-        expect(screen.getByText('Total Repositories')).toBeInTheDocument();
-      });
-
-      // Both summary and breakdown tiles should be present
-      expect(screen.getByText('Open PRs')).toBeInTheDocument();
-      expect(screen.getByText('Open PRs by Visibility')).toBeInTheDocument();
-    });
-
-    it('shows loading state in breakdown tiles', async () => {
+    it('shows loading state in combined tiles', async () => {
       mockedDashboardApi.getSummary.mockReturnValue(new Promise(() => {}));
       mockedDashboardApi.getGrid.mockReturnValue(new Promise(() => {}));
       mockedPullRequestsApi.list.mockReturnValue(new Promise(() => {}));
@@ -553,7 +519,7 @@ describe('Dashboard', () => {
         expect(screen.getByText('Dashboard')).toBeInTheDocument();
       });
 
-      // Check for spinner in breakdown tiles (they use animate-spin)
+      // Check for spinner in combined tiles (they use animate-spin)
       const spinners = container.querySelectorAll('.animate-spin');
       expect(spinners.length).toBeGreaterThan(0);
     });
@@ -586,9 +552,9 @@ describe('Dashboard', () => {
         expect(screen.getByText('10')).toBeInTheDocument();
       });
 
-      // Breakdown tiles should still render with zeros
-      expect(screen.getByText('Repositories by Visibility')).toBeInTheDocument();
-      expect(screen.getByText('Open PRs by Visibility')).toBeInTheDocument();
+      // Combined tiles should still render with main titles
+      expect(screen.getByText('Total Repositories')).toBeInTheDocument();
+      expect(screen.getByText('Open PRs')).toBeInTheDocument();
     });
 
     it('displays all zero counts when no repositories exist', async () => {
@@ -621,12 +587,12 @@ describe('Dashboard', () => {
         expect(screen.getByText('No repositories found')).toBeInTheDocument();
       });
 
-      // All breakdown tiles should show zeros
+      // Combined tiles should show zeros
       const zeroElements = screen.getAllByText('0');
       expect(zeroElements.length).toBeGreaterThan(0);
     });
 
-    it('displays correct icon labels in breakdown tiles', async () => {
+    it('displays correct icon labels in combined tiles', async () => {
       mockedDashboardApi.getSummary.mockResolvedValue({
         totalRepositories: 20,
         totalOpenPrs: 10,
@@ -653,14 +619,10 @@ describe('Dashboard', () => {
       renderDashboard();
 
       await waitFor(() => {
-        expect(screen.getByText('Repositories by Visibility')).toBeInTheDocument();
-        expect(screen.getByText('Open PRs by Visibility')).toBeInTheDocument();
-        expect(screen.getByText('Ready to Merge by Visibility')).toBeInTheDocument();
-        expect(screen.getByText('Needs Attention by Visibility')).toBeInTheDocument();
+        expect(screen.getByText('Total Repositories')).toBeInTheDocument();
       });
 
-      // Each breakdown tile should have Public, Private, and Archived labels
-      // Wait for labels to appear
+      // Each combined tile should have Public, Private, and Archived labels
       await waitFor(() => {
         const publicLabels = screen.queryAllByText('Public');
         expect(publicLabels.length).toBeGreaterThan(0);
@@ -670,13 +632,13 @@ describe('Dashboard', () => {
       const privateLabels = screen.getAllByText('Private');
       const archivedLabels = screen.getAllByText('Archived');
 
-      // Should have 4 breakdown tiles, each with these labels
+      // Should have 4 combined tiles, each with these labels
       expect(publicLabels.length).toBe(4);
       expect(privateLabels.length).toBe(4);
       expect(archivedLabels.length).toBe(4);
     });
 
-    it('maintains responsive layout with breakdown tiles', async () => {
+    it('maintains responsive layout with combined tiles', async () => {
       mockedDashboardApi.getSummary.mockResolvedValue({
         totalRepositories: 20,
         totalOpenPrs: 10,
@@ -703,7 +665,7 @@ describe('Dashboard', () => {
       const { container } = renderDashboard();
 
       await waitFor(() => {
-        expect(screen.getByText('Repositories by Visibility')).toBeInTheDocument();
+        expect(screen.getByText('Total Repositories')).toBeInTheDocument();
       });
 
       // Check for grid layout classes
