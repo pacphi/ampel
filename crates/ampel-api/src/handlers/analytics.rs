@@ -15,6 +15,7 @@ use crate::handlers::{ApiError, ApiResponse};
 use crate::AppState;
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct AnalyticsSummary {
     pub total_prs_merged: i64,
     pub avg_time_to_merge_hours: f64,
@@ -24,6 +25,7 @@ pub struct AnalyticsSummary {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ContributorStats {
     pub author: String,
     pub pr_count: i64,
@@ -31,6 +33,7 @@ pub struct ContributorStats {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RepositoryHealthResponse {
     pub repository_id: Uuid,
     pub repository_name: String,
@@ -41,6 +44,7 @@ pub struct RepositoryHealthResponse {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct HealthMetrics {
     pub avg_time_to_merge_hours: f64,
     pub avg_review_time_hours: f64,
@@ -50,6 +54,7 @@ pub struct HealthMetrics {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct HealthScorePoint {
     pub date: chrono::DateTime<Utc>,
     pub score: i32,
