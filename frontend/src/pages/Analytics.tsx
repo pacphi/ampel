@@ -11,7 +11,10 @@ import {
   Activity,
 } from 'lucide-react';
 
-function formatHours(hours: number): string {
+function formatHours(hours: number | null | undefined): string {
+  if (hours == null || !Number.isFinite(hours)) {
+    return '—';
+  }
   if (hours < 1) {
     return `${Math.round(hours * 60)}m`;
   } else if (hours < 24) {

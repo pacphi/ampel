@@ -119,6 +119,12 @@ export interface Review {
   submittedAt: string;
 }
 
+export interface VisibilityBreakdown {
+  public: number;
+  private: number;
+  archived: number;
+}
+
 export interface DashboardSummary {
   totalRepositories: number;
   totalOpenPrs: number;
@@ -132,6 +138,10 @@ export interface DashboardSummary {
     gitlab: number;
     bitbucket: number;
   };
+  repositoryBreakdown?: VisibilityBreakdown;
+  openPrsBreakdown?: VisibilityBreakdown;
+  readyToMergeBreakdown?: VisibilityBreakdown;
+  needsAttentionBreakdown?: VisibilityBreakdown;
 }
 
 export interface PaginatedResponse<T> {

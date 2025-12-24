@@ -206,7 +206,28 @@ crates/
 
 The database schema supports multitenancy, multiple provider accounts, and comprehensive PR tracking.
 
-### 5.2 Core Tables
+### 5.2 Repository Visibility
+
+Ampel tracks repository visibility through two boolean fields on the `repositories` table:
+
+- **`is_private`**: Indicates if the repository is private (requires authentication to access)
+- **`is_archived`**: Indicates if the repository has been archived (read-only, usually inactive)
+
+**Visibility Classification**:
+
+| Type         | Condition                                    | Description                               |
+| ------------ | -------------------------------------------- | ----------------------------------------- |
+| **Public**   | `is_private = false AND is_archived = false` | Publicly accessible, active repository    |
+| **Private**  | `is_private = true AND is_archived = false`  | Private, active repository                |
+| **Archived** | `is_archived = true`                         | Archived repository (may also be private) |
+
+**Provider Support**:
+
+- **GitHub**: Fully supports public, private, and archived
+- **GitLab**: Fully supports public, private, and archived
+- **Bitbucket**: Supports public and private, but NOT archived (always `false`)
+
+### 5.3 Core Tables
 
 #### Users
 
@@ -1210,10 +1231,19 @@ let scheduler = Scheduler::new()
 
 ### 10.5 Dashboard Endpoints
 
-| Method | Endpoint                 | Description               | Auth Required |
-| ------ | ------------------------ | ------------------------- | ------------- |
-| GET    | `/api/dashboard/summary` | Get traffic light summary | Yes           |
-| GET    | `/api/dashboard/grid`    | Get repository grid view  | Yes           |
+| Method | Endpoint                 | Description                                          | Auth Required |
+| ------ | ------------------------ | ---------------------------------------------------- | ------------- |
+| GET    | `/api/dashboard/summary` | Get traffic light summary with visibility breakdowns | Yes           |
+| GET    | `/api/dashboard/grid`    | Get repository grid view                             | Yes           |
+
+**Dashboard Summary Response** includes:
+
+- Total repositories and open PRs
+- Status counts (green/yellow/red)
+- Provider counts (GitHub/GitLab/Bitbucket)
+- **Visibility breakdowns**: Repository, Open PRs, Ready to Merge, Needs Attention counts broken down by public/private/archived
+
+See [Dashboard Visibility Breakdown API Documentation](/docs/api/DASHBOARD-VISIBILITY-BREAKDOWN.md) for complete details.
 
 ### 10.6 Bulk Merge Endpoints
 

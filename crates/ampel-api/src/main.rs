@@ -41,6 +41,29 @@ async fn main() -> anyhow::Result<()> {
     run_migrations(&db).await?;
     tracing::info!("Database migrations applied");
 
+    // Initialize Redis connection (optional)
+    let redis = if let Some(redis_url) = &config.redis_url {
+        match redis::Client::open(redis_url.as_str()) {
+            Ok(client) => match client.get_connection_manager().await {
+                Ok(conn_mgr) => {
+                    tracing::info!("Redis connection established");
+                    Some(conn_mgr)
+                }
+                Err(e) => {
+                    tracing::warn!(error = %e, "Failed to connect to Redis, continuing without cache");
+                    None
+                }
+            },
+            Err(e) => {
+                tracing::warn!(error = %e, "Failed to create Redis client, continuing without cache");
+                None
+            }
+        }
+    } else {
+        tracing::info!("Redis URL not configured, caching disabled");
+        None
+    };
+
     // Initialize services
     let auth_service = AuthService::new(
         config.jwt_secret.clone(),
@@ -56,6 +79,7 @@ async fn main() -> anyhow::Result<()> {
     // Create app state
     let state = AppState::new(
         db,
+        redis,
         auth_service,
         encryption_service,
         provider_factory,

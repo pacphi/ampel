@@ -71,6 +71,9 @@ metrics = "0.24"
 metrics-exporter-prometheus = { version = "0.16", default-features = false }
 metrics-util = "0.19"
 
+# Redis
+redis = { version = "0.27", features = ["tokio-comp", "connection-manager"] }
+
 # API Documentation
 utoipa = { version = "5", features = ["axum_extras"] }
 utoipa-swagger-ui = { version = "9", features = ["axum"] }

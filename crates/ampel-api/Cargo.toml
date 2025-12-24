@@ -51,6 +51,9 @@ config.workspace = true
 dotenvy.workspace = true
 url.workspace = true
 
+# Caching
+redis.workspace = true
+
 # Metrics
 metrics.workspace = true
 metrics-exporter-prometheus.workspace = true
@@ -75,3 +78,4 @@ ampel-providers.workspace = true
 tokio = { workspace = true, features = ["test-util", "macros"] }
 tower = { workspace = true, features = ["util"] }
 sea-orm-migration.workspace = true
+futures = "0.3"

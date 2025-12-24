@@ -208,6 +208,24 @@ async fn test_summary_has_correct_structure() {
     assert!(json["data"]["providerCounts"]["gitlab"].is_number());
     assert!(json["data"]["providerCounts"]["bitbucket"].is_number());
 
+    // Verify visibility breakdown structure
+    assert!(json["data"]["repositoryBreakdown"].is_object());
+    assert!(json["data"]["repositoryBreakdown"]["public"].is_number());
+    assert!(json["data"]["repositoryBreakdown"]["private"].is_number());
+    assert!(json["data"]["repositoryBreakdown"]["archived"].is_number());
+    assert!(json["data"]["openPrsBreakdown"].is_object());
+    assert!(json["data"]["openPrsBreakdown"]["public"].is_number());
+    assert!(json["data"]["openPrsBreakdown"]["private"].is_number());
+    assert!(json["data"]["openPrsBreakdown"]["archived"].is_number());
+    assert!(json["data"]["readyToMergeBreakdown"].is_object());
+    assert!(json["data"]["readyToMergeBreakdown"]["public"].is_number());
+    assert!(json["data"]["readyToMergeBreakdown"]["private"].is_number());
+    assert!(json["data"]["readyToMergeBreakdown"]["archived"].is_number());
+    assert!(json["data"]["needsAttentionBreakdown"].is_object());
+    assert!(json["data"]["needsAttentionBreakdown"]["public"].is_number());
+    assert!(json["data"]["needsAttentionBreakdown"]["private"].is_number());
+    assert!(json["data"]["needsAttentionBreakdown"]["archived"].is_number());
+
     test_db.cleanup().await;
 }
 

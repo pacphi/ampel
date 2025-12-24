@@ -4,15 +4,20 @@ import { dashboardApi } from '@/api/dashboard';
 import { pullRequestsApi } from '@/api/pullRequests';
 import { settingsApi } from '@/api/settings';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import GridView from '@/components/dashboard/GridView';
 import ListView from '@/components/dashboard/ListView';
 import PRListView from '@/components/dashboard/PRListView';
+import SummaryBreakdownTile from '@/components/dashboard/SummaryBreakdownTile';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { Grid, List, RefreshCw, GitPullRequest, Boxes } from 'lucide-react';
 import type { PullRequestWithDetails } from '@/types';
 import { useRepositoryFilters } from '@/hooks/useRepositoryFilters';
 
 type ViewMode = 'grid' | 'list' | 'prs';
+
+// Custom icon components for status indicators
+const GreenStatusIcon = () => <span className="h-3 w-3 rounded-full bg-ampel-green" />;
+const RedStatusIcon = () => <span className="h-3 w-3 rounded-full bg-ampel-red" />;
 
 // Calculate if a PR is ready to merge (same logic as Merge page)
 function isReadyToMerge(pr: PullRequestWithDetails, skipReviewRequirement: boolean): boolean {
@@ -71,12 +76,64 @@ export default function Dashboard() {
     staleTime: 60000,
   });
 
-  // Calculate "Ready to Merge" count based on user's skipReviewRequirement setting
-  const readyToMergeCount = useMemo(() => {
+  // Create a map of repository ID to repository for visibility lookups
+  const repositoryMap = useMemo(() => {
+    const map = new Map<string, { isPrivate: boolean; isArchived: boolean }>();
+    for (const repo of repositories || []) {
+      map.set(repo.id, { isPrivate: repo.isPrivate, isArchived: repo.isArchived });
+    }
+    return map;
+  }, [repositories]);
+
+  // Calculate "Ready to Merge" count and breakdown based on user's skipReviewRequirement setting
+  const { readyToMergeCount, readyToMergeBreakdown } = useMemo(() => {
     const prs = prsData?.items || [];
     const skipReviewRequirement = settings?.skipReviewRequirement || false;
-    return prs.filter((pr) => isReadyToMerge(pr, skipReviewRequirement)).length;
-  }, [prsData, settings]);
+
+    let count = 0;
+    const breakdown = { public: 0, private: 0, archived: 0 };
+
+    for (const pr of prs) {
+      if (isReadyToMerge(pr, skipReviewRequirement)) {
+        count++;
+        const repo = repositoryMap.get(pr.repositoryId);
+        if (repo) {
+          if (repo.isArchived) {
+            breakdown.archived++;
+          } else if (repo.isPrivate) {
+            breakdown.private++;
+          } else {
+            breakdown.public++;
+          }
+        }
+      }
+    }
+
+    return { readyToMergeCount: count, readyToMergeBreakdown: breakdown };
+  }, [prsData, settings, repositoryMap]);
+
+  // Calculate "Needs Attention" breakdown (red status PRs)
+  const needsAttentionBreakdown = useMemo(() => {
+    const prs = prsData?.items || [];
+    const breakdown = { public: 0, private: 0, archived: 0 };
+
+    for (const pr of prs) {
+      if (pr.status === 'red') {
+        const repo = repositoryMap.get(pr.repositoryId);
+        if (repo) {
+          if (repo.isArchived) {
+            breakdown.archived++;
+          } else if (repo.isPrivate) {
+            breakdown.private++;
+          } else {
+            breakdown.public++;
+          }
+        }
+      }
+    }
+
+    return breakdown;
+  }, [prsData, repositoryMap]);
 
   const isLoading = summaryLoading || reposLoading;
 
@@ -123,48 +180,46 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Summary Cards */}
+      {/* Combined Summary + Breakdown Tiles */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Repositories</CardTitle>
-            <Boxes className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{isLoading ? '-' : summary?.totalRepositories}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Open PRs</CardTitle>
-            <GitPullRequest className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{isLoading ? '-' : summary?.totalOpenPrs}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Ready to Merge</CardTitle>
-            <span className="h-3 w-3 rounded-full bg-ampel-green" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-ampel-green">
-              {isLoading ? '-' : readyToMergeCount}
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Needs Attention</CardTitle>
-            <span className="h-3 w-3 rounded-full bg-ampel-red" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-ampel-red">
-              {isLoading ? '-' : summary?.statusCounts.red}
-            </div>
-          </CardContent>
-        </Card>
+        <ErrorBoundary>
+          <SummaryBreakdownTile
+            title="Total Repositories"
+            count={summary?.totalRepositories || 0}
+            breakdown={summary?.repositoryBreakdown || { public: 0, private: 0, archived: 0 }}
+            icon={Boxes}
+            isLoading={isLoading}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <SummaryBreakdownTile
+            title="Open PRs"
+            count={summary?.totalOpenPrs || 0}
+            breakdown={summary?.openPrsBreakdown || { public: 0, private: 0, archived: 0 }}
+            icon={GitPullRequest}
+            isLoading={isLoading}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <SummaryBreakdownTile
+            title="Ready to Merge"
+            count={readyToMergeCount}
+            breakdown={readyToMergeBreakdown}
+            icon={GreenStatusIcon}
+            isLoading={isLoading}
+            countColor="text-ampel-green"
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <SummaryBreakdownTile
+            title="Needs Attention"
+            count={summary?.statusCounts.red || 0}
+            breakdown={needsAttentionBreakdown}
+            icon={RedStatusIcon}
+            isLoading={isLoading}
+            countColor="text-ampel-red"
+          />
+        </ErrorBoundary>
       </div>
 
       {/* Repository/PR View */}

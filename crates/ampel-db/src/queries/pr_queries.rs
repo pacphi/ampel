@@ -208,4 +208,22 @@ impl PrQueries {
             .count(db)
             .await
     }
+
+    /// Find all open PRs for multiple repositories in one batch query
+    /// Returns all open PRs for the given repository IDs
+    pub async fn find_open_for_repositories(
+        db: &DatabaseConnection,
+        repository_ids: &[Uuid],
+    ) -> Result<Vec<Model>, DbErr> {
+        if repository_ids.is_empty() {
+            return Ok(Vec::new());
+        }
+
+        Entity::find()
+            .filter(Column::RepositoryId.is_in(repository_ids.iter().copied()))
+            .filter(Column::State.eq("open"))
+            .order_by_desc(Column::UpdatedAt)
+            .all(db)
+            .await
+    }
 }

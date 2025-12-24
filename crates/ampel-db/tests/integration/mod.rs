@@ -7,6 +7,7 @@
 mod common;
 
 // Test modules
+mod dashboard_queries;
 mod pr_queries;
 mod provider_account_queries;
 mod repo_queries;

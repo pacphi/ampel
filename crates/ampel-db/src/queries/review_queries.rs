@@ -89,4 +89,21 @@ impl ReviewQueries {
             .await?;
         Ok(result.rows_affected)
     }
+
+    /// Find all reviews for multiple PRs in one batch query
+    /// Returns all reviews for the given PR IDs
+    pub async fn find_for_pull_requests(
+        db: &DatabaseConnection,
+        pull_request_ids: &[Uuid],
+    ) -> Result<Vec<Model>, DbErr> {
+        if pull_request_ids.is_empty() {
+            return Ok(Vec::new());
+        }
+
+        Entity::find()
+            .filter(Column::PullRequestId.is_in(pull_request_ids.iter().copied()))
+            .order_by_desc(Column::SubmittedAt)
+            .all(db)
+            .await
+    }
 }

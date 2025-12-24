@@ -217,6 +217,7 @@ function ProfileSettings() {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
+                  timeZone: 'UTC',
                 })
               : 'Unknown'}
           </p>
