@@ -1,5 +1,6 @@
 pub mod cache;
 pub mod config;
+pub mod docs;
 pub mod extractors;
 pub mod handlers;
 pub mod middleware;
@@ -8,5 +9,6 @@ pub mod routes;
 pub mod state;
 
 pub use config::Config;
+pub use docs::{swagger_ui, ApiDoc};
 pub use observability::{health_handler, init_metrics, metrics_handler, readiness_handler};
 pub use state::AppState;

@@ -5,19 +5,40 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderPullRequest,
-    ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderDiff,
+    ProviderDiffFile, ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo,
+    TokenValidation,
 };
+use crate::utils::bearer_auth_header;
 use ampel_core::models::{
     DiscoveredRepository, GitProvider as Provider, MergeRequest, MergeStrategy,
 };
 
+/// GitLab provider implementation for the GitProvider trait
+///
+/// Supports both GitLab.com and self-hosted GitLab instances
 pub struct GitLabProvider {
     client: Client,
     base_url: String,
 }
 
 impl GitLabProvider {
+    /// Create a new GitLab provider instance
+    ///
+    /// # Arguments
+    /// * `instance_url` - Optional base URL for self-hosted GitLab.
+    ///   Defaults to "https://gitlab.com" for GitLab.com
+    ///
+    /// # Example
+    /// ```
+    /// use ampel_providers::GitLabProvider;
+    ///
+    /// // GitLab.com
+    /// let provider = GitLabProvider::new(None);
+    ///
+    /// // Self-hosted GitLab
+    /// let self_hosted = GitLabProvider::new(Some("https://gitlab.company.com".into()));
+    /// ```
     pub fn new(instance_url: Option<String>) -> Self {
         let client = Client::builder()
             .user_agent("Ampel/1.0")
@@ -30,13 +51,27 @@ impl GitLabProvider {
         }
     }
 
+    /// Build full API URL from path (includes /api/v4 prefix)
+    ///
+    /// # Arguments
+    /// * `path` - API endpoint path (e.g., "/user", "/projects")
+    ///
+    /// # Returns
+    /// Complete API URL with GitLab's /api/v4 prefix
     fn api_url(&self, path: &str) -> String {
         format!("{}/api/v4{}", self.base_url, path)
     }
 
+    /// Generate authentication header for API requests
+    ///
+    /// # Arguments
+    /// * `credentials` - Provider credentials containing the PAT token
+    ///
+    /// # Returns
+    /// Formatted "Bearer {token}" authentication header
     fn auth_header(&self, credentials: &ProviderCredentials) -> String {
         match credentials {
-            ProviderCredentials::Pat { token, .. } => format!("Bearer {}", token),
+            ProviderCredentials::Pat { token, .. } => bearer_auth_header(token),
         }
     }
 }
@@ -140,6 +175,20 @@ struct GitLabMergeRequest {
     merge_commit_message: Option<String>,
     squash: bool,
     should_remove_source_branch: bool,
+}
+
+#[derive(Debug, Deserialize)]
+struct GitLabDiffFile {
+    old_path: String,
+    new_path: String,
+    new_file: bool,
+    renamed_file: bool,
+    deleted_file: bool,
+    diff: Option<String>,
+    #[serde(default)]
+    _a_mode: String,
+    #[serde(default)]
+    _b_mode: String,
 }
 
 fn parse_datetime(s: &str) -> DateTime<Utc> {
@@ -665,4 +714,126 @@ impl GitProvider for GitLabProvider {
             reset_at: Utc::now() + chrono::Duration::hours(1),
         })
     }
+
+    async fn get_pull_request_diff(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+    ) -> ProviderResult<ProviderDiff> {
+        // Get PR details to extract base and head commits
+        let pr = self.get_pull_request(credentials, owner, repo, pr_number).await?;
+
+        let project_path = format!("{}/{}", owner, repo);
+        let encoded_path = urlencoding::encode(&project_path);
+
+        let response = self
+            .client
+            .get(self.api_url(&format!(
+                "/projects/{}/merge_requests/{}/diffs",
+                encoded_path, pr_number
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .query(&[("per_page", "100")])
+            .send()
+            .await?;
+
+        if response.status() == 404 {
+            return Err(ProviderError::NotFound(format!(
+                "Merge request !{} not found",
+                pr_number
+            )));
+        }
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: "Failed to get merge request diff".to_string(),
+            });
+        }
+
+        let files: Vec<GitLabDiffFile> = response.json().await?;
+
+        let mut total_additions = 0;
+        let mut total_deletions = 0;
+        let mut total_changes = 0;
+        let total_files = files.len() as i32;
+
+        let provider_files: Vec<ProviderDiffFile> = files
+            .into_iter()
+            .map(|f| {
+                let status = if f.new_file {
+                    "added"
+                } else if f.deleted_file {
+                    "removed"
+                } else if f.renamed_file {
+                    "renamed"
+                } else {
+                    "modified"
+                };
+
+                // Parse diff to count additions/deletions
+                let (additions, deletions) = if let Some(ref diff) = f.diff {
+                    let mut adds = 0;
+                    let mut dels = 0;
+                    for line in diff.lines() {
+                        if line.starts_with('+') && !line.starts_with("+++") {
+                            adds += 1;
+                        } else if line.starts_with('-') && !line.starts_with("---") {
+                            dels += 1;
+                        }
+                    }
+                    (adds, dels)
+                } else {
+                    (0, 0)
+                };
+
+                total_additions += additions;
+                total_deletions += deletions;
+                total_changes += additions + deletions;
+
+                // Use b_mode as sha, or generate a simple hash from filename
+                let sha = if !f._b_mode.is_empty() {
+                    f._b_mode.clone()
+                } else {
+                    // Generate a simple deterministic hash from the filename
+                    let hash: u64 = f.new_path.bytes().fold(0u64, |acc, b| {
+                        acc.wrapping_mul(31).wrapping_add(b as u64)
+                    });
+                    format!("{:016x}", hash)
+                };
+
+                ProviderDiffFile {
+                    filename: f.new_path.clone(),
+                    status: status.to_string(),
+                    additions,
+                    deletions,
+                    changes: additions + deletions,
+                    patch: f.diff,
+                    previous_filename: if f.renamed_file && f.old_path != f.new_path {
+                        Some(f.old_path)
+                    } else {
+                        None
+                    },
+                    sha,
+                }
+            })
+            .collect();
+
+        // Use branch names as base/head commits (simplified approach)
+        let base_commit = pr.target_branch.clone();
+        let head_commit = pr.source_branch.clone();
+
+        Ok(ProviderDiff {
+            files: provider_files,
+            total_additions,
+            total_deletions,
+            total_changes,
+            total_files,
+            base_commit,
+            head_commit,
+        })
+    }
+
 }

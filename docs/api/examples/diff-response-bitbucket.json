@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "data": {
+    "files": [
+      {
+        "sha": "bb1234567890abcdefbb1234567890abcdefbb12",
+        "old_path": "src/main/java/com/example/App.java",
+        "new_path": "src/main/java/com/example/App.java",
+        "status": "modified",
+        "additions": 18,
+        "deletions": 5,
+        "changes": 23,
+        "patch": "@@ -1,10 +1,23 @@\n package com.example;\n \n+import java.util.logging.Logger;\n+import java.util.logging.Level;\n+\n public class App {\n+    private static final Logger LOGGER = Logger.getLogger(App.class.getName());\n+    \n     public static void main(String[] args) {\n-        System.out.println(\"Hello World\");\n+        try {\n+            LOGGER.log(Level.INFO, \"Application starting...\");\n+            System.out.println(\"Hello World\");\n+            LOGGER.log(Level.INFO, \"Application completed successfully\");\n+        } catch (Exception e) {\n+            LOGGER.log(Level.SEVERE, \"Application error\", e);\n+            System.exit(1);\n+        }\n     }\n }"
+      },
+      {
+        "sha": "bbabcdef1234567890bbabcdef1234567890bbab",
+        "old_path": null,
+        "new_path": "src/test/java/com/example/AppTest.java",
+        "status": "added",
+        "additions": 35,
+        "deletions": 0,
+        "changes": 35,
+        "patch": "@@ -0,0 +1,35 @@\n+package com.example;\n+\n+import org.junit.Test;\n+import static org.junit.Assert.*;\n+\n+public class AppTest {\n+    @Test\n+    public void testMain() {\n+        // Test that main runs without exceptions\n+        String[] args = {};\n+        App.main(args);\n+        assertTrue(true);\n+    }\n+}\n"
+      }
+    ],
+    "total_additions": 53,
+    "total_deletions": 5,
+    "total_files": 2,
+    "base_commit": "bitbucket-base-commit-abc123",
+    "head_commit": "bitbucket-head-commit-def456"
+  },
+  "metadata": {
+    "provider": "bitbucket",
+    "cached": true,
+    "cache_age_seconds": 240,
+    "timestamp": "2025-12-25T15:28:45Z"
+  }
+}

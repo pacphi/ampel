@@ -6,6 +6,8 @@ import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
 import { initMonitoring } from './utils/monitoring';
 import './index.css';
+// Temporarily disabled due to Tailwind v4 @apply incompatibility
+// import './styles/diff.css';
 
 // Initialize monitoring
 initMonitoring();

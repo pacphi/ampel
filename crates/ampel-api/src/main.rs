@@ -100,8 +100,9 @@ async fn main() -> anyhow::Result<()> {
         .allow_headers([header::AUTHORIZATION, header::CONTENT_TYPE])
         .allow_credentials(true);
 
-    // Build router
-    let app = routes::create_router(state)
+    // Build router with Swagger UI
+    let app = routes::create_router(state.clone())
+        .merge(ampel_api::swagger_ui())
         .layer(TraceLayer::new_for_http())
         .layer(cors);
 

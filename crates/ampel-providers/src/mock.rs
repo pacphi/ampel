@@ -39,8 +39,8 @@ use std::sync::{Arc, Mutex};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderPullRequest,
-    ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderDiff,
+    ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
 };
 use ampel_core::models::{DiscoveredRepository, GitProvider as Provider, MergeRequest};
 
@@ -408,6 +408,25 @@ impl GitProvider for MockProvider {
             remaining: 4999,
             reset_at: Utc::now() + chrono::Duration::hours(1),
         }))
+    }
+
+    async fn get_pull_request_diff(
+        &self,
+        _credentials: &ProviderCredentials,
+        _owner: &str,
+        _repo: &str,
+        _pr_number: i32,
+    ) -> ProviderResult<ProviderDiff> {
+        // Mock implementation returns empty diff
+        Ok(ProviderDiff {
+            files: vec![],
+            total_additions: 0,
+            total_deletions: 0,
+            total_changes: 0,
+            total_files: 0,
+            base_commit: "mock_base_commit".to_string(),
+            head_commit: "mock_head_commit".to_string(),
+        })
     }
 }
 

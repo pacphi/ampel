@@ -102,6 +102,33 @@ pub struct MergeResult {
     pub message: String,
 }
 
+/// File-level diff information from provider
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
+pub struct ProviderDiffFile {
+    pub filename: String,
+    pub status: String,
+    pub additions: i32,
+    pub deletions: i32,
+    pub changes: i32,
+    pub patch: Option<String>,
+    pub previous_filename: Option<String>,
+    pub sha: String,
+}
+
+/// Complete diff for a pull request
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
+pub struct ProviderDiff {
+    pub files: Vec<ProviderDiffFile>,
+    pub total_additions: i32,
+    pub total_deletions: i32,
+    pub total_changes: i32,
+    pub total_files: i32,
+    pub base_commit: String,
+    pub head_commit: String,
+}
+
 /// Unified interface for Git providers (GitHub, GitLab, Bitbucket)
 #[async_trait]
 pub trait GitProvider: Send + Sync {
@@ -187,4 +214,13 @@ pub trait GitProvider: Send + Sync {
         &self,
         credentials: &ProviderCredentials,
     ) -> ProviderResult<RateLimitInfo>;
+
+    /// Get diff for a pull request
+    async fn get_pull_request_diff(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+    ) -> ProviderResult<ProviderDiff>;
 }

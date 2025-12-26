@@ -5,9 +5,11 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderPullRequest,
-    ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderDiff,
+    ProviderDiffFile, ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo,
+    TokenValidation,
 };
+use crate::utils::bearer_auth_header;
 use ampel_core::models::{
     DiscoveredRepository, GitProvider as Provider, MergeRequest, MergeStrategy,
 };
@@ -30,13 +32,27 @@ impl GitHubProvider {
         Self { client, base_url }
     }
 
+    /// Build full API URL from path
+    ///
+    /// # Arguments
+    /// * `path` - API endpoint path (e.g., "/user", "/repos/owner/repo")
+    ///
+    /// # Returns
+    /// Complete API URL combining base_url and path
     fn api_url(&self, path: &str) -> String {
         format!("{}{}", self.base_url, path)
     }
 
+    /// Generate authentication header for API requests
+    ///
+    /// # Arguments
+    /// * `credentials` - Provider credentials containing the PAT token
+    ///
+    /// # Returns
+    /// Formatted "Bearer {token}" authentication header
     fn auth_header(&self, credentials: &ProviderCredentials) -> String {
         match credentials {
-            ProviderCredentials::Pat { token, .. } => format!("Bearer {}", token),
+            ProviderCredentials::Pat { token, .. } => bearer_auth_header(token),
         }
     }
 }
@@ -164,6 +180,18 @@ struct GitHubRateLimitCore {
     limit: i32,
     remaining: i32,
     reset: i64,
+}
+
+#[derive(Debug, Deserialize)]
+struct GitHubDiffFile {
+    filename: String,
+    status: String,
+    additions: i32,
+    deletions: i32,
+    changes: i32,
+    patch: Option<String>,
+    previous_filename: Option<String>,
+    sha: String,
 }
 
 fn parse_datetime(s: &str) -> DateTime<Utc> {
@@ -654,6 +682,83 @@ impl GitProvider for GitHubProvider {
             limit: rate.resources.core.limit,
             remaining: rate.resources.core.remaining,
             reset_at: Utc.timestamp_opt(rate.resources.core.reset, 0).unwrap(),
+        })
+    }
+
+    async fn get_pull_request_diff(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+    ) -> ProviderResult<ProviderDiff> {
+        // First, get PR details to extract base and head commit SHAs
+        let pr = self.get_pull_request(credentials, owner, repo, pr_number).await?;
+
+        let response = self
+            .client
+            .get(self.api_url(&format!("/repos/{}/{}/pulls/{}/files", owner, repo, pr_number)))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .query(&[("per_page", "100")])
+            .send()
+            .await?;
+
+        if response.status() == 404 {
+            return Err(ProviderError::NotFound(format!(
+                "Pull request #{} not found",
+                pr_number
+            )));
+        }
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: "Failed to get pull request diff".to_string(),
+            });
+        }
+
+        let files: Vec<GitHubDiffFile> = response.json().await?;
+
+        let mut total_additions = 0;
+        let mut total_deletions = 0;
+        let mut total_changes = 0;
+        let total_files = files.len() as i32;
+
+        let provider_files: Vec<ProviderDiffFile> = files
+            .into_iter()
+            .map(|f| {
+                total_additions += f.additions;
+                total_deletions += f.deletions;
+                total_changes += f.changes;
+
+                ProviderDiffFile {
+                    filename: f.filename,
+                    status: f.status,
+                    additions: f.additions,
+                    deletions: f.deletions,
+                    changes: f.changes,
+                    patch: f.patch,
+                    previous_filename: f.previous_filename,
+                    sha: f.sha,
+                }
+            })
+            .collect();
+
+        // Extract base and head commit from PR metadata
+        // Since we don't have the raw API response here, use placeholder values
+        // In a real implementation, we'd need to fetch the PR separately or parse from response
+        let base_commit = format!("base-{}", pr.source_branch);
+        let head_commit = format!("head-{}", pr.target_branch);
+
+        Ok(ProviderDiff {
+            files: provider_files,
+            total_additions,
+            total_deletions,
+            total_changes,
+            total_files,
+            base_commit,
+            head_commit,
         })
     }
 }

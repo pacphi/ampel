@@ -30,9 +30,13 @@ base64.workspace = true
 # Internal
 ampel-core.workspace = true
 
+# Optional dependencies
+utoipa = { version = "5.4", optional = true }
+
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
 wiremock = "0.6"
 
 [features]
 test-utils = []
+utoipa = ["dep:utoipa"]

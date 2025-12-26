@@ -6,13 +6,17 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderPullRequest,
-    ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderDiff,
+    ProviderDiffFile, ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo,
+    TokenValidation,
 };
 use ampel_core::models::{
     DiscoveredRepository, GitProvider as Provider, MergeRequest, MergeStrategy,
 };
 
+/// Bitbucket provider implementation for the GitProvider trait
+///
+/// Supports both Bitbucket Cloud and Bitbucket Server/Data Center
 pub struct BitbucketProvider {
     client: Client,
     base_url: String,
@@ -24,6 +28,17 @@ impl BitbucketProvider {
     /// # Arguments
     /// * `instance_url` - Optional base URL for Bitbucket Server/Data Center.
     ///   Defaults to "https://api.bitbucket.org/2.0" for Bitbucket Cloud
+    ///
+    /// # Example
+    /// ```
+    /// use ampel_providers::BitbucketProvider;
+    ///
+    /// // Bitbucket Cloud
+    /// let provider = BitbucketProvider::new(None);
+    ///
+    /// // Self-hosted Bitbucket
+    /// let self_hosted = BitbucketProvider::new(Some("https://bitbucket.company.com/rest/api/2.0".into()));
+    /// ```
     pub fn new(instance_url: Option<String>) -> Self {
         let client = Client::builder()
             .user_agent("Ampel/1.0")
@@ -35,11 +50,26 @@ impl BitbucketProvider {
         Self { client, base_url }
     }
 
+    /// Build full API URL from path
+    ///
+    /// # Arguments
+    /// * `path` - API endpoint path (e.g., "/user", "/repositories")
+    ///
+    /// # Returns
+    /// Complete API URL combining base_url and path
     fn api_url(&self, path: &str) -> String {
         format!("{}{}", self.base_url, path)
     }
 
     /// Generate appropriate authentication header for PAT (App Password)
+    ///
+    /// Bitbucket uses Basic Authentication with username:token encoding
+    ///
+    /// # Arguments
+    /// * `credentials` - Provider credentials with username and token
+    ///
+    /// # Returns
+    /// Formatted "Basic {base64(username:token)}" authentication header
     fn auth_header(&self, credentials: &ProviderCredentials) -> String {
         match credentials {
             ProviderCredentials::Pat { token, username } => {
@@ -177,6 +207,22 @@ struct BitbucketMergeRequest {
     message: Option<String>,
     close_source_branch: bool,
     merge_strategy: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct BitbucketDiffStat {
+    status: String,
+    lines_added: Option<i32>,
+    lines_removed: Option<i32>,
+    #[serde(rename = "type")]
+    _diff_type: Option<String>,
+    old: Option<BitbucketDiffPath>,
+    new: Option<BitbucketDiffPath>,
+}
+
+#[derive(Debug, Deserialize)]
+struct BitbucketDiffPath {
+    path: String,
 }
 
 fn parse_datetime(s: &str) -> DateTime<Utc> {
@@ -723,6 +769,106 @@ impl GitProvider for BitbucketProvider {
             limit: 1000,
             remaining: 1000,
             reset_at: Utc::now() + chrono::Duration::hours(1),
+        })
+    }
+
+    async fn get_pull_request_diff(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+    ) -> ProviderResult<ProviderDiff> {
+        // Get PR details to extract base and head commits
+        let pr = self.get_pull_request(credentials, owner, repo, pr_number).await?;
+
+        let response = self
+            .client
+            .get(self.api_url(&format!(
+                "/repositories/{}/{}/pullrequests/{}/diffstat",
+                owner, repo, pr_number
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .send()
+            .await?;
+
+        if response.status() == 404 {
+            return Err(ProviderError::NotFound(format!(
+                "Pull request #{} not found",
+                pr_number
+            )));
+        }
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: "Failed to get pull request diff".to_string(),
+            });
+        }
+
+        let diffstats: BitbucketPaginated<BitbucketDiffStat> = response.json().await?;
+
+        let mut total_additions = 0;
+        let mut total_deletions = 0;
+        let mut total_changes = 0;
+
+        let provider_files: Vec<ProviderDiffFile> = diffstats
+            .values
+            .into_iter()
+            .filter_map(|d| {
+                let status = d.status.to_lowercase();
+                let new_path = d.new.as_ref().map(|n| n.path.clone());
+                let old_path = d.old.as_ref().map(|o| o.path.clone());
+
+                let filename = new_path.clone().or_else(|| old_path.clone())?;
+
+                let additions = d.lines_added.unwrap_or(0);
+                let deletions = d.lines_removed.unwrap_or(0);
+                let changes = additions + deletions;
+
+                total_additions += additions;
+                total_deletions += deletions;
+                total_changes += changes;
+
+                let previous_filename = if status == "renamed" {
+                    old_path.filter(|old| new_path.as_ref() != Some(old))
+                } else {
+                    None
+                };
+
+                // Generate a simple deterministic hash from filename
+                let hash: u64 = filename.bytes().fold(0u64, |acc, b| {
+                    acc.wrapping_mul(31).wrapping_add(b as u64)
+                });
+                let sha = format!("{:016x}", hash);
+
+                Some(ProviderDiffFile {
+                    filename,
+                    status,
+                    additions,
+                    deletions,
+                    changes,
+                    patch: None,
+                    previous_filename,
+                    sha,
+                })
+            })
+            .collect();
+
+        let total_files = provider_files.len() as i32;
+
+        // Use branch names as base/head commits
+        let base_commit = pr.target_branch.clone();
+        let head_commit = pr.source_branch.clone();
+
+        Ok(ProviderDiff {
+            files: provider_files,
+            total_additions,
+            total_deletions,
+            total_changes,
+            total_files,
+            base_commit,
+            head_commit,
         })
     }
 }
