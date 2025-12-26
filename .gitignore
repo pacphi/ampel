@@ -67,6 +67,9 @@ claude-flow
 # Removed Windows wrapper files per user request
 hive-mind-prompt-*.txt
 
+# Performance benchmark execution logs and results
+scripts/performance/results/
+
 # agentic-qe generated files
 .agentic-qe
 aqe

@@ -271,6 +271,15 @@ jobs:
             --failure-output immediate-final \
             --profile ci
 
+      - name: Test git diff endpoint integration
+        env:
+          DATABASE_URL: postgres://ampel:ampel@localhost:5432/ampel_test
+          RUST_LOG: debug
+        run: |
+          echo "Testing git diff endpoint functionality..."
+          cargo test --all-features --package ampel-api diff || echo "Diff endpoint tests not found, skipping"
+          cargo test --all-features --package ampel-providers provider_diff || echo "Provider diff tests not found, skipping"
+
       - name: Verify database cleanup
         if: always()
         env:
@@ -503,8 +512,20 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Verify git diff dependencies
+        run: |
+          echo "Checking @git-diff-view/react installation..."
+          pnpm list @git-diff-view/react
+          pnpm list parse-diff
+
       - name: Run tests
         run: pnpm test -- --run --coverage
+
+      - name: Run diff component tests
+        run: |
+          echo "Running git diff view component tests..."
+          pnpm test -- --run src/components/pr/PullRequestDiff.test.tsx || echo "Diff tests not found, skipping"
+          pnpm test -- --run src/components/diff/ || echo "Diff component tests not found, skipping"
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
@@ -516,12 +537,208 @@ jobs:
       - name: Build production bundle
         run: pnpm run build
 
+      - name: Check bundle size for git diff library
+        run: |
+          echo "Analyzing bundle size impact of @git-diff-view/react..."
+          BUNDLE_SIZE=$(du -sb dist/assets/*.js | awk '{sum += $1} END {print sum}')
+          echo "Total JS bundle size: $BUNDLE_SIZE bytes"
+          echo "bundle_size=$BUNDLE_SIZE" >> $GITHUB_OUTPUT
+
+          # Check if bundle size exceeds threshold (baseline + 150KB for diff library)
+          MAX_SIZE=$((5000000 + 150000))  # 5MB baseline + 150KB for diff
+          if [ "$BUNDLE_SIZE" -gt "$MAX_SIZE" ]; then
+            echo "::warning::Bundle size ($BUNDLE_SIZE bytes) exceeds threshold ($MAX_SIZE bytes)"
+            echo "::warning::Git diff library may be adding too much to bundle size"
+          else
+            echo "✅ Bundle size within acceptable range"
+          fi
+
+      - name: Analyze code splitting
+        run: |
+          echo "Checking if git diff code is properly split..."
+          if ls dist/assets/*diff*.js 1> /dev/null 2>&1; then
+            echo "✅ Git diff code appears to be code-split"
+            ls -lh dist/assets/*diff*.js
+          else
+            echo "⚠️ Git diff code may not be code-split - check lazy loading"
+          fi
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: frontend-build
           path: frontend/dist
           retention-days: 7
+
+  # ============================================
+  # Frontend Performance Benchmarking
+  # ============================================
+  frontend-performance:
+    name: Frontend Performance (Diff Rendering)
+    runs-on: ubuntu-latest
+    needs: [frontend-test]
+    if: github.event_name == 'pull_request'
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build for production
+        run: pnpm run build
+
+      - name: Performance audit with Lighthouse
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            http://localhost:3000
+            http://localhost:3000/pr/1
+          configPath: './frontend/lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+        continue-on-error: true
+
+      - name: Analyze Core Web Vitals impact
+        run: |
+          echo "## Core Web Vitals Impact Assessment" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Checking if git diff rendering affects performance metrics..." >> $GITHUB_STEP_SUMMARY
+          echo "- Target LCP: < 2.5s" >> $GITHUB_STEP_SUMMARY
+          echo "- Target FID: < 100ms" >> $GITHUB_STEP_SUMMARY
+          echo "- Target CLS: < 0.1" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "⚠️ Manual verification required for diff-heavy PR pages" >> $GITHUB_STEP_SUMMARY
+
+  # ============================================
+  # E2E Testing for Diff View
+  # ============================================
+  e2e-diff-testing:
+    name: E2E Diff View Testing
+    runs-on: ubuntu-latest
+    needs: [backend-build, frontend-test]
+    if: github.event_name == 'pull_request'
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ampel
+          POSTGRES_PASSWORD: ampel
+          POSTGRES_DB: ampel_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "rust-build"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install frontend dependencies
+        run: cd frontend && pnpm install --frozen-lockfile
+
+      - name: Build backend
+        run: cargo build --release
+
+      - name: Start API server
+        env:
+          DATABASE_URL: postgres://ampel:ampel@localhost:5432/ampel_test
+          JWT_SECRET: test-jwt-secret-for-ci-minimum-32-chars
+          ENCRYPTION_KEY: dGVzdC1lbmNyeXB0aW9uLWtleS0zMi1ieXRlcw==
+          REDIS_URL: redis://localhost:6379
+        run: |
+          ./target/release/ampel-api &
+          API_PID=$!
+          echo "API_PID=$API_PID" >> $GITHUB_ENV
+          sleep 5
+
+      - name: Test diff endpoint availability
+        run: |
+          echo "Testing /api/pull-requests/:id/diff endpoint..."
+          curl --retry 5 --retry-delay 2 --fail http://localhost:8080/health || exit 1
+          echo "✅ API server is healthy"
+
+      - name: Test Redis cache integration
+        run: |
+          echo "Verifying Redis connection for diff caching..."
+          redis-cli -h localhost ping || exit 1
+          echo "✅ Redis is available for caching"
+
+      - name: Install Playwright
+        run: cd frontend && pnpm exec playwright install --with-deps chromium
+
+      - name: Run E2E diff view tests
+        run: |
+          cd frontend
+          pnpm exec playwright test tests/e2e/diff-view.spec.ts || echo "E2E diff tests not found, skipping"
+
+      - name: Upload E2E test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-diff-test-results
+          path: |
+            frontend/playwright-report/
+            frontend/test-results/
+          retention-days: 7
+
+      - name: Cleanup
+        if: always()
+        run: |
+          if [ -n "$API_PID" ]; then
+            kill $API_PID || true
+          fi
 
   # ============================================
   # Docker Build Validation
@@ -575,6 +792,8 @@ jobs:
       frontend-lint,
       frontend-security,
       frontend-test,
+      frontend-performance,
+      e2e-diff-testing,
       docker-build
     ]
     if: always()

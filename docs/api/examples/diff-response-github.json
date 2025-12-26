@@ -1,0 +1,58 @@
+{
+  "success": true,
+  "data": {
+    "files": [
+      {
+        "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+        "old_path": "src/components/Button.tsx",
+        "new_path": "src/components/Button.tsx",
+        "status": "modified",
+        "additions": 15,
+        "deletions": 3,
+        "changes": 18,
+        "patch": "@@ -1,7 +1,19 @@\n import React from 'react';\n+import { cn } from '@/lib/utils';\n \n-export function Button({ children, onClick }) {\n+interface ButtonProps {\n+  children: React.ReactNode;\n+  onClick?: () => void;\n+  variant?: 'primary' | 'secondary';\n+  disabled?: boolean;\n+}\n+\n+export function Button({ \n+  children, \n+  onClick,\n+  variant = 'primary',\n+  disabled = false \n+}: ButtonProps) {\n   return (\n-    <button onClick={onClick}>\n+    <button \n+      onClick={onClick}\n+      disabled={disabled}\n+      className={cn(\n+        'px-4 py-2 rounded',\n+        variant === 'primary' ? 'bg-blue-500' : 'bg-gray-500'\n+      )}\n+    >\n       {children}\n     </button>\n   );\n }"
+      },
+      {
+        "sha": "a1b2c3d4e5f6789012345678901234567890abcd",
+        "old_path": null,
+        "new_path": "src/hooks/usePullRequests.ts",
+        "status": "added",
+        "additions": 42,
+        "deletions": 0,
+        "changes": 42,
+        "patch": "@@ -0,0 +1,42 @@\n+import { useQuery } from '@tanstack/react-query';\n+import { fetchPullRequests } from '@/api/pullRequests';\n+\n+export function usePullRequests() {\n+  return useQuery({\n+    queryKey: ['pull-requests'],\n+    queryFn: fetchPullRequests,\n+    staleTime: 5 * 60 * 1000, // 5 minutes\n+  });\n+}\n"
+      },
+      {
+        "sha": "aaaabbbbccccddddeeeeffffgggghhhhiiiijjjj",
+        "old_path": "README.md",
+        "new_path": null,
+        "status": "deleted",
+        "additions": 0,
+        "deletions": 127,
+        "changes": 127,
+        "patch": "@@ -1,127 +0,0 @@\n-# Old README\n-This file has been removed...\n"
+      },
+      {
+        "sha": "1234567890abcdef1234567890abcdef12345678",
+        "old_path": "src/utils/helpers.ts",
+        "new_path": "src/lib/utils.ts",
+        "status": "renamed",
+        "additions": 5,
+        "deletions": 2,
+        "changes": 7,
+        "patch": "@@ -1,10 +1,13 @@\n export function formatDate(date: Date): string {\n-  return date.toLocaleDateString();\n+  return date.toLocaleDateString('en-US', {\n+    year: 'numeric',\n+    month: 'long',\n+    day: 'numeric'\n+  });\n }\n"
+      }
+    ],
+    "total_additions": 142,
+    "total_deletions": 38,
+    "total_files": 8,
+    "base_commit": "abc123def456789012345678901234567890abcd",
+    "head_commit": "def456abc789012345678901234567890abcdef1"
+  },
+  "metadata": {
+    "provider": "github",
+    "cached": true,
+    "cache_age_seconds": 120,
+    "timestamp": "2025-12-25T15:30:00Z"
+  }
+}

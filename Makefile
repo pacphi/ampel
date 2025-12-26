@@ -41,9 +41,17 @@ help:
 	@echo "  test-backend     - Run backend tests only"
 	@echo "  test-frontend    - Run frontend tests only"
 	@echo "  test-integration - Run integration tests with PostgreSQL (same as CI)"
+	@echo "  test-e2e         - Run E2E tests with Playwright"
+	@echo "  test-e2e-diff    - Run E2E tests for git diff view only"
+	@echo "  test-e2e-ui      - Run E2E tests with interactive UI"
 	@echo "  test-coverage    - Run all tests with coverage reports"
 	@echo "  test-backend-coverage  - Backend tests with coverage (uses cargo-llvm-cov)"
 	@echo "  test-frontend-coverage - Frontend tests with coverage"
+	@echo ""
+	@echo "Performance & Benchmarking:"
+	@echo "  performance-test - Run Lighthouse performance audit"
+	@echo "  bundle-analysis  - Analyze frontend bundle size"
+	@echo "  lighthouse-ci    - Run Lighthouse CI with configuration"
 	@echo ""
 	@echo "Code Quality:"
 	@echo "  lint             - Run all linters"
@@ -186,6 +194,18 @@ test-integration:
 test-frontend:
 	@echo "==> Running frontend tests..."
 	cd frontend && pnpm run test -- --run
+
+test-e2e:
+	@echo "==> Running E2E tests..."
+	cd frontend && pnpm exec playwright test
+
+test-e2e-diff:
+	@echo "==> Running E2E tests for diff view..."
+	cd frontend && pnpm exec playwright test tests/e2e/diff-view.spec.ts
+
+test-e2e-ui:
+	@echo "==> Running E2E tests with UI..."
+	cd frontend && pnpm exec playwright test --ui
 
 # Coverage targets - auto-install tools if missing
 # Uses cargo-llvm-cov for 5-10x faster coverage than tarpaulin
@@ -374,6 +394,25 @@ docker-logs:
 docker-clean:
 	@echo "==> Cleaning Docker resources..."
 	cd docker && docker compose down -v --rmi local
+
+# =============================================================================
+# Performance & Benchmarking
+# =============================================================================
+
+performance-test:
+	@echo "==> Running performance tests..."
+	cd frontend && pnpm exec lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html
+
+bundle-analysis:
+	@echo "==> Analyzing bundle size..."
+	cd frontend && pnpm run build && du -sh dist/assets/*.js | sort -h
+	@echo ""
+	@echo "Total bundle size:"
+	cd frontend && du -sh dist/
+
+lighthouse-ci:
+	@echo "==> Running Lighthouse CI..."
+	cd frontend && pnpm exec lhci autorun
 
 # =============================================================================
 # Deployment

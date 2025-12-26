@@ -6,10 +6,12 @@ use axum::{
 
 use crate::handlers::{
     accounts, analytics, auth, bot_rules, bulk_merge, dashboard, notifications, pr_filters,
-    pull_requests, repositories, teams, user_settings,
+    pull_requests, pull_requests_diff, repositories, teams, user_settings,
 };
 use crate::{
-    health_handler, metrics_handler, middleware::track_metrics, readiness_handler, AppState,
+    health_handler, metrics_handler,
+    middleware::{rate_limit_diff, track_metrics},
+    readiness_handler, AppState,
 };
 
 pub fn create_router(state: AppState) -> Router {
@@ -74,6 +76,18 @@ pub fn create_router(state: AppState) -> Router {
         .route(
             "/api/repositories/:repo_id/pull-requests/:pr_id/refresh",
             post(pull_requests::refresh_pull_request),
+        )
+        .route(
+            "/api/repositories/:repo_id/pull-requests/:pr_id/diff",
+            get(pull_requests_diff::get_pull_request_diff),
+        )
+        // v1 API endpoint for diff (new versioned endpoint with rate limiting)
+        .route(
+            "/api/v1/pull-requests/:id/diff",
+            get(pull_requests_diff::get_pull_request_diff).layer(middleware::from_fn_with_state(
+                state.clone(),
+                rate_limit_diff,
+            )),
         )
         // Dashboard routes
         .route("/api/dashboard/summary", get(dashboard::get_summary))

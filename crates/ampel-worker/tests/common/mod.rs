@@ -397,6 +397,28 @@ impl GitProviderTrait for MockProvider {
         )
     }
 
+    async fn get_pull_request_diff(
+        &self,
+        _credentials: &ampel_providers::traits::ProviderCredentials,
+        _owner: &str,
+        _repo: &str,
+        _pr_number: i32,
+    ) -> ampel_providers::error::ProviderResult<ampel_providers::traits::ProviderDiff> {
+        self.call_log
+            .lock()
+            .unwrap()
+            .push("get_pull_request_diff".to_string());
+        Ok(ampel_providers::traits::ProviderDiff {
+            files: vec![],
+            total_additions: 0,
+            total_deletions: 0,
+            total_changes: 0,
+            total_files: 0,
+            base_commit: "abc123".to_string(),
+            head_commit: "def456".to_string(),
+        })
+    }
+
     async fn get_ci_checks(
         &self,
         _credentials: &ampel_providers::traits::ProviderCredentials,

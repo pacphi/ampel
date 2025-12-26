@@ -157,3 +157,25 @@ export interface ApiResponse<T> {
   data?: T;
   error?: string;
 }
+
+// Account Types
+// export type { Account } from './account';
+
+// Git Diff Types
+export type {
+  DiffViewMode,
+  DiffSyntaxHighlight,
+  DiffFile,
+  DiffStats,
+  DiffSearchResult,
+  DiffNavigationItem,
+  DiffViewerPreferences,
+  PullRequestDiffResponse,
+  DiffHunk,
+  DiffChange,
+  DiffRenderOptions,
+  DiffFileFilter,
+  LanguageDetection,
+} from './diff';
+
+export { FileChangeType } from './diff';
