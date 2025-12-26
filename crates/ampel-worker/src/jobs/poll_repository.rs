@@ -114,7 +114,7 @@ impl PollRepositoryJob {
 
         let provider = provider_factory.create(provider_type, account.instance_url.clone());
 
-        // Fetch open PRs from provider
+        // Fetch open PRs from provider (works consistently for GitHub, GitLab, Bitbucket)
         let prs = provider
             .list_pull_requests(&credentials, &repo.owner, &repo.name, Some("open"))
             .await?;
@@ -125,6 +125,11 @@ impl PollRepositoryJob {
             repo.owner,
             repo.name
         );
+
+        // Collect PR numbers that are still open on the provider
+        // Used later to detect and close stale PRs in the database
+        let open_pr_numbers: std::collections::HashSet<i32> =
+            prs.iter().map(|pr| pr.number).collect();
 
         for pr in prs {
             // Upsert PR
@@ -214,6 +219,24 @@ impl PollRepositoryJob {
                 Err(e) => {
                     tracing::warn!("Failed to fetch reviews for PR #{}: {}", pr.number, e);
                 }
+            }
+        }
+
+        // Mark PRs as closed if they're no longer in the provider's open list
+        // This handles PRs that were merged or closed on GitHub/GitLab/Bitbucket
+        let existing_open_prs = PrQueries::find_open_by_repository(db, repo.id).await?;
+        let now = Utc::now();
+
+        for existing_pr in existing_open_prs {
+            if !open_pr_numbers.contains(&existing_pr.number) {
+                tracing::info!(
+                    "Marking PR #{} as closed (no longer open on provider) for {}/{}",
+                    existing_pr.number,
+                    repo.owner,
+                    repo.name
+                );
+                PrQueries::update_state(db, existing_pr.id, "closed".to_string(), None, Some(now))
+                    .await?;
             }
         }
 

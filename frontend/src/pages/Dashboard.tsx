@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { dashboardApi } from '@/api/dashboard';
 import { pullRequestsApi } from '@/api/pullRequests';
 import { settingsApi } from '@/api/settings';
@@ -48,17 +48,15 @@ function isReadyToMerge(pr: PullRequestWithDetails, skipReviewRequirement: boole
 export default function Dashboard() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const { filterRepositories } = useRepositoryFilters();
+  const queryClient = useQueryClient();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { data: summary, isLoading: summaryLoading } = useQuery({
     queryKey: ['dashboard', 'summary'],
     queryFn: () => dashboardApi.getSummary(),
   });
 
-  const {
-    data: repositories,
-    isLoading: reposLoading,
-    refetch,
-  } = useQuery({
+  const { data: repositories, isLoading: reposLoading } = useQuery({
     queryKey: ['dashboard', 'grid'],
     queryFn: () => dashboardApi.getGrid(),
   });
@@ -69,6 +67,19 @@ export default function Dashboard() {
     queryKey: ['pull-requests'],
     queryFn: () => pullRequestsApi.list(1, 1000),
   });
+
+  // Refresh all dashboard data
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['dashboard'] }),
+        queryClient.invalidateQueries({ queryKey: ['pull-requests'] }),
+      ]);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   const { data: settings } = useQuery({
     queryKey: ['user-settings', 'behavior'],
@@ -147,9 +158,9 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => refetch()}>
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
+            <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {isRefreshing ? 'Refreshing...' : 'Refresh'}
           </Button>
           <div className="flex border rounded-md">
             <Button
