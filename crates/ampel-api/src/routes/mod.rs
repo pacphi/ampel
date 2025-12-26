@@ -6,7 +6,7 @@ use axum::{
 
 use crate::handlers::{
     accounts, analytics, auth, bot_rules, bulk_merge, dashboard, notifications, pr_filters,
-    pull_requests_diff, repositories, teams, user_settings,
+    pull_requests, pull_requests_diff, repositories, teams, user_settings,
 };
 use crate::{
     health_handler, metrics_handler,
@@ -59,28 +59,28 @@ pub fn create_router(state: AppState) -> Router {
                 .patch(repositories::update_repository)
                 .delete(repositories::remove_repository),
         )
-        // Pull request routes - temporarily commented out until module is restored
-        // .route("/api/pull-requests", get(pull_requests::list_pull_requests))
-        // .route(
-        //     "/api/repositories/:repo_id/pull-requests",
-        //     get(pull_requests::list_repository_prs),
-        // )
-        // .route(
-        //     "/api/repositories/:repo_id/pull-requests/:pr_id",
-        //     get(pull_requests::get_pull_request),
-        // )
-        // .route(
-        //     "/api/repositories/:repo_id/pull-requests/:pr_id/merge",
-        //     post(pull_requests::merge_pull_request),
-        // )
-        // .route(
-        //     "/api/repositories/:repo_id/pull-requests/:pr_id/refresh",
-        //     post(pull_requests::refresh_pull_request),
-        // )
-        // .route(
-        //     "/api/repositories/:repo_id/pull-requests/:pr_id/diff",
-        //     get(pull_requests_diff::get_pull_request_diff),
-        // )
+        // Pull request routes
+        .route("/api/pull-requests", get(pull_requests::list_pull_requests))
+        .route(
+            "/api/repositories/:repo_id/pull-requests",
+            get(pull_requests::list_repository_prs),
+        )
+        .route(
+            "/api/repositories/:repo_id/pull-requests/:pr_id",
+            get(pull_requests::get_pull_request),
+        )
+        .route(
+            "/api/repositories/:repo_id/pull-requests/:pr_id/merge",
+            post(pull_requests::merge_pull_request),
+        )
+        .route(
+            "/api/repositories/:repo_id/pull-requests/:pr_id/refresh",
+            post(pull_requests::refresh_pull_request),
+        )
+        .route(
+            "/api/repositories/:repo_id/pull-requests/:pr_id/diff",
+            get(pull_requests_diff::get_pull_request_diff),
+        )
         // v1 API endpoint for diff (new versioned endpoint with rate limiting)
         .route(
             "/api/v1/pull-requests/:id/diff",

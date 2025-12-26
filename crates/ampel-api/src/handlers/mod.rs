@@ -7,6 +7,7 @@ pub mod dashboard;
 pub mod diff_types;
 pub mod notifications;
 pub mod pr_filters;
+pub mod pull_requests;
 pub mod pull_requests_diff;
 pub mod repositories;
 pub mod teams;

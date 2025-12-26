@@ -39,13 +39,14 @@ describe('DiffViewer - XSS Prevention', () => {
 
       const { container } = render(<DiffViewer file={maliciousFile} />);
 
-      // Verify no script tags are rendered
+      // Verify no script tags are rendered as actual DOM elements
       const scripts = container.getElementsByTagName('script');
       expect(scripts.length).toBe(0);
 
-      // Verify filename is displayed but escaped
-      const filename = container.textContent || '';
-      expect(filename).not.toContain('<script>');
+      // Verify the script tag is HTML-escaped in the output (shows as &lt;script&gt;)
+      // innerHTML will contain escaped entities if properly sanitized
+      const innerHTML = container.innerHTML;
+      expect(innerHTML).toContain('&lt;script&gt;');
     });
 
     it('should escape script tags in diff content', () => {
