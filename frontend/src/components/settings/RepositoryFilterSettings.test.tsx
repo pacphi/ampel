@@ -180,6 +180,7 @@ describe('RepositoryFilterSettings', () => {
         includePublic: false,
         includePrivate: true,
         includeArchived: true,
+        onlyWithPrs: false,
       });
     });
 
@@ -202,6 +203,7 @@ describe('RepositoryFilterSettings', () => {
         includePublic: false,
         includePrivate: false,
         includeArchived: false,
+        onlyWithPrs: false,
       });
     });
   });

@@ -20,6 +20,7 @@ describe('useRepositoryFilters', () => {
         includePublic: true,
         includePrivate: true,
         includeArchived: true,
+        onlyWithPrs: false,
       });
     });
 
@@ -28,6 +29,7 @@ describe('useRepositoryFilters', () => {
         includePublic: false,
         includePrivate: true,
         includeArchived: false,
+        onlyWithPrs: true,
       };
       localStorage.setItem('ampel-repository-filters', JSON.stringify(storedFilters));
 
@@ -42,6 +44,7 @@ describe('useRepositoryFilters', () => {
       expect(result.current.filters.includePublic).toBe(true);
       expect(result.current.filters.includePrivate).toBe(true);
       expect(result.current.filters.includeArchived).toBe(true);
+      expect(result.current.filters.onlyWithPrs).toBe(false);
     });
 
     it('handles corrupted localStorage data gracefully', () => {
@@ -53,6 +56,7 @@ describe('useRepositoryFilters', () => {
         includePublic: true,
         includePrivate: true,
         includeArchived: true,
+        onlyWithPrs: false,
       });
     });
 
@@ -66,6 +70,7 @@ describe('useRepositoryFilters', () => {
         includePublic: false,
         includePrivate: true,
         includeArchived: true,
+        onlyWithPrs: false,
       });
     });
   });
@@ -79,6 +84,7 @@ describe('useRepositoryFilters', () => {
           includePublic: false,
           includePrivate: true,
           includeArchived: false,
+          onlyWithPrs: true,
         });
       });
 
@@ -86,6 +92,7 @@ describe('useRepositoryFilters', () => {
         includePublic: false,
         includePrivate: true,
         includeArchived: false,
+        onlyWithPrs: true,
       });
     });
 
@@ -96,6 +103,7 @@ describe('useRepositoryFilters', () => {
         includePublic: false,
         includePrivate: true,
         includeArchived: false,
+        onlyWithPrs: false,
       };
 
       act(() => {
@@ -114,6 +122,7 @@ describe('useRepositoryFilters', () => {
           includePublic: false,
           includePrivate: true,
           includeArchived: true,
+          onlyWithPrs: false,
         });
       });
 
@@ -122,6 +131,7 @@ describe('useRepositoryFilters', () => {
           includePublic: false,
           includePrivate: false,
           includeArchived: true,
+          onlyWithPrs: true,
         });
       });
 
@@ -129,6 +139,7 @@ describe('useRepositoryFilters', () => {
         includePublic: false,
         includePrivate: false,
         includeArchived: true,
+        onlyWithPrs: true,
       });
     });
   });
@@ -182,6 +193,7 @@ describe('useRepositoryFilters', () => {
           includePublic: false,
           includePrivate: true,
           includeArchived: true,
+          onlyWithPrs: false,
         });
       });
 
@@ -206,6 +218,7 @@ describe('useRepositoryFilters', () => {
           includePublic: true,
           includePrivate: false,
           includeArchived: true,
+          onlyWithPrs: false,
         });
       });
 
@@ -230,6 +243,7 @@ describe('useRepositoryFilters', () => {
           includePublic: true,
           includePrivate: true,
           includeArchived: false,
+          onlyWithPrs: false,
         });
       });
 
@@ -255,6 +269,7 @@ describe('useRepositoryFilters', () => {
           includePublic: false,
           includePrivate: true,
           includeArchived: false,
+          onlyWithPrs: false,
         });
       });
 
@@ -281,6 +296,7 @@ describe('useRepositoryFilters', () => {
           includePublic: false,
           includePrivate: false,
           includeArchived: true,
+          onlyWithPrs: false,
         });
       });
 

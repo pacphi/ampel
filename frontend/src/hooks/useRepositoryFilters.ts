@@ -5,6 +5,7 @@ export interface RepositoryFilters {
   includePublic: boolean;
   includePrivate: boolean;
   includeArchived: boolean;
+  onlyWithPrs: boolean;
 }
 
 const STORAGE_KEY = 'ampel-repository-filters';
@@ -13,6 +14,7 @@ const defaultFilters: RepositoryFilters = {
   includePublic: true,
   includePrivate: true,
   includeArchived: true,
+  onlyWithPrs: false,
 };
 
 function loadFilters(): RepositoryFilters {
@@ -24,6 +26,7 @@ function loadFilters(): RepositoryFilters {
         includePublic: parsed.includePublic ?? defaultFilters.includePublic,
         includePrivate: parsed.includePrivate ?? defaultFilters.includePrivate,
         includeArchived: parsed.includeArchived ?? defaultFilters.includeArchived,
+        onlyWithPrs: parsed.onlyWithPrs ?? defaultFilters.onlyWithPrs,
       };
     }
   } catch {
@@ -61,6 +64,11 @@ export function useRepositoryFilters() {
 
         // Filter by archived status
         if (repo.isArchived && !filters.includeArchived) {
+          return false;
+        }
+
+        // Filter to only show repos with open PRs
+        if (filters.onlyWithPrs && repo.openPrCount === 0) {
           return false;
         }
 

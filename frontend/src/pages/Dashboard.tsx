@@ -4,6 +4,8 @@ import { dashboardApi } from '@/api/dashboard';
 import { pullRequestsApi } from '@/api/pullRequests';
 import { settingsApi } from '@/api/settings';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import GridView from '@/components/dashboard/GridView';
 import ListView from '@/components/dashboard/ListView';
 import PRListView from '@/components/dashboard/PRListView';
@@ -47,7 +49,7 @@ function isReadyToMerge(pr: PullRequestWithDetails, skipReviewRequirement: boole
 
 export default function Dashboard() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const { filterRepositories } = useRepositoryFilters();
+  const { filters, setFilters, filterRepositories } = useRepositoryFilters();
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -157,7 +159,21 @@ export default function Dashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
+          {viewMode !== 'prs' && (
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="only-with-prs"
+                checked={filters.onlyWithPrs}
+                onCheckedChange={(checked) =>
+                  setFilters({ ...filters, onlyWithPrs: checked === true })
+                }
+              />
+              <Label htmlFor="only-with-prs" className="text-sm cursor-pointer">
+                Show repositories with Open PRs
+              </Label>
+            </div>
+          )}
           <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
             {isRefreshing ? 'Refreshing...' : 'Refresh'}
