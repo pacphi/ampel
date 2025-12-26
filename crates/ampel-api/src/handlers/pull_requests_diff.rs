@@ -14,8 +14,7 @@ use ampel_providers::traits::ProviderCredentials;
 
 use crate::extractors::AuthUser;
 use crate::handlers::diff_types::{
-    DiffApiResponse, DiffErrorResponse, DiffFile, DiffMetadata, DiffQuery,
-    DiffResponse, FileStatus,
+    DiffApiResponse, DiffErrorResponse, DiffFile, DiffMetadata, DiffQuery, DiffResponse, FileStatus,
 };
 use crate::handlers::ApiError;
 use crate::AppState;
@@ -235,9 +234,7 @@ pub async fn get_pull_request_diff(
     let provider_diff = provider
         .get_pull_request_diff(&credentials, &repo.owner, &repo.name, pr.number)
         .await
-        .map_err(|e| {
-            ApiError::internal(format!("Failed to fetch diff from provider: {}", e))
-        })?;
+        .map_err(|e| ApiError::internal(format!("Failed to fetch diff from provider: {}", e)))?;
 
     // Convert to API response format
     let files: Vec<DiffFile> = provider_diff

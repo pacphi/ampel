@@ -84,11 +84,10 @@ pub fn create_router(state: AppState) -> Router {
         // v1 API endpoint for diff (new versioned endpoint with rate limiting)
         .route(
             "/api/v1/pull-requests/:id/diff",
-            get(pull_requests_diff::get_pull_request_diff)
-                .layer(middleware::from_fn_with_state(
-                    state.clone(),
-                    rate_limit_diff,
-                )),
+            get(pull_requests_diff::get_pull_request_diff).layer(middleware::from_fn_with_state(
+                state.clone(),
+                rate_limit_diff,
+            )),
         )
         // Dashboard routes
         .route("/api/dashboard/summary", get(dashboard::get_summary))

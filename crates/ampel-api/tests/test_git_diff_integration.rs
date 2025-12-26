@@ -103,8 +103,7 @@ async fn test_diff_endpoint_requires_authentication() {
 
     // Should require authentication
     assert!(
-        response.status() == StatusCode::UNAUTHORIZED
-            || response.status() == StatusCode::NOT_FOUND,
+        response.status() == StatusCode::UNAUTHORIZED || response.status() == StatusCode::NOT_FOUND,
         "Diff endpoint should require authentication or return not found"
     );
 

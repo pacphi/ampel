@@ -6,9 +6,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderDiff,
-    ProviderDiffFile, ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo,
-    TokenValidation,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderDiff, ProviderDiffFile,
+    ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
 };
 use ampel_core::models::{
     DiscoveredRepository, GitProvider as Provider, MergeRequest, MergeStrategy,
@@ -780,7 +779,9 @@ impl GitProvider for BitbucketProvider {
         pr_number: i32,
     ) -> ProviderResult<ProviderDiff> {
         // Get PR details to extract base and head commits
-        let pr = self.get_pull_request(credentials, owner, repo, pr_number).await?;
+        let pr = self
+            .get_pull_request(credentials, owner, repo, pr_number)
+            .await?;
 
         let response = self
             .client
@@ -837,9 +838,9 @@ impl GitProvider for BitbucketProvider {
                 };
 
                 // Generate a simple deterministic hash from filename
-                let hash: u64 = filename.bytes().fold(0u64, |acc, b| {
-                    acc.wrapping_mul(31).wrapping_add(b as u64)
-                });
+                let hash: u64 = filename
+                    .bytes()
+                    .fold(0u64, |acc, b| acc.wrapping_mul(31).wrapping_add(b as u64));
                 let sha = format!("{:016x}", hash);
 
                 Some(ProviderDiffFile {

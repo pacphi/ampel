@@ -1,6 +1,6 @@
 use utoipa::OpenApi;
 
-use crate::handlers::{pull_requests_diff, diff_types};
+use crate::handlers::{diff_types, pull_requests_diff};
 use crate::observability::{HealthChecks, HealthResponse, ReadinessChecks, ReadinessResponse};
 
 /// OpenAPI documentation for Ampel API
@@ -53,8 +53,8 @@ pub struct ApiDoc;
 
 /// Initialize Swagger UI
 pub fn swagger_ui() -> axum::Router {
-    use utoipa_swagger_ui::SwaggerUi;
     use axum::Router;
+    use utoipa_swagger_ui::SwaggerUi;
 
     Router::new().merge(SwaggerUi::new("/api/docs").url("/api/openapi.json", ApiDoc::openapi()))
 }

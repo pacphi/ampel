@@ -17,7 +17,6 @@
 //! cargo test -p ampel-providers --test diff_tests
 //! ```
 
-
 /// Mock diff data structure representing provider-specific diff format
 #[derive(Debug, Clone)]
 pub struct ProviderDiff {
@@ -211,7 +210,8 @@ pub fn is_binary_file(file_path: &str) -> bool {
 
     matches!(
         extension.as_str(),
-        "png" | "jpg"
+        "png"
+            | "jpg"
             | "jpeg"
             | "gif"
             | "bmp"
@@ -314,7 +314,10 @@ mod tests {
         let unified = transform_github_diff(diff);
 
         assert_eq!(unified.status, DiffStatus::Renamed);
-        assert_eq!(unified.previous_filename, Some("src/old_name.py".to_string()));
+        assert_eq!(
+            unified.previous_filename,
+            Some("src/old_name.py".to_string())
+        );
         assert_eq!(unified.language, Some("Python".to_string()));
     }
 
@@ -393,7 +396,10 @@ mod tests {
 
         assert_eq!(unified.status, DiffStatus::Renamed);
         assert_eq!(unified.language, Some("Kotlin".to_string()));
-        assert_eq!(unified.previous_filename, Some("models/user.kt".to_string()));
+        assert_eq!(
+            unified.previous_filename,
+            Some("models/user.kt".to_string())
+        );
     }
 
     // Bitbucket Diff Transformation Tests
@@ -497,10 +503,7 @@ mod tests {
 
     #[test]
     fn test_detect_javascript_language() {
-        assert_eq!(
-            detect_language("index.js"),
-            Some("JavaScript".to_string())
-        );
+        assert_eq!(detect_language("index.js"), Some("JavaScript".to_string()));
         assert_eq!(
             detect_language("Component.jsx"),
             Some("JavaScript".to_string())
@@ -637,10 +640,7 @@ mod tests {
             transform_gitlab_diff(diff.clone()).status,
             DiffStatus::Modified
         );
-        assert_eq!(
-            transform_bitbucket_diff(diff).status,
-            DiffStatus::Modified
-        );
+        assert_eq!(transform_bitbucket_diff(diff).status, DiffStatus::Modified);
     }
 
     // Edge Cases

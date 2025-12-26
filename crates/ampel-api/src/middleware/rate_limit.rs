@@ -116,8 +116,8 @@ pub async fn rate_limit_diff(
 
     let mut limiter = RedisRateLimiter::new(
         redis.clone(),
-        100,  // 100 requests/hour
-        20,   // 20 requests/second burst
+        100, // 100 requests/hour
+        20,  // 20 requests/second burst
     );
 
     match limiter.check_rate_limit(&client_id).await {
@@ -205,9 +205,7 @@ mod tests {
         }
 
         let client = redis::Client::open(std::env::var("REDIS_URL").unwrap()).unwrap();
-        let conn = redis::aio::ConnectionManager::new(client)
-            .await
-            .unwrap();
+        let conn = redis::aio::ConnectionManager::new(client).await.unwrap();
 
         let mut limiter = RedisRateLimiter::new(conn, 100, 20);
 
@@ -223,18 +221,13 @@ mod tests {
         }
 
         let client = redis::Client::open(std::env::var("REDIS_URL").unwrap()).unwrap();
-        let conn = redis::aio::ConnectionManager::new(client)
-            .await
-            .unwrap();
+        let conn = redis::aio::ConnectionManager::new(client).await.unwrap();
 
         let mut limiter = RedisRateLimiter::new(conn, 100, 20);
 
         // Send 21 requests rapidly (burst limit is 20)
         for i in 0..21 {
-            let (allowed, _, _) = limiter
-                .check_rate_limit("burst_test_user")
-                .await
-                .unwrap();
+            let (allowed, _, _) = limiter.check_rate_limit("burst_test_user").await.unwrap();
             if i < 20 {
                 assert!(allowed, "Request {} should be allowed", i);
             } else {

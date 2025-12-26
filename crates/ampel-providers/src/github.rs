@@ -5,9 +5,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderDiff,
-    ProviderDiffFile, ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo,
-    TokenValidation,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderDiff, ProviderDiffFile,
+    ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
 };
 use crate::utils::bearer_auth_header;
 use ampel_core::models::{
@@ -693,11 +692,16 @@ impl GitProvider for GitHubProvider {
         pr_number: i32,
     ) -> ProviderResult<ProviderDiff> {
         // First, get PR details to extract base and head commit SHAs
-        let pr = self.get_pull_request(credentials, owner, repo, pr_number).await?;
+        let pr = self
+            .get_pull_request(credentials, owner, repo, pr_number)
+            .await?;
 
         let response = self
             .client
-            .get(self.api_url(&format!("/repos/{}/{}/pulls/{}/files", owner, repo, pr_number)))
+            .get(self.api_url(&format!(
+                "/repos/{}/{}/pulls/{}/files",
+                owner, repo, pr_number
+            )))
             .header("Authorization", self.auth_header(credentials))
             .header("Accept", "application/vnd.github+json")
             .query(&[("per_page", "100")])

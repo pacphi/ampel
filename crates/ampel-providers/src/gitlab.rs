@@ -5,9 +5,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
 use crate::traits::{
-    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderDiff,
-    ProviderDiffFile, ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo,
-    TokenValidation,
+    GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderDiff, ProviderDiffFile,
+    ProviderPullRequest, ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
 };
 use crate::utils::bearer_auth_header;
 use ampel_core::models::{
@@ -723,7 +722,9 @@ impl GitProvider for GitLabProvider {
         pr_number: i32,
     ) -> ProviderResult<ProviderDiff> {
         // Get PR details to extract base and head commits
-        let pr = self.get_pull_request(credentials, owner, repo, pr_number).await?;
+        let pr = self
+            .get_pull_request(credentials, owner, repo, pr_number)
+            .await?;
 
         let project_path = format!("{}/{}", owner, repo);
         let encoded_path = urlencoding::encode(&project_path);
@@ -798,9 +799,10 @@ impl GitProvider for GitLabProvider {
                     f._b_mode.clone()
                 } else {
                     // Generate a simple deterministic hash from the filename
-                    let hash: u64 = f.new_path.bytes().fold(0u64, |acc, b| {
-                        acc.wrapping_mul(31).wrapping_add(b as u64)
-                    });
+                    let hash: u64 = f
+                        .new_path
+                        .bytes()
+                        .fold(0u64, |acc, b| acc.wrapping_mul(31).wrapping_add(b as u64));
                     format!("{:016x}", hash)
                 };
 
@@ -835,5 +837,4 @@ impl GitProvider for GitLabProvider {
             head_commit,
         })
     }
-
 }

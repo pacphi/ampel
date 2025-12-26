@@ -35,7 +35,9 @@ pub struct DiffFile {
     /// Total changes (additions + deletions)
     pub changes: i32,
     /// Unified diff patch
-    #[schema(example = "@@ -1,7 +1,19 @@\n import React from 'react';\n+import { cn } from '@/lib/utils';")]
+    #[schema(
+        example = "@@ -1,7 +1,19 @@\n import React from 'react';\n+import { cn } from '@/lib/utils';"
+    )]
     pub patch: String,
 }
 

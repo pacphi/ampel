@@ -168,29 +168,27 @@ pub async fn set_pr_diff_cache<T: Serialize>(
     };
 
     match serde_json::to_string(data) {
-        Ok(json_data) => {
-            match redis.set_ex::<_, _, ()>(&key, json_data, ttl).await {
-                Ok(_) => {
-                    tracing::debug!(
-                        repo_id = %repo_id,
-                        pr_id = %pr_id,
-                        key = %key,
-                        ttl_seconds = ttl,
-                        is_open = is_open,
-                        "PR diff cache set successfully"
-                    );
-                }
-                Err(e) => {
-                    tracing::warn!(
-                        error = %e,
-                        repo_id = %repo_id,
-                        pr_id = %pr_id,
-                        key = %key,
-                        "Failed to set PR diff cache"
-                    );
-                }
+        Ok(json_data) => match redis.set_ex::<_, _, ()>(&key, json_data, ttl).await {
+            Ok(_) => {
+                tracing::debug!(
+                    repo_id = %repo_id,
+                    pr_id = %pr_id,
+                    key = %key,
+                    ttl_seconds = ttl,
+                    is_open = is_open,
+                    "PR diff cache set successfully"
+                );
             }
-        }
+            Err(e) => {
+                tracing::warn!(
+                    error = %e,
+                    repo_id = %repo_id,
+                    pr_id = %pr_id,
+                    key = %key,
+                    "Failed to set PR diff cache"
+                );
+            }
+        },
         Err(e) => {
             tracing::warn!(
                 error = %e,
