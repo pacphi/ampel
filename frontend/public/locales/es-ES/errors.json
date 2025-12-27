@@ -1,0 +1,50 @@
+{
+  "generic": {
+    "title": "Something went wrong",
+    "message": "An unexpected error occurred. Please try again.",
+    "retry": "Try again",
+    "goHome": "Go to dashboard"
+  },
+  "network": {
+    "title": "Network error",
+    "message": "Unable to connect to the server. Please check your internet connection.",
+    "offline": "You are currently offline"
+  },
+  "auth": {
+    "unauthorized": "Unauthorized access",
+    "forbidden": "You don't have permission to access this resource",
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "invalidCredentials": "Invalid username or password",
+    "tokenExpired": "Authentication token has expired"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidUrl": "Please enter a valid URL",
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must not exceed {{max}} characters",
+    "passwordMismatch": "Passwords do not match"
+  },
+  "provider": {
+    "connectionFailed": "Failed to connect to {{provider}}",
+    "invalidToken": "Invalid {{provider}} token",
+    "rateLimited": "{{provider}} API rate limit exceeded",
+    "notFound": "Resource not found on {{provider}}"
+  },
+  "pr": {
+    "loadFailed": "Failed to load pull requests",
+    "mergeFailed": "Failed to merge pull request",
+    "approveFailed": "Failed to approve pull request",
+    "commentFailed": "Failed to post comment"
+  },
+  "repository": {
+    "loadFailed": "Failed to load repositories",
+    "notFound": "Repository not found",
+    "accessDenied": "Access to repository denied"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "The page you are looking for does not exist.",
+    "goHome": "Return to dashboard"
+  }
+}

@@ -6,7 +6,7 @@ use axum::{
 
 use crate::handlers::{
     accounts, analytics, auth, bot_rules, bulk_merge, dashboard, notifications, pr_filters,
-    pull_requests, repositories, teams, user_settings,
+    pull_requests, repositories, teams, user_preferences, user_settings,
 };
 use crate::{
     health_handler, metrics_handler, middleware::track_metrics, readiness_handler, AppState,
@@ -106,6 +106,12 @@ pub fn create_router(state: AppState) -> Router {
         .route(
             "/api/settings/behavior",
             get(user_settings::get_settings).put(user_settings::update_settings),
+        )
+        // User preferences routes (language)
+        .route(
+            "/api/v1/user/preferences/language",
+            get(user_preferences::get_language_preference)
+                .put(user_preferences::update_language_preference),
         )
         // Bulk merge routes
         .route("/api/merge/bulk", post(bulk_merge::bulk_merge))

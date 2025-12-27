@@ -1,0 +1,27 @@
+{
+  "title": "Dashboard",
+  "pullRequests": {
+    "title": "Pull Requests",
+    "count": "{{count}} PR",
+    "count_other": "{{count}} PRs",
+    "noPullRequests": "No pull requests found",
+    "filters": {
+      "all": "All",
+      "open": "Open",
+      "merged": "Merged",
+      "closed": "Closed"
+    }
+  },
+  "status": {
+    "green": "Ready to Merge",
+    "yellow": "In Progress",
+    "red": "Blocked",
+    "unknown": "Unknown"
+  },
+  "stats": {
+    "total": "Total PRs",
+    "ready": "Ready to Merge",
+    "inProgress": "In Progress",
+    "blocked": "Blocked"
+  }
+}

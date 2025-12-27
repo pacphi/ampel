@@ -9,6 +9,9 @@ use ampel_core::services::AuthService;
 use ampel_db::{encryption::EncryptionService, init_database, run_migrations};
 use ampel_providers::ProviderFactory;
 
+// Initialize rust-i18n with all supported locales
+rust_i18n::i18n!("locales", fallback = "en");
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     // Load environment variables

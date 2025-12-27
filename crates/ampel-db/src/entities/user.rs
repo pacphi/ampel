@@ -11,6 +11,7 @@ pub struct Model {
     pub password_hash: String,
     pub display_name: Option<String>,
     pub avatar_url: Option<String>,
+    pub language: Option<String>,
     pub created_at: DateTimeUtc,
     pub updated_at: DateTimeUtc,
 }
@@ -53,6 +54,7 @@ impl From<Model> for ampel_core::models::User {
             password_hash: model.password_hash,
             display_name: model.display_name,
             avatar_url: model.avatar_url,
+            language: model.language,
             created_at: model.created_at,
             updated_at: model.updated_at,
         }

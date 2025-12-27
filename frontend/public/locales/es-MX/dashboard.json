@@ -1,0 +1,59 @@
+{
+  "title": "PR Dashboard",
+  "subtitle": "Manage your pull requests across all providers",
+  "empty": {
+    "title": "No pull requests found",
+    "description": "Connect your Git providers to start tracking PRs",
+    "action": "Connect Provider"
+  },
+  "filters": {
+    "all": "All",
+    "open": "Open",
+    "closed": "Closed",
+    "merged": "Merged",
+    "draft": "Draft",
+    "provider": "Provider",
+    "repository": "Repository",
+    "author": "Author",
+    "assignee": "Assignee",
+    "label": "Label"
+  },
+  "status": {
+    "green": "Ready to merge",
+    "yellow": "In progress",
+    "red": "Blocked",
+    "draft": "Draft",
+    "merged": "Merged",
+    "closed": "Closed"
+  },
+  "actions": {
+    "merge": "Merge",
+    "approve": "Approve",
+    "requestChanges": "Request Changes",
+    "comment": "Comment",
+    "viewOnProvider": "View on {{provider}}",
+    "refresh": "Refresh",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All"
+  },
+  "stats": {
+    "total": "Total PRs",
+    "open": "Open",
+    "ready": "Ready to merge",
+    "inProgress": "In progress",
+    "blocked": "Blocked"
+  },
+  "views": {
+    "grid": "Grid view",
+    "list": "List view",
+    "table": "Table view"
+  },
+  "sort": {
+    "title": "Sort by",
+    "updated": "Last updated",
+    "created": "Created date",
+    "author": "Author",
+    "status": "Status",
+    "repository": "Repository"
+  }
+}

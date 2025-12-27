@@ -1,0 +1,75 @@
+{
+  "title": "Settings",
+  "subtitle": "Manage your preferences and integrations",
+  "tabs": {
+    "general": "General",
+    "account": "Account",
+    "providers": "Providers",
+    "notifications": "Notifications",
+    "behavior": "Behavior",
+    "repositories": "Repositories",
+    "appearance": "Appearance"
+  },
+  "general": {
+    "language": "Language",
+    "languageDescription": "Choose your preferred language",
+    "theme": "Theme",
+    "themeDescription": "Select your color theme",
+    "timezone": "Timezone",
+    "timezoneDescription": "Set your timezone for dates and times"
+  },
+  "account": {
+    "profile": "Profile",
+    "displayName": "Display name",
+    "email": "Email address",
+    "avatar": "Avatar",
+    "changePassword": "Change password",
+    "deleteAccount": "Delete account",
+    "deleteAccountWarning": "This action cannot be undone"
+  },
+  "providers": {
+    "github": "GitHub",
+    "gitlab": "GitLab",
+    "bitbucket": "Bitbucket",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "connected": "Connected",
+    "notConnected": "Not connected",
+    "token": "Personal Access Token",
+    "tokenDescription": "Enter your {{provider}} personal access token",
+    "tokenPlaceholder": "ghp_...",
+    "tokenInstructions": "How to get a token"
+  },
+  "notifications": {
+    "email": "Email notifications",
+    "emailDescription": "Receive notifications via email",
+    "prUpdates": "PR updates",
+    "prUpdatesDescription": "Get notified when PRs are updated",
+    "mentions": "Mentions",
+    "mentionsDescription": "Get notified when you're mentioned",
+    "reviews": "Review requests",
+    "reviewsDescription": "Get notified when your review is requested"
+  },
+  "behavior": {
+    "autoRefresh": "Auto refresh",
+    "autoRefreshDescription": "Automatically refresh PR list",
+    "refreshInterval": "Refresh interval",
+    "refreshIntervalDescription": "How often to refresh (in minutes)",
+    "defaultView": "Default view",
+    "defaultViewDescription": "Choose your preferred PR view",
+    "prPerPage": "PRs per page",
+    "prPerPageDescription": "Number of PRs to display per page"
+  },
+  "repositories": {
+    "filter": "Repository filter",
+    "filterDescription": "Choose which repositories to display",
+    "showArchived": "Show archived",
+    "showArchivedDescription": "Include archived repositories",
+    "showForks": "Show forks",
+    "showForksDescription": "Include forked repositories"
+  },
+  "save": "Save changes",
+  "saved": "Settings saved successfully",
+  "reset": "Reset to defaults",
+  "resetConfirm": "Are you sure you want to reset all settings?"
+}

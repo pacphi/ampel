@@ -1,0 +1,22 @@
+{
+  "general": {
+    "unknown": "An unknown error occurred",
+    "network": "Network error. Please check your connection",
+    "server": "Server error. Please try again later",
+    "notFound": "Resource not found",
+    "unauthorised": "Unauthorised. Please log in again",
+    "forbidden": "You don't have permission to access this resource"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Invalid email address",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "invalidUrl": "Invalid URL format"
+  },
+  "auth": {
+    "invalidCredentials": "Invalid email or password",
+    "sessionExpired": "Your session has expired. Please log in again",
+    "accountExists": "An account with this email already exists"
+  }
+}

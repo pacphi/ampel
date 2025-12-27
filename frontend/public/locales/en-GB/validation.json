@@ -1,0 +1,23 @@
+{
+  "required": "This field is required",
+  "email": {
+    "invalid": "Invalid email address",
+    "required": "Email is required"
+  },
+  "password": {
+    "tooShort": "Password must be at least 8 characters",
+    "required": "Password is required",
+    "noMatch": "Passwords do not match"
+  },
+  "url": {
+    "invalid": "Invalid URL format"
+  },
+  "string": {
+    "tooShort": "Must be at least {{min}} characters",
+    "tooLong": "Must be no more than {{max}} characters"
+  },
+  "number": {
+    "tooSmall": "Must be at least {{min}}",
+    "tooLarge": "Must be no more than {{max}}"
+  }
+}

@@ -36,6 +36,7 @@ impl UserQueries {
             password_hash: Set(password_hash),
             display_name: Set(display_name),
             avatar_url: Set(None),
+            language: Set(None),
             created_at: Set(now),
             updated_at: Set(now),
         };

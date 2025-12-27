@@ -12,50 +12,50 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │                     Developer Workflow                          │
 │                                                                 │
-│  Developer writes English → CLI runs → Translations generated  │
+│  Developer writes English → CLI runs → Translations generated   │
 └────────────────┬────────────────────────────────────────────────┘
                  │
                  ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │               ampel-i18n-builder CLI                            │
-│  ┌──────────┬─────────┬──────────┬──────────┬─────────┐       │
-│  │   init   │translate│   sync   │ coverage │validate │       │
-│  └──────────┴─────────┴──────────┴──────────┴─────────┘       │
+│  ┌──────────┬─────────┬──────────┬──────────┬─────────┐         │
+│  │   init   │translate│   sync   │ coverage │validate │         │
+│  └──────────┴─────────┴──────────┴──────────┴─────────┘         │
 └────────────────┬────────────────────────────────────────────────┘
                  │
                  ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                   Workflow Layer                                │
-│  ┌─────────────┬──────────────┬────────────────┐              │
-│  │   Upload    │   Download   │     Sync       │              │
-│  │  Workflow   │   Workflow   │   Workflow     │              │
-│  └─────────────┴──────────────┴────────────────┘              │
+│  ┌─────────────┬──────────────┬────────────────┐                │
+│  │   Upload    │   Download   │     Sync       │                │
+│  │  Workflow   │   Workflow   │   Workflow     │                │
+│  └─────────────┴──────────────┴────────────────┘                │
 └───────┬──────────────────────┬──────────────────────────────────┘
         │                      │
         ▼                      ▼
 ┌───────────────────┐  ┌───────────────────────────────────┐
 │   API Providers   │  │    Bundle Generators              │
 │                   │  │                                   │
-│  ┌────────────┐  │  │  ┌──────────┐  ┌──────────────┐  │
-│  │  DeepL     │  │  │  │   YAML   │  │     JSON     │  │
-│  │  Provider  │  │  │  │Generator │  │  Generator   │  │
-│  │ (18 langs) │  │  │  │(Backend) │  │  (Frontend)  │  │
-│  └────────────┘  │  │  └──────────┘  └──────────────┘  │
+│  ┌────────────┐   │  │  ┌──────────┐  ┌──────────────┐   │
+│  │  DeepL     │   │  │  │   YAML   │  │     JSON     │   │
+│  │  Provider  │   │  │  │Generator │  │  Generator   │   │
+│  │ (18 langs) │   │  │  │(Backend) │  │  (Frontend)  │   │
+│  └────────────┘   │  │  └──────────┘  └──────────────┘   │
 │                   │  │                                   │
-│  ┌────────────┐  │  │  ┌──────────────────────────┐    │
-│  │  Google    │  │  │  │   Format Parsers         │    │
-│  │  Provider  │  │  │  │   YAML ↔ JSON            │    │
-│  │ (2 langs)  │  │  │  └──────────────────────────┘    │
-│  └────────────┘  │  │                                   │
+│  ┌────────────┐   │  │  ┌──────────────────────────┐     │
+│  │  Google    │   │  │  │   Format Parsers         │     │
+│  │  Provider  │   │  │  │   YAML ↔ JSON            │     │
+│  │ (2 langs)  │   │  │  └──────────────────────────┘     │
+│  └────────────┘   │  │                                   │
 └───────────────────┘  └───────────────────────────────────┘
         │                              │
         ▼                              ▼
 ┌───────────────────────────────────────────────────────────────┐
 │                   Foundation Layer                            │
-│  ┌──────────┬────────────┬───────────────┬────────────┐     │
-│  │   Cache  │ Validation │ Rate Limiting │   Error    │     │
-│  │   (LRU)  │  Engine    │(Token Bucket) │  Handling  │     │
-│  └──────────┴────────────┴───────────────┴────────────┘     │
+│  ┌──────────┬────────────┬───────────────┬────────────┐       │
+│  │   Cache  │ Validation │ Rate Limiting │   Error    │       │
+│  │   (LRU)  │  Engine    │(Token Bucket) │  Handling  │       │
+│  └──────────┴────────────┴───────────────┴────────────┘       │
 └───────────────────────────────────────────────────────────────┘
 ```
 
@@ -84,17 +84,17 @@
        ▼
 ┌──────────────────────────────────┐
 │  Provider Selection (Intelligent)│
-│  ┌──────────┐      ┌──────────┐ │
-│  │  DeepL   │      │  Google  │ │
-│  │(18 langs)│      │(2 langs) │ │
-│  └────┬─────┘      └─────┬────┘ │
-│       │                  │      │
-│       ▼                  ▼      │
-│  Check Cache ──► Cache Hit?     │
+│  ┌──────────┐      ┌──────────┐  │
+│  │  DeepL   │      │  Google  │  │
+│  │(18 langs)│      │(2 langs) │  │
+│  └────┬─────┘      └─────┬────┘  │
+│       │                  │       │
+│       ▼                  ▼       │
+│  Check Cache ──► Cache Hit?      │
 │       │              │           │
 │       │ No           │ Yes       │
 │       ▼              ▼           │
-│  Call API       Return cached   │
+│  Call API       Return cached    │
 └──────┬─────────────────┬─────────┘
        │                 │
        ▼                 ▼
@@ -119,7 +119,7 @@
        │
        ▼
 ┌──────────────────────────────────┐
-│  Retry Logic (Exponential)      │
+│  Retry Logic (Exponential)       │
 │  ┌────────────────────────────┐  │
 │  │ Attempt 1: immediate       │  │
 │  │ Attempt 2: wait 1s         │  │
@@ -211,6 +211,7 @@ Legend:
 ```
 
 **Dependency Rules:**
+
 1. **Upper layers depend on lower layers**
 2. **No circular dependencies**
 3. **Foundation layer has no internal dependencies**
@@ -274,10 +275,10 @@ Legend:
 │         Translation Bundle                       │
 │  language: "fi"                                  │
 │  translations: BTreeMap {                        │
-│    "dashboard.title": Simple("Kojelauta")       │
-│    "items.count": Plural {                      │
-│      one: "1 kohde"                             │
-│      other: "{{count}} kohdetta"                │
+│    "dashboard.title": Simple("Kojelauta")        │
+│    "items.count": Plural {                       │
+│      one: "1 kohde"                              │
+│      other: "{{count}} kohdetta"                 │
 │    }                                             │
 │  }                                               │
 └────────────┬─────────────────────────────────────┘
@@ -333,8 +334,8 @@ Legend:
 │  │ Entry 1: "Hello|en|fi" → "Hei" │  │
 │  │ Entry 2: "World|en|fi" → "..." │  │
 │  │ Entry 3: "Dashboard|en|fi" ✓   │  │
-│  │ ...                             │  │
-│  │ Entry 1000: ...                 │  │
+│  │ ...                            │  │
+│  │ Entry 1000: ...                │  │
 │  └────────────────────────────────┘  │
 └──────────┬───────────────────────────┘
            │
@@ -411,7 +412,7 @@ Result:
 │  │ 5xx → Yes (server error)           │  │
 │  │ Network timeout → Yes              │  │
 │  └────────────────────────────────────┘  │
-└──────────────┬──────────────────────────┘
+└──────────────┬───────────────────────────┘
                │
         ┌──────┴───────┐
         │              │
@@ -509,9 +510,9 @@ Result:
      ┌───────────┼───────────┬────────┬────────┐
      │           │           │        │        │
      ▼           ▼           ▼        ▼        ▼
-┌────────┐ ┌──────────┐ ┌────────┐ ┌──────┐ ┌──────┐
+┌────────┐ ┌──────────┐ ┌────────┐ ┌──────┐ ┌────────┐
 │  init  │ │translate │ │  sync  │ │coverage│validate│
-└───┬────┘ └────┬─────┘ └───┬────┘ └───┬──┘ └───┬──┘
+└───┬────┘ └────┬─────┘ └───┬────┘ └───┬──┘ └───┬────┘
     │           │           │          │        │
     ▼           ▼           ▼          ▼        ▼
 ┌───────────────────────────────────────────────────┐
@@ -528,16 +529,16 @@ Result:
 ┌───────────────────────────────────────────────────┐
 │              Output                               │
 │  ✅ Finnish translation complete                  │
-│     - 476/500 keys translated (95.2%)            │
-│     - 24 keys from cache                         │
-│     - 452 keys from DeepL API                    │
-│     - Time: 34.5 seconds                         │
-│     - Cost: €0.11                                │
+│     - 476/500 keys translated (95.2%)             │
+│     - 24 keys from cache                          │
+│     - 452 keys from DeepL API                     │
+│     - Time: 34.5 seconds                          │
+│     - Cost: €0.11                                 │
 │                                                   │
-│  Files generated:                                │
-│     - locales/fi.yml                             │
-│     - public/locales/fi/common.json              │
-│     - public/locales/fi/dashboard.json           │
+│  Files generated:                                 │
+│     - locales/fi.yml                              │
+│     - public/locales/fi/common.json               │
+│     - public/locales/fi/dashboard.json            │
 └───────────────────────────────────────────────────┘
 ```
 
@@ -559,10 +560,10 @@ Result:
 │          │     Tests     │ API, CLI, Workflows  │
 │          └───────────────┘                      │
 │                                                 │
-│      ┌───────────────────────┐                 │
+│      ┌───────────────────────┐                  │
 │      │      Unit Tests       │ (Phase 0)        │
-│      │  Parsers, Cache, etc  │                 │
-│      └───────────────────────┘                 │
+│      │  Parsers, Cache, etc  │                  │
+│      └───────────────────────┘                  │
 └─────────────────────────────────────────────────┘
 
 Test Coverage by Layer:
@@ -608,37 +609,37 @@ Overall: ~60% (target: 85%)
 ┌─────────────────────────────────────────────┐
 │  Secure Secret Management                   │
 │                                             │
-│  ┌───────────────────────────────────────┐ │
-│  │  API Key Storage                      │ │
-│  │  ┌─────────────────────────────────┐ │ │
-│  │  │ SecretString (never logs)       │ │ │
-│  │  │ - No Debug trait                │ │ │
-│  │  │ - No Display trait              │ │ │
-│  │  │ - Explicit expose_secret()      │ │ │
-│  │  └─────────────────────────────────┘ │ │
-│  └───────────────────────────────────────┘ │
+│  ┌───────────────────────────────────────┐  │
+│  │  API Key Storage                      │  │
+│  │  ┌─────────────────────────────────┐  │  │
+│  │  │ SecretString (never logs)       │  │  │
+│  │  │ - No Debug trait                │  │  │
+│  │  │ - No Display trait              │  │  │
+│  │  │ - Explicit expose_secret()      │  │  │
+│  │  └─────────────────────────────────┘  │  │
+│  └───────────────────────────────────────┘  │
 └─────────────┬───────────────────────────────┘
               │
               ▼
 ┌─────────────────────────────────────────────┐
 │  Input Validation                           │
-│  ┌───────────────────────────────────────┐ │
-│  │ 1. Max text length: 5000 chars        │ │
-│  │ 2. Language code: ISO 639-1 valid     │ │
-│  │ 3. File size: <5 MB                   │ │
-│  │ 4. No code injection patterns         │ │
-│  │ 5. XSS detection (Phase 1)            │ │
-│  └───────────────────────────────────────┘ │
+│  ┌───────────────────────────────────────┐  │
+│  │ 1. Max text length: 5000 chars        │  │
+│  │ 2. Language code: ISO 639-1 valid     │  │
+│  │ 3. File size: <5 MB                   │  │
+│  │ 4. No code injection patterns         │  │
+│  │ 5. XSS detection (Phase 1)            │  │
+│  └───────────────────────────────────────┘  │
 └─────────────┬───────────────────────────────┘
               │
               ▼
 ┌─────────────────────────────────────────────┐
 │  Secure Transport                           │
-│  ┌───────────────────────────────────────┐ │
-│  │ HTTPS only (rustls-tls)               │ │
-│  │ Certificate validation                │ │
-│  │ No plain HTTP allowed                 │ │
-│  └───────────────────────────────────────┘ │
+│  ┌───────────────────────────────────────┐  │
+│  │ HTTPS only (rustls-tls)               │  │
+│  │ Certificate validation                │  │
+│  │ No plain HTTP allowed                 │  │
+│  └───────────────────────────────────────┘  │
 └─────────────────────────────────────────────┘
 ```
 
@@ -706,41 +707,41 @@ Combined Impact: 50-70x improvement over naive implementation
 ```
 ┌─────────────────────────────────────────────┐
 │  Development Environment                    │
-│  ┌───────────────────────────────────────┐ │
-│  │ Developer runs:                       │ │
-│  │ cargo run --bin i18n-builder --       │ │
-│  │   translate --lang fi                 │ │
-│  └───────────────────────────────────────┘ │
+│  ┌───────────────────────────────────────┐  │
+│  │ Developer runs:                       │  │
+│  │ cargo run --bin i18n-builder --       │  │
+│  │   translate --lang fi                 │  │
+│  └───────────────────────────────────────┘  │
 └─────────────┬───────────────────────────────┘
               │
               ▼
 ┌─────────────────────────────────────────────┐
 │  CI/CD Pipeline (GitHub Actions)            │
-│  ┌───────────────────────────────────────┐ │
-│  │ 1. On PR: Validate translations       │ │
-│  │ 2. On merge: Sync if needed           │ │
-│  │ 3. Weekly: Auto-sync all languages    │ │
-│  └───────────────────────────────────────┘ │
+│  ┌───────────────────────────────────────┐  │
+│  │ 1. On PR: Validate translations       │  │
+│  │ 2. On merge: Sync if needed           │  │
+│  │ 3. Weekly: Auto-sync all languages    │  │
+│  └───────────────────────────────────────┘  │
 └─────────────┬───────────────────────────────┘
               │
               ▼
 ┌─────────────────────────────────────────────┐
 │  Build Process (cargo build)                │
-│  ┌───────────────────────────────────────┐ │
-│  │ build.rs:                             │ │
-│  │ 1. Validate translations              │ │
-│  │ 2. Generate TypeScript types          │ │
-│  │ 3. Fail build if validation errors    │ │
-│  └───────────────────────────────────────┘ │
+│  ┌───────────────────────────────────────┐  │
+│  │ build.rs:                             │  │
+│  │ 1. Validate translations              │  │
+│  │ 2. Generate TypeScript types          │  │
+│  │ 3. Fail build if validation errors    │  │
+│  └───────────────────────────────────────┘  │
 └─────────────┬───────────────────────────────┘
               │
               ▼
 ┌─────────────────────────────────────────────┐
 │  Runtime (ampel-api + frontend)             │
-│  ┌───────────────────────────────────────┐ │
-│  │ Backend: rust-i18n (compiled in)      │ │
-│  │ Frontend: react-i18next (lazy-loaded) │ │
-│  └───────────────────────────────────────┘ │
+│  ┌───────────────────────────────────────┐  │
+│  │ Backend: rust-i18n (compiled in)      │  │
+│  │ Frontend: react-i18next (lazy-loaded) │  │
+│  └───────────────────────────────────────┘  │
 └─────────────────────────────────────────────┘
 ```
 
@@ -751,6 +752,7 @@ Combined Impact: 50-70x improvement over naive implementation
 The `ampel-i18n-builder` architecture provides a robust, performant, and maintainable foundation for Ampel's localization system. The design follows industry best practices and Rust idioms while delivering excellent developer experience and runtime performance.
 
 **Key Achievements:**
+
 - ✅ Production-ready architecture (9.0/10 quality score)
 - ✅ Comprehensive trait-based design
 - ✅ Performance optimizations (50-70x improvement)

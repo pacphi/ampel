@@ -1,0 +1,38 @@
+{
+  "title": "Settings",
+  "general": {
+    "title": "General",
+    "language": "Language",
+    "theme": "Theme",
+    "colourScheme": "Colour Scheme"
+  },
+  "account": {
+    "title": "Account",
+    "email": "Email",
+    "password": "Password",
+    "changePassword": "Change Password"
+  },
+  "integrations": {
+    "title": "Integrations",
+    "github": "GitHub",
+    "gitlab": "GitLab",
+    "bitbucket": "Bitbucket",
+    "connected": "Connected",
+    "notConnected": "Not Connected",
+    "connect": "Connect",
+    "disconnect": "Disconnect"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "email": "Email Notifications",
+    "desktop": "Desktop Notifications",
+    "enabled": "Enabled",
+    "disabled": "Disabled"
+  },
+  "preferences": {
+    "title": "Preferences",
+    "dateFormat": "Date Format",
+    "timeFormat": "Time Format",
+    "timezone": "Timezone"
+  }
+}
