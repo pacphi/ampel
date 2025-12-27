@@ -1,0 +1,53 @@
+---
+# YAML Lint Configuration for i18n translation files
+# Used by GitHub Actions i18n-validation workflow
+
+extends: default
+
+rules:
+  # Line length (allow longer lines for translations)
+  line-length:
+    max: 120
+    level: warning
+
+  # Indentation (2 spaces)
+  indentation:
+    spaces: 2
+    indent-sequences: true
+
+  # Comments
+  comments:
+    min-spaces-from-content: 1
+
+  # Trailing spaces
+  trailing-spaces: enable
+
+  # Document start (allow files without ---)
+  document-start: disable
+
+  # Empty lines
+  empty-lines:
+    max: 2
+
+  # Truthy values
+  truthy:
+    allowed-values: ['true', 'false', 'yes', 'no']
+
+  # Key ordering (disable for translations)
+  key-ordering: disable
+
+  # Brackets
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+
+  # Braces
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+
+# Ignore patterns
+ignore: |
+  **/node_modules/**
+  **/target/**
+  **/.git/**

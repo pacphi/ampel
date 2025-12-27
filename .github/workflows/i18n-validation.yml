@@ -1,0 +1,459 @@
+name: I18n Validation
+
+on:
+  pull_request:
+    paths:
+      - 'crates/ampel-api/locales/**'
+      - 'frontend/public/locales/**'
+      - 'crates/ampel-i18n-builder/**'
+      - '**.rs'
+      - '**.tsx'
+      - '**.ts'
+      - '.github/workflows/i18n-validation.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'crates/ampel-api/locales/**'
+      - 'frontend/public/locales/**'
+
+env:
+  COVERAGE_THRESHOLD: 95
+  SUPPORTED_LANGUAGES: 20
+
+jobs:
+  validate-backend:
+    name: Validate Rust Translations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Build ampel-i18n-builder
+        run: cargo build --package ampel-i18n-builder --release
+
+      - name: Check translation coverage
+        id: coverage-check
+        run: |
+          cargo run --package ampel-i18n-builder --release -- check --min-coverage ${{ env.COVERAGE_THRESHOLD }}
+          echo "coverage_passed=true" >> $GITHUB_OUTPUT
+
+      - name: Validate YAML schema
+        run: |
+          # Install yamllint if not available
+          if ! command -v yamllint &> /dev/null; then
+            pip install yamllint
+          fi
+
+          # Validate all YAML files
+          find crates/ampel-api/locales -name "*.yml" -o -name "*.yaml" | while read file; do
+            echo "Validating: $file"
+            yamllint -c .yamllint.yml "$file" || exit 1
+          done
+
+      - name: Check for missing translations
+        id: missing-check
+        run: |
+          OUTPUT=$(cargo run --package ampel-i18n-builder --release -- missing)
+          echo "$OUTPUT"
+
+          # Check if there are missing translations
+          if echo "$OUTPUT" | grep -q "Missing translations found"; then
+            echo "has_missing=true" >> $GITHUB_OUTPUT
+            echo "::warning::Missing translations detected. See output above."
+          else
+            echo "has_missing=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate backend coverage report
+        id: backend-coverage
+        run: |
+          cargo run --package ampel-i18n-builder --release -- report --format json > backend-coverage.json
+
+          # Extract coverage percentage
+          COVERAGE=$(jq -r '.overall_coverage' backend-coverage.json)
+          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+
+          # Generate markdown report
+          cargo run --package ampel-i18n-builder --release -- report --format markdown > backend-coverage.md
+
+      - name: Upload backend coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage-report
+          path: |
+            backend-coverage.json
+            backend-coverage.md
+          retention-days: 30
+
+  validate-frontend:
+    name: Validate React Translations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          pnpm install --frozen-lockfile
+
+      - name: Check translation coverage
+        id: coverage-check
+        run: |
+          cd frontend
+          pnpm run test:i18n:coverage
+          echo "coverage_passed=true" >> $GITHUB_OUTPUT
+
+      - name: Validate JSON schema
+        run: |
+          cd frontend
+          # Validate all JSON translation files
+          find public/locales -name "*.json" | while read file; do
+            echo "Validating: $file"
+            node -e "JSON.parse(require('fs').readFileSync('$file', 'utf8'))" || exit 1
+          done
+
+      - name: Check for missing keys
+        id: missing-keys
+        run: |
+          cd frontend
+          OUTPUT=$(node scripts/i18n-coverage-report.js --check-missing)
+          echo "$OUTPUT"
+
+          if echo "$OUTPUT" | grep -q "Missing keys found"; then
+            echo "has_missing=true" >> $GITHUB_OUTPUT
+            echo "::warning::Missing translation keys detected"
+          else
+            echo "has_missing=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate TypeScript types
+        run: |
+          # This will be implemented by ampel-i18n-builder
+          cargo run --package ampel-i18n-builder --release -- generate-types
+
+      - name: Verify types are up-to-date
+        run: |
+          if git diff --exit-code frontend/src/i18n/types.ts; then
+            echo "✅ TypeScript types are up-to-date"
+          else
+            echo "::error::TypeScript types are out of sync. Run 'cargo run --package ampel-i18n-builder -- generate-types'"
+            exit 1
+          fi
+
+      - name: Generate frontend coverage report
+        id: frontend-coverage
+        run: |
+          cd frontend
+          node scripts/i18n-coverage-report.js --format json > ../frontend-coverage.json
+          node scripts/i18n-coverage-report.js --format markdown > ../frontend-coverage.md
+
+          # Extract coverage percentage
+          COVERAGE=$(jq -r '.overall_coverage' ../frontend-coverage.json)
+          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+
+      - name: Upload frontend coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage-report
+          path: |
+            frontend-coverage.json
+            frontend-coverage.md
+          retention-days: 30
+
+  test-rtl:
+    name: Test RTL Support
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          pnpm install --frozen-lockfile
+
+      - name: Install Playwright
+        run: |
+          cd frontend
+          pnpm exec playwright install --with-deps chromium firefox
+
+      - name: Run RTL visual regression tests
+        run: |
+          cd frontend
+          pnpm exec playwright test tests/visual/rtl.spec.ts --reporter=html
+
+      - name: Upload visual test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-rtl-report
+          path: frontend/playwright-report/
+          retention-days: 7
+
+      - name: Upload visual diffs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diffs
+          path: frontend/test-results/
+          retention-days: 7
+
+  test-complex-scripts:
+    name: Test Complex Scripts (Arabic, Thai, Korean)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          pnpm install --frozen-lockfile
+
+      - name: Run complex script tests
+        run: |
+          cd frontend
+          pnpm test tests/i18n/arabic-rendering.test.tsx --run
+          pnpm test tests/i18n/thai-rendering.test.tsx --run
+          pnpm test tests/i18n/korean-rendering.test.tsx --run
+
+  test-pluralization:
+    name: Test Complex Pluralization
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          pnpm install --frozen-lockfile
+
+      - name: Run pluralization tests
+        run: |
+          cd frontend
+          pnpm test tests/i18n/finnish-pluralization.test.ts --run
+          pnpm test tests/i18n/czech-pluralization.test.ts --run
+          pnpm test tests/i18n/slavic-pluralization.test.ts --run
+
+  coverage-report:
+    name: Generate Coverage Report
+    runs-on: ubuntu-latest
+    needs: [validate-backend, validate-frontend]
+    if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download backend coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-coverage-report
+          path: ./coverage
+
+      - name: Download frontend coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-coverage-report
+          path: ./coverage
+
+      - name: Generate combined report
+        id: combined-report
+        run: |
+          # Combine backend and frontend coverage
+          BACKEND_COV=$(jq -r '.overall_coverage' ./coverage/backend-coverage.json)
+          FRONTEND_COV=$(jq -r '.overall_coverage' ./coverage/frontend-coverage.json)
+
+          # Calculate average coverage
+          TOTAL_COV=$(echo "scale=2; ($BACKEND_COV + $FRONTEND_COV) / 2" | bc)
+
+          echo "backend_coverage=$BACKEND_COV" >> $GITHUB_OUTPUT
+          echo "frontend_coverage=$FRONTEND_COV" >> $GITHUB_OUTPUT
+          echo "total_coverage=$TOTAL_COV" >> $GITHUB_OUTPUT
+
+          # Create combined markdown report
+          cat > combined-coverage.md << 'EOF'
+          ## 🌐 Translation Coverage Report
+
+          ### Overall Coverage
+
+          | Component | Coverage | Status |
+          |-----------|----------|--------|
+          | **Backend (Rust)** | $BACKEND_COV% | ${{ steps.combined-report.outputs.backend_coverage >= env.COVERAGE_THRESHOLD && '✅' || '❌' }} |
+          | **Frontend (React)** | $FRONTEND_COV% | ${{ steps.combined-report.outputs.frontend_coverage >= env.COVERAGE_THRESHOLD && '✅' || '❌' }} |
+          | **Total Average** | $TOTAL_COV% | ${{ steps.combined-report.outputs.total_coverage >= env.COVERAGE_THRESHOLD && '✅' || '❌' }} |
+
+          **Threshold:** ${{ env.COVERAGE_THRESHOLD }}%
+          **Supported Languages:** ${{ env.SUPPORTED_LANGUAGES }}
+
+          ---
+
+          ### Backend Coverage Details
+
+          EOF
+
+          cat ./coverage/backend-coverage.md >> combined-coverage.md
+
+          echo "" >> combined-coverage.md
+          echo "---" >> combined-coverage.md
+          echo "" >> combined-coverage.md
+          echo "### Frontend Coverage Details" >> combined-coverage.md
+          echo "" >> combined-coverage.md
+
+          cat ./coverage/frontend-coverage.md >> combined-coverage.md
+
+          # Replace placeholders with actual values
+          sed -i "s/\$BACKEND_COV/$BACKEND_COV/g" combined-coverage.md
+          sed -i "s/\$FRONTEND_COV/$FRONTEND_COV/g" combined-coverage.md
+          sed -i "s/\$TOTAL_COV/$TOTAL_COV/g" combined-coverage.md
+
+      - name: Post coverage report as PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('combined-coverage.md', 'utf8');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Translation Coverage Report')
+            );
+
+            const commentBody = `${report}\n\n---\n*Updated: ${new Date().toISOString()}*`;
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: commentBody
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: commentBody
+              });
+            }
+
+      - name: Check coverage threshold
+        run: |
+          TOTAL_COV=${{ steps.combined-report.outputs.total_coverage }}
+          THRESHOLD=${{ env.COVERAGE_THRESHOLD }}
+
+          if (( $(echo "$TOTAL_COV < $THRESHOLD" | bc -l) )); then
+            echo "::error::Translation coverage ($TOTAL_COV%) is below threshold ($THRESHOLD%)"
+            exit 1
+          fi
+
+          echo "✅ Coverage check passed: $TOTAL_COV% >= $THRESHOLD%"
+
+  translation-api:
+    name: Test Translation API Integration
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run translation update (dry-run)
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: |
+          cargo run --package ampel-i18n-builder --release -- translate --dry-run
+
+      - name: Create translation PR if needed
+        if: steps.translate.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'chore(i18n): automated translation updates'
+          title: '[i18n] Automated Translation Updates'
+          body: |
+            Automated translation updates from DeepL API.
+
+            **Changes:**
+            - Updated translations for missing keys
+            - Languages updated: ${{ steps.translate.outputs.languages }}
+
+            **Review Required:**
+            - [ ] Verify translation quality
+            - [ ] Check context appropriateness
+            - [ ] Test in UI
+            - [ ] Native speaker review
+          branch: i18n/automated-updates
+          labels: i18n, automated
+          delete-branch: true

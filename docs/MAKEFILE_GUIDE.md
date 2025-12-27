@@ -16,6 +16,7 @@ A beginner-friendly guide to using the Ampel Makefile for development, testing, 
 - [Docker Commands](#docker-commands)
 - [Deployment Commands](#deployment-commands)
 - [GitHub Actions Integration](#github-actions-integration)
+- [Internationalization (i18n) Commands](#internationalization-i18n-commands)
 - [Customizing the Makefile](#customizing-the-makefile)
 - [Troubleshooting](#troubleshooting)
 
@@ -55,6 +56,8 @@ make install build-release
 | `make test-integration` | Run integration tests with PostgreSQL | Mimicking CI locally                         |
 | `make lint-fix`         | Auto-fix code issues                  | Before committing, during development        |
 | `make docker-up`        | Start all services with Docker        | Full-stack development, testing integrations |
+| `make build-i18n`       | Build cargo-i18n CLI tool             | Developing i18n features                     |
+| `make i18n ARGS='...'`  | Run cargo-i18n with custom arguments  | Managing translations                        |
 
 ### Common Workflows
 
@@ -1386,6 +1389,318 @@ STATUS  TITLE  WORKFLOW  BRANCH      EVENT  ID
 ✓       CI     CI        feat/auth   push   123456788
 ```
 
+## Internationalization (i18n) Commands
+
+These commands help build, test, and use the `cargo-i18n` CLI tool for managing translations in the Ampel project.
+
+### `make build-i18n`
+
+Builds the **cargo-i18n CLI tool** in debug mode.
+
+**What it does:**
+
+- Runs `cargo build --package ampel-i18n-builder --bin cargo-i18n`
+- Compiles the translation automation tool
+
+**When to use:**
+
+- Developing i18n features
+- Testing the CLI tool locally
+- Before running i18n commands
+
+**Example:**
+
+```bash
+$ make build-i18n
+==> Building cargo-i18n CLI tool...
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.34s
+```
+
+**Output:** `target/debug/cargo-i18n`
+
+---
+
+### `make build-i18n-release`
+
+Builds the **cargo-i18n CLI tool** in release mode with optimizations.
+
+**What it does:**
+
+- Runs `cargo build --package ampel-i18n-builder --bin cargo-i18n --release`
+- Creates optimized binary for production use
+
+**When to use:**
+
+- Installing the tool for regular use
+- Performance-critical translation tasks
+- CI/CD pipelines
+
+**Example:**
+
+```bash
+$ make build-i18n-release
+==> Building cargo-i18n CLI tool (release)...
+    Finished `release` profile [optimized] target(s) in 4.56s
+```
+
+**Output:** `target/release/cargo-i18n`
+
+---
+
+### `make test-i18n`
+
+Runs **all tests** for the i18n-builder crate.
+
+**What it does:**
+
+- Runs `cargo test --package ampel-i18n-builder --all-features`
+- Tests translation automation, API clients, code generation
+
+**When to use:**
+
+- After modifying i18n code
+- Verifying i18n functionality
+- Before committing i18n changes
+
+**Example:**
+
+```bash
+$ make test-i18n
+==> Running i18n-builder tests...
+    Finished `test` profile [optimized + debuginfo] target(s) in 20.99s
+     Running unittests src/lib.rs
+
+running 20 tests
+test codegen::rust::tests::test_rust_generator ... ok
+test translator::deepl::tests::test_deepl_translate ... ok
+test formats::json::tests::test_parse_simple_json ... ok
+...
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured
+```
+
+**Test coverage:**
+
+- Unit tests for code generators (Rust/TypeScript)
+- Integration tests for translation APIs (DeepL, OpenAI)
+- Format parser tests (JSON, YAML)
+- CLI command tests
+
+---
+
+### `make test-i18n-coverage`
+
+Generates **code coverage report** for the i18n-builder crate.
+
+**What it does:**
+
+- Installs `cargo-llvm-cov` if not present
+- Runs tests with coverage instrumentation
+- Generates HTML report in `coverage/i18n/`
+
+**When to use:**
+
+- Verifying i18n test coverage
+- Finding untested code paths
+- Before releasing i18n features
+
+**Example:**
+
+```bash
+$ make test-i18n-coverage
+==> Running i18n-builder tests with coverage...
+Installing cargo-llvm-cov...  # First time only
+
+==> I18n coverage report: coverage/i18n/index.html
+```
+
+**Viewing report:**
+
+```bash
+open coverage/i18n/index.html
+```
+
+---
+
+### `make install-i18n`
+
+Installs the **cargo-i18n tool** to `~/.cargo/bin` for system-wide use.
+
+**What it does:**
+
+- Runs `cargo install --path crates/ampel-i18n-builder --bin cargo-i18n --force`
+- Installs tool to Cargo's bin directory
+- Makes `cargo i18n` available globally
+
+**When to use:**
+
+- First-time setup for translation workflow
+- After updating i18n tool code
+- For regular translation management
+
+**Example:**
+
+```bash
+$ make install-i18n
+==> Installing cargo-i18n CLI tool...
+  Installing cargo-i18n v0.1.0
+    Finished `release` profile [optimized] target(s) in 5.23s
+  Installing ~/.cargo/bin/cargo-i18n
+
+cargo-i18n installed to ~/.cargo/bin/cargo-i18n
+Run 'cargo i18n --help' to get started
+```
+
+**Verification:**
+
+```bash
+$ cargo i18n --help
+Translation automation for Ampel
+
+Usage: cargo i18n <COMMAND>
+
+Commands:
+  translate  Translate missing keys using AI translation service
+  sync       Sync all languages from source language
+  validate   Validate translation files for errors
+  coverage   Check translation coverage statistics
+  ...
+```
+
+**Troubleshooting:**
+
+- **"cargo i18n: command not found"**: Ensure `~/.cargo/bin` is in your `PATH`
+- **Permission errors**: Check file permissions in `~/.cargo/bin`
+
+---
+
+### `make clean-i18n`
+
+Removes **i18n-builder build artifacts** to free disk space.
+
+**What it does:**
+
+- Runs `cargo clean --package ampel-i18n-builder`
+- Cleans only i18n crate artifacts
+
+**When to use:**
+
+- Freeing disk space
+- Fixing i18n build issues
+- After major i18n changes
+
+**Example:**
+
+```bash
+$ make clean-i18n
+==> Cleaning i18n-builder artifacts...
+```
+
+---
+
+### `make i18n ARGS='...'`
+
+Runs the **cargo-i18n tool** with custom arguments (without installing).
+
+**What it does:**
+
+- Runs `cargo run --package ampel-i18n-builder --bin cargo-i18n -- <ARGS>`
+- Executes i18n commands directly from source
+
+**When to use:**
+
+- Running i18n commands during development
+- Testing CLI changes without installing
+- Quick translation tasks
+
+**Common usage examples:**
+
+```bash
+# Show help
+make i18n ARGS='--help'
+
+# Translate missing keys to Spanish
+make i18n ARGS='translate --lang es'
+
+# Sync all languages from English source
+make i18n ARGS='sync --source en'
+
+# Validate all translation files
+make i18n ARGS='validate'
+
+# Check translation coverage
+make i18n ARGS='coverage'
+
+# Export translations for external service
+make i18n ARGS='export --lang fr --format xliff'
+
+# Import translations from external service
+make i18n ARGS='import --lang fr --file translations.xliff'
+```
+
+**Example output:**
+
+```bash
+$ make i18n ARGS='coverage'
+==> Running cargo-i18n...
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.24s
+     Running `target/debug/cargo-i18n coverage`
+
+Translation Coverage Report:
+╭──────────┬────────────┬──────────┬──────────╮
+│ Language │ Total Keys │ Translated│ Coverage │
+├──────────┼────────────┼──────────┼──────────┤
+│ en       │ 245        │ 245      │ 100.0%   │
+│ es       │ 245        │ 198      │  80.8%   │
+│ fr       │ 245        │ 156      │  63.7%   │
+│ de       │ 245        │ 102      │  41.6%   │
+╰──────────┴────────────┴──────────┴──────────╯
+```
+
+**Troubleshooting:**
+
+- **API errors**: Ensure translation API keys are configured in `.env`
+- **File not found**: Check that translation files exist in expected locations
+- **Rate limiting**: Use caching features to reduce API calls
+
+---
+
+### I18n Workflow Example
+
+**Complete translation workflow:**
+
+```bash
+# 1. Build the tool
+make build-i18n
+
+# 2. Check current coverage
+make i18n ARGS='coverage'
+
+# 3. Validate existing translations
+make i18n ARGS='validate'
+
+# 4. Translate missing keys (requires API keys)
+make i18n ARGS='translate --lang es --provider deepl'
+make i18n ARGS='translate --lang fr --provider openai'
+
+# 5. Check updated coverage
+make i18n ARGS='coverage'
+
+# 6. Run tests
+make test-i18n
+
+# 7. Install for regular use
+make install-i18n
+```
+
+**Using installed tool:**
+
+```bash
+# After installation
+cargo i18n coverage
+cargo i18n translate --lang de
+cargo i18n validate
+```
+
 ## Customizing the Makefile
 
 ### Adding a New Command
@@ -1622,6 +1937,11 @@ make test-integration
 # Deployment
 make build-release
 make deploy-fly
+
+# Internationalization
+make build-i18n       # Build i18n tool
+make i18n ARGS='coverage'  # Check translation coverage
+make test-i18n        # Test i18n crate
 
 # Maintenance
 make audit

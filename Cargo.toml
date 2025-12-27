@@ -6,6 +6,7 @@ members = [
     "crates/ampel-db",
     "crates/ampel-providers",
     "crates/ampel-worker",
+    "crates/ampel-i18n-builder",
 ]
 
 [workspace.package]
