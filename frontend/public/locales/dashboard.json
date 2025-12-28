@@ -1,0 +1,89 @@
+{
+  "actions": {
+    "approve": "Approuver",
+    "comment": "Commenter",
+    "deselectAll": "Tout désélectionner",
+    "merge": "Fusionner",
+    "refresh": "Rafraîchir",
+    "requestChanges": "Demander des modifications",
+    "selectAll": "Tout sélectionner",
+    "viewOnProvider": "Voir sur {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "En attente de révision",
+    "changesRequested": "Modifications demandées",
+    "ciFailed": "CI a échoué",
+    "ciPending": "CI en attente",
+    "conflicts": "Conflits",
+    "draft": "Brouillon",
+    "needsReview": "Besoin de révision"
+  },
+  "empty": {
+    "action": "Connecter le fournisseur",
+    "description": "Connectez vos fournisseurs Git pour commencer à suivre les PR",
+    "title": "Aucune demande de tirage trouvée"
+  },
+  "filters": {
+    "all": "Tous",
+    "assignee": "Cessionnaire",
+    "author": "Auteur",
+    "closed": "Fermé",
+    "draft": "Brouillon",
+    "label": "Étiquette",
+    "merged": "Fusionné",
+    "onlyWithPrs": "Afficher les dépôts avec des PR ouverts",
+    "open": "Ouvert",
+    "provider": "Fournisseur",
+    "repository": "Dépôt"
+  },
+  "pr": {
+    "additions": "Additions",
+    "author": "Auteur",
+    "comments": "Commentaires",
+    "createdAt": "Créé",
+    "deletions": "Suppressions",
+    "number": "#{{number}}",
+    "sourceBranch": "Branche source",
+    "targetBranch": "Branche cible",
+    "updatedAt": "Mis à jour"
+  },
+  "prDashboard": "PR Dashboard",
+  "sort": {
+    "author": "Auteur",
+    "created": "Date de création",
+    "repository": "Dépôt",
+    "status": "Statut",
+    "title": "Trier par",
+    "updated": "Dernière mise à jour"
+  },
+  "stats": {
+    "blocked": "Bloqué",
+    "inProgress": "En cours",
+    "needsAttention": "Besoin d'attention",
+    "open": "Ouvert",
+    "openPRs": "PR ouverts",
+    "ready": "Prêt à fusionner",
+    "readyToMerge": "Prêt à fusionner",
+    "total": "Total de PR",
+    "totalRepositories": "Total des dépôts"
+  },
+  "status": {
+    "closed": "Fermé",
+    "draft": "Brouillon",
+    "green": "Prêt à fusionner",
+    "merged": "Fusionné",
+    "red": "Bloqué",
+    "yellow": "En cours"
+  },
+  "subtitle": "Gestione sus solicitudes de extracción en todos los proveedores",
+  "title": "Tablero",
+  "views": {
+    "grid": "Vue en grille",
+    "list": "Vue en liste",
+    "prs": "Vue des demandes de tirage",
+    "pullRequests": "Vue des demandes de tirage",
+    "repositoryGrid": "Vue en grille du dépôt",
+    "repositoryList": "Vue en liste du dépôt",
+    "table": "Vue en tableau"
+  }
+}

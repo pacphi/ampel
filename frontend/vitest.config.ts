@@ -49,7 +49,7 @@ export default defineConfig({
     hookTimeout: 10000,
 
     // File patterns
-    include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}'],
+    include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}', 'tests/**/*.{test,spec}.{js,ts,jsx,tsx}'],
     exclude: ['node_modules', 'dist', '.idea', '.git', '.cache'],
 
     // Mock reset behavior

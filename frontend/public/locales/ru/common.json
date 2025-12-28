@@ -65,5 +65,16 @@
     "weeksAgo_other": "{{count}} weeks ago",
     "monthsAgo": "{{count}} month ago",
     "monthsAgo_other": "{{count}} months ago"
+  },
+  "pluralization": {
+    "requests_one": "{{count}} запрос",
+    "requests_few": "{{count}} запроса",
+    "requests_many": "{{count}} запросов",
+    "pullRequests_one": "{{count}} pull request",
+    "pullRequests_few": "{{count}} pull request-а",
+    "pullRequests_many": "{{count}} pull request-ов",
+    "comments_one": "{{count}} комментарий",
+    "comments_few": "{{count}} комментария",
+    "comments_many": "{{count}} комментариев"
   }
 }

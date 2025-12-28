@@ -1,1 +1,23 @@
-{}
+{
+  "alphanum": "{{field}} 必須只包含字母和數字",
+  "date": "請輸入有效的日期",
+  "dateRange": "結束日期必須在開始日期之後",
+  "email": "請輸入有效的電子郵件地址",
+  "fileSize": "檔案大小不能超過 {{max}}",
+  "fileType": "檔案類型必須是 {{types}}",
+  "integer": "{{field}} 必須是整數",
+  "invalidEmail": "無效的電子郵件地址",
+  "max": "{{field}} 不得超過 {{max}}",
+  "maxLength": "{{field}} 的長度不得超過 {{max}} 個字符",
+  "min": "{{field}} 必須至少為 {{min}}",
+  "minLength": "{{field}} 的長度必須至少為 {{min}} 個字符",
+  "negative": "{{field}} 必須為負數",
+  "numeric": "{{field}} 必須是數字",
+  "passwordMismatch": "密碼不匹配",
+  "passwordsDontMatch": "密碼不匹配",
+  "pattern": "{{field}} 格式無效",
+  "positive": "{{field}} 必須為正數",
+  "required": "{{field}} 是必需的",
+  "unique": "{{field}} 已經存在",
+  "url": "請輸入有效的網址"
+}

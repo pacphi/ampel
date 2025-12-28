@@ -1,1 +1,17 @@
-{}
+{
+  "filtersReset": "已重設篩選器",
+  "filtersResetSuccess": "您的PR篩選器設定已重設為預設值。",
+  "filtersUpdateFailed": "更新篩選器失敗",
+  "filtersUpdateSuccess": "您的PR篩選器設定已儲存。",
+  "filtersUpdated": "篩選器已更新",
+  "profileUpdateFailed": "更新個人資料失敗",
+  "profileUpdateSuccess": "您的個人資料已成功儲存。",
+  "profileUpdated": "個人資料已更新",
+  "reset": "重設為預設值",
+  "resetConfirm": "您確定要重設所有設定嗎？",
+  "save": "儲存變更",
+  "saved": "設定已成功儲存",
+  "subtitle": "管理您的偏好設定和整合",
+  "title": "設定",
+  "updateFailed": "更新失敗"
+}

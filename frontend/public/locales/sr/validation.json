@@ -1,1 +1,23 @@
-{}
+{
+  "alphanum": "{{field}} mora sadržati samo slova i brojeve",
+  "date": "Unesite važeći datum",
+  "dateRange": "Datum završetka mora biti nakon datuma početka",
+  "email": "Unesite važeću email adresu",
+  "fileSize": "Veličina datoteke ne sme premašiti {{max}}",
+  "fileType": "Tip datoteke mora biti {{types}}",
+  "integer": "{{field}} mora biti ceo broj",
+  "invalidEmail": "Neispravna email adresa",
+  "max": "{{field}} ne sme premašiti {{max}}",
+  "maxLength": "{{field}} ne sme premašiti {{max}} karaktera",
+  "min": "{{field}} mora biti najmanje {{min}}",
+  "minLength": "{{field}} mora biti najmanje {{min}} karaktera",
+  "negative": "{{field}} mora biti negativan",
+  "numeric": "{{field}} mora biti broj",
+  "passwordMismatch": "Lozinke se ne podudaraju",
+  "passwordsDontMatch": "Lozinke se ne podudaraju",
+  "pattern": "Format {{field}} je nevažeći",
+  "positive": "{{field}} mora biti pozitivan",
+  "required": "{{field}} je obavezan",
+  "unique": "{{field}} već postoji",
+  "url": "Unesite važeći URL"
+}

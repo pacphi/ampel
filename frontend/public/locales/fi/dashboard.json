@@ -1,1 +1,89 @@
-{}
+{
+  "actions": {
+    "approve": "Hyväksy",
+    "comment": "Kommentoi",
+    "deselectAll": "Poista kaikki valinnat",
+    "merge": "Yhdistä",
+    "refresh": "Päivitä",
+    "requestChanges": "Pyydä muutoksia",
+    "selectAll": "Valitse kaikki",
+    "viewOnProvider": "Näytä {{provider}}:ssa"
+  },
+  "blockers": {
+    "awaitingReview": "Odottaa arviointia",
+    "changesRequested": "Muutoksia pyydetty",
+    "ciFailed": "CI epäonnistui",
+    "ciPending": "CI odottaa",
+    "conflicts": "Ristiriidat",
+    "draft": "Luonnos",
+    "needsReview": "Tarvitsee arvioinnin"
+  },
+  "empty": {
+    "action": "Yhdistä palveluntarjoaja",
+    "description": "Yhdistä Git-palveluntarjoajasi aloittaaksesi PR:ien seurannan",
+    "title": "Vetopyyntöjä ei löytynyt"
+  },
+  "filters": {
+    "all": "Kaikki",
+    "assignee": "Tehtävän saaja",
+    "author": "Tekijä",
+    "closed": "Suljettu",
+    "draft": "Luonnos",
+    "label": "Merkintä",
+    "merged": "Yhdistetty",
+    "onlyWithPrs": "Näytä repositoriot, joissa on avoimet PR:t",
+    "open": "Avoin",
+    "provider": "Palveluntarjoaja",
+    "repository": "Repositorio"
+  },
+  "pr": {
+    "additions": "Lisäykset",
+    "author": "Tekijä",
+    "comments": "Kommentit",
+    "createdAt": "Luotu",
+    "deletions": "Poistot",
+    "number": "#{{number}}",
+    "sourceBranch": "Lähdehaara",
+    "targetBranch": "Kohdehaara",
+    "updatedAt": "Päivitetty"
+  },
+  "prDashboard": "PR-kojelauta",
+  "sort": {
+    "author": "Tekijä",
+    "created": "Luontipäivämäärä",
+    "repository": "Repositorio",
+    "status": "Tila",
+    "title": "Lajittele",
+    "updated": "Viimeksi päivitetty"
+  },
+  "stats": {
+    "blocked": "Estetty",
+    "inProgress": "Käynnissä",
+    "needsAttention": "Tarvitsee huomiota",
+    "open": "Avoin",
+    "openPRs": "Avoimet PR:t",
+    "ready": "Valmis yhdistettäväksi",
+    "readyToMerge": "Valmis yhdistettäväksi",
+    "total": "Yhteensä PR:t",
+    "totalRepositories": "Yhteensä repositorioita"
+  },
+  "status": {
+    "closed": "Suljettu",
+    "draft": "Luonnos",
+    "green": "Valmis yhdistettäväksi",
+    "merged": "Yhdistetty",
+    "red": "Estetty",
+    "yellow": "Käynnissä"
+  },
+  "subtitle": "Hallitse vetopyyntöjäsi kaikilla palveluntarjoajilla",
+  "title": "Kojelauta",
+  "views": {
+    "grid": "Ruudukkonäkymä",
+    "list": "Luettelonäkymä",
+    "prs": "Vetopyyntönäkymä",
+    "pullRequests": "Vetopyyntönäkymä",
+    "repositoryGrid": "Repositorioruudukko",
+    "repositoryList": "Repositorioluettelo",
+    "table": "Taulukkonäkymä"
+  }
+}

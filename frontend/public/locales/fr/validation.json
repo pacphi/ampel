@@ -1,1 +1,35 @@
-{}
+{
+  "alphanum": "{{field}} doit contenir uniquement des lettres et des chiffres",
+  "date": "Veuillez entrer une date valide",
+  "dateRange": "La date de fin doit être après la date de début",
+  "email": "Veuillez entrer une adresse e-mail valide",
+  "fields": {
+    "confirmPassword": "Confirmez le mot de passe",
+    "displayName": "Nom d'affichage",
+    "email": "Email",
+    "password": "Mot de passe"
+  },
+  "fileSize": "La taille du fichier ne doit pas dépasser {{max}}",
+  "fileType": "Le type de fichier doit être {{types}}",
+  "integer": "{{field}} doit être un entier",
+  "invalidEmail": "Adresse e-mail invalide",
+  "max": "{{field}} ne doit pas dépasser {{max}}",
+  "maxLength": "{{field}} ne doit pas dépasser {{max}} caractères",
+  "messages": {
+    "displayNameRequired": "Le nom d'affichage est requis",
+    "emailRequired": "L'email est requis",
+    "passwordMinLength": "Le mot de passe doit comporter au moins 8 caractères",
+    "passwordRequired": "Le mot de passe est requis"
+  },
+  "min": "{{field}} doit être au moins {{min}}",
+  "minLength": "{{field}} doit contenir au moins {{min}} caractères",
+  "negative": "{{field}} doit être négatif",
+  "numeric": "{{field}} doit être un nombre",
+  "passwordMismatch": "Les mots de passe ne correspondent pas",
+  "passwordsDontMatch": "Les mots de passe ne correspondent pas",
+  "pattern": "Le format de {{field}} est invalide",
+  "positive": "{{field}} doit être positif",
+  "required": "{{field}} est requis",
+  "unique": "{{field}} existe déjà",
+  "url": "Veuillez entrer une URL valide"
+}

@@ -1,0 +1,58 @@
+pt-BR:
+  errors:
+    # Authentication errors
+    auth:
+      email_registered: "E-mail já cadastrado"
+      invalid_credentials: "E-mail ou senha inválidos"
+      invalid_refresh_token: "Token de atualização inválido ou expirado"
+      user_not_found: "Usuário não encontrado"
+      email_in_use: "E-mail já está em uso"
+
+    # Repository errors
+    repository:
+      not_found: "Repositório não encontrado"
+      already_added: "Repositório já adicionado"
+      invalid_provider: "Provedor inválido"
+      provider_not_connected: "Provedor não conectado"
+      invalid_provider_db: "Tipo de provedor inválido no banco de dados"
+      not_found_for_pr: "Repositório não encontrado para o PR"
+      no_account_linked: "Repositório não vinculado à conta"
+
+    # Pull request errors
+    pull_request:
+      not_found: "Pull request não encontrado"
+      merge_failed: "Merge falhou: %{reason}"
+
+    # Account errors
+    account:
+      not_found: "Conta não encontrada"
+      invalid_provider_type: "Tipo de provedor inválido"
+      validation_failed: "Validação do token falhou: %{error}"
+      invalid_token: "Token inválido"
+      provider_no_user_id: "O provedor não retornou o ID do usuário"
+      provider_no_username: "O provedor não retornou o nome de usuário"
+      already_connected: "Esta conta já está conectada. Use PATCH para atualizar o token."
+
+    # Provider errors
+    provider:
+      error: "Erro do provedor: %{error}"
+      decrypt_failed: "Falha ao descriptografar token: %{error}"
+
+    # Encryption errors
+    encryption:
+      failed: "Erro de criptografia: %{error}"
+      decrypt_failed: "Erro de descriptografia: %{error}"
+
+    # General errors
+    general:
+      internal: "Erro interno"
+      serialization_failed: "Falha ao serializar escopos: %{error}"
+
+    # Network errors
+    network:
+      timeout: "Tempo limite da solicitação esgotado"
+      connection_failed: "Falha na conexão"
+
+    # Rate limit
+    rate_limit:
+      exceeded: "Limite de taxa excedido"

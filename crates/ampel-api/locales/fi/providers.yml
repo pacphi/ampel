@@ -1,0 +1,38 @@
+fi:
+  providers:
+    # GitHub provider
+    github:
+      token_invalid: "Virheellinen tai vanhentunut tunniste"
+      api_error: "API-virhe: %{status}"
+      user_fetch_failed: "Käyttäjän haku epäonnistui"
+      invalid_token: "Virheellinen tunniste"
+      repos_fetch_failed: "Tietovarastojen listaus epäonnistui"
+      repo_fetch_failed: "Tietovaraston haku epäonnistui"
+      repo_not_found: "Tietovarastoa %{owner}/%{repo} ei löytynyt"
+      prs_fetch_failed: "Vetopyyntöjen listaus epäonnistui"
+      pr_not_found: "Vetopyyntöä #%{number} ei löytynyt"
+      pr_fetch_failed: "Vetopyynnön haku epäonnistui"
+      reviews_fetch_failed: "Arviointien haku epäonnistui"
+      merge_not_mergeable: "Vetopyyntöä ei voi yhdistää"
+      merge_conflict: "Yhdistämisristiriita tai päähaara on muutettu"
+      merge_checks_failed: "Vetopyyntöä ei voi yhdistää (tarkista tilatarkistukset ja arvioinnit)"
+      merge_failed: "Vetopyynnön yhdistäminen epäonnistui"
+      rate_limit_failed: "Nopeusrajan haku epäonnistui"
+
+    # General provider errors
+    general:
+      auth_failed: "Todennus epäonnistui: %{reason}"
+      rate_limit_exceeded: "Nopeusraja ylitetty. Nollautuu: %{reset_time}"
+      not_found: "Resurssia ei löytynyt: %{resource}"
+      permission_denied: "Käyttö estetty: %{reason}"
+      invalid_response: "Virheellinen vastaus: %{reason}"
+      network_error: "Verkkovirhe: %{reason}"
+      api_error: "Palveluntarjoajan API-virhe: %{message} (tila: %{status_code})"
+      serialization_error: "Sarjoitusvirhe: %{reason}"
+      config_error: "Määritysvirhe: %{reason}"
+      not_supported: "Toimintoa ei tueta: %{operation}"
+
+    # Worker job errors
+    worker:
+      no_account: "Tietovarastolla ei ole liitettyä palveluntarjoajatiliä"
+      account_not_found: "Palveluntarjoajatiliä ei löytynyt"

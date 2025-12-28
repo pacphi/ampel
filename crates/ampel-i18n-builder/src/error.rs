@@ -36,4 +36,7 @@ pub enum Error {
 
     #[error("API error: {0}")]
     Api(String),
+
+    #[error("Internal error: {0}")]
+    Internal(String),
 }

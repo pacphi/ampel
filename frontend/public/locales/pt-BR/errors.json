@@ -1,50 +1,54 @@
 {
+  "auth": {
+    "failedToCreateAccount": "Falha ao criar conta",
+    "forbidden": "You don't have permission to access this resource",
+    "invalidCredentials": "Invalid username or password",
+    "invalidEmailOrPassword": "Email ou senha inválidos",
+    "loginFailed": "Falha no login",
+    "registrationFailed": "Falha no registro",
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "tokenExpired": "Authentication token has expired",
+    "unauthorized": "Unauthorized access"
+  },
   "generic": {
-    "title": "Something went wrong",
+    "goHome": "Go to dashboard",
     "message": "An unexpected error occurred. Please try again.",
     "retry": "Try again",
-    "goHome": "Go to dashboard"
+    "title": "Something went wrong"
   },
   "network": {
-    "title": "Network error",
     "message": "Unable to connect to the server. Please check your internet connection.",
-    "offline": "You are currently offline"
+    "offline": "You are currently offline",
+    "title": "Network error"
   },
-  "auth": {
-    "unauthorized": "Unauthorized access",
-    "forbidden": "You don't have permission to access this resource",
-    "sessionExpired": "Your session has expired. Please log in again.",
-    "invalidCredentials": "Invalid username or password",
-    "tokenExpired": "Authentication token has expired"
+  "notFound": {
+    "goHome": "Return to dashboard",
+    "message": "The page you are looking for does not exist.",
+    "title": "Page not found"
   },
-  "validation": {
-    "required": "This field is required",
-    "invalidEmail": "Please enter a valid email address",
-    "invalidUrl": "Please enter a valid URL",
-    "minLength": "Must be at least {{min}} characters",
-    "maxLength": "Must not exceed {{max}} characters",
-    "passwordMismatch": "Passwords do not match"
+  "pr": {
+    "approveFailed": "Failed to approve pull request",
+    "commentFailed": "Failed to post comment",
+    "loadFailed": "Failed to load pull requests",
+    "mergeFailed": "Failed to merge pull request"
   },
   "provider": {
     "connectionFailed": "Failed to connect to {{provider}}",
     "invalidToken": "Invalid {{provider}} token",
-    "rateLimited": "{{provider}} API rate limit exceeded",
-    "notFound": "Resource not found on {{provider}}"
-  },
-  "pr": {
-    "loadFailed": "Failed to load pull requests",
-    "mergeFailed": "Failed to merge pull request",
-    "approveFailed": "Failed to approve pull request",
-    "commentFailed": "Failed to post comment"
+    "notFound": "Resource not found on {{provider}}",
+    "rateLimited": "{{provider}} API rate limit exceeded"
   },
   "repository": {
+    "accessDenied": "Access to repository denied",
     "loadFailed": "Failed to load repositories",
-    "notFound": "Repository not found",
-    "accessDenied": "Access to repository denied"
+    "notFound": "Repository not found"
   },
-  "notFound": {
-    "title": "Page not found",
-    "message": "The page you are looking for does not exist.",
-    "goHome": "Return to dashboard"
+  "validation": {
+    "invalidEmail": "Please enter a valid email address",
+    "invalidUrl": "Please enter a valid URL",
+    "maxLength": "Must not exceed {{max}} characters",
+    "minLength": "Must be at least {{min}} characters",
+    "passwordMismatch": "Passwords do not match",
+    "required": "This field is required"
   }
 }

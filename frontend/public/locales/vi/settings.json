@@ -1,1 +1,17 @@
-{}
+{
+  "filtersReset": "Đặt lại bộ lọc",
+  "filtersResetSuccess": "Cài đặt bộ lọc PR của bạn đã được đặt lại về mặc định.",
+  "filtersUpdateFailed": "Không thể cập nhật bộ lọc",
+  "filtersUpdateSuccess": "Cài đặt bộ lọc PR của bạn đã được lưu.",
+  "filtersUpdated": "Bộ lọc đã được cập nhật",
+  "profileUpdateFailed": "Không thể cập nhật hồ sơ",
+  "profileUpdateSuccess": "Hồ sơ của bạn đã được lưu thành công.",
+  "profileUpdated": "Hồ sơ đã được cập nhật",
+  "reset": "Đặt lại về mặc định",
+  "resetConfirm": "Bạn có chắc chắn muốn đặt lại tất cả các cài đặt không?",
+  "save": "Lưu thay đổi",
+  "saved": "Cài đặt đã được lưu thành công",
+  "subtitle": "Quản lý sở thích và tích hợp của bạn",
+  "title": "Cài đặt",
+  "updateFailed": "Không thể cập nhật"
+}

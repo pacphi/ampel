@@ -47,9 +47,9 @@ pub struct TranslateArgs {
     #[arg(short, long)]
     pub lang: String,
 
-    /// Translation provider to use
+    /// Translation provider to use (deprecated - use --no-fallback instead)
     #[arg(short, long, value_enum)]
-    pub provider: TranslationProvider,
+    pub provider: Option<TranslationProvider>,
 
     /// Only translate specific namespace (e.g., "dashboard", "settings")
     #[arg(short, long)]
@@ -62,6 +62,26 @@ pub struct TranslateArgs {
     /// Path to translation directory
     #[arg(long, default_value = "frontend/public/locales")]
     pub translation_dir: PathBuf,
+
+    /// Override global timeout (seconds)
+    #[arg(long)]
+    pub timeout: Option<u64>,
+
+    /// Override batch size
+    #[arg(long)]
+    pub batch_size: Option<usize>,
+
+    /// Override max retry attempts
+    #[arg(long)]
+    pub max_retries: Option<usize>,
+
+    /// Disable specific providers (can be repeated)
+    #[arg(long = "disable-provider")]
+    pub disabled_providers: Vec<String>,
+
+    /// Disable fallback (use only primary provider)
+    #[arg(long)]
+    pub no_fallback: bool,
 }
 
 #[derive(Parser)]
@@ -157,11 +177,13 @@ pub struct ImportArgs {
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
 pub enum TranslationProvider {
-    /// DeepL API (requires DEEPL_API_KEY)
+    /// Systran Translation API (requires SYSTRAN_API_KEY) - Tier 1
+    Systran,
+    /// DeepL API (requires DEEPL_API_KEY) - Tier 2
     DeepL,
-    /// Google Cloud Translation API (requires GOOGLE_API_KEY)
+    /// Google Cloud Translation API (requires GOOGLE_API_KEY) - Tier 3
     Google,
-    /// OpenAI GPT-4 (requires OPENAI_API_KEY)
+    /// OpenAI GPT-4 (requires OPENAI_API_KEY) - Tier 4
     OpenAI,
 }
 

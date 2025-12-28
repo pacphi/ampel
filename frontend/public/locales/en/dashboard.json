@@ -1,5 +1,6 @@
 {
-  "title": "PR Dashboard",
+  "title": "Dashboard",
+  "prDashboard": "PR Dashboard",
   "subtitle": "Manage your pull requests across all providers",
   "empty": {
     "title": "No pull requests found",
@@ -16,7 +17,8 @@
     "repository": "Repository",
     "author": "Author",
     "assignee": "Assignee",
-    "label": "Label"
+    "label": "Label",
+    "onlyWithPrs": "Show repositories with Open PRs"
   },
   "status": {
     "green": "Ready to merge",
@@ -38,15 +40,23 @@
   },
   "stats": {
     "total": "Total PRs",
+    "totalRepositories": "Total Repositories",
     "open": "Open",
+    "openPRs": "Open PRs",
     "ready": "Ready to merge",
+    "readyToMerge": "Ready to Merge",
     "inProgress": "In progress",
-    "blocked": "Blocked"
+    "blocked": "Blocked",
+    "needsAttention": "Needs Attention"
   },
   "views": {
     "grid": "Grid view",
     "list": "List view",
-    "table": "Table view"
+    "table": "Table view",
+    "prs": "Pull requests view",
+    "repositoryGrid": "Repository grid view",
+    "repositoryList": "Repository list view",
+    "pullRequests": "Pull requests view"
   },
   "sort": {
     "title": "Sort by",
@@ -55,5 +65,25 @@
     "author": "Author",
     "status": "Status",
     "repository": "Repository"
+  },
+  "pr": {
+    "number": "#{{number}}",
+    "author": "Author",
+    "sourceBranch": "Source branch",
+    "targetBranch": "Target branch",
+    "additions": "Additions",
+    "deletions": "Deletions",
+    "comments": "Comments",
+    "createdAt": "Created",
+    "updatedAt": "Updated"
+  },
+  "blockers": {
+    "draft": "Draft",
+    "conflicts": "Conflicts",
+    "ciFailed": "CI failed",
+    "ciPending": "CI pending",
+    "changesRequested": "Changes requested",
+    "awaitingReview": "Awaiting review",
+    "needsReview": "Needs review"
   }
 }

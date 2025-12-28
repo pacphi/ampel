@@ -1,1 +1,54 @@
-{}
+{
+  "auth": {
+    "failedToCreateAccount": "Tilin luominen epäonnistui",
+    "forbidden": "Sinulla ei ole oikeutta käyttää tätä resurssia",
+    "invalidCredentials": "Virheellinen käyttäjänimi tai salasana",
+    "invalidEmailOrPassword": "Virheellinen sähköposti tai salasana",
+    "loginFailed": "Kirjautuminen epäonnistui",
+    "registrationFailed": "Rekisteröinti epäonnistui",
+    "sessionExpired": "Istuntosi on vanhentunut. Kirjaudu uudelleen sisään.",
+    "tokenExpired": "Autentikointitunnus on vanhentunut",
+    "unauthorized": "Luvaton pääsy"
+  },
+  "generic": {
+    "goHome": "Mene kojelautaan",
+    "message": "Tapahtui odottamaton virhe. Yritä uudelleen.",
+    "retry": "Yritä uudelleen",
+    "title": "Jotain meni pieleen"
+  },
+  "network": {
+    "message": "Yhteys palvelimeen ei onnistu. Tarkista internet-yhteytesi.",
+    "offline": "Olet tällä hetkellä offline-tilassa",
+    "title": "Verkkovirhe"
+  },
+  "notFound": {
+    "goHome": "Palaa kojelautaan",
+    "message": "Etsimääsi sivua ei ole olemassa.",
+    "title": "Sivua ei löydy"
+  },
+  "pr": {
+    "approveFailed": "Vetopyynnön hyväksyminen epäonnistui",
+    "commentFailed": "Kommentin lähettäminen epäonnistui",
+    "loadFailed": "Vetopyyntöjen lataaminen epäonnistui",
+    "mergeFailed": "Vetopyynnön yhdistäminen epäonnistui"
+  },
+  "provider": {
+    "connectionFailed": "Yhteys kohteeseen {{provider}} epäonnistui",
+    "invalidToken": "Virheellinen {{provider}}-tunnus",
+    "notFound": "Resurssia ei löydy kohteesta {{provider}}",
+    "rateLimited": "{{provider}} API:n nopeusrajoitus ylitetty"
+  },
+  "repository": {
+    "accessDenied": "Pääsy varastoon evätty",
+    "loadFailed": "Varastojen lataaminen epäonnistui",
+    "notFound": "Varastoa ei löydy"
+  },
+  "validation": {
+    "invalidEmail": "Anna kelvollinen sähköpostiosoite",
+    "invalidUrl": "Anna kelvollinen URL",
+    "maxLength": "Ei saa ylittää {{max}} merkkiä",
+    "minLength": "Oltava vähintään {{min}} merkkiä",
+    "passwordMismatch": "Salasanat eivät täsmää",
+    "required": "Tämä kenttä on pakollinen"
+  }
+}

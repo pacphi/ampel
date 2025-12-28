@@ -34,10 +34,15 @@ pub async fn execute(args: SyncArgs) -> Result<()> {
 
         let translate_args = TranslateArgs {
             lang,
-            provider: args.provider,
+            provider: Some(args.provider),
             namespace: None,
             dry_run: args.dry_run,
             translation_dir: args.translation_dir.clone(),
+            timeout: None,
+            batch_size: None,
+            max_retries: None,
+            disabled_providers: vec![],
+            no_fallback: true, // Sync uses explicit provider, no fallback
         };
 
         crate::cli::translate::execute(translate_args).await?;

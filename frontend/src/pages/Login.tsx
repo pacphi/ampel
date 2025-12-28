@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,19 +12,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/components/ui/use-toast';
 import { CircleDot } from 'lucide-react';
 
-const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password is required'),
-});
-
-type LoginForm = z.infer<typeof loginSchema>;
-
 export default function Login() {
+  const { t } = useTranslation(['common', 'validation', 'errors']);
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+
+  const loginSchema = z.object({
+    email: z.string().email(t('validation:invalidEmail')),
+    password: z.string().min(1, t('validation:messages.passwordRequired')),
+  });
+
+  type LoginForm = z.infer<typeof loginSchema>;
 
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/dashboard';
 
@@ -44,8 +46,8 @@ export default function Login() {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Login failed',
-        description: axiosError.response?.data?.error || 'Invalid email or password',
+        title: t('errors:auth.loginFailed'),
+        description: axiosError.response?.data?.error || t('errors:auth.invalidEmailOrPassword'),
       });
     } finally {
       setIsLoading(false);
@@ -59,31 +61,31 @@ export default function Login() {
           <div className="flex justify-center mb-4">
             <CircleDot className="h-12 w-12 text-ampel-green" />
           </div>
-          <CardTitle className="text-2xl">Welcome to Ampel</CardTitle>
-          <CardDescription>Sign in to your account to continue</CardDescription>
+          <CardTitle className="text-2xl">{t('common:auth.welcomeToAmpel')}</CardTitle>
+          <CardDescription>{t('common:auth.signInToContinue')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('common:auth.email')}</Label>
               <Input id="email" type="email" placeholder="you@example.com" {...register('email')} />
               {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('common:auth.password')}</Label>
               <Input id="password" type="password" {...register('password')} />
               {errors.password && (
                 <p className="text-sm text-destructive">{errors.password.message}</p>
               )}
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? t('common:auth.signingIn') : t('common:auth.signIn')}
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
-            Don't have an account?{' '}
+            {t('common:auth.dontHaveAccount')}{' '}
             <Link to="/register" className="text-primary hover:underline">
-              Sign up
+              {t('common:auth.signUp')}
             </Link>
           </div>
         </CardContent>

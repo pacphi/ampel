@@ -1,0 +1,58 @@
+fi:
+  errors:
+    # Authentication errors
+    auth:
+      email_registered: "Sähköposti on jo rekisteröity"
+      invalid_credentials: "Virheellinen sähköposti tai salasana"
+      invalid_refresh_token: "Virheellinen tai vanhentunut päivitystunniste"
+      user_not_found: "Käyttäjää ei löytynyt"
+      email_in_use: "Sähköposti on jo käytössä"
+
+    # Repository errors
+    repository:
+      not_found: "Tietovarastoa ei löytynyt"
+      already_added: "Tietovarasto on jo lisätty"
+      invalid_provider: "Virheellinen palveluntarjoaja"
+      provider_not_connected: "Palveluntarjoaja ei ole yhdistetty"
+      invalid_provider_db: "Virheellinen palveluntarjoajan tyyppi tietokannassa"
+      not_found_for_pr: "Tietovarastoa ei löytynyt PR:lle"
+      no_account_linked: "Tietovarasto ei ole linkitetty tiliin"
+
+    # Pull request errors
+    pull_request:
+      not_found: "Vetopyyntöä ei löytynyt"
+      merge_failed: "Yhdistäminen epäonnistui: %{reason}"
+
+    # Account errors
+    account:
+      not_found: "Tiliä ei löytynyt"
+      invalid_provider_type: "Virheellinen palveluntarjoajan tyyppi"
+      validation_failed: "Tunnisteen validointi epäonnistui: %{error}"
+      invalid_token: "Virheellinen tunniste"
+      provider_no_user_id: "Palveluntarjoaja ei palauttanut käyttäjätunnusta"
+      provider_no_username: "Palveluntarjoaja ei palauttanut käyttäjänimeä"
+      already_connected: "Tämä tili on jo yhdistetty. Käytä PATCH:ia tunnisteen päivittämiseen."
+
+    # Provider errors
+    provider:
+      error: "Palveluntarjoajan virhe: %{error}"
+      decrypt_failed: "Tunnisteen salauksen purku epäonnistui: %{error}"
+
+    # Encryption errors
+    encryption:
+      failed: "Salausvirhe: %{error}"
+      decrypt_failed: "Salauksen purkuvirhe: %{error}"
+
+    # General errors
+    general:
+      internal: "Sisäinen virhe"
+      serialization_failed: "Alueiden sarjoitus epäonnistui: %{error}"
+
+    # Network errors
+    network:
+      timeout: "Pyynnön aikakatkaisu"
+      connection_failed: "Yhteys epäonnistui"
+
+    # Rate limit
+    rate_limit:
+      exceeded: "Nopeusraja ylitetty"

@@ -1,1 +1,35 @@
-{}
+{
+  "alphanum": "{{field}} saa sisältää vain kirjaimia ja numeroita",
+  "date": "Syötä kelvollinen päivämäärä",
+  "dateRange": "Lopetuspäivämäärän on oltava alkamispäivämäärän jälkeen",
+  "email": "Syötä kelvollinen sähköpostiosoite",
+  "fields": {
+    "confirmPassword": "Vahvista salasana",
+    "displayName": "Näyttönimi",
+    "email": "Sähköposti",
+    "password": "Salasana"
+  },
+  "fileSize": "Tiedoston koko ei saa ylittää {{max}}",
+  "fileType": "Tiedostotyypin on oltava {{types}}",
+  "integer": "{{field}} on oltava kokonaisluku",
+  "invalidEmail": "Virheellinen sähköpostiosoite",
+  "max": "{{field}} ei saa ylittää {{max}}",
+  "maxLength": "{{field}} ei saa ylittää {{max}} merkkiä",
+  "messages": {
+    "displayNameRequired": "Näyttönimi vaaditaan",
+    "emailRequired": "Sähköposti vaaditaan",
+    "passwordMinLength": "Salasanan on oltava vähintään 8 merkkiä pitkä",
+    "passwordRequired": "Salasana vaaditaan"
+  },
+  "min": "{{field}} on oltava vähintään {{min}}",
+  "minLength": "{{field}} on oltava vähintään {{min}} merkkiä pitkä",
+  "negative": "{{field}} on oltava negatiivinen",
+  "numeric": "{{field}} on oltava numero",
+  "passwordMismatch": "Salasanat eivät täsmää",
+  "passwordsDontMatch": "Salasanat eivät täsmää",
+  "pattern": "{{field}} muoto on virheellinen",
+  "positive": "{{field}} on oltava positiivinen",
+  "required": "{{field}} vaaditaan",
+  "unique": "{{field}} on jo olemassa",
+  "url": "Syötä kelvollinen URL"
+}

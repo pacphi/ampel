@@ -39,13 +39,13 @@ struct ResponseMessage {
 }
 
 impl OpenAITranslator {
-    pub fn new(api_key: String, timeout: Duration) -> Self {
+    pub fn new(api_key: String, timeout: Duration) -> Result<Self> {
         let client = reqwest::Client::builder()
             .timeout(timeout)
             .build()
-            .expect("Failed to build HTTP client");
+            .map_err(|e| Error::Config(format!("Failed to build HTTP client: {}", e)))?;
 
-        Self { client, api_key }
+        Ok(Self { client, api_key })
     }
 
     fn get_language_name(code: &str) -> &str {
@@ -70,8 +70,51 @@ impl OpenAITranslator {
     }
 }
 
+/// Extract placeholders like {{count}}, {{provider}}, {{variable}} from text
+fn extract_placeholders(text: &str) -> Vec<String> {
+    let mut placeholders = Vec::new();
+    let mut chars = text.chars().peekable();
+
+    while let Some(c) = chars.next() {
+        if c == '{' && chars.peek() == Some(&'{') {
+            chars.next(); // consume second {
+            let mut placeholder = String::new();
+
+            // Extract placeholder content
+            while let Some(&ch) = chars.peek() {
+                if ch == '}' {
+                    chars.next();
+                    if chars.peek() == Some(&'}') {
+                        chars.next();
+                        placeholders.push(format!("{{{{{}}}}}", placeholder));
+                        break;
+                    }
+                } else {
+                    placeholder.push(ch);
+                    chars.next();
+                }
+            }
+        }
+    }
+
+    placeholders.sort();
+    placeholders
+}
+
 #[async_trait]
 impl TranslationService for OpenAITranslator {
+    fn provider_name(&self) -> &str {
+        "OpenAI"
+    }
+
+    fn provider_tier(&self) -> u8 {
+        4 // Tier 4: Fallback for specialized content
+    }
+
+    fn is_available(&self) -> bool {
+        !self.api_key.is_empty()
+    }
+
     async fn translate_batch(
         &self,
         texts: &HashMap<String, serde_json::Value>,
@@ -100,10 +143,16 @@ impl TranslationService for OpenAITranslator {
 
         let prompt = format!(
             "Translate the following UI text from English to {}. \
-            Return ONLY a JSON object with the same keys and translated values. \
-            Preserve any placeholders like {{variable}}.\n\n{}",
+            CRITICAL REQUIREMENTS:\n\
+            1. Return ONLY a JSON object with the same keys and translated values\n\
+            2. PRESERVE ALL PLACEHOLDERS EXACTLY: {{{{count}}}}, {{{{provider}}}}, {{{{variable}}}}, etc.\n\
+            3. Keep placeholders in the SAME POSITION in the translated text\n\
+            4. Do NOT translate placeholder names - keep them in English\n\
+            5. Translate ONLY the surrounding text, not the placeholder variables\n\
+            Example: \"{{{{count}}}} items\" in French → \"{{{{count}}}} éléments\"\n\n{}",
             lang_name,
-            serde_json::to_string_pretty(&texts_json).unwrap()
+            serde_json::to_string_pretty(&texts_json)
+                .map_err(|e| Error::Internal(format!("Failed to serialize texts: {}", e)))?
         );
 
         let request = OpenAIRequest {
@@ -133,7 +182,7 @@ impl TranslationService for OpenAITranslator {
 
         if !response.status().is_success() {
             let status = response.status();
-            let body = response.text().await.unwrap_or_default();
+            let body = response.text().await.unwrap_or_else(|_| "Unable to read error response".to_string());
             return Err(Error::Api(format!(
                 "OpenAI API error {}: {}",
                 status, body
@@ -152,6 +201,21 @@ impl TranslationService for OpenAITranslator {
         // Parse JSON response
         let translations: HashMap<String, String> = serde_json::from_str(content)
             .map_err(|e| Error::Translation(format!("Failed to parse OpenAI response: {}", e)))?;
+
+        // Validate placeholder preservation
+        for (key, translated) in &translations {
+            if let Some((_, original)) = source_texts.iter().find(|(k, _)| k == key) {
+                let original_placeholders = extract_placeholders(original);
+                let translated_placeholders = extract_placeholders(translated);
+
+                if original_placeholders != translated_placeholders {
+                    eprintln!(
+                        "⚠️  Warning: Placeholders mismatch in key '{}'\n   Original: {:?}\n   Translated: {:?}",
+                        key, original_placeholders, translated_placeholders
+                    );
+                }
+            }
+        }
 
         // Convert to expected format
         let mut result = HashMap::new();

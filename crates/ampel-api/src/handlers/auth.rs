@@ -1,4 +1,5 @@
 use axum::{extract::State, http::StatusCode, Json};
+use rust_i18n::t;
 
 use ampel_core::models::{
     AuthTokens, CreateUserRequest, LoginRequest, RefreshTokenRequest, UpdateProfileRequest,
@@ -20,7 +21,7 @@ pub async fn register(
         .await?
         .is_some()
     {
-        return Err(ApiError::bad_request("Email already registered"));
+        return Err(ApiError::bad_request(t!("errors.auth.email_registered")));
     }
 
     // Hash password
@@ -55,7 +56,7 @@ pub async fn login(
     // Find user
     let user = UserQueries::find_by_email(&state.db, &req.email)
         .await?
-        .ok_or_else(|| ApiError::unauthorized("Invalid email or password"))?;
+        .ok_or_else(|| ApiError::unauthorized(t!("errors.auth.invalid_credentials")))?;
 
     // Verify password
     let valid = state
@@ -64,7 +65,7 @@ pub async fn login(
         .map_err(|e| ApiError::internal(e.to_string()))?;
 
     if !valid {
-        return Err(ApiError::unauthorized("Invalid email or password"));
+        return Err(ApiError::unauthorized(t!("errors.auth.invalid_credentials")));
     }
 
     // Generate tokens
@@ -85,12 +86,12 @@ pub async fn refresh(
     let claims = state
         .auth_service
         .validate_refresh_token(&req.refresh_token)
-        .map_err(|_| ApiError::unauthorized("Invalid or expired refresh token"))?;
+        .map_err(|_| ApiError::unauthorized(t!("errors.auth.invalid_refresh_token")))?;
 
     // Verify user still exists
     let user = UserQueries::find_by_id(&state.db, claims.sub)
         .await?
-        .ok_or_else(|| ApiError::unauthorized("User not found"))?;
+        .ok_or_else(|| ApiError::unauthorized(t!("errors.auth.user_not_found")))?;
 
     // Generate new tokens
     let tokens = state
@@ -108,7 +109,7 @@ pub async fn me(
 ) -> Result<Json<ApiResponse<UserResponse>>, ApiError> {
     let user = UserQueries::find_by_id(&state.db, auth.user_id)
         .await?
-        .ok_or_else(|| ApiError::not_found("User not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.auth.user_not_found")))?;
 
     let response: UserResponse = ampel_core::models::User::from(user).into();
     Ok(Json(ApiResponse::success(response)))
@@ -124,7 +125,7 @@ pub async fn update_me(
     if let Some(ref new_email) = req.email {
         if let Some(existing) = UserQueries::find_by_email(&state.db, new_email).await? {
             if existing.id != auth.user_id {
-                return Err(ApiError::bad_request("Email already in use"));
+                return Err(ApiError::bad_request(t!("errors.auth.email_in_use")));
             }
         }
     }

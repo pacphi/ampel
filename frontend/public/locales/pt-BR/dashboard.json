@@ -1,59 +1,89 @@
 {
-  "title": "PR Dashboard",
-  "subtitle": "Manage your pull requests across all providers",
+  "actions": {
+    "approve": "Approve",
+    "comment": "Comment",
+    "deselectAll": "Deselect All",
+    "merge": "Merge",
+    "refresh": "Refresh",
+    "requestChanges": "Request Changes",
+    "selectAll": "Select All",
+    "viewOnProvider": "View on {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Aguardando revisão",
+    "changesRequested": "Alterações solicitadas",
+    "ciFailed": "CI falhou",
+    "ciPending": "CI pendente",
+    "conflicts": "Conflitos",
+    "draft": "Rascunho",
+    "needsReview": "Necessita revisão"
+  },
   "empty": {
-    "title": "No pull requests found",
+    "action": "Connect Provider",
     "description": "Connect your Git providers to start tracking PRs",
-    "action": "Connect Provider"
+    "title": "No pull requests found"
   },
   "filters": {
     "all": "All",
-    "open": "Open",
-    "closed": "Closed",
-    "merged": "Merged",
-    "draft": "Draft",
-    "provider": "Provider",
-    "repository": "Repository",
-    "author": "Author",
     "assignee": "Assignee",
-    "label": "Label"
-  },
-  "status": {
-    "green": "Ready to merge",
-    "yellow": "In progress",
-    "red": "Blocked",
+    "author": "Author",
+    "closed": "Closed",
     "draft": "Draft",
+    "label": "Label",
     "merged": "Merged",
-    "closed": "Closed"
+    "onlyWithPrs": "Mostrar repositórios com PRs abertos",
+    "open": "Open",
+    "provider": "Provider",
+    "repository": "Repository"
   },
-  "actions": {
-    "merge": "Merge",
-    "approve": "Approve",
-    "requestChanges": "Request Changes",
-    "comment": "Comment",
-    "viewOnProvider": "View on {{provider}}",
-    "refresh": "Refresh",
-    "selectAll": "Select All",
-    "deselectAll": "Deselect All"
+  "pr": {
+    "additions": "Adições",
+    "author": "Autor",
+    "comments": "Comentários",
+    "createdAt": "Criado",
+    "deletions": "Deleções",
+    "number": "#{{number}}",
+    "sourceBranch": "Branch de origem",
+    "targetBranch": "Branch de destino",
+    "updatedAt": "Atualizado"
+  },
+  "prDashboard": "Painel de PR",
+  "sort": {
+    "author": "Author",
+    "created": "Created date",
+    "repository": "Repository",
+    "status": "Status",
+    "title": "Sort by",
+    "updated": "Last updated"
   },
   "stats": {
-    "total": "Total PRs",
-    "open": "Open",
-    "ready": "Ready to merge",
+    "blocked": "Blocked",
     "inProgress": "In progress",
-    "blocked": "Blocked"
+    "needsAttention": "Precisa de atenção",
+    "open": "Open",
+    "openPRs": "PRs abertos",
+    "ready": "Ready to merge",
+    "readyToMerge": "Pronto para mesclar",
+    "total": "Total PRs",
+    "totalRepositories": "Total de repositórios"
   },
+  "status": {
+    "closed": "Closed",
+    "draft": "Draft",
+    "green": "Ready to merge",
+    "merged": "Merged",
+    "red": "Blocked",
+    "yellow": "In progress"
+  },
+  "subtitle": "Manage your pull requests across all providers",
+  "title": "PR Dashboard",
   "views": {
     "grid": "Grid view",
     "list": "List view",
+    "prs": "Visualização de pull requests",
+    "pullRequests": "Visualização de pull requests",
+    "repositoryGrid": "Visualização em grade do repositório",
+    "repositoryList": "Visualização em lista do repositório",
     "table": "Table view"
-  },
-  "sort": {
-    "title": "Sort by",
-    "updated": "Last updated",
-    "created": "Created date",
-    "author": "Author",
-    "status": "Status",
-    "repository": "Repository"
   }
 }

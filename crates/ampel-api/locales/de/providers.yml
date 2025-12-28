@@ -1,0 +1,38 @@
+de:
+  providers:
+    # GitHub provider
+    github:
+      token_invalid: "Ungültiger oder abgelaufener Token"
+      api_error: "API-Fehler: %{status}"
+      user_fetch_failed: "Benutzer konnte nicht abgerufen werden"
+      invalid_token: "Ungültiger Token"
+      repos_fetch_failed: "Repositories konnten nicht aufgelistet werden"
+      repo_fetch_failed: "Repository konnte nicht abgerufen werden"
+      repo_not_found: "Repository %{owner}/%{repo} nicht gefunden"
+      prs_fetch_failed: "Pull Requests konnten nicht aufgelistet werden"
+      pr_not_found: "Pull Request #%{number} nicht gefunden"
+      pr_fetch_failed: "Pull Request konnte nicht abgerufen werden"
+      reviews_fetch_failed: "Bewertungen konnten nicht abgerufen werden"
+      merge_not_mergeable: "Pull Request kann nicht zusammengeführt werden"
+      merge_conflict: "Merge-Konflikt oder Hauptzweig wurde geändert"
+      merge_checks_failed: "Pull Request kann nicht zusammengeführt werden (Überprüfen Sie Statusprüfungen und Bewertungen)"
+      merge_failed: "Pull Request konnte nicht zusammengeführt werden"
+      rate_limit_failed: "Ratenlimit konnte nicht abgerufen werden"
+
+    # General provider errors
+    general:
+      auth_failed: "Authentifizierung fehlgeschlagen: %{reason}"
+      rate_limit_exceeded: "Ratenlimit überschritten. Wird zurückgesetzt um: %{reset_time}"
+      not_found: "Ressource nicht gefunden: %{resource}"
+      permission_denied: "Zugriff verweigert: %{reason}"
+      invalid_response: "Ungültige Antwort: %{reason}"
+      network_error: "Netzwerkfehler: %{reason}"
+      api_error: "Anbieter-API-Fehler: %{message} (Status: %{status_code})"
+      serialization_error: "Serialisierungsfehler: %{reason}"
+      config_error: "Konfigurationsfehler: %{reason}"
+      not_supported: "Operation nicht unterstützt: %{operation}"
+
+    # Worker job errors
+    worker:
+      no_account: "Repository hat kein zugehöriges Anbieterkonto"
+      account_not_found: "Anbieterkonto nicht gefunden"

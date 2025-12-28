@@ -1,1 +1,89 @@
-{}
+{
+  "actions": {
+    "approve": "Schválit",
+    "comment": "Komentář",
+    "deselectAll": "Zrušit výběr všech",
+    "merge": "Sloučit",
+    "refresh": "Obnovit",
+    "requestChanges": "Požádat o změny",
+    "selectAll": "Vybrat vše",
+    "viewOnProvider": "Zobrazit na {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Čeká na recenzi",
+    "changesRequested": "Požadovány změny",
+    "ciFailed": "CI selhalo",
+    "ciPending": "CI čeká",
+    "conflicts": "Konflikty",
+    "draft": "Návrh",
+    "needsReview": "Potřebuje recenzi"
+  },
+  "empty": {
+    "action": "Připojit poskytovatele",
+    "description": "Připojte své poskytovatele Git, abyste mohli sledovat PR",
+    "title": "Nebyly nalezeny žádné požadavky na tahání"
+  },
+  "filters": {
+    "all": "Vše",
+    "assignee": "Přiřazený",
+    "author": "Autor",
+    "closed": "Zavřeno",
+    "draft": "Návrh",
+    "label": "Štítek",
+    "merged": "Sloučeno",
+    "onlyWithPrs": "Zobrazit repozitáře s otevřenými PR",
+    "open": "Otevřeno",
+    "provider": "Poskytovatel",
+    "repository": "Repozitář"
+  },
+  "pr": {
+    "additions": "Přidání",
+    "author": "Autor",
+    "comments": "Komentáře",
+    "createdAt": "Vytvořeno",
+    "deletions": "Odstranění",
+    "number": "#{{number}}",
+    "sourceBranch": "Zdrojová větev",
+    "targetBranch": "Cílová větev",
+    "updatedAt": "Aktualizováno"
+  },
+  "prDashboard": "PR Dashboard",
+  "sort": {
+    "author": "Autor",
+    "created": "Datum vytvoření",
+    "repository": "Repozitář",
+    "status": "Stav",
+    "title": "Seřadit podle",
+    "updated": "Naposledy aktualizováno"
+  },
+  "stats": {
+    "blocked": "Blokované",
+    "inProgress": "V průběhu",
+    "needsAttention": "Potřebuje pozornost",
+    "open": "Otevřené",
+    "openPRs": "Otevřené PR",
+    "ready": "Připraveno ke sloučení",
+    "readyToMerge": "Připraveno ke sloučení",
+    "total": "Celkem PR",
+    "totalRepositories": "Celkem repozitářů"
+  },
+  "status": {
+    "closed": "Zavřeno",
+    "draft": "Návrh",
+    "green": "Připraveno ke sloučení",
+    "merged": "Sloučeno",
+    "red": "Blokované",
+    "yellow": "V průběhu"
+  },
+  "subtitle": "Spravujte své požadavky na tahání napříč všemi poskytovateli",
+  "title": "Dashboard",
+  "views": {
+    "grid": "Zobrazení mřížky",
+    "list": "Seznamové zobrazení",
+    "prs": "Zobrazení požadavků na tahání",
+    "pullRequests": "Zobrazení požadavků na tahání",
+    "repositoryGrid": "Zobrazení repozitářů v mřížce",
+    "repositoryList": "Seznamové zobrazení repozitářů",
+    "table": "Tabulkové zobrazení"
+  }
+}

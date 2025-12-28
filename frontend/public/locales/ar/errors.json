@@ -1,1 +1,54 @@
-{}
+{
+  "auth": {
+    "failedToCreateAccount": "فشل في إنشاء الحساب",
+    "forbidden": "ليس لديك الإذن للوصول إلى هذا المورد",
+    "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صالحة",
+    "invalidEmailOrPassword": "البريد الإلكتروني أو كلمة المرور غير صالحة",
+    "loginFailed": "فشل تسجيل الدخول",
+    "registrationFailed": "فشل التسجيل",
+    "sessionExpired": "انتهت صلاحية جلستك. الرجاء تسجيل الدخول مرة أخرى.",
+    "tokenExpired": "انتهت صلاحية رمز المصادقة",
+    "unauthorized": "الوصول غير مصرح به"
+  },
+  "generic": {
+    "goHome": "الذهاب إلى لوحة التحكم",
+    "message": "حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى.",
+    "retry": "حاول مرة اخرى",
+    "title": "حدث خطأ ما"
+  },
+  "network": {
+    "message": "تعذر الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت.",
+    "offline": "أنت حاليا غير متصل",
+    "title": "خطأ في الشبكة"
+  },
+  "notFound": {
+    "goHome": "العودة إلى لوحة التحكم",
+    "message": "الصفحة التي تبحث عنها غير موجودة.",
+    "title": "الصفحة غير موجودة"
+  },
+  "pr": {
+    "approveFailed": "فشل في الموافقة على طلب السحب",
+    "commentFailed": "فشل في نشر التعليق",
+    "loadFailed": "فشل في تحميل طلبات السحب",
+    "mergeFailed": "فشل في دمج طلب السحب"
+  },
+  "provider": {
+    "connectionFailed": "فشل في الاتصال بـ {{provider}}",
+    "invalidToken": "رمز {{provider}} غير صالح",
+    "notFound": "المورد غير موجود على {{provider}}",
+    "rateLimited": "تم تجاوز حد واجهة برمجة تطبيقات {{provider}}"
+  },
+  "repository": {
+    "accessDenied": "تم رفض الوصول إلى المستودع",
+    "loadFailed": "فشل في تحميل المستودعات",
+    "notFound": "المستودع غير موجود"
+  },
+  "validation": {
+    "invalidEmail": "الرجاء إدخال عنوان بريد إلكتروني صالح",
+    "invalidUrl": "الرجاء إدخال عنوان URL صالح",
+    "maxLength": "يجب ألا يتجاوز {{max}} حرفًا",
+    "minLength": "يجب أن يكون على الأقل {{min}} حرفًا",
+    "passwordMismatch": "كلمات المرور غير متطابقة",
+    "required": "هذا الحقل مطلوب"
+  }
+}

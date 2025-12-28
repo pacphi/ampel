@@ -4,7 +4,8 @@ use crate::cli::TranslateArgs;
 use crate::config::Config;
 use crate::error::Result;
 use crate::formats::{JsonFormat, TranslationFormat, TranslationMap, TranslationValue};
-use crate::translator::Translator;
+use crate::translator::fallback::FallbackTranslationRouter;
+use crate::translator::{TranslationService, Translator};
 use colored::Colorize;
 use indicatif::{ProgressBar, ProgressStyle};
 use std::collections::HashMap;
@@ -12,18 +13,80 @@ use std::fs;
 use std::path::Path;
 
 pub async fn execute(args: TranslateArgs) -> Result<()> {
-    println!(
-        "{} Translating to {} using {:?}",
-        "→".cyan().bold(),
-        args.lang.green(),
-        args.provider
-    );
-
     // Load configuration
-    let config = Config::load()?;
+    let mut config = Config::load()?;
 
-    // Initialize translator
-    let translator = Translator::new(args.provider, &config)?;
+    // Apply CLI overrides to configuration
+    if let Some(timeout) = args.timeout {
+        config.translation.default_timeout_secs = timeout;
+        println!(
+            "{} Override global timeout: {}s",
+            "⚙".cyan(),
+            timeout
+        );
+    }
+    if let Some(batch_size) = args.batch_size {
+        config.translation.default_batch_size = batch_size;
+        println!(
+            "{} Override batch size: {}",
+            "⚙".cyan(),
+            batch_size
+        );
+    }
+    if let Some(max_retries) = args.max_retries {
+        config.translation.default_max_retries = max_retries;
+        println!(
+            "{} Override max retries: {}",
+            "⚙".cyan(),
+            max_retries
+        );
+    }
+
+    // Warn about disabled providers
+    if !args.disabled_providers.is_empty() {
+        println!(
+            "{} Disabled providers: {}",
+            "!".yellow(),
+            args.disabled_providers.join(", ")
+        );
+    }
+
+    // Initialize translator based on mode
+    let translator: Box<dyn TranslationService> = if args.no_fallback {
+        // Single provider mode (backward compatibility)
+        let provider = args.provider.ok_or_else(|| {
+            crate::error::Error::Config(
+                "Provider must be specified when using --no-fallback".to_string(),
+            )
+        })?;
+
+        println!(
+            "{} Single provider mode: {:?} (no fallback)",
+            "→".cyan().bold(),
+            provider
+        );
+
+        Box::new(Translator::new(provider, &config)?)
+    } else {
+        // Fallback router mode (default)
+        if let Some(provider) = args.provider {
+            println!(
+                "{} Provider hint: {:?} will be prioritized",
+                "!".yellow(),
+                provider
+            );
+        }
+
+        let router = FallbackTranslationRouter::new(&config)?;
+
+        println!(
+            "{} Fallback mode enabled: Translating to {}",
+            "→".cyan().bold(),
+            args.lang.green()
+        );
+
+        Box::new(router)
+    };
 
     // Load source (English) translations
     let source_dir = args.translation_dir.join("en");
@@ -70,7 +133,7 @@ pub async fn execute(args: TranslateArgs) -> Result<()> {
             &source_dir,
             &target_dir,
             &args.lang,
-            &translator,
+            translator.as_ref(),
             args.dry_run,
         )
         .await?;
@@ -86,7 +149,7 @@ async fn process_namespace(
     source_dir: &Path,
     target_dir: &Path,
     target_lang: &str,
-    translator: &Translator,
+    translator: &dyn TranslationService,
     dry_run: bool,
 ) -> Result<()> {
     let format = JsonFormat::new();
@@ -125,20 +188,17 @@ async fn process_namespace(
         missing_keys.len().to_string().yellow()
     );
 
-    // Prepare texts for translation
-    let texts_to_translate: HashMap<String, serde_json::Value> = missing_keys
-        .iter()
-        .filter_map(|key| {
-            if let Some(TranslationValue::String(text)) = source_map.get(key) {
-                Some((key.clone(), serde_json::Value::String(text.clone())))
-            } else {
-                None
-            }
-        })
-        .collect();
+    // Flatten nested structures for translation
+    let mut texts_to_translate: HashMap<String, serde_json::Value> = HashMap::new();
+
+    for key in &missing_keys {
+        if let Some(value) = get_translation_value(&source_map, key) {
+            flatten_for_translation(key, value, &mut texts_to_translate);
+        }
+    }
 
     if texts_to_translate.is_empty() {
-        println!("    {} No simple strings to translate (only nested/plural forms)", "!".yellow());
+        println!("    {} No translatable content found", "!".yellow());
         return Ok(());
     }
 
@@ -158,10 +218,10 @@ async fn process_namespace(
         .await?;
     pb.finish_with_message("Done!");
 
-    // Update target map
+    // Reconstruct nested structure from flattened translations
     for (key, value) in translations {
         if let serde_json::Value::String(text) = value {
-            target_map.insert(key, TranslationValue::String(text));
+            set_translation_value(&mut target_map, &key, text);
         }
     }
 
@@ -203,4 +263,181 @@ fn find_missing_keys(source: &TranslationMap, target: &TranslationMap) -> Vec<St
     }
 
     missing
+}
+
+/// Get translation value from nested path (e.g., "app.title" or "auth.login")
+fn get_translation_value<'a>(map: &'a TranslationMap, key: &str) -> Option<&'a TranslationValue> {
+    let parts: Vec<&str> = key.split('.').collect();
+
+    if parts.is_empty() {
+        return None;
+    }
+
+    if parts.len() == 1 {
+        return map.get(key);
+    }
+
+    // Navigate nested structure
+    let mut current_value = map.get(parts[0])?;
+
+    for part in &parts[1..] {
+        match current_value {
+            TranslationValue::Nested(nested_map) => {
+                current_value = nested_map.get(*part)?;
+            }
+            _ => return None,
+        }
+    }
+
+    Some(current_value)
+}
+
+/// Flatten translation value for batch translation
+/// Converts nested structures to dot-notation keys
+fn flatten_for_translation(
+    prefix: &str,
+    value: &TranslationValue,
+    result: &mut HashMap<String, serde_json::Value>,
+) {
+    match value {
+        TranslationValue::String(text) => {
+            result.insert(prefix.to_string(), serde_json::Value::String(text.clone()));
+        }
+        TranslationValue::Nested(nested_map) => {
+            for (key, nested_value) in nested_map {
+                let nested_key = if prefix.is_empty() {
+                    key.clone()
+                } else {
+                    format!("{}.{}", prefix, key)
+                };
+                flatten_for_translation(&nested_key, nested_value, result);
+            }
+        }
+        TranslationValue::Plural(forms) => {
+            // Translate each plural form independently
+            if let Some(zero) = &forms.zero {
+                result.insert(
+                    format!("{}.zero", prefix),
+                    serde_json::Value::String(zero.clone()),
+                );
+            }
+            if let Some(one) = &forms.one {
+                result.insert(
+                    format!("{}.one", prefix),
+                    serde_json::Value::String(one.clone()),
+                );
+            }
+            if let Some(two) = &forms.two {
+                result.insert(
+                    format!("{}.two", prefix),
+                    serde_json::Value::String(two.clone()),
+                );
+            }
+            if let Some(few) = &forms.few {
+                result.insert(
+                    format!("{}.few", prefix),
+                    serde_json::Value::String(few.clone()),
+                );
+            }
+            if let Some(many) = &forms.many {
+                result.insert(
+                    format!("{}.many", prefix),
+                    serde_json::Value::String(many.clone()),
+                );
+            }
+            result.insert(
+                format!("{}.other", prefix),
+                serde_json::Value::String(forms.other.clone()),
+            );
+        }
+    }
+}
+
+/// Set translation value in nested structure from dot-notation key
+fn set_translation_value(map: &mut TranslationMap, key: &str, value: String) {
+    let parts: Vec<&str> = key.split('.').collect();
+
+    if parts.is_empty() {
+        return;
+    }
+
+    // Handle plural form keys (e.g., "pullRequests.count_one.zero")
+    if parts.len() > 1 {
+        let last_part = parts[parts.len() - 1];
+        if matches!(last_part, "zero" | "one" | "two" | "few" | "many" | "other") {
+            // This is a plural form - reconstruct the plural key path
+            let plural_key_parts = &parts[..parts.len() - 1];
+            let plural_form = last_part;
+
+            // Navigate to or create the nested structure
+            let mut current_map = map;
+            for part in &plural_key_parts[..plural_key_parts.len() - 1] {
+                if !current_map.contains_key(*part) {
+                    current_map.insert(
+                        part.to_string(),
+                        TranslationValue::Nested(TranslationMap::new()),
+                    );
+                }
+                current_map = match current_map.get_mut(*part).unwrap() {
+                    TranslationValue::Nested(nested) => nested,
+                    _ => return, // Invalid structure, skip
+                };
+            }
+
+            // Get or create the plural forms structure
+            let plural_key = plural_key_parts.last().unwrap();
+            let plural_forms = current_map
+                .entry(plural_key.to_string())
+                .or_insert_with(|| {
+                    TranslationValue::Plural(crate::formats::PluralForms {
+                        zero: None,
+                        one: None,
+                        two: None,
+                        few: None,
+                        many: None,
+                        other: String::new(),
+                    })
+                });
+
+            if let TranslationValue::Plural(forms) = plural_forms {
+                match plural_form {
+                    "zero" => forms.zero = Some(value),
+                    "one" => forms.one = Some(value),
+                    "two" => forms.two = Some(value),
+                    "few" => forms.few = Some(value),
+                    "many" => forms.many = Some(value),
+                    "other" => forms.other = value,
+                    _ => {}
+                }
+            }
+            return;
+        }
+    }
+
+    // Handle regular nested keys (e.g., "app.title", "auth.login")
+    if parts.len() == 1 {
+        map.insert(key.to_string(), TranslationValue::String(value));
+        return;
+    }
+
+    let mut current_map = map;
+
+    for (i, part) in parts.iter().enumerate() {
+        if i == parts.len() - 1 {
+            // Last part - insert the value
+            current_map.insert(part.to_string(), TranslationValue::String(value.clone()));
+        } else {
+            // Intermediate part - ensure nested map exists
+            if !current_map.contains_key(*part) {
+                current_map.insert(
+                    part.to_string(),
+                    TranslationValue::Nested(TranslationMap::new()),
+                );
+            }
+            current_map = match current_map.get_mut(*part).unwrap() {
+                TranslationValue::Nested(nested) => nested,
+                _ => return, // Invalid structure, skip
+            };
+        }
+    }
 }

@@ -1,1 +1,35 @@
-{}
+{
+  "alphanum": "{{field}} musí obsahovat pouze písmena a čísla",
+  "date": "Prosím, zadejte platné datum",
+  "dateRange": "Koncové datum musí být po počátečním datu",
+  "email": "Prosím, zadejte platnou emailovou adresu",
+  "fields": {
+    "confirmPassword": "Potvrďte heslo",
+    "displayName": "Zobrazované jméno",
+    "email": "Email",
+    "password": "Heslo"
+  },
+  "fileSize": "Velikost souboru nesmí překročit {{max}}",
+  "fileType": "Typ souboru musí být {{types}}",
+  "integer": "{{field}} musí být celé číslo",
+  "invalidEmail": "Neplatná emailová adresa",
+  "max": "{{field}} nesmí překročit {{max}}",
+  "maxLength": "{{field}} nesmí překročit {{max}} znaků",
+  "messages": {
+    "displayNameRequired": "Zobrazované jméno je povinné",
+    "emailRequired": "Email je povinný",
+    "passwordMinLength": "Heslo musí mít alespoň 8 znaků",
+    "passwordRequired": "Heslo je povinné"
+  },
+  "min": "{{field}} musí být alespoň {{min}}",
+  "minLength": "{{field}} musí mít alespoň {{min}} znaků",
+  "negative": "{{field}} musí být záporné",
+  "numeric": "{{field}} musí být číslo",
+  "passwordMismatch": "Hesla se neshodují",
+  "passwordsDontMatch": "Hesla se neshodují",
+  "pattern": "Formát {{field}} je neplatný",
+  "positive": "{{field}} musí být kladné",
+  "required": "{{field}} je povinné",
+  "unique": "{{field}} již existuje",
+  "url": "Prosím, zadejte platnou URL"
+}

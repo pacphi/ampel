@@ -102,17 +102,117 @@ graph TB
 
 ### Technology Stack
 
-| Component | Technology | Justification |
-|-----------|-----------|---------------|
-| **Backend i18n** | rust-i18n 3.0+ | Zero runtime overhead, compile-time validation |
-| **Frontend i18n** | react-i18next 16.2+ | Type safety, largest ecosystem, RTL support |
-| **Translation API** | Lokalise/Crowdin | Professional workflow, version control, context |
-| **Bundle Formats** | YAML (backend), JSON (frontend) | Native format support, developer-friendly |
-| **Build Tool** | New `ampel-i18n-builder` crate | Unified translation workflow automation |
-| **CLI Interface** | clap 4.0+ | User-friendly command-line interface |
-| **HTTP Client** | reqwest 0.12+ | Async API integration with rustls |
-| **Caching** | Redis 7+ (existing) | Translation cache, API rate limiting |
-| **Validation** | serde + JSON Schema | Type-safe translation validation |
+| Component           | Technology                      | Justification                                   |
+| ------------------- | ------------------------------- | ----------------------------------------------- |
+| **Backend i18n**    | rust-i18n 3.0+                  | Zero runtime overhead, compile-time validation  |
+| **Frontend i18n**   | react-i18next 16.2+             | Type safety, largest ecosystem, RTL support     |
+| **Translation API** | Lokalise/Crowdin                | Professional workflow, version control, context |
+| **Bundle Formats**  | YAML (backend), JSON (frontend) | Native format support, developer-friendly       |
+| **Build Tool**      | New `ampel-i18n-builder` crate  | Unified translation workflow automation         |
+| **CLI Interface**   | clap 4.0+                       | User-friendly command-line interface            |
+| **HTTP Client**     | reqwest 0.12+                   | Async API integration with rustls               |
+| **Caching**         | Redis 7+ (existing)             | Translation cache, API rate limiting            |
+| **Validation**      | serde + JSON Schema             | Type-safe translation validation                |
+
+---
+
+## 4-Tier Translation Provider Architecture
+
+### Overview
+
+The `ampel-i18n-builder` implements a robust 4-tier provider architecture with intelligent fallback to ensure 99.9% translation success rate.
+
+### Provider Tiers
+
+| Tier | Provider    | Purpose                         | Rate Limit  | Batch Size | Languages |
+| ---- | ----------- | ------------------------------- | ----------- | ---------- | --------- |
+| 1    | **Systran** | Enterprise neural MT (primary)  | 100 req/sec | 50 texts   | 55+       |
+| 2    | **DeepL**   | High-quality European languages | 10 req/sec  | 50 texts   | 28        |
+| 3    | **Google**  | Broad language coverage         | 100 req/sec | 100 texts  | 133+      |
+| 4    | **OpenAI**  | Fallback for complex content    | Unlimited   | Unlimited  | All       |
+
+### Fallback Flow Diagram
+
+```mermaid
+graph TB
+    START[Translation Request] --> SYSTRAN[Systran API - Tier 1]
+    SYSTRAN -->|Success| DONE[Return Translation]
+    SYSTRAN -->|Failure/Timeout| DEEPL[DeepL API - Tier 2]
+    DEEPL -->|Success| DONE
+    DEEPL -->|Failure/Timeout| GOOGLE[Google API - Tier 3]
+    GOOGLE -->|Success| DONE
+    GOOGLE -->|Failure/Timeout| OPENAI[OpenAI API - Tier 4]
+    OPENAI -->|Success| DONE
+    OPENAI -->|Failure| ERROR[Return Error]
+
+    style SYSTRAN fill:#90EE90
+    style DEEPL fill:#87CEEB
+    style GOOGLE fill:#FFD700
+    style OPENAI fill:#FFA500
+    style DONE fill:#32CD32
+    style ERROR fill:#FF6347
+```
+
+### Configuration Example
+
+```yaml
+translation:
+  # API Keys
+  systran_api_key: '${SYSTRAN_API_KEY}'
+  deepl_api_key: '${DEEPL_API_KEY}'
+  google_api_key: '${GOOGLE_API_KEY}'
+  openai_api_key: '${OPENAI_API_KEY}'
+
+  # Per-Provider Settings
+  providers:
+    systran:
+      enabled: true
+      priority: 1
+      timeout_secs: 45
+      max_retries: 3
+      batch_size: 50
+
+    deepl:
+      enabled: true
+      priority: 2
+      timeout_secs: 30
+      max_retries: 3
+      batch_size: 50
+      # Optimized for European languages
+      preferred_languages: ['de', 'fr', 'fi', 'sv', 'pl', 'cs']
+
+    google:
+      enabled: true
+      priority: 3
+      timeout_secs: 30
+      max_retries: 3
+      batch_size: 100
+      # Optimized for Asian/Middle Eastern languages
+      preferred_languages: ['ar', 'th', 'vi', 'zh', 'ja']
+
+    openai:
+      enabled: true
+      priority: 4
+      timeout_secs: 60
+      max_retries: 2
+      model: 'gpt-4o'
+
+  # Fallback Strategy
+  fallback:
+    skip_on_missing_key: true
+    stop_on_first_success: true
+    log_fallback_events: true
+```
+
+### Key Features
+
+- **Automatic Fallback**: Seamlessly switches to next tier on failure
+- **Configurable Retry**: Exponential backoff with per-provider settings
+- **Language Preferences**: Route languages to optimal providers
+- **Skip on Missing Key**: Gracefully skip unconfigured providers
+- **Comprehensive Logging**: Track provider selection and failures
+
+For complete configuration guide, see [PROVIDER-CONFIGURATION.md](./PROVIDER-CONFIGURATION.md).
 
 ---
 
@@ -1519,7 +1619,7 @@ name: Translation Sync
 on:
   # Run weekly to sync translations
   schedule:
-    - cron: '0 0 * * 0'  # Every Sunday at midnight
+    - cron: '0 0 * * 0' # Every Sunday at midnight
 
   # Allow manual trigger
   workflow_dispatch:
@@ -1834,9 +1934,7 @@ type TypedTFunction<N extends Namespace> = <K extends PathsToStringProps<Resourc
 type PathsToStringProps<T> = T extends string
   ? []
   : {
-      [K in Extract<keyof T, string>]: T[K] extends string
-        ? [K]
-        : [K, ...PathsToStringProps<T[K]>];
+      [K in Extract<keyof T, string>]: T[K] extends string ? [K] : [K, ...PathsToStringProps<T[K]>];
     }[Extract<keyof T, string>];
 ```
 
@@ -2289,6 +2387,7 @@ This architecture document defines a comprehensive, production-ready localizatio
 ✅ **Enables professional workflows** via translation service API integration
 
 **Next Steps:**
+
 1. Review architecture with engineering team
 2. Prototype `ampel-i18n-builder` core functionality
 3. Implement language switcher component

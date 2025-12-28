@@ -1,15 +1,36 @@
 {
-  "title": "Settings",
-  "subtitle": "Manage your preferences and integrations",
-  "tabs": {
-    "general": "General",
-    "account": "Account",
-    "providers": "Providers",
-    "notifications": "Notifications",
-    "behavior": "Behavior",
-    "repositories": "Repositories",
-    "appearance": "Appearance"
+  "account": {
+    "avatar": "Avatar",
+    "changePassword": "Change password",
+    "deleteAccount": "Delete account",
+    "deleteAccountWarning": "This action cannot be undone",
+    "displayName": "Display name",
+    "displayNamePlaceholder": "Insira seu nome de exibição",
+    "email": "Email address",
+    "emailAddress": "Endereço de email",
+    "emailPlaceholder": "Insira seu email",
+    "memberSince": "Membro desde",
+    "notSet": "Não definido",
+    "profile": "Profile",
+    "unknown": "Desconhecido",
+    "yourAccountInfo": "Informações da sua conta"
   },
+  "behavior": {
+    "autoRefresh": "Auto refresh",
+    "autoRefreshDescription": "Automatically refresh PR list",
+    "defaultView": "Default view",
+    "defaultViewDescription": "Choose your preferred PR view",
+    "prPerPage": "PRs per page",
+    "prPerPageDescription": "Number of PRs to display per page",
+    "refreshInterval": "Refresh interval",
+    "refreshIntervalDescription": "How often to refresh (in minutes)",
+    "title": "Comportamento"
+  },
+  "filtersReset": "Filtros redefinidos",
+  "filtersResetSuccess": "As configurações do seu filtro PR foram redefinidas para os padrões.",
+  "filtersUpdateFailed": "Falha ao atualizar filtros",
+  "filtersUpdateSuccess": "As configurações do seu filtro PR foram salvas.",
+  "filtersUpdated": "Filtros atualizados",
   "general": {
     "language": "Language",
     "languageDescription": "Choose your preferred language",
@@ -18,47 +39,45 @@
     "timezone": "Timezone",
     "timezoneDescription": "Set your timezone for dates and times"
   },
-  "account": {
-    "profile": "Profile",
-    "displayName": "Display name",
-    "email": "Email address",
-    "avatar": "Avatar",
-    "changePassword": "Change password",
-    "deleteAccount": "Delete account",
-    "deleteAccountWarning": "This action cannot be undone"
-  },
-  "providers": {
-    "github": "GitHub",
-    "gitlab": "GitLab",
-    "bitbucket": "Bitbucket",
-    "connect": "Connect",
-    "disconnect": "Disconnect",
-    "connected": "Connected",
-    "notConnected": "Not connected",
-    "token": "Personal Access Token",
-    "tokenDescription": "Enter your {{provider}} personal access token",
-    "tokenPlaceholder": "ghp_...",
-    "tokenInstructions": "How to get a token"
-  },
   "notifications": {
     "email": "Email notifications",
     "emailDescription": "Receive notifications via email",
-    "prUpdates": "PR updates",
-    "prUpdatesDescription": "Get notified when PRs are updated",
     "mentions": "Mentions",
     "mentionsDescription": "Get notified when you're mentioned",
+    "prUpdates": "PR updates",
+    "prUpdatesDescription": "Get notified when PRs are updated",
     "reviews": "Review requests",
-    "reviewsDescription": "Get notified when your review is requested"
+    "reviewsDescription": "Get notified when your review is requested",
+    "title": "Notificações"
   },
-  "behavior": {
-    "autoRefresh": "Auto refresh",
-    "autoRefreshDescription": "Automatically refresh PR list",
-    "refreshInterval": "Refresh interval",
-    "refreshIntervalDescription": "How often to refresh (in minutes)",
-    "defaultView": "Default view",
-    "defaultViewDescription": "Choose your preferred PR view",
-    "prPerPage": "PRs per page",
-    "prPerPageDescription": "Number of PRs to display per page"
+  "prFilters": {
+    "allowedActors": "Atores permitidos (Bots/Usuários)",
+    "allowedActorsDescription": "Processar apenas PRs desses atores confiáveis. Normalmente bots como dependabot, renovate, etc.",
+    "allowedActorsPlaceholder": "por exemplo, dependabot[bot]",
+    "description": "Configure filtros globais para o processamento de solicitações pull. Estes se aplicam às regras de auto-merge em todos os repositórios.",
+    "maxAgeDays": "Idade máxima do PR (Dias)",
+    "maxAgeDaysDescription": "Ignore PRs mais antigos que este número de dias. Deixe em branco para não haver limite.",
+    "maxAgeDaysPlaceholder": "por exemplo, 30",
+    "skipLabels": "Pular etiquetas",
+    "skipLabelsDescription": "PRs com essas etiquetas serão ignorados durante o processamento de auto-merge.",
+    "skipLabelsPlaceholder": "por exemplo, não-fundir",
+    "title": "Filtros de PR"
+  },
+  "profileUpdateFailed": "Falha ao atualizar o perfil",
+  "profileUpdateSuccess": "Seu perfil foi salvo com sucesso.",
+  "profileUpdated": "Perfil atualizado",
+  "providers": {
+    "bitbucket": "Bitbucket",
+    "connect": "Connect",
+    "connected": "Connected",
+    "disconnect": "Disconnect",
+    "github": "GitHub",
+    "gitlab": "GitLab",
+    "notConnected": "Not connected",
+    "token": "Personal Access Token",
+    "tokenDescription": "Enter your {{provider}} personal access token",
+    "tokenInstructions": "How to get a token",
+    "tokenPlaceholder": "ghp_..."
   },
   "repositories": {
     "filter": "Repository filter",
@@ -68,8 +87,25 @@
     "showForks": "Show forks",
     "showForksDescription": "Include forked repositories"
   },
+  "reset": "Reset to defaults",
+  "resetConfirm": "Are you sure you want to reset all settings?",
   "save": "Save changes",
   "saved": "Settings saved successfully",
-  "reset": "Reset to defaults",
-  "resetConfirm": "Are you sure you want to reset all settings?"
+  "subtitle": "Manage your preferences and integrations",
+  "tabs": {
+    "account": "Account",
+    "accounts": "Contas",
+    "appearance": "Appearance",
+    "behavior": "Behavior",
+    "filters": "Filtros de PR",
+    "general": "General",
+    "notifications": "Notifications",
+    "prFilters": "Filtros de PR",
+    "profile": "Perfil",
+    "providers": "Providers",
+    "repositories": "Repositories",
+    "repositoryFilters": "Filtros de repositório"
+  },
+  "title": "Settings",
+  "updateFailed": "Falha ao atualizar"
 }

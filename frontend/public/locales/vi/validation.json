@@ -1,1 +1,23 @@
-{}
+{
+  "alphanum": "{{field}} chỉ được chứa chữ và số",
+  "date": "Vui lòng nhập ngày hợp lệ",
+  "dateRange": "Ngày kết thúc phải sau ngày bắt đầu",
+  "email": "Vui lòng nhập địa chỉ email hợp lệ",
+  "fileSize": "Kích thước tệp không được vượt quá {{max}}",
+  "fileType": "Loại tệp phải là {{types}}",
+  "integer": "{{field}} phải là số nguyên",
+  "invalidEmail": "Địa chỉ email không hợp lệ",
+  "max": "{{field}} không được vượt quá {{max}}",
+  "maxLength": "{{field}} không được vượt quá {{max}} ký tự",
+  "min": "{{field}} phải ít nhất là {{min}}",
+  "minLength": "{{field}} phải có ít nhất {{min}} ký tự",
+  "negative": "{{field}} phải là số âm",
+  "numeric": "{{field}} phải là số",
+  "passwordMismatch": "Mật khẩu không khớp",
+  "passwordsDontMatch": "Mật khẩu không khớp",
+  "pattern": "Định dạng {{field}} không hợp lệ",
+  "positive": "{{field}} phải là số dương",
+  "required": "{{field}} là bắt buộc",
+  "unique": "{{field}} đã tồn tại",
+  "url": "Vui lòng nhập URL hợp lệ"
+}

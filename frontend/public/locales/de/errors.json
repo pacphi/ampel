@@ -1,1 +1,54 @@
-{}
+{
+  "auth": {
+    "failedToCreateAccount": "Kontoerstellung fehlgeschlagen",
+    "forbidden": "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen",
+    "invalidCredentials": "Ungültiger Benutzername oder Passwort",
+    "invalidEmailOrPassword": "Ungültige E-Mail oder Passwort",
+    "loginFailed": "Anmeldung fehlgeschlagen",
+    "registrationFailed": "Registrierung fehlgeschlagen",
+    "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+    "tokenExpired": "Authentifizierungstoken ist abgelaufen",
+    "unauthorized": "Unberechtigter Zugriff"
+  },
+  "generic": {
+    "goHome": "Zum Dashboard gehen",
+    "message": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+    "retry": "Erneut versuchen",
+    "title": "Etwas ist schief gelaufen"
+  },
+  "network": {
+    "message": "Verbindung zum Server konnte nicht hergestellt werden. Bitte überprüfen Sie Ihre Internetverbindung.",
+    "offline": "Sie sind derzeit offline",
+    "title": "Netzwerkfehler"
+  },
+  "notFound": {
+    "goHome": "Zurück zum Dashboard",
+    "message": "Die Seite, nach der Sie suchen, existiert nicht.",
+    "title": "Seite nicht gefunden"
+  },
+  "pr": {
+    "approveFailed": "Pull-Anfrage konnte nicht genehmigt werden",
+    "commentFailed": "Kommentar konnte nicht gepostet werden",
+    "loadFailed": "Pull-Anfragen konnten nicht geladen werden",
+    "mergeFailed": "Pull-Anfrage konnte nicht zusammengeführt werden"
+  },
+  "provider": {
+    "connectionFailed": "Verbindung zu {{provider}} fehlgeschlagen",
+    "invalidToken": "Ungültiges {{provider}} Token",
+    "notFound": "Ressource auf {{provider}} nicht gefunden",
+    "rateLimited": "{{provider}} API-Ratenlimit überschritten"
+  },
+  "repository": {
+    "accessDenied": "Zugriff auf das Repository verweigert",
+    "loadFailed": "Repositories konnten nicht geladen werden",
+    "notFound": "Repository nicht gefunden"
+  },
+  "validation": {
+    "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "invalidUrl": "Bitte geben Sie eine gültige URL ein",
+    "maxLength": "Darf {{max}} Zeichen nicht überschreiten",
+    "minLength": "Muss mindestens {{min}} Zeichen lang sein",
+    "passwordMismatch": "Passwörter stimmen nicht überein",
+    "required": "Dieses Feld ist erforderlich"
+  }
+}

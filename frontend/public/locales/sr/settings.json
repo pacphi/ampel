@@ -1,1 +1,17 @@
-{}
+{
+  "filtersReset": "Filteri resetovani",
+  "filtersResetSuccess": "Vaša podešavanja PR filtera su resetovana na podrazumevane vrednosti.",
+  "filtersUpdateFailed": "Ažuriranje filtera nije uspelo",
+  "filtersUpdateSuccess": "Vaša podešavanja PR filtera su sačuvana.",
+  "filtersUpdated": "Filteri ažurirani",
+  "profileUpdateFailed": "Ažuriranje profila nije uspelo",
+  "profileUpdateSuccess": "Vaš profil je uspešno sačuvan.",
+  "profileUpdated": "Profil ažuriran",
+  "reset": "Resetuj na podrazumevane",
+  "resetConfirm": "Da li ste sigurni da želite da resetujete sva podešavanja?",
+  "save": "Sačuvaj promene",
+  "saved": "Podešavanja su uspešno sačuvana",
+  "subtitle": "Upravljajte svojim preferencijama i integracijama",
+  "title": "Podešavanja",
+  "updateFailed": "Ažuriranje nije uspelo"
+}

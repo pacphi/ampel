@@ -1,0 +1,38 @@
+pt-BR:
+  providers:
+    # GitHub provider
+    github:
+      token_invalid: "Token inválido ou expirado"
+      api_error: "Erro na API: %{status}"
+      user_fetch_failed: "Falha ao obter usuário"
+      invalid_token: "Token inválido"
+      repos_fetch_failed: "Falha ao listar repositórios"
+      repo_fetch_failed: "Falha ao obter repositório"
+      repo_not_found: "Repositório %{owner}/%{repo} não encontrado"
+      prs_fetch_failed: "Falha ao listar pull requests"
+      pr_not_found: "Pull request #%{number} não encontrado"
+      pr_fetch_failed: "Falha ao obter pull request"
+      reviews_fetch_failed: "Falha ao obter revisões"
+      merge_not_mergeable: "O pull request não pode ser mesclado"
+      merge_conflict: "Conflito de merge ou o branch principal foi modificado"
+      merge_checks_failed: "O pull request não pode ser mesclado (verifique as verificações de status e revisões)"
+      merge_failed: "Falha ao mesclar pull request"
+      rate_limit_failed: "Falha ao obter limite de taxa"
+
+    # General provider errors
+    general:
+      auth_failed: "Falha na autenticação: %{reason}"
+      rate_limit_exceeded: "Limite de taxa excedido. Reinicia em: %{reset_time}"
+      not_found: "Recurso não encontrado: %{resource}"
+      permission_denied: "Permissão negada: %{reason}"
+      invalid_response: "Resposta inválida: %{reason}"
+      network_error: "Erro de rede: %{reason}"
+      api_error: "Erro na API do provedor: %{message} (status: %{status_code})"
+      serialization_error: "Erro de serialização: %{reason}"
+      config_error: "Erro de configuração: %{reason}"
+      not_supported: "Operação não suportada: %{operation}"
+
+    # Worker job errors
+    worker:
+      no_account: "O repositório não possui conta de provedor associada"
+      account_not_found: "Conta de provedor não encontrada"

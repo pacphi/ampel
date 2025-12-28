@@ -1,0 +1,11 @@
+he:
+  validation:
+    # Account validation
+    account:
+      valid: "חוקי"
+      invalid: "לא חוקי"
+
+    # General validation
+    general:
+      required: "שדה זה הוא חובה"
+      invalid_format: "פורמט לא חוקי"

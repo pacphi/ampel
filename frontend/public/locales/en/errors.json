@@ -15,7 +15,11 @@
     "forbidden": "You don't have permission to access this resource",
     "sessionExpired": "Your session has expired. Please log in again.",
     "invalidCredentials": "Invalid username or password",
-    "tokenExpired": "Authentication token has expired"
+    "invalidEmailOrPassword": "Invalid email or password",
+    "tokenExpired": "Authentication token has expired",
+    "loginFailed": "Login failed",
+    "registrationFailed": "Registration failed",
+    "failedToCreateAccount": "Failed to create account"
   },
   "validation": {
     "required": "This field is required",

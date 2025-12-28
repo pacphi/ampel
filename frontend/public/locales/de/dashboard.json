@@ -1,1 +1,89 @@
-{}
+{
+  "actions": {
+    "approve": "Genehmigen",
+    "comment": "Kommentar",
+    "deselectAll": "Alles abwählen",
+    "merge": "Zusammenführen",
+    "refresh": "Aktualisieren",
+    "requestChanges": "Änderungen anfordern",
+    "selectAll": "Alles auswählen",
+    "viewOnProvider": "Anzeigen auf {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Wartet auf Überprüfung",
+    "changesRequested": "Änderungen angefordert",
+    "ciFailed": "CI fehlgeschlagen",
+    "ciPending": "CI ausstehend",
+    "conflicts": "Konflikte",
+    "draft": "Entwurf",
+    "needsReview": "Benötigt Überprüfung"
+  },
+  "empty": {
+    "action": "Anbieter verbinden",
+    "description": "Verbinden Sie Ihre Git-Anbieter, um PRs zu verfolgen",
+    "title": "Keine Pull-Anfragen gefunden"
+  },
+  "filters": {
+    "all": "Alle",
+    "assignee": "Zuweiser",
+    "author": "Autor",
+    "closed": "Geschlossen",
+    "draft": "Entwurf",
+    "label": "Etikett",
+    "merged": "Zusammengeführt",
+    "onlyWithPrs": "Nur Repositories mit offenen PRs anzeigen",
+    "open": "Offen",
+    "provider": "Anbieter",
+    "repository": "Repository"
+  },
+  "pr": {
+    "additions": "Ergänzungen",
+    "author": "Autor",
+    "comments": "Kommentare",
+    "createdAt": "Erstellt",
+    "deletions": "Löschungen",
+    "number": "#{{number}}",
+    "sourceBranch": "Quellzweig",
+    "targetBranch": "Zielzweig",
+    "updatedAt": "Aktualisiert"
+  },
+  "prDashboard": "PR Dashboard",
+  "sort": {
+    "author": "Autor",
+    "created": "Erstellungsdatum",
+    "repository": "Repository",
+    "status": "Status",
+    "title": "Sortieren nach",
+    "updated": "Zuletzt aktualisiert"
+  },
+  "stats": {
+    "blocked": "Blockiert",
+    "inProgress": "In Bearbeitung",
+    "needsAttention": "Benötigt Aufmerksamkeit",
+    "open": "Offen",
+    "openPRs": "Offene PRs",
+    "ready": "Bereit zum Zusammenführen",
+    "readyToMerge": "Bereit zum Zusammenführen",
+    "total": "Gesamt PRs",
+    "totalRepositories": "Gesamt Repositories"
+  },
+  "status": {
+    "closed": "Geschlossen",
+    "draft": "Entwurf",
+    "green": "Bereit zum Zusammenführen",
+    "merged": "Zusammengeführt",
+    "red": "Blockiert",
+    "yellow": "In Bearbeitung"
+  },
+  "subtitle": "Verwalten Sie Ihre Pull-Anfragen über alle Anbieter",
+  "title": "Dashboard",
+  "views": {
+    "grid": "Rasteransicht",
+    "list": "Listenansicht",
+    "prs": "Pull-Anfragen Ansicht",
+    "pullRequests": "Pull-Anfragen Ansicht",
+    "repositoryGrid": "Repository Rasteransicht",
+    "repositoryList": "Repository Listenansicht",
+    "table": "Tabellenansicht"
+  }
+}

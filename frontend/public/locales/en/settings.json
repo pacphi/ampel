@@ -3,12 +3,17 @@
   "subtitle": "Manage your preferences and integrations",
   "tabs": {
     "general": "General",
+    "profile": "Profile",
     "account": "Account",
+    "accounts": "Accounts",
     "providers": "Providers",
     "notifications": "Notifications",
     "behavior": "Behavior",
     "repositories": "Repositories",
-    "appearance": "Appearance"
+    "repositoryFilters": "Repository Filters",
+    "appearance": "Appearance",
+    "filters": "PR Filters",
+    "prFilters": "PR Filters"
   },
   "general": {
     "language": "Language",
@@ -21,11 +26,18 @@
   "account": {
     "profile": "Profile",
     "displayName": "Display name",
-    "email": "Email address",
+    "displayNamePlaceholder": "Enter your display name",
+    "email": "Email",
+    "emailAddress": "Email address",
+    "emailPlaceholder": "Enter your email",
     "avatar": "Avatar",
     "changePassword": "Change password",
     "deleteAccount": "Delete account",
-    "deleteAccountWarning": "This action cannot be undone"
+    "deleteAccountWarning": "This action cannot be undone",
+    "memberSince": "Member Since",
+    "notSet": "Not set",
+    "unknown": "Unknown",
+    "yourAccountInfo": "Your account information"
   },
   "providers": {
     "github": "GitHub",
@@ -41,6 +53,7 @@
     "tokenInstructions": "How to get a token"
   },
   "notifications": {
+    "title": "Notifications",
     "email": "Email notifications",
     "emailDescription": "Receive notifications via email",
     "prUpdates": "PR updates",
@@ -51,6 +64,7 @@
     "reviewsDescription": "Get notified when your review is requested"
   },
   "behavior": {
+    "title": "Behavior",
     "autoRefresh": "Auto refresh",
     "autoRefreshDescription": "Automatically refresh PR list",
     "refreshInterval": "Refresh interval",
@@ -68,8 +82,30 @@
     "showForks": "Show forks",
     "showForksDescription": "Include forked repositories"
   },
+  "prFilters": {
+    "title": "PR Filters",
+    "description": "Configure global filters for pull request processing. These apply to auto-merge rules across all repositories.",
+    "allowedActors": "Allowed Actors (Bots/Users)",
+    "allowedActorsDescription": "Only process PRs from these trusted actors. Typically bots like dependabot, renovate, etc.",
+    "allowedActorsPlaceholder": "e.g., dependabot[bot]",
+    "skipLabels": "Skip Labels",
+    "skipLabelsDescription": "PRs with these labels will be skipped during auto-merge processing.",
+    "skipLabelsPlaceholder": "e.g., do-not-merge",
+    "maxAgeDays": "Max PR Age (Days)",
+    "maxAgeDaysDescription": "Skip PRs older than this many days. Leave empty for no limit.",
+    "maxAgeDaysPlaceholder": "e.g., 30"
+  },
   "save": "Save changes",
   "saved": "Settings saved successfully",
+  "profileUpdated": "Profile updated",
+  "profileUpdateSuccess": "Your profile has been saved successfully.",
+  "filtersUpdated": "Filters updated",
+  "filtersUpdateSuccess": "Your PR filter settings have been saved.",
+  "filtersReset": "Filters reset",
+  "filtersResetSuccess": "Your PR filter settings have been reset to defaults.",
   "reset": "Reset to defaults",
-  "resetConfirm": "Are you sure you want to reset all settings?"
+  "resetConfirm": "Are you sure you want to reset all settings?",
+  "updateFailed": "Failed to update",
+  "profileUpdateFailed": "Failed to update profile",
+  "filtersUpdateFailed": "Failed to update filters"
 }

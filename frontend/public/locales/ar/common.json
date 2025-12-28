@@ -65,5 +65,25 @@
     "weeksAgo_other": "{{count}} weeks ago",
     "monthsAgo": "{{count}} month ago",
     "monthsAgo_other": "{{count}} months ago"
+  },
+  "pluralization": {
+    "requests_zero": "لا طلبات",
+    "requests_one": "طلب واحد",
+    "requests_two": "طلبان",
+    "requests_few": "{{count}} طلبات",
+    "requests_many": "{{count}} طلباً",
+    "requests_other": "{{count}} طلب",
+    "pullRequests_zero": "لا pull requests",
+    "pullRequests_one": "pull request واحد",
+    "pullRequests_two": "pull requests اثنان",
+    "pullRequests_few": "{{count}} pull requests",
+    "pullRequests_many": "{{count}} pull request",
+    "pullRequests_other": "{{count}} pull request",
+    "comments_zero": "لا تعليقات",
+    "comments_one": "تعليق واحد",
+    "comments_two": "تعليقان",
+    "comments_few": "{{count}} تعليقات",
+    "comments_many": "{{count}} تعليقاً",
+    "comments_other": "{{count}} تعليق"
   }
 }

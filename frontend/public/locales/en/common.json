@@ -1,6 +1,7 @@
 {
   "app": {
     "title": "Ampel PR Dashboard",
+    "name": "Ampel",
     "description": "Unified pull request management",
     "loading": "Loading...",
     "error": "An error occurred",
@@ -19,7 +20,10 @@
     "apply": "Apply",
     "success": "Success",
     "warning": "Warning",
-    "info": "Information"
+    "info": "Information",
+    "add": "Add",
+    "remove": "Remove",
+    "reset": "Reset"
   },
   "auth": {
     "login": "Login",
@@ -27,12 +31,23 @@
     "username": "Username",
     "password": "Password",
     "email": "Email",
+    "displayName": "Display Name",
     "forgotPassword": "Forgot password?",
     "resetPassword": "Reset password",
     "signUp": "Sign up",
+    "signIn": "Sign in",
     "welcome": "Welcome back!",
+    "welcomeToAmpel": "Welcome to Ampel",
+    "createAccount": "Create an account",
+    "getStarted": "Get started with Ampel",
     "loginSuccess": "Login successful",
-    "logoutSuccess": "Logout successful"
+    "logoutSuccess": "Logout successful",
+    "signingIn": "Signing in...",
+    "creatingAccount": "Creating account...",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInToContinue": "Sign in to your account to continue",
+    "confirmPassword": "Confirm Password"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -42,12 +57,15 @@
     "repositories": "Repositories",
     "pullRequests": "Pull Requests",
     "help": "Help",
-    "documentation": "Documentation"
+    "documentation": "Documentation",
+    "merge": "Merge",
+    "analytics": "Analytics"
   },
   "theme": {
     "light": "Light mode",
     "dark": "Dark mode",
-    "auto": "Auto"
+    "auto": "Auto",
+    "toggle": "Toggle theme"
   },
   "language": {
     "select": "Select language",
@@ -65,5 +83,38 @@
     "weeksAgo_other": "{{count}} weeks ago",
     "monthsAgo": "{{count}} month ago",
     "monthsAgo_other": "{{count}} months ago"
+  },
+  "actions": {
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "remove": "Remove",
+    "reset": "Reset to Defaults",
+    "apply": "Apply",
+    "clear": "Clear",
+    "viewOnProvider": "View on {{provider}}",
+    "showEmail": "Show email",
+    "hideEmail": "Hide email"
+  },
+  "visibility": {
+    "public": "Public",
+    "private": "Private",
+    "archived": "Archived"
+  },
+  "status": {
+    "trafficLight": "Traffic Light Status"
+  },
+  "pluralization": {
+    "requests_one": "{{count}} request",
+    "requests_other": "{{count}} requests",
+    "pullRequests_one": "{{count}} pull request",
+    "pullRequests_other": "{{count}} pull requests",
+    "comments_one": "{{count}} comment",
+    "comments_other": "{{count}} comments"
   }
 }

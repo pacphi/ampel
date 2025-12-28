@@ -1,1 +1,89 @@
-{}
+{
+  "actions": {
+    "approve": "وافق",
+    "comment": "تعليق",
+    "deselectAll": "إلغاء تحديد الكل",
+    "merge": "دمج",
+    "refresh": "تحديث",
+    "requestChanges": "طلب تغييرات",
+    "selectAll": "حدد الكل",
+    "viewOnProvider": "عرض على {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "في انتظار المراجعة",
+    "changesRequested": "تم طلب تغييرات",
+    "ciFailed": "فشل CI",
+    "ciPending": "CI معلق",
+    "conflicts": "التعارضات",
+    "draft": "مسودة",
+    "needsReview": "يحتاج إلى مراجعة"
+  },
+  "empty": {
+    "action": "ربط المزود",
+    "description": "قم بربط مزودي Git الخاصين بك لبدء تتبع طلبات السحب",
+    "title": "لم يتم العثور على طلبات السحب"
+  },
+  "filters": {
+    "all": "الكل",
+    "assignee": "المكلف",
+    "author": "المؤلف",
+    "closed": "مغلق",
+    "draft": "مسودة",
+    "label": "التسمية",
+    "merged": "تم الدمج",
+    "onlyWithPrs": "عرض المستودعات مع طلبات السحب المفتوحة",
+    "open": "مفتوح",
+    "provider": "المزود",
+    "repository": "المستودع"
+  },
+  "pr": {
+    "additions": "الإضافات",
+    "author": "المؤلف",
+    "comments": "التعليقات",
+    "createdAt": "أنشئت",
+    "deletions": "الحذف",
+    "number": "#{{number}}",
+    "sourceBranch": "الفرع المصدر",
+    "targetBranch": "الفرع الهدف",
+    "updatedAt": "تم التحديث"
+  },
+  "prDashboard": "لوحة طلبات السحب",
+  "sort": {
+    "author": "المؤلف",
+    "created": "تاريخ الإنشاء",
+    "repository": "المستودع",
+    "status": "الحالة",
+    "title": "الترتيب حسب",
+    "updated": "آخر تحديث"
+  },
+  "stats": {
+    "blocked": "محظور",
+    "inProgress": "جاري العمل",
+    "needsAttention": "يحتاج الى اهتمام",
+    "open": "مفتوح",
+    "openPRs": "طلبات السحب المفتوحة",
+    "ready": "جاهز للدمج",
+    "readyToMerge": "جاهز للدمج",
+    "total": "إجمالي طلبات السحب",
+    "totalRepositories": "إجمالي المستودعات"
+  },
+  "status": {
+    "closed": "مغلق",
+    "draft": "مسودة",
+    "green": "جاهز للدمج",
+    "merged": "تم الدمج",
+    "red": "محظور",
+    "yellow": "جاري العمل"
+  },
+  "subtitle": "إدارة طلبات السحب الخاصة بك عبر جميع المزودين",
+  "title": "لوحة القيادة",
+  "views": {
+    "grid": "عرض الشبكة",
+    "list": "عرض القائمة",
+    "prs": "عرض طلبات السحب",
+    "pullRequests": "عرض طلبات السحب",
+    "repositoryGrid": "عرض شبكة المستودع",
+    "repositoryList": "عرض قائمة المستودع",
+    "table": "عرض الجدول"
+  }
+}

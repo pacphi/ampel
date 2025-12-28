@@ -1,0 +1,38 @@
+fr:
+  providers:
+    # GitHub provider
+    github:
+      token_invalid: "Jeton non valide ou expiré"
+      api_error: "Erreur d'API : %{status}"
+      user_fetch_failed: "Échec de la récupération de l'utilisateur"
+      invalid_token: "Jeton non valide"
+      repos_fetch_failed: "Échec de la liste des dépôts"
+      repo_fetch_failed: "Échec de la récupération du dépôt"
+      repo_not_found: "Dépôt %{owner}/%{repo} non trouvé"
+      prs_fetch_failed: "Échec de la liste des pull requests"
+      pr_not_found: "Pull request #%{number} non trouvée"
+      pr_fetch_failed: "Échec de la récupération de la pull request"
+      reviews_fetch_failed: "Échec de la récupération des évaluations"
+      merge_not_mergeable: "La pull request ne peut pas être fusionnée"
+      merge_conflict: "Conflit de fusion ou la branche principale a été modifiée"
+      merge_checks_failed: "La pull request ne peut pas être fusionnée (vérifiez les contrôles d'état et les évaluations)"
+      merge_failed: "Échec de la fusion de la pull request"
+      rate_limit_failed: "Échec de la récupération de la limite de débit"
+
+    # General provider errors
+    general:
+      auth_failed: "Échec de l'authentification : %{reason}"
+      rate_limit_exceeded: "Limite de débit dépassée. Réinitialisation à : %{reset_time}"
+      not_found: "Ressource non trouvée : %{resource}"
+      permission_denied: "Permission refusée : %{reason}"
+      invalid_response: "Réponse non valide : %{reason}"
+      network_error: "Erreur réseau : %{reason}"
+      api_error: "Erreur d'API du fournisseur : %{message} (état : %{status_code})"
+      serialization_error: "Erreur de sérialisation : %{reason}"
+      config_error: "Erreur de configuration : %{reason}"
+      not_supported: "Opération non prise en charge : %{operation}"
+
+    # Worker job errors
+    worker:
+      no_account: "Le dépôt n'a pas de compte fournisseur associé"
+      account_not_found: "Compte fournisseur non trouvé"

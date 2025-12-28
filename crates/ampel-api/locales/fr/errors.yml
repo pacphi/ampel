@@ -1,0 +1,58 @@
+fr:
+  errors:
+    # Authentication errors
+    auth:
+      email_registered: "E-mail déjà enregistré"
+      invalid_credentials: "E-mail ou mot de passe non valide"
+      invalid_refresh_token: "Jeton de rafraîchissement non valide ou expiré"
+      user_not_found: "Utilisateur non trouvé"
+      email_in_use: "E-mail déjà utilisé"
+
+    # Repository errors
+    repository:
+      not_found: "Dépôt non trouvé"
+      already_added: "Dépôt déjà ajouté"
+      invalid_provider: "Fournisseur non valide"
+      provider_not_connected: "Fournisseur non connecté"
+      invalid_provider_db: "Type de fournisseur non valide dans la base de données"
+      not_found_for_pr: "Dépôt non trouvé pour la PR"
+      no_account_linked: "Dépôt non lié au compte"
+
+    # Pull request errors
+    pull_request:
+      not_found: "Pull request non trouvée"
+      merge_failed: "Échec de la fusion : %{reason}"
+
+    # Account errors
+    account:
+      not_found: "Compte non trouvé"
+      invalid_provider_type: "Type de fournisseur non valide"
+      validation_failed: "Échec de la validation du jeton : %{error}"
+      invalid_token: "Jeton non valide"
+      provider_no_user_id: "Le fournisseur n'a pas renvoyé l'ID utilisateur"
+      provider_no_username: "Le fournisseur n'a pas renvoyé le nom d'utilisateur"
+      already_connected: "Ce compte est déjà connecté. Utilisez PATCH pour mettre à jour le jeton."
+
+    # Provider errors
+    provider:
+      error: "Erreur du fournisseur : %{error}"
+      decrypt_failed: "Échec du déchiffrement du jeton : %{error}"
+
+    # Encryption errors
+    encryption:
+      failed: "Erreur de chiffrement : %{error}"
+      decrypt_failed: "Erreur de déchiffrement : %{error}"
+
+    # General errors
+    general:
+      internal: "Erreur interne"
+      serialization_failed: "Échec de la sérialisation des portées : %{error}"
+
+    # Network errors
+    network:
+      timeout: "Délai d'attente de la requête dépassé"
+      connection_failed: "Échec de la connexion"
+
+    # Rate limit
+    rate_limit:
+      exceeded: "Limite de débit dépassée"

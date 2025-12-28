@@ -1,0 +1,58 @@
+cs:
+  errors:
+    # Authentication errors
+    auth:
+      email_registered: "E-mail je již registrován"
+      invalid_credentials: "Neplatný e-mail nebo heslo"
+      invalid_refresh_token: "Neplatný nebo vypršený obnovovací token"
+      user_not_found: "Uživatel nebyl nalezen"
+      email_in_use: "E-mail je již používán"
+
+    # Repository errors
+    repository:
+      not_found: "Repozitář nebyl nalezen"
+      already_added: "Repozitář již byl přidán"
+      invalid_provider: "Neplatný poskytovatel"
+      provider_not_connected: "Poskytovatel není připojen"
+      invalid_provider_db: "Neplatný typ poskytovatele v databázi"
+      not_found_for_pr: "Repozitář nebyl nalezen pro PR"
+      no_account_linked: "Repozitář není propojen s účtem"
+
+    # Pull request errors
+    pull_request:
+      not_found: "Pull request nebyl nalezen"
+      merge_failed: "Sloučení selhalo: %{reason}"
+
+    # Account errors
+    account:
+      not_found: "Účet nebyl nalezen"
+      invalid_provider_type: "Neplatný typ poskytovatele"
+      validation_failed: "Ověření tokenu selhalo: %{error}"
+      invalid_token: "Neplatný token"
+      provider_no_user_id: "Poskytovatel nevrátil ID uživatele"
+      provider_no_username: "Poskytovatel nevrátil uživatelské jméno"
+      already_connected: "Tento účet je již připojen. Použijte PATCH k aktualizaci tokenu."
+
+    # Provider errors
+    provider:
+      error: "Chyba poskytovatele: %{error}"
+      decrypt_failed: "Dešifrování tokenu selhalo: %{error}"
+
+    # Encryption errors
+    encryption:
+      failed: "Chyba šifrování: %{error}"
+      decrypt_failed: "Chyba dešifrování: %{error}"
+
+    # General errors
+    general:
+      internal: "Interní chyba"
+      serialization_failed: "Serializace rozsahů selhala: %{error}"
+
+    # Network errors
+    network:
+      timeout: "Časový limit požadavku vypršel"
+      connection_failed: "Připojení selhalo"
+
+    # Rate limit
+    rate_limit:
+      exceeded: "Limit četnosti překročen"

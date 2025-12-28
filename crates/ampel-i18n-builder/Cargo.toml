@@ -45,6 +45,8 @@ colored = "2.1"
 indicatif = "0.17"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+secrecy = "0.10"
+dotenv = "0.15"
 
 # Rate limiting and caching
 governor = "0.6"
@@ -59,3 +61,4 @@ tempfile = "3.14"
 [features]
 default = []
 redis-cache = ["redis"]
+integration-tests = [] # Enable feature-gated tests that make real API calls

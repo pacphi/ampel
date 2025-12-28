@@ -1,0 +1,250 @@
+# Ampel i18n Builder Configuration Example
+# Copy this file to .ampel-i18n.yaml and configure with your API keys
+
+translation:
+  # =============================================================================
+  # API Keys (Required)
+  # =============================================================================
+  # Provider API keys can be set here or via environment variables.
+  # Environment variables take precedence over values in this file.
+  #
+  # To use environment variables:
+  #   export SYSTRAN_API_KEY="your-key-here"
+  #   export DEEPL_API_KEY="your-key-here"
+  #   export GOOGLE_API_KEY="your-key-here"
+  #   export OPENAI_API_KEY="your-key-here"
+  #
+  # Or reference them in YAML using shell variable syntax:
+  systran_api_key: "${SYSTRAN_API_KEY}"
+  deepl_api_key: "${DEEPL_API_KEY}"
+  google_api_key: "${GOOGLE_API_KEY}"
+  openai_api_key: "${OPENAI_API_KEY}"
+
+  # =============================================================================
+  # Global Defaults (Optional)
+  # =============================================================================
+  # These values are used as defaults for all providers unless overridden
+  # in the per-provider configuration below.
+
+  # Default request timeout in seconds (default: 30)
+  default_timeout_secs: 30
+
+  # Default batch size for translation requests (default: 50)
+  default_batch_size: 50
+
+  # Default maximum retry attempts on failure (default: 3)
+  default_max_retries: 3
+
+  # =============================================================================
+  # Per-Provider Configuration
+  # =============================================================================
+  # Configure each translation provider with specific settings.
+  # Providers are tried in priority order (1 = highest, 4 = lowest).
+
+  providers:
+    # ---------------------------------------------------------------------------
+    # Systran Translation API (Tier 1 - Primary Enterprise Translation)
+    # ---------------------------------------------------------------------------
+    # Best for: High-accuracy neural MT, domain-specific models
+    # Rate limit: 100 requests/sec
+    # Batch size: 50 texts per request
+    # Cost: Enterprise pricing (pay-per-character)
+    systran:
+      # Enable or disable this provider (default: true)
+      enabled: true
+
+      # Provider priority (1 = highest, tried first)
+      priority: 1
+
+      # Request timeout in seconds (default: 45)
+      timeout_secs: 45
+
+      # Maximum retry attempts on failure (default: 3)
+      max_retries: 3
+
+      # Batch size for translation requests (default: 50)
+      batch_size: 50
+
+      # Rate limit in requests per second (default: 100)
+      rate_limit_per_sec: 100
+
+      # Initial retry delay in milliseconds (default: 1000)
+      retry_delay_ms: 1000
+
+      # Maximum retry delay in milliseconds (default: 30000)
+      max_delay_ms: 30000
+
+      # Exponential backoff multiplier (default: 2.0)
+      # Each retry waits retry_delay_ms * (backoff_multiplier ^ attempt)
+      backoff_multiplier: 2.0
+
+      # Optional: Languages where this provider performs best
+      # If set, this provider gets priority for these languages
+      # If empty or commented out, provider is used based on priority alone
+      #
+      # Example language codes:
+      # - European: de, fr, fi, sv, pl, cs, da, nl, pt, ro, sk, sl
+      # - Asian: ar, th, vi, hi, zh, ja, ko, id, tr, uk
+      # - Other: bg, el, es, et, hu, it, lt, lv, nb, ru
+      #
+      # preferred_languages: []  # Use for all languages (default)
+      # preferred_languages: ["de", "fr", "fi", "sv", "pl", "cs"]  # Optimize for European languages
+
+    # ---------------------------------------------------------------------------
+    # DeepL API (Tier 2 - High-Quality European Languages)
+    # ---------------------------------------------------------------------------
+    # Best for: EU languages (28 languages supported)
+    # Rate limit: 10 requests/sec
+    # Batch size: 50 texts per request
+    # Cost: Free tier available, paid tier recommended
+    deepl:
+      enabled: true
+      priority: 2
+      timeout_secs: 30
+      max_retries: 3
+      batch_size: 50
+      rate_limit_per_sec: 10
+      retry_delay_ms: 1000
+      max_delay_ms: 30000
+      backoff_multiplier: 2.0
+
+      # Optional: DeepL excels at European languages
+      # Uncomment to enable language-specific routing:
+      # preferred_languages: ["bg", "cs", "da", "de", "el", "es", "et", "fi", "fr", "hu", "id", "it", "ja", "ko", "lt", "lv", "nb", "nl", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "tr", "uk", "zh"]
+
+    # ---------------------------------------------------------------------------
+    # Google Translate API (Tier 3 - Broad Language Coverage)
+    # ---------------------------------------------------------------------------
+    # Best for: Asian/Middle Eastern languages (133+ languages)
+    # Rate limit: 100 requests/sec
+    # Batch size: 100 texts per request
+    # Cost: Pay-per-character
+    google:
+      enabled: true
+      priority: 3
+      timeout_secs: 30
+      max_retries: 3
+      batch_size: 100
+      rate_limit_per_sec: 100
+      retry_delay_ms: 1000
+      max_delay_ms: 30000
+      backoff_multiplier: 2.0
+
+      # Optional: Google excels at Asian and Middle Eastern languages
+      # Uncomment to enable language-specific routing:
+      # preferred_languages: ["ar", "th", "vi", "hi", "zh", "ja", "ko", "id", "tr", "uk"]
+
+    # ---------------------------------------------------------------------------
+    # OpenAI GPT API (Tier 4 - Fallback for Edge Cases)
+    # ---------------------------------------------------------------------------
+    # Best for: Technical content, complex placeholders, context-aware translation
+    # Rate limit: No specific limit (token-based)
+    # Batch size: Unlimited (limited by context window)
+    # Cost: High (token-based pricing)
+    openai:
+      enabled: true
+      priority: 4
+      timeout_secs: 60  # Higher timeout for LLM processing
+      max_retries: 2    # Fewer retries due to high cost
+      batch_size: 0     # Unlimited (context window limited)
+      rate_limit_per_sec: 0  # No rate limiting
+      retry_delay_ms: 2000
+      max_delay_ms: 60000
+      backoff_multiplier: 2.0
+
+      # Optional: OpenAI handles all languages well but is expensive
+      # Typically used as universal fallback, so no language preferences
+      # preferred_languages: []
+
+  # =============================================================================
+  # Fallback Strategy Configuration
+  # =============================================================================
+  # Control how the system behaves when providers fail or are unavailable
+
+  fallback:
+    # Skip providers without API keys instead of failing
+    # If true: Providers without configured API keys are silently skipped
+    # If false: Missing API key causes an error
+    # (default: true)
+    skip_on_missing_key: true
+
+    # Stop trying providers after first success
+    # If true: Once a provider succeeds, don't try additional providers
+    # If false: Try all providers even after success (not recommended)
+    # (default: true)
+    stop_on_first_success: true
+
+    # Log fallback events (provider failures and fallback attempts)
+    # If true: Log when falling back to next tier provider
+    # If false: Silent fallback (only log final success/failure)
+    # (default: true)
+    log_fallback_events: true
+
+# =============================================================================
+# Example Configurations
+# =============================================================================
+
+# --- Production Configuration (High Reliability) ---
+# Use Systran as primary, DeepL and Google as fallbacks, disable OpenAI to save costs
+#
+# providers:
+#   systran:
+#     enabled: true
+#     priority: 1
+#   deepl:
+#     enabled: true
+#     priority: 2
+#   google:
+#     enabled: true
+#     priority: 3
+#   openai:
+#     enabled: false  # Disabled to save costs
+
+# --- Development Configuration (All Providers) ---
+# Enable all providers for testing, use smaller batches and shorter timeouts
+#
+# default_timeout_secs: 60
+# default_batch_size: 10
+# providers:
+#   systran:
+#     enabled: true
+#     max_retries: 1  # Fast fail for development
+#   deepl:
+#     enabled: true
+#   google:
+#     enabled: true
+#   openai:
+#     enabled: true
+
+# --- Cost-Optimized Configuration (Free Tier Only) ---
+# Use only DeepL free tier, disable paid providers
+#
+# providers:
+#   systran:
+#     enabled: false
+#   deepl:
+#     enabled: true
+#     priority: 1  # Make DeepL primary
+#   google:
+#     enabled: false
+#   openai:
+#     enabled: false
+
+# --- Language-Specific Optimization ---
+# Route languages to providers that handle them best
+#
+# providers:
+#   systran:
+#     enabled: true
+#     priority: 1
+#     # Use Systran for all languages as primary
+#   deepl:
+#     enabled: true
+#     priority: 2
+#     preferred_languages: ["bg", "cs", "da", "de", "el", "es", "et", "fi", "fr", "hu", "it", "lt", "lv", "nl", "pl", "pt", "ro", "ru", "sk", "sl", "sv"]
+#   google:
+#     enabled: true
+#     priority: 3
+#     preferred_languages: ["ar", "th", "vi", "hi", "zh", "ja", "ko", "id", "tr", "uk"]
+#   openai:
+#     enabled: false

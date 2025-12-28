@@ -6,6 +6,7 @@ use axum::{
     body::Body,
     http::{Request, Response, StatusCode},
 };
+use rust_i18n::t;
 use tokio::sync::Mutex;
 use tower::{Layer, Service};
 
@@ -103,7 +104,7 @@ where
                 let response = Response::builder()
                     .status(StatusCode::TOO_MANY_REQUESTS)
                     .header("Retry-After", "60")
-                    .body(Body::from("Rate limit exceeded"))
+                    .body(Body::from(t!("errors.rate_limit.exceeded")))
                     .unwrap();
                 return Ok(response);
             }
