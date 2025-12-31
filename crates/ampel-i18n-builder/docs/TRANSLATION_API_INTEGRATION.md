@@ -458,6 +458,6 @@ rm -rf .ampel-i18n-cache
 
 For issues or questions:
 
-- GitHub Issues: https://github.com/your-org/ampel/issues
+- GitHub Issues: https://github.com/pacphi/ampel/issues
 - Internal Docs: `/docs/i18n/`
 - Team Slack: #i18n-support

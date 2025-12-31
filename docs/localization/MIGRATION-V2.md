@@ -1293,7 +1293,7 @@ If you encounter issues during migration:
 
 ### Support
 
-- **GitHub Issues**: https://github.com/your-org/ampel/issues
+- **GitHub Issues**: https://github.com/pacphi/ampel/issues
 - **Slack**: #ampel-i18n channel
 - **Email**: support@ampel.dev
 

@@ -29,7 +29,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/ampel.git
+git clone https://github.com/pacphi/ampel.git
 cd ampel
 
 # Build the i18n-builder tool
@@ -118,12 +118,12 @@ vim crates/ampel-api/locales/en/common.yml
 dashboard:
   filters:
     status:
-      label: "Filter by Status"
+      label: 'Filter by Status'
       options:
-        all: "All Statuses"
-        open: "Open"
-        closed: "Closed"
-        merged: "Merged"
+        all: 'All Statuses'
+        open: 'Open'
+        closed: 'Closed'
+        merged: 'Merged'
 ```
 
 #### Step 2: Translate to Target Languages
@@ -201,28 +201,28 @@ git commit -m "feat(i18n): add dashboard filter translations"
 
 The system currently supports 20 languages:
 
-| Language | Code | Provider | RTL | Complex Plurals |
-|----------|------|----------|-----|-----------------|
-| English | en | - | No | No |
-| Portuguese (Brazil) | pt-BR | DeepL | No | No |
-| Spanish (Spain) | es-ES | DeepL | No | No |
-| German | de | DeepL | No | No |
-| French | fr | DeepL | No | No |
-| Hebrew | he | DeepL | **Yes** | No |
-| Dutch | nl | DeepL | No | No |
-| Italian | it | DeepL | No | No |
-| Polish | pl | DeepL | No | **Yes** |
-| Russian | ru | DeepL | No | **Yes** |
-| Serbian | sr | DeepL | No | Yes |
-| Chinese (Simplified) | zh-CN | DeepL | No | No |
-| Japanese | ja | DeepL | No | No |
-| Finnish | fi | DeepL | No | **Yes** |
-| Swedish | sv | DeepL | No | No |
-| Norwegian | no | DeepL | No | No |
-| Danish | da | DeepL | No | No |
-| Czech | cs | DeepL | No | **Yes** |
-| Thai | th | **Google** | No | No |
-| Arabic | ar | **Google** | **Yes** | Yes |
+| Language             | Code  | Provider   | RTL     | Complex Plurals |
+| -------------------- | ----- | ---------- | ------- | --------------- |
+| English              | en    | -          | No      | No              |
+| Portuguese (Brazil)  | pt-BR | DeepL      | No      | No              |
+| Spanish (Spain)      | es-ES | DeepL      | No      | No              |
+| German               | de    | DeepL      | No      | No              |
+| French               | fr    | DeepL      | No      | No              |
+| Hebrew               | he    | DeepL      | **Yes** | No              |
+| Dutch                | nl    | DeepL      | No      | No              |
+| Italian              | it    | DeepL      | No      | No              |
+| Polish               | pl    | DeepL      | No      | **Yes**         |
+| Russian              | ru    | DeepL      | No      | **Yes**         |
+| Serbian              | sr    | DeepL      | No      | Yes             |
+| Chinese (Simplified) | zh-CN | DeepL      | No      | No              |
+| Japanese             | ja    | DeepL      | No      | No              |
+| Finnish              | fi    | DeepL      | No      | **Yes**         |
+| Swedish              | sv    | DeepL      | No      | No              |
+| Norwegian            | no    | DeepL      | No      | No              |
+| Danish               | da    | DeepL      | No      | No              |
+| Czech                | cs    | DeepL      | No      | **Yes**         |
+| Thai                 | th    | **Google** | No      | No              |
+| Arabic               | ar    | **Google** | **Yes** | Yes             |
 
 ### Adding a New Language
 
