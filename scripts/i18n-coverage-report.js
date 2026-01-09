@@ -22,10 +22,35 @@ const LOCALES_DIR = path.join(__dirname, '../frontend/public/locales');
 const BASE_LOCALE = 'en';
 const COVERAGE_THRESHOLD = 95;
 
-// Supported languages (20 total)
+// Supported languages - must match actual directory names in frontend/public/locales/
 const SUPPORTED_LANGUAGES = [
-  'en', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'pl', 'ru', 'ja',
-  'ko', 'zh', 'ar', 'he', 'hi', 'th', 'tr', 'cs', 'fi', 'sv'
+  'en',
+  'es-ES',
+  'es-MX',
+  'fr',
+  'de',
+  'it',
+  'pt-BR',
+  'nl',
+  'pl',
+  'ru',
+  'ja',
+  'ko',
+  'zh-CN',
+  'zh-TW',
+  'ar',
+  'he',
+  'hi',
+  'th',
+  'tr',
+  'cs',
+  'fi',
+  'sv',
+  'da',
+  'no',
+  'vi',
+  'sr',
+  'en-GB',
 ];
 
 // Parse command line arguments
@@ -35,7 +60,7 @@ const options = {
   check: false,
   checkMissing: false,
   minCoverage: COVERAGE_THRESHOLD,
-  output: null
+  output: null,
 };
 
 for (let i = 0; i < args.length; i++) {
@@ -148,7 +173,7 @@ function calculateCoverage() {
     totalKeys,
     locales: {},
     overallCoverage: 0,
-    generatedAt: new Date().toISOString()
+    generatedAt: new Date().toISOString(),
   };
 
   let totalCoverage = 0;
@@ -160,7 +185,7 @@ function calculateCoverage() {
         coverage: 100,
         translatedKeys: totalKeys,
         missingKeys: [],
-        emptyKeys: []
+        emptyKeys: [],
       };
       continue;
     }
@@ -173,7 +198,7 @@ function calculateCoverage() {
         translatedKeys: 0,
         missingKeys: baseKeys,
         emptyKeys: [],
-        error: 'File not found'
+        error: 'File not found',
       };
       continue;
     }
@@ -199,7 +224,7 @@ function calculateCoverage() {
       coverage: parseFloat(coverage.toFixed(2)),
       translatedKeys,
       missingKeys,
-      emptyKeys
+      emptyKeys,
     };
 
     totalCoverage += coverage;
@@ -242,7 +267,9 @@ function formatMarkdown(results) {
     const missing = data.missingKeys?.length || 0;
     const empty = data.emptyKeys?.length || 0;
 
-    lines.push(`| ${locale} | ${data.coverage}% | ${data.translatedKeys} | ${missing} | ${empty} | ${status} |`);
+    lines.push(
+      `| ${locale} | ${data.coverage}% | ${data.translatedKeys} | ${missing} | ${empty} | ${status} |`
+    );
   }
 
   lines.push('');
@@ -292,7 +319,9 @@ function formatText(results) {
 
   for (const [locale, data] of Object.entries(results.locales)) {
     const status = data.coverage >= options.minCoverage ? '✅' : '❌';
-    lines.push(`${status} ${locale.padEnd(5)} ${data.coverage.toFixed(1).padStart(6)}% (${data.translatedKeys}/${results.totalKeys})`);
+    lines.push(
+      `${status} ${locale.padEnd(5)} ${data.coverage.toFixed(1).padStart(6)}% (${data.translatedKeys}/${results.totalKeys})`
+    );
 
     if (data.missingKeys && data.missingKeys.length > 0) {
       lines.push(`   Missing: ${data.missingKeys.length} keys`);
@@ -340,14 +369,18 @@ function main() {
 
     // Check mode: exit with error if coverage below threshold
     if (options.check || options.checkMissing) {
-      const failedLocales = Object.entries(results.locales)
-        .filter(([locale, data]) => locale !== BASE_LOCALE && data.coverage < options.minCoverage);
+      const failedLocales = Object.entries(results.locales).filter(
+        ([locale, data]) => locale !== BASE_LOCALE && data.coverage < options.minCoverage
+      );
 
-      const hasMissing = Object.values(results.locales)
-        .some(data => data.missingKeys && data.missingKeys.length > 0);
+      const hasMissing = Object.values(results.locales).some(
+        (data) => data.missingKeys && data.missingKeys.length > 0
+      );
 
       if (failedLocales.length > 0) {
-        console.error(`\n❌ ${failedLocales.length} locale(s) below ${options.minCoverage}% coverage threshold`);
+        console.error(
+          `\n❌ ${failedLocales.length} locale(s) below ${options.minCoverage}% coverage threshold`
+        );
         process.exit(1);
       }
 
@@ -375,5 +408,5 @@ module.exports = {
   calculateCoverage,
   formatJSON,
   formatMarkdown,
-  formatText
+  formatText,
 };

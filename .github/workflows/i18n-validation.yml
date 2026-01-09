@@ -18,7 +18,7 @@ on:
 
 env:
   COVERAGE_THRESHOLD: 95
-  SUPPORTED_LANGUAGES: 20
+  SUPPORTED_LANGUAGES: 27
 
 jobs:
   validate-backend:
@@ -142,7 +142,6 @@ jobs:
       - name: Check for missing keys
         id: missing-keys
         run: |
-          cd frontend
           OUTPUT=$(node scripts/i18n-coverage-report.js --check-missing)
           echo "$OUTPUT"
 
@@ -170,12 +169,11 @@ jobs:
       - name: Generate frontend coverage report
         id: frontend-coverage
         run: |
-          cd frontend
-          node scripts/i18n-coverage-report.js --format json > ../frontend-coverage.json
-          node scripts/i18n-coverage-report.js --format markdown > ../frontend-coverage.md
+          node scripts/i18n-coverage-report.js --format json > frontend-coverage.json
+          node scripts/i18n-coverage-report.js --format markdown > frontend-coverage.md
 
           # Extract coverage percentage
-          COVERAGE=$(jq -r '.overall_coverage' ../frontend-coverage.json)
+          COVERAGE=$(jq -r '.overall_coverage' frontend-coverage.json)
           echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
 
       - name: Upload frontend coverage artifact
@@ -183,8 +181,8 @@ jobs:
         with:
           name: frontend-coverage-report
           path: |
-            frontend-coverage.json
-            frontend-coverage.md
+            ./frontend-coverage.json
+            ./frontend-coverage.md
           retention-days: 30
 
   test-rtl:
