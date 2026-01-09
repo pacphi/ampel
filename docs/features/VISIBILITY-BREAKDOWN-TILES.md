@@ -497,7 +497,7 @@ npm run test:e2e -- dashboard
 
 - [Repository Visibility Filters](./REPOSITORY_VISIBILITY_FILTERS.md)
 - [Dashboard Summary Cards](../ARCHITECTURE.md#105-dashboard-endpoints)
-- [PR Status Calculation](../ARCHITECTURE.md#traffic-light-status-calculation)
+- [PR Status Calculation](../ARCHITECTURE.md#appendix-a-traffic-light-status-calculation)
 
 ---
 

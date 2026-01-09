@@ -2391,7 +2391,7 @@ This architecture document defines a comprehensive, production-ready localizatio
 1. Review architecture with engineering team
 2. Prototype `ampel-i18n-builder` core functionality
 3. Implement language switcher component
-4. Begin Phase 1 implementation per [LOCALIZATION_IMPLEMENTATION_PLAN.md](LOCALIZATION_IMPLEMENTATION_PLAN.md)
+4. Begin Phase 1 implementation per [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)
 
 ---
 

@@ -1584,8 +1584,6 @@ cargo i18n translate --lang fi --provider deepl --no-fallback
 cargo i18n translate --lang fi --disable-provider openai
 ```
 
-```
-
 ---
 
 ## Quality Attributes
@@ -1595,12 +1593,14 @@ cargo i18n translate --lang fi --disable-provider openai
 **Target**: 99.9% success rate for translations
 
 **Mechanisms**:
+
 - 4-tier fallback ensures multiple providers available
 - Exponential backoff retry (3 attempts per provider)
 - Graceful degradation when providers fail
 - Skip providers without API keys
 
 **Metrics**:
+
 - Success rate per provider
 - Fallback frequency (should be < 5%)
 - Mean time to recovery (MTTR)
@@ -1612,12 +1612,14 @@ cargo i18n translate --lang fi --disable-provider openai
 **Target**: < 5 seconds for 50-text batch translation
 
 **Mechanisms**:
+
 - Rate limiting prevents quota exhaustion
 - LRU caching (1000 entries) reduces redundant API calls
 - Batch translation (50-100 texts per request)
 - Configurable timeouts prevent hung requests
 
 **Metrics**:
+
 - P50/P95/P99 latency per provider
 - Cache hit rate (target: > 40%)
 - API call count (minimize redundant calls)
@@ -1629,18 +1631,21 @@ cargo i18n translate --lang fi --disable-provider openai
 **Target**: Full visibility into provider selection and failures
 
 **Mechanisms**:
+
 - Structured logging (tracing crate)
 - Per-provider usage metrics
 - Fallback event logging
 - Retry attempt tracking
 
 **Log Levels**:
+
 - `INFO`: Provider selection, success events
 - `WARN`: Fallback events, retry attempts
 - `ERROR`: Provider failures, all-providers-failed errors
 - `DEBUG`: Cache hits, rate limiting
 
 **Example Logs**:
+
 ```
 
 INFO FallbackRouter initialized with 3 providers: Systran (Tier 1), DeepL (Tier 2), Google (Tier 3)
@@ -1650,7 +1655,7 @@ WARN Retrying in 1024ms...
 WARN Used fallback provider DeepL (Tier 2) after 1 failure(s)
 INFO ✓ Translation successful with DeepL (Tier 2)
 
-````
+```
 
 ---
 
@@ -1659,12 +1664,14 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 **Target**: All parameters adjustable without code changes
 
 **Configuration Layers** (precedence high → low):
+
 1. CLI arguments (`--timeout`, `--batch-size`, etc.)
 2. Environment variables (`SYSTRAN_API_KEY`, etc.)
 3. YAML configuration (`.ampel-i18n.yaml`)
 4. Default values (hardcoded fallbacks)
 
 **Configurable Parameters** (per provider):
+
 - API key
 - Enabled/disabled flag
 - Priority (1-4)
@@ -1685,16 +1692,19 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 **Decision**: Implement 4-tier fallback architecture
 
 **Pros**:
+
 - High reliability (99.9%+ success rate)
 - Graceful degradation under failures
 - Flexibility to use multiple providers
 
 **Cons**:
+
 - Increased code complexity (~500 LOC)
 - More configuration surface area
 - Longer debugging time for failures
 
 **Mitigation**:
+
 - Comprehensive unit/integration tests (> 80% coverage)
 - Clear documentation and migration guide
 - Structured logging for observability
@@ -1706,16 +1716,19 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 **Decision**: Use caching and batch translation
 
 **Pros**:
+
 - Reduce redundant API calls by 40-60%
 - Lower API costs (pay per character)
 - Faster translation (cache hits are instant)
 
 **Cons**:
+
 - Cache invalidation complexity
 - Memory overhead (1000-entry LRU cache ~500KB)
 - Stale translations if source changes
 
 **Mitigation**:
+
 - Cache key includes source text, target lang
 - Configurable cache size
 - Cache is per-process (no shared state)
@@ -1727,16 +1740,19 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 **Decision**: Generic `TranslationService` trait
 
 **Pros**:
+
 - Easy to add new providers
 - Consistent API across providers
 - Clean separation of concerns
 
 **Cons**:
+
 - Can't leverage provider-specific features
 - Lowest common denominator API
 - May miss optimization opportunities
 
 **Mitigation**:
+
 - Per-provider configuration allows optimization
 - Providers can implement internal optimizations
 - Can extend trait with optional methods
@@ -1749,6 +1765,7 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 **Impact**: High
 
 **Mitigation**:
+
 1. Never commit API keys to version control
 2. Use environment variables for secrets
 3. Add `.ampel-i18n.yaml` to `.gitignore`
@@ -1762,6 +1779,7 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 **Impact**: Medium
 
 **Mitigation**:
+
 1. Token bucket rate limiting per provider
 2. Exponential backoff on 429 errors
 3. Configurable rate limits
@@ -1775,6 +1793,7 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 **Impact**: High
 
 **Mitigation**:
+
 1. Integration tests with real API calls (in CI)
 2. Version pinning for API endpoints
 3. Provider abstraction layer isolates changes
@@ -1788,6 +1807,7 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 **Impact**: Medium
 
 **Mitigation**:
+
 1. Language-based provider selection (DeepL for EU, Google for Asian)
 2. Tier ordering prioritizes quality (Systran/DeepL before Google/OpenAI)
 3. Manual review of critical translations
@@ -1800,6 +1820,7 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 ### Unit Tests (80%+ coverage)
 
 **Files**:
+
 - `src/config.rs`: Configuration parsing, validation
 - `src/translator/systran.rs`: Systran provider logic
 - `src/translator/deepl.rs`: DeepL provider logic (update)
@@ -1808,6 +1829,7 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 - `src/translator/fallback.rs`: Fallback router logic
 
 **Test Coverage**:
+
 - Configuration loading (YAML, TOML, env vars)
 - Provider initialization (success, failure, missing key)
 - Retry logic (exponential backoff, max retries)
@@ -1822,6 +1844,7 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 **File**: `tests/integration/fallback_tests.rs`
 
 **Test Scenarios**:
+
 1. **Happy Path**: First provider succeeds
 2. **Single Fallback**: First fails, second succeeds
 3. **Multiple Fallbacks**: First two fail, third succeeds
@@ -1834,6 +1857,7 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 10. **Cache Persistence**: Cache survives multiple calls
 
 **Prerequisites**:
+
 - Real API keys in environment variables (CI secrets)
 - Or mockito for stubbed API responses
 
@@ -1844,6 +1868,7 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 **Command**: `cargo i18n translate --lang fi`
 
 **Scenarios**:
+
 1. Translate complete namespace (common.json, dashboard.json)
 2. Verify placeholder preservation ({{count}}, {{provider}})
 3. Verify plural forms (zero, one, two, few, many, other)
@@ -1851,6 +1876,7 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 5. Verify fallback logging (check logs for fallback events)
 
 **Validation**:
+
 - All keys translated
 - No placeholder corruption
 - Valid JSON output
@@ -1863,12 +1889,14 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 **Tool**: `cargo bench` (criterion.rs)
 
 **Benchmarks**:
+
 1. **Translation Latency**: 50 texts, measure P50/P95/P99
 2. **Cache Hit Rate**: 1000 texts, 50% duplicates
 3. **Batch Splitting**: 500 texts, measure overhead
 4. **Rate Limiting**: 100 concurrent requests, measure throughput
 
 **Targets**:
+
 - P50 latency: < 2s
 - P95 latency: < 5s
 - Cache hit rate: > 40%
@@ -1879,6 +1907,7 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 ### Security Tests
 
 **Scenarios**:
+
 1. **API Key Redaction**: Verify keys not logged
 2. **Injection Attack**: Malicious text inputs
 3. **Config Validation**: Reject invalid configurations
@@ -1893,10 +1922,10 @@ INFO ✓ Translation successful with DeepL (Tier 2)
 ```yaml
 translation:
   # Only one provider configured (will use this for all translations)
-  deepl_api_key: "${DEEPL_API_KEY}"
+  deepl_api_key: '${DEEPL_API_KEY}'
 
   # Use defaults for everything else
-````
+```
 
 ### Development Configuration
 
