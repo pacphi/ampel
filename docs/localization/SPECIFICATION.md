@@ -41,40 +41,44 @@ This specification document outlines enhancements to the Ampel localization syst
 
 ### 1. New Languages Overview
 
-| Language | Code | Script | Direction | Pluralization | Priority | Special Requirements |
-|----------|------|--------|-----------|---------------|----------|----------------------|
-| **Finnish** | fi | Latin | LTR | Standard (2 forms) | Phase 2 | Complex compound words |
-| **Swedish** | sv | Latin | LTR | Standard (2 forms) | Phase 2 | Similar to Norwegian |
-| **Norwegian** | no | Latin | LTR | Standard (2 forms) | Phase 2 | Bokmål variant (nb) |
-| **Thai** | th | Thai | LTR | None | Phase 3 | Complex character set |
-| **Arabic** | ar | Arabic | **RTL** | Complex (6 forms) | Phase 3 | **RTL testing critical** |
-| **Danish** | da | Latin | LTR | Standard (2 forms) | Phase 2 | Similar to Norwegian |
-| **Czech** | cs | Latin | LTR | Complex (3 forms) | Phase 3 | Diacritics |
+| Language      | Code | Script | Direction | Pluralization      | Priority | Special Requirements     |
+| ------------- | ---- | ------ | --------- | ------------------ | -------- | ------------------------ |
+| **Finnish**   | fi   | Latin  | LTR       | Standard (2 forms) | Phase 2  | Complex compound words   |
+| **Swedish**   | sv   | Latin  | LTR       | Standard (2 forms) | Phase 2  | Similar to Norwegian     |
+| **Norwegian** | no   | Latin  | LTR       | Standard (2 forms) | Phase 2  | Bokmål variant (nb)      |
+| **Thai**      | th   | Thai   | LTR       | None               | Phase 3  | Complex character set    |
+| **Arabic**    | ar   | Arabic | **RTL**   | Complex (6 forms)  | Phase 3  | **RTL testing critical** |
+| **Danish**    | da   | Latin  | LTR       | Standard (2 forms) | Phase 2  | Similar to Norwegian     |
+| **Czech**     | cs   | Latin  | LTR       | Complex (3 forms)  | Phase 3  | Diacritics               |
 
 ### 2. Detailed Language Requirements
 
 #### 2.1 Finnish (fi)
 
 **Functional Requirements:**
+
 - FR-FI-001: Support standard Finnish pluralization (one, other)
 - FR-FI-002: Handle compound word translations without breaking semantics
 - FR-FI-003: Support Finnish date format (DD.MM.YYYY)
 - FR-FI-004: Support Finnish number format (space as thousands separator)
 
 **Non-Functional Requirements:**
+
 - NFR-FI-001: Translation files must use UTF-8 encoding for Finnish characters (ä, ö, å)
 - NFR-FI-002: UI elements must accommodate 30% longer text than English (compound words)
 
 **Pluralization Rules:**
+
 ```yaml
 # locales/fi/common.yml
 pull_requests:
   count:
-    one: "%{count} pull request"  # 1
-    other: "%{count} pull requestia"  # 0, 2-∞
+    one: '%{count} pull request' # 1
+    other: '%{count} pull requestia' # 0, 2-∞
 ```
 
 **Character Set Considerations:**
+
 - Finnish alphabet includes: å, ä, ö
 - Case sensitivity: Å/å, Ä/ä, Ö/ö
 - Collation: Special characters sort after z
@@ -84,24 +88,28 @@ pull_requests:
 #### 2.2 Swedish (sv)
 
 **Functional Requirements:**
+
 - FR-SV-001: Support standard Swedish pluralization (one, other)
 - FR-SV-002: Support Swedish date format (YYYY-MM-DD)
 - FR-SV-003: Support Swedish number format (space as thousands separator)
 
 **Non-Functional Requirements:**
+
 - NFR-SV-001: Translation files must use UTF-8 encoding for Swedish characters (å, ä, ö)
 - NFR-SV-002: UI elements must accommodate 20% longer text than English
 
 **Pluralization Rules:**
+
 ```yaml
 # locales/sv/common.yml
 pull_requests:
   count:
-    one: "%{count} pull request"  # 1
-    other: "%{count} pull requests"  # 0, 2-∞
+    one: '%{count} pull request' # 1
+    other: '%{count} pull requests' # 0, 2-∞
 ```
 
 **Character Set Considerations:**
+
 - Swedish alphabet includes: å, ä, ö
 - Similar to Finnish but different grammatical rules
 - Collation: å, ä, ö sort after z
@@ -111,31 +119,36 @@ pull_requests:
 #### 2.3 Norwegian (no/nb)
 
 **Functional Requirements:**
+
 - FR-NO-001: Support Norwegian Bokmål (nb) as primary variant
 - FR-NO-002: Support standard Norwegian pluralization (one, other)
 - FR-NO-003: Support Norwegian date format (DD.MM.YYYY)
 - FR-NO-004: Support Norwegian number format (space as thousands separator)
 
 **Non-Functional Requirements:**
+
 - NFR-NO-001: Use `nb` (Bokmål) code, with `no` as fallback alias
 - NFR-NO-002: Translation files must use UTF-8 encoding for Norwegian characters (æ, ø, å)
 - NFR-NO-003: UI elements must accommodate 20% longer text than English
 
 **Pluralization Rules:**
+
 ```yaml
 # locales/nb/common.yml
 pull_requests:
   count:
-    one: "%{count} pull request"  # 1
-    other: "%{count} pull requests"  # 0, 2-∞
+    one: '%{count} pull request' # 1
+    other: '%{count} pull requests' # 0, 2-∞
 ```
 
 **Character Set Considerations:**
+
 - Norwegian alphabet includes: æ, ø, å
 - Bokmål vs Nynorsk: Support Bokmål only initially
 - Collation: æ, ø, å sort after z
 
 **Locale Code Normalization:**
+
 ```rust
 // middleware/locale.rs
 fn normalize_locale(locale: &str) -> Option<&str> {
@@ -152,31 +165,36 @@ fn normalize_locale(locale: &str) -> Option<&str> {
 #### 2.4 Thai (th)
 
 **Functional Requirements:**
+
 - FR-TH-001: Support Thai script rendering (no pluralization needed)
 - FR-TH-002: Support Thai Buddhist calendar (B.E.) in date formats
 - FR-TH-003: Support Thai number format (comma as thousands separator)
 - FR-TH-004: Handle Thai text wrapping (no spaces between words)
 
 **Non-Functional Requirements:**
+
 - NFR-TH-001: Translation files must use UTF-8 encoding for Thai characters
 - NFR-TH-002: Fonts must support Thai Unicode range (U+0E00 to U+0E7F)
 - NFR-TH-003: UI elements must accommodate 40% shorter text than English
 - NFR-TH-004: Line breaking must use Thai dictionary-based algorithm
 
 **Pluralization Rules:**
+
 ```yaml
 # locales/th/common.yml
 pull_requests:
-  count: "%{count} pull request"  # No plural forms in Thai
+  count: '%{count} pull request' # No plural forms in Thai
 ```
 
 **Character Set Considerations:**
+
 - Thai script: consonants (44), vowels (15), tone marks (4)
 - No spaces between words (requires word segmentation)
 - Complex character composition (base + above/below marks)
 - Fonts required: Noto Sans Thai, Sarabun, Prompt
 
 **Text Rendering Considerations:**
+
 ```typescript
 // CSS for Thai text
 .thai-text {
@@ -188,6 +206,7 @@ pull_requests:
 ```
 
 **Date Formatting:**
+
 ```typescript
 // Thai Buddhist Era (B.E.) = Gregorian year + 543
 const formatThaiDate = (date: Date): string => {
@@ -195,7 +214,7 @@ const formatThaiDate = (date: Date): string => {
   return new Intl.DateTimeFormat('th-TH-u-ca-buddhist', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   }).format(date);
 };
 // Example output: "27 ธันวาคม พ.ศ. 2568"
@@ -206,6 +225,7 @@ const formatThaiDate = (date: Date): string => {
 #### 2.5 Arabic (ar)
 
 **Functional Requirements:**
+
 - FR-AR-001: Support full RTL (right-to-left) text direction
 - FR-AR-002: Support Arabic pluralization (6 forms: zero, one, two, few, many, other)
 - FR-AR-003: Support Arabic date format (DD/MM/YYYY)
@@ -213,6 +233,7 @@ const formatThaiDate = (date: Date): string => {
 - FR-AR-005: Support bidirectional text (Bidi) for mixed LTR/RTL content
 
 **Non-Functional Requirements:**
+
 - NFR-AR-001: All UI layouts must mirror for RTL (existing Hebrew infrastructure)
 - NFR-AR-002: Translation files must use UTF-8 encoding for Arabic characters
 - NFR-AR-003: Fonts must support Arabic ligatures and contextual forms
@@ -220,19 +241,21 @@ const formatThaiDate = (date: Date): string => {
 - NFR-AR-005: UI elements must accommodate 30% longer text than English
 
 **Pluralization Rules:**
+
 ```yaml
 # locales/ar/common.yml
 pull_requests:
   count:
-    zero: "لا توجد pull requests"  # 0
-    one: "pull request واحد"  # 1
-    two: "pull requestان"  # 2
-    few: "%{count} pull requests"  # 3-10
-    many: "%{count} pull request"  # 11-99
-    other: "%{count} pull request"  # 100+
+    zero: 'لا توجد pull requests' # 0
+    one: 'pull request واحد' # 1
+    two: 'pull requestان' # 2
+    few: '%{count} pull requests' # 3-10
+    many: '%{count} pull request' # 11-99
+    other: '%{count} pull request' # 100+
 ```
 
 **Frontend Pluralization (react-i18next):**
+
 ```json
 {
   "pullRequests": {
@@ -249,6 +272,7 @@ pull_requests:
 **RTL Implementation Requirements:**
 
 1. **Document Direction:**
+
 ```typescript
 // src/i18n/config.ts
 export const SUPPORTED_LANGUAGES = {
@@ -258,21 +282,23 @@ export const SUPPORTED_LANGUAGES = {
 ```
 
 2. **CSS Logical Properties:**
+
 ```css
 /* Use logical properties for RTL support */
 .container {
-  margin-inline-start: 1rem;  /* Not margin-left */
-  padding-inline-end: 1rem;   /* Not padding-right */
-  border-inline-start: 1px solid;  /* Not border-left */
+  margin-inline-start: 1rem; /* Not margin-left */
+  padding-inline-end: 1rem; /* Not padding-right */
+  border-inline-start: 1px solid; /* Not border-left */
 }
 
 /* RTL-specific overrides */
-[dir="rtl"] .icon {
-  transform: scaleX(-1);  /* Flip directional icons */
+[dir='rtl'] .icon {
+  transform: scaleX(-1); /* Flip directional icons */
 }
 ```
 
 3. **Bidirectional Text Handling:**
+
 ```typescript
 // For mixed LTR/RTL content (e.g., code snippets in Arabic UI)
 <span dir="ltr">{codeSnippet}</span>
@@ -280,21 +306,26 @@ export const SUPPORTED_LANGUAGES = {
 ```
 
 **Character Set Considerations:**
+
 - Arabic alphabet: 28 letters with 4 forms each (isolated, initial, medial, final)
 - Ligatures: Automatic connecting between letters
 - Diacritics: Optional vowel marks (َ ِ ُ)
 - Eastern Arabic numerals: ٠١٢٣٤٥٦٧٨٩ (vs Western: 0123456789)
 
 **Font Requirements:**
+
 ```css
 /* Arabic font stack */
 .arabic-text {
   font-family: 'Noto Sans Arabic', 'Dubai', 'Tajawal', 'Amiri', sans-serif;
-  font-feature-settings: 'liga' 1, 'calt' 1;  /* Enable ligatures */
+  font-feature-settings:
+    'liga' 1,
+    'calt' 1; /* Enable ligatures */
 }
 ```
 
 **Testing Requirements:**
+
 - Visual regression tests for RTL layout
 - Test Hebrew + Arabic together (both RTL)
 - Test mixed LTR/RTL content (URLs, code, numbers)
@@ -306,24 +337,28 @@ export const SUPPORTED_LANGUAGES = {
 #### 2.6 Danish (da)
 
 **Functional Requirements:**
+
 - FR-DA-001: Support standard Danish pluralization (one, other)
 - FR-DA-002: Support Danish date format (DD-MM-YYYY)
 - FR-DA-003: Support Danish number format (dot as thousands separator, comma as decimal)
 
 **Non-Functional Requirements:**
+
 - NFR-DA-001: Translation files must use UTF-8 encoding for Danish characters (æ, ø, å)
 - NFR-DA-002: UI elements must accommodate 20% longer text than English
 
 **Pluralization Rules:**
+
 ```yaml
 # locales/da/common.yml
 pull_requests:
   count:
-    one: "%{count} pull request"  # 1
-    other: "%{count} pull requests"  # 0, 2-∞
+    one: '%{count} pull request' # 1
+    other: '%{count} pull requests' # 0, 2-∞
 ```
 
 **Character Set Considerations:**
+
 - Danish alphabet includes: æ, ø, å
 - Similar to Norwegian but different word usage
 - Collation: æ, ø, å sort after z
@@ -333,27 +368,31 @@ pull_requests:
 #### 2.7 Czech (cs)
 
 **Functional Requirements:**
+
 - FR-CS-001: Support Czech pluralization (3 forms: one, few, many)
 - FR-CS-002: Support Czech date format (DD.MM.YYYY)
 - FR-CS-003: Support Czech number format (space as thousands separator, comma as decimal)
 - FR-CS-004: Handle Czech diacritics in search and sorting
 
 **Non-Functional Requirements:**
+
 - NFR-CS-001: Translation files must use UTF-8 encoding for Czech diacritics
 - NFR-CS-002: UI elements must accommodate 25% longer text than English
 - NFR-CS-003: Search must be diacritic-insensitive (e.g., "e" matches "é", "ě")
 
 **Pluralization Rules:**
+
 ```yaml
 # locales/cs/common.yml
 pull_requests:
   count:
-    one: "%{count} pull request"  # 1
-    few: "%{count} pull requesty"  # 2-4
-    many: "%{count} pull requestů"  # 0, 5-∞
+    one: '%{count} pull request' # 1
+    few: '%{count} pull requesty' # 2-4
+    many: '%{count} pull requestů' # 0, 5-∞
 ```
 
 **Frontend Pluralization:**
+
 ```json
 {
   "pullRequests": {
@@ -365,6 +404,7 @@ pull_requests:
 ```
 
 **Character Set Considerations:**
+
 - Czech diacritics: á, č, ď, é, ě, í, ň, ó, ř, š, ť, ú, ů, ý, ž
 - Uppercase variants: Á, Č, Ď, É, Ě, Í, Ň, Ó, Ř, Š, Ť, Ú, Ů, Ý, Ž
 - Collation: Special characters have unique sort order (č after c, not after c)
@@ -373,28 +413,28 @@ pull_requests:
 
 ### 3. Updated Language Support Matrix
 
-| Language | Code | Script | Direction | Pluralization | Phase | RTL |
-|----------|------|--------|-----------|---------------|-------|-----|
-| English | en | Latin | LTR | 2 forms | 1 | ❌ |
-| Portuguese (BR) | pt-BR | Latin | LTR | 2 forms | 1 | ❌ |
-| Spanish (ES) | es-ES | Latin | LTR | 2 forms | 1 | ❌ |
-| Dutch | nl | Latin | LTR | 2 forms | 1 | ❌ |
-| German | de | Latin | LTR | 2 forms | 1 | ❌ |
-| Serbian | sr | Cyrillic | LTR | 2 forms | 1 | ❌ |
-| Russian | ru | Cyrillic | LTR | 3 forms | 1 | ❌ |
-| Hebrew | he | Hebrew | RTL | 2 forms | 1 | ✅ |
-| French | fr | Latin | LTR | 2 forms | 1 | ❌ |
-| Italian | it | Latin | LTR | 2 forms | 1 | ❌ |
-| Polish | pl | Latin | LTR | 3 forms | 1 | ❌ |
-| Chinese (CN) | zh-CN | Han | LTR | None | 1 | ❌ |
-| Japanese | ja | Han/Kana | LTR | None | 1 | ❌ |
-| **Finnish** | **fi** | **Latin** | **LTR** | **2 forms** | **2** | ❌ |
-| **Swedish** | **sv** | **Latin** | **LTR** | **2 forms** | **2** | ❌ |
-| **Norwegian** | **nb** | **Latin** | **LTR** | **2 forms** | **2** | ❌ |
-| **Danish** | **da** | **Latin** | **LTR** | **2 forms** | **2** | ❌ |
-| **Thai** | **th** | **Thai** | **LTR** | **None** | **3** | ❌ |
-| **Arabic** | **ar** | **Arabic** | **RTL** | **6 forms** | **3** | ✅ |
-| **Czech** | **cs** | **Latin** | **LTR** | **3 forms** | **3** | ❌ |
+| Language        | Code   | Script     | Direction | Pluralization | Phase | RTL |
+| --------------- | ------ | ---------- | --------- | ------------- | ----- | --- |
+| English         | en     | Latin      | LTR       | 2 forms       | 1     | ❌  |
+| Portuguese (BR) | pt-BR  | Latin      | LTR       | 2 forms       | 1     | ❌  |
+| Spanish (ES)    | es-ES  | Latin      | LTR       | 2 forms       | 1     | ❌  |
+| Dutch           | nl     | Latin      | LTR       | 2 forms       | 1     | ❌  |
+| German          | de     | Latin      | LTR       | 2 forms       | 1     | ❌  |
+| Serbian         | sr     | Cyrillic   | LTR       | 2 forms       | 1     | ❌  |
+| Russian         | ru     | Cyrillic   | LTR       | 3 forms       | 1     | ❌  |
+| Hebrew          | he     | Hebrew     | RTL       | 2 forms       | 1     | ✅  |
+| French          | fr     | Latin      | LTR       | 2 forms       | 1     | ❌  |
+| Italian         | it     | Latin      | LTR       | 2 forms       | 1     | ❌  |
+| Polish          | pl     | Latin      | LTR       | 3 forms       | 1     | ❌  |
+| Chinese (CN)    | zh-CN  | Han        | LTR       | None          | 1     | ❌  |
+| Japanese        | ja     | Han/Kana   | LTR       | None          | 1     | ❌  |
+| **Finnish**     | **fi** | **Latin**  | **LTR**   | **2 forms**   | **2** | ❌  |
+| **Swedish**     | **sv** | **Latin**  | **LTR**   | **2 forms**   | **2** | ❌  |
+| **Norwegian**   | **nb** | **Latin**  | **LTR**   | **2 forms**   | **2** | ❌  |
+| **Danish**      | **da** | **Latin**  | **LTR**   | **2 forms**   | **2** | ❌  |
+| **Thai**        | **th** | **Thai**   | **LTR**   | **None**      | **3** | ❌  |
+| **Arabic**      | **ar** | **Arabic** | **RTL**   | **6 forms**   | **3** | ✅  |
+| **Czech**       | **cs** | **Latin**  | **LTR**   | **3 forms**   | **3** | ❌  |
 
 **Total: 20 languages (13 existing + 7 new)**
 
@@ -440,6 +480,7 @@ crates/ampel-i18n-builder/
 **Description:** Support multiple translation providers through a trait-based abstraction.
 
 **Interface:**
+
 ```rust
 #[async_trait]
 pub trait TranslationProvider: Send + Sync {
@@ -471,6 +512,7 @@ pub struct Language {
 ```
 
 **Acceptance Criteria:**
+
 - ✅ Implement trait for Google Cloud Translation API
 - ✅ Implement trait for DeepL API
 - ✅ Implement trait for Amazon Translate
@@ -485,6 +527,7 @@ pub struct Language {
 **Description:** Parse and write translation files in YAML (backend) and JSON (frontend).
 
 **Interface:**
+
 ```rust
 pub trait TranslationFormat {
     /// Parse translation file into key-value map
@@ -518,6 +561,7 @@ pub struct PluralForms {
 ```
 
 **Acceptance Criteria:**
+
 - ✅ Parse YAML translation files (rust-i18n format)
 - ✅ Parse JSON translation files (react-i18next format)
 - ✅ Preserve nested structure and pluralization rules
@@ -531,6 +575,7 @@ pub struct PluralForms {
 **Description:** Cache translations to avoid redundant API calls and reduce costs.
 
 **Interface:**
+
 ```rust
 pub struct TranslationCache {
     cache: Arc<Mutex<HashMap<CacheKey, String>>>,
@@ -560,6 +605,7 @@ impl TranslationCache {
 ```
 
 **Acceptance Criteria:**
+
 - ✅ In-memory cache for runtime translations
 - ✅ File-based cache for persistence (JSON)
 - ✅ Optional Redis cache for production
@@ -573,6 +619,7 @@ impl TranslationCache {
 **Description:** Provide CLI tool for translation automation workflows.
 
 **Commands:**
+
 ```bash
 # Translate all missing keys for a language
 cargo i18n translate --lang fi --provider deepl
@@ -597,6 +644,7 @@ cargo i18n import --lang fi --format xliff --input translations.xliff
 ```
 
 **CLI Options:**
+
 ```rust
 #[derive(Parser)]
 #[command(name = "cargo-i18n")]
@@ -677,6 +725,7 @@ enum Commands {
 ```
 
 **Acceptance Criteria:**
+
 - ✅ Translate command completes in <5 minutes for 500 keys
 - ✅ Sync command updates all 20 languages
 - ✅ Coverage command shows percentage per language
@@ -690,6 +739,7 @@ enum Commands {
 **Description:** Configure translation providers and options via config file.
 
 **Configuration File:**
+
 ```toml
 # .i18n-config.toml
 [translation]
@@ -728,6 +778,7 @@ namespaces = ["common", "dashboard", "settings", "errors", "validation"]
 ```
 
 **Acceptance Criteria:**
+
 - ✅ Load configuration from `.i18n-config.toml`
 - ✅ Override config with environment variables
 - ✅ Validate configuration on startup
@@ -893,38 +944,41 @@ Enhanced language switcher component with flag icons, ISO-639 language codes, lo
 **Description:** Display country/region flags for visual language identification.
 
 **Requirements:**
+
 - Use emoji flags for lightweight implementation (no image assets)
 - Map language codes to flag emojis
 - Fallback to language code if flag unavailable
 
 **Flag Mapping:**
+
 ```typescript
 // src/i18n/flags.ts
 export const LANGUAGE_FLAGS: Record<SupportedLanguage, string> = {
-  en: '🇬🇧',     // English - UK flag
+  en: '🇬🇧', // English - UK flag
   'pt-BR': '🇧🇷', // Portuguese - Brazil flag
   'es-ES': '🇪🇸', // Spanish - Spain flag
-  nl: '🇳🇱',      // Dutch - Netherlands flag
-  de: '🇩🇪',      // German - Germany flag
-  sr: '🇷🇸',      // Serbian - Serbia flag
-  ru: '🇷🇺',      // Russian - Russia flag
-  he: '🇮🇱',      // Hebrew - Israel flag
-  fr: '🇫🇷',      // French - France flag
-  it: '🇮🇹',      // Italian - Italy flag
-  pl: '🇵🇱',      // Polish - Poland flag
+  nl: '🇳🇱', // Dutch - Netherlands flag
+  de: '🇩🇪', // German - Germany flag
+  sr: '🇷🇸', // Serbian - Serbia flag
+  ru: '🇷🇺', // Russian - Russia flag
+  he: '🇮🇱', // Hebrew - Israel flag
+  fr: '🇫🇷', // French - France flag
+  it: '🇮🇹', // Italian - Italy flag
+  pl: '🇵🇱', // Polish - Poland flag
   'zh-CN': '🇨🇳', // Chinese - China flag
-  ja: '🇯🇵',      // Japanese - Japan flag
-  fi: '🇫🇮',      // Finnish - Finland flag
-  sv: '🇸🇪',      // Swedish - Sweden flag
-  nb: '🇳🇴',      // Norwegian - Norway flag
-  th: '🇹🇭',      // Thai - Thailand flag
-  ar: '🇸🇦',      // Arabic - Saudi Arabia flag
-  da: '🇩🇰',      // Danish - Denmark flag
-  cs: '🇨🇿',      // Czech - Czech Republic flag
+  ja: '🇯🇵', // Japanese - Japan flag
+  fi: '🇫🇮', // Finnish - Finland flag
+  sv: '🇸🇪', // Swedish - Sweden flag
+  nb: '🇳🇴', // Norwegian - Norway flag
+  th: '🇹🇭', // Thai - Thailand flag
+  ar: '🇸🇦', // Arabic - Saudi Arabia flag
+  da: '🇩🇰', // Danish - Denmark flag
+  cs: '🇨🇿', // Czech - Czech Republic flag
 };
 ```
 
 **Acceptance Criteria:**
+
 - ✅ Display flag emoji next to language name
 - ✅ Flags render correctly across browsers
 - ✅ Fallback to language code if emoji not supported
@@ -936,6 +990,7 @@ export const LANGUAGE_FLAGS: Record<SupportedLanguage, string> = {
 **Description:** Display ISO-639 language codes alongside language names.
 
 **Requirements:**
+
 ```typescript
 // src/i18n/config.ts
 export const SUPPORTED_LANGUAGES = {
@@ -943,36 +998,38 @@ export const SUPPORTED_LANGUAGES = {
     name: 'English',
     nativeName: 'English',
     isoCode: 'en',
-    dir: 'ltr'
+    dir: 'ltr',
   },
   'pt-BR': {
     name: 'Portuguese (Brazil)',
     nativeName: 'Português (Brasil)',
     isoCode: 'pt-BR',
-    dir: 'ltr'
+    dir: 'ltr',
   },
   fi: {
     name: 'Finnish',
     nativeName: 'Suomi',
     isoCode: 'fi',
-    dir: 'ltr'
+    dir: 'ltr',
   },
   ar: {
     name: 'Arabic',
     nativeName: 'العربية',
     isoCode: 'ar',
-    dir: 'rtl'
+    dir: 'rtl',
   },
   // ... other languages
 } as const;
 ```
 
 **Display Format:**
+
 - Primary: `🇫🇮 Suomi (fi)`
 - Compact: `🇫🇮 fi`
 - Verbose: `🇫🇮 Finnish - Suomi (fi)`
 
 **Acceptance Criteria:**
+
 - ✅ Show ISO code in parentheses
 - ✅ Support compact mode for mobile
 - ✅ ISO codes follow ISO-639-1 standard
@@ -984,6 +1041,7 @@ export const SUPPORTED_LANGUAGES = {
 **Description:** Show tooltip with language information in user's current language.
 
 **Translation Keys:**
+
 ```json
 // public/locales/en/common.json
 {
@@ -1010,6 +1068,7 @@ export const SUPPORTED_LANGUAGES = {
 ```
 
 **Acceptance Criteria:**
+
 - ✅ Tooltip shows on hover (desktop) and long-press (mobile)
 - ✅ Tooltip text translates with current language
 - ✅ Tooltip indicates RTL languages
@@ -1021,6 +1080,7 @@ export const SUPPORTED_LANGUAGES = {
 **Description:** Improved visual design and interaction patterns.
 
 **Requirements:**
+
 - Dropdown menu with search/filter capability
 - Keyboard navigation support (arrow keys, Enter, Escape)
 - Active language indicator (checkmark or highlight)
@@ -1028,6 +1088,7 @@ export const SUPPORTED_LANGUAGES = {
 - Responsive design (desktop, tablet, mobile)
 
 **Component Structure:**
+
 ```typescript
 // src/components/LanguageSwitcher.tsx
 export function LanguageSwitcher() {
@@ -1147,6 +1208,7 @@ function LanguageSelectItem({ code, info }: { code: string; info: LanguageInfo }
 ```
 
 **Acceptance Criteria:**
+
 - ✅ Search filters languages by name, native name, or code
 - ✅ Keyboard navigation works (Tab, Arrow keys, Enter, Escape)
 - ✅ Current language shows checkmark indicator
@@ -1250,8 +1312,18 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 export const SUPPORTED_LANGUAGES = {
   // Existing languages
   en: { name: 'English', nativeName: 'English', isoCode: 'en', dir: 'ltr' },
-  'pt-BR': { name: 'Portuguese (Brazil)', nativeName: 'Português (Brasil)', isoCode: 'pt-BR', dir: 'ltr' },
-  'es-ES': { name: 'Spanish (Spain)', nativeName: 'Español (España)', isoCode: 'es-ES', dir: 'ltr' },
+  'pt-BR': {
+    name: 'Portuguese (Brazil)',
+    nativeName: 'Português (Brasil)',
+    isoCode: 'pt-BR',
+    dir: 'ltr',
+  },
+  'es-ES': {
+    name: 'Spanish (Spain)',
+    nativeName: 'Español (España)',
+    isoCode: 'es-ES',
+    dir: 'ltr',
+  },
   de: { name: 'German', nativeName: 'Deutsch', isoCode: 'de', dir: 'ltr' },
   fr: { name: 'French', nativeName: 'Français', isoCode: 'fr', dir: 'ltr' },
   he: { name: 'Hebrew', nativeName: 'עברית', isoCode: 'he', dir: 'rtl' },
@@ -1323,16 +1395,19 @@ frontend/public/locales/
 ### 1. Translation Quality
 
 #### QA-TRANS-001: Accuracy
+
 - Professional translation service (DeepL, Google Translate, or human translators)
 - Native speaker review for critical languages (fi, ar, th)
 - Context provided for technical terms
 
 #### QA-TRANS-002: Completeness
+
 - 100% coverage for all keys across all 20 languages
 - No missing translations in production
 - Fallback to English for missing keys in development
 
 #### QA-TRANS-003: Consistency
+
 - Consistent terminology across all namespaces
 - Glossary for technical terms (PR, repository, merge, etc.)
 - Tone consistent with brand (professional, friendly)
@@ -1342,17 +1417,20 @@ frontend/public/locales/
 ### 2. Functional Quality
 
 #### QA-FUNC-001: Pluralization
+
 - All plural forms tested for each language
 - Russian (3 forms), Polish (3 forms), Arabic (6 forms), Czech (3 forms) validated
 - Thai and Japanese (no plurals) tested
 
 #### QA-FUNC-002: RTL Support
+
 - Arabic and Hebrew render correctly RTL
 - Layouts mirror properly
 - Mixed LTR/RTL content (URLs, code) handled
 - Icons flip appropriately
 
 #### QA-FUNC-003: Character Encoding
+
 - UTF-8 encoding verified for all files
 - Special characters render: Thai (ไทย), Arabic (العربية), Czech (čeština)
 - No mojibake or encoding corruption
@@ -1362,11 +1440,13 @@ frontend/public/locales/
 ### 3. Performance Quality
 
 #### QA-PERF-001: Load Time
+
 - Initial language load: <200ms
 - Language switch: <100ms
 - Translation file size: <50KB per language
 
 #### QA-PERF-002: Bundle Size
+
 - Frontend i18n overhead: <35KB (gzipped)
 - Lazy loading implemented for all languages
 - No blocking on translation load
@@ -1376,11 +1456,13 @@ frontend/public/locales/
 ### 4. Accessibility Quality
 
 #### QA-A11Y-001: WCAG Compliance
+
 - Language switcher WCAG 2.1 AA compliant
 - Screen reader announces language changes
 - Keyboard navigation works for all interactions
 
 #### QA-A11Y-002: Language Tags
+
 - HTML `lang` attribute updated on language change
 - `dir` attribute set correctly for RTL languages
 - ARIA labels translated
@@ -1410,12 +1492,7 @@ describe('Extended Language Support', () => {
 
       it('should have all common keys translated', async () => {
         await i18n.changeLanguage(lang);
-        const commonKeys = [
-          'app.name',
-          'navigation.dashboard',
-          'status.green',
-          'actions.save',
-        ];
+        const commonKeys = ['app.name', 'navigation.dashboard', 'status.green', 'actions.save'];
 
         commonKeys.forEach((key) => {
           const translation = i18n.t(`common:${key}`);
@@ -1688,7 +1765,7 @@ test.describe('Character Rendering - Thai', () => {
 
     // Verify Thai characters render
     const title = await page.textContent('[data-testid="dashboard-title"]');
-    expect(title).toMatch(/[\u0E00-\u0E7F]/);  // Thai Unicode range
+    expect(title).toMatch(/[\u0E00-\u0E7F]/); // Thai Unicode range
 
     await expect(page).toHaveScreenshot('dashboard-thai.png');
   });
@@ -1738,6 +1815,7 @@ This specification document provides comprehensive requirements for:
 **Priority**: Medium (Phase 2-3 rollout)
 
 **Next Steps:**
+
 1. Review specification with stakeholders
 2. Prioritize Phase 2 languages (fi, sv, nb, da) vs Phase 3 (th, ar, cs)
 3. Set up translation service accounts (DeepL, Google Translate)

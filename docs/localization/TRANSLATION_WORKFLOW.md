@@ -58,18 +58,18 @@ Backend translations are stored in `crates/ampel-api/locales/` and embedded at c
 ```yaml
 # crates/ampel-api/locales/en/common.yml
 dashboard:
-  title: "Pull Request Dashboard"
-  subtitle: "Unified view across all repositories"
+  title: 'Pull Request Dashboard'
+  subtitle: 'Unified view across all repositories'
 
 errors:
   auth:
-    invalid_credentials: "Invalid email or password"
-    token_expired: "Your session has expired. Please login again."
+    invalid_credentials: 'Invalid email or password'
+    token_expired: 'Your session has expired. Please login again.'
 
 pull_requests:
   count:
-    one: "1 pull request"
-    other: "{{count}} pull requests"
+    one: '1 pull request'
+    other: '{{count}} pull requests'
 ```
 
 #### Key Naming Conventions
@@ -180,8 +180,8 @@ items:
 const { t } = useTranslation('dashboard');
 
 // Automatic plural selection
-t('pull_requests', { count: 1 });  // "1 pull request"
-t('pull_requests', { count: 5 });  // "5 pull requests"
+t('pull_requests', { count: 1 }); // "1 pull request"
+t('pull_requests', { count: 5 }); // "5 pull requests"
 ```
 
 ---
@@ -205,13 +205,13 @@ cargo run --bin i18n-builder -- --help
 Create `.ampel-i18n.yaml` in the project root:
 
 ```yaml
-translation_dir: "frontend/public/locales"
+translation_dir: 'frontend/public/locales'
 
 translation:
   # API keys (can also use environment variables)
-  deepl_api_key: null  # Use DEEPL_API_KEY env var
-  google_api_key: null  # Use GOOGLE_API_KEY env var
-  openai_api_key: null  # Use OPENAI_API_KEY env var
+  deepl_api_key: null # Use DEEPL_API_KEY env var
+  google_api_key: null # Use GOOGLE_API_KEY env var
+  openai_api_key: null # Use OPENAI_API_KEY env var
 
   # Request timeout in seconds
   timeout_secs: 30
@@ -298,11 +298,11 @@ cargo run --bin i18n-builder -- codegen \
 
 The CLI automatically selects the best provider based on language:
 
-| Provider | Languages | Use Case |
-|----------|-----------|----------|
-| **DeepL** | 18/20 (excludes Thai, Arabic) | Primary - highest quality |
-| **Google** | 20/20 (all languages) | Fallback - broad coverage |
-| **OpenAI** | All languages | Emergency fallback |
+| Provider   | Languages                     | Use Case                  |
+| ---------- | ----------------------------- | ------------------------- |
+| **DeepL**  | 18/20 (excludes Thai, Arabic) | Primary - highest quality |
+| **Google** | 20/20 (all languages)         | Fallback - broad coverage |
+| **OpenAI** | All languages                 | Emergency fallback        |
 
 ### DeepL Integration
 
@@ -420,7 +420,7 @@ The CI generates a coverage report and posts it to the PR:
 **Overall Coverage:** 96.5%
 
 | Language | Coverage | Translated | Missing | Status |
-|----------|----------|------------|---------|--------|
+| -------- | -------- | ---------- | ------- | ------ |
 | en       | 100.0%   | 150        | 0       | ✅     |
 | es       | 98.0%    | 147        | 3       | ✅     |
 | fi       | 97.3%    | 146        | 4       | ✅     |
@@ -576,12 +576,12 @@ yamllint -c .yamllint.yml crates/ampel-api/locales/fi/common.yml
 
 ```yaml
 # ❌ Bad: Ambiguous
-button: "OK"
+button: 'OK'
 
 # ✅ Good: Clear context
 dialog:
-  confirm_button: "Confirm changes"
-  cancel_button: "Cancel"
+  confirm_button: 'Confirm changes'
+  cancel_button: 'Cancel'
 ```
 
 ### 2. Provide Context
@@ -589,11 +589,11 @@ dialog:
 ```yaml
 # Add comments for translators
 # Context: Button label for submitting a form
-submit: "Submit"
+submit: 'Submit'
 
 # Context: Status indicator for completed tasks
 status:
-  completed: "Completed"
+  completed: 'Completed'
 ```
 
 ### 3. Use Consistent Terminology

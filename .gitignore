@@ -13,6 +13,9 @@ frontend/.vite/
 .env.local
 .env.*.local
 
+# i18n builder local config (may contain API keys)
+.ampel-i18n.yaml
+
 # IDE
 .idea/
 .vscode/
@@ -70,9 +73,6 @@ hive-mind-prompt-*.txt
 # agentic-qe generated files
 .agentic-qe
 aqe
-
-# archived
-.archives/
 
 # Prevent undefined directory from misconfigured CARGO_HOME/RUSTUP_HOME
 undefined/

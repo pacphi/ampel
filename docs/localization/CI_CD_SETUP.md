@@ -20,6 +20,7 @@ The i18n validation system ensures translation quality and coverage across all 2
 ```
 
 This installs:
+
 - **pre-commit**: Validates translation files before commit (<5s)
 - **commit-msg**: Enforces i18n commit message conventions
 
@@ -58,6 +59,7 @@ node frontend/scripts/i18n-coverage-report.js --check --min-coverage 95
 ## GitHub Actions Workflow
 
 The workflow runs on:
+
 - Pull requests that modify translation files
 - Pushes to the main branch
 
@@ -68,6 +70,7 @@ The workflow runs on:
 Validates Rust translations in `crates/ampel-api/locales/`
 
 **Steps:**
+
 - Build ampel-i18n-builder
 - Check coverage (≥95%)
 - Validate YAML schema
@@ -75,6 +78,7 @@ Validates Rust translations in `crates/ampel-api/locales/`
 - Generate coverage report
 
 **Artifacts:**
+
 - `backend-coverage.json` - JSON coverage data
 - `backend-coverage.md` - Markdown report
 
@@ -83,6 +87,7 @@ Validates Rust translations in `crates/ampel-api/locales/`
 Validates React translations in `frontend/public/locales/`
 
 **Steps:**
+
 - Install dependencies (pnpm)
 - Check coverage (≥95%)
 - Validate JSON schema
@@ -91,6 +96,7 @@ Validates React translations in `frontend/public/locales/`
 - Verify types are up-to-date
 
 **Artifacts:**
+
 - `frontend-coverage.json` - JSON coverage data
 - `frontend-coverage.md` - Markdown report
 
@@ -101,6 +107,7 @@ Tests RTL (Right-to-Left) language support
 **Languages:** Arabic (ar), Hebrew (he)
 
 **Steps:**
+
 - Run Playwright visual regression tests
 - Upload visual diffs on failure
 
@@ -111,6 +118,7 @@ Tests complex script rendering
 **Languages:** Arabic (ar), Thai (th), Korean (ko)
 
 **Steps:**
+
 - Run rendering tests for each language
 - Verify proper text shaping and layout
 
@@ -121,6 +129,7 @@ Tests complex pluralization rules
 **Languages:** Finnish (fi), Czech (cs), Russian (ru), Polish (pl)
 
 **Steps:**
+
 - Run pluralization tests
 - Verify correct plural forms
 
@@ -129,6 +138,7 @@ Tests complex pluralization rules
 Generates combined coverage report and posts to PR
 
 **Steps:**
+
 - Download backend and frontend coverage
 - Calculate overall coverage
 - Post formatted report as PR comment
@@ -139,23 +149,26 @@ Generates combined coverage report and posts to PR
 Tests DeepL API integration (main branch only)
 
 **Steps:**
+
 - Run dry-run translation update
 - Create automated PR if translations updated
 
 ## Coverage Thresholds
 
-| Component | Threshold | Status |
-|-----------|-----------|--------|
-| Backend | 95% | ✅ Required |
-| Frontend | 95% | ✅ Required |
-| Overall | 95% | ✅ Required |
+| Component | Threshold | Status      |
+| --------- | --------- | ----------- |
+| Backend   | 95%       | ✅ Required |
+| Frontend  | 95%       | ✅ Required |
+| Overall   | 95%       | ✅ Required |
 
 **Coverage calculation:**
+
 ```
 Coverage = (Translated Keys / Total Keys) × 100
 ```
 
 **Exclusions:**
+
 - Empty values (null, "", "TODO", "[TODO ...]")
 - Missing keys
 - Commented-out translations
@@ -200,6 +213,7 @@ docs(i18n): improve localization guide
 ```
 
 The commit-msg hook enforces:
+
 - i18n commits only modify i18n files
 - Proper commit message format
 
@@ -264,7 +278,7 @@ Coverage by Language:
 ## Coverage by Language
 
 | Language | Coverage | Translated | Missing | Empty | Status |
-|----------|----------|------------|---------|-------|--------|
+| -------- | -------- | ---------- | ------- | ----- | ------ |
 | en       | 100.0%   | 150        | 0       | 0     | ✅     |
 | es       | 98.0%    | 147        | 3       | 0     | ✅     |
 | fr       | 92.0%    | 138        | 12      | 0     | ❌     |

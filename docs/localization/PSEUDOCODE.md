@@ -1594,8 +1594,8 @@ END
 CONFIGURATION: .ampel-i18n.yaml
 
 api:
-  provider: "google"  # or "deepl", "azure"
-  base_url: "https://translation.googleapis.com/v3"
+  provider: 'google' # or "deepl", "azure"
+  base_url: 'https://translation.googleapis.com/v3'
   timeout_seconds: 30
 
 rate_limiting:
@@ -1603,24 +1603,24 @@ rate_limiting:
   burst_size: 20
 
 translation:
-  source_language: "en"
+  source_language: 'en'
   target_languages:
-    - "de"
-    - "fr"
-    - "es"
-    - "ja"
-    - "zh-CN"
+    - 'de'
+    - 'fr'
+    - 'es'
+    - 'ja'
+    - 'zh-CN'
 
   preserve_formatting: true
   preserve_variables: true
 
 paths:
-  source_bundle: "frontend/src/locales/en.yaml"
-  output_directory: "frontend/src/locales"
-  format: "yaml"  # or "json"
+  source_bundle: 'frontend/src/locales/en.yaml'
+  output_directory: 'frontend/src/locales'
+  format: 'yaml' # or "json"
 
 validation:
-  minimum_coverage: 80.0  # percentage
+  minimum_coverage: 80.0 # percentage
   allow_empty_strings: false
   warn_on_missing_variables: true
 
@@ -1637,7 +1637,8 @@ cache:
 ### Translation API Client
 
 **TranslateBatch Algorithm:**
-- Time Complexity: O(n/b * r) where:
+
+- Time Complexity: O(n/b \* r) where:
   - n = number of strings
   - b = batch size (typically 100)
   - r = retry attempts (typically 3)
@@ -1645,18 +1646,21 @@ cache:
 - Cache lookup: O(1) average case with hash map
 
 **Rate Limiter (Token Bucket):**
+
 - Time Complexity: O(1) per token acquisition
 - Space Complexity: O(1) for bucket state
 
 ### Bundle Generator
 
 **BuildTranslationMap (Recursive):**
-- Time Complexity: O(k * d) where:
+
+- Time Complexity: O(k \* d) where:
   - k = number of keys
   - d = average nesting depth
 - Space Complexity: O(k) for output map
 
 **GenerateTargetBundle:**
+
 - Time Complexity: O(k + t + k log k) where:
   - k = number of keys
   - t = translation time (dominated by API calls)
@@ -1666,26 +1670,31 @@ cache:
 ### CLI Tool
 
 **ExecuteSync:**
-- Time Complexity: O(k * l) where:
+
+- Time Complexity: O(k \* l) where:
   - k = number of keys
   - l = number of languages
-- Space Complexity: O(k * l) worst case if all missing
+- Space Complexity: O(k \* l) worst case if all missing
 
 **ExecuteValidate:**
-- Time Complexity: O(k * l) for comparing all keys across languages
+
+- Time Complexity: O(k \* l) for comparing all keys across languages
 - Space Complexity: O(k) for storing key sets
 
 **ExecuteDiff:**
+
 - Time Complexity: O(k) for set operations
 - Space Complexity: O(k) for difference sets
 
 ### Language Switcher Component
 
 **Render:**
+
 - Time Complexity: O(l log l) where l = number of languages (for sorting)
 - Space Complexity: O(1) (constant state size)
 
 **Keyboard Navigation:**
+
 - Time Complexity: O(1) per key event
 - Space Complexity: O(1)
 
@@ -1726,6 +1735,6 @@ cache:
 
 ---
 
-*Generated for Ampel Localization System*
-*Version: 1.0.0*
-*Date: 2025-12-27*
+_Generated for Ampel Localization System_
+_Version: 1.0.0_
+_Date: 2025-12-27_

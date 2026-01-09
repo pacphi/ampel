@@ -1,25 +1,30 @@
 # Ampel Localization System - Documentation Index
 
-**Version:** 2.0
-**Date:** 2025-12-27
-**Status:** Enhanced with SPARC Methodology
+**Version:** 3.0
+**Date:** 2026-01-09
+**Status:** Production - 27 Languages Supported
 
 ---
 
 ## 📚 Documentation Overview
 
-This directory contains comprehensive documentation for Ampel's multi-language localization system, supporting **20 languages** with automated translation, RTL support, and type-safe implementation.
+This directory contains active documentation for Ampel's multi-language localization system, supporting **27 languages** with automated 4-tier translation provider fallback, RTL support, and type-safe implementation.
+
+> **Note**: Implementation history and phase reports have been archived to `docs/.archives/2025/12/localization/`.
 
 ### Quick Navigation
 
-| Document | Purpose | Status |
-|----------|---------|--------|
-| **[LOCALIZATION_IMPLEMENTATION_PLAN.md](./LOCALIZATION_IMPLEMENTATION_PLAN.md)** | Original V1 plan (13 languages) | ✅ Complete |
-| **[IMPLEMENTATION_ROADMAP_V2.md](./IMPLEMENTATION_ROADMAP_V2.md)** | Enhanced V2 roadmap (20 languages) | ✅ Ready for Approval |
-| **[TRANSLATION_API_RESEARCH.md](./TRANSLATION_API_RESEARCH.md)** | API provider research & recommendations | ✅ Complete |
-| **[SPECIFICATION.md](./SPECIFICATION.md)** | SPARC: Requirements specification | ✅ Complete |
-| **[ARCHITECTURE.md](./ARCHITECTURE.md)** | SPARC: System architecture design | ✅ Complete |
-| **[PSEUDOCODE.md](./PSEUDOCODE.md)** | SPARC: Algorithm pseudocode | ✅ Complete |
+| Document                                                                 | Purpose                         | Audience   |
+| ------------------------------------------------------------------------ | ------------------------------- | ---------- |
+| **[DEVELOPER-GUIDE.md](./DEVELOPER-GUIDE.md)**                           | How to add/update translations  | Developers |
+| **[USER-GUIDE.md](./USER-GUIDE.md)**                                     | How to change language settings | End users  |
+| **[4-TIER-PROVIDER-ARCHITECTURE.md](./4-TIER-PROVIDER-ARCHITECTURE.md)** | Translation provider design     | Architects |
+| **[PROVIDER-CONFIGURATION.md](./PROVIDER-CONFIGURATION.md)**             | Configure translation providers | DevOps     |
+| **[CI_CD_SETUP.md](./CI_CD_SETUP.md)**                                   | CI/CD validation pipeline       | DevOps     |
+| **[TRANSLATION_WORKFLOW.md](./TRANSLATION_WORKFLOW.md)**                 | Translation process guide       | Developers |
+| **[SPECIFICATION.md](./SPECIFICATION.md)**                               | Requirements specification      | Reference  |
+| **[ARCHITECTURE.md](./ARCHITECTURE.md)**                                 | System architecture design      | Reference  |
+| **[PSEUDOCODE.md](./PSEUDOCODE.md)**                                     | Algorithm pseudocode            | Reference  |
 
 ---
 
@@ -28,6 +33,7 @@ This directory contains comprehensive documentation for Ampel's multi-language l
 ### Supported Languages: 20 Total
 
 #### Phase 1: Core Languages (6)
+
 - 🇬🇧 English (en) - Default/Fallback
 - 🇧🇷 Portuguese - Brazil (pt-BR)
 - 🇪🇸 Spanish - Spain (es-ES)
@@ -36,6 +42,7 @@ This directory contains comprehensive documentation for Ampel's multi-language l
 - 🇮🇱 Hebrew (he) - **RTL**
 
 #### Phase 2: European Extensions (7)
+
 - 🇫🇮 Finnish (fi) - **NEW**
 - 🇸🇪 Swedish (sv) - **NEW**
 - 🇳🇴 Norwegian (no) - **NEW**
@@ -45,6 +52,7 @@ This directory contains comprehensive documentation for Ampel's multi-language l
 - 🇮🇹 Italian (it)
 
 #### Phase 3: Global Expansion (7)
+
 - 🇵🇱 Polish (pl)
 - 🇷🇺 Russian (ru)
 - 🇷🇸 Serbian (sr)
@@ -60,12 +68,14 @@ This directory contains comprehensive documentation for Ampel's multi-language l
 ### Tech Stack
 
 **Backend:**
+
 - **rust-i18n** - Compile-time translation embedding (zero runtime overhead)
 - **ampel-i18n-builder** (NEW) - Custom crate for automated translation workflow
 - **DeepL API** - Primary translation provider (92-98% accuracy)
 - **Google Cloud Translation API** - Fallback provider (broad language coverage)
 
 **Frontend:**
+
 - **react-i18next** - Runtime translation with hot-reload support
 - **i18next-http-backend** - Lazy loading for translation bundles
 - **Enhanced Language Switcher** - Flag icons, ISO codes, localized tooltips
@@ -112,30 +122,35 @@ graph TB
 ## 📋 Implementation Phases (V2)
 
 ### Phase 0: Infrastructure (Weeks 1-2) - **NEW**
+
 - Build **ampel-i18n-builder** crate (30 hours)
 - Integrate DeepL API client (10 hours)
 - Integrate Google Cloud API client (10 hours)
 - Create CLI tools for translation management (10 hours)
 
 ### Phase 1: Foundation (Weeks 3-4)
+
 - Backend: rust-i18n setup for 20 languages
 - Frontend: react-i18next with enhanced language switcher (flags, ISO codes, tooltips)
 - RTL support for Hebrew and Arabic
 - Type-safe translation keys
 
 ### Phase 2: Translation (Weeks 5-8)
+
 - API-based translation for all UI strings (Phase 1-2 languages)
 - Professional review for critical languages (Hebrew, Arabic, Thai)
 - Complex pluralization testing (Finnish, Czech, Russian, Polish)
 - Error message and validation text translation
 
 ### Phase 3: Advanced Features (Weeks 9-10)
+
 - Lazy loading optimization
 - Translation caching with Redis
 - Performance benchmarking
 - Developer tooling and documentation
 
 ### Phase 4: CI/CD & Launch (Weeks 11-12)
+
 - Automated translation validation in GitHub Actions
 - Visual regression testing for RTL layouts
 - Monitoring and analytics setup
@@ -150,14 +165,14 @@ graph TB
 
 ### V2 Budget Breakdown
 
-| Category | Cost | Notes |
-|----------|------|-------|
-| **Development** | $23,000 | 230 hours @ $100/hour |
-| **API Translation** | $2,500 | DeepL + Google with professional spot-checks |
-| **Professional Review** | $18,550 | Critical languages (Hebrew, Arabic, Thai, Chinese) |
-| **Tools & Services** | $1,140 | Translation management platform, monitoring |
-| **QA & Testing** | $1,000 | Native speaker testing, visual regression |
-| **Total** | **$46,190** | Full implementation cost |
+| Category                | Cost        | Notes                                              |
+| ----------------------- | ----------- | -------------------------------------------------- |
+| **Development**         | $23,000     | 230 hours @ $100/hour                              |
+| **API Translation**     | $2,500      | DeepL + Google with professional spot-checks       |
+| **Professional Review** | $18,550     | Critical languages (Hebrew, Arabic, Thai, Chinese) |
+| **Tools & Services**    | $1,140      | Translation management platform, monitoring        |
+| **QA & Testing**        | $1,000      | Native speaker testing, visual regression          |
+| **Total**               | **$46,190** | Full implementation cost                           |
 
 ### API Cost Efficiency
 
@@ -173,56 +188,51 @@ graph TB
 ### Recommended Providers (Research Complete)
 
 #### 🥇 Primary: DeepL API
+
 - **Languages:** 18/20 (all except Thai, Arabic)
 - **Accuracy:** 92-98% (industry-leading for European languages)
 - **Cost:** €24.99/month for 1M characters
 - **Strengths:** Natural translations, formality control, glossary support
 
 #### 🥈 Fallback: Google Cloud Translation API
+
 - **Languages:** 20/20 (all languages)
 - **Accuracy:** 85-92% (excellent for Asian languages)
 - **Cost:** $20/1M characters ($300 free credit)
 - **Strengths:** Broad coverage, enterprise reliability, AutoML custom models
 
 ### Intelligent Routing
+
 - Use DeepL for high-quality European languages
 - Use Google for Thai and Arabic
 - Automatic failover between providers
 - 95% cost reduction vs. professional translation for ongoing updates
 
-**See:** [TRANSLATION_API_RESEARCH.md](./TRANSLATION_API_RESEARCH.md) for detailed analysis
+**See:** [4-TIER-PROVIDER-ARCHITECTURE.md](./4-TIER-PROVIDER-ARCHITECTURE.md) for current architecture
 
 ---
 
-## 🔬 SPARC Methodology Documents
+## 🔬 Reference Documents
 
-### Specification Phase
-**[SPECIFICATION.md](./SPECIFICATION.md)** - Comprehensive requirements analysis
-- Extended language support (7 new languages)
-- Translation automation crate design
-- Enhanced language switcher with flags/tooltips
-- Quality assurance criteria and acceptance tests
+### Design Documents
 
-### Pseudocode Phase
-**[PSEUDOCODE.md](./PSEUDOCODE.md)** - Algorithm design and implementation details
-- Translation API client with rate limiting and retry logic
-- Bundle generator for YAML and JSON formats
-- CLI tool command structure
-- Language switcher component logic
+**[SPECIFICATION.md](./SPECIFICATION.md)** - Requirements analysis and acceptance criteria
 
-### Architecture Phase
-**[ARCHITECTURE.md](./ARCHITECTURE.md)** - System design and integration
-- ampel-i18n-builder crate structure
-- API abstraction layer (Lokalise, Crowdin, POEditor support)
-- Enhanced language switcher component with accessibility
-- Build pipeline integration and Docker deployment
+**[ARCHITECTURE.md](./ARCHITECTURE.md)** - System design and integration patterns
 
-### Refinement Phase
-**[IMPLEMENTATION_ROADMAP_V2.md](./IMPLEMENTATION_ROADMAP_V2.md)** - Detailed implementation plan
-- 12-week phased timeline (14 weeks with buffer)
-- 230-hour effort estimate
-- Risk assessment and mitigation strategies
-- Cost breakdown and success metrics
+**[PSEUDOCODE.md](./PSEUDOCODE.md)** - Algorithm design for translation pipeline
+
+**[4-TIER-PROVIDER-ARCHITECTURE.md](./4-TIER-PROVIDER-ARCHITECTURE.md)** - Current provider fallback design
+
+### Operational Guides
+
+**[DEVELOPER-GUIDE.md](./DEVELOPER-GUIDE.md)** - Complete developer workflow
+
+**[TRANSLATION_WORKFLOW.md](./TRANSLATION_WORKFLOW.md)** - Translation process and CLI tools
+
+**[PROVIDER-CONFIGURATION.md](./PROVIDER-CONFIGURATION.md)** - Provider setup and configuration
+
+**[CI_CD_SETUP.md](./CI_CD_SETUP.md)** - Validation pipeline setup
 
 ---
 
@@ -231,24 +241,28 @@ graph TB
 ### Test Coverage by Language Type
 
 #### RTL Languages (Hebrew, Arabic)
+
 - Bidirectional text rendering
 - Layout mirroring (CSS logical properties)
 - Mixed LTR/RTL content handling
 - Visual regression testing with Playwright
 
 #### Complex Scripts (Thai)
+
 - Font rendering (tone marks, ligatures)
 - Word segmentation (dictionary-based)
 - Line breaking algorithms
 - Character composition
 
 #### Complex Pluralization (Finnish, Czech, Russian, Polish)
+
 - 3-15 plural forms per language
 - CLDR plural rule validation
 - Programmatic plural testing
 - Edge case coverage (0, 1, 2, 5, 10, 100, 1000)
 
 #### Asian Languages (Chinese, Japanese)
+
 - CJK character rendering
 - IME (Input Method Editor) testing
 - Calendar systems (Gregorian, Japanese calendar)
@@ -316,22 +330,26 @@ function MyComponent() {
 ## 📊 Success Metrics
 
 ### Translation Quality
+
 - **COMET Score:** >0.85 (DeepL baseline)
 - **Human Rating:** >8/10 for critical languages
 - **Translation Coverage:** 100% across all 20 languages
 
 ### Performance
+
 - **Bundle Size:** <35KB (i18n overhead)
 - **Load Time:** <200ms for translation files
 - **Switch Time:** <100ms for language switching
 - **API Response:** <10s for full 20-language sync
 
 ### Reliability
+
 - **API Uptime:** 99.9% with automatic failover
 - **Missing Keys:** 0 in production (CI validation)
 - **Translation Errors:** <5/month reported by users
 
 ### Developer Experience
+
 - **Time to Add Key:** <2 minutes
 - **Time to Translate:** <30 seconds with CLI
 - **Translation Turnaround:** <1 hour (API) vs. <7 days (professional)
@@ -341,11 +359,13 @@ function MyComponent() {
 ## 🔗 Related Documentation
 
 ### Ampel Documentation
+
 - [Main README](../../README.md)
 - [CLAUDE.md](../../CLAUDE.md) - Development guidelines
 - [Testing Guide](../TESTING.md)
 
 ### External Resources
+
 - [rust-i18n Documentation](https://github.com/longbridge/rust-i18n)
 - [react-i18next Documentation](https://react.i18next.com/)
 - [DeepL API Documentation](https://www.deepl.com/docs-api)
@@ -358,6 +378,7 @@ function MyComponent() {
 ## 📝 Change Log
 
 ### Version 2.0 (2025-12-27)
+
 - ✨ Added 7 new languages (Finnish, Swedish, Norwegian, Danish, Czech, Thai, Arabic)
 - ✨ Designed ampel-i18n-builder crate for translation automation
 - ✨ Integrated DeepL + Google Cloud Translation APIs
@@ -368,6 +389,7 @@ function MyComponent() {
 - 🔬 Enhanced testing strategy for RTL, complex scripts, and pluralization
 
 ### Version 1.0 (2025-12-27)
+
 - 📚 Initial localization implementation plan
 - 🌍 Support for 13 languages (English, Portuguese, Spanish, Dutch, German, Serbian, Russian, Hebrew, French, Italian, Polish, Chinese, Japanese)
 - 🏗️ rust-i18n (backend) + react-i18next (frontend) architecture
@@ -406,6 +428,6 @@ function MyComponent() {
 
 ---
 
-**Last Updated:** 2025-12-27
+**Last Updated:** 2026-01-09
 **Maintained By:** Ampel Development Team
 **License:** Same as Ampel project

@@ -1,0 +1,110 @@
+{
+  "timestamp": "2025-12-25T16:12:00Z",
+  "build_tool": "vite-7.3.0",
+  "build_time_seconds": 29.25,
+  "chunks": {
+    "diff_view": {
+      "filename": "diff-view-CxMiBJMg.js",
+      "size_kb": 35.9,
+      "size_gzip_kb": 11.7,
+      "purpose": "Git diff viewer (lazy loaded)",
+      "code_split": true
+    },
+    "react_vendor": {
+      "filename": "react-vendor-eddkxjox.js",
+      "size_kb": 56.11,
+      "size_gzip_kb": 18.87,
+      "purpose": "React core libraries"
+    },
+    "query_vendor": {
+      "filename": "query-vendor-CLnwSFlS.js",
+      "size_kb": 76.76,
+      "size_gzip_kb": 25.46,
+      "purpose": "TanStack Query"
+    },
+    "ui_vendor": {
+      "filename": "ui-vendor-Bb0Ymp6p.js",
+      "size_kb": 92.4,
+      "size_gzip_kb": 30.43,
+      "purpose": "shadcn/ui components"
+    },
+    "main_app": {
+      "filename": "index-Cx9h0r3j.js",
+      "size_kb": 686.59,
+      "size_gzip_kb": 162.61,
+      "purpose": "Main application code",
+      "warning": "Large chunk - consider further splitting"
+    },
+    "web_vitals": {
+      "filename": "web-vitals-Cy8-ZkK4.js",
+      "size_kb": 6.12,
+      "size_gzip_kb": 2.52,
+      "purpose": "Performance monitoring"
+    },
+    "styles": {
+      "filename": "index-BuQgB_AE.css",
+      "size_kb": 44.66,
+      "size_gzip_kb": 8.05,
+      "purpose": "Tailwind CSS"
+    }
+  },
+  "totals": {
+    "total_js_kb": 954.88,
+    "total_js_gzip_kb": 251.59,
+    "total_css_gzip_kb": 8.05,
+    "combined_gzip_kb": 259.64,
+    "total_disk_kb": 5028
+  },
+  "targets": {
+    "diff_chunk_gzip_kb": {
+      "target": 50,
+      "actual": 11.7,
+      "status": "PASS",
+      "margin": 38.3
+    },
+    "diff_chunk_increase_kb": {
+      "target": 150,
+      "actual": 35.9,
+      "status": "PASS",
+      "margin": 114.1
+    },
+    "code_splitting": {
+      "target": "required",
+      "actual": "implemented",
+      "status": "PASS"
+    },
+    "lazy_loading": {
+      "target": "required",
+      "actual": "implemented",
+      "status": "PASS"
+    }
+  },
+  "optimizations": {
+    "code_splitting": true,
+    "tree_shaking": true,
+    "minification": true,
+    "gzip_compression": true,
+    "vendor_chunking": true,
+    "lazy_loading": true
+  },
+  "recommendations": [
+    "Monitor main bundle size (686.59 KB) - consider further splitting",
+    "Enable Brotli compression in production for 15-20% better compression",
+    "Cache vendor chunks aggressively (immutable)",
+    "Add bundle size monitoring to CI pipeline",
+    "Consider CDN caching strategy for static assets"
+  ],
+  "verdict": {
+    "overall_status": "PASS",
+    "summary": "Diff library integration successful with minimal bundle impact",
+    "diff_chunk_impact_kb": 35.9,
+    "diff_chunk_gzip_kb": 11.7,
+    "code_split_working": true,
+    "targets_met": [
+      "Bundle size increase <150KB",
+      "Diff chunk <50KB gzipped",
+      "Code splitting implemented",
+      "Lazy loading implemented"
+    ]
+  }
+}
