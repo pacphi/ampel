@@ -100,19 +100,14 @@ impl TypeScriptGenerator {
         let mut structure = TypeStructure::Object(BTreeMap::new());
 
         for (key, value) in translations {
-            self.insert_into_structure(&mut structure, key, value);
+            Self::insert_into_structure(&mut structure, key, value);
         }
 
         structure
     }
 
     /// Insert a translation value into the type structure
-    fn insert_into_structure(
-        &self,
-        structure: &mut TypeStructure,
-        key: &str,
-        value: &TranslationValue,
-    ) {
+    fn insert_into_structure(structure: &mut TypeStructure, key: &str, value: &TranslationValue) {
         if let TypeStructure::Object(ref mut map) = structure {
             match value {
                 TranslationValue::String(_) => {
@@ -124,7 +119,11 @@ impl TypeScriptGenerator {
                 TranslationValue::Nested(nested) => {
                     let mut nested_structure = TypeStructure::Object(BTreeMap::new());
                     for (nested_key, nested_value) in nested {
-                        self.insert_into_structure(&mut nested_structure, nested_key, nested_value);
+                        Self::insert_into_structure(
+                            &mut nested_structure,
+                            nested_key,
+                            nested_value,
+                        );
                     }
                     map.insert(key.to_string(), nested_structure);
                 }
@@ -163,7 +162,7 @@ impl TypeScriptGenerator {
                                 } else {
                                     format!("\"{}\"", nested_key)
                                 };
-                                let type_str = self.render_type(nested_value, indent + 2);
+                                let type_str = Self::render_type(nested_value, indent + 2);
                                 output.push_str(&format!(
                                     "{}    {}: {};\n",
                                     indent_str, nested_sanitized, type_str
@@ -181,7 +180,7 @@ impl TypeScriptGenerator {
     }
 
     /// Render a TypeScript type from type structure
-    fn render_type(&self, structure: &TypeStructure, indent: usize) -> String {
+    fn render_type(structure: &TypeStructure, indent: usize) -> String {
         let indent_str = "  ".repeat(indent);
 
         match structure {
@@ -194,7 +193,7 @@ impl TypeScriptGenerator {
                     } else {
                         format!("\"{}\"", key)
                     };
-                    let type_str = self.render_type(value, indent + 1);
+                    let type_str = Self::render_type(value, indent + 1);
                     output.push_str(&format!(
                         "{}  {}: {};\n",
                         indent_str, sanitized_key, type_str
