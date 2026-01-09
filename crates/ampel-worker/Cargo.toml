@@ -37,6 +37,9 @@ tracing-subscriber.workspace = true
 config.workspace = true
 dotenvy.workspace = true
 
+# Internationalization
+rust-i18n = "3.0"
+
 # Internal
 ampel-core.workspace = true
 ampel-db.workspace = true

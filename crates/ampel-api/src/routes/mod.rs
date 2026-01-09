@@ -9,11 +9,14 @@ use crate::handlers::{
     pull_requests, repositories, teams, user_preferences, user_settings,
 };
 use crate::{
-    health_handler, metrics_handler, middleware::track_metrics, readiness_handler, AppState,
+    health_handler, metrics_handler,
+    middleware::{locale_detection_middleware, track_metrics},
+    readiness_handler, AppState,
 };
 
 pub fn create_router(state: AppState) -> Router {
-    Router::new()
+    // Create the main application router with all routes
+    let app = Router::new()
         // Observability routes (no auth required)
         .route("/health", get(health_handler))
         .route("/ready", get(readiness_handler))
@@ -31,17 +34,17 @@ pub fn create_router(state: AppState) -> Router {
             get(accounts::list_accounts).post(accounts::add_account),
         )
         .route(
-            "/api/accounts/:id",
+            "/api/accounts/{id}",
             get(accounts::get_account)
                 .patch(accounts::update_account)
                 .delete(accounts::delete_account),
         )
         .route(
-            "/api/accounts/:id/validate",
+            "/api/accounts/{id}/validate",
             post(accounts::validate_account),
         )
         .route(
-            "/api/accounts/:id/set-default",
+            "/api/accounts/{id}/set-default",
             post(accounts::set_default_account),
         )
         // Repository routes
@@ -52,7 +55,7 @@ pub fn create_router(state: AppState) -> Router {
             get(repositories::discover_repositories),
         )
         .route(
-            "/api/repositories/:id",
+            "/api/repositories/{id}",
             get(repositories::get_repository)
                 .patch(repositories::update_repository)
                 .delete(repositories::remove_repository),
@@ -60,19 +63,19 @@ pub fn create_router(state: AppState) -> Router {
         // Pull request routes
         .route("/api/pull-requests", get(pull_requests::list_pull_requests))
         .route(
-            "/api/repositories/:repo_id/pull-requests",
+            "/api/repositories/{repo_id}/pull-requests",
             get(pull_requests::list_repository_prs),
         )
         .route(
-            "/api/repositories/:repo_id/pull-requests/:pr_id",
+            "/api/repositories/{repo_id}/pull-requests/{pr_id}",
             get(pull_requests::get_pull_request),
         )
         .route(
-            "/api/repositories/:repo_id/pull-requests/:pr_id/merge",
+            "/api/repositories/{repo_id}/pull-requests/{pr_id}/merge",
             post(pull_requests::merge_pull_request),
         )
         .route(
-            "/api/repositories/:repo_id/pull-requests/:pr_id/refresh",
+            "/api/repositories/{repo_id}/pull-requests/{pr_id}/refresh",
             post(pull_requests::refresh_pull_request),
         )
         // Dashboard routes
@@ -83,10 +86,10 @@ pub fn create_router(state: AppState) -> Router {
             "/api/teams",
             get(teams::list_teams).post(teams::create_team),
         )
-        .route("/api/teams/:team_id", get(teams::get_team))
-        .route("/api/teams/:team_id/members", post(teams::add_member))
+        .route("/api/teams/{team_id}", get(teams::get_team))
+        .route("/api/teams/{team_id}/members", post(teams::add_member))
         .route(
-            "/api/teams/:team_id/members/:user_id",
+            "/api/teams/{team_id}/members/{user_id}",
             delete(teams::remove_member),
         )
         // Notification routes
@@ -117,12 +120,12 @@ pub fn create_router(state: AppState) -> Router {
         .route("/api/merge/bulk", post(bulk_merge::bulk_merge))
         .route("/api/merge/operations", get(bulk_merge::list_operations))
         .route(
-            "/api/merge/operations/:operation_id",
+            "/api/merge/operations/{operation_id}",
             get(bulk_merge::get_operation),
         )
         // Bot/Auto-merge routes
         .route(
-            "/api/repositories/:repo_id/auto-merge",
+            "/api/repositories/{repo_id}/auto-merge",
             get(bot_rules::get_auto_merge_rule)
                 .put(bot_rules::upsert_auto_merge_rule)
                 .delete(bot_rules::delete_auto_merge_rule),
@@ -140,9 +143,12 @@ pub fn create_router(state: AppState) -> Router {
         )
         .route("/api/analytics/health", get(analytics::get_health_overview))
         .route(
-            "/api/repositories/:repo_id/health",
+            "/api/repositories/{repo_id}/health",
             get(analytics::get_repository_health),
-        )
+        );
+
+    // Apply middleware layers and state
+    app.layer(middleware::from_fn(locale_detection_middleware))
         .layer(middleware::from_fn(track_metrics))
         .with_state(state)
 }

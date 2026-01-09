@@ -11,7 +11,7 @@
  */
 
 import { describe, expect, it, beforeEach, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
@@ -80,7 +80,7 @@ describe('LanguageSwitcher', () => {
 
   describe('Language List', () => {
     it('shows all 20 languages when opened', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -104,7 +104,7 @@ describe('LanguageSwitcher', () => {
     });
 
     it('shows language flags in list', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -121,7 +121,7 @@ describe('LanguageSwitcher', () => {
     });
 
     it('highlights current language', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -139,7 +139,7 @@ describe('LanguageSwitcher', () => {
 
   describe('Search Functionality', () => {
     it('filters languages by search query', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -159,7 +159,7 @@ describe('LanguageSwitcher', () => {
     });
 
     it('shows no results message for non-matching search', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -177,7 +177,7 @@ describe('LanguageSwitcher', () => {
     });
 
     it('search is case-insensitive', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -195,7 +195,7 @@ describe('LanguageSwitcher', () => {
     });
 
     it('clears search when dropdown closes', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -221,8 +221,8 @@ describe('LanguageSwitcher', () => {
 
   describe('Language Selection', () => {
     it('changes language when option is clicked', async () => {
-      const user = userEvent.setup();
-      const changeLanguageSpy = vi.spyOn(i18n, 'changeLanguage');
+      const _user = userEvent.setup();
+      const _changeLanguageSpy = vi.spyOn(i18n, 'changeLanguage');
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -238,7 +238,7 @@ describe('LanguageSwitcher', () => {
     });
 
     it('updates displayed language after selection', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -256,7 +256,7 @@ describe('LanguageSwitcher', () => {
     });
 
     it('closes dropdown after selection', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -276,7 +276,7 @@ describe('LanguageSwitcher', () => {
 
   describe('Keyboard Navigation', () => {
     it('opens dropdown with Enter key', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -293,7 +293,7 @@ describe('LanguageSwitcher', () => {
     });
 
     it('navigates options with arrow keys', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -312,7 +312,7 @@ describe('LanguageSwitcher', () => {
     });
 
     it('closes dropdown with Escape key', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -334,7 +334,7 @@ describe('LanguageSwitcher', () => {
 
   describe('LocalStorage Persistence', () => {
     it('saves selected language to localStorage', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>
@@ -379,7 +379,7 @@ describe('LanguageSwitcher', () => {
     });
 
     it('announces selected language to screen readers', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       render(
         <I18nextProvider i18n={i18n}>

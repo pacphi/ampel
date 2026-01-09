@@ -171,13 +171,18 @@ pub async fn add_account(
     let validation = provider
         .validate_credentials(&credentials)
         .await
-        .map_err(|e| ApiError::bad_request(t!("errors.account.validation_failed", error = e.to_string())))?;
+        .map_err(|e| {
+            ApiError::bad_request(t!(
+                "errors.account.validation_failed",
+                error = e.to_string()
+            ))
+        })?;
 
     if !validation.is_valid {
         return Err(ApiError::bad_request(
             validation
                 .error_message
-                .unwrap_or_else(|| t!("errors.account.invalid_token")),
+                .unwrap_or_else(|| t!("errors.account.invalid_token").to_string()),
         ));
     }
 
@@ -199,9 +204,7 @@ pub async fn add_account(
         .await?;
 
     if existing.is_some() {
-        return Err(ApiError::conflict(
-            t!("errors.account.already_connected"),
-        ));
+        return Err(ApiError::conflict(t!("errors.account.already_connected")));
     }
 
     // 6. Encrypt and store token
@@ -221,8 +224,12 @@ pub async fn add_account(
 
     // 8. Create account record
     let now = Utc::now();
-    let scopes_json = serde_json::to_string(&validation.scopes)
-        .map_err(|e| ApiError::internal(t!("errors.general.serialization_failed", error = e.to_string())))?;
+    let scopes_json = serde_json::to_string(&validation.scopes).map_err(|e| {
+        ApiError::internal(t!(
+            "errors.general.serialization_failed",
+            error = e.to_string()
+        ))
+    })?;
 
     let account = provider_account::ActiveModel {
         id: Set(Uuid::new_v4()),
@@ -342,21 +349,25 @@ pub async fn update_account(
         let validation = provider
             .validate_credentials(&credentials)
             .await
-            .map_err(|e| ApiError::bad_request(t!("errors.account.validation_failed", error = e.to_string())))?;
+            .map_err(|e| {
+                ApiError::bad_request(t!(
+                    "errors.account.validation_failed",
+                    error = e.to_string()
+                ))
+            })?;
 
         if !validation.is_valid {
             return Err(ApiError::bad_request(
                 validation
                     .error_message
-                    .unwrap_or_else(|| t!("errors.account.invalid_token")),
+                    .unwrap_or_else(|| t!("errors.account.invalid_token").to_string()),
             ));
         }
 
         // Encrypt new token
-        let token_encrypted = state
-            .encryption_service
-            .encrypt(&new_token)
-            .map_err(|e| ApiError::internal(t!("errors.encryption.failed", error = e.to_string())))?;
+        let token_encrypted = state.encryption_service.encrypt(&new_token).map_err(|e| {
+            ApiError::internal(t!("errors.encryption.failed", error = e.to_string()))
+        })?;
 
         active.access_token_encrypted = Set(token_encrypted);
         active.last_validated_at = Set(Some(now));
@@ -364,8 +375,12 @@ pub async fn update_account(
 
         // Update scopes and expiration if available
         if !validation.scopes.is_empty() {
-            let scopes_json = serde_json::to_string(&validation.scopes)
-                .map_err(|e| ApiError::internal(t!("errors.general.serialization_failed", error = e.to_string())))?;
+            let scopes_json = serde_json::to_string(&validation.scopes).map_err(|e| {
+                ApiError::internal(t!(
+                    "errors.general.serialization_failed",
+                    error = e.to_string()
+                ))
+            })?;
             active.scopes = Set(Some(scopes_json));
         }
         if validation.expires_at.is_some() {
@@ -460,7 +475,12 @@ pub async fn validate_account(
     let token = state
         .encryption_service
         .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(t!("errors.encryption.decrypt_failed", error = e.to_string())))?;
+        .map_err(|e| {
+            ApiError::internal(t!(
+                "errors.encryption.decrypt_failed",
+                error = e.to_string()
+            ))
+        })?;
 
     // Create provider instance
     let provider_type: GitProvider = account

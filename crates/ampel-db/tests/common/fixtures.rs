@@ -87,6 +87,7 @@ impl UserFixture {
             display_name: Set(self.display_name),
             avatar_url: Set(self.avatar_url),
             password_hash: Set(self.password_hash),
+            language: Set(None),
             created_at: Set(now),
             updated_at: Set(now),
         };

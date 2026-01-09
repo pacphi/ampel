@@ -1,8 +1,21 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import GridView from './GridView';
 import type { RepositoryWithStatus } from '@/types';
+
+// Mock react-i18next - GridView doesn't use translations but imports components that do
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: {
+      language: 'en',
+      changeLanguage: vi.fn(),
+    },
+    ready: true,
+  }),
+}));
+
+import GridView from './GridView';
 
 function renderGridView(repositories: Partial<RepositoryWithStatus>[]) {
   const queryClient = new QueryClient({
@@ -21,6 +34,10 @@ function renderGridView(repositories: Partial<RepositoryWithStatus>[]) {
 }
 
 describe('GridView', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   describe('Empty State', () => {
     it('shows empty state when no repositories', () => {
       renderGridView([]);

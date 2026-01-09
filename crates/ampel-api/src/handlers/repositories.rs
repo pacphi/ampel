@@ -116,7 +116,9 @@ pub async fn discover_repositories(
     let access_token = state
         .encryption_service
         .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string())))?;
+        .map_err(|e| {
+            ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string()))
+        })?;
 
     // Create credentials
     let credentials = ampel_providers::traits::ProviderCredentials::Pat {
@@ -138,7 +140,9 @@ pub async fn discover_repositories(
             let page_repos = provider
                 .list_repositories(&credentials, page, per_page)
                 .await
-                .map_err(|e| ApiError::internal(t!("errors.provider.error", error = e.to_string())))?;
+                .map_err(|e| {
+                    ApiError::internal(t!("errors.provider.error", error = e.to_string()))
+                })?;
 
             let count = page_repos.len();
             all_repos.extend(page_repos);
@@ -187,7 +191,9 @@ pub async fn add_repository(
     let access_token = state
         .encryption_service
         .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string())))?;
+        .map_err(|e| {
+            ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string()))
+        })?;
 
     // Create credentials
     let credentials = ampel_providers::traits::ProviderCredentials::Pat {

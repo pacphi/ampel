@@ -1,8 +1,34 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import PRCard from './PRCard';
 import type { PullRequestWithDetails } from '@/types';
+
+// Mock react-i18next before importing the component
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      // Return actual translated strings for test assertions
+      const translations: Record<string, string> = {
+        'dashboard:blockers.draft': 'Draft',
+        'dashboard:blockers.conflicts': 'Conflicts',
+        'dashboard:blockers.ciFailed': 'CI failed',
+        'dashboard:blockers.ciPending': 'CI pending',
+        'dashboard:blockers.changesRequested': 'Changes requested',
+        'dashboard:blockers.awaitingReview': 'Awaiting review',
+        'dashboard:blockers.needsReview': 'Needs review',
+        'dashboard:actions.merge': 'Merge',
+      };
+      return translations[key] || key;
+    },
+    i18n: {
+      language: 'en',
+      changeLanguage: vi.fn(),
+    },
+    ready: true,
+  }),
+}));
+
+import PRCard from './PRCard';
 
 function renderPRCard(
   pr: Partial<PullRequestWithDetails>,
@@ -25,6 +51,10 @@ function renderPRCard(
 }
 
 describe('PRCard', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   describe('Basic Display', () => {
     it('renders PR title and number', () => {
       const pr = {

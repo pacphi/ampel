@@ -65,7 +65,9 @@ pub async fn login(
         .map_err(|e| ApiError::internal(e.to_string()))?;
 
     if !valid {
-        return Err(ApiError::unauthorized(t!("errors.auth.invalid_credentials")));
+        return Err(ApiError::unauthorized(t!(
+            "errors.auth.invalid_credentials"
+        )));
     }
 
     // Generate tokens

@@ -5,6 +5,8 @@ use apalis::prelude::*;
 use apalis_cron::CronStream;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
+rust_i18n::i18n!("locales", fallback = "en");
+
 mod jobs;
 
 use jobs::{

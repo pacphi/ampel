@@ -5,6 +5,93 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Settings from './Settings';
 
+// Mock react-i18next with translations
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        // Settings namespace - tabs
+        'settings:tabs.profile': 'Profile',
+        'settings:tabs.accounts': 'Accounts',
+        'settings:tabs.prFilters': 'PR Filters',
+        'settings:tabs.repositoryFilters': 'Repository Filters',
+        'settings:tabs.notifications': 'Notifications',
+        'settings:tabs.behavior': 'Behavior',
+        // Settings namespace - title
+        'settings:title': 'Settings',
+        // Settings namespace - account section
+        'settings:account.profile': 'Profile',
+        'settings:account.yourAccountInfo': 'Your account information',
+        'settings:account.email': 'Email',
+        'settings:account.emailPlaceholder': 'Enter your email',
+        'settings:account.displayName': 'Display name',
+        'settings:account.displayNamePlaceholder': 'Enter your display name',
+        'settings:account.memberSince': 'Member Since',
+        'settings:account.notSet': 'Not set',
+        'settings:account.unknown': 'Unknown',
+        // Settings namespace - profile messages
+        'settings:profileUpdated': 'Profile updated',
+        'settings:profileUpdateSuccess': 'Your profile has been saved successfully.',
+        'settings:profileUpdateFailed': 'Failed to update profile',
+        // Settings namespace - prFilters section
+        'settings:prFilters.title': 'PR Filters',
+        'settings:prFilters.description':
+          'Configure global filters for pull request processing. These apply to auto-merge rules across all repositories.',
+        'settings:prFilters.allowedActors': 'Allowed Actors (Bots/Users)',
+        'settings:prFilters.allowedActorsDescription':
+          'Only process PRs from these trusted actors. Typically bots like dependabot, renovate, etc.',
+        'settings:prFilters.allowedActorsPlaceholder': 'e.g., dependabot[bot]',
+        'settings:prFilters.skipLabels': 'Skip Labels',
+        'settings:prFilters.skipLabelsDescription':
+          'PRs with these labels will be skipped during auto-merge processing.',
+        'settings:prFilters.skipLabelsPlaceholder': 'e.g., do-not-merge',
+        'settings:prFilters.maxAgeDays': 'Max PR Age (Days)',
+        'settings:prFilters.maxAgeDaysDescription':
+          'Skip PRs older than this many days. Leave empty for no limit.',
+        'settings:prFilters.maxAgeDaysPlaceholder': 'e.g., 30',
+        // Settings namespace - filter messages
+        'settings:filtersUpdated': 'Filters updated',
+        'settings:filtersUpdateSuccess': 'Your PR filter settings have been saved.',
+        'settings:filtersReset': 'Filters reset',
+        'settings:filtersResetSuccess': 'Your PR filter settings have been reset to defaults.',
+        'settings:filtersUpdateFailed': 'Failed to update filters',
+        // Settings namespace - language
+        'settings:language.title': 'Language Preferences',
+        'settings:language.description': 'Select your preferred language for the application',
+        // Common namespace
+        'common:app.edit': 'Edit',
+        'common:app.save': 'Save',
+        'common:app.cancel': 'Cancel',
+        'common:app.add': 'Add',
+        'common:app.error': 'An error occurred',
+        'common:actions.saving': 'Saving...',
+        'common:actions.reset': 'Reset to Defaults',
+        'common:actions.showEmail': 'Show email',
+        'common:actions.hideEmail': 'Hide email',
+      };
+      return translations[key] || key;
+    },
+    i18n: { language: 'en', changeLanguage: vi.fn() },
+    ready: true,
+  }),
+  Trans: ({ children }: { children: React.ReactNode }) => children,
+  initReactI18next: { type: '3rdParty', init: vi.fn() },
+}));
+
+// Mock the i18n hooks used by LanguageSwitcher
+vi.mock('@/i18n/hooks', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: { language: 'en', changeLanguage: vi.fn() },
+    ready: true,
+  }),
+}));
+
+// Mock LanguageSwitcher component to avoid complex dependencies
+vi.mock('@/components/LanguageSwitcher', () => ({
+  default: () => <div data-testid="language-switcher">Language Switcher</div>,
+}));
+
 vi.mock('@/hooks/useAuth', () => ({
   useAuth: vi.fn(),
 }));

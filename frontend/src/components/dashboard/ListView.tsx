@@ -20,7 +20,11 @@ const STATUS_PRIORITY: Record<AmpelStatus, number> = {
   none: 3,
 };
 
-function SortIcon({ column, sortColumn, sortDirection }: {
+function SortIcon({
+  column,
+  sortColumn,
+  sortDirection,
+}: {
   column: SortColumn;
   sortColumn: SortColumn | null;
   sortDirection: SortDirection;
@@ -28,9 +32,11 @@ function SortIcon({ column, sortColumn, sortDirection }: {
   if (sortColumn !== column) {
     return <ArrowUpDown className="h-4 w-4 ml-1 opacity-50" />;
   }
-  return sortDirection === 'asc'
-    ? <ArrowUp className="h-4 w-4 ml-1" />
-    : <ArrowDown className="h-4 w-4 ml-1" />;
+  return sortDirection === 'asc' ? (
+    <ArrowUp className="h-4 w-4 ml-1" />
+  ) : (
+    <ArrowDown className="h-4 w-4 ml-1" />
+  );
 }
 
 export default function ListView({ repositories }: ListViewProps) {
@@ -40,7 +46,7 @@ export default function ListView({ repositories }: ListViewProps) {
   const handleSort = (column: SortColumn) => {
     if (sortColumn === column) {
       // Toggle direction if same column
-      setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
     } else {
       // New column - set to ascending
       setSortColumn(column);
@@ -97,7 +103,8 @@ export default function ListView({ repositories }: ListViewProps) {
     );
   }
 
-  const headerClass = "px-4 py-3 text-left text-sm font-medium cursor-pointer hover:bg-muted/80 select-none";
+  const headerClass =
+    'px-4 py-3 text-left text-sm font-medium cursor-pointer hover:bg-muted/80 select-none';
 
   return (
     <div className="rounded-lg border">
@@ -119,7 +126,11 @@ export default function ListView({ repositories }: ListViewProps) {
             <th className={headerClass} onClick={() => handleSort('visibility')}>
               <div className="flex items-center">
                 Visibility
-                <SortIcon column="visibility" sortColumn={sortColumn} sortDirection={sortDirection} />
+                <SortIcon
+                  column="visibility"
+                  sortColumn={sortColumn}
+                  sortDirection={sortDirection}
+                />
               </div>
             </th>
             <th className={headerClass} onClick={() => handleSort('provider')}>
@@ -137,7 +148,11 @@ export default function ListView({ repositories }: ListViewProps) {
             <th className={headerClass} onClick={() => handleSort('lastUpdated')}>
               <div className="flex items-center">
                 Last Updated
-                <SortIcon column="lastUpdated" sortColumn={sortColumn} sortDirection={sortDirection} />
+                <SortIcon
+                  column="lastUpdated"
+                  sortColumn={sortColumn}
+                  sortDirection={sortDirection}
+                />
               </div>
             </th>
             <th className="px-4 py-3 text-left text-sm font-medium"></th>

@@ -197,10 +197,9 @@ pub async fn merge_pull_request(
         .map_err(|_| ApiError::internal(t!("errors.repository.invalid_provider_db")))?;
 
     // Get provider account
-    let account = provider_account::Entity::find_by_id(
-        repo.provider_account_id
-            .ok_or(ApiError::bad_request(t!("errors.repository.no_account_linked")))?,
-    )
+    let account = provider_account::Entity::find_by_id(repo.provider_account_id.ok_or(
+        ApiError::bad_request(t!("errors.repository.no_account_linked")),
+    )?)
     .one(&state.db)
     .await?
     .ok_or(ApiError::not_found(t!("errors.account.not_found")))?;
@@ -209,7 +208,9 @@ pub async fn merge_pull_request(
     let access_token = state
         .encryption_service
         .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string())))?;
+        .map_err(|e| {
+            ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string()))
+        })?;
 
     // Create credentials
     let credentials = ampel_providers::traits::ProviderCredentials::Pat {
@@ -224,7 +225,12 @@ pub async fn merge_pull_request(
     let result = provider
         .merge_pull_request(&credentials, &repo.owner, &repo.name, pr.number, &merge_req)
         .await
-        .map_err(|e| ApiError::bad_request(t!("errors.pull_request.merge_failed", reason = e.to_string())))?;
+        .map_err(|e| {
+            ApiError::bad_request(t!(
+                "errors.pull_request.merge_failed",
+                reason = e.to_string()
+            ))
+        })?;
 
     // Update PR state in database
     if result.merged {
@@ -282,10 +288,9 @@ pub async fn refresh_pull_request(
         .map_err(|_| ApiError::internal(t!("errors.repository.invalid_provider_db")))?;
 
     // Get provider account
-    let account = provider_account::Entity::find_by_id(
-        repo.provider_account_id
-            .ok_or(ApiError::bad_request(t!("errors.repository.no_account_linked")))?,
-    )
+    let account = provider_account::Entity::find_by_id(repo.provider_account_id.ok_or(
+        ApiError::bad_request(t!("errors.repository.no_account_linked")),
+    )?)
     .one(&state.db)
     .await?
     .ok_or(ApiError::not_found(t!("errors.account.not_found")))?;
@@ -294,7 +299,9 @@ pub async fn refresh_pull_request(
     let access_token = state
         .encryption_service
         .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string())))?;
+        .map_err(|e| {
+            ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string()))
+        })?;
 
     // Create credentials
     let credentials = ampel_providers::traits::ProviderCredentials::Pat {

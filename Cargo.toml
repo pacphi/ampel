@@ -21,10 +21,10 @@ tokio = { version = "1", features = ["full"] }
 async-trait = "0.1"
 
 # Web framework
-axum = "0.7"
-axum-extra = { version = "0.9", features = ["typed-header", "cookie"] }
+axum = "0.8"
+axum-extra = { version = "0.10", features = ["typed-header", "cookie"] }
 tower = "0.4"
-tower-http = { version = "0.5", features = ["cors", "trace", "compression-gzip"] }
+tower-http = { version = "0.6", features = ["cors", "trace", "compression-gzip"] }
 
 # Database - SQLite support added for testing
 sea-orm = { version = "1.0", features = ["sqlx-postgres", "sqlx-sqlite", "runtime-tokio-rustls", "macros"] }

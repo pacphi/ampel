@@ -5,6 +5,7 @@ import { useTheme } from '@/hooks/useTheme';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LogOut, Moon, Sun } from 'lucide-react';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Header() {
   const { t } = useTranslation(['dashboard', 'common']);
@@ -36,6 +37,7 @@ export default function Header() {
         <h1 className="text-lg font-semibold">{t('dashboard:prDashboard')}</h1>
       </div>
       <div className="flex items-center gap-4">
+        <LanguageSwitcher variant="inline" size="sm" />
         <Button variant="ghost" size="icon" onClick={toggleTheme} title={t('common:theme.toggle')}>
           {resolvedTheme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>

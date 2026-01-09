@@ -30,6 +30,7 @@ import { RepositoryFilterSettings } from '@/components/settings/RepositoryFilter
 import { AccountsListPage } from './settings/AccountsListPage';
 import { AddAccountPage } from './settings/AddAccountPage';
 import { EditAccountPage } from './settings/EditAccountPage';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 function SettingsNav() {
   const { t } = useTranslation(['settings']);
@@ -230,6 +231,18 @@ function ProfileSettings() {
                 })
               : t('settings:account.unknown')}
           </p>
+        </div>
+        <div>
+          <label className="text-sm font-medium">
+            {t('settings:language.title', 'Language Preferences')}
+          </label>
+          <p className="text-sm text-muted-foreground mb-3">
+            {t(
+              'settings:language.description',
+              'Select your preferred language for the application'
+            )}
+          </p>
+          <LanguageSwitcher variant="dropdown" showSearch showFavorites />
         </div>
       </CardContent>
     </Card>
