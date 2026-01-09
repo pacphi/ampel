@@ -411,10 +411,10 @@ jq '.' frontend/public/locales/en/common.json > temp.json && mv temp.json fronte
 
 ## Related Documentation
 
-- [IMPLEMENTATION_ROADMAP_V2.md](IMPLEMENTATION_ROADMAP_V2.md) - Full implementation plan
-- [LOCALIZATION_IMPLEMENTATION_PLAN.md](LOCALIZATION_IMPLEMENTATION_PLAN.md) - Detailed localization guide
 - [ARCHITECTURE.md](ARCHITECTURE.md) - System architecture
-- [SPECIFICATION.md](SPECIFICATION.md) - Feature specifications
+- [4-TIER-PROVIDER-ARCHITECTURE.md](4-TIER-PROVIDER-ARCHITECTURE.md) - Provider architecture
+- [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md) - Developer quick start
+- [TRANSLATION_WORKFLOW.md](TRANSLATION_WORKFLOW.md) - Translation workflow guide
 
 ## Support
 

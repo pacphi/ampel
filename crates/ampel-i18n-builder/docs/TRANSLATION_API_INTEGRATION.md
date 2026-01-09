@@ -451,8 +451,8 @@ rm -rf .ampel-i18n-cache
 
 - [DeepL API Documentation](https://www.deepl.com/docs-api)
 - [Google Cloud Translation API](https://cloud.google.com/translate/docs)
-- [Translation API Research](../TRANSLATION_API_RESEARCH.md)
-- [i18n System Architecture](../../../docs/i18n/ARCHITECTURE.md)
+- [4-Tier Provider Architecture](../../../docs/localization/4-TIER-PROVIDER-ARCHITECTURE.md)
+- [i18n System Architecture](../../../docs/localization/ARCHITECTURE.md)
 
 ## Support
 

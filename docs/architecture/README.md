@@ -296,7 +296,7 @@ git log --all -- docs/architecture/
 
 **Architecture Questions**: Review relevant ADR or design document first
 **Implementation Help**: Check implementation guide and code examples
-**Process Questions**: See [Contributing](#contributing) section
+**Process Questions**: See [Contributing](#-contributing) section
 
 **Team**:
 

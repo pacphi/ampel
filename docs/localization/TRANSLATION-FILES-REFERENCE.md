@@ -317,6 +317,6 @@ grep -r "%{" crates/ampel-api/locales/pt-BR/
 
 **See Also:**
 
-- [STATUS-REPORT-2026-01-08.md](./STATUS-REPORT-2026-01-08.md) - Full status report
-- [PHASE-2-STATUS.md](./PHASE-2-STATUS.md) - Phase 2 details
-- [PHASE-1-STATUS.md](./PHASE-1-STATUS.md) - Foundation implementation
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - System architecture
+- [TRANSLATION_WORKFLOW.md](./TRANSLATION_WORKFLOW.md) - Translation workflow guide
+- [DEVELOPER-GUIDE.md](./DEVELOPER-GUIDE.md) - Developer quick start

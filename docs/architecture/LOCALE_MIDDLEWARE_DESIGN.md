@@ -782,7 +782,7 @@ Router::new()
 - [Axum 0.7 Middleware Guide](https://docs.rs/axum/0.7/axum/middleware/index.html)
 - [Axum State Sharing](https://docs.rs/axum/0.7/axum/extract/struct.State.html)
 - [Tower Middleware](https://docs.rs/tower/latest/tower/trait.Service.html)
-- [Ampel Localization Specification](./localization/SPECIFICATION.md)
+- [Ampel Localization Specification](../localization/SPECIFICATION.md)
 
 ---
 

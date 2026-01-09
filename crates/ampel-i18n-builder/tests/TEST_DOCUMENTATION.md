@@ -410,8 +410,8 @@ cargo test --package ampel-i18n-builder -- --test-threads=1
 
 ## References
 
-- [4-Tier Provider Architecture](../docs/localization/4-TIER-PROVIDER-ARCHITECTURE.md)
-- [Testing Strategy](../docs/localization/4-TIER-PROVIDER-ARCHITECTURE.md#testing-strategy)
+- [4-Tier Provider Architecture](../../../docs/localization/4-TIER-PROVIDER-ARCHITECTURE.md)
+- [Testing Strategy](../../../docs/localization/4-TIER-PROVIDER-ARCHITECTURE.md#testing-strategy)
 - [Cargo Test Documentation](https://doc.rust-lang.org/cargo/commands/cargo-test.html)
 - [Tokio Testing](https://docs.rs/tokio/latest/tokio/attr.test.html)
 - [Mockito Documentation](https://docs.rs/mockito/latest/mockito/)

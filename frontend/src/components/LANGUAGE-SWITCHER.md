@@ -510,10 +510,10 @@ Directional icons automatically flip in RTL:
 
 ## Related Documentation
 
-- [Translation Workflow](../../../docs/localization/TRANSLATION-WORKFLOW.md)
+- [Translation Workflow](../../../docs/localization/TRANSLATION_WORKFLOW.md)
 - [i18n Configuration](../i18n/config.ts)
 - [RTL Provider](./RTLProvider.tsx)
-- [Language Strategy](../../../docs/localization/FINAL-LANGUAGE-STRATEGY.md)
+- [Developer Guide](../../../docs/localization/DEVELOPER-GUIDE.md)
 
 ---
 

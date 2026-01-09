@@ -482,10 +482,10 @@ components:
 
 ## Related Documentation
 
-- [Repository Visibility Filter Implementation](/docs/planning/REPOSITORY-VISIBILITY-FILTER-IMPLEMENTATION.md)
-- [Visibility Breakdown Tiles Implementation Plan](/docs/planning/VISIBILITY-BREAKDOWN-TILES-IMPLEMENTATION.md)
-- [Architecture Documentation](/docs/ARCHITECTURE.md)
-- [Testing Guide](/docs/TESTING.md)
+- [Repository Visibility Filters](../features/REPOSITORY_VISIBILITY_FILTERS.md)
+- [Visibility Breakdown Tiles](../features/VISIBILITY-BREAKDOWN-TILES.md)
+- [Architecture Documentation](../ARCHITECTURE.md)
+- [Testing Guide](../TESTING.md)
 
 ---
 

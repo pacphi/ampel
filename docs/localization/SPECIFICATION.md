@@ -3,7 +3,7 @@
 **Version:** 2.0
 **Date:** 2025-12-27
 **Status:** Specification
-**Based On:** [LOCALIZATION_IMPLEMENTATION_PLAN.md](./LOCALIZATION_IMPLEMENTATION_PLAN.md)
+**Based On:** [4-TIER-PROVIDER-ARCHITECTURE.md](./4-TIER-PROVIDER-ARCHITECTURE.md)
 
 ## Table of Contents
 

@@ -421,4 +421,4 @@ const settingsNav = [
 
 ## See Also
 
-- [Implementation Plan](../planning/REPOSITORY-VISIBILITY-FILTER-IMPLEMENTATION.md)
+- [Visibility Breakdown Tiles](./VISIBILITY-BREAKDOWN-TILES.md)

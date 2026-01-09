@@ -409,7 +409,7 @@ The system selects providers based on:
 
 ## Documentation
 
-- **[DEVELOPER_GUIDE.md](../../docs/localization/DEVELOPER_GUIDE.md)** - Quick start for developers
+- **[DEVELOPER-GUIDE.md](../../docs/localization/DEVELOPER-GUIDE.md)** - Quick start for developers
 - **[TRANSLATION_WORKFLOW.md](../../docs/localization/TRANSLATION_WORKFLOW.md)** - Complete workflow guide
 - **[ARCHITECTURE.md](../../docs/localization/ARCHITECTURE.md)** - System architecture details
 - **[PROVIDER-CONFIGURATION.md](../../docs/localization/PROVIDER-CONFIGURATION.md)** - Complete provider configuration guide
@@ -460,4 +460,4 @@ MIT OR Apache-2.0
 
 **Full Documentation:** [docs/localization/](../../docs/localization/)
 **Issues:** File with `[i18n]` prefix
-**Questions:** See [DEVELOPER_GUIDE.md](../../docs/localization/DEVELOPER_GUIDE.md)
+**Questions:** See [DEVELOPER-GUIDE.md](../../docs/localization/DEVELOPER-GUIDE.md)

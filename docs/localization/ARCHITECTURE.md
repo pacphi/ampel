@@ -3,7 +3,7 @@
 **Version:** 1.0
 **Date:** 2025-12-27
 **Status:** Design Document
-**Related:** [Implementation Plan](LOCALIZATION_IMPLEMENTATION_PLAN.md)
+**Related:** [4-Tier Provider Architecture](4-TIER-PROVIDER-ARCHITECTURE.md)
 
 ## Table of Contents
 

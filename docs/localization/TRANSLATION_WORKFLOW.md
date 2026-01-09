@@ -565,7 +565,7 @@ yamllint -c .yamllint.yml crates/ampel-api/locales/fi/common.yml
 
 1. **Check the logs**: Run CLI with `--verbose` flag
 2. **Validate locally**: Use `validate` command before committing
-3. **Review documentation**: See [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)
+3. **Review documentation**: See [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)
 4. **Open an issue**: Include error output and relevant files
 
 ---
@@ -639,7 +639,7 @@ node frontend/scripts/i18n-coverage-report.js --check --min-coverage 95
 
 ## Next Steps
 
-- **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)** - Quick start for developers
+- **[DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)** - Quick start for developers
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture details
 - **[CI_CD_SETUP.md](CI_CD_SETUP.md)** - CI/CD configuration guide
 

@@ -514,7 +514,7 @@ pub async fn locale_detection_middleware(mut req: Request<Body>, next: Next) -> 
 ### Internal Documentation
 
 - [Localization Specification](../../localization/SPECIFICATION.md)
-- [i18n Phase 2 Status](../../localization/STATUS-REPORT-2026-01-08.md)
+- [Localization Architecture](../../localization/ARCHITECTURE.md)
 - [Testing Documentation](../../TESTING.md)
 
 ### Code References

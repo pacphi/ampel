@@ -278,4 +278,4 @@ console.log('Translation:', i18n.t('common:language'));
 - [Testing Library Best Practices](https://testing-library.com/docs/guiding-principles/)
 - [i18next Testing Guide](https://www.i18next.com/misc/testing)
 - [React Testing Patterns](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
-- [Main Test Implementation Summary](./I18N_INTEGRATION_TEST_FIXES.md)
+- [Localization Testing Guide](../localization/DEVELOPER-GUIDE.md)
