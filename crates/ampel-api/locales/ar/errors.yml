@@ -1,58 +1,57 @@
-ar:
-  errors:
-    # Authentication errors
-    auth:
-      email_registered: "البريد الإلكتروني مسجل بالفعل"
-      invalid_credentials: "البريد الإلكتروني أو كلمة المرور غير صحيحة"
-      invalid_refresh_token: "رمز التحديث غير صالح أو منتهي الصلاحية"
-      user_not_found: "المستخدم غير موجود"
-      email_in_use: "البريد الإلكتروني مستخدم بالفعل"
+errors:
+  # Authentication errors
+  auth:
+    email_registered: "البريد الإلكتروني مسجل بالفعل"
+    invalid_credentials: "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+    invalid_refresh_token: "رمز التحديث غير صالح أو منتهي الصلاحية"
+    user_not_found: "المستخدم غير موجود"
+    email_in_use: "البريد الإلكتروني مستخدم بالفعل"
 
-    # Repository errors
-    repository:
-      not_found: "المستودع غير موجود"
-      already_added: "المستودع مضاف بالفعل"
-      invalid_provider: "مزود غير صالح"
-      provider_not_connected: "المزود غير متصل"
-      invalid_provider_db: "نوع مزود غير صالح في قاعدة البيانات"
-      not_found_for_pr: "المستودع غير موجود لطلب السحب"
-      no_account_linked: "المستودع غير مرتبط بالحساب"
+  # Repository errors
+  repository:
+    not_found: "المستودع غير موجود"
+    already_added: "المستودع مضاف بالفعل"
+    invalid_provider: "مزود غير صالح"
+    provider_not_connected: "المزود غير متصل"
+    invalid_provider_db: "نوع مزود غير صالح في قاعدة البيانات"
+    not_found_for_pr: "المستودع غير موجود لطلب السحب"
+    no_account_linked: "المستودع غير مرتبط بالحساب"
 
-    # Pull request errors
-    pull_request:
-      not_found: "طلب السحب غير موجود"
-      merge_failed: "فشل الدمج: %{reason}"
+  # Pull request errors
+  pull_request:
+    not_found: "طلب السحب غير موجود"
+    merge_failed: "فشل الدمج: %{reason}"
 
-    # Account errors
-    account:
-      not_found: "الحساب غير موجود"
-      invalid_provider_type: "نوع مزود غير صالح"
-      validation_failed: "فشل التحقق من الرمز: %{error}"
-      invalid_token: "رمز غير صالح"
-      provider_no_user_id: "لم يعيد المزود معرف المستخدم"
-      provider_no_username: "لم يعيد المزود اسم المستخدم"
-      already_connected: "هذا الحساب متصل بالفعل. استخدم PATCH لتحديث الرمز."
+  # Account errors
+  account:
+    not_found: "الحساب غير موجود"
+    invalid_provider_type: "نوع مزود غير صالح"
+    validation_failed: "فشل التحقق من الرمز: %{error}"
+    invalid_token: "رمز غير صالح"
+    provider_no_user_id: "لم يعيد المزود معرف المستخدم"
+    provider_no_username: "لم يعيد المزود اسم المستخدم"
+    already_connected: "هذا الحساب متصل بالفعل. استخدم PATCH لتحديث الرمز."
 
-    # Provider errors
-    provider:
-      error: "خطأ في المزود: %{error}"
-      decrypt_failed: "فشل فك تشفير الرمز: %{error}"
+  # Provider errors
+  provider:
+    error: "خطأ في المزود: %{error}"
+    decrypt_failed: "فشل فك تشفير الرمز: %{error}"
 
-    # Encryption errors
-    encryption:
-      failed: "خطأ في التشفير: %{error}"
-      decrypt_failed: "خطأ في فك التشفير: %{error}"
+  # Encryption errors
+  encryption:
+    failed: "خطأ في التشفير: %{error}"
+    decrypt_failed: "خطأ في فك التشفير: %{error}"
 
-    # General errors
-    general:
-      internal: "خطأ داخلي"
-      serialization_failed: "فشل تسلسل النطاقات: %{error}"
+  # General errors
+  general:
+    internal: "خطأ داخلي"
+    serialization_failed: "فشل تسلسل النطاقات: %{error}"
 
-    # Network errors
-    network:
-      timeout: "انتهت مهلة الطلب"
-      connection_failed: "فشل الاتصال"
+  # Network errors
+  network:
+    timeout: "انتهت مهلة الطلب"
+    connection_failed: "فشل الاتصال"
 
-    # Rate limit
-    rate_limit:
-      exceeded: "تم تجاوز حد المعدل"
+  # Rate limit
+  rate_limit:
+    exceeded: "تم تجاوز حد المعدل"

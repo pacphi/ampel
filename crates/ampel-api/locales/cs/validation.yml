@@ -1,11 +1,10 @@
-cs:
-  validation:
-    # Account validation
-    account:
-      valid: "platný"
-      invalid: "neplatný"
+validation:
+  # Account validation
+  account:
+    valid: "platný"
+    invalid: "neplatný"
 
-    # General validation
-    general:
-      required: "Toto pole je povinné"
-      invalid_format: "Neplatný formát"
+  # General validation
+  general:
+    required: "Toto pole je povinné"
+    invalid_format: "Neplatný formát"

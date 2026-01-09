@@ -1,38 +1,37 @@
-en:
-  providers:
-    # GitHub provider
-    github:
-      token_invalid: "Invalid or expired token"
-      api_error: "API error: %{status}"
-      user_fetch_failed: "Failed to get user"
-      invalid_token: "Invalid token"
-      repos_fetch_failed: "Failed to list repositories"
-      repo_fetch_failed: "Failed to get repository"
-      repo_not_found: "Repository %{owner}/%{repo} not found"
-      prs_fetch_failed: "Failed to list pull requests"
-      pr_not_found: "Pull request #%{number} not found"
-      pr_fetch_failed: "Failed to get pull request"
-      reviews_fetch_failed: "Failed to get reviews"
-      merge_not_mergeable: "Pull request is not mergeable"
-      merge_conflict: "Merge conflict or head branch was modified"
-      merge_checks_failed: "Pull request cannot be merged (check status checks and reviews)"
-      merge_failed: "Failed to merge pull request"
-      rate_limit_failed: "Failed to get rate limit"
+providers:
+  # GitHub provider
+  github:
+    token_invalid: "Invalid or expired token"
+    api_error: "API error: %{status}"
+    user_fetch_failed: "Failed to get user"
+    invalid_token: "Invalid token"
+    repos_fetch_failed: "Failed to list repositories"
+    repo_fetch_failed: "Failed to get repository"
+    repo_not_found: "Repository %{owner}/%{repo} not found"
+    prs_fetch_failed: "Failed to list pull requests"
+    pr_not_found: "Pull request #%{number} not found"
+    pr_fetch_failed: "Failed to get pull request"
+    reviews_fetch_failed: "Failed to get reviews"
+    merge_not_mergeable: "Pull request is not mergeable"
+    merge_conflict: "Merge conflict or head branch was modified"
+    merge_checks_failed: "Pull request cannot be merged (check status checks and reviews)"
+    merge_failed: "Failed to merge pull request"
+    rate_limit_failed: "Failed to get rate limit"
 
-    # General provider errors
-    general:
-      auth_failed: "Authentication failed: %{reason}"
-      rate_limit_exceeded: "Rate limit exceeded. Resets at: %{reset_time}"
-      not_found: "Resource not found: %{resource}"
-      permission_denied: "Permission denied: %{reason}"
-      invalid_response: "Invalid response: %{reason}"
-      network_error: "Network error: %{reason}"
-      api_error: "Provider API error: %{message} (status: %{status_code})"
-      serialization_error: "Serialization error: %{reason}"
-      config_error: "Configuration error: %{reason}"
-      not_supported: "Operation not supported: %{operation}"
+  # General provider errors
+  general:
+    auth_failed: "Authentication failed: %{reason}"
+    rate_limit_exceeded: "Rate limit exceeded. Resets at: %{reset_time}"
+    not_found: "Resource not found: %{resource}"
+    permission_denied: "Permission denied: %{reason}"
+    invalid_response: "Invalid response: %{reason}"
+    network_error: "Network error: %{reason}"
+    api_error: "Provider API error: %{message} (status: %{status_code})"
+    serialization_error: "Serialization error: %{reason}"
+    config_error: "Configuration error: %{reason}"
+    not_supported: "Operation not supported: %{operation}"
 
-    # Worker job errors
-    worker:
-      no_account: "Repository has no associated provider account"
-      account_not_found: "Provider account not found"
+  # Worker job errors
+  worker:
+    no_account: "Repository has no associated provider account"
+    account_not_found: "Provider account not found"

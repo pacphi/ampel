@@ -1,25 +1,24 @@
-ar:
-  app:
-    name: "Ampel"
-    tagline: "لوحة معلومات إدارة PR الموحدة"
-    description: "دمج طلبات السحب من GitHub و GitLab و Bitbucket"
+app:
+  name: "Ampel"
+  tagline: "لوحة معلومات إدارة PR الموحدة"
+  description: "دمج طلبات السحب من GitHub و GitLab و Bitbucket"
 
-  nav:
-    dashboard: "لوحة التحكم"
-    repositories: "المستودعات"
-    pull_requests: "طلبات السحب"
-    teams: "الفرق"
-    settings: "الإعدادات"
-    logout: "تسجيل الخروج"
+nav:
+  dashboard: "لوحة التحكم"
+  repositories: "المستودعات"
+  pull_requests: "طلبات السحب"
+  teams: "الفرق"
+  settings: "الإعدادات"
+  logout: "تسجيل الخروج"
 
-  status:
-    green: "جاهز للدمج"
-    yellow: "قيد التقدم"
-    red: "محظور"
-    unknown: "غير معروف"
+status:
+  green: "جاهز للدمج"
+  yellow: "قيد التقدم"
+  red: "محظور"
+  unknown: "غير معروف"
 
-  actions:
-    save: "حفظ"
-    cancel: "إلغاء"
-    delete: "حذف"
-    edit: "تعديل"
+actions:
+  save: "حفظ"
+  cancel: "إلغاء"
+  delete: "حذف"
+  edit: "تعديل"

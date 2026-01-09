@@ -1,38 +1,37 @@
-he:
-  providers:
-    # GitHub provider
-    github:
-      token_invalid: "אסימון לא חוקי או פג תוקף"
-      api_error: "שגיאת API: %{status}"
-      user_fetch_failed: "כשל בקבלת המשתמש"
-      invalid_token: "אסימון לא חוקי"
-      repos_fetch_failed: "כשל ברשימת המאגרים"
-      repo_fetch_failed: "כשל בקבלת המאגר"
-      repo_not_found: "המאגר %{owner}/%{repo} לא נמצא"
-      prs_fetch_failed: "כשל ברשימת בקשות המשיכה"
-      pr_not_found: "בקשת משיכה #%{number} לא נמצאה"
-      pr_fetch_failed: "כשל בקבלת בקשת המשיכה"
-      reviews_fetch_failed: "כשל בקבלת הביקורות"
-      merge_not_mergeable: "לא ניתן למזג את בקשת המשיכה"
-      merge_conflict: "קונפליקט במיזוג או שהענף הראשי שונה"
-      merge_checks_failed: "לא ניתן למזג את בקשת המשיכה (בדוק את בדיקות הסטטוס והביקורות)"
-      merge_failed: "כשל במיזוג בקשת המשיכה"
-      rate_limit_failed: "כשל בקבלת מגבלת השיעור"
+providers:
+  # GitHub provider
+  github:
+    token_invalid: "אסימון לא חוקי או פג תוקף"
+    api_error: "שגיאת API: %{status}"
+    user_fetch_failed: "כשל בקבלת המשתמש"
+    invalid_token: "אסימון לא חוקי"
+    repos_fetch_failed: "כשל ברשימת המאגרים"
+    repo_fetch_failed: "כשל בקבלת המאגר"
+    repo_not_found: "המאגר %{owner}/%{repo} לא נמצא"
+    prs_fetch_failed: "כשל ברשימת בקשות המשיכה"
+    pr_not_found: "בקשת משיכה #%{number} לא נמצאה"
+    pr_fetch_failed: "כשל בקבלת בקשת המשיכה"
+    reviews_fetch_failed: "כשל בקבלת הביקורות"
+    merge_not_mergeable: "לא ניתן למזג את בקשת המשיכה"
+    merge_conflict: "קונפליקט במיזוג או שהענף הראשי שונה"
+    merge_checks_failed: "לא ניתן למזג את בקשת המשיכה (בדוק את בדיקות הסטטוס והביקורות)"
+    merge_failed: "כשל במיזוג בקשת המשיכה"
+    rate_limit_failed: "כשל בקבלת מגבלת השיעור"
 
-    # General provider errors
-    general:
-      auth_failed: "אימות נכשל: %{reason}"
-      rate_limit_exceeded: "חריגה ממגבלת השיעור. מתאפס ב: %{reset_time}"
-      not_found: "המשאב לא נמצא: %{resource}"
-      permission_denied: "הרשאה נדחתה: %{reason}"
-      invalid_response: "תגובה לא חוקית: %{reason}"
-      network_error: "שגיאת רשת: %{reason}"
-      api_error: "שגיאת API של הספק: %{message} (סטטוס: %{status_code})"
-      serialization_error: "שגיאת סידור: %{reason}"
-      config_error: "שגיאת תצורה: %{reason}"
-      not_supported: "פעולה לא נתמכת: %{operation}"
+  # General provider errors
+  general:
+    auth_failed: "אימות נכשל: %{reason}"
+    rate_limit_exceeded: "חריגה ממגבלת השיעור. מתאפס ב: %{reset_time}"
+    not_found: "המשאב לא נמצא: %{resource}"
+    permission_denied: "הרשאה נדחתה: %{reason}"
+    invalid_response: "תגובה לא חוקית: %{reason}"
+    network_error: "שגיאת רשת: %{reason}"
+    api_error: "שגיאת API של הספק: %{message} (סטטוס: %{status_code})"
+    serialization_error: "שגיאת סידור: %{reason}"
+    config_error: "שגיאת תצורה: %{reason}"
+    not_supported: "פעולה לא נתמכת: %{operation}"
 
-    # Worker job errors
-    worker:
-      no_account: "למאגר אין חשבון ספק משויך"
-      account_not_found: "חשבון ספק לא נמצא"
+  # Worker job errors
+  worker:
+    no_account: "למאגר אין חשבון ספק משויך"
+    account_not_found: "חשבון ספק לא נמצא"

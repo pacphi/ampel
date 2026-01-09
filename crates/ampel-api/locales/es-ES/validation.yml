@@ -1,11 +1,10 @@
-es-ES:
-  validation:
-    # Account validation
-    account:
-      valid: "válido"
-      invalid: "no válido"
+validation:
+  # Account validation
+  account:
+    valid: "válido"
+    invalid: "no válido"
 
-    # General validation
-    general:
-      required: "Este campo es obligatorio"
-      invalid_format: "Formato no válido"
+  # General validation
+  general:
+    required: "Este campo es obligatorio"
+    invalid_format: "Formato no válido"

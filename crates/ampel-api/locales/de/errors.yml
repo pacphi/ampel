@@ -1,58 +1,57 @@
-de:
-  errors:
-    # Authentication errors
-    auth:
-      email_registered: "E-Mail bereits registriert"
-      invalid_credentials: "Ungültige E-Mail oder Passwort"
-      invalid_refresh_token: "Ungültiger oder abgelaufener Aktualisierungstoken"
-      user_not_found: "Benutzer nicht gefunden"
-      email_in_use: "E-Mail wird bereits verwendet"
+errors:
+  # Authentication errors
+  auth:
+    email_registered: "E-Mail bereits registriert"
+    invalid_credentials: "Ungültige E-Mail oder Passwort"
+    invalid_refresh_token: "Ungültiger oder abgelaufener Aktualisierungstoken"
+    user_not_found: "Benutzer nicht gefunden"
+    email_in_use: "E-Mail wird bereits verwendet"
 
-    # Repository errors
-    repository:
-      not_found: "Repository nicht gefunden"
-      already_added: "Repository bereits hinzugefügt"
-      invalid_provider: "Ungültiger Anbieter"
-      provider_not_connected: "Anbieter nicht verbunden"
-      invalid_provider_db: "Ungültiger Anbietertyp in der Datenbank"
-      not_found_for_pr: "Repository für PR nicht gefunden"
-      no_account_linked: "Repository nicht mit Konto verknüpft"
+  # Repository errors
+  repository:
+    not_found: "Repository nicht gefunden"
+    already_added: "Repository bereits hinzugefügt"
+    invalid_provider: "Ungültiger Anbieter"
+    provider_not_connected: "Anbieter nicht verbunden"
+    invalid_provider_db: "Ungültiger Anbietertyp in der Datenbank"
+    not_found_for_pr: "Repository für PR nicht gefunden"
+    no_account_linked: "Repository nicht mit Konto verknüpft"
 
-    # Pull request errors
-    pull_request:
-      not_found: "Pull Request nicht gefunden"
-      merge_failed: "Zusammenführung fehlgeschlagen: %{reason}"
+  # Pull request errors
+  pull_request:
+    not_found: "Pull Request nicht gefunden"
+    merge_failed: "Zusammenführung fehlgeschlagen: %{reason}"
 
-    # Account errors
-    account:
-      not_found: "Konto nicht gefunden"
-      invalid_provider_type: "Ungültiger Anbietertyp"
-      validation_failed: "Token-Validierung fehlgeschlagen: %{error}"
-      invalid_token: "Ungültiger Token"
-      provider_no_user_id: "Anbieter hat keine Benutzer-ID zurückgegeben"
-      provider_no_username: "Anbieter hat keinen Benutzernamen zurückgegeben"
-      already_connected: "Dieses Konto ist bereits verbunden. Verwenden Sie PATCH, um den Token zu aktualisieren."
+  # Account errors
+  account:
+    not_found: "Konto nicht gefunden"
+    invalid_provider_type: "Ungültiger Anbietertyp"
+    validation_failed: "Token-Validierung fehlgeschlagen: %{error}"
+    invalid_token: "Ungültiger Token"
+    provider_no_user_id: "Anbieter hat keine Benutzer-ID zurückgegeben"
+    provider_no_username: "Anbieter hat keinen Benutzernamen zurückgegeben"
+    already_connected: "Dieses Konto ist bereits verbunden. Verwenden Sie PATCH, um den Token zu aktualisieren."
 
-    # Provider errors
-    provider:
-      error: "Anbieterfehler: %{error}"
-      decrypt_failed: "Token-Entschlüsselung fehlgeschlagen: %{error}"
+  # Provider errors
+  provider:
+    error: "Anbieterfehler: %{error}"
+    decrypt_failed: "Token-Entschlüsselung fehlgeschlagen: %{error}"
 
-    # Encryption errors
-    encryption:
-      failed: "Verschlüsselungsfehler: %{error}"
-      decrypt_failed: "Entschlüsselungsfehler: %{error}"
+  # Encryption errors
+  encryption:
+    failed: "Verschlüsselungsfehler: %{error}"
+    decrypt_failed: "Entschlüsselungsfehler: %{error}"
 
-    # General errors
-    general:
-      internal: "Interner Fehler"
-      serialization_failed: "Serialisierung der Bereiche fehlgeschlagen: %{error}"
+  # General errors
+  general:
+    internal: "Interner Fehler"
+    serialization_failed: "Serialisierung der Bereiche fehlgeschlagen: %{error}"
 
-    # Network errors
-    network:
-      timeout: "Zeitüberschreitung der Anfrage"
-      connection_failed: "Verbindung fehlgeschlagen"
+  # Network errors
+  network:
+    timeout: "Zeitüberschreitung der Anfrage"
+    connection_failed: "Verbindung fehlgeschlagen"
 
-    # Rate limit
-    rate_limit:
-      exceeded: "Ratenlimit überschritten"
+  # Rate limit
+  rate_limit:
+    exceeded: "Ratenlimit überschritten"

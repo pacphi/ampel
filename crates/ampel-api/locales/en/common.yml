@@ -1,151 +1,150 @@
-en:
-  # Application metadata
-  app:
-    name: "Ampel"
-    tagline: "Unified PR Management Dashboard"
-    description: "Consolidate pull requests from GitHub, GitLab, and Bitbucket"
+# Application metadata
+app:
+  name: "Ampel"
+  tagline: "Unified PR Management Dashboard"
+  description: "Consolidate pull requests from GitHub, GitLab, and Bitbucket"
 
-  # Navigation
-  nav:
-    dashboard: "Dashboard"
-    repositories: "Repositories"
-    pull_requests: "Pull Requests"
-    teams: "Teams"
-    settings: "Settings"
-    logout: "Logout"
+# Navigation
+nav:
+  dashboard: "Dashboard"
+  repositories: "Repositories"
+  pull_requests: "Pull Requests"
+  teams: "Teams"
+  settings: "Settings"
+  logout: "Logout"
 
-  # PR Status (Traffic Light System)
-  status:
-    green: "Ready to Merge"
-    green_description: "All checks passed, approved, and ready"
-    yellow: "In Progress"
-    yellow_description: "Under review or awaiting changes"
-    red: "Blocked"
-    red_description: "Failed checks or conflicts present"
-    unknown: "Unknown"
+# PR Status (Traffic Light System)
+status:
+  green: "Ready to Merge"
+  green_description: "All checks passed, approved, and ready"
+  yellow: "In Progress"
+  yellow_description: "Under review or awaiting changes"
+  red: "Blocked"
+  red_description: "Failed checks or conflicts present"
+  unknown: "Unknown"
 
-  # Common Actions
-  actions:
-    save: "Save"
-    cancel: "Cancel"
-    delete: "Delete"
-    edit: "Edit"
-    create: "Create"
-    update: "Update"
-    refresh: "Refresh"
-    submit: "Submit"
-    confirm: "Confirm"
-    view: "View"
-    close: "Close"
-    retry: "Retry"
-    back: "Back"
+# Common Actions
+actions:
+  save: "Save"
+  cancel: "Cancel"
+  delete: "Delete"
+  edit: "Edit"
+  create: "Create"
+  update: "Update"
+  refresh: "Refresh"
+  submit: "Submit"
+  confirm: "Confirm"
+  view: "View"
+  close: "Close"
+  retry: "Retry"
+  back: "Back"
 
-  # Error Messages
-  errors:
-    # Authentication Errors
-    auth:
-      invalid_credentials: "Invalid email or password"
-      token_expired: "Your session has expired. Please log in again"
-      token_invalid: "Invalid authentication token"
-      unauthorized: "You are not authorized to perform this action"
-      already_exists: "An account with this email already exists"
-      not_found: "Account not found"
-    # Validation Errors
-    validation:
-      required: "This field is required"
-      invalid_email: "Invalid email address"
-      password_too_short: "Password must be at least 8 characters"
-      passwords_no_match: "Passwords do not match"
-      invalid_url: "Invalid URL format"
-      invalid_format: "Invalid format"
-    # Provider Errors
-    provider:
-      connection_failed: "Failed to connect to provider"
-      authentication_failed: "Provider authentication failed"
-      rate_limit_exceeded: "API rate limit exceeded. Please try again later"
-      repository_not_found: "Repository not found"
-      permission_denied: "Permission denied to access this resource"
-      api_error: "Provider API error"
-    # General Errors
-    general:
-      server_error: "An unexpected server error occurred"
-      network_error: "Network connection error"
-      not_found: "Resource not found"
-      bad_request: "Invalid request"
+# Error Messages
+errors:
+  # Authentication Errors
+  auth:
+    invalid_credentials: "Invalid email or password"
+    token_expired: "Your session has expired. Please log in again"
+    token_invalid: "Invalid authentication token"
+    unauthorized: "You are not authorized to perform this action"
+    already_exists: "An account with this email already exists"
+    not_found: "Account not found"
+  # Validation Errors
+  validation:
+    required: "This field is required"
+    invalid_email: "Invalid email address"
+    password_too_short: "Password must be at least 8 characters"
+    passwords_no_match: "Passwords do not match"
+    invalid_url: "Invalid URL format"
+    invalid_format: "Invalid format"
+  # Provider Errors
+  provider:
+    connection_failed: "Failed to connect to provider"
+    authentication_failed: "Provider authentication failed"
+    rate_limit_exceeded: "API rate limit exceeded. Please try again later"
+    repository_not_found: "Repository not found"
+    permission_denied: "Permission denied to access this resource"
+    api_error: "Provider API error"
+  # General Errors
+  general:
+    server_error: "An unexpected server error occurred"
+    network_error: "Network connection error"
+    not_found: "Resource not found"
+    bad_request: "Invalid request"
 
-  # Success Messages
-  success:
-    saved: "Successfully saved"
-    created: "Successfully created"
-    updated: "Successfully updated"
-    deleted: "Successfully deleted"
-    refresh_complete: "Refresh complete"
-    login_success: "Login successful"
-    logout_success: "Logged out successfully"
+# Success Messages
+success:
+  saved: "Successfully saved"
+  created: "Successfully created"
+  updated: "Successfully updated"
+  deleted: "Successfully deleted"
+  refresh_complete: "Refresh complete"
+  login_success: "Login successful"
+  logout_success: "Logged out successfully"
 
-  # Date/Time Formatting
-  datetime:
-    just_now: "Just now"
-    minutes_ago: "%{count} minutes ago"
-    hours_ago: "%{count} hours ago"
-    days_ago: "%{count} days ago"
-    date_format: "%Y-%m-%d"
-    datetime_format: "%Y-%m-%d %H:%M:%S"
+# Date/Time Formatting
+datetime:
+  just_now: "Just now"
+  minutes_ago: "%{count} minutes ago"
+  hours_ago: "%{count} hours ago"
+  days_ago: "%{count} days ago"
+  date_format: "%Y-%m-%d"
+  datetime_format: "%Y-%m-%d %H:%M:%S"
 
-  # PR-specific Terminology
-  pr:
-    title: "Pull Request"
-    plural: "Pull Requests"
-    author: "Author"
-    reviewer: "Reviewer"
-    reviewers: "Reviewers"
-    approvals: "Approvals"
-    changes_requested: "Changes Requested"
-    comments: "Comments"
-    commits: "Commits"
-    files_changed: "Files Changed"
-    merge: "Merge"
-    merged: "Merged"
-    open: "Open"
-    closed: "Closed"
-    draft: "Draft"
-    conflict: "Conflict"
-    no_conflicts: "No Conflicts"
+# PR-specific Terminology
+pr:
+  title: "Pull Request"
+  plural: "Pull Requests"
+  author: "Author"
+  reviewer: "Reviewer"
+  reviewers: "Reviewers"
+  approvals: "Approvals"
+  changes_requested: "Changes Requested"
+  comments: "Comments"
+  commits: "Commits"
+  files_changed: "Files Changed"
+  merge: "Merge"
+  merged: "Merged"
+  open: "Open"
+  closed: "Closed"
+  draft: "Draft"
+  conflict: "Conflict"
+  no_conflicts: "No Conflicts"
 
-  # CI/CD Status
-  ci:
-    pending: "Pending"
-    running: "Running"
-    success: "Success"
-    failed: "Failed"
-    cancelled: "Cancelled"
-    checks: "Checks"
-    all_passed: "All checks passed"
-    some_failed: "Some checks failed"
+# CI/CD Status
+ci:
+  pending: "Pending"
+  running: "Running"
+  success: "Success"
+  failed: "Failed"
+  cancelled: "Cancelled"
+  checks: "Checks"
+  all_passed: "All checks passed"
+  some_failed: "Some checks failed"
 
-  # Repository
-  repository:
-    title: "Repository"
-    plural: "Repositories"
-    visibility: "Visibility"
-    public: "Public"
-    private: "Private"
-    default_branch: "Default Branch"
-    last_updated: "Last Updated"
+# Repository
+repository:
+  title: "Repository"
+  plural: "Repositories"
+  visibility: "Visibility"
+  public: "Public"
+  private: "Private"
+  default_branch: "Default Branch"
+  last_updated: "Last Updated"
 
-  # Teams & Organizations
-  team:
-    title: "Team"
-    plural: "Teams"
-    members: "Members"
-    organization: "Organization"
+# Teams & Organizations
+team:
+  title: "Team"
+  plural: "Teams"
+  members: "Members"
+  organization: "Organization"
 
-  # Settings
-  settings:
-    general: "General"
-    account: "Account"
-    security: "Security"
-    integrations: "Integrations"
-    notifications: "Notifications"
-    language: "Language"
-    theme: "Theme"
+# Settings
+settings:
+  general: "General"
+  account: "Account"
+  security: "Security"
+  integrations: "Integrations"
+  notifications: "Notifications"
+  language: "Language"
+  theme: "Theme"

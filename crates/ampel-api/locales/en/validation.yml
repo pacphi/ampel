@@ -1,11 +1,10 @@
-en:
-  validation:
-    # Account validation
-    account:
-      valid: "valid"
-      invalid: "invalid"
+validation:
+  # Account validation
+  account:
+    valid: "valid"
+    invalid: "invalid"
 
-    # General validation
-    general:
-      required: "This field is required"
-      invalid_format: "Invalid format"
+  # General validation
+  general:
+    required: "This field is required"
+    invalid_format: "Invalid format"

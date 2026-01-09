@@ -1,11 +1,10 @@
-fi:
-  validation:
-    # Account validation
-    account:
-      valid: "kelvollinen"
-      invalid: "virheellinen"
+validation:
+  # Account validation
+  account:
+    valid: "kelvollinen"
+    invalid: "virheellinen"
 
-    # General validation
-    general:
-      required: "Tämä kenttä on pakollinen"
-      invalid_format: "Virheellinen muoto"
+  # General validation
+  general:
+    required: "Tämä kenttä on pakollinen"
+    invalid_format: "Virheellinen muoto"

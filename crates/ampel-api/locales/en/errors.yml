@@ -1,58 +1,57 @@
-en:
-  errors:
-    # Authentication errors
-    auth:
-      email_registered: "Email already registered"
-      invalid_credentials: "Invalid email or password"
-      invalid_refresh_token: "Invalid or expired refresh token"
-      user_not_found: "User not found"
-      email_in_use: "Email already in use"
+errors:
+  # Authentication errors
+  auth:
+    email_registered: "Email already registered"
+    invalid_credentials: "Invalid email or password"
+    invalid_refresh_token: "Invalid or expired refresh token"
+    user_not_found: "User not found"
+    email_in_use: "Email already in use"
 
-    # Repository errors
-    repository:
-      not_found: "Repository not found"
-      already_added: "Repository already added"
-      invalid_provider: "Invalid provider"
-      provider_not_connected: "Provider not connected"
-      invalid_provider_db: "Invalid provider type in database"
-      not_found_for_pr: "Repository not found for PR"
-      no_account_linked: "Repository not linked to account"
+  # Repository errors
+  repository:
+    not_found: "Repository not found"
+    already_added: "Repository already added"
+    invalid_provider: "Invalid provider"
+    provider_not_connected: "Provider not connected"
+    invalid_provider_db: "Invalid provider type in database"
+    not_found_for_pr: "Repository not found for PR"
+    no_account_linked: "Repository not linked to account"
 
-    # Pull request errors
-    pull_request:
-      not_found: "Pull request not found"
-      merge_failed: "Merge failed: %{reason}"
+  # Pull request errors
+  pull_request:
+    not_found: "Pull request not found"
+    merge_failed: "Merge failed: %{reason}"
 
-    # Account errors
-    account:
-      not_found: "Account not found"
-      invalid_provider_type: "Invalid provider type"
-      validation_failed: "Token validation failed: %{error}"
-      invalid_token: "Invalid token"
-      provider_no_user_id: "Provider did not return user ID"
-      provider_no_username: "Provider did not return username"
-      already_connected: "This account is already connected. Use PATCH to update the token."
+  # Account errors
+  account:
+    not_found: "Account not found"
+    invalid_provider_type: "Invalid provider type"
+    validation_failed: "Token validation failed: %{error}"
+    invalid_token: "Invalid token"
+    provider_no_user_id: "Provider did not return user ID"
+    provider_no_username: "Provider did not return username"
+    already_connected: "This account is already connected. Use PATCH to update the token."
 
-    # Provider errors
-    provider:
-      error: "Provider error: %{error}"
-      decrypt_failed: "Failed to decrypt token: %{error}"
+  # Provider errors
+  provider:
+    error: "Provider error: %{error}"
+    decrypt_failed: "Failed to decrypt token: %{error}"
 
-    # Encryption errors
-    encryption:
-      failed: "Encryption error: %{error}"
-      decrypt_failed: "Decryption error: %{error}"
+  # Encryption errors
+  encryption:
+    failed: "Encryption error: %{error}"
+    decrypt_failed: "Decryption error: %{error}"
 
-    # General errors
-    general:
-      internal: "Internal error"
-      serialization_failed: "Failed to serialize scopes: %{error}"
+  # General errors
+  general:
+    internal: "Internal error"
+    serialization_failed: "Failed to serialize scopes: %{error}"
 
-    # Network errors
-    network:
-      timeout: "Request timed out"
-      connection_failed: "Connection failed"
+  # Network errors
+  network:
+    timeout: "Request timed out"
+    connection_failed: "Connection failed"
 
-    # Rate limit
-    rate_limit:
-      exceeded: "Rate limit exceeded"
+  # Rate limit
+  rate_limit:
+    exceeded: "Rate limit exceeded"
