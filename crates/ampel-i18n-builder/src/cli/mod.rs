@@ -5,7 +5,10 @@ use std::path::PathBuf;
 
 pub mod coverage;
 pub mod export;
+pub mod generate_types;
 pub mod import;
+pub mod missing;
+pub mod report;
 pub mod sync;
 pub mod translate;
 pub mod validate;
@@ -39,6 +42,15 @@ pub enum Commands {
 
     /// Import translations from external translation service
     Import(ImportArgs),
+
+    /// List missing translation keys per language
+    Missing(MissingArgs),
+
+    /// Generate coverage reports in various formats
+    Report(ReportArgs),
+
+    /// Generate TypeScript type definitions from translations
+    GenerateTypes(GenerateTypesArgs),
 }
 
 #[derive(Parser)]
@@ -203,4 +215,49 @@ pub enum ExportFormat {
     Csv,
     /// JSON format for custom tools
     Json,
+}
+
+#[derive(Parser)]
+pub struct MissingArgs {
+    /// Check specific language only
+    #[arg(short, long)]
+    pub lang: Option<String>,
+
+    /// Path to translation directory
+    #[arg(long, default_value = "frontend/public/locales")]
+    pub translation_dir: PathBuf,
+}
+
+#[derive(Parser)]
+pub struct ReportArgs {
+    /// Output format
+    #[arg(short, long, value_enum, default_value = "markdown")]
+    pub format: ReportFormat,
+
+    /// Check specific language only
+    #[arg(short, long)]
+    pub lang: Option<String>,
+
+    /// Path to translation directory
+    #[arg(long, default_value = "frontend/public/locales")]
+    pub translation_dir: PathBuf,
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+pub enum ReportFormat {
+    /// JSON format for programmatic access
+    Json,
+    /// Markdown format for documentation
+    Markdown,
+}
+
+#[derive(Parser)]
+pub struct GenerateTypesArgs {
+    /// Output file path for TypeScript types
+    #[arg(short, long, default_value = "frontend/src/i18n/types.ts")]
+    pub output: PathBuf,
+
+    /// Path to translation directory
+    #[arg(long, default_value = "frontend/public/locales")]
+    pub translation_dir: PathBuf,
 }

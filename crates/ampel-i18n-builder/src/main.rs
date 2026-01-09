@@ -47,6 +47,15 @@ async fn main() -> Result<()> {
         Commands::Import(args) => {
             ampel_i18n_builder::cli::import::execute(args).await?;
         }
+        Commands::Missing(args) => {
+            ampel_i18n_builder::cli::missing::execute(args).await?;
+        }
+        Commands::Report(args) => {
+            ampel_i18n_builder::cli::report::execute(args).await?;
+        }
+        Commands::GenerateTypes(args) => {
+            ampel_i18n_builder::cli::generate_types::execute(args).await?;
+        }
     }
 
     Ok(())
