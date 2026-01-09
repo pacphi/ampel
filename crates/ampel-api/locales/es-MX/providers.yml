@@ -14,7 +14,7 @@ en:
     github:
       api_error: 'Error de API: %{status}'
       invalid_token: Token inválido
-      merge_checks_failed: La solicitud de extracción no se puede fusionar (verifique las verificaciones de estado y las revisiones)
+      merge_checks_failed: La PR no se puede fusionar (verifique las verificaciones de estado y las revisiones)
       merge_conflict: Conflicto de fusión o se modificó la rama principal
       merge_failed: No se pudo fusionar la solicitud de extracción
       merge_not_mergeable: La solicitud de extracción no se puede fusionar

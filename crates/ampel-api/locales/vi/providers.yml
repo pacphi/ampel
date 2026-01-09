@@ -14,7 +14,7 @@ en:
     github:
       api_error: 'Lỗi API: %{status}'
       invalid_token: Mã thông báo không hợp lệ
-      merge_checks_failed: Yêu cầu kéo (pull request) không thể được hợp nhất (vui lòng kiểm tra trạng thái và đánh giá).
+      merge_checks_failed: Yêu cầu kéo không thể được hợp nhất (vui lòng kiểm tra trạng thái và đánh giá).
       merge_conflict: Xung đột hợp nhất hoặc nhánh chính đã bị sửa đổi
       merge_failed: Không thể hợp nhất yêu cầu kéo (pull request).
       merge_not_mergeable: Yêu cầu kéo (pull request) không thể hợp nhất.

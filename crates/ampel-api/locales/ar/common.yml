@@ -3,7 +3,7 @@ ar:
     name: "Ampel"
     tagline: "لوحة معلومات إدارة PR الموحدة"
     description: "دمج طلبات السحب من GitHub و GitLab و Bitbucket"
-  
+
   nav:
     dashboard: "لوحة التحكم"
     repositories: "المستودعات"
@@ -11,13 +11,13 @@ ar:
     teams: "الفرق"
     settings: "الإعدادات"
     logout: "تسجيل الخروج"
-  
+
   status:
     green: "جاهز للدمج"
     yellow: "قيد التقدم"
     red: "محظور"
     unknown: "غير معروف"
-  
+
   actions:
     save: "حفظ"
     cancel: "إلغاء"

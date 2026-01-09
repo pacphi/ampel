@@ -15,7 +15,7 @@ fr:
       reviews_fetch_failed: "Échec de la récupération des évaluations"
       merge_not_mergeable: "La pull request ne peut pas être fusionnée"
       merge_conflict: "Conflit de fusion ou la branche principale a été modifiée"
-      merge_checks_failed: "La pull request ne peut pas être fusionnée (vérifiez les contrôles d'état et les évaluations)"
+      merge_checks_failed: "La PR ne peut pas être fusionnée (vérifiez les contrôles d'état et les évaluations)"
       merge_failed: "Échec de la fusion de la pull request"
       rate_limit_failed: "Échec de la récupération de la limite de débit"
 

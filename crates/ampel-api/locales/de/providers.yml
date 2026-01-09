@@ -15,7 +15,7 @@ de:
       reviews_fetch_failed: "Bewertungen konnten nicht abgerufen werden"
       merge_not_mergeable: "Pull Request kann nicht zusammengeführt werden"
       merge_conflict: "Merge-Konflikt oder Hauptzweig wurde geändert"
-      merge_checks_failed: "Pull Request kann nicht zusammengeführt werden (Überprüfen Sie Statusprüfungen und Bewertungen)"
+      merge_checks_failed: "PR kann nicht zusammengeführt werden (Überprüfen Sie Statusprüfungen und Bewertungen)"
       merge_failed: "Pull Request konnte nicht zusammengeführt werden"
       rate_limit_failed: "Ratenlimit konnte nicht abgerufen werden"
 

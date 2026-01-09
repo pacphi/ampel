@@ -14,7 +14,7 @@ en:
     github:
       api_error: 'Errore API: %{status}'
       invalid_token: Token non valido
-      merge_checks_failed: La richiesta di pull non può essere unita (controllare lo stato dei controlli e delle revisioni)
+      merge_checks_failed: La PR non può essere unita (controllare lo stato dei controlli e delle revisioni)
       merge_conflict: Conflitto di unione o ramo principale modificato
       merge_failed: Impossibile unire la richiesta pull
       merge_not_mergeable: La richiesta di pull non è unificabile
