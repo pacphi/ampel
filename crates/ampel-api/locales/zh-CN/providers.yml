@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 提供商 API 错误：%{message}（状态：%{status_code}）
+      auth_failed: 身份验证失败：%{reason}
+      config_error: 配置错误：%{reason}
+      invalid_response: 无效响应：%{reason}
+      network_error: 网络错误：%{reason}
+      not_found: 未找到资源：%{resource}
+      not_supported: 不支持的操作：%{operation}
+      permission_denied: 权限被拒绝：%{reason}
+      rate_limit_exceeded: 速率限制已超出。重置时间为：%{reset_time}
+      serialization_error: 序列化错误：%{reason}
+    github:
+      api_error: API 错误：%{status}
+      invalid_token: 无效令牌
+      merge_checks_failed: 拉取请求无法合并（请检查状态检查和审核）
+      merge_conflict: 合并冲突或主分支已修改
+      merge_failed: 合并拉取请求失败
+      merge_not_mergeable: 拉取请求不可合并
+      pr_fetch_failed: 获取拉取请求失败
+      pr_not_found: '未找到拉取请求 #%{number}'
+      prs_fetch_failed: 无法列出拉取请求
+      rate_limit_failed: 获取速率限制失败
+      repo_fetch_failed: 获取存储库失败
+      repo_not_found: 未找到仓库 %{owner}/%{repo}
+      repos_fetch_failed: 列出存储库失败
+      reviews_fetch_failed: 未能获得评论
+      token_invalid: 无效或过期的令牌
+      user_fetch_failed: 获取用户失败
+    worker:
+      account_not_found: 未找到提供商帐户
+      no_account: 该存储库没有关联的提供商帐户

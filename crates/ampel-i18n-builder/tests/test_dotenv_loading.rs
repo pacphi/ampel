@@ -34,10 +34,7 @@ fn test_dotenv_precedence() {
         env::var("TEST_VAR_FROM_DOTENV").ok(),
         Some("dotenv_value".to_string())
     );
-    assert_eq!(
-        env::var("ANOTHER_VAR").ok(),
-        Some("from_file".to_string())
-    );
+    assert_eq!(env::var("ANOTHER_VAR").ok(), Some("from_file".to_string()));
 
     // Cleanup - restore directory and remove env vars
     env::set_current_dir(original_dir).expect("Failed to restore dir");
@@ -174,9 +171,18 @@ AMPEL_I18N_MAX_RETRIES=5
     dotenv::dotenv().expect("Failed to load .env");
 
     // Verify config override vars are loaded
-    assert_eq!(env::var("AMPEL_I18N_TIMEOUT_SECS").ok(), Some("45".to_string()));
-    assert_eq!(env::var("AMPEL_I18N_BATCH_SIZE").ok(), Some("50".to_string()));
-    assert_eq!(env::var("AMPEL_I18N_MAX_RETRIES").ok(), Some("5".to_string()));
+    assert_eq!(
+        env::var("AMPEL_I18N_TIMEOUT_SECS").ok(),
+        Some("45".to_string())
+    );
+    assert_eq!(
+        env::var("AMPEL_I18N_BATCH_SIZE").ok(),
+        Some("50".to_string())
+    );
+    assert_eq!(
+        env::var("AMPEL_I18N_MAX_RETRIES").ok(),
+        Some("5".to_string())
+    );
 
     // Cleanup
     env::set_current_dir(original_dir).expect("Failed to restore dir");

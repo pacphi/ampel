@@ -22,7 +22,12 @@ impl RustGenerator {
     }
 
     /// Generate Rust const declarations from translation map
-    pub fn generate_consts(&self, translations: &TranslationMap, language: &str, options: &GeneratorOptions) -> String {
+    pub fn generate_consts(
+        &self,
+        translations: &TranslationMap,
+        language: &str,
+        options: &GeneratorOptions,
+    ) -> String {
         let mut output = String::new();
 
         // Header comment
@@ -32,7 +37,8 @@ impl RustGenerator {
                  // Language: {}\n\
                  // Generated at: {}\n\
                  // DO NOT EDIT - This file is auto-generated\n\n",
-                language, chrono::Utc::now()
+                language,
+                chrono::Utc::now()
             ));
         }
 
@@ -44,7 +50,9 @@ impl RustGenerator {
         output.push_str("//!\n");
         output.push_str(&format!("//! Language: {}\n", language));
         output.push_str("//! \n");
-        output.push_str("//! Use these constants with `rust_i18n::t!()` macro for type-safe translations.\n\n");
+        output.push_str(
+            "//! Use these constants with `rust_i18n::t!()` macro for type-safe translations.\n\n",
+        );
 
         // Generate const declarations
         let flattened = flatten_translations(translations);
@@ -87,7 +95,10 @@ impl RustGenerator {
             let doc_comment = format!("/// Translation key: `{}`", key);
 
             output.push_str(&format!("{}\n", doc_comment));
-            output.push_str(&format!("pub const {}: &str = \"{}\";\n\n", const_name, key));
+            output.push_str(&format!(
+                "pub const {}: &str = \"{}\";\n\n",
+                const_name, key
+            ));
         }
 
         output
@@ -108,7 +119,10 @@ impl RustGenerator {
                 let const_name = self.key_to_const_name(&key);
                 let full_key = format!("{}.{}", namespace, key);
                 output.push_str(&format!("    /// Translation key: `{}`\n", full_key));
-                output.push_str(&format!("    pub const {}: &str = \"{}\";\n", const_name, full_key));
+                output.push_str(&format!(
+                    "    pub const {}: &str = \"{}\";\n",
+                    const_name, full_key
+                ));
             }
 
             output.push_str("}\n\n");
@@ -134,8 +148,7 @@ impl RustGenerator {
     /// Convert a translation key to a Rust const name
     /// Example: "common.welcome" -> "COMMON_WELCOME"
     fn key_to_const_name(&self, key: &str) -> String {
-        key.replace(['.', '-'], "_")
-            .to_uppercase()
+        key.replace(['.', '-'], "_").to_uppercase()
     }
 
     /// Sanitize module name for Rust
@@ -243,7 +256,9 @@ mod tests {
         let output_dir = Path::new("/tmp/ampel-i18n-rust-test");
 
         let options = GeneratorOptions::default();
-        let result = generator.generate(&translations, "en", output_dir, options).await;
+        let result = generator
+            .generate(&translations, "en", output_dir, options)
+            .await;
 
         assert!(result.is_ok());
         let result = result.unwrap();
@@ -276,9 +291,15 @@ mod tests {
     fn test_key_to_const_name() {
         let generator = RustGenerator::new();
         assert_eq!(generator.key_to_const_name("hello"), "HELLO");
-        assert_eq!(generator.key_to_const_name("common.welcome"), "COMMON_WELCOME");
+        assert_eq!(
+            generator.key_to_const_name("common.welcome"),
+            "COMMON_WELCOME"
+        );
         assert_eq!(generator.key_to_const_name("app.name"), "APP_NAME");
-        assert_eq!(generator.key_to_const_name("pull-requests"), "PULL_REQUESTS");
+        assert_eq!(
+            generator.key_to_const_name("pull-requests"),
+            "PULL_REQUESTS"
+        );
     }
 
     #[test]
@@ -286,7 +307,10 @@ mod tests {
         let generator = RustGenerator::new();
         assert_eq!(generator.sanitize_module_name("common"), "common");
         assert_eq!(generator.sanitize_module_name("dashboard"), "dashboard");
-        assert_eq!(generator.sanitize_module_name("PullRequests"), "pullrequests");
+        assert_eq!(
+            generator.sanitize_module_name("PullRequests"),
+            "pullrequests"
+        );
         assert_eq!(generator.sanitize_module_name("123invalid"), "_123invalid");
     }
 

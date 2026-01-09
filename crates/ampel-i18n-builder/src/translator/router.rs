@@ -28,9 +28,7 @@ impl SmartTranslationRouter {
         let mut openai = None;
 
         // Initialize DeepL if available
-        if config.translation.deepl_api_key.is_some()
-            || std::env::var("DEEPL_API_KEY").is_ok()
-        {
+        if config.translation.deepl_api_key.is_some() || std::env::var("DEEPL_API_KEY").is_ok() {
             match Translator::new(TranslationProvider::DeepL, config) {
                 Ok(translator) => {
                     deepl = Some(translator.service);
@@ -41,9 +39,7 @@ impl SmartTranslationRouter {
         }
 
         // Initialize Google if available
-        if config.translation.google_api_key.is_some()
-            || std::env::var("GOOGLE_API_KEY").is_ok()
-        {
+        if config.translation.google_api_key.is_some() || std::env::var("GOOGLE_API_KEY").is_ok() {
             match Translator::new(TranslationProvider::Google, config) {
                 Ok(translator) => {
                     google = Some(translator.service);
@@ -54,9 +50,7 @@ impl SmartTranslationRouter {
         }
 
         // Initialize OpenAI if available
-        if config.translation.openai_api_key.is_some()
-            || std::env::var("OPENAI_API_KEY").is_ok()
-        {
+        if config.translation.openai_api_key.is_some() || std::env::var("OPENAI_API_KEY").is_ok() {
             match Translator::new(TranslationProvider::OpenAI, config) {
                 Ok(translator) => {
                     openai = Some(translator.service);

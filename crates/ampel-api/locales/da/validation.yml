@@ -1,0 +1,8 @@
+en:
+  validation:
+    account:
+      invalid: ugyldig
+      valid: gyldig
+    general:
+      invalid_format: Ugyldigt format
+      required: Dette felt er påkrævet

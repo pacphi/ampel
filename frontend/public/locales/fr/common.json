@@ -3,31 +3,31 @@
     "add": "Ajouter",
     "apply": "Appliquer",
     "cancel": "Annuler",
-    "clear": "Effacer",
+    "clear": "Clair",
     "delete": "Supprimer",
     "edit": "Modifier",
     "hideEmail": "Masquer l'email",
     "refresh": "Rafraîchir",
-    "refreshing": "Rafraîchissement...",
+    "refreshing": "Rafraîchissant...",
     "remove": "Retirer",
-    "reset": "Réinitialiser aux valeurs par défaut",
-    "save": "Enregistrer",
-    "saving": "Enregistrement...",
+    "reset": "Réinitialiser les paramètres par défaut",
+    "save": "Sauvegarder",
+    "saving": "Économie...",
     "showEmail": "Afficher l'email",
     "viewOnProvider": "Voir sur {{provider}}"
   },
   "app": {
     "add": "Ajouter",
     "apply": "Appliquer",
-    "back": "Retour",
+    "back": "Dos",
     "cancel": "Annuler",
-    "clear": "Effacer",
+    "clear": "Clair",
     "close": "Fermer",
     "delete": "Supprimer",
-    "description": "Gestion unifiée des demandes de tirage",
+    "description": "Gestion unifiée des demandes d'extraction",
     "edit": "Modifier",
-    "error": "Une erreur s'est produite",
-    "filter": "Filtrer",
+    "error": "Une erreur s'est produite.",
+    "filter": "Filtre",
     "info": "Information",
     "loading": "Chargement...",
     "name": "Ampel",
@@ -36,23 +36,23 @@
     "remove": "Retirer",
     "reset": "Réinitialiser",
     "retry": "Réessayer",
-    "save": "Enregistrer",
-    "search": "Rechercher",
+    "save": "Sauvegarder",
+    "search": "Recherche",
     "success": "Succès",
-    "title": "Tableau de bord Ampel PR",
+    "title": "Tableau de bord RP d'Ampel",
     "warning": "Avertissement"
   },
   "auth": {
-    "alreadyHaveAccount": "Vous avez déjà un compte?",
-    "confirmPassword": "Confirmer le mot de passe",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "confirmPassword": "Confirmez le mot de passe",
     "createAccount": "Créer un compte",
-    "creatingAccount": "Création du compte...",
+    "creatingAccount": "Création d'un compte...",
     "displayName": "Nom d'affichage",
-    "dontHaveAccount": "Vous n'avez pas de compte?",
-    "email": "Email",
-    "forgotPassword": "Mot de passe oublié?",
+    "dontHaveAccount": "Vous n'avez pas de compte ?",
+    "email": "E-mail",
+    "forgotPassword": "Mot de passe oublié ?",
     "getStarted": "Commencez avec Ampel",
-    "login": "Connexion",
+    "login": "Se connecter",
     "loginSuccess": "Connexion réussie",
     "logout": "Déconnexion",
     "logoutSuccess": "Déconnexion réussie",
@@ -61,14 +61,14 @@
     "signIn": "Se connecter",
     "signInToContinue": "Connectez-vous à votre compte pour continuer",
     "signUp": "S'inscrire",
-    "signingIn": "Connexion en cours...",
+    "signingIn": "Connexion...",
     "username": "Nom d'utilisateur",
-    "welcome": "Bienvenue de retour!",
-    "welcomeToAmpel": "Bienvenue à Ampel"
+    "welcome": "Content de te revoir!",
+    "welcomeToAmpel": "Bienvenue chez Ampel"
   },
   "language": {
     "current": "Langue actuelle",
-    "select": "Sélectionner la langue"
+    "select": "Sélectionnez la langue"
   },
   "navigation": {
     "analytics": "Analytique",
@@ -78,20 +78,20 @@
     "merge": "Fusionner",
     "organizations": "Organisations",
     "profile": "Profil",
-    "pullRequests": "Demandes de tirage",
+    "pullRequests": "Demandes de fusion",
     "repositories": "Dépôts",
     "settings": "Paramètres"
   },
   "pluralization": {
     "comments_one": "{{count}} commentaire",
     "comments_other": "{{count}} commentaires",
-    "pullRequests_one": "{{count}} demande de tirage",
-    "pullRequests_other": "{{count}} demandes de tirage",
-    "requests_one": "{{count}} demande",
-    "requests_other": "{{count}} demandes"
+    "pullRequests_one": "{{count}} requête d'extraction",
+    "pullRequests_other": "{{count}} demandes de fusion",
+    "requests_one": "{{count}} requête",
+    "requests_other": "{{count}} requêtes"
   },
   "status": {
-    "trafficLight": "Statut du feu de circulation"
+    "trafficLight": "État des feux de circulation"
   },
   "theme": {
     "auto": "Auto",
@@ -100,21 +100,21 @@
     "toggle": "Changer de thème"
   },
   "time": {
-    "daysAgo": "Il y a {{count}} jour",
-    "daysAgo_other": "Il y a {{count}} jours",
-    "hoursAgo": "Il y a {{count}} heure",
-    "hoursAgo_other": "Il y a {{count}} heures",
-    "minutesAgo": "Il y a {{count}} minute",
-    "minutesAgo_other": "Il y a {{count}} minutes",
-    "monthsAgo": "Il y a {{count}} mois",
-    "monthsAgo_other": "Il y a {{count}} mois",
-    "now": "À l'instant",
-    "weeksAgo": "Il y a {{count}} semaine",
-    "weeksAgo_other": "Il y a {{count}} semaines"
+    "daysAgo": "{{count}} jours auparavant",
+    "daysAgo_other": "{{count}} jours",
+    "hoursAgo": "{{count}} il y a une heure",
+    "hoursAgo_other": "{{count}} heures auparavant",
+    "minutesAgo": "il y a {{count}} minutes",
+    "minutesAgo_other": "{{count}} minutes auparavant",
+    "monthsAgo": "{{count}} mois",
+    "monthsAgo_other": "il y a {{count}} mois",
+    "now": "Tout à l' heure",
+    "weeksAgo": "il y a {{count}} semaine",
+    "weeksAgo_other": "il y a {{count}} semaines"
   },
   "visibility": {
     "archived": "Archivé",
     "private": "Privé",
-    "public": "Public"
+    "public": "Publique"
   }
 }

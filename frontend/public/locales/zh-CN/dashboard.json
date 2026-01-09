@@ -1,59 +1,89 @@
 {
-  "title": "PR Dashboard",
-  "subtitle": "Manage your pull requests across all providers",
+  "actions": {
+    "approve": "批准",
+    "comment": "评论",
+    "deselectAll": "取消选择所有",
+    "merge": "合并",
+    "refresh": "刷新",
+    "requestChanges": "请求更改",
+    "selectAll": "全选",
+    "viewOnProvider": "查看 {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "等待审查",
+    "changesRequested": "需要更改",
+    "ciFailed": "CI失败",
+    "ciPending": "CI待定",
+    "conflicts": "冲突",
+    "draft": "草案",
+    "needsReview": "需要审查"
+  },
   "empty": {
-    "title": "No pull requests found",
-    "description": "Connect your Git providers to start tracking PRs",
-    "action": "Connect Provider"
+    "action": "连接提供商",
+    "description": "连接您的 Git 服务商以开始跟踪 PR。",
+    "title": "未找到拉取请求"
   },
   "filters": {
-    "all": "All",
-    "open": "Open",
-    "closed": "Closed",
-    "merged": "Merged",
-    "draft": "Draft",
-    "provider": "Provider",
-    "repository": "Repository",
-    "author": "Author",
-    "assignee": "Assignee",
-    "label": "Label"
+    "all": "全部",
+    "assignee": "受让人",
+    "author": "作者",
+    "closed": "关闭",
+    "draft": "草稿",
+    "label": "标签",
+    "merged": "合并",
+    "onlyWithPrs": "只显示有开放PR的仓库",
+    "open": "打开",
+    "provider": "提供者",
+    "repository": "存储库"
   },
-  "status": {
-    "green": "Ready to merge",
-    "yellow": "In progress",
-    "red": "Blocked",
-    "draft": "Draft",
-    "merged": "Merged",
-    "closed": "Closed"
+  "pr": {
+    "additions": "添加",
+    "author": "作者",
+    "comments": "评论",
+    "createdAt": "创建于",
+    "deletions": "删除",
+    "number": "＃{{数字}}",
+    "sourceBranch": "源分支",
+    "targetBranch": "目标分支",
+    "updatedAt": "更新于"
   },
-  "actions": {
-    "merge": "Merge",
-    "approve": "Approve",
-    "requestChanges": "Request Changes",
-    "comment": "Comment",
-    "viewOnProvider": "View on {{provider}}",
-    "refresh": "Refresh",
-    "selectAll": "Select All",
-    "deselectAll": "Deselect All"
+  "prDashboard": "PR仪表板",
+  "sort": {
+    "author": "作者",
+    "created": "创建日期",
+    "repository": "存储库",
+    "status": "地位",
+    "title": "排序方式",
+    "updated": "最后更新时间"
   },
   "stats": {
-    "total": "Total PRs",
-    "open": "Open",
-    "ready": "Ready to merge",
-    "inProgress": "In progress",
-    "blocked": "Blocked"
+    "blocked": "已屏蔽",
+    "inProgress": "进行中",
+    "needsAttention": "需要注意",
+    "open": "打开",
+    "openPRs": "开放的PR",
+    "ready": "准备合并",
+    "readyToMerge": "准备合并",
+    "total": "总公关次数",
+    "totalRepositories": "仓库总数"
   },
+  "status": {
+    "closed": "关闭",
+    "draft": "草稿",
+    "green": "准备合并",
+    "merged": "合并",
+    "red": "已屏蔽",
+    "yellow": "进行中"
+  },
+  "subtitle": "管理您在所有提供商中的拉取请求",
+  "title": "PR Dashboard",
   "views": {
-    "grid": "Grid view",
-    "list": "List view",
-    "table": "Table view"
-  },
-  "sort": {
-    "title": "Sort by",
-    "updated": "Last updated",
-    "created": "Created date",
-    "author": "Author",
-    "status": "Status",
-    "repository": "Repository"
+    "grid": "网格视图",
+    "list": "列表视图",
+    "prs": "拉取请求视图",
+    "pullRequests": "拉取请求视图",
+    "repositoryGrid": "仓库网格视图",
+    "repositoryList": "仓库列表视图",
+    "table": "表格视图"
   }
 }

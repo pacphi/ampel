@@ -3,7 +3,7 @@
 use crate::cli::TranslateArgs;
 use crate::config::Config;
 use crate::error::Result;
-use crate::formats::{JsonFormat, TranslationFormat, TranslationMap, TranslationValue};
+use crate::formats::{JsonFormat, YamlFormat, TranslationFormat, TranslationMap, TranslationValue};
 use crate::translator::fallback::FallbackTranslationRouter;
 use crate::translator::{TranslationService, Translator};
 use colored::Colorize;
@@ -19,27 +19,15 @@ pub async fn execute(args: TranslateArgs) -> Result<()> {
     // Apply CLI overrides to configuration
     if let Some(timeout) = args.timeout {
         config.translation.default_timeout_secs = timeout;
-        println!(
-            "{} Override global timeout: {}s",
-            "⚙".cyan(),
-            timeout
-        );
+        println!("{} Override global timeout: {}s", "⚙".cyan(), timeout);
     }
     if let Some(batch_size) = args.batch_size {
         config.translation.default_batch_size = batch_size;
-        println!(
-            "{} Override batch size: {}",
-            "⚙".cyan(),
-            batch_size
-        );
+        println!("{} Override batch size: {}", "⚙".cyan(), batch_size);
     }
     if let Some(max_retries) = args.max_retries {
         config.translation.default_max_retries = max_retries;
-        println!(
-            "{} Override max retries: {}",
-            "⚙".cyan(),
-            max_retries
-        );
+        println!("{} Override max retries: {}", "⚙".cyan(), max_retries);
     }
 
     // Warn about disabled providers
@@ -105,12 +93,13 @@ pub async fn execute(args: TranslateArgs) -> Result<()> {
     let namespaces = if let Some(ns) = &args.namespace {
         vec![ns.clone()]
     } else {
-        // List all JSON files in source directory
+        // List all JSON and YAML files in source directory
         fs::read_dir(&source_dir)?
             .filter_map(|entry| {
                 let entry = entry.ok()?;
                 let path = entry.path();
-                if path.extension()? == "json" {
+                let ext = path.extension()?.to_str()?;
+                if ext == "json" || ext == "yml" || ext == "yaml" {
                     path.file_stem()?.to_str().map(|s| s.to_string())
                 } else {
                     None
@@ -126,6 +115,30 @@ pub async fn execute(args: TranslateArgs) -> Result<()> {
         namespaces.join(", ")
     );
 
+    // Validate flag usage
+    if args.force && args.detect_untranslated {
+        return Err(crate::error::Error::Config(
+            "Cannot use both --force and --detect-untranslated. Choose one strategy.".to_string(),
+        ));
+    }
+
+    // Show mode
+    if args.force {
+        println!("{} Force mode: Retranslating ALL keys", "!".yellow().bold());
+    } else if args.detect_untranslated {
+        println!(
+            "{} Smart detection: Retranslating English/untranslated values only",
+            "🔍".cyan().bold()
+        );
+    }
+
+    // Create options struct
+    let options = TranslateOptions {
+        dry_run: args.dry_run,
+        force: args.force,
+        detect_untranslated: args.detect_untranslated,
+    };
+
     // Process each namespace
     for namespace in namespaces {
         process_namespace(
@@ -134,7 +147,7 @@ pub async fn execute(args: TranslateArgs) -> Result<()> {
             &target_dir,
             &args.lang,
             translator.as_ref(),
-            args.dry_run,
+            &options,
         )
         .await?;
     }
@@ -144,34 +157,66 @@ pub async fn execute(args: TranslateArgs) -> Result<()> {
     Ok(())
 }
 
+struct TranslateOptions {
+    dry_run: bool,
+    force: bool,
+    detect_untranslated: bool,
+}
+
 async fn process_namespace(
     namespace: &str,
     source_dir: &Path,
     target_dir: &Path,
     target_lang: &str,
     translator: &dyn TranslationService,
-    dry_run: bool,
+    options: &TranslateOptions,
 ) -> Result<()> {
-    let format = JsonFormat::new();
+    // Auto-detect file format from source directory
+    let (source_file, formatter): (std::path::PathBuf, Box<dyn TranslationFormat>) =
+        if source_dir.join(format!("{}.json", namespace)).exists() {
+            (source_dir.join(format!("{}.json", namespace)), Box::new(JsonFormat::new()))
+        } else if source_dir.join(format!("{}.yml", namespace)).exists() {
+            (source_dir.join(format!("{}.yml", namespace)), Box::new(YamlFormat))
+        } else if source_dir.join(format!("{}.yaml", namespace)).exists() {
+            (source_dir.join(format!("{}.yaml", namespace)), Box::new(YamlFormat))
+        } else {
+            return Err(crate::error::Error::Io(std::io::Error::new(
+                std::io::ErrorKind::NotFound,
+                format!("Source file not found for namespace '{}' (.json, .yml, or .yaml)", namespace),
+            )));
+        };
+
+    // Determine target file extension (same as source)
+    let target_extension = source_file.extension()
+        .and_then(|e| e.to_str())
+        .unwrap_or("json");
 
     // Load source translations
-    let source_file = source_dir.join(format!("{}.json", namespace));
     let source_content = fs::read_to_string(&source_file)?;
-    let source_map = format.parse(&source_content)?;
+    let source_map = formatter.parse(&source_content)?;
 
     // Load existing target translations (if any)
-    let target_file = target_dir.join(format!("{}.json", namespace));
+    let target_file = target_dir.join(format!("{}.{}", namespace, target_extension));
     let mut target_map = if target_file.exists() {
         let content = fs::read_to_string(&target_file)?;
-        format.parse(&content)?
+        formatter.parse(&content)?
     } else {
         TranslationMap::new()
     };
 
-    // Find missing keys
-    let missing_keys = find_missing_keys(&source_map, &target_map);
+    // Find keys to translate based on mode
+    let keys_to_translate = if options.force {
+        // Force mode: retranslate all keys
+        collect_all_keys(&source_map)
+    } else if options.detect_untranslated {
+        // Smart detection: find English values
+        find_untranslated_keys(&source_map, &target_map)
+    } else {
+        // Default: only missing keys
+        find_missing_keys(&source_map, &target_map)
+    };
 
-    if missing_keys.is_empty() {
+    if keys_to_translate.is_empty() {
         println!(
             "  {} {} - {} up to date",
             "✓".green(),
@@ -181,17 +226,27 @@ async fn process_namespace(
         return Ok(());
     }
 
+    // Show what will be translated
+    let mode_label = if options.force {
+        "all keys (force)"
+    } else if options.detect_untranslated {
+        "keys with English values"
+    } else {
+        "missing key(s)"
+    };
+
     println!(
-        "  {} {} - {} missing key(s)",
+        "  {} {} - {} {}",
         "→".cyan(),
         namespace,
-        missing_keys.len().to_string().yellow()
+        keys_to_translate.len().to_string().yellow(),
+        mode_label.dimmed()
     );
 
     // Flatten nested structures for translation
     let mut texts_to_translate: HashMap<String, serde_json::Value> = HashMap::new();
 
-    for key in &missing_keys {
+    for key in &keys_to_translate {
         if let Some(value) = get_translation_value(&source_map, key) {
             flatten_for_translation(key, value, &mut texts_to_translate);
         }
@@ -226,20 +281,20 @@ async fn process_namespace(
     }
 
     // Write to file
-    if !dry_run {
-        let output = format.write(&target_map)?;
+    if !options.dry_run {
+        let output = formatter.write(&target_map)?;
         fs::write(&target_file, output)?;
         println!(
             "    {} Wrote {} translations to {}",
             "✓".green(),
-            missing_keys.len(),
+            keys_to_translate.len(),
             target_file.display()
         );
     } else {
         println!(
             "    {} Would write {} translations (dry run)",
             "!".yellow(),
-            missing_keys.len()
+            keys_to_translate.len()
         );
     }
 
@@ -263,6 +318,176 @@ fn find_missing_keys(source: &TranslationMap, target: &TranslationMap) -> Vec<St
     }
 
     missing
+}
+
+/// Collect all keys from source map (for --force mode)
+fn collect_all_keys(source: &TranslationMap) -> Vec<String> {
+    let mut all_keys = Vec::new();
+
+    for (key, value) in source {
+        match value {
+            TranslationValue::String(_) | TranslationValue::Plural(_) => {
+                all_keys.push(key.clone());
+            }
+            TranslationValue::Nested(nested_map) => {
+                // Recursively collect nested keys
+                let nested_keys = collect_all_keys(nested_map);
+                for nested_key in nested_keys {
+                    all_keys.push(format!("{}.{}", key, nested_key));
+                }
+            }
+        }
+    }
+
+    all_keys
+}
+
+/// Find keys with English/untranslated values (for --detect-untranslated mode)
+fn find_untranslated_keys(source: &TranslationMap, target: &TranslationMap) -> Vec<String> {
+    let mut untranslated = Vec::new();
+
+    for (key, source_value) in source {
+        if !target.contains_key(key) {
+            // Key doesn't exist - needs translation
+            untranslated.push(key.clone());
+        } else {
+            let target_value = target.get(key).unwrap();
+
+            match (source_value, target_value) {
+                (TranslationValue::String(source_text), TranslationValue::String(target_text)) => {
+                    // Check if target value is still in English
+                    if is_english_value(source_text, target_text) {
+                        untranslated.push(key.clone());
+                    }
+                }
+                (
+                    TranslationValue::Nested(source_nested),
+                    TranslationValue::Nested(target_nested),
+                ) => {
+                    // Recursively check nested structures
+                    let nested_untranslated = find_untranslated_keys(source_nested, target_nested);
+                    for nested_key in nested_untranslated {
+                        untranslated.push(format!("{}.{}", key, nested_key));
+                    }
+                }
+                (
+                    TranslationValue::Plural(source_plural),
+                    TranslationValue::Plural(target_plural),
+                ) => {
+                    // Check 'other' form (always present)
+                    if is_english_value(&source_plural.other, &target_plural.other) {
+                        untranslated.push(format!("{}.other", key));
+                    }
+                    // Check 'one' form if present
+                    if let (Some(src), Some(tgt)) = (&source_plural.one, &target_plural.one) {
+                        if is_english_value(src, tgt) {
+                            untranslated.push(format!("{}.one", key));
+                        }
+                    }
+                    // Check other optional forms
+                    if let (Some(src), Some(tgt)) = (&source_plural.zero, &target_plural.zero) {
+                        if is_english_value(src, tgt) {
+                            untranslated.push(format!("{}.zero", key));
+                        }
+                    }
+                    if let (Some(src), Some(tgt)) = (&source_plural.two, &target_plural.two) {
+                        if is_english_value(src, tgt) {
+                            untranslated.push(format!("{}.two", key));
+                        }
+                    }
+                    if let (Some(src), Some(tgt)) = (&source_plural.few, &target_plural.few) {
+                        if is_english_value(src, tgt) {
+                            untranslated.push(format!("{}.few", key));
+                        }
+                    }
+                    if let (Some(src), Some(tgt)) = (&source_plural.many, &target_plural.many) {
+                        if is_english_value(src, tgt) {
+                            untranslated.push(format!("{}.many", key));
+                        }
+                    }
+                }
+                _ => {
+                    // Type mismatch - needs retranslation
+                    untranslated.push(key.clone());
+                }
+            }
+        }
+    }
+
+    untranslated
+}
+
+/// Check if a value appears to be in English (not translated)
+fn is_english_value(source_text: &str, target_text: &str) -> bool {
+    // Exact match with source - definitely not translated
+    if source_text == target_text {
+        return true;
+    }
+
+    // Common English words that indicate untranslated text
+    let english_indicators = [
+        "the",
+        "is",
+        "and",
+        "or",
+        "to",
+        "a",
+        "an",
+        "in",
+        "on",
+        "at",
+        "for",
+        "loading",
+        "error",
+        "success",
+        "warning",
+        "info",
+        "cancel",
+        "save",
+        "delete",
+        "edit",
+        "add",
+        "remove",
+        "close",
+        "back",
+        "next",
+        "retry",
+        "apply",
+        "clear",
+        "filter",
+        "search",
+        "login",
+        "logout",
+        "password",
+        "email",
+        "username",
+        "dashboard",
+        "settings",
+        "profile",
+        "please",
+        "enter",
+        "valid",
+        "required",
+        "invalid",
+        "already",
+        "exists",
+    ];
+
+    let lower_target = target_text.to_lowercase();
+
+    // Count how many English indicator words are in the target text
+    let english_word_count = english_indicators
+        .iter()
+        .filter(|&&word| {
+            // Check for whole word matches (not substrings)
+            lower_target
+                .split(|c: char| !c.is_alphanumeric())
+                .any(|w| w == word)
+        })
+        .count();
+
+    // If multiple English words found, likely untranslated
+    english_word_count >= 2
 }
 
 /// Get translation value from nested path (e.g., "app.title" or "auth.login")

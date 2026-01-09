@@ -1,59 +1,89 @@
 {
-  "title": "PR Dashboard",
-  "subtitle": "Manage your pull requests across all providers",
+  "actions": {
+    "approve": "Aprobar",
+    "comment": "Comentario",
+    "deselectAll": "Deseleccionar todo",
+    "merge": "Unir",
+    "refresh": "Refrescar",
+    "requestChanges": "Solicitar cambios",
+    "selectAll": "Seleccionar todo",
+    "viewOnProvider": "Ver en {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "En espera de revisión",
+    "changesRequested": "Cambios solicitados",
+    "ciFailed": "CI falló",
+    "ciPending": "CI pendiente",
+    "conflicts": "Conflictos",
+    "draft": "Borrador",
+    "needsReview": "Necesita revisión"
+  },
   "empty": {
-    "title": "No pull requests found",
-    "description": "Connect your Git providers to start tracking PRs",
-    "action": "Connect Provider"
+    "action": "Proveedor de conexión",
+    "description": "Conecte sus proveedores de Git para comenzar a rastrear solicitudes de registro",
+    "title": "No se encontraron solicitudes de extracción"
   },
   "filters": {
-    "all": "All",
-    "open": "Open",
-    "closed": "Closed",
-    "merged": "Merged",
-    "draft": "Draft",
-    "provider": "Provider",
-    "repository": "Repository",
-    "author": "Author",
-    "assignee": "Assignee",
-    "label": "Label"
+    "all": "Todo",
+    "assignee": "Cesionario",
+    "author": "Autor",
+    "closed": "Cerrado",
+    "draft": "Borrador",
+    "label": "Etiqueta",
+    "merged": "Fusionado",
+    "onlyWithPrs": "Mostrar repositorios con Open PR",
+    "open": "Abierto",
+    "provider": "Proveedor",
+    "repository": "Repositorio"
   },
-  "status": {
-    "green": "Ready to merge",
-    "yellow": "In progress",
-    "red": "Blocked",
-    "draft": "Draft",
-    "merged": "Merged",
-    "closed": "Closed"
+  "pr": {
+    "additions": "Adiciones",
+    "author": "Autor",
+    "comments": "Comentarios",
+    "createdAt": "Creado",
+    "deletions": "Eliminaciones",
+    "number": "#{{número}}",
+    "sourceBranch": "Rama de origen",
+    "targetBranch": "Rama de destino",
+    "updatedAt": "Actualizado"
   },
-  "actions": {
-    "merge": "Merge",
-    "approve": "Approve",
-    "requestChanges": "Request Changes",
-    "comment": "Comment",
-    "viewOnProvider": "View on {{provider}}",
-    "refresh": "Refresh",
-    "selectAll": "Select All",
-    "deselectAll": "Deselect All"
+  "prDashboard": "Panel de relaciones públicas",
+  "sort": {
+    "author": "Autor",
+    "created": "Fecha de creación",
+    "repository": "Repositorio",
+    "status": "Estado",
+    "title": "Ordenar por",
+    "updated": "Última actualización"
   },
   "stats": {
-    "total": "Total PRs",
-    "open": "Open",
-    "ready": "Ready to merge",
-    "inProgress": "In progress",
-    "blocked": "Blocked"
+    "blocked": "Obstruido",
+    "inProgress": "En curso",
+    "needsAttention": "Necesita atención",
+    "open": "Abierto",
+    "openPRs": "Relaciones públicas abiertas",
+    "ready": "Listo para fusionarse",
+    "readyToMerge": "Listo para fusionarse",
+    "total": "PR totales",
+    "totalRepositories": "Repositorios totales"
   },
+  "status": {
+    "closed": "Cerrado",
+    "draft": "Borrador",
+    "green": "Listo para fusionarse",
+    "merged": "Fusionado",
+    "red": "Obstruido",
+    "yellow": "En curso"
+  },
+  "subtitle": "Gestione sus solicitudes de extracción en todos los proveedores",
+  "title": "Panel",
   "views": {
-    "grid": "Grid view",
-    "list": "List view",
-    "table": "Table view"
-  },
-  "sort": {
-    "title": "Sort by",
-    "updated": "Last updated",
-    "created": "Created date",
-    "author": "Author",
-    "status": "Status",
-    "repository": "Repository"
+    "grid": "Vista de cuadrícula",
+    "list": "Vista de lista",
+    "prs": "Vista de solicitudes de extracción",
+    "pullRequests": "Vista de solicitudes de extracción",
+    "repositoryGrid": "Vista de cuadrícula del repositorio",
+    "repositoryList": "Vista de lista de repositorios",
+    "table": "Vista de tabla"
   }
 }

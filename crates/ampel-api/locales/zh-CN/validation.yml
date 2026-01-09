@@ -1,0 +1,8 @@
+en:
+  validation:
+    account:
+      invalid: 无效的
+      valid: 有效的
+    general:
+      invalid_format: 格式无效
+      required: 此字段是必需的

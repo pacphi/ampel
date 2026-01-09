@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Provider API-fout: %{message} (status: %{status_code})'
+      auth_failed: 'Authenticatie mislukt: %{reason}'
+      config_error: 'Configuratiefout: %{reason}'
+      invalid_response: 'Ongeldig antwoord: %{reason}'
+      network_error: 'Netwerkfout: %{reason}'
+      not_found: 'Bron niet gevonden: %{resource}'
+      not_supported: 'Niet-ondersteunde bewerking: %{bewerking}'
+      permission_denied: 'Toegang geweigerd: %{reason}'
+      rate_limit_exceeded: 'Limiet voor het aantal aanvragen overschreden. Wordt gereset op: %{reset_time}'
+      serialization_error: 'Serialisatiefout: %{reason}'
+    github:
+      api_error: 'API-fout: %{status}'
+      invalid_token: Ongeldig token
+      merge_checks_failed: Pull request kan niet worden samengevoegd (controleer de status en beoordelingen).
+      merge_conflict: Er is een samenvoegingsconflict opgetreden of de hoofdbranch is gewijzigd.
+      merge_failed: Het samenvoegen van de pull-aanvraag is mislukt.
+      merge_not_mergeable: De pull request kan niet worden samengevoegd.
+      pr_fetch_failed: Het ophalen van de pull request is mislukt.
+      pr_not_found: 'Pull-verzoek #%{nummer} niet gevonden'
+      prs_fetch_failed: Het lukte niet om pull requests weer te geven.
+      rate_limit_failed: Het is niet gelukt om de snelheidslimiet te verkrijgen.
+      repo_fetch_failed: Het ophalen van de repository is mislukt.
+      repo_not_found: Repository %{owner}/%{repo} niet gevonden
+      repos_fetch_failed: Het lukte niet om de repositories weer te geven.
+      reviews_fetch_failed: Recensies ontvangen mislukt
+      token_invalid: Ongeldig of verlopen token
+      user_fetch_failed: Gebruiker ophalen mislukt
+    worker:
+      account_not_found: Aanbiedersaccount niet gevonden
+      no_account: De repository heeft geen bijbehorend provideraccount.

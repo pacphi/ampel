@@ -1,1 +1,120 @@
-{}
+{
+  "actions": {
+    "add": "新增",
+    "apply": "應用",
+    "cancel": "取消",
+    "clear": "清除",
+    "delete": "刪除",
+    "edit": "編輯",
+    "hideEmail": "隱藏電子郵件",
+    "refresh": "刷新",
+    "refreshing": "正在刷新...",
+    "remove": "移除",
+    "reset": "重設為預設值",
+    "save": "保存",
+    "saving": "正在儲存...",
+    "showEmail": "顯示電子郵件",
+    "viewOnProvider": "在 {{provider}} 上查看"
+  },
+  "app": {
+    "add": "添加",
+    "apply": "應用",
+    "back": "返回",
+    "cancel": "取消",
+    "clear": "清除",
+    "close": "關閉",
+    "delete": "刪除",
+    "description": "統一拉取請求管理",
+    "edit": "編輯",
+    "error": "發生錯誤",
+    "filter": "篩選",
+    "info": "資訊",
+    "loading": "加載中...",
+    "name": "安培",
+    "next": "下一個",
+    "previous": "上一個",
+    "remove": "移除",
+    "reset": "重置",
+    "retry": "重試",
+    "save": "儲存",
+    "search": "搜索",
+    "success": "成功",
+    "title": "Ampel PR 儀表板",
+    "warning": "警告"
+  },
+  "auth": {
+    "alreadyHaveAccount": "已經有帳戶了嗎？",
+    "confirmPassword": "確認密碼",
+    "createAccount": "創建帳戶",
+    "creatingAccount": "正在創建帳戶...",
+    "displayName": "顯示名稱",
+    "dontHaveAccount": "還沒有帳號？",
+    "email": "電子郵件",
+    "forgotPassword": "忘記密碼？",
+    "getStarted": "開始使用 Ampel",
+    "login": "登入",
+    "loginSuccess": "登入成功",
+    "logout": "登出",
+    "logoutSuccess": "登出成功",
+    "password": "密碼",
+    "resetPassword": "重設密碼",
+    "signIn": "登入",
+    "signInToContinue": "繼續登入您的帳戶",
+    "signUp": "註冊",
+    "signingIn": "正在登入...",
+    "username": "用戶名",
+    "welcome": "歡迎回來！",
+    "welcomeToAmpel": "歡迎來到 Ampel"
+  },
+  "language": {
+    "current": "當前語言",
+    "select": "選擇語言"
+  },
+  "navigation": {
+    "analytics": "分析",
+    "dashboard": "儀表板",
+    "documentation": "文件",
+    "help": "幫助",
+    "merge": "合併",
+    "organizations": "組織",
+    "profile": "個人資料",
+    "pullRequests": "拉取請求",
+    "repositories": "倉庫",
+    "settings": "設定"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} 條評論",
+    "comments_other": "{{count}} 條評論",
+    "pullRequests_one": "{{count}} 個拉取請求",
+    "pullRequests_other": "{{count}} 個拉取請求",
+    "requests_one": "{{count}} 個請求",
+    "requests_other": "{{count}} 個請求"
+  },
+  "status": {
+    "trafficLight": "交通燈狀態"
+  },
+  "theme": {
+    "auto": "自動",
+    "dark": "深色模式",
+    "light": "淺色模式",
+    "toggle": "切換主題"
+  },
+  "time": {
+    "daysAgo": "{{count}} 天前",
+    "daysAgo_other": "{{count}} 天前",
+    "hoursAgo": "{{count}} 小時前",
+    "hoursAgo_other": "{{count}} 小時前",
+    "minutesAgo": "{{count}} 分鐘前",
+    "minutesAgo_other": "{{count}} 分鐘前",
+    "monthsAgo": "{{count}} 個月前",
+    "monthsAgo_other": "{{count}} 個月前",
+    "now": "剛剛",
+    "weeksAgo": "{{count}} 週前",
+    "weeksAgo_other": "{{count}} 週前"
+  },
+  "visibility": {
+    "archived": "已存檔",
+    "private": "私人的",
+    "public": "公開"
+  }
+}

@@ -1,1 +1,89 @@
-{}
+{
+  "actions": {
+    "approve": "Godkende",
+    "comment": "Kommentar",
+    "deselectAll": "Fravælg alle",
+    "merge": "Flet",
+    "refresh": "Opfriske",
+    "requestChanges": "Anmod om ændringer",
+    "selectAll": "Vælg alle",
+    "viewOnProvider": "Vis på {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Venter på gennemgang",
+    "changesRequested": "Ønskede ændringer",
+    "ciFailed": "CI mislykkedes",
+    "ciPending": "CI afventer",
+    "conflicts": "Konflikter",
+    "draft": "Udkast",
+    "needsReview": "Skal gennemgås"
+  },
+  "empty": {
+    "action": "Connect-udbyder",
+    "description": "Forbind dine Git-udbydere for at begynde at spore PR'er",
+    "title": "Ingen pull requests fundet"
+  },
+  "filters": {
+    "all": "Alle",
+    "assignee": "Tildeler",
+    "author": "Forfatter",
+    "closed": "Lukket",
+    "draft": "Udkast",
+    "label": "Mærke",
+    "merged": "Sammenflettet",
+    "onlyWithPrs": "Vis arkiver med åbne PR'er",
+    "open": "Åben",
+    "provider": "Udbyder",
+    "repository": "Arkiv"
+  },
+  "pr": {
+    "additions": "Tilføjelser",
+    "author": "Forfatter",
+    "comments": "Kommentarer",
+    "createdAt": "Oprettet",
+    "deletions": "Sletninger",
+    "number": "#{{antal}}",
+    "sourceBranch": "Kildegren",
+    "targetBranch": "Målgren",
+    "updatedAt": "Opdateret"
+  },
+  "prDashboard": "PR-dashboard",
+  "sort": {
+    "author": "Forfatter",
+    "created": "Oprettelsesdato",
+    "repository": "Arkiv",
+    "status": "Status",
+    "title": "Sortér efter",
+    "updated": "Sidst opdateret"
+  },
+  "stats": {
+    "blocked": "Blokeret",
+    "inProgress": "I gang",
+    "needsAttention": "Kræver opmærksomhed",
+    "open": "Åben",
+    "openPRs": "Åbne PR'er",
+    "ready": "Klar til at fusionere",
+    "readyToMerge": "Klar til at fusionere",
+    "total": "Samlede PR'er",
+    "totalRepositories": "Samlede arkiver"
+  },
+  "status": {
+    "closed": "Lukket",
+    "draft": "Udkast",
+    "green": "Klar til at fusionere",
+    "merged": "Sammenflettet",
+    "red": "Blokeret",
+    "yellow": "I gang"
+  },
+  "subtitle": "Administrer dine pull requests på tværs af alle udbydere",
+  "title": "Dashboard",
+  "views": {
+    "grid": "Gittervisning",
+    "list": "Listevisning",
+    "prs": "Visning af pull-anmodninger",
+    "pullRequests": "Visning af pull-anmodninger",
+    "repositoryGrid": "Gittervisning af arkivet",
+    "repositoryList": "Visning af arkivliste",
+    "table": "Tabelvisning"
+  }
+}

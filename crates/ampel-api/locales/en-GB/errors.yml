@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: This account is already connected. Use PATCH to update the token.
+      invalid_provider_type: Invalid provider type
+      invalid_token: Invalid token
+      not_found: Account not found
+      provider_no_user_id: Provider did not return user ID
+      provider_no_username: Provider did not return username
+      validation_failed: 'Token validation failed: %{error}'
+    auth:
+      email_in_use: Email already in use
+      email_registered: Email already registered
+      invalid_credentials: Invalid email or password
+      invalid_refresh_token: Invalid or expired refresh token
+      user_not_found: User not found
+    encryption:
+      decrypt_failed: 'Decryption error: %{error}'
+      failed: 'Encryption error: %{error}'
+    general:
+      internal: Internal error
+      serialization_failed: 'Failed to serialize scopes: %{error}'
+    network:
+      connection_failed: Connection failed
+      timeout: Request timed out
+    provider:
+      decrypt_failed: 'Failed to decrypt token: %{error}'
+      error: 'Provider error: %{error}'
+    pull_request:
+      merge_failed: 'Merge failed: %{reason}'
+      not_found: Pull request not found
+    rate_limit:
+      exceeded: Rate limit exceeded
+    repository:
+      already_added: Repository already added
+      invalid_provider: Invalid provider
+      invalid_provider_db: Invalid provider type in database
+      no_account_linked: Repository not linked to account
+      not_found: Repository not found
+      not_found_for_pr: Repository not found for PR
+      provider_not_connected: Provider not connected

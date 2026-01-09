@@ -1,1 +1,89 @@
-{}
+{
+  "actions": {
+    "approve": "Approvare",
+    "comment": "Commento",
+    "deselectAll": "Deseleziona tutto",
+    "merge": "Unisci",
+    "refresh": "Aggiorna",
+    "requestChanges": "Richiedi modifiche",
+    "selectAll": "Seleziona tutto",
+    "viewOnProvider": "Visualizza su {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "In attesa di revisione",
+    "changesRequested": "Modifiche richieste",
+    "ciFailed": "CI fallito",
+    "ciPending": "CI in attesa",
+    "conflicts": "Conflitti",
+    "draft": "Bozza",
+    "needsReview": "Necessita di revisione"
+  },
+  "empty": {
+    "action": "Connetti il fornitore",
+    "description": "Collega i tuoi provider Git per iniziare a monitorare i PR",
+    "title": "Nessuna richiesta di pull trovata"
+  },
+  "filters": {
+    "all": "Tutto",
+    "assignee": "Cessionario",
+    "author": "Autore",
+    "closed": "Chiuso",
+    "draft": "Bozza",
+    "label": "Etichetta",
+    "merged": "Unito",
+    "onlyWithPrs": "Mostra repository con Open PR",
+    "open": "Aprire",
+    "provider": "Fornitore",
+    "repository": "Deposito"
+  },
+  "pr": {
+    "additions": "Aggiunte",
+    "author": "Autore",
+    "comments": "Commenti",
+    "createdAt": "Creato",
+    "deletions": "Eliminazioni",
+    "number": "#{{numero}}",
+    "sourceBranch": "Ramo di origine",
+    "targetBranch": "Ramo di destinazione",
+    "updatedAt": "Aggiornato"
+  },
+  "prDashboard": "Pannello di controllo delle relazioni pubbliche",
+  "sort": {
+    "author": "Autore",
+    "created": "Data di creazione",
+    "repository": "Deposito",
+    "status": "Stato",
+    "title": "Ordina per",
+    "updated": "Ultimo aggiornamento"
+  },
+  "stats": {
+    "blocked": "Bloccato",
+    "inProgress": "In corso",
+    "needsAttention": "Richiede attenzione",
+    "open": "Aprire",
+    "openPRs": "PR aperti",
+    "ready": "Pronti per la fusione",
+    "readyToMerge": "Pronti per la fusione",
+    "total": "PR totali",
+    "totalRepositories": "Totale repository"
+  },
+  "status": {
+    "closed": "Chiuso",
+    "draft": "Bozza",
+    "green": "Pronti per la fusione",
+    "merged": "Unito",
+    "red": "Bloccato",
+    "yellow": "In corso"
+  },
+  "subtitle": "Gestisci le tue richieste pull su tutti i provider",
+  "title": "Pannello di controllo",
+  "views": {
+    "grid": "Visualizzazione griglia",
+    "list": "Visualizzazione elenco",
+    "prs": "Visualizzazione delle richieste di pull",
+    "pullRequests": "Visualizzazione delle richieste di pull",
+    "repositoryGrid": "Visualizzazione griglia del repository",
+    "repositoryList": "Visualizzazione elenco repository",
+    "table": "Vista tabella"
+  }
+}

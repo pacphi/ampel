@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Provider API error: %{message} (status: %{status_code})'
+      auth_failed: 'Authentication failed: %{reason}'
+      config_error: 'Configuration error: %{reason}'
+      invalid_response: 'Invalid response: %{reason}'
+      network_error: 'Network error: %{reason}'
+      not_found: 'Resource not found: %{resource}'
+      not_supported: 'Operation not supported: %{operation}'
+      permission_denied: 'Permission denied: %{reason}'
+      rate_limit_exceeded: 'Rate limit exceeded. Resets at: %{reset_time}'
+      serialization_error: 'Serialization error: %{reason}'
+    github:
+      api_error: 'API error: %{status}'
+      invalid_token: Invalid token
+      merge_checks_failed: Pull request cannot be merged (check status checks and reviews)
+      merge_conflict: Merge conflict or head branch was modified
+      merge_failed: Failed to merge pull request
+      merge_not_mergeable: Pull request is not mergeable
+      pr_fetch_failed: Failed to get pull request
+      pr_not_found: 'Pull request #%{number} not found'
+      prs_fetch_failed: Failed to list pull requests
+      rate_limit_failed: Failed to get rate limit
+      repo_fetch_failed: Failed to get repository
+      repo_not_found: Repository %{owner}/%{repo} not found
+      repos_fetch_failed: Failed to list repositories
+      reviews_fetch_failed: Failed to get reviews
+      token_invalid: Invalid or expired token
+      user_fetch_failed: Failed to get user
+    worker:
+      account_not_found: Provider account not found
+      no_account: Repository has no associated provider account

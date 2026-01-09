@@ -43,6 +43,8 @@ pub async fn execute(args: SyncArgs) -> Result<()> {
             max_retries: None,
             disabled_providers: vec![],
             no_fallback: true, // Sync uses explicit provider, no fallback
+            force: false,
+            detect_untranslated: false,
         };
 
         crate::cli::translate::execute(translate_args).await?;
@@ -53,10 +55,7 @@ pub async fn execute(args: SyncArgs) -> Result<()> {
     Ok(())
 }
 
-fn discover_languages(
-    translation_dir: &std::path::PathBuf,
-    exclude: &str,
-) -> Result<Vec<String>> {
+fn discover_languages(translation_dir: &std::path::PathBuf, exclude: &str) -> Result<Vec<String>> {
     let mut languages = Vec::new();
 
     if !translation_dir.exists() {

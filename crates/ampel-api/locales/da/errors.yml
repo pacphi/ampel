@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: Denne konto er allerede forbundet. Brug PATCH til at opdatere tokenet.
+      invalid_provider_type: Ugyldig udbydertype
+      invalid_token: Ugyldig token
+      not_found: Kontoen blev ikke fundet
+      provider_no_user_id: Udbyderen returnerede ikke bruger-ID'et
+      provider_no_username: Udbyderen returnerede ikke brugernavnet
+      validation_failed: 'Tokenvalidering mislykkedes: %{error}'
+    auth:
+      email_in_use: E-mail allerede i brug
+      email_registered: E-mailadressen er allerede registreret
+      invalid_credentials: Ugyldig e-mail eller adgangskode
+      invalid_refresh_token: Ugyldig eller udløbet opdateringstoken
+      user_not_found: Bruger ikke fundet
+    encryption:
+      decrypt_failed: 'Dekrypteringsfejl: %{error}'
+      failed: 'Krypteringsfejl: %{error}'
+    general:
+      internal: Intern fejl
+      serialization_failed: 'Kunne ikke serialisere scopes: %{error}'
+    network:
+      connection_failed: Forbindelsen mislykkedes
+      timeout: Anmodningen udløb
+    provider:
+      decrypt_failed: 'Kunne ikke dekryptere token: %{error}'
+      error: 'Udbyderfejl: %{error}'
+    pull_request:
+      merge_failed: 'Fletning mislykkedes: %{reason}'
+      not_found: Pull-anmodning ikke fundet
+    rate_limit:
+      exceeded: Hastighedsgrænse overskredet
+    repository:
+      already_added: Arkivet er allerede tilføjet
+      invalid_provider: Ugyldig udbyder
+      invalid_provider_db: Ugyldig udbydertype i databasen
+      no_account_linked: Lager er ikke knyttet til konto
+      not_found: Arkivet blev ikke fundet
+      not_found_for_pr: Lagersted ikke fundet for PR
+      provider_not_connected: Udbyderen er ikke forbundet

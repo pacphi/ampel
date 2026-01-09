@@ -35,14 +35,13 @@ fn test_cli_loads_dotenv_file() {
 
     // Run CLI with --help to verify it starts (and loads .env)
     // The --help command won't actually use the API keys, but it will load .env
-    let cli_output = Command::new(
-        "/alt/home/developer/workspace/projects/ampel/target/debug/cargo-i18n",
-    )
-    .arg("--help")
-    .current_dir(temp_dir.path())
-    .env("RUST_LOG", "debug")
-    .output()
-    .expect("Failed to run CLI");
+    let cli_output =
+        Command::new("/alt/home/developer/workspace/projects/ampel/target/debug/cargo-i18n")
+            .arg("--help")
+            .current_dir(temp_dir.path())
+            .env("RUST_LOG", "debug")
+            .output()
+            .expect("Failed to run CLI");
 
     // CLI should run successfully
     assert!(
@@ -65,13 +64,12 @@ fn test_cli_works_without_dotenv() {
     let temp_dir = TempDir::new().expect("Failed to create temp dir");
 
     // Run CLI with --help (should work even without .env)
-    let cli_output = Command::new(
-        "/alt/home/developer/workspace/projects/ampel/target/debug/cargo-i18n",
-    )
-    .arg("--help")
-    .current_dir(temp_dir.path())
-    .output()
-    .expect("Failed to run CLI");
+    let cli_output =
+        Command::new("/alt/home/developer/workspace/projects/ampel/target/debug/cargo-i18n")
+            .arg("--help")
+            .current_dir(temp_dir.path())
+            .output()
+            .expect("Failed to run CLI");
 
     // CLI should still work without .env file
     assert!(
@@ -91,14 +89,13 @@ fn test_system_env_overrides_dotenv_in_cli() {
     fs::write(&env_file, "DEEPL_API_KEY=from_dotenv_file\n").expect("Failed to write .env");
 
     // Run CLI with system env var that should override .env
-    let cli_output = Command::new(
-        "/alt/home/developer/workspace/projects/ampel/target/debug/cargo-i18n",
-    )
-    .arg("--help")
-    .current_dir(temp_dir.path())
-    .env("DEEPL_API_KEY", "from_system_env") // Should override .env
-    .output()
-    .expect("Failed to run CLI");
+    let cli_output =
+        Command::new("/alt/home/developer/workspace/projects/ampel/target/debug/cargo-i18n")
+            .arg("--help")
+            .current_dir(temp_dir.path())
+            .env("DEEPL_API_KEY", "from_system_env") // Should override .env
+            .output()
+            .expect("Failed to run CLI");
 
     // CLI should run successfully
     assert!(

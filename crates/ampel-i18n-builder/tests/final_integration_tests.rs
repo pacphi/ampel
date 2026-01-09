@@ -444,7 +444,11 @@ async fn test_provider_tier_ordering() {
     let router_result = FallbackTranslationRouter::new(&config);
 
     // Router should initialize successfully with all providers
-    assert!(router_result.is_ok(), "Router should initialize: {:?}", router_result.err());
+    assert!(
+        router_result.is_ok(),
+        "Router should initialize: {:?}",
+        router_result.err()
+    );
 
     // Note: Individual provider tier validation is tested in unit tests
     // This integration test verifies the router can initialize with all keys

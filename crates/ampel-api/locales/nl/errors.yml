@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: Dit account is al verbonden. Gebruik PATCH om het token bij te werken.
+      invalid_provider_type: Ongeldig providertype
+      invalid_token: Ongeldig token
+      not_found: Account niet gevonden
+      provider_no_user_id: De provider heeft geen gebruikers-ID geretourneerd.
+      provider_no_username: De provider heeft geen gebruikersnaam geretourneerd.
+      validation_failed: 'Tokenvalidatie mislukt: %{error}'
+    auth:
+      email_in_use: E-mailadres is al in gebruik.
+      email_registered: E-mailadres is al geregistreerd
+      invalid_credentials: Ongeldig e-mailadres of wachtwoord
+      invalid_refresh_token: Ongeldig of verlopen vernieuwingstoken
+      user_not_found: Gebruiker niet gevonden
+    encryption:
+      decrypt_failed: 'Ontsleutelingsfout: %{error}'
+      failed: 'Versleutelingsfout: %{error}'
+    general:
+      internal: Interne fout
+      serialization_failed: 'Het serialiseren van scopes is mislukt: %{error}'
+    network:
+      connection_failed: Verbinding mislukt
+      timeout: Verzoek is verlopen.
+    provider:
+      decrypt_failed: 'Het decoderen van het token is mislukt: %{error}'
+      error: 'Providerfout: %{error}'
+    pull_request:
+      merge_failed: 'Samenvoeging mislukt: %{reason}'
+      not_found: Pull-verzoek niet gevonden
+    rate_limit:
+      exceeded: Snelheidslimiet overschreden
+    repository:
+      already_added: Repository is reeds toegevoegd
+      invalid_provider: Ongeldige provider
+      invalid_provider_db: Ongeldig providertype in de database.
+      no_account_linked: Repository niet gekoppeld aan account
+      not_found: Repository niet gevonden
+      not_found_for_pr: Repository niet gevonden voor PR
+      provider_not_connected: Aanbieder niet verbonden

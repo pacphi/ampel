@@ -1,48 +1,48 @@
 {
   "actions": {
-    "approve": "Schválit",
+    "approve": "Schvalovat",
     "comment": "Komentář",
-    "deselectAll": "Zrušit výběr všech",
-    "merge": "Sloučit",
+    "deselectAll": "Zrušit výběr všeho",
+    "merge": "Spojit",
     "refresh": "Obnovit",
-    "requestChanges": "Požádat o změny",
+    "requestChanges": "Žádost o změny",
     "selectAll": "Vybrat vše",
     "viewOnProvider": "Zobrazit na {{provider}}"
   },
   "blockers": {
-    "awaitingReview": "Čeká na recenzi",
-    "changesRequested": "Požadovány změny",
-    "ciFailed": "CI selhalo",
-    "ciPending": "CI čeká",
+    "awaitingReview": "Čeká na kontrolu",
+    "changesRequested": "Požadované změny",
+    "ciFailed": "CI selhala",
+    "ciPending": "CI čeká na vyřízení",
     "conflicts": "Konflikty",
     "draft": "Návrh",
-    "needsReview": "Potřebuje recenzi"
+    "needsReview": "Vyžaduje kontrolu"
   },
   "empty": {
-    "action": "Připojit poskytovatele",
-    "description": "Připojte své poskytovatele Git, abyste mohli sledovat PR",
-    "title": "Nebyly nalezeny žádné požadavky na tahání"
+    "action": "Připojení poskytovatele",
+    "description": "Propojte své poskytovatele Gitu a začněte sledovat PR.",
+    "title": "Nenalezeny žádné pull requesty"
   },
   "filters": {
     "all": "Vše",
-    "assignee": "Přiřazený",
+    "assignee": "Nabyvatel",
     "author": "Autor",
-    "closed": "Zavřeno",
+    "closed": "ZAVŘENO",
     "draft": "Návrh",
-    "label": "Štítek",
+    "label": "Označení",
     "merged": "Sloučeno",
     "onlyWithPrs": "Zobrazit repozitáře s otevřenými PR",
-    "open": "Otevřeno",
+    "open": "OTEVŘENO",
     "provider": "Poskytovatel",
-    "repository": "Repozitář"
+    "repository": "Úložiště"
   },
   "pr": {
-    "additions": "Přidání",
+    "additions": "Dodatky",
     "author": "Autor",
     "comments": "Komentáře",
     "createdAt": "Vytvořeno",
-    "deletions": "Odstranění",
-    "number": "#{{number}}",
+    "deletions": "Smazání",
+    "number": "#{{číslo}}",
     "sourceBranch": "Zdrojová větev",
     "targetBranch": "Cílová větev",
     "updatedAt": "Aktualizováno"
@@ -51,39 +51,39 @@
   "sort": {
     "author": "Autor",
     "created": "Datum vytvoření",
-    "repository": "Repozitář",
-    "status": "Stav",
+    "repository": "Úložiště",
+    "status": "Postavení",
     "title": "Seřadit podle",
     "updated": "Naposledy aktualizováno"
   },
   "stats": {
-    "blocked": "Blokované",
-    "inProgress": "V průběhu",
-    "needsAttention": "Potřebuje pozornost",
-    "open": "Otevřené",
+    "blocked": "Zablokováno",
+    "inProgress": "Probíhá",
+    "needsAttention": "Vyžaduje pozornost",
+    "open": "OTEVŘENO",
     "openPRs": "Otevřené PR",
     "ready": "Připraveno ke sloučení",
     "readyToMerge": "Připraveno ke sloučení",
-    "total": "Celkem PR",
-    "totalRepositories": "Celkem repozitářů"
+    "total": "Celkový počet PR",
+    "totalRepositories": "Celkový počet repozitářů"
   },
   "status": {
-    "closed": "Zavřeno",
+    "closed": "ZAVŘENO",
     "draft": "Návrh",
     "green": "Připraveno ke sloučení",
     "merged": "Sloučeno",
-    "red": "Blokované",
-    "yellow": "V průběhu"
+    "red": "Zablokováno",
+    "yellow": "Probíhá"
   },
-  "subtitle": "Spravujte své požadavky na tahání napříč všemi poskytovateli",
+  "subtitle": "Spravujte své pull requesty napříč všemi poskytovateli",
   "title": "Dashboard",
   "views": {
     "grid": "Zobrazení mřížky",
-    "list": "Seznamové zobrazení",
-    "prs": "Zobrazení požadavků na tahání",
-    "pullRequests": "Zobrazení požadavků na tahání",
-    "repositoryGrid": "Zobrazení repozitářů v mřížce",
-    "repositoryList": "Seznamové zobrazení repozitářů",
-    "table": "Tabulkové zobrazení"
+    "list": "Seznam",
+    "prs": "Zobrazení žádostí o načtení",
+    "pullRequests": "Zobrazení žádostí o načtení",
+    "repositoryGrid": "Zobrazení mřížky úložiště",
+    "repositoryList": "Seznam úložiště",
+    "table": "Zobrazení tabulky"
   }
 }

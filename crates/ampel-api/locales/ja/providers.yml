@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'プロバイダー API エラー: %{message} (ステータス: %{status_code})'
+      auth_failed: '認証に失敗しました: %{reason}'
+      config_error: '設定エラー: %{reason}'
+      invalid_response: '無効な応答: %{reason}'
+      network_error: 'ネットワーク エラー: %{reason}'
+      not_found: 'リソースが見つかりません: %{resource}'
+      not_supported: 'サポートされていない操作: %{operation}'
+      permission_denied: '権限が拒否されました: %{reason}'
+      rate_limit_exceeded: 'レート制限を超えました。リセット時刻: %{reset_time}'
+      serialization_error: 'シリアル化エラー: %{reason}'
+    github:
+      api_error: 'API エラー: %{status}'
+      invalid_token: 無効なトークン
+      merge_checks_failed: プルリクエストをマージできません（ステータスチェックとレビューを確認してください）
+      merge_conflict: マージの競合またはヘッドブランチが変更されました
+      merge_failed: プルリクエストのマージに失敗しました
+      merge_not_mergeable: プルリクエストはマージできません
+      pr_fetch_failed: プルリクエストを取得できませんでした
+      pr_not_found: 'プルリクエスト #%{number} が見つかりません'
+      prs_fetch_failed: プルリクエストのリスト表示に失敗しました
+      rate_limit_failed: レート制限を取得できませんでした
+      repo_fetch_failed: リポジトリの取得に失敗しました
+      repo_not_found: リポジトリ %{owner}/%{repo} が見つかりません
+      repos_fetch_failed: リポジトリの一覧表示に失敗しました
+      reviews_fetch_failed: レビューを取得できませんでした
+      token_invalid: 無効または期限切れのトークン
+      user_fetch_failed: ユーザーの取得に失敗しました
+    worker:
+      account_not_found: プロバイダーアカウントが見つかりません
+      no_account: リポジトリには関連付けられたプロバイダー アカウントがありません

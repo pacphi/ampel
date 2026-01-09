@@ -1,54 +1,54 @@
 {
   "auth": {
-    "failedToCreateAccount": "Falha ao criar conta",
-    "forbidden": "You don't have permission to access this resource",
-    "invalidCredentials": "Invalid username or password",
-    "invalidEmailOrPassword": "Email ou senha inválidos",
-    "loginFailed": "Falha no login",
+    "failedToCreateAccount": "Falha ao criar a conta",
+    "forbidden": "Você não tem permissão para acessar este recurso.",
+    "invalidCredentials": "Nome de usuário ou senha inválidos",
+    "invalidEmailOrPassword": "E-mail ou senha inválidos",
+    "loginFailed": "falha no login",
     "registrationFailed": "Falha no registro",
-    "sessionExpired": "Your session has expired. Please log in again.",
-    "tokenExpired": "Authentication token has expired",
-    "unauthorized": "Unauthorized access"
+    "sessionExpired": "Sua sessão expirou. Por favor, faça login novamente.",
+    "tokenExpired": "O token de autenticação expirou.",
+    "unauthorized": "Acesso não autorizado"
   },
   "generic": {
-    "goHome": "Go to dashboard",
-    "message": "An unexpected error occurred. Please try again.",
-    "retry": "Try again",
-    "title": "Something went wrong"
+    "goHome": "Acesse o painel de controle.",
+    "message": "Ocorreu um erro inesperado. Tente novamente.",
+    "retry": "Tente novamente",
+    "title": "Algo deu errado"
   },
   "network": {
-    "message": "Unable to connect to the server. Please check your internet connection.",
-    "offline": "You are currently offline",
-    "title": "Network error"
+    "message": "Não foi possível conectar ao servidor. Verifique sua conexão com a internet.",
+    "offline": "Você está offline no momento.",
+    "title": "Erro de rede"
   },
   "notFound": {
-    "goHome": "Return to dashboard",
-    "message": "The page you are looking for does not exist.",
-    "title": "Page not found"
+    "goHome": "Voltar ao painel de controle",
+    "message": "A página que você está procurando não existe.",
+    "title": "Página não encontrada"
   },
   "pr": {
-    "approveFailed": "Failed to approve pull request",
-    "commentFailed": "Failed to post comment",
-    "loadFailed": "Failed to load pull requests",
-    "mergeFailed": "Failed to merge pull request"
+    "approveFailed": "Falha ao aprovar a solicitação de pull request",
+    "commentFailed": "Não foi possível publicar o comentário.",
+    "loadFailed": "Falha ao carregar as solicitações de pull",
+    "mergeFailed": "Falha ao mesclar a solicitação de pull request"
   },
   "provider": {
-    "connectionFailed": "Failed to connect to {{provider}}",
-    "invalidToken": "Invalid {{provider}} token",
-    "notFound": "Resource not found on {{provider}}",
-    "rateLimited": "{{provider}} API rate limit exceeded"
+    "connectionFailed": "Falha ao conectar-se a {{provider}}",
+    "invalidToken": "Token {{provider}} inválido",
+    "notFound": "Recurso não encontrado em {{provider}}",
+    "rateLimited": "O limite de requisições da API do provedor foi excedido."
   },
   "repository": {
-    "accessDenied": "Access to repository denied",
-    "loadFailed": "Failed to load repositories",
-    "notFound": "Repository not found"
+    "accessDenied": "Acesso ao repositório negado",
+    "loadFailed": "Falha ao carregar os repositórios.",
+    "notFound": "Repositório não encontrado"
   },
   "validation": {
-    "invalidEmail": "Please enter a valid email address",
-    "invalidUrl": "Please enter a valid URL",
-    "maxLength": "Must not exceed {{max}} characters",
-    "minLength": "Must be at least {{min}} characters",
-    "passwordMismatch": "Passwords do not match",
-    "required": "This field is required"
+    "invalidEmail": "Por favor, insira um endereço de e-mail válido.",
+    "invalidUrl": "Por favor, insira um URL válido.",
+    "maxLength": "Não deve exceder {{max}} caracteres",
+    "minLength": "Deve ter pelo menos {{min}} caracteres",
+    "passwordMismatch": "As senhas não coincidem.",
+    "required": "Este campo é obrigatório"
   }
 }

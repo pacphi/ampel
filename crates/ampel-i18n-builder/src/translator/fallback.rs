@@ -83,7 +83,8 @@ impl FallbackTranslationRouter {
             .or_else(|| std::env::var("SYSTRAN_API_KEY").ok())
         {
             if config.translation.providers.systran.enabled {
-                let timeout = Duration::from_secs(config.translation.providers.systran.timeout_secs);
+                let timeout =
+                    Duration::from_secs(config.translation.providers.systran.timeout_secs);
                 let translator = SystranTranslator::new(api_key, timeout);
                 info!("✓ Systran translator initialized (Tier 1)");
                 providers.push(Box::new(translator));
@@ -382,10 +383,7 @@ impl TranslationService for FallbackTranslationRouter {
                     return Ok(result);
                 }
                 Err(e) => {
-                    error!(
-                        "✗ {} (Tier {}) failed: {}",
-                        provider_name, provider_tier, e
-                    );
+                    error!("✗ {} (Tier {}) failed: {}", provider_name, provider_tier, e);
                     last_error = Some(e);
 
                     // TODO: Use config.translation.fallback.stop_on_first_success when available

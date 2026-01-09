@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: Bu hesap zaten bağlı. Token'ı güncellemek için PATCH komutunu kullanın.
+      invalid_provider_type: Geçersiz sağlayıcı türü
+      invalid_token: Geçersiz belirteç
+      not_found: Hesap bulunamadı.
+      provider_no_user_id: Sağlayıcı kullanıcı kimliğini döndürmedi.
+      provider_no_username: Sağlayıcı kullanıcı adını döndürmedi.
+      validation_failed: 'Token doğrulama başarısız oldu: %{error}'
+    auth:
+      email_in_use: E-posta zaten kullanımda.
+      email_registered: E-posta adresi zaten kayıtlı.
+      invalid_credentials: Geçersiz e-posta veya şifre
+      invalid_refresh_token: Geçersiz veya süresi dolmuş yenileme belirteci
+      user_not_found: Kullanıcı bulunamadı.
+    encryption:
+      decrypt_failed: 'Şifre çözme hatası: %{error}'
+      failed: 'Şifreleme hatası: %{error}'
+    general:
+      internal: Dahili hata
+      serialization_failed: 'Kapsamların serileştirilmesi başarısız oldu: %{error}'
+    network:
+      connection_failed: Bağlantı başarısız oldu.
+      timeout: İstek zaman aşımına uğradı.
+    provider:
+      decrypt_failed: 'Tokenin şifresini çözme başarısız oldu: %{error}'
+      error: 'Sağlayıcı hatası: %{error}'
+    pull_request:
+      merge_failed: 'Birleştirme başarısız oldu: %{reason}'
+      not_found: Çekme isteği bulunamadı.
+    rate_limit:
+      exceeded: Hız sınırı aşıldı
+    repository:
+      already_added: Depo zaten eklendi.
+      invalid_provider: Geçersiz sağlayıcı
+      invalid_provider_db: Veritabanında geçersiz sağlayıcı türü.
+      no_account_linked: Depo hesaba bağlı değil.
+      not_found: Depo bulunamadı.
+      not_found_for_pr: PR için depo bulunamadı.
+      provider_not_connected: Sağlayıcı bağlı değil

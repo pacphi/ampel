@@ -3,12 +3,12 @@
 use clap::{Parser, Subcommand, ValueEnum};
 use std::path::PathBuf;
 
-pub mod translate;
-pub mod sync;
-pub mod validate;
 pub mod coverage;
 pub mod export;
 pub mod import;
+pub mod sync;
+pub mod translate;
+pub mod validate;
 
 #[derive(Parser)]
 #[command(name = "cargo-i18n")]
@@ -82,6 +82,14 @@ pub struct TranslateArgs {
     /// Disable fallback (use only primary provider)
     #[arg(long)]
     pub no_fallback: bool,
+
+    /// Force retranslation of all keys (ignores existing translations)
+    #[arg(long)]
+    pub force: bool,
+
+    /// Detect and retranslate keys with English/source language values
+    #[arg(long)]
+    pub detect_untranslated: bool,
 }
 
 #[derive(Parser)]

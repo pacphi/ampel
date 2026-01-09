@@ -1,1 +1,54 @@
-{}
+{
+  "auth": {
+    "failedToCreateAccount": "계정 생성에 실패했습니다",
+    "forbidden": "이 리소스에 대한 접근 권한이 없습니다",
+    "invalidCredentials": "잘못된 사용자 이름 또는 비밀번호",
+    "invalidEmailOrPassword": "잘못된 이메일 또는 비밀번호입니다",
+    "loginFailed": "로그인 실패",
+    "registrationFailed": "등록 실패",
+    "sessionExpired": "세션이 만료되었습니다. 다시 로그인 해주세요.",
+    "tokenExpired": "인증 토큰이 만료되었습니다",
+    "unauthorized": "인증되지 않은 접근"
+  },
+  "generic": {
+    "goHome": "대시보드로 이동",
+    "message": "예상치 못한 오류가 발생했습니다. 다시 시도해 주세요.",
+    "retry": "다시 시도",
+    "title": "문제가 발생했습니다"
+  },
+  "network": {
+    "message": "서버에 연결할 수 없습니다. 인터넷 연결을 확인해 주세요.",
+    "offline": "현재 오프라인 상태입니다",
+    "title": "네트워크 오류"
+  },
+  "notFound": {
+    "goHome": "대시보드로 돌아가기",
+    "message": "찾고 있는 페이지가 존재하지 않습니다.",
+    "title": "페이지를 찾을 수 없습니다"
+  },
+  "pr": {
+    "approveFailed": "풀 리퀘스트 승인에 실패했습니다",
+    "commentFailed": "댓글 게시에 실패했습니다",
+    "loadFailed": "풀 리퀘스트 로드에 실패했습니다",
+    "mergeFailed": "풀 리퀘스트 병합에 실패했습니다"
+  },
+  "provider": {
+    "connectionFailed": "{{provider}}에 연결 실패",
+    "invalidToken": "잘못된 {{provider}} 토큰",
+    "notFound": "{{provider}}에서 리소스를 찾을 수 없습니다",
+    "rateLimited": "{{provider}} API 요청 한도 초과"
+  },
+  "repository": {
+    "accessDenied": "저장소에 대한 접근이 거부되었습니다",
+    "loadFailed": "저장소를 불러오는데 실패했습니다",
+    "notFound": "저장소를 찾을 수 없습니다"
+  },
+  "validation": {
+    "invalidEmail": "유효한 이메일 주소를 입력해 주세요",
+    "invalidUrl": "유효한 URL을 입력해 주세요",
+    "maxLength": "{{max}} 문자를 초과하지 않아야 합니다",
+    "minLength": "최소 {{min}} 문자 이상이어야 합니다",
+    "passwordMismatch": "비밀번호가 일치하지 않습니다",
+    "required": "이 필드는 필수입니다"
+  }
+}

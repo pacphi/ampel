@@ -23,9 +23,7 @@ use std::collections::HashMap;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Initialize tracing
-    tracing_subscriber::fmt()
-        .with_env_filter("info")
-        .init();
+    tracing_subscriber::fmt().with_env_filter("info").init();
 
     println!("🌍 Translation API Usage Example\n");
 
@@ -42,20 +40,35 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let deepl_translator = Translator::new(TranslationProvider::DeepL, &config)?;
 
     let mut finnish_texts = HashMap::new();
-    finnish_texts.insert("greeting".to_string(), serde_json::Value::String("Hello, world!".to_string()));
-    finnish_texts.insert("farewell".to_string(), serde_json::Value::String("Goodbye!".to_string()));
+    finnish_texts.insert(
+        "greeting".to_string(),
+        serde_json::Value::String("Hello, world!".to_string()),
+    );
+    finnish_texts.insert(
+        "farewell".to_string(),
+        serde_json::Value::String("Goodbye!".to_string()),
+    );
 
     // Check cache first
     if let Some(cached) = cache.get("fi", "example", "greeting", "Hello, world!") {
         println!("  ✓ Cache hit: greeting -> {}", cached);
     } else {
-        let result = deepl_translator.translate_batch(&finnish_texts, "fi").await?;
+        let result = deepl_translator
+            .translate_batch(&finnish_texts, "fi")
+            .await?;
         println!("  ✓ API translation: {} keys", result.len());
 
         // Store in cache
         for (key, value) in &result {
             if let serde_json::Value::String(translated) = value {
-                cache.set("fi", "example", key, finnish_texts[key].as_str().unwrap(), translated, "deepl")?;
+                cache.set(
+                    "fi",
+                    "example",
+                    key,
+                    finnish_texts[key].as_str().unwrap(),
+                    translated,
+                    "deepl",
+                )?;
             }
         }
     }
@@ -65,7 +78,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let google_translator = Translator::new(TranslationProvider::Google, &config)?;
 
     let mut thai_texts = HashMap::new();
-    thai_texts.insert("welcome".to_string(), serde_json::Value::String("Welcome to our app!".to_string()));
+    thai_texts.insert(
+        "welcome".to_string(),
+        serde_json::Value::String("Welcome to our app!".to_string()),
+    );
 
     let result = google_translator.translate_batch(&thai_texts, "th").await?;
     println!("  ✓ Translated: {} keys", result.len());
@@ -75,7 +91,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let router = SmartTranslationRouter::new(&config)?;
 
     let mut texts = HashMap::new();
-    texts.insert("dashboard.title".to_string(), serde_json::Value::String("Dashboard".to_string()));
+    texts.insert(
+        "dashboard.title".to_string(),
+        serde_json::Value::String("Dashboard".to_string()),
+    );
 
     // Router will choose DeepL for Swedish (EU language)
     let sv_result = router.translate_batch(&texts, "sv").await?;
@@ -89,12 +108,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("\n📍 Example 4: Batch cache operations");
     let batch_translations = vec![
         ("key1".to_string(), "Hello".to_string(), "Terve".to_string()),
-        ("key2".to_string(), "World".to_string(), "Maailma".to_string()),
-        ("key3".to_string(), "Thanks".to_string(), "Kiitos".to_string()),
+        (
+            "key2".to_string(),
+            "World".to_string(),
+            "Maailma".to_string(),
+        ),
+        (
+            "key3".to_string(),
+            "Thanks".to_string(),
+            "Kiitos".to_string(),
+        ),
     ];
 
     cache.set_batch("fi", "batch_example", &batch_translations, "deepl")?;
-    println!("  ✓ Cached {} translations in batch", batch_translations.len());
+    println!(
+        "  ✓ Cached {} translations in batch",
+        batch_translations.len()
+    );
 
     // 7. Display cache statistics
     println!("\n📊 Cache Statistics:");

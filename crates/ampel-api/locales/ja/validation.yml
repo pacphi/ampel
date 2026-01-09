@@ -1,0 +1,8 @@
+en:
+  validation:
+    account:
+      invalid: 無効
+      valid: 有効
+    general:
+      invalid_format: 無効な形式
+      required: この項目は必須です

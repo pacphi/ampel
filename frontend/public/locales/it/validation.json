@@ -1,1 +1,35 @@
-{}
+{
+  "alphanum": "{{field}} deve contenere solo lettere e numeri",
+  "date": "Inserisci una data valida",
+  "dateRange": "La data di fine deve essere successiva alla data di inizio",
+  "email": "Si prega di inserire un indirizzo email valido",
+  "fields": {
+    "confirmPassword": "Conferma password",
+    "displayName": "Nome da visualizzare",
+    "email": "E-mail",
+    "password": "Password"
+  },
+  "fileSize": "La dimensione del file non deve superare {{max}}",
+  "fileType": "Il tipo di file deve essere {{types}}",
+  "integer": "{{field}} deve essere un numero intero",
+  "invalidEmail": "Indirizzo email non valido",
+  "max": "{{field}} non deve superare {{max}}",
+  "maxLength": "{{field}} non deve superare i {{max}} caratteri",
+  "messages": {
+    "displayNameRequired": "Il nome visualizzato è obbligatorio",
+    "emailRequired": "L'email è obbligatoria",
+    "passwordMinLength": "La password deve contenere almeno 8 caratteri",
+    "passwordRequired": "La password è obbligatoria"
+  },
+  "min": "{{field}} deve essere almeno {{min}}",
+  "minLength": "{{field}} deve contenere almeno {{min}} caratteri",
+  "negative": "{{field}} deve essere negativo",
+  "numeric": "{{field}} deve essere un numero",
+  "passwordMismatch": "Le password non corrispondono",
+  "passwordsDontMatch": "Le password non corrispondono",
+  "pattern": "Il formato {{field}} non è valido",
+  "positive": "{{field}} deve essere positivo",
+  "required": "{{field}} è obbligatorio",
+  "unique": "{{field}} esiste già",
+  "url": "Inserisci un URL valido"
+}

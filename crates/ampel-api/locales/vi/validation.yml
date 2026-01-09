@@ -1,0 +1,8 @@
+en:
+  validation:
+    account:
+      invalid: không hợp lệ
+      valid: có hiệu lực
+    general:
+      invalid_format: Định dạng không hợp lệ
+      required: Trường này là bắt buộc

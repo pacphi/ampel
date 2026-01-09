@@ -1,1 +1,89 @@
-{}
+{
+  "actions": {
+    "approve": "Onaylamak",
+    "comment": "Yorum",
+    "deselectAll": "Tümünü Seçimi Kaldır",
+    "merge": "Birleştir",
+    "refresh": "Yenile",
+    "requestChanges": "Değişiklik Talebi",
+    "selectAll": "Tümünü Seç",
+    "viewOnProvider": "{{provider}} üzerinden görüntüle"
+  },
+  "blockers": {
+    "awaitingReview": "İnceleme bekleniyor",
+    "changesRequested": "Değişiklik talebi",
+    "ciFailed": "CI başarısız oldu",
+    "ciPending": "CI beklemede",
+    "conflicts": "Çatışmalar",
+    "draft": "Taslak",
+    "needsReview": "Gözden geçirilmesi gerekiyor"
+  },
+  "empty": {
+    "action": "Bağlantı Sağlayıcısı",
+    "description": "PR'ları izlemeye başlamak için Git sağlayıcılarınızı bağlayın.",
+    "title": "Hiçbir çekme isteği bulunamadı."
+  },
+  "filters": {
+    "all": "Tüm",
+    "assignee": "Atanan kişi",
+    "author": "Yazar",
+    "closed": "Kapalı",
+    "draft": "Taslak",
+    "label": "Etiket",
+    "merged": "Birleştirildi",
+    "onlyWithPrs": "Açık PR'ları olan depoları göster",
+    "open": "Açık",
+    "provider": "Sağlayıcı",
+    "repository": "Depo"
+  },
+  "pr": {
+    "additions": "Eklemeler",
+    "author": "Yazar",
+    "comments": "Yorumlar",
+    "createdAt": "Oluşturuldu",
+    "deletions": "Silinmeler",
+    "number": "#{{sayı}}",
+    "sourceBranch": "Kaynak dalı",
+    "targetBranch": "Hedef şube",
+    "updatedAt": "Güncellendi"
+  },
+  "prDashboard": "PR Kontrol Paneli",
+  "sort": {
+    "author": "Yazar",
+    "created": "Oluşturulma tarihi",
+    "repository": "Depo",
+    "status": "Durum",
+    "title": "Göre sırala",
+    "updated": "Son güncelleme"
+  },
+  "stats": {
+    "blocked": "Engellendi",
+    "inProgress": "Devam etmekte",
+    "needsAttention": "Dikkat Gerekiyor",
+    "open": "Açık",
+    "openPRs": "Açık PR'lar",
+    "ready": "Birleşmeye hazır",
+    "readyToMerge": "Birleşmeye Hazır",
+    "total": "Toplam PR'ler",
+    "totalRepositories": "Toplam Depolar"
+  },
+  "status": {
+    "closed": "Kapalı",
+    "draft": "Taslak",
+    "green": "Birleşmeye hazır",
+    "merged": "Birleştirildi",
+    "red": "Engellendi",
+    "yellow": "Devam etmekte"
+  },
+  "subtitle": "Tüm sağlayıcılardaki çekme isteklerinizi yönetin.",
+  "title": "Kontrol Paneli",
+  "views": {
+    "grid": "Izgara görünümü",
+    "list": "Liste görünümü",
+    "prs": "Çekme isteklerini görüntüle",
+    "pullRequests": "Çekme isteklerini görüntüle",
+    "repositoryGrid": "Depo ızgara görünümü",
+    "repositoryList": "Depo listesi görünümü",
+    "table": "Tablo görünümü"
+  }
+}

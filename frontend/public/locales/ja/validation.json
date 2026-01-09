@@ -1,1 +1,35 @@
-{}
+{
+  "alphanum": "{{field}}は文字と数字のみを含む必要があります",
+  "date": "有効な日付を入力してください",
+  "dateRange": "終了日は開始日より後でなければなりません",
+  "email": "有効なメールアドレスを入力してください",
+  "fields": {
+    "confirmPassword": "パスワードを確認してください",
+    "displayName": "表示名",
+    "email": "メール",
+    "password": "パスワード"
+  },
+  "fileSize": "ファイルサイズは{{max}}を超えてはいけません",
+  "fileType": "ファイルタイプは{{types}}でなければなりません",
+  "integer": "{{field}}は整数でなければなりません",
+  "invalidEmail": "無効なメールアドレス",
+  "max": "{{field}}は{{max}}を超えてはいけません",
+  "maxLength": "{{field}}は{{max}}文字を超えてはなりません",
+  "messages": {
+    "displayNameRequired": "表示名が必要です",
+    "emailRequired": "メールは必須です",
+    "passwordMinLength": "パスワードは最低8文字でなければなりません",
+    "passwordRequired": "パスワードは必須です"
+  },
+  "min": "{{field}}は少なくとも{{min}}でなければなりません",
+  "minLength": "{{field}}は最低{{min}}文字でなければなりません",
+  "negative": "{{field}}は負でなければなりません",
+  "numeric": "{{field}}は数字でなければなりません",
+  "passwordMismatch": "パスワードが一致しません",
+  "passwordsDontMatch": "パスワードが一致しません",
+  "pattern": "{{field}}の形式が無効です",
+  "positive": "{{field}}は正でなければなりません",
+  "required": "{{field}}は必須です",
+  "unique": "{{field}}はすでに存在します",
+  "url": "有効なURLを入力してください"
+}

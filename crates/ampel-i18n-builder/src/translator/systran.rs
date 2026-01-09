@@ -50,7 +50,13 @@ pub struct SystranTranslator {
     client: reqwest::Client,
     api_key: String,
     cache: Arc<Mutex<LruCache<CacheKey, String>>>,
-    rate_limiter: Arc<GovernorRateLimiter<governor::state::NotKeyed, governor::state::InMemoryState, governor::clock::DefaultClock>>,
+    rate_limiter: Arc<
+        GovernorRateLimiter<
+            governor::state::NotKeyed,
+            governor::state::InMemoryState,
+            governor::clock::DefaultClock,
+        >,
+    >,
     retry_policy: RetryPolicy,
     usage_chars: Arc<Mutex<u64>>,
     usage_calls: Arc<Mutex<u64>>,
@@ -83,7 +89,9 @@ impl SystranTranslator {
             .expect("Failed to build HTTP client");
 
         // Rate limiter: 100 requests per second (Systran API limit)
-        let rate_limiter = Arc::new(GovernorRateLimiter::direct(Quota::per_second(nonzero!(100u32))));
+        let rate_limiter = Arc::new(GovernorRateLimiter::direct(Quota::per_second(nonzero!(
+            100u32
+        ))));
 
         // LRU cache with 1000 entries
         let cache_capacity = NonZeroUsize::new(1000).unwrap();
@@ -113,7 +121,11 @@ impl SystranTranslator {
     }
 
     /// Make API request with exponential backoff retry
-    async fn translate_with_retry(&self, texts: &[String], target_lang: &str) -> Result<Vec<String>> {
+    async fn translate_with_retry(
+        &self,
+        texts: &[String],
+        target_lang: &str,
+    ) -> Result<Vec<String>> {
         let mut attempt = 0;
         let mut delay = self.retry_policy.initial_delay_ms;
 
@@ -304,7 +316,10 @@ impl TranslationService for SystranTranslator {
             // Cache results
             for (text, translation) in chunk_texts.iter().zip(translations.iter()) {
                 let cache_key = self.cache_key(text, "en", target_lang);
-                self.cache.lock().unwrap().put(cache_key, translation.clone());
+                self.cache
+                    .lock()
+                    .unwrap()
+                    .put(cache_key, translation.clone());
             }
 
             all_translations.extend(
@@ -408,13 +423,23 @@ mod tests {
 
         // Manually populate cache
         let cache_key = translator.cache_key("test", "en", "fi");
-        translator.cache.lock().unwrap().put(cache_key, "testi".to_string());
+        translator
+            .cache
+            .lock()
+            .unwrap()
+            .put(cache_key, "testi".to_string());
 
         let mut texts = HashMap::new();
-        texts.insert("key1".to_string(), serde_json::Value::String("test".to_string()));
+        texts.insert(
+            "key1".to_string(),
+            serde_json::Value::String("test".to_string()),
+        );
 
         let result = translator.translate_batch(&texts, "fi").await.unwrap();
-        assert_eq!(result.get("key1").unwrap(), &serde_json::Value::String("testi".to_string()));
+        assert_eq!(
+            result.get("key1").unwrap(),
+            &serde_json::Value::String("testi".to_string())
+        );
 
         let stats = translator.get_stats();
         assert_eq!(stats.cache_hits, 1);

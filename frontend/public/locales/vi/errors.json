@@ -1,1 +1,54 @@
-{}
+{
+  "auth": {
+    "failedToCreateAccount": "Tạo tài khoản không thành công",
+    "forbidden": "Bạn không có quyền truy cập vào tài nguyên này.",
+    "invalidCredentials": "Tên người dùng hoặc mật khẩu không hợp lệ",
+    "invalidEmailOrPassword": "Email hoặc mật khẩu không hợp lệ",
+    "loginFailed": "Đăng nhập thất bại",
+    "registrationFailed": "Đăng ký thất bại",
+    "sessionExpired": "Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
+    "tokenExpired": "Mã xác thực đã hết hạn",
+    "unauthorized": "Truy cập trái phép"
+  },
+  "generic": {
+    "goHome": "Đi đến bảng điều khiển",
+    "message": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.",
+    "retry": "Hãy thử lại",
+    "title": "Đã xảy ra lỗi"
+  },
+  "network": {
+    "message": "Không thể kết nối với máy chủ. Vui lòng kiểm tra kết nối internet của bạn.",
+    "offline": "Bạn hiện đang ngoại tuyến",
+    "title": "Lỗi mạng"
+  },
+  "notFound": {
+    "goHome": "Trở lại bảng điều khiển",
+    "message": "Trang bạn đang tìm kiếm không tồn tại.",
+    "title": "Không tìm thấy trang"
+  },
+  "pr": {
+    "approveFailed": "Không thể phê duyệt yêu cầu kéo (pull request).",
+    "commentFailed": "Không thể đăng bình luận",
+    "loadFailed": "Không thể tải yêu cầu kéo (pull request).",
+    "mergeFailed": "Không thể hợp nhất yêu cầu kéo (pull request)."
+  },
+  "provider": {
+    "connectionFailed": "Không thể kết nối với {{provider}}",
+    "invalidToken": "Mã thông báo {{provider}} không hợp lệ",
+    "notFound": "Không tìm thấy tài nguyên trên {{provider}}",
+    "rateLimited": "Đã vượt quá giới hạn số lượt truy cập API của {{provider}}"
+  },
+  "repository": {
+    "accessDenied": "Quyền truy cập kho lưu trữ bị từ chối",
+    "loadFailed": "Không thể tải kho lưu trữ.",
+    "notFound": "Không tìm thấy kho lưu trữ"
+  },
+  "validation": {
+    "invalidEmail": "Vui lòng nhập địa chỉ email hợp lệ.",
+    "invalidUrl": "Vui lòng nhập URL hợp lệ",
+    "maxLength": "Không được vượt quá {{max}} ký tự",
+    "minLength": "Phải có ít nhất {{min}} ký tự",
+    "passwordMismatch": "Mật khẩu không khớp",
+    "required": "Trường này là bắt buộc"
+  }
+}

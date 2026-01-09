@@ -1,0 +1,8 @@
+en:
+  validation:
+    account:
+      invalid: non valido
+      valid: valido
+    general:
+      invalid_format: Formato non valido
+      required: Questo campo è obbligatorio

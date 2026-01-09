@@ -1,38 +1,134 @@
 {
-  "title": "Settings",
-  "general": {
-    "title": "General",
-    "language": "Language",
-    "theme": "Theme",
-    "colourScheme": "Colour Scheme"
-  },
   "account": {
-    "title": "Account",
+    "avatar": "Avatar",
+    "changePassword": "Change password",
+    "deleteAccount": "Delete account",
+    "deleteAccountWarning": "This action cannot be undone",
+    "displayName": "Display name",
+    "displayNamePlaceholder": "Enter your display name",
     "email": "Email",
+    "emailAddress": "Email address",
+    "emailPlaceholder": "Enter your email",
+    "memberSince": "Member Since",
+    "notSet": "Not set",
     "password": "Password",
-    "changePassword": "Change Password"
+    "profile": "Profile",
+    "title": "Account",
+    "unknown": "Unknown",
+    "yourAccountInfo": "Your account information"
+  },
+  "behavior": {
+    "autoRefresh": "Auto refresh",
+    "autoRefreshDescription": "Automatically refresh PR list",
+    "defaultView": "Default view",
+    "defaultViewDescription": "Choose your preferred PR view",
+    "prPerPage": "PRs per page",
+    "prPerPageDescription": "Number of PRs to display per page",
+    "refreshInterval": "Refresh interval",
+    "refreshIntervalDescription": "How often to refresh (in minutes)",
+    "title": "Behavior"
+  },
+  "filtersReset": "Filters reset",
+  "filtersResetSuccess": "Your PR filter settings have been reset to defaults.",
+  "filtersUpdateFailed": "Failed to update filters",
+  "filtersUpdateSuccess": "Your PR filter settings have been saved.",
+  "filtersUpdated": "Filters updated",
+  "general": {
+    "colourScheme": "Colour Scheme",
+    "language": "Language",
+    "languageDescription": "Choose your preferred language",
+    "theme": "Theme",
+    "themeDescription": "Select your color theme",
+    "timezone": "Timezone",
+    "timezoneDescription": "Set your timezone for dates and times",
+    "title": "General"
   },
   "integrations": {
-    "title": "Integrations",
+    "bitbucket": "Bitbucket",
+    "connect": "Connect",
+    "connected": "Connected",
+    "disconnect": "Disconnect",
     "github": "GitHub",
     "gitlab": "GitLab",
-    "bitbucket": "Bitbucket",
-    "connected": "Connected",
     "notConnected": "Not Connected",
-    "connect": "Connect",
-    "disconnect": "Disconnect"
+    "title": "Integrations"
   },
   "notifications": {
-    "title": "Notifications",
-    "email": "Email Notifications",
     "desktop": "Desktop Notifications",
+    "disabled": "Disabled",
+    "email": "Email notifications",
+    "emailDescription": "Receive notifications via email",
     "enabled": "Enabled",
-    "disabled": "Disabled"
+    "mentions": "Mentions",
+    "mentionsDescription": "Get notified when you're mentioned",
+    "prUpdates": "PR updates",
+    "prUpdatesDescription": "Get notified when PRs are updated",
+    "reviews": "Review requests",
+    "reviewsDescription": "Get notified when your review is requested",
+    "title": "Notifications"
+  },
+  "prFilters": {
+    "allowedActors": "Allowed Actors (Bots/Users)",
+    "allowedActorsDescription": "Only process PRs from these trusted actors. Typically bots like dependabot, renovate, etc.",
+    "allowedActorsPlaceholder": "e.g., dependabot[bot]",
+    "description": "Configure global filters for pull request processing. These apply to auto-merge rules across all repositories.",
+    "maxAgeDays": "Max PR Age (Days)",
+    "maxAgeDaysDescription": "Skip PRs older than this many days. Leave empty for no limit.",
+    "maxAgeDaysPlaceholder": "e.g., 30",
+    "skipLabels": "Skip Labels",
+    "skipLabelsDescription": "PRs with these labels will be skipped during auto-merge processing.",
+    "skipLabelsPlaceholder": "e.g., do-not-merge",
+    "title": "PR Filters"
   },
   "preferences": {
-    "title": "Preferences",
     "dateFormat": "Date Format",
     "timeFormat": "Time Format",
-    "timezone": "Timezone"
-  }
+    "timezone": "Timezone",
+    "title": "Preferences"
+  },
+  "profileUpdateFailed": "Failed to update profile",
+  "profileUpdateSuccess": "Your profile has been saved successfully.",
+  "profileUpdated": "Profile updated",
+  "providers": {
+    "bitbucket": "Bitbucket",
+    "connect": "Connect",
+    "connected": "Connected",
+    "disconnect": "Disconnect",
+    "github": "GitHub",
+    "gitlab": "GitLab",
+    "notConnected": "Not connected",
+    "token": "Personal Access Token",
+    "tokenDescription": "Enter your {{provider}} personal access token",
+    "tokenInstructions": "How to get a token",
+    "tokenPlaceholder": "ghp_..."
+  },
+  "repositories": {
+    "filter": "Repository filter",
+    "filterDescription": "Choose which repositories to display",
+    "showArchived": "Show archived",
+    "showArchivedDescription": "Include archived repositories",
+    "showForks": "Show forks",
+    "showForksDescription": "Include forked repositories"
+  },
+  "reset": "Reset to defaults",
+  "resetConfirm": "Are you sure you want to reset all settings?",
+  "save": "Save changes",
+  "saved": "Settings saved successfully",
+  "subtitle": "Manage your preferences and integrations",
+  "tabs": {
+    "account": "Account",
+    "accounts": "Accounts",
+    "appearance": "Appearance",
+    "behavior": "Behavior",
+    "filters": "PR Filters",
+    "general": "General",
+    "notifications": "Notifications",
+    "prFilters": "PR Filters",
+    "profile": "Profile",
+    "providers": "Providers",
+    "repositories": "Repositories",
+    "repositoryFilters": "Repository Filters"
+  },
+  "title": "Settings",
+  "updateFailed": "Failed to update"
 }

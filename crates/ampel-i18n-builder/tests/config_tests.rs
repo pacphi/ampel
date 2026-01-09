@@ -55,7 +55,10 @@ translation:
   deepl_api_key: "test-key"
 "#;
     let config: Config = serde_yaml::from_str(yaml).unwrap();
-    assert_eq!(config.translation.deepl_api_key, Some("test-key".to_string()));
+    assert_eq!(
+        config.translation.deepl_api_key,
+        Some("test-key".to_string())
+    );
     assert_eq!(config.translation.timeout_secs, 30);
     assert_eq!(config.translation.providers.deepl.priority, 2);
 }
@@ -107,7 +110,10 @@ translation:
     log_fallback_events: true
 "#;
     let config: Config = serde_yaml::from_str(yaml).unwrap();
-    assert_eq!(config.translation.systran_api_key, Some("systran-key".to_string()));
+    assert_eq!(
+        config.translation.systran_api_key,
+        Some("systran-key".to_string())
+    );
     assert_eq!(config.translation.default_timeout_secs, 45);
     assert_eq!(config.translation.default_batch_size, 100);
     assert_eq!(config.translation.default_max_retries, 5);
@@ -225,7 +231,10 @@ translation:
   batch_size: 100
 "#;
     let config: Config = serde_yaml::from_str(yaml).unwrap();
-    assert_eq!(config.translation.deepl_api_key, Some("test-key".to_string()));
+    assert_eq!(
+        config.translation.deepl_api_key,
+        Some("test-key".to_string())
+    );
     assert_eq!(config.translation.timeout_secs, 60);
     assert_eq!(config.translation.batch_size, 100);
     // New fields should use defaults

@@ -91,19 +91,13 @@ pub enum GeneratorError {
 }
 
 /// Helper function to flatten nested translations into dot-notation keys
-pub fn flatten_translations(
-    translations: &TranslationMap,
-) -> BTreeMap<String, String> {
+pub fn flatten_translations(translations: &TranslationMap) -> BTreeMap<String, String> {
     let mut result = BTreeMap::new();
     flatten_recursive(translations, "", &mut result);
     result
 }
 
-fn flatten_recursive(
-    map: &TranslationMap,
-    prefix: &str,
-    result: &mut BTreeMap<String, String>,
-) {
+fn flatten_recursive(map: &TranslationMap, prefix: &str, result: &mut BTreeMap<String, String>) {
     for (key, value) in map {
         let full_key = if prefix.is_empty() {
             key.clone()

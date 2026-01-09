@@ -1,1 +1,120 @@
-{}
+{
+  "actions": {
+    "add": "เพิ่ม",
+    "apply": "ใช้งาน",
+    "cancel": "ยกเลิก",
+    "clear": "ล้าง",
+    "delete": "ลบ",
+    "edit": "แก้ไข",
+    "hideEmail": "ซ่อนอีเมล",
+    "refresh": "รีเฟรช",
+    "refreshing": "กำลังรีเฟรช...",
+    "remove": "ลบ",
+    "reset": "รีเซ็ตเป็นค่าเริ่มต้น",
+    "save": "บันทึก",
+    "saving": "กำลังบันทึก...",
+    "showEmail": "แสดงอีเมล",
+    "viewOnProvider": "ดูบน {{provider}}"
+  },
+  "app": {
+    "add": "เพิ่ม",
+    "apply": "ใช้",
+    "back": "ย้อนกลับ",
+    "cancel": "ยกเลิก",
+    "clear": "ล้าง",
+    "close": "ปิด",
+    "delete": "ลบ",
+    "description": "การจัดการคำขอดึงที่เข้ากันได้",
+    "edit": "แก้ไข",
+    "error": "เกิดข้อผิดพลาด",
+    "filter": "กรอง",
+    "info": "ข้อมูล",
+    "loading": "กำลังโหลด...",
+    "name": "Ampel",
+    "next": "ถัดไป",
+    "previous": "ก่อนหน้า",
+    "remove": "ลบ",
+    "reset": "รีเซ็ต",
+    "retry": "ลองใหม่",
+    "save": "บันทึก",
+    "search": "ค้นหา",
+    "success": "สำเร็จ",
+    "title": "แดชบอร์ด Ampel PR",
+    "warning": "คำเตือน"
+  },
+  "auth": {
+    "alreadyHaveAccount": "มีบัญชีอยู่แล้ว?",
+    "confirmPassword": "ยืนยันรหัสผ่าน",
+    "createAccount": "สร้างบัญชี",
+    "creatingAccount": "กำลังสร้างบัญชี...",
+    "displayName": "ชื่อที่แสดง",
+    "dontHaveAccount": "ไม่มีบัญชีผู้ใช้?",
+    "email": "อีเมล",
+    "forgotPassword": "ลืมรหัสผ่าน?",
+    "getStarted": "เริ่มต้นกับ Ampel",
+    "login": "เข้าสู่ระบบ",
+    "loginSuccess": "เข้าสู่ระบบสำเร็จ",
+    "logout": "ออกจากระบบ",
+    "logoutSuccess": "ออกจากระบบสำเร็จ",
+    "password": "รหัสผ่าน",
+    "resetPassword": "รีเซ็ตรหัสผ่าน",
+    "signIn": "เข้าสู่ระบบ",
+    "signInToContinue": "เข้าสู่ระบบเพื่อดำเนินการต่อ",
+    "signUp": "สมัครสมาชิก",
+    "signingIn": "กำลังเข้าสู่ระบบ...",
+    "username": "ชื่อผู้ใช้",
+    "welcome": "ยินดีต้อนรับกลับ!",
+    "welcomeToAmpel": "ยินดีต้อนรับสู่ Ampel"
+  },
+  "language": {
+    "current": "ภาษาปัจจุบัน",
+    "select": "เลือกภาษา"
+  },
+  "navigation": {
+    "analytics": "วิเคราะห์",
+    "dashboard": "แดชบอร์ด",
+    "documentation": "เอกสาร",
+    "help": "ช่วยเหลือ",
+    "merge": "ผสาน",
+    "organizations": "องค์กร",
+    "profile": "โปรไฟล์",
+    "pullRequests": "คำขอดึง",
+    "repositories": "ที่เก็บข้อมูล",
+    "settings": "การตั้งค่า"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} ความคิดเห็น",
+    "comments_other": "{{count}} ความคิดเห็น",
+    "pullRequests_one": "{{count}} คำขอดึง",
+    "pullRequests_other": "{{count}} คำขอดึง",
+    "requests_one": "{{count}} คำขอ",
+    "requests_other": "{{count}} คำขอ"
+  },
+  "status": {
+    "trafficLight": "สถานะไฟจราจร"
+  },
+  "theme": {
+    "auto": "อัตโนมัติ",
+    "dark": "โหมดมืด",
+    "light": "โหมดสว่าง",
+    "toggle": "สลับธีม"
+  },
+  "time": {
+    "daysAgo": "{{count}} วันที่ผ่านมา",
+    "daysAgo_other": "{{count}} วันที่ผ่านมา",
+    "hoursAgo": "{{count}} ชั่วโมงที่ผ่านมา",
+    "hoursAgo_other": "{{count}} ชั่วโมงที่ผ่านมา",
+    "minutesAgo": "{{count}} นาทีที่ผ่านมา",
+    "minutesAgo_other": "{{count}} นาทีที่ผ่านมา",
+    "monthsAgo": "{{count}} เดือนที่ผ่านมา",
+    "monthsAgo_other": "{{count}} เดือนที่ผ่านมา",
+    "now": "เพิ่งนี้",
+    "weeksAgo": "{{count}} สัปดาห์ที่ผ่านมา",
+    "weeksAgo_other": "{{count}} สัปดาห์ที่ผ่านมา"
+  },
+  "visibility": {
+    "archived": "ถูกเก็บถาวร",
+    "private": "ส่วนตัว",
+    "public": "สาธารณะ"
+  }
+}

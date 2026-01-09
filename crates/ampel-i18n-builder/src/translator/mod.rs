@@ -91,7 +91,8 @@ impl Translator {
                     .or_else(|| std::env::var("SYSTRAN_API_KEY").ok())
                     .ok_or_else(|| {
                         Error::Config(
-                            "Systran API key not found. Set SYSTRAN_API_KEY env var or config".to_string(),
+                            "Systran API key not found. Set SYSTRAN_API_KEY env var or config"
+                                .to_string(),
                         )
                     })?;
 
@@ -108,7 +109,8 @@ impl Translator {
                     .or_else(|| std::env::var("DEEPL_API_KEY").ok())
                     .ok_or_else(|| {
                         Error::Config(
-                            "DeepL API key not found. Set DEEPL_API_KEY env var or config".to_string(),
+                            "DeepL API key not found. Set DEEPL_API_KEY env var or config"
+                                .to_string(),
                         )
                     })?;
 
@@ -133,7 +135,8 @@ impl Translator {
                     .or_else(|| std::env::var("GOOGLE_API_KEY").ok())
                     .ok_or_else(|| {
                         Error::Config(
-                            "Google API key not found. Set GOOGLE_API_KEY env var or config".to_string(),
+                            "Google API key not found. Set GOOGLE_API_KEY env var or config"
+                                .to_string(),
                         )
                     })?;
 
@@ -150,7 +153,8 @@ impl Translator {
                     .or_else(|| std::env::var("GOOGLE_API_KEY").ok())
                     .ok_or_else(|| {
                         Error::Config(
-                            "OpenAI API key not found. Set OPENAI_API_KEY env var or config".to_string(),
+                            "OpenAI API key not found. Set OPENAI_API_KEY env var or config"
+                                .to_string(),
                         )
                     })?;
 

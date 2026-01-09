@@ -75,9 +75,11 @@ fn load_namespaces(
 }
 
 fn export_xliff(namespaces: &[(String, TranslationMap)], target_lang: &str) -> Result<String> {
-    let mut xliff = String::from(r#"<?xml version="1.0" encoding="UTF-8"?>
+    let mut xliff = String::from(
+        r#"<?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-"#);
+"#,
+    );
 
     for (namespace, map) in namespaces {
         xliff.push_str(&format!(

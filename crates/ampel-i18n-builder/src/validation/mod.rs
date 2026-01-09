@@ -2,13 +2,13 @@ use std::collections::HashMap;
 use thiserror::Error;
 
 pub mod coverage;
-pub mod missing;
 pub mod duplicates;
+pub mod missing;
 pub mod variables;
 
 pub use coverage::CoverageValidator;
-pub use missing::MissingKeysValidator;
 pub use duplicates::DuplicateKeysValidator;
+pub use missing::MissingKeysValidator;
 pub use variables::VariableValidator;
 
 #[derive(Error, Debug, Clone, PartialEq)]
@@ -93,12 +93,7 @@ impl ValidationResults {
     pub fn get_errors(&self) -> Vec<(String, ValidationError)> {
         self.results
             .iter()
-            .flat_map(|(name, result)| {
-                result
-                    .errors
-                    .iter()
-                    .map(move |e| (name.clone(), e.clone()))
-            })
+            .flat_map(|(name, result)| result.errors.iter().map(move |e| (name.clone(), e.clone())))
             .collect()
     }
 }

@@ -1,50 +1,54 @@
 {
+  "auth": {
+    "failedToCreateAccount": "No se pudo crear la cuenta",
+    "forbidden": "No tienes permiso para acceder a este recurso.",
+    "invalidCredentials": "Nombre de usuario o contraseña no válidos",
+    "invalidEmailOrPassword": "Correo electrónico o contraseña no válidos",
+    "loginFailed": "error de inicio de sesion",
+    "registrationFailed": "El registro falló",
+    "sessionExpired": "Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.",
+    "tokenExpired": "El token de autenticación ha expirado",
+    "unauthorized": "Acceso no autorizado"
+  },
   "generic": {
-    "title": "Something went wrong",
-    "message": "An unexpected error occurred. Please try again.",
-    "retry": "Try again",
-    "goHome": "Go to dashboard"
+    "goHome": "Ir al panel de control",
+    "message": "Se produjo un error inesperado. Inténtalo de nuevo.",
+    "retry": "Intentar otra vez",
+    "title": "Algo salió mal"
   },
   "network": {
-    "title": "Network error",
-    "message": "Unable to connect to the server. Please check your internet connection.",
-    "offline": "You are currently offline"
-  },
-  "auth": {
-    "unauthorized": "Unauthorized access",
-    "forbidden": "You don't have permission to access this resource",
-    "sessionExpired": "Your session has expired. Please log in again.",
-    "invalidCredentials": "Invalid username or password",
-    "tokenExpired": "Authentication token has expired"
-  },
-  "validation": {
-    "required": "This field is required",
-    "invalidEmail": "Please enter a valid email address",
-    "invalidUrl": "Please enter a valid URL",
-    "minLength": "Must be at least {{min}} characters",
-    "maxLength": "Must not exceed {{max}} characters",
-    "passwordMismatch": "Passwords do not match"
-  },
-  "provider": {
-    "connectionFailed": "Failed to connect to {{provider}}",
-    "invalidToken": "Invalid {{provider}} token",
-    "rateLimited": "{{provider}} API rate limit exceeded",
-    "notFound": "Resource not found on {{provider}}"
-  },
-  "pr": {
-    "loadFailed": "Failed to load pull requests",
-    "mergeFailed": "Failed to merge pull request",
-    "approveFailed": "Failed to approve pull request",
-    "commentFailed": "Failed to post comment"
-  },
-  "repository": {
-    "loadFailed": "Failed to load repositories",
-    "notFound": "Repository not found",
-    "accessDenied": "Access to repository denied"
+    "message": "No se puede conectar al servidor. Por favor, revise su conexión a internet.",
+    "offline": "Actualmente estás desconectado",
+    "title": "Error de red"
   },
   "notFound": {
-    "title": "Page not found",
-    "message": "The page you are looking for does not exist.",
-    "goHome": "Return to dashboard"
+    "goHome": "Regresar al panel de control",
+    "message": "La página que estás buscando no existe.",
+    "title": "Página no encontrada"
+  },
+  "pr": {
+    "approveFailed": "No se pudo aprobar la solicitud de extracción",
+    "commentFailed": "No se pudo publicar el comentario",
+    "loadFailed": "No se pudieron cargar las solicitudes de extracción",
+    "mergeFailed": "No se pudo fusionar la solicitud de extracción"
+  },
+  "provider": {
+    "connectionFailed": "No se pudo conectar con {{provider}}",
+    "invalidToken": "Token {{provider}} no válido",
+    "notFound": "Recurso no encontrado en {{provider}}",
+    "rateLimited": "Se excedió el límite de velocidad de la API de {{provider}}"
+  },
+  "repository": {
+    "accessDenied": "Acceso al repositorio denegado",
+    "loadFailed": "No se pudieron cargar los repositorios",
+    "notFound": "Repositorio no encontrado"
+  },
+  "validation": {
+    "invalidEmail": "Por favor, introduce una dirección de correo electrónico válida",
+    "invalidUrl": "Por favor, introduzca una URL válida",
+    "maxLength": "No debe exceder {{max}} caracteres",
+    "minLength": "Debe tener al menos {{min}} caracteres",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "required": "Este campo es obligatorio"
   }
 }

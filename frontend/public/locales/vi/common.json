@@ -1,1 +1,120 @@
-{}
+{
+  "actions": {
+    "add": "Thêm vào",
+    "apply": "Áp dụng",
+    "cancel": "Hủy bỏ",
+    "clear": "Thông thoáng",
+    "delete": "Xóa bỏ",
+    "edit": "Biên tập",
+    "hideEmail": "Ẩn email",
+    "refresh": "Làm cho khỏe lại",
+    "refreshing": "Thật sảng khoái...",
+    "remove": "Di dời",
+    "reset": "Khôi phục về cài đặt mặc định",
+    "save": "Cứu",
+    "saving": "Đang lưu...",
+    "showEmail": "Hiển thị email",
+    "viewOnProvider": "Xem trên {{provider}}"
+  },
+  "app": {
+    "add": "Thêm vào",
+    "apply": "Áp dụng",
+    "back": "Mặt sau",
+    "cancel": "Hủy bỏ",
+    "clear": "Thông thoáng",
+    "close": "Đóng",
+    "delete": "Xóa bỏ",
+    "description": "Quản lý yêu cầu kéo thống nhất",
+    "edit": "Biên tập",
+    "error": "Đã xảy ra lỗi",
+    "filter": "Lọc",
+    "info": "Thông tin",
+    "loading": "Đang tải...",
+    "name": "Ampel",
+    "next": "Kế tiếp",
+    "previous": "Trước",
+    "remove": "Di dời",
+    "reset": "Cài lại",
+    "retry": "Thử lại",
+    "save": "Cứu",
+    "search": "Tìm kiếm",
+    "success": "Thành công",
+    "title": "Bảng điều khiển Ampel PR",
+    "warning": "Cảnh báo"
+  },
+  "auth": {
+    "alreadyHaveAccount": "Bạn đã có tài khoản chưa?",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "createAccount": "Tạo tài khoản",
+    "creatingAccount": "Đang tạo tài khoản...",
+    "displayName": "Tên hiển thị",
+    "dontHaveAccount": "Bạn chưa có tài khoản?",
+    "email": "E-mail",
+    "forgotPassword": "Quên mật khẩu?",
+    "getStarted": "Bắt đầu sử dụng Ampel",
+    "login": "Đăng nhập",
+    "loginSuccess": "Đăng nhập thành công",
+    "logout": "Đăng xuất",
+    "logoutSuccess": "Đăng xuất thành công",
+    "password": "Mật khẩu",
+    "resetPassword": "Đặt lại mật khẩu",
+    "signIn": "Đăng nhập",
+    "signInToContinue": "Đăng nhập vào tài khoản của bạn để tiếp tục.",
+    "signUp": "Đăng ký",
+    "signingIn": "Đang đăng nhập...",
+    "username": "Tên người dùng",
+    "welcome": "Chào mừng bạn trở lại!",
+    "welcomeToAmpel": "Chào mừng đến với Ampel"
+  },
+  "language": {
+    "current": "Ngôn ngữ hiện tại",
+    "select": "Chọn ngôn ngữ"
+  },
+  "navigation": {
+    "analytics": "Phân tích",
+    "dashboard": "Bảng điều khiển",
+    "documentation": "Tài liệu",
+    "help": "Giúp đỡ",
+    "merge": "Hợp nhất",
+    "organizations": "Các tổ chức",
+    "profile": "Hồ sơ",
+    "pullRequests": "Yêu cầu kéo",
+    "repositories": "Kho lưu trữ",
+    "settings": "Cài đặt"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} bình luận",
+    "comments_other": "{{count}} bình luận",
+    "pullRequests_one": "Yêu cầu kéo {{count}}",
+    "pullRequests_other": "{{count}} yêu cầu kéo",
+    "requests_one": "yêu cầu {{count}}",
+    "requests_other": "{{count}} yêu cầu"
+  },
+  "status": {
+    "trafficLight": "Trạng thái đèn giao thông"
+  },
+  "theme": {
+    "auto": "Tự động",
+    "dark": "Chế độ tối",
+    "light": "Chế độ sáng",
+    "toggle": "Chuyển đổi chủ đề"
+  },
+  "time": {
+    "daysAgo": "{{count}} ngày trước",
+    "daysAgo_other": "{{count}} ngày trước",
+    "hoursAgo": "{{count}} giờ trước",
+    "hoursAgo_other": "{{count}} giờ trước",
+    "minutesAgo": "{{count}} phút trước",
+    "minutesAgo_other": "{{count}} phút trước",
+    "monthsAgo": "{{count}} tháng trước",
+    "monthsAgo_other": "{{count}} tháng trước",
+    "now": "Vừa nãy",
+    "weeksAgo": "{{count}} tuần trước",
+    "weeksAgo_other": "{{count}} tuần trước"
+  },
+  "visibility": {
+    "archived": "Đã lưu trữ",
+    "private": "Riêng tư",
+    "public": "Công cộng"
+  }
+}

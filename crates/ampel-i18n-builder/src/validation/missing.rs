@@ -19,12 +19,16 @@ impl MissingKeysValidator {
             };
 
             if let Some(target_value) = target.get(key) {
-                if let (TranslationValue::Nested(source_nested), TranslationValue::Nested(target_nested)) =
-                    (value, target_value)
+                if let (
+                    TranslationValue::Nested(source_nested),
+                    TranslationValue::Nested(target_nested),
+                ) = (value, target_value)
                 {
-                    missing.extend(
-                        Self::find_missing_keys(source_nested, target_nested, full_key)
-                    );
+                    missing.extend(Self::find_missing_keys(
+                        source_nested,
+                        target_nested,
+                        full_key,
+                    ));
                 }
             } else {
                 missing.push(full_key);

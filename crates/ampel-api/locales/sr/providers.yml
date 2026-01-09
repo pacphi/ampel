@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Грешка API-ја провајдера: %{message} (статус: %{status_code})'
+      auth_failed: 'Аутентификација није успела: %{reason}'
+      config_error: 'Грешка у конфигурацији: %{reason}'
+      invalid_response: 'Неважећи одговор: %{reason}'
+      network_error: 'Грешка мреже: %{reason}'
+      not_found: 'Ресурс није пронађен: %{resource}'
+      not_supported: 'Операција није подржана: %{operation}'
+      permission_denied: 'Дозвола одбијена: %{reason}'
+      rate_limit_exceeded: 'Прекорачено ограничење брзине. Ресетује се у: %{reset_time}'
+      serialization_error: 'Грешка серијализације: %{reason}'
+    github:
+      api_error: 'Грешка API-ја: %{status}'
+      invalid_token: Неважећи токен
+      merge_checks_failed: Захтев за повлачење не може бити спојен (проверите статус провера и прегледа)
+      merge_conflict: Сукоб спајања или главна грана је измењена
+      merge_failed: Спајање захтева за повлачење није успело
+      merge_not_mergeable: Захтев за повлачење се не може спојити
+      pr_fetch_failed: Није успело добијање захтева за повлачење
+      pr_not_found: 'Захтев за повлачење #%{number} није пронађен'
+      prs_fetch_failed: Приказивање захтева за повлачење није успело
+      rate_limit_failed: Није успело добијање ограничења стопе
+      repo_fetch_failed: Није успело преузимање спремишта
+      repo_not_found: Репозиторијум %{owner}/%{repo} није пронађен
+      repos_fetch_failed: Навођење репозиторијума није успело
+      reviews_fetch_failed: Није успело добијање рецензија
+      token_invalid: Неважећи или истекли токен
+      user_fetch_failed: Није успело преузимање корисника
+    worker:
+      account_not_found: Налог добављача није пронађен
+      no_account: Репозиторијум нема повезани налог провајдера

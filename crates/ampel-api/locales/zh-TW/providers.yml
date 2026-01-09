@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 提供者 API 錯誤：%{message}（狀態：%{status_code}）
+      auth_failed: 驗證失敗：%{reason}
+      config_error: 配置錯誤：%{reason}
+      invalid_response: 無效回應：%{reason}
+      network_error: 網路錯誤：%{reason}
+      not_found: 未找到資源：%{resource}
+      not_supported: 不支援的操作：%{operation}
+      permission_denied: 權限被拒絕：%{reason}
+      rate_limit_exceeded: 速率限制已超出。重置時間為：%{reset_time}
+      serialization_error: 序列化錯誤：%{reason}
+    github:
+      api_error: API 錯誤：%{status}
+      invalid_token: 無效令牌
+      merge_checks_failed: 拉取請求無法合併（請檢查狀態檢查和審核）
+      merge_conflict: 合併衝突或主分支已修改
+      merge_failed: 合併拉取請求失敗
+      merge_not_mergeable: 拉取請求不可合併
+      pr_fetch_failed: 取得拉取請求失敗
+      pr_not_found: '未找到拉取請求 #%{number}'
+      prs_fetch_failed: 無法列出拉取請求
+      rate_limit_failed: 取得速率限制失敗
+      repo_fetch_failed: 取得儲存庫失敗
+      repo_not_found: 未找到倉庫 %{owner}/%{repo}
+      repos_fetch_failed: 列出儲存庫失敗
+      reviews_fetch_failed: 未能獲得評論
+      token_invalid: 無效或過期的令牌
+      user_fetch_failed: 取得用戶失敗
+    worker:
+      account_not_found: 未找到提供者帳戶
+      no_account: 該儲存庫沒有關聯的提供者帳戶

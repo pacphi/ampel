@@ -1,35 +1,35 @@
 {
-  "alphanum": "{{field}} musí obsahovat pouze písmena a čísla",
-  "date": "Prosím, zadejte platné datum",
-  "dateRange": "Koncové datum musí být po počátečním datu",
-  "email": "Prosím, zadejte platnou emailovou adresu",
+  "alphanum": "{{field}} musí obsahovat pouze písmena a číslice",
+  "date": "Zadejte prosím platné datum",
+  "dateRange": "Datum ukončení musí být po datu zahájení",
+  "email": "Zadejte prosím platnou e-mailovou adresu",
   "fields": {
-    "confirmPassword": "Potvrďte heslo",
-    "displayName": "Zobrazované jméno",
-    "email": "Email",
+    "confirmPassword": "Potvrzení hesla",
+    "displayName": "Zobrazovaný název",
+    "email": "E-mail",
     "password": "Heslo"
   },
   "fileSize": "Velikost souboru nesmí překročit {{max}}",
   "fileType": "Typ souboru musí být {{types}}",
   "integer": "{{field}} musí být celé číslo",
-  "invalidEmail": "Neplatná emailová adresa",
+  "invalidEmail": "Neplatná e-mailová adresa",
   "max": "{{field}} nesmí překročit {{max}}",
-  "maxLength": "{{field}} nesmí překročit {{max}} znaků",
+  "maxLength": "Maximální počet znaků v poli {{field}} je {{max}}.",
   "messages": {
-    "displayNameRequired": "Zobrazované jméno je povinné",
-    "emailRequired": "Email je povinný",
+    "displayNameRequired": "Zobrazovaný název je povinný",
+    "emailRequired": "E-mail je povinný",
     "passwordMinLength": "Heslo musí mít alespoň 8 znaků",
-    "passwordRequired": "Heslo je povinné"
+    "passwordRequired": "Je vyžadováno heslo"
   },
   "min": "{{field}} musí být alespoň {{min}}",
   "minLength": "{{field}} musí mít alespoň {{min}} znaků",
-  "negative": "{{field}} musí být záporné",
+  "negative": "Hodnota {{field}} musí být záporná",
   "numeric": "{{field}} musí být číslo",
   "passwordMismatch": "Hesla se neshodují",
   "passwordsDontMatch": "Hesla se neshodují",
   "pattern": "Formát {{field}} je neplatný",
-  "positive": "{{field}} musí být kladné",
-  "required": "{{field}} je povinné",
+  "positive": "Hodnota {{field}} musí být kladná",
+  "required": "Pole {{field}} je povinné",
   "unique": "{{field}} již existuje",
-  "url": "Prosím, zadejte platnou URL"
+  "url": "Zadejte platnou URL adresu"
 }

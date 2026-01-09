@@ -71,10 +71,18 @@ impl VariableValidator {
 
             if let Some(target_value) = target.get(key) {
                 match (source_value, target_value) {
-                    (TranslationValue::String(source_str), TranslationValue::String(target_str)) => {
-                        errors.extend(Self::check_string_variables(&full_key, source_str, target_str));
+                    (
+                        TranslationValue::String(source_str),
+                        TranslationValue::String(target_str),
+                    ) => {
+                        errors.extend(Self::check_string_variables(
+                            &full_key, source_str, target_str,
+                        ));
                     }
-                    (TranslationValue::Plural(source_plural), TranslationValue::Plural(target_plural)) => {
+                    (
+                        TranslationValue::Plural(source_plural),
+                        TranslationValue::Plural(target_plural),
+                    ) => {
                         errors.extend(Self::check_string_variables(
                             &format!("{}.other", full_key),
                             &source_plural.other,
@@ -82,14 +90,29 @@ impl VariableValidator {
                         ));
 
                         if let (Some(s), Some(t)) = (&source_plural.one, &target_plural.one) {
-                            errors.extend(Self::check_string_variables(&format!("{}.one", full_key), s, t));
+                            errors.extend(Self::check_string_variables(
+                                &format!("{}.one", full_key),
+                                s,
+                                t,
+                            ));
                         }
                         if let (Some(s), Some(t)) = (&source_plural.few, &target_plural.few) {
-                            errors.extend(Self::check_string_variables(&format!("{}.few", full_key), s, t));
+                            errors.extend(Self::check_string_variables(
+                                &format!("{}.few", full_key),
+                                s,
+                                t,
+                            ));
                         }
                     }
-                    (TranslationValue::Nested(source_nested), TranslationValue::Nested(target_nested)) => {
-                        errors.extend(Self::validate_variables_recursive(source_nested, target_nested, full_key));
+                    (
+                        TranslationValue::Nested(source_nested),
+                        TranslationValue::Nested(target_nested),
+                    ) => {
+                        errors.extend(Self::validate_variables_recursive(
+                            source_nested,
+                            target_nested,
+                            full_key,
+                        ));
                     }
                     _ => {}
                 }
@@ -110,7 +133,8 @@ impl Validator for VariableValidator {
 
         for (namespace, source_map) in source {
             if let Some((_, target_map)) = target.iter().find(|(ns, _)| ns == namespace) {
-                let errors = Self::validate_variables_recursive(source_map, target_map, String::new());
+                let errors =
+                    Self::validate_variables_recursive(source_map, target_map, String::new());
 
                 for error in errors {
                     result.add_error(error);

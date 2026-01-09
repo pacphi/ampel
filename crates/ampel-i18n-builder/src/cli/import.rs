@@ -87,11 +87,13 @@ fn import_xliff(content: &str) -> Result<Vec<(String, TranslationMap)>> {
                 continue;
             }
 
-            let key = extract_attribute(trans_unit, "id")
-                .ok_or_else(|| crate::error::Error::Translation("Missing trans-unit id".to_string()))?;
+            let key = extract_attribute(trans_unit, "id").ok_or_else(|| {
+                crate::error::Error::Translation("Missing trans-unit id".to_string())
+            })?;
 
-            let target = extract_element_content(trans_unit, "target")
-                .ok_or_else(|| crate::error::Error::Translation("Missing target element".to_string()))?;
+            let target = extract_element_content(trans_unit, "target").ok_or_else(|| {
+                crate::error::Error::Translation("Missing target element".to_string())
+            })?;
 
             // Handle nested keys (e.g., "dashboard.title" -> {"dashboard": {"title": "..."}})
             insert_nested_key(&mut translations, &key, target);

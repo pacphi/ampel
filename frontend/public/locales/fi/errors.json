@@ -2,52 +2,52 @@
   "auth": {
     "failedToCreateAccount": "Tilin luominen epäonnistui",
     "forbidden": "Sinulla ei ole oikeutta käyttää tätä resurssia",
-    "invalidCredentials": "Virheellinen käyttäjänimi tai salasana",
-    "invalidEmailOrPassword": "Virheellinen sähköposti tai salasana",
+    "invalidCredentials": "Virheellinen käyttäjätunnus tai salasana",
+    "invalidEmailOrPassword": "Virheellinen sähköpostiosoite tai salasana",
     "loginFailed": "Kirjautuminen epäonnistui",
     "registrationFailed": "Rekisteröinti epäonnistui",
-    "sessionExpired": "Istuntosi on vanhentunut. Kirjaudu uudelleen sisään.",
-    "tokenExpired": "Autentikointitunnus on vanhentunut",
+    "sessionExpired": "Istuntosi on vanhentunut. Kirjaudu sisään uudelleen.",
+    "tokenExpired": "Todennustunnus on vanhentunut",
     "unauthorized": "Luvaton pääsy"
   },
   "generic": {
-    "goHome": "Mene kojelautaan",
-    "message": "Tapahtui odottamaton virhe. Yritä uudelleen.",
+    "goHome": "Siirry kojelautaan",
+    "message": "Odottamaton virhe tapahtui. Yritä uudelleen.",
     "retry": "Yritä uudelleen",
-    "title": "Jotain meni pieleen"
+    "title": "Jokin meni pieleen"
   },
   "network": {
-    "message": "Yhteys palvelimeen ei onnistu. Tarkista internet-yhteytesi.",
+    "message": "Palvelimeen ei saada yhteyttä. Tarkista internetyhteytesi.",
     "offline": "Olet tällä hetkellä offline-tilassa",
     "title": "Verkkovirhe"
   },
   "notFound": {
     "goHome": "Palaa kojelautaan",
     "message": "Etsimääsi sivua ei ole olemassa.",
-    "title": "Sivua ei löydy"
+    "title": "Sivua ei löytynyt"
   },
   "pr": {
-    "approveFailed": "Vetopyynnön hyväksyminen epäonnistui",
+    "approveFailed": "Pull-pyynnön hyväksyminen epäonnistui",
     "commentFailed": "Kommentin lähettäminen epäonnistui",
-    "loadFailed": "Vetopyyntöjen lataaminen epäonnistui",
-    "mergeFailed": "Vetopyynnön yhdistäminen epäonnistui"
+    "loadFailed": "Pull-pyyntöjen lataaminen epäonnistui",
+    "mergeFailed": "Pull-pyynnön yhdistäminen epäonnistui"
   },
   "provider": {
-    "connectionFailed": "Yhteys kohteeseen {{provider}} epäonnistui",
-    "invalidToken": "Virheellinen {{provider}}-tunnus",
-    "notFound": "Resurssia ei löydy kohteesta {{provider}}",
-    "rateLimited": "{{provider}} API:n nopeusrajoitus ylitetty"
+    "connectionFailed": "Yhteyden muodostaminen palveluntarjoajaan {{provider}} epäonnistui",
+    "invalidToken": "Virheellinen {{provider}}-token",
+    "notFound": "Resurssia ei löytynyt osoitteesta {{provider}}",
+    "rateLimited": "{{provider}} API-nopeusraja ylitetty"
   },
   "repository": {
-    "accessDenied": "Pääsy varastoon evätty",
-    "loadFailed": "Varastojen lataaminen epäonnistui",
-    "notFound": "Varastoa ei löydy"
+    "accessDenied": "Pääsy arkistoon evätty",
+    "loadFailed": "Repositorioiden lataaminen epäonnistui",
+    "notFound": "Arkistoa ei löytynyt"
   },
   "validation": {
     "invalidEmail": "Anna kelvollinen sähköpostiosoite",
-    "invalidUrl": "Anna kelvollinen URL",
-    "maxLength": "Ei saa ylittää {{max}} merkkiä",
-    "minLength": "Oltava vähintään {{min}} merkkiä",
+    "invalidUrl": "Anna kelvollinen URL-osoite",
+    "maxLength": "Enintään {{max}} merkkiä",
+    "minLength": "Vähintään {{min}} merkkiä",
     "passwordMismatch": "Salasanat eivät täsmää",
     "required": "Tämä kenttä on pakollinen"
   }

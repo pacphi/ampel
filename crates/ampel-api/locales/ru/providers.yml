@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Ошибка API поставщика: %{message} (status: %{status_code})'
+      auth_failed: 'Аутентификация не удалась: %{reason}'
+      config_error: 'Ошибка конфигурации: %{reason}'
+      invalid_response: 'Неверный ответ: %{reason}'
+      network_error: 'Сетевая ошибка: %{reason}'
+      not_found: 'Ресурс не найден: %{resource}'
+      not_supported: 'Операция не поддерживается: %{operation}'
+      permission_denied: 'Доступ запрещен: %{reason}'
+      rate_limit_exceeded: 'Превышен лимит запросов. Сброс происходит в: %{reset_time}'
+      serialization_error: 'Ошибка сериализации: %{reason}'
+    github:
+      api_error: 'Ошибка API: %{status}'
+      invalid_token: Недействительный токен
+      merge_checks_failed: Запрос на слияние не может быть объединен (проверьте статус и отзывы).
+      merge_conflict: Конфликт слияния или изменение головной ветви.
+      merge_failed: Не удалось объединить запрос на слияние.
+      merge_not_mergeable: Запрос на слияние не подлежит объединению.
+      pr_fetch_failed: Не удалось получить запрос на слияние.
+      pr_not_found: 'Запрос на слияние #%{number} не найден'
+      prs_fetch_failed: Не удалось отобразить запросы на слияние.
+      rate_limit_failed: Не удалось получить лимит скорости.
+      repo_fetch_failed: Не удалось получить репозиторий.
+      repo_not_found: Репозиторий %{owner}/%{repo} не найден
+      repos_fetch_failed: Не удалось получить список репозиториев.
+      reviews_fetch_failed: Не удалось получить отзывы
+      token_invalid: Недействительный или просроченный токен
+      user_fetch_failed: Не удалось получить пользователя.
+    worker:
+      account_not_found: Учетная запись поставщика не найдена
+      no_account: У репозитория нет связанного с ним аккаунта поставщика услуг.

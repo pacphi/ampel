@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Błąd interfejsu API dostawcy: %{message} (status: %{status_code})'
+      auth_failed: 'Uwierzytelnianie nie powiodło się: %{reason}'
+      config_error: 'Błąd konfiguracji: %{reason}'
+      invalid_response: 'Nieprawidłowa odpowiedź: %{reason}'
+      network_error: 'Błąd sieciowy: %{reason}'
+      not_found: 'Nie znaleziono zasobu: %{resource}'
+      not_supported: 'Operacja nie jest obsługiwana: %{operation}'
+      permission_denied: 'Odmowa dostępu: %{reason}'
+      rate_limit_exceeded: 'Przekroczono limit szybkości. Resetowanie o: %{reset_time}'
+      serialization_error: 'Błąd serializacji: %{reason}'
+    github:
+      api_error: 'Błąd API: %{status}'
+      invalid_token: Nieprawidłowy token
+      merge_checks_failed: Żądania ściągnięcia nie można scalić (sprawdź stan kontroli i recenzje)
+      merge_conflict: Konflikt scalenia lub zmodyfikowano gałąź główną
+      merge_failed: Nie udało się scalić żądania ściągnięcia
+      merge_not_mergeable: Żądanie ściągnięcia nie jest możliwe do scalania
+      pr_fetch_failed: Nie udało się pobrać żądania ściągnięcia
+      pr_not_found: 'Nie znaleziono żądania ściągnięcia #%{number}'
+      prs_fetch_failed: Nie udało się wyświetlić listy żądań ściągnięcia
+      rate_limit_failed: Nie udało się uzyskać limitu szybkości
+      repo_fetch_failed: Nie udało się pobrać repozytorium
+      repo_not_found: Repozytorium %{owner}/%{repo} nie zostało znalezione
+      repos_fetch_failed: Nie udało się wyświetlić listy repozytoriów
+      reviews_fetch_failed: Nie udało się uzyskać recenzji
+      token_invalid: Nieprawidłowy lub wygasły token
+      user_fetch_failed: Nie udało się uzyskać użytkownika
+    worker:
+      account_not_found: Nie znaleziono konta dostawcy
+      no_account: Repozytorium nie ma powiązanego konta dostawcy

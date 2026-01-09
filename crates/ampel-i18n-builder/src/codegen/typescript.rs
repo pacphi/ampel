@@ -22,7 +22,12 @@ impl TypeScriptGenerator {
     }
 
     /// Generate TypeScript interface from translation map
-    pub fn generate_types(&self, translations: &TranslationMap, language: &str, options: &GeneratorOptions) -> String {
+    pub fn generate_types(
+        &self,
+        translations: &TranslationMap,
+        language: &str,
+        options: &GeneratorOptions,
+    ) -> String {
         let mut output = String::new();
 
         // Header comment
@@ -32,7 +37,8 @@ impl TypeScriptGenerator {
                  // Language: {}\n\
                  // Generated at: {}\n\
                  // DO NOT EDIT - This file is auto-generated\n\n",
-                language, chrono::Utc::now()
+                language,
+                chrono::Utc::now()
             ));
         }
 
@@ -63,7 +69,9 @@ impl TypeScriptGenerator {
         output.push_str("/**\n");
         output.push_str(" * All valid translation keys with dot notation\n");
         output.push_str(" */\n");
-        output.push_str("export type TranslationKey = Join<PathsToStringProps<Translations>, '.'>;\n\n");
+        output.push_str(
+            "export type TranslationKey = Join<PathsToStringProps<Translations>, '.'>;\n\n",
+        );
 
         // Join helper type
         output.push_str("type Join<T extends string[], D extends string> =\n");
@@ -99,7 +107,12 @@ impl TypeScriptGenerator {
     }
 
     /// Insert a translation value into the type structure
-    fn insert_into_structure(&self, structure: &mut TypeStructure, key: &str, value: &TranslationValue) {
+    fn insert_into_structure(
+        &self,
+        structure: &mut TypeStructure,
+        key: &str,
+        value: &TranslationValue,
+    ) {
         if let TypeStructure::Object(ref mut map) = structure {
             match value {
                 TranslationValue::String(_) => {
@@ -139,7 +152,8 @@ impl TypeScriptGenerator {
 
                     match value {
                         TypeStructure::String => {
-                            output.push_str(&format!("{}  {}: string;\n", indent_str, sanitized_key));
+                            output
+                                .push_str(&format!("{}  {}: string;\n", indent_str, sanitized_key));
                         }
                         TypeStructure::Object(nested_map) => {
                             output.push_str(&format!("{}  {}: {{\n", indent_str, sanitized_key));
@@ -181,7 +195,10 @@ impl TypeScriptGenerator {
                         format!("\"{}\"", key)
                     };
                     let type_str = self.render_type(value, indent + 1);
-                    output.push_str(&format!("{}  {}: {};\n", indent_str, sanitized_key, type_str));
+                    output.push_str(&format!(
+                        "{}  {}: {};\n",
+                        indent_str, sanitized_key, type_str
+                    ));
                 }
                 output.push_str(&format!("{}}}", indent_str));
                 output
@@ -270,7 +287,9 @@ mod tests {
         let output_dir = PathBuf::from("/tmp/ampel-i18n-ts-test");
 
         let options = GeneratorOptions::default();
-        let result = generator.generate(&translations, "en", &output_dir, options).await;
+        let result = generator
+            .generate(&translations, "en", &output_dir, options)
+            .await;
 
         assert!(result.is_ok());
         let result = result.unwrap();

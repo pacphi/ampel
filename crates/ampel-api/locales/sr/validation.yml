@@ -1,0 +1,8 @@
+en:
+  validation:
+    account:
+      invalid: неважећи
+      valid: важећи
+    general:
+      invalid_format: Неважећи формат
+      required: Ово поље је обавезно

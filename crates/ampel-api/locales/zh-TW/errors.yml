@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: 此帳戶已連線。請使用 PATCH 函數更新令牌。
+      invalid_provider_type: 無效的提供者類型
+      invalid_token: 無效令牌
+      not_found: 未找到帳戶
+      provider_no_user_id: 提供者未傳回用戶 ID
+      provider_no_username: 提供者未返回用戶名
+      validation_failed: 令牌驗證失敗：%{error}
+    auth:
+      email_in_use: 郵箱已在使用中
+      email_registered: 信箱已註冊
+      invalid_credentials: 無效的電子郵件地址或密碼
+      invalid_refresh_token: 無效或已過期的刷新令牌
+      user_not_found: 用戶未找到
+    encryption:
+      decrypt_failed: 解密錯誤：%{error}
+      failed: 加密錯誤：%{error}
+    general:
+      internal: 內部錯誤
+      serialization_failed: 序列化作用域失敗：%{error}
+    network:
+      connection_failed: 連線失敗
+      timeout: 請求超時
+    provider:
+      decrypt_failed: 解密令牌失敗：%{error}
+      error: 提供者錯誤：%{error}
+    pull_request:
+      merge_failed: 合併失敗：%{reason}
+      not_found: 未找到拉取請求
+    rate_limit:
+      exceeded: 超出速率限制
+    repository:
+      already_added: 存儲庫已新增
+      invalid_provider: 無效的提供者
+      invalid_provider_db: 資料庫中的提供者類型無效
+      no_account_linked: 儲存庫未關聯到帳戶
+      not_found: 未找到儲存庫
+      not_found_for_pr: 未找到 PR 的倉庫
+      provider_not_connected: 服務提供者未連接

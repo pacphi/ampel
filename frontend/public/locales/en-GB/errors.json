@@ -1,22 +1,65 @@
 {
+  "auth": {
+    "accountExists": "An account with this email already exists",
+    "failedToCreateAccount": "Failed to create account",
+    "forbidden": "You don't have permission to access this resource",
+    "invalidCredentials": "Invalid username or password",
+    "invalidEmailOrPassword": "Invalid email or password",
+    "loginFailed": "Login failed",
+    "registrationFailed": "Registration failed",
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "tokenExpired": "Authentication token has expired",
+    "unauthorized": "Unauthorized access"
+  },
   "general": {
-    "unknown": "An unknown error occurred",
+    "forbidden": "You don't have permission to access this resource",
     "network": "Network error. Please check your connection",
-    "server": "Server error. Please try again later",
     "notFound": "Resource not found",
+    "server": "Server error. Please try again later",
     "unauthorised": "Unauthorised. Please log in again",
-    "forbidden": "You don't have permission to access this resource"
+    "unknown": "An unknown error occurred"
+  },
+  "generic": {
+    "goHome": "Go to dashboard",
+    "message": "An unexpected error occurred. Please try again.",
+    "retry": "Try again",
+    "title": "Something went wrong"
+  },
+  "network": {
+    "message": "Unable to connect to the server. Please check your internet connection.",
+    "offline": "You are currently offline",
+    "title": "Network error"
+  },
+  "notFound": {
+    "goHome": "Return to dashboard",
+    "message": "The page you are looking for does not exist.",
+    "title": "Page not found"
+  },
+  "pr": {
+    "approveFailed": "Failed to approve pull request",
+    "commentFailed": "Failed to post comment",
+    "loadFailed": "Failed to load pull requests",
+    "mergeFailed": "Failed to merge pull request"
+  },
+  "provider": {
+    "connectionFailed": "Failed to connect to {{provider}}",
+    "invalidToken": "Invalid {{provider}} token",
+    "notFound": "Resource not found on {{provider}}",
+    "rateLimited": "{{provider}} API rate limit exceeded"
+  },
+  "repository": {
+    "accessDenied": "Access to repository denied",
+    "loadFailed": "Failed to load repositories",
+    "notFound": "Repository not found"
   },
   "validation": {
-    "required": "This field is required",
-    "invalidEmail": "Invalid email address",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidUrl": "Please enter a valid URL",
+    "maxLength": "Must not exceed {{max}} characters",
+    "minLength": "Must be at least {{min}} characters",
+    "passwordMismatch": "Passwords do not match",
     "passwordTooShort": "Password must be at least 8 characters",
     "passwordsDoNotMatch": "Passwords do not match",
-    "invalidUrl": "Invalid URL format"
-  },
-  "auth": {
-    "invalidCredentials": "Invalid email or password",
-    "sessionExpired": "Your session has expired. Please log in again",
-    "accountExists": "An account with this email already exists"
+    "required": "This field is required"
   }
 }

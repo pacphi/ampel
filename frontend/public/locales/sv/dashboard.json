@@ -1,1 +1,89 @@
-{}
+{
+  "actions": {
+    "approve": "Godkänna",
+    "comment": "Kommentar",
+    "deselectAll": "Avmarkera alla",
+    "merge": "Slå ihop",
+    "refresh": "Uppdatera",
+    "requestChanges": "Begär ändringar",
+    "selectAll": "Markera alla",
+    "viewOnProvider": "Visa på {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Väntar på granskning",
+    "changesRequested": "Ändringar begärda",
+    "ciFailed": "CI misslyckades",
+    "ciPending": "CI väntar",
+    "conflicts": "Konflikter",
+    "draft": "Förslag",
+    "needsReview": "Behöver granskas"
+  },
+  "empty": {
+    "action": "Anslut leverantör",
+    "description": "Anslut dina Git-leverantörer för att börja spåra PR:er",
+    "title": "Inga pull requests hittades"
+  },
+  "filters": {
+    "all": "Alla",
+    "assignee": "Övertagare",
+    "author": "Författare",
+    "closed": "Stängd",
+    "draft": "Förslag",
+    "label": "Märka",
+    "merged": "Sammanfogad",
+    "onlyWithPrs": "Visa arkiv med öppna PR:er",
+    "open": "Öppna",
+    "provider": "Leverantör",
+    "repository": "Förvaring"
+  },
+  "pr": {
+    "additions": "Tillägg",
+    "author": "Författare",
+    "comments": "Kommentarer",
+    "createdAt": "Skapad",
+    "deletions": "Borttagningar",
+    "number": "#{{antal}}",
+    "sourceBranch": "Källgren",
+    "targetBranch": "Målgren",
+    "updatedAt": "Uppdaterad"
+  },
+  "prDashboard": "PR-instrumentpanel",
+  "sort": {
+    "author": "Författare",
+    "created": "Skapad datum",
+    "repository": "Förvaring",
+    "status": "Status",
+    "title": "Sortera efter",
+    "updated": "Senast uppdaterad"
+  },
+  "stats": {
+    "blocked": "Blockerad",
+    "inProgress": "Pågår",
+    "needsAttention": "Behöver uppmärksamhet",
+    "open": "Öppna",
+    "openPRs": "Öppna PR:er",
+    "ready": "Klar att slås samman",
+    "readyToMerge": "Klar att slås samman",
+    "total": "Totalt antal PR:er",
+    "totalRepositories": "Totalt antal arkiv"
+  },
+  "status": {
+    "closed": "Stängd",
+    "draft": "Förslag",
+    "green": "Klar att slås samman",
+    "merged": "Sammanfogad",
+    "red": "Blockerad",
+    "yellow": "Pågår"
+  },
+  "subtitle": "Hantera dina pull requests över alla leverantörer",
+  "title": "Instrumentpanel",
+  "views": {
+    "grid": "Rutnätsvy",
+    "list": "Listvy",
+    "prs": "Vyn Pull requests",
+    "pullRequests": "Vyn Pull requests",
+    "repositoryGrid": "Rutnätvy för arkivet",
+    "repositoryList": "Listvy för arkiv",
+    "table": "Tabellvy"
+  }
+}

@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Error de API del proveedor: %{message} (estado: %{status_code})'
+      auth_failed: 'Error de autenticación: %{reason}'
+      config_error: 'Error de configuración: %{reason}'
+      invalid_response: 'Respuesta no válida: %{reason}'
+      network_error: 'Error de red: %{reason}'
+      not_found: 'Recurso no encontrado: %{resource}'
+      not_supported: 'Operación no admitida: %{operation}'
+      permission_denied: 'Permiso denegado: %{reason}'
+      rate_limit_exceeded: 'Límite de velocidad excedido. Se reinicia a las: %{reset_time}'
+      serialization_error: 'Error de serialización: %{reason}'
+    github:
+      api_error: 'Error de API: %{status}'
+      invalid_token: Token inválido
+      merge_checks_failed: La solicitud de extracción no se puede fusionar (verifique las verificaciones de estado y las revisiones)
+      merge_conflict: Conflicto de fusión o se modificó la rama principal
+      merge_failed: No se pudo fusionar la solicitud de extracción
+      merge_not_mergeable: La solicitud de extracción no se puede fusionar
+      pr_fetch_failed: No se pudo obtener la solicitud de extracción
+      pr_not_found: Solicitud de extracción n.° %{number} no encontrada
+      prs_fetch_failed: No se pudieron listar las solicitudes de extracción
+      rate_limit_failed: No se pudo obtener el límite de velocidad
+      repo_fetch_failed: No se pudo obtener el repositorio
+      repo_not_found: Repositorio %{owner}/%{repo} no encontrado
+      repos_fetch_failed: No se pudieron listar los repositorios
+      reviews_fetch_failed: No se pudieron obtener reseñas
+      token_invalid: Token inválido o caducado
+      user_fetch_failed: No se pudo obtener el usuario
+    worker:
+      account_not_found: Cuenta de proveedor no encontrada
+      no_account: El repositorio no tiene ninguna cuenta de proveedor asociada

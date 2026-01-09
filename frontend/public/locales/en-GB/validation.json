@@ -1,23 +1,48 @@
 {
-  "required": "This field is required",
-  "email": {
-    "invalid": "Invalid email address",
-    "required": "Email is required"
+  "alphanum": "{{field}} must contain only letters and numbers",
+  "date": "Please enter a valid date",
+  "dateRange": "End date must be after start date",
+  "email": "Please enter a valid email address",
+  "fields": {
+    "confirmPassword": "Confirm password",
+    "displayName": "Display name",
+    "email": "Email",
+    "password": "Password"
   },
-  "password": {
-    "tooShort": "Password must be at least 8 characters",
-    "required": "Password is required",
-    "noMatch": "Passwords do not match"
+  "fileSize": "File size must not exceed {{max}}",
+  "fileType": "File type must be {{types}}",
+  "integer": "{{field}} must be an integer",
+  "invalidEmail": "Invalid email address",
+  "max": "{{field}} must not exceed {{max}}",
+  "maxLength": "{{field}} must not exceed {{max}} characters",
+  "messages": {
+    "displayNameRequired": "Display name is required",
+    "emailRequired": "Email is required",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordRequired": "Password is required"
   },
-  "url": {
-    "invalid": "Invalid URL format"
-  },
-  "string": {
-    "tooShort": "Must be at least {{min}} characters",
-    "tooLong": "Must be no more than {{max}} characters"
-  },
+  "min": "{{field}} must be at least {{min}}",
+  "minLength": "{{field}} must be at least {{min}} characters",
+  "negative": "{{field}} must be negative",
   "number": {
-    "tooSmall": "Must be at least {{min}}",
-    "tooLarge": "Must be no more than {{max}}"
-  }
+    "tooLarge": "Must be no more than {{max}}",
+    "tooSmall": "Must be at least {{min}}"
+  },
+  "numeric": "{{field}} must be a number",
+  "password": {
+    "noMatch": "Passwords do not match",
+    "required": "Password is required",
+    "tooShort": "Password must be at least 8 characters"
+  },
+  "passwordMismatch": "Passwords do not match",
+  "passwordsDontMatch": "Passwords don't match",
+  "pattern": "{{field}} format is invalid",
+  "positive": "{{field}} must be positive",
+  "required": "{{field}} is required",
+  "string": {
+    "tooLong": "Must be no more than {{max}} characters",
+    "tooShort": "Must be at least {{min}} characters"
+  },
+  "unique": "{{field}} already exists",
+  "url": "Please enter a valid URL"
 }

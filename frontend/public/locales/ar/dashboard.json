@@ -42,7 +42,7 @@
     "comments": "التعليقات",
     "createdAt": "أنشئت",
     "deletions": "الحذف",
-    "number": "#{{number}}",
+    "number": "#{{رقم}}",
     "sourceBranch": "الفرع المصدر",
     "targetBranch": "الفرع الهدف",
     "updatedAt": "تم التحديث"

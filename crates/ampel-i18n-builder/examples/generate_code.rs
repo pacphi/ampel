@@ -52,12 +52,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Display generated TypeScript
     println!("\n--- Generated TypeScript (types.ts) ---");
     let ts_content = std::fs::read_to_string(ts_output.join("types.ts"))?;
-    println!("{}", ts_content.lines().take(50).collect::<Vec<_>>().join("\n"));
+    println!(
+        "{}",
+        ts_content.lines().take(50).collect::<Vec<_>>().join("\n")
+    );
 
     // Display generated Rust
     println!("\n--- Generated Rust (keys.rs) ---");
     let rust_content = std::fs::read_to_string(rust_output.join("keys.rs"))?;
-    println!("{}", rust_content.lines().take(50).collect::<Vec<_>>().join("\n"));
+    println!(
+        "{}",
+        rust_content.lines().take(50).collect::<Vec<_>>().join("\n")
+    );
 
     Ok(())
 }

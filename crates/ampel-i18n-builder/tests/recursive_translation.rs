@@ -1,6 +1,8 @@
 //! Integration tests for recursive translation of nested objects and plural forms
 
-use ampel_i18n_builder::formats::{JsonFormat, PluralForms, TranslationFormat, TranslationMap, TranslationValue};
+use ampel_i18n_builder::formats::{
+    JsonFormat, PluralForms, TranslationFormat, TranslationMap, TranslationValue,
+};
 use std::collections::BTreeMap;
 
 #[test]
@@ -9,20 +11,38 @@ fn test_flatten_nested_structure() {
 
     // Create nested structure: app.title, app.name, auth.login
     let mut app_nested = BTreeMap::new();
-    app_nested.insert("title".to_string(), TranslationValue::String("Ampel PR Dashboard".to_string()));
-    app_nested.insert("name".to_string(), TranslationValue::String("Ampel".to_string()));
+    app_nested.insert(
+        "title".to_string(),
+        TranslationValue::String("Ampel PR Dashboard".to_string()),
+    );
+    app_nested.insert(
+        "name".to_string(),
+        TranslationValue::String("Ampel".to_string()),
+    );
 
     let mut auth_nested = BTreeMap::new();
-    auth_nested.insert("login".to_string(), TranslationValue::String("Login".to_string()));
-    auth_nested.insert("logout".to_string(), TranslationValue::String("Logout".to_string()));
+    auth_nested.insert(
+        "login".to_string(),
+        TranslationValue::String("Login".to_string()),
+    );
+    auth_nested.insert(
+        "logout".to_string(),
+        TranslationValue::String("Logout".to_string()),
+    );
 
     map.insert("app".to_string(), TranslationValue::Nested(app_nested));
     map.insert("auth".to_string(), TranslationValue::Nested(auth_nested));
 
     // Verify structure
     if let Some(TranslationValue::Nested(app)) = map.get("app") {
-        assert_eq!(app.get("title"), Some(&TranslationValue::String("Ampel PR Dashboard".to_string())));
-        assert_eq!(app.get("name"), Some(&TranslationValue::String("Ampel".to_string())));
+        assert_eq!(
+            app.get("title"),
+            Some(&TranslationValue::String("Ampel PR Dashboard".to_string()))
+        );
+        assert_eq!(
+            app.get("name"),
+            Some(&TranslationValue::String("Ampel".to_string()))
+        );
     } else {
         panic!("Expected nested app structure");
     }
@@ -90,11 +110,20 @@ fn test_write_nested_json() {
     let mut map = TranslationMap::new();
 
     let mut app_nested = BTreeMap::new();
-    app_nested.insert("title".to_string(), TranslationValue::String("Ampel".to_string()));
-    app_nested.insert("name".to_string(), TranslationValue::String("Ampel PR".to_string()));
+    app_nested.insert(
+        "title".to_string(),
+        TranslationValue::String("Ampel".to_string()),
+    );
+    app_nested.insert(
+        "name".to_string(),
+        TranslationValue::String("Ampel PR".to_string()),
+    );
 
     map.insert("app".to_string(), TranslationValue::Nested(app_nested));
-    map.insert("simple".to_string(), TranslationValue::String("Simple value".to_string()));
+    map.insert(
+        "simple".to_string(),
+        TranslationValue::String("Simple value".to_string()),
+    );
 
     let format = JsonFormat::new();
     let json = format.write(&map).unwrap();
@@ -146,11 +175,20 @@ fn test_all_strings_extraction() {
     let mut map = TranslationMap::new();
 
     let mut app_nested = BTreeMap::new();
-    app_nested.insert("title".to_string(), TranslationValue::String("Title".to_string()));
-    app_nested.insert("name".to_string(), TranslationValue::String("Name".to_string()));
+    app_nested.insert(
+        "title".to_string(),
+        TranslationValue::String("Title".to_string()),
+    );
+    app_nested.insert(
+        "name".to_string(),
+        TranslationValue::String("Name".to_string()),
+    );
 
     map.insert("app".to_string(), TranslationValue::Nested(app_nested));
-    map.insert("simple".to_string(), TranslationValue::String("Simple".to_string()));
+    map.insert(
+        "simple".to_string(),
+        TranslationValue::String("Simple".to_string()),
+    );
 
     // Extract all strings
     let mut all_strings = Vec::new();
@@ -228,13 +266,22 @@ fn test_mixed_structure() {
     assert_eq!(map.len(), 3);
 
     // Verify simple string
-    assert!(matches!(map.get("simple"), Some(TranslationValue::String(_))));
+    assert!(matches!(
+        map.get("simple"),
+        Some(TranslationValue::String(_))
+    ));
 
     // Verify nested structure
-    assert!(matches!(map.get("nested"), Some(TranslationValue::Nested(_))));
+    assert!(matches!(
+        map.get("nested"),
+        Some(TranslationValue::Nested(_))
+    ));
 
     // Verify plural structure
-    assert!(matches!(map.get("plural"), Some(TranslationValue::Nested(_))));
+    assert!(matches!(
+        map.get("plural"),
+        Some(TranslationValue::Nested(_))
+    ));
 }
 
 #[test]

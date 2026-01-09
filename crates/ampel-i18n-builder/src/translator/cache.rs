@@ -56,7 +56,6 @@ impl FileCache {
         }
     }
 
-
     /// Get cached translation for a key
     pub fn get(
         &self,
@@ -76,10 +75,7 @@ impl FileCache {
                 if let Some(entry) = cache.entries.get(key) {
                     // Validate source text matches (invalidate if changed)
                     if entry.source_text == source_text {
-                        debug!(
-                            "Cache hit: {} -> {} ({})",
-                            key, target_lang, entry.provider
-                        );
+                        debug!("Cache hit: {} -> {} ({})", key, target_lang, entry.provider);
                         return Some(entry.translated_text.clone());
                     } else {
                         debug!(
@@ -300,14 +296,7 @@ mod tests {
         let cache = FileCache::new(temp_dir.path());
 
         cache
-            .set(
-                "fi",
-                "dashboard",
-                "greeting",
-                "Hello",
-                "Terve",
-                "deepl",
-            )
+            .set("fi", "dashboard", "greeting", "Hello", "Terve", "deepl")
             .unwrap();
 
         let result = cache.get("fi", "dashboard", "greeting", "Hello");
@@ -325,7 +314,11 @@ mod tests {
 
         let translations = vec![
             ("key1".to_string(), "Hello".to_string(), "Terve".to_string()),
-            ("key2".to_string(), "World".to_string(), "Maailma".to_string()),
+            (
+                "key2".to_string(),
+                "World".to_string(),
+                "Maailma".to_string(),
+            ),
         ];
 
         cache

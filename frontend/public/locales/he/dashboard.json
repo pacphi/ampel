@@ -1,59 +1,89 @@
 {
-  "title": "PR Dashboard",
-  "subtitle": "Manage your pull requests across all providers",
+  "actions": {
+    "approve": "לְאַשֵׁר",
+    "comment": "הֶעָרָה",
+    "deselectAll": "בטל את הבחירה של הכל",
+    "merge": "לְמַזֵג",
+    "refresh": "לְרַעֲנֵן",
+    "requestChanges": "בקשת שינויים",
+    "selectAll": "בחר הכל",
+    "viewOnProvider": "הצג ב-{{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "ממתין לביקורת",
+    "changesRequested": "נדרשות שינויים",
+    "ciFailed": "CI נכשל",
+    "ciPending": "CI ממתין",
+    "conflicts": "סכסוכים",
+    "draft": "טיוטה",
+    "needsReview": "דורש בחינה"
+  },
   "empty": {
-    "title": "No pull requests found",
-    "description": "Connect your Git providers to start tracking PRs",
-    "action": "Connect Provider"
+    "action": "ספק חיבור",
+    "description": "חברו את ספקי ה-Git שלכם כדי להתחיל לעקוב אחר PRs",
+    "title": "לא נמצאו בקשות משיכה"
   },
   "filters": {
-    "all": "All",
-    "open": "Open",
-    "closed": "Closed",
-    "merged": "Merged",
-    "draft": "Draft",
-    "provider": "Provider",
-    "repository": "Repository",
-    "author": "Author",
-    "assignee": "Assignee",
-    "label": "Label"
+    "all": "כֹּל",
+    "assignee": "נִמחֶה",
+    "author": "מְחַבֵּר",
+    "closed": "סָגוּר",
+    "draft": "טְיוּטָה",
+    "label": "מַדבֵּקָה",
+    "merged": "ממוזג",
+    "onlyWithPrs": "הצג מאגרים עם PRs פתוחים",
+    "open": "לִפְתוֹחַ",
+    "provider": "ספק",
+    "repository": "מאגר"
   },
-  "status": {
-    "green": "Ready to merge",
-    "yellow": "In progress",
-    "red": "Blocked",
-    "draft": "Draft",
-    "merged": "Merged",
-    "closed": "Closed"
+  "pr": {
+    "additions": "תוספות",
+    "author": "מחבר",
+    "comments": "הערות",
+    "createdAt": "נוצר",
+    "deletions": "מחיקות",
+    "number": "#{{מִספָּר}}",
+    "sourceBranch": "ענף מקור",
+    "targetBranch": "ענף מטרה",
+    "updatedAt": "עודכן"
   },
-  "actions": {
-    "merge": "Merge",
-    "approve": "Approve",
-    "requestChanges": "Request Changes",
-    "comment": "Comment",
-    "viewOnProvider": "View on {{provider}}",
-    "refresh": "Refresh",
-    "selectAll": "Select All",
-    "deselectAll": "Deselect All"
+  "prDashboard": "לוח PR",
+  "sort": {
+    "author": "מְחַבֵּר",
+    "created": "תאריך יצירה",
+    "repository": "מאגר",
+    "status": "סטָטוּס",
+    "title": "מיין לפי",
+    "updated": "עודכן לאחרונה"
   },
   "stats": {
-    "total": "Total PRs",
-    "open": "Open",
-    "ready": "Ready to merge",
-    "inProgress": "In progress",
-    "blocked": "Blocked"
+    "blocked": "חָסוּם",
+    "inProgress": "בתהליך",
+    "needsAttention": "דורש תשומת לב",
+    "open": "לִפְתוֹחַ",
+    "openPRs": "PRs פתוחים",
+    "ready": "מוכן למיזוג",
+    "readyToMerge": "מוכן למיזוג",
+    "total": "סך כל היחסי ציבור",
+    "totalRepositories": "סה\"כ מאגרים"
   },
+  "status": {
+    "closed": "סָגוּר",
+    "draft": "טְיוּטָה",
+    "green": "מוכן למיזוג",
+    "merged": "ממוזג",
+    "red": "חָסוּם",
+    "yellow": "בתהליך"
+  },
+  "subtitle": "נהל את בקשות המשיכה שלך בכל הספקים",
+  "title": "PR Dashboard",
   "views": {
-    "grid": "Grid view",
-    "list": "List view",
-    "table": "Table view"
-  },
-  "sort": {
-    "title": "Sort by",
-    "updated": "Last updated",
-    "created": "Created date",
-    "author": "Author",
-    "status": "Status",
-    "repository": "Repository"
+    "grid": "תצוגת רשת",
+    "list": "תצוגת רשימה",
+    "prs": "תצוגת בקשות משיכה",
+    "pullRequests": "תצוגת בקשות משיכה",
+    "repositoryGrid": "תצוגת רשת מאגר",
+    "repositoryList": "תצוגת רשימת מאגר",
+    "table": "תצוגת טבלה"
   }
 }

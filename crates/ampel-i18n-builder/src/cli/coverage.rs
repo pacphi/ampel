@@ -72,7 +72,10 @@ pub async fn execute(args: CoverageArgs) -> Result<()> {
 
     // Display results
     println!("\n{} Coverage Report", "=".cyan().bold());
-    println!("{:<12} {:>10} {:>10} {:>10} {:>12}", "Language", "Coverage", "Translated", "Total", "Missing");
+    println!(
+        "{:<12} {:>10} {:>10} {:>10} {:>12}",
+        "Language", "Coverage", "Translated", "Total", "Missing"
+    );
     println!("{}", "─".repeat(60));
 
     let mut has_failures = false;
@@ -89,11 +92,7 @@ pub async fn execute(args: CoverageArgs) -> Result<()> {
 
         println!(
             "{:<12} {:>10} {:>10} {:>10} {:>12}",
-            result.language,
-            coverage_colored,
-            result.translated,
-            result.total,
-            result.missing_keys
+            result.language, coverage_colored, result.translated, result.total, result.missing_keys
         );
 
         // Check threshold
@@ -105,10 +104,14 @@ pub async fn execute(args: CoverageArgs) -> Result<()> {
     }
 
     // Summary
-    let avg_coverage = coverage_results.iter().map(|r| r.coverage).sum::<f32>()
-        / coverage_results.len() as f32;
+    let avg_coverage =
+        coverage_results.iter().map(|r| r.coverage).sum::<f32>() / coverage_results.len() as f32;
 
-    println!("\n{} Average Coverage: {:.1}%", "=".cyan().bold(), avg_coverage * 100.0);
+    println!(
+        "\n{} Average Coverage: {:.1}%",
+        "=".cyan().bold(),
+        avg_coverage * 100.0
+    );
 
     // Check threshold
     if let Some(min_coverage) = args.min_coverage {
@@ -185,10 +188,7 @@ fn count_keys(map: &BTreeMap<String, TranslationValue>) -> usize {
     count
 }
 
-fn discover_languages(
-    translation_dir: &std::path::PathBuf,
-    exclude: &str,
-) -> Result<Vec<String>> {
+fn discover_languages(translation_dir: &std::path::PathBuf, exclude: &str) -> Result<Vec<String>> {
     let mut languages = Vec::new();
 
     if !translation_dir.exists() {

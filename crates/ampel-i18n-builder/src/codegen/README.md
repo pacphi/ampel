@@ -112,6 +112,7 @@ cargo test -p ampel-i18n-builder --lib codegen
 ```
 
 All generators include comprehensive unit tests:
+
 - Translation key flattening
 - Identifier validation and sanitization
 - Namespace extraction

@@ -29,7 +29,13 @@ pub struct DeepLTranslator {
     client: reqwest::Client,
     config: ProviderConfig,
     cache: Arc<Mutex<LruCache<CacheKey, String>>>,
-    rate_limiter: Arc<GovernorRateLimiter<governor::state::NotKeyed, governor::state::InMemoryState, governor::clock::DefaultClock>>,
+    rate_limiter: Arc<
+        GovernorRateLimiter<
+            governor::state::NotKeyed,
+            governor::state::InMemoryState,
+            governor::clock::DefaultClock,
+        >,
+    >,
     usage_chars: Arc<Mutex<u64>>,
     usage_calls: Arc<Mutex<u64>>,
     cache_hits: Arc<Mutex<u64>>,
@@ -61,12 +67,9 @@ impl DeepLTranslator {
             .map_err(|e| Error::Config(format!("Failed to build HTTP client: {}", e)))?;
 
         // Rate limiter: configurable requests per second
-        let rate_limiter = Arc::new(GovernorRateLimiter::direct(
-            Quota::per_second(
-                std::num::NonZeroU32::new(config.rate_limit_per_sec)
-                    .unwrap_or(nonzero!(10u32))
-            )
-        ));
+        let rate_limiter = Arc::new(GovernorRateLimiter::direct(Quota::per_second(
+            std::num::NonZeroU32::new(config.rate_limit_per_sec).unwrap_or(nonzero!(10u32)),
+        )));
 
         // LRU cache with 1000 entries
         // SAFETY: 1000 is a non-zero constant
@@ -94,7 +97,11 @@ impl DeepLTranslator {
     }
 
     /// Make API request with exponential backoff retry
-    async fn translate_with_retry(&self, texts: &[String], target_lang: &str) -> Result<Vec<String>> {
+    async fn translate_with_retry(
+        &self,
+        texts: &[String],
+        target_lang: &str,
+    ) -> Result<Vec<String>> {
         let mut attempt = 0;
         let mut delay = self.config.retry_delay_ms;
 
@@ -118,7 +125,10 @@ impl DeepLTranslator {
             let response = self
                 .client
                 .post("https://api-free.deepl.com/v2/translate")
-                .header("Authorization", format!("DeepL-Auth-Key {}", self.config.api_key))
+                .header(
+                    "Authorization",
+                    format!("DeepL-Auth-Key {}", self.config.api_key),
+                )
                 .json(&request)
                 .send()
                 .await;
@@ -129,16 +139,26 @@ impl DeepLTranslator {
 
                     if status.is_success() {
                         let deepl_response: DeepLResponse = resp.json().await?;
-                        return Ok(deepl_response.translations.into_iter().map(|t| t.text).collect());
+                        return Ok(deepl_response
+                            .translations
+                            .into_iter()
+                            .map(|t| t.text)
+                            .collect());
                     }
 
-                    let error_body = resp.text().await.unwrap_or_else(|_| "Unable to read error response".to_string());
+                    let error_body = resp
+                        .text()
+                        .await
+                        .unwrap_or_else(|_| "Unable to read error response".to_string());
 
                     // Check if retryable
                     let is_retryable = matches!(status.as_u16(), 408 | 429 | 500 | 502 | 503 | 504);
 
                     if !is_retryable {
-                        return Err(Error::Api(format!("DeepL API error {}: {}", status, error_body)));
+                        return Err(Error::Api(format!(
+                            "DeepL API error {}: {}",
+                            status, error_body
+                        )));
                     }
 
                     attempt += 1;
@@ -149,17 +169,24 @@ impl DeepLTranslator {
                         )));
                     }
 
-                    warn!("DeepL API request failed (attempt {}/{}): {} {}",
-                        attempt, self.config.max_retries, status, error_body);
+                    warn!(
+                        "DeepL API request failed (attempt {}/{}): {} {}",
+                        attempt, self.config.max_retries, status, error_body
+                    );
                 }
                 Err(e) => {
                     attempt += 1;
                     if attempt >= self.config.max_retries {
-                        return Err(Error::Api(format!("Network error after {} attempts: {}", attempt, e)));
+                        return Err(Error::Api(format!(
+                            "Network error after {} attempts: {}",
+                            attempt, e
+                        )));
                     }
 
-                    warn!("DeepL API network error (attempt {}/{}): {}",
-                        attempt, self.config.max_retries, e);
+                    warn!(
+                        "DeepL API network error (attempt {}/{}): {}",
+                        attempt, self.config.max_retries, e
+                    );
                 }
             }
 
@@ -228,14 +255,18 @@ impl TranslationService for DeepLTranslator {
         for (key, text) in &text_entries {
             let cache_key = self.cache_key(text, "en", target_lang);
 
-            let cached = self.cache.lock()
+            let cached = self
+                .cache
+                .lock()
                 .map_err(|e| Error::Internal(format!("Cache lock poisoned: {}", e)))?
                 .get(&cache_key)
                 .cloned();
 
             if let Some(cached_text) = cached {
                 cached_results.insert(key.clone(), cached_text);
-                *self.cache_hits.lock()
+                *self
+                    .cache_hits
+                    .lock()
                     .map_err(|e| Error::Internal(format!("Cache hits lock poisoned: {}", e)))? += 1;
             } else {
                 uncached_entries.push((key.clone(), text.clone()));
@@ -259,22 +290,31 @@ impl TranslationService for DeepLTranslator {
 
             // Update usage metrics
             let chars: usize = chunk_texts.iter().map(|s| s.len()).sum();
-            *self.usage_chars.lock()
-                .map_err(|e| Error::Internal(format!("Usage chars lock poisoned: {}", e)))? += chars as u64;
-            *self.usage_calls.lock()
+            *self
+                .usage_chars
+                .lock()
+                .map_err(|e| Error::Internal(format!("Usage chars lock poisoned: {}", e)))? +=
+                chars as u64;
+            *self
+                .usage_calls
+                .lock()
                 .map_err(|e| Error::Internal(format!("Usage calls lock poisoned: {}", e)))? += 1;
 
             // Cache results
             for (text, translation) in chunk_texts.iter().zip(translations.iter()) {
                 let cache_key = self.cache_key(text, "en", target_lang);
-                self.cache.lock()
+                self.cache
+                    .lock()
                     .map_err(|e| Error::Internal(format!("Cache lock poisoned: {}", e)))?
                     .put(cache_key, translation.clone());
             }
 
-            all_translations.extend(chunk.iter().zip(translations.iter()).map(|((key, _), translation)| {
-                (key.clone(), translation.clone())
-            }));
+            all_translations.extend(
+                chunk
+                    .iter()
+                    .zip(translations.iter())
+                    .map(|((key, _), translation)| (key.clone(), translation.clone())),
+            );
         }
 
         // Merge cached and new translations

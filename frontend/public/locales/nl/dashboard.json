@@ -1,1 +1,89 @@
-{}
+{
+  "actions": {
+    "approve": "Goedkeuren",
+    "comment": "Opmerking",
+    "deselectAll": "Alles deselecteren",
+    "merge": "Samenvoegen",
+    "refresh": "Vernieuwen",
+    "requestChanges": "Wijzigingen aanvragen",
+    "selectAll": "Alles selecteren",
+    "viewOnProvider": "Bekijken op {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "In afwachting van beoordeling",
+    "changesRequested": "Gevraagde wijzigingen",
+    "ciFailed": "CI mislukt",
+    "ciPending": "CI in behandeling",
+    "conflicts": "Conflicten",
+    "draft": "Voorlopige versie",
+    "needsReview": "Moet beoordeeld worden"
+  },
+  "empty": {
+    "action": "Connect Provider",
+    "description": "Verbind uw Git-providers om pull-requests te gaan volgen.",
+    "title": "Geen pull-requests gevonden"
+  },
+  "filters": {
+    "all": "Alle",
+    "assignee": "Cessionaris",
+    "author": "Auteur",
+    "closed": "Gesloten",
+    "draft": "Voorlopige versie",
+    "label": "Label",
+    "merged": "Samengevoegd",
+    "onlyWithPrs": "Toon repositories met open pull requests.",
+    "open": "Open",
+    "provider": "Aanbieder",
+    "repository": "Opslagplaats"
+  },
+  "pr": {
+    "additions": "Toevoegingen",
+    "author": "Auteur",
+    "comments": "Opmerkingen",
+    "createdAt": "Gemaakt",
+    "deletions": "Verwijderingen",
+    "number": "#{{nummer}}",
+    "sourceBranch": "Brontak",
+    "targetBranch": "Doelfiliaal",
+    "updatedAt": "Bijgewerkt"
+  },
+  "prDashboard": "PR-dashboard",
+  "sort": {
+    "author": "Auteur",
+    "created": "Aanmaakdatum",
+    "repository": "Opslagplaats",
+    "status": "Status",
+    "title": "Sorteren op",
+    "updated": "Laatst bijgewerkt"
+  },
+  "stats": {
+    "blocked": "Geblokkeerd",
+    "inProgress": "In behandeling",
+    "needsAttention": "Vereist aandacht",
+    "open": "Open",
+    "openPRs": "Open PR's",
+    "ready": "Klaar om te fuseren",
+    "readyToMerge": "Klaar om te fuseren",
+    "total": "Totaal PR's",
+    "totalRepositories": "Totaal aantal repositories"
+  },
+  "status": {
+    "closed": "Gesloten",
+    "draft": "Voorlopige versie",
+    "green": "Klaar om te fuseren",
+    "merged": "Samengevoegd",
+    "red": "Geblokkeerd",
+    "yellow": "In behandeling"
+  },
+  "subtitle": "Beheer uw pull-aanvragen voor alle providers.",
+  "title": "Dashboard",
+  "views": {
+    "grid": "Rasterweergave",
+    "list": "Lijstweergave",
+    "prs": "Pull-aanvragen bekijken",
+    "pullRequests": "Pull-aanvragen bekijken",
+    "repositoryGrid": "Repository rasterweergave",
+    "repositoryList": "Lijstweergave van repositories",
+    "table": "Tabelweergave"
+  }
+}

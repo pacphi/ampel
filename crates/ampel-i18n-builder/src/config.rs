@@ -249,7 +249,7 @@ impl ProviderConfig {
             priority: 4,
             timeout_secs: 60,
             max_retries: 2,
-            batch_size: 0, // Unlimited (context window limited)
+            batch_size: 0,         // Unlimited (context window limited)
             rate_limit_per_sec: 0, // No rate limiting
             retry_delay_ms: 2000,
             max_delay_ms: 60000,
@@ -495,7 +495,10 @@ translation:
   deepl_api_key: "test-key"
 "#;
         let config: Config = serde_yaml::from_str(yaml).unwrap();
-        assert_eq!(config.translation.deepl_api_key, Some("test-key".to_string()));
+        assert_eq!(
+            config.translation.deepl_api_key,
+            Some("test-key".to_string())
+        );
         assert_eq!(config.translation.timeout_secs, 30);
         assert_eq!(config.translation.providers.deepl.priority, 2);
     }
@@ -547,17 +550,26 @@ translation:
     log_fallback_events: true
 "#;
         let config: Config = serde_yaml::from_str(yaml).unwrap();
-        assert_eq!(config.translation.systran_api_key, Some("systran-key".to_string()));
+        assert_eq!(
+            config.translation.systran_api_key,
+            Some("systran-key".to_string())
+        );
         assert_eq!(config.translation.default_timeout_secs, 45);
         assert_eq!(config.translation.default_batch_size, 100);
         assert_eq!(config.translation.default_max_retries, 5);
 
         assert_eq!(config.translation.providers.systran.priority, 1);
         assert_eq!(config.translation.providers.systran.timeout_secs, 60);
-        assert_eq!(config.translation.providers.systran.preferred_languages, Some(vec!["de".to_string(), "fr".to_string(), "fi".to_string()]));
+        assert_eq!(
+            config.translation.providers.systran.preferred_languages,
+            Some(vec!["de".to_string(), "fr".to_string(), "fi".to_string()])
+        );
 
         assert_eq!(config.translation.providers.deepl.priority, 2);
-        assert_eq!(config.translation.providers.deepl.preferred_languages, Some(vec!["sv".to_string(), "pl".to_string(), "cs".to_string()]));
+        assert_eq!(
+            config.translation.providers.deepl.preferred_languages,
+            Some(vec!["sv".to_string(), "pl".to_string(), "cs".to_string()])
+        );
 
         assert!(!config.translation.providers.openai.enabled);
         assert!(config.translation.fallback.skip_on_missing_key);
@@ -659,7 +671,10 @@ translation:
   batch_size: 100
 "#;
         let config: Config = serde_yaml::from_str(yaml).unwrap();
-        assert_eq!(config.translation.deepl_api_key, Some("test-key".to_string()));
+        assert_eq!(
+            config.translation.deepl_api_key,
+            Some("test-key".to_string())
+        );
         assert_eq!(config.translation.timeout_secs, 60);
         assert_eq!(config.translation.batch_size, 100);
         // New fields should use defaults

@@ -1,54 +1,54 @@
 {
   "auth": {
-    "failedToCreateAccount": "Échec de la création du compte",
-    "forbidden": "Vous n'avez pas la permission d'accéder à cette ressource",
-    "invalidCredentials": "Nom d'utilisateur ou mot de passe invalide",
-    "invalidEmailOrPassword": "Email ou mot de passe invalide",
-    "loginFailed": "Échec de la connexion",
-    "registrationFailed": "Échec de l'inscription",
+    "failedToCreateAccount": "Impossible de créer le compte",
+    "forbidden": "Vous n'êtes pas autorisé à accéder à cette ressource.",
+    "invalidCredentials": "Nom d'utilisateur ou mot de passe incorrect",
+    "invalidEmailOrPassword": "Adresse e-mail ou mot de passe invalide",
+    "loginFailed": "La connexion a échoué",
+    "registrationFailed": "L'inscription a échoué",
     "sessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
-    "tokenExpired": "Le jeton d'authentification a expiré",
+    "tokenExpired": "Le jeton d'authentification a expiré.",
     "unauthorized": "Accès non autorisé"
   },
   "generic": {
-    "goHome": "Aller au tableau de bord",
+    "goHome": "Accéder au tableau de bord",
     "message": "Une erreur inattendue s'est produite. Veuillez réessayer.",
-    "retry": "Réessayer",
-    "title": "Quelque chose a mal tourné"
+    "retry": "Essayer à nouveau",
+    "title": "Quelque chose s'est mal passé"
   },
   "network": {
-    "message": "Impossible de se connecter au serveur. Veuillez vérifier votre connexion internet.",
+    "message": "Impossible de se connecter au serveur. Veuillez vérifier votre connexion Internet.",
     "offline": "Vous êtes actuellement hors ligne",
-    "title": "Erreur de réseau"
+    "title": "Erreur réseau"
   },
   "notFound": {
-    "goHome": "Retourner au tableau de bord",
+    "goHome": "Retour au tableau de bord",
     "message": "La page que vous recherchez n'existe pas.",
-    "title": "Page non trouvée"
+    "title": "Page introuvable"
   },
   "pr": {
-    "approveFailed": "Échec de l'approbation de la demande de tirage",
-    "commentFailed": "Échec de la publication du commentaire",
-    "loadFailed": "Échec du chargement des demandes de tirage",
-    "mergeFailed": "Échec de la fusion de la demande de tirage"
+    "approveFailed": "Échec de l'approbation de la demande de fusion",
+    "commentFailed": "Impossible de publier le commentaire",
+    "loadFailed": "Échec du chargement des demandes d'extraction",
+    "mergeFailed": "Échec de la fusion de la requête d'extraction"
   },
   "provider": {
     "connectionFailed": "Échec de la connexion à {{provider}}",
     "invalidToken": "Jeton {{provider}} invalide",
-    "notFound": "Ressource non trouvée sur {{provider}}",
-    "rateLimited": "Limite de taux d'API {{provider}} dépassée"
+    "notFound": "Ressource introuvable sur {{provider}}",
+    "rateLimited": "Limite de requêtes de l'API {{provider}} dépassée"
   },
   "repository": {
     "accessDenied": "Accès au dépôt refusé",
     "loadFailed": "Échec du chargement des dépôts",
-    "notFound": "Dépôt non trouvé"
+    "notFound": "Dépôt introuvable"
   },
   "validation": {
-    "invalidEmail": "Veuillez entrer une adresse email valide",
-    "invalidUrl": "Veuillez entrer une URL valide",
+    "invalidEmail": "S'il vous plaît, mettez une adresse email valide",
+    "invalidUrl": "Veuillez saisir une URL valide",
     "maxLength": "Ne doit pas dépasser {{max}} caractères",
-    "minLength": "Doit comporter au moins {{min}} caractères",
-    "passwordMismatch": "Les mots de passe ne correspondent pas",
-    "required": "Ce champ est requis"
+    "minLength": "Doit contenir au moins {{min}} caractères",
+    "passwordMismatch": "Les mots de passe ne correspondent pas.",
+    "required": "Ce champ est obligatoire"
   }
 }

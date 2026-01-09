@@ -1,1 +1,89 @@
-{}
+{
+  "actions": {
+    "approve": "Zatwierdzić",
+    "comment": "Komentarz",
+    "deselectAll": "Odznacz wszystko",
+    "merge": "Łączyć",
+    "refresh": "Odświeżać",
+    "requestChanges": "Poproś o zmiany",
+    "selectAll": "Zaznacz wszystko",
+    "viewOnProvider": "Zobacz na {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Oczekiwanie na recenzję",
+    "changesRequested": "Żądane zmiany",
+    "ciFailed": "CI nie powiodło się",
+    "ciPending": "Oczekuje na CI",
+    "conflicts": "Konflikty",
+    "draft": "Projekt",
+    "needsReview": "Wymaga przeglądu"
+  },
+  "empty": {
+    "action": "Dostawca połączenia",
+    "description": "Połącz swoich dostawców Git, aby rozpocząć śledzenie żądań ściągnięcia",
+    "title": "Nie znaleziono żądań ściągnięcia"
+  },
+  "filters": {
+    "all": "Wszystko",
+    "assignee": "Mandatariusz",
+    "author": "Autor",
+    "closed": "Zamknięte",
+    "draft": "Projekt",
+    "label": "Etykieta",
+    "merged": "Połączone",
+    "onlyWithPrs": "Pokaż repozytoria z otwartymi żądaniami dostępu",
+    "open": "Otwarte",
+    "provider": "Dostawca",
+    "repository": "Magazyn"
+  },
+  "pr": {
+    "additions": "Wzbogacenie",
+    "author": "Autor",
+    "comments": "Uwagi",
+    "createdAt": "Stworzony",
+    "deletions": "Usunięcia",
+    "number": "#{{numer}}",
+    "sourceBranch": "Gałąź źródłowa",
+    "targetBranch": "Gałąź docelowa",
+    "updatedAt": "Zaktualizowano"
+  },
+  "prDashboard": "Panel PR",
+  "sort": {
+    "author": "Autor",
+    "created": "Data utworzenia",
+    "repository": "Magazyn",
+    "status": "Status",
+    "title": "Sortuj według",
+    "updated": "Ostatnia aktualizacja"
+  },
+  "stats": {
+    "blocked": "Zablokowany",
+    "inProgress": "W toku",
+    "needsAttention": "Wymaga uwagi",
+    "open": "Otwarte",
+    "openPRs": "Otwarte PR-y",
+    "ready": "Gotowy do połączenia",
+    "readyToMerge": "Gotowy do połączenia",
+    "total": "Łączna liczba PR-ów",
+    "totalRepositories": "Całkowita liczba repozytoriów"
+  },
+  "status": {
+    "closed": "Zamknięte",
+    "draft": "Projekt",
+    "green": "Gotowy do połączenia",
+    "merged": "Połączone",
+    "red": "Zablokowany",
+    "yellow": "W toku"
+  },
+  "subtitle": "Zarządzaj swoimi żądaniami ściągnięcia u wszystkich dostawców",
+  "title": "Panel",
+  "views": {
+    "grid": "Widok siatki",
+    "list": "Widok listy",
+    "prs": "Widok żądań ściągnięcia",
+    "pullRequests": "Widok żądań ściągnięcia",
+    "repositoryGrid": "Widok siatki repozytorium",
+    "repositoryList": "Widok listy repozytoriów",
+    "table": "Widok tabeli"
+  }
+}

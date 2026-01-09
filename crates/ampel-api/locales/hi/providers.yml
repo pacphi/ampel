@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'प्रदाता API त्रुटि: %{message} (स्थिति: %{status_code})'
+      auth_failed: 'प्रमाणीकरण विफल: %{कारण}'
+      config_error: 'कॉन्फ़िगरेशन त्रुटि: %{कारण}'
+      invalid_response: 'अमान्य प्रतिक्रिया: %{कारण}'
+      network_error: 'नेटवर्क त्रुटि: %{कारण}'
+      not_found: 'संसाधन नहीं मिला: %{संसाधन}'
+      not_supported: 'यह ऑपरेशन समर्थित नहीं है: %{operation}'
+      permission_denied: 'अनुमति अस्वीकृत: %{कारण}'
+      rate_limit_exceeded: 'दर सीमा पार हो गई। रीसेट होने का समय: %{reset_time}'
+      serialization_error: 'क्रमबद्धता त्रुटि: %{कारण}'
+    github:
+      api_error: 'एपीआई त्रुटि: %{status}'
+      invalid_token: अमान्य टोकन
+      merge_checks_failed: पुल रिक्वेस्ट को मर्ज नहीं किया जा सकता (स्थिति जांच और समीक्षा देखें)
+      merge_conflict: विलय में टकराव या मुख्य शाखा में संशोधन किया गया था
+      merge_failed: पुल अनुरोध को मर्ज करने में विफलता
+      merge_not_mergeable: पुल रिक्वेस्ट मर्ज करने योग्य नहीं है
+      pr_fetch_failed: पुल रिक्वेस्ट प्राप्त करने में विफल रहा
+      pr_not_found: 'पुल अनुरोध #%{number} नहीं मिला'
+      prs_fetch_failed: पुल अनुरोधों को सूचीबद्ध करने में विफल
+      rate_limit_failed: दर सीमा प्राप्त करने में विफल
+      repo_fetch_failed: रिपॉजिटरी प्राप्त करने में विफल
+      repo_not_found: रिपॉजिटरी %{owner}/%{repo} नहीं मिली
+      repos_fetch_failed: रिपॉजिटरी की सूची बनाने में विफल
+      reviews_fetch_failed: समीक्षाएँ प्राप्त करने में असफल रहे
+      token_invalid: अमान्य या समाप्त हो चुका टोकन
+      user_fetch_failed: उपयोगकर्ता को प्राप्त करने में विफल
+    worker:
+      account_not_found: प्रदाता खाता नहीं मिला
+      no_account: रिपॉजिटरी का कोई संबद्ध प्रदाता खाता नहीं है

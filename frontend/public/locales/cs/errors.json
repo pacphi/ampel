@@ -1,53 +1,53 @@
 {
   "auth": {
     "failedToCreateAccount": "Vytvoření účtu se nezdařilo",
-    "forbidden": "Nemáte oprávnění přistupovat k tomuto zdroji",
+    "forbidden": "Nemáte oprávnění k přístupu k tomuto zdroji.",
     "invalidCredentials": "Neplatné uživatelské jméno nebo heslo",
-    "invalidEmailOrPassword": "Neplatný email nebo heslo",
+    "invalidEmailOrPassword": "Neplatný e-mail nebo heslo",
     "loginFailed": "Přihlášení se nezdařilo",
     "registrationFailed": "Registrace se nezdařila",
-    "sessionExpired": "Vaše relace vypršela. Prosím, přihlašte se znovu.",
-    "tokenExpired": "Autentizační token vypršel",
+    "sessionExpired": "Vaše relace vypršela. Přihlaste se prosím znovu.",
+    "tokenExpired": "Platnost ověřovacího tokenu vypršela",
     "unauthorized": "Neoprávněný přístup"
   },
   "generic": {
-    "goHome": "Jít na přehled",
+    "goHome": "Přejít na řídicí panel",
     "message": "Došlo k neočekávané chybě. Zkuste to prosím znovu.",
-    "retry": "Zkusit znovu",
+    "retry": "Zkuste to znovu",
     "title": "Něco se pokazilo"
   },
   "network": {
-    "message": "Nelze se připojit k serveru. Zkontrolujte prosím své internetové připojení.",
-    "offline": "Jste momentálně offline",
+    "message": "Nelze se připojit k serveru. Zkontrolujte prosím připojení k internetu.",
+    "offline": "Momentálně jste offline",
     "title": "Chyba sítě"
   },
   "notFound": {
-    "goHome": "Vrátit se na přehled",
+    "goHome": "Zpět na řídicí panel",
     "message": "Stránka, kterou hledáte, neexistuje.",
-    "title": "Stránka nebyla nalezena"
+    "title": "Stránka nenalezena"
   },
   "pr": {
-    "approveFailed": "Schválení požadavku na pull se nezdařilo",
+    "approveFailed": "Schválení žádosti o změnu se nezdařilo",
     "commentFailed": "Nepodařilo se odeslat komentář",
-    "loadFailed": "Nepodařilo se načíst požadavky na pull",
-    "mergeFailed": "Sloučení požadavku na pull se nezdařilo"
+    "loadFailed": "Nepodařilo se načíst žádosti o změny",
+    "mergeFailed": "Nepodařilo se sloučit žádost o změnu obsahu (pull request)"
   },
   "provider": {
-    "connectionFailed": "Připojení k {{provider}} se nezdařilo",
+    "connectionFailed": "Nepodařilo se připojit k {{provider}}",
     "invalidToken": "Neplatný token {{provider}}",
-    "notFound": "Zdroj na {{provider}} nebyl nalezen",
-    "rateLimited": "Byl překročen limit rychlosti API {{provider}}"
+    "notFound": "Zdroj nebyl nalezen na {{provider}}",
+    "rateLimited": "{{provider}} překročen limit rychlosti API"
   },
   "repository": {
-    "accessDenied": "Přístup k repozitáři byl odepřen",
+    "accessDenied": "Přístup k repozitáři byl zamítnut",
     "loadFailed": "Nepodařilo se načíst repozitáře",
-    "notFound": "Repozitář nebyl nalezen"
+    "notFound": "Úložiště nenalezeno"
   },
   "validation": {
-    "invalidEmail": "Zadejte prosím platnou emailovou adresu",
-    "invalidUrl": "Zadejte prosím platnou URL",
+    "invalidEmail": "Zadejte prosím platnou e-mailovou adresu",
+    "invalidUrl": "Zadejte platnou URL adresu",
     "maxLength": "Nesmí překročit {{max}} znaků",
-    "minLength": "Musí mít alespoň {{min}} znaků",
+    "minLength": "Musí obsahovat alespoň {{min}} znaků",
     "passwordMismatch": "Hesla se neshodují",
     "required": "Toto pole je povinné"
   }

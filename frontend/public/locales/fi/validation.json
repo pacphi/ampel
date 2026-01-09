@@ -1,8 +1,8 @@
 {
   "alphanum": "{{field}} saa sisältää vain kirjaimia ja numeroita",
-  "date": "Syötä kelvollinen päivämäärä",
-  "dateRange": "Lopetuspäivämäärän on oltava alkamispäivämäärän jälkeen",
-  "email": "Syötä kelvollinen sähköpostiosoite",
+  "date": "Anna kelvollinen päivämäärä",
+  "dateRange": "Päättymispäivämäärän on oltava alkamispäivämäärän jälkeen",
+  "email": "Anna kelvollinen sähköpostiosoite",
   "fields": {
     "confirmPassword": "Vahvista salasana",
     "displayName": "Näyttönimi",
@@ -16,20 +16,20 @@
   "max": "{{field}} ei saa ylittää {{max}}",
   "maxLength": "{{field}} ei saa ylittää {{max}} merkkiä",
   "messages": {
-    "displayNameRequired": "Näyttönimi vaaditaan",
-    "emailRequired": "Sähköposti vaaditaan",
+    "displayNameRequired": "Näyttönimi on pakollinen",
+    "emailRequired": "Sähköpostiosoite vaaditaan",
     "passwordMinLength": "Salasanan on oltava vähintään 8 merkkiä pitkä",
     "passwordRequired": "Salasana vaaditaan"
   },
-  "min": "{{field}} on oltava vähintään {{min}}",
-  "minLength": "{{field}} on oltava vähintään {{min}} merkkiä pitkä",
-  "negative": "{{field}} on oltava negatiivinen",
-  "numeric": "{{field}} on oltava numero",
+  "min": "{{field}}-kentän on oltava vähintään {{min}}",
+  "minLength": "{{field}}-kentän on oltava vähintään {{min}} merkkiä pitkä",
+  "negative": "{{field}}-kentän on oltava negatiivinen",
+  "numeric": "{{field}} täytyy olla numero",
   "passwordMismatch": "Salasanat eivät täsmää",
   "passwordsDontMatch": "Salasanat eivät täsmää",
-  "pattern": "{{field}} muoto on virheellinen",
-  "positive": "{{field}} on oltava positiivinen",
-  "required": "{{field}} vaaditaan",
+  "pattern": "{{field}} -muoto on virheellinen",
+  "positive": "{{field}}-kentän on oltava positiivinen",
+  "required": "{{field}} on pakollinen",
   "unique": "{{field}} on jo olemassa",
-  "url": "Syötä kelvollinen URL"
+  "url": "Anna kelvollinen URL-osoite"
 }

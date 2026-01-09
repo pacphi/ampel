@@ -2,11 +2,11 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use thiserror::Error;
 
-pub mod yaml;
 pub mod json;
+pub mod yaml;
 
-pub use yaml::YamlFormat;
 pub use json::JsonFormat;
+pub use yaml::YamlFormat;
 
 #[derive(Error, Debug)]
 pub enum FormatError {
@@ -83,9 +83,7 @@ impl TranslationValue {
                 }
                 strings
             }
-            TranslationValue::Nested(map) => {
-                map.values().flat_map(|v| v.all_strings()).collect()
-            }
+            TranslationValue::Nested(map) => map.values().flat_map(|v| v.all_strings()).collect(),
         }
     }
 }
