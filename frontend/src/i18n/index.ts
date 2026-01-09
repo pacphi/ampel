@@ -15,10 +15,13 @@ export {
 } from './config';
 export { useTranslation } from './hooks';
 export type {
-  CommonKey,
-  DashboardKey,
-  SettingsKey,
-  ErrorsKey,
-  ValidationKey,
-  TranslationKey,
+  SupportedLanguage,
+  TranslationNamespace,
+  CommonTranslations,
+  DashboardTranslations,
+  ErrorsTranslations,
+  SettingsTranslations,
+  ValidationTranslations,
+  Translations,
 } from './types';
+export { defaultLanguage, supportedLanguages } from './types';
