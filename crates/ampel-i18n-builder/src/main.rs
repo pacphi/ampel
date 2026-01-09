@@ -11,11 +11,12 @@ use ampel_i18n_builder::cli::{Cli, Commands};
 async fn main() -> Result<()> {
     // Load .env file if present (system env vars take precedence)
     // Silent failure if .env doesn't exist - it's optional
+    #[cfg(debug_assertions)]
     if let Err(e) = dotenv::dotenv() {
-        // Only log in debug mode to avoid noise in production
-        #[cfg(debug_assertions)]
         eprintln!("Note: .env file not found or error loading: {}", e);
     }
+    #[cfg(not(debug_assertions))]
+    let _ = dotenv::dotenv();
 
     // Initialize tracing subscriber for logging
     tracing_subscriber::fmt()

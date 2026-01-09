@@ -10,6 +10,15 @@ use std::fs;
 pub async fn execute(args: CoverageArgs) -> Result<()> {
     println!("{} Analyzing translation coverage", "→".cyan().bold());
 
+    // Normalize min_coverage: if > 1.0, treat as percentage and convert to fraction
+    let min_coverage_normalized = args.min_coverage.map(|v| {
+        if v > 1.0 {
+            v / 100.0 // Convert percentage to fraction (e.g., 95 -> 0.95)
+        } else {
+            v
+        }
+    });
+
     // Load source (English) translations
     let source_dir = args.translation_dir.join("en");
     if !source_dir.exists() {
@@ -58,13 +67,15 @@ pub async fn execute(args: CoverageArgs) -> Result<()> {
         }
 
         let target_stats = calculate_stats(&target_dir, &format)?;
-        let coverage = target_stats.total_keys as f32 / source_stats.total_keys as f32;
-        let missing = source_stats.total_keys - target_stats.total_keys;
+        // Cap coverage at 1.0 (100%) - extra keys don't count as extra coverage
+        let coverage = (target_stats.total_keys as f32 / source_stats.total_keys as f32).min(1.0);
+        // Use saturating subtraction to avoid underflow when target has more keys
+        let missing = source_stats.total_keys.saturating_sub(target_stats.total_keys);
 
         coverage_results.push(CoverageResult {
             language: lang.clone(),
             coverage,
-            translated: target_stats.total_keys,
+            translated: target_stats.total_keys.min(source_stats.total_keys), // Cap at source total
             total: source_stats.total_keys,
             missing_keys: missing,
         });
@@ -96,7 +107,7 @@ pub async fn execute(args: CoverageArgs) -> Result<()> {
         );
 
         // Check threshold
-        if let Some(min_coverage) = args.min_coverage {
+        if let Some(min_coverage) = min_coverage_normalized {
             if result.coverage < min_coverage {
                 has_failures = true;
             }
@@ -114,7 +125,7 @@ pub async fn execute(args: CoverageArgs) -> Result<()> {
     );
 
     // Check threshold
-    if let Some(min_coverage) = args.min_coverage {
+    if let Some(min_coverage) = min_coverage_normalized {
         if has_failures {
             println!(
                 "\n{} Coverage check failed (minimum: {:.1}%)",

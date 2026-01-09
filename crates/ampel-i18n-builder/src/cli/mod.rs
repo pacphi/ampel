@@ -117,7 +117,7 @@ pub struct CoverageArgs {
     #[arg(short, long)]
     pub lang: Option<String>,
 
-    /// Minimum coverage threshold (0.0-1.0)
+    /// Minimum coverage threshold as percentage (e.g., 95 for 95%) or fraction (e.g., 0.95)
     #[arg(long)]
     pub min_coverage: Option<f32>,
 
