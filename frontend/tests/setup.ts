@@ -1,11 +1,45 @@
 /// <reference types="vitest/globals" />
-import { afterEach, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-// Cleanup after each test
+// MSW server imports
+import { server, resetHandlers } from './setup/msw/server';
+
+// ============================================================================
+// MSW Server Lifecycle
+// ============================================================================
+
+/**
+ * Start MSW server before all tests.
+ * Intercepts all HTTP requests and returns mock responses.
+ */
+beforeAll(() => {
+  server.listen({
+    onUnhandledRequest: 'warn',
+  });
+});
+
+/**
+ * Reset handlers and cleanup after each test.
+ * Ensures tests don't affect each other.
+ */
 afterEach(() => {
+  // Reset MSW handlers to defaults
+  resetHandlers();
+
+  // Cleanup React Testing Library
   cleanup();
+
+  // Clear localStorage
+  localStorage.clear();
+});
+
+/**
+ * Stop MSW server after all tests complete.
+ */
+afterAll(() => {
+  server.close();
 });
 
 // Mock window.matchMedia - must be defined before any tests run

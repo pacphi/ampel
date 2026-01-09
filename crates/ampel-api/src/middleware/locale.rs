@@ -1,9 +1,4 @@
-use axum::{
-    extract::Request,
-    http::header,
-    middleware::Next,
-    response::Response,
-};
+use axum::{extract::Request, http::header, middleware::Next, response::Response};
 use cookie::Cookie;
 use sea_orm::EntityTrait;
 use uuid::Uuid;

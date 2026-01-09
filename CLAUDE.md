@@ -10,7 +10,7 @@ yellow=in progress, red=blocked).
 
 ## Tech Stack
 
-- **Backend**: Rust 1.91+ (Axum, SeaORM, Apalis for background jobs, Tokio async runtime)
+- **Backend**: Rust 1.91+ (Axum 0.8, SeaORM, Apalis for background jobs, Tokio async runtime)
 - **Frontend**: React 19 + TypeScript, Vite, TanStack Query, shadcn/ui, Tailwind CSS
 - **Database**: PostgreSQL 16, Redis 7 for caching
 - **Package Manager**: pnpm 10.24.0

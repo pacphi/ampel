@@ -3,7 +3,7 @@
 use crate::cli::TranslateArgs;
 use crate::config::Config;
 use crate::error::Result;
-use crate::formats::{JsonFormat, YamlFormat, TranslationFormat, TranslationMap, TranslationValue};
+use crate::formats::{JsonFormat, TranslationFormat, TranslationMap, TranslationValue, YamlFormat};
 use crate::translator::fallback::FallbackTranslationRouter;
 use crate::translator::{TranslationService, Translator};
 use colored::Colorize;
@@ -174,20 +174,33 @@ async fn process_namespace(
     // Auto-detect file format from source directory
     let (source_file, formatter): (std::path::PathBuf, Box<dyn TranslationFormat>) =
         if source_dir.join(format!("{}.json", namespace)).exists() {
-            (source_dir.join(format!("{}.json", namespace)), Box::new(JsonFormat::new()))
+            (
+                source_dir.join(format!("{}.json", namespace)),
+                Box::new(JsonFormat::new()),
+            )
         } else if source_dir.join(format!("{}.yml", namespace)).exists() {
-            (source_dir.join(format!("{}.yml", namespace)), Box::new(YamlFormat))
+            (
+                source_dir.join(format!("{}.yml", namespace)),
+                Box::new(YamlFormat),
+            )
         } else if source_dir.join(format!("{}.yaml", namespace)).exists() {
-            (source_dir.join(format!("{}.yaml", namespace)), Box::new(YamlFormat))
+            (
+                source_dir.join(format!("{}.yaml", namespace)),
+                Box::new(YamlFormat),
+            )
         } else {
             return Err(crate::error::Error::Io(std::io::Error::new(
                 std::io::ErrorKind::NotFound,
-                format!("Source file not found for namespace '{}' (.json, .yml, or .yaml)", namespace),
+                format!(
+                    "Source file not found for namespace '{}' (.json, .yml, or .yaml)",
+                    namespace
+                ),
             )));
         };
 
     // Determine target file extension (same as source)
-    let target_extension = source_file.extension()
+    let target_extension = source_file
+        .extension()
         .and_then(|e| e.to_str())
         .unwrap_or("json");
 

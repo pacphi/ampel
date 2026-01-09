@@ -8,7 +8,7 @@
  * - Direction switching
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/i18n';
@@ -260,7 +260,6 @@ describe('RTL Layout Integration Tests', () => {
       element.className = 'ms-4'; // Tailwind margin-inline-start
       document.body.appendChild(element);
 
-      const styles = window.getComputedStyle(element);
       // In RTL, margin-inline-start becomes margin-right
       // This test verifies logical properties are being used
       expect(element.className).toContain('ms-');

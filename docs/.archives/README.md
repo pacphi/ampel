@@ -126,13 +126,12 @@ A narrative of the major documentation epochs, for anyone curious about how we g
 
 - Implementation summaries, metrics documentation
 
-**planning/** (6 files) - Completed feature implementations
+**planning/** (5 files) - Completed feature implementations
 
 - Multi-account PAT support design
 - Merge operations and notifications
 - Repository visibility filter implementation
 - Visibility breakdown tiles implementation
-- Git diff view integration plan
 
 **quality/** (7 files) - Code quality remediation
 

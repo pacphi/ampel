@@ -10,7 +10,11 @@
 
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Directories to scan for CSS violations
 const DIRECTORIES_TO_SCAN = [
@@ -68,7 +72,7 @@ function scanFileForViolations(filePath: string): string[] {
     });
 
     return violations;
-  } catch (error) {
+  } catch {
     // Skip files that can't be read
     return [];
   }
@@ -93,7 +97,7 @@ function scanDirectory(dirPath: string): string[] {
         violations = violations.concat(scanFileForViolations(fullPath));
       }
     }
-  } catch (error) {
+  } catch {
     // Skip directories that can't be accessed
   }
 

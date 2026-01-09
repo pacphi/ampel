@@ -39,6 +39,7 @@ Open [http://localhost:3000](http://localhost:3000) and connect your first repos
 - **Smart Filtering** - Filter by provider, status, author, reviewer, labels, age
 - **Repository Health Scores** - Track team velocity and identify bottlenecks
 - **Multitenancy** - Organizations and teams with role-based access control
+- **Multi-Language Support** - 27 languages with RTL support (Arabic, Hebrew) and automatic detection
 
 ### Advanced Features
 
@@ -47,6 +48,7 @@ Open [http://localhost:3000](http://localhost:3000) and connect your first repos
 - **Bot PR Rules** - Separate Dependabot/Renovate PRs with auto-merge support
 - **Analytics & Reporting** - PR cycle time, review turnaround, team velocity trends
 - **Production Monitoring** - Prometheus metrics, Grafana dashboards, distributed tracing
+- **Language Persistence** - User language preference saved to account and synced across devices
 
 [View complete feature matrix →](docs/planning/PRODUCT_SPEC.md)
 
@@ -69,6 +71,20 @@ Open [http://localhost:3000](http://localhost:3000) and connect your first repos
 - [Multitenancy](docs/features/MULTITENANCY.md) - Organizations, teams, and access control
 - [Bulk Merge Operations](docs/features/BULK_MERGE.md) - Merge multiple PRs with progress tracking
 - [Health Scores](docs/features/HEALTH_SCORES.md) - Repository health scoring and trend analysis
+
+### 🌍 Internationalization (i18n)
+
+**Multi-language support (27 languages with RTL support):**
+
+- Multi-language UI with 27 supported languages
+- RTL (right-to-left) support for Arabic, Hebrew, Persian, and Urdu
+- Automatic locale detection from browser settings
+- Language switcher in user settings
+
+<!-- Documentation links - Coming soon:
+- User Guide - Change language, supported languages, RTL support, troubleshooting
+- Developer Guide - Add translatable strings, use i18n hooks/macros, test translations
+-->
 
 ### 🏗️ Architecture & Development
 

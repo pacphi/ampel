@@ -66,4 +66,33 @@ export default [
       },
     },
   },
+  // Test files configuration
+  {
+    files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', 'tests/**/*.{ts,tsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        // Vitest globals
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        vi: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        test: 'readonly',
+        jest: 'readonly',
+        // Browser globals for DOM testing
+        IntersectionObserverCallback: 'readonly',
+        IntersectionObserverInit: 'readonly',
+        ResizeObserverCallback: 'readonly',
+        ResizeObserverEntry: 'readonly',
+      },
+    },
+    rules: {
+      // Allow non-component exports in test files
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ];
