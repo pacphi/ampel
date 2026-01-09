@@ -197,7 +197,7 @@ let translator: Box<dyn TranslationService> = if args.no_fallback {
 - ✅ Cache key includes source text, source lang, target lang
 - ✅ Cache hit tracking for metrics
 - ✅ LRU eviction when capacity exceeded
-- ✅ Thread-safe (Arc<Mutex<LruCache>>)
+- ✅ Thread-safe (`Arc<Mutex<LruCache>>`)
 
 ### ⚠️ INCOMPLETE: Provider Integration
 
@@ -550,7 +550,7 @@ impl ProviderConfig {
 **LRU Cache Implementation** (Systran):
 
 - **Capacity**: 1000 entries
-- **Thread Safety**: Arc<Mutex<LruCache>>
+- **Thread Safety**: `Arc<Mutex<LruCache>>`
 - **Key Structure**: (text, source_lang, target_lang)
 - **Eviction**: Automatic (LRU)
 - **Metrics**: Cache hits tracked
@@ -812,36 +812,36 @@ let has_preference = false; // TODO: Implement when config structure is updated
 
 ### Deployment Checklist
 
-| Category                 | Requirement    | Status   | Blocker? |
-| ------------------------ | -------------- | -------- | -------- |
-| **Functionality**        |
-| All 4 providers wired    | ❌ No          | 🔴 YES   |
-| Fallback logic working   | ⚠️ Partial     | 🔴 YES   |
-| Configuration complete   | ✅ Yes         | No       |
-| CLI integration complete | ✅ Yes         | No       |
-| **Testing**              |
-| Unit tests (80%+)        | ✅ Yes         | No       |
-| Integration tests        | ⚠️ Structural  | 🟡 Minor |
-| End-to-end tests         | ❌ No          | 🟡 Minor |
-| All tests passing        | ✅ Yes         | No       |
-| **Security**             |
-| No API key leakage       | ✅ Yes         | No       |
-| .env in .gitignore       | ✅ Yes         | No       |
-| Error handling safe      | ✅ Yes         | No       |
-| Input validation         | ✅ Yes         | No       |
-| **Performance**          |
-| Caching implemented      | ✅ Yes         | No       |
-| Rate limiting            | ✅ Yes         | No       |
-| Batch processing         | ✅ Yes         | No       |
-| **Documentation**        |
-| Architecture docs        | ✅ Yes         | No       |
-| Migration guide          | ❌ No          | 🟡 Minor |
-| API documentation        | ⚠️ Partial     | No       |
-| Troubleshooting          | ❌ No          | 🟡 Minor |
-| **Code Quality**         |
-| No critical warnings     | ⚠️ 6 warnings  | No       |
-| Lint passing             | ⚠️ In progress | No       |
-| Code coverage            | ✅ 80%         | No       |
+| Category                 | Requirement | Status         | Blocker? |
+| ------------------------ | ----------- | -------------- | -------- |
+| **Functionality**        | -           | -              | -        |
+| All 4 providers wired    | Required    | ❌ No          | 🔴 YES   |
+| Fallback logic working   | Required    | ⚠️ Partial     | 🔴 YES   |
+| Configuration complete   | Required    | ✅ Yes         | No       |
+| CLI integration complete | Required    | ✅ Yes         | No       |
+| **Testing**              | -           | -              | -        |
+| Unit tests (80%+)        | Required    | ✅ Yes         | No       |
+| Integration tests        | Required    | ⚠️ Structural  | 🟡 Minor |
+| End-to-end tests         | Optional    | ❌ No          | 🟡 Minor |
+| All tests passing        | Required    | ✅ Yes         | No       |
+| **Security**             | -           | -              | -        |
+| No API key leakage       | Required    | ✅ Yes         | No       |
+| .env in .gitignore       | Required    | ✅ Yes         | No       |
+| Error handling safe      | Required    | ✅ Yes         | No       |
+| Input validation         | Required    | ✅ Yes         | No       |
+| **Performance**          | -           | -              | -        |
+| Caching implemented      | Required    | ✅ Yes         | No       |
+| Rate limiting            | Required    | ✅ Yes         | No       |
+| Batch processing         | Optional    | ✅ Yes         | No       |
+| **Documentation**        | -           | -              | -        |
+| Architecture docs        | Required    | ✅ Yes         | No       |
+| Migration guide          | Optional    | ❌ No          | 🟡 Minor |
+| API documentation        | Required    | ⚠️ Partial     | No       |
+| Troubleshooting          | Optional    | ❌ No          | 🟡 Minor |
+| **Code Quality**         | -           | -              | -        |
+| No critical warnings     | Required    | ⚠️ 6 warnings  | No       |
+| Lint passing             | Required    | ⚠️ In progress | No       |
+| Code coverage            | Required    | ✅ 80%         | No       |
 
 **Blockers Summary**:
 

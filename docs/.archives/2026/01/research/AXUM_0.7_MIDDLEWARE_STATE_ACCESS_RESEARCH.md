@@ -185,7 +185,7 @@ let app = Router::new()
 **Cause**: Passing `&Request<Body>` to async helper functions
 **Solution**: Pass request by value or extract specific parts before async calls
 
-**From Discussion #2571**: Request<Body> is `!Sync` because Body is `!Sync`. That means `&Request<Body>` is `!Send`, making the future returned by middleware also `!Send`.
+**From Discussion #2571**: `Request<Body>` is `!Sync` because Body is `!Sync`. That means `&Request<Body>` is `!Send`, making the future returned by middleware also `!Send`.
 
 ### Error 3: Request Borrowing Issues
 

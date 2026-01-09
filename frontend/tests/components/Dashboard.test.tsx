@@ -6,7 +6,7 @@
  */
 
 import { describe, expect, beforeAll, afterAll, afterEach } from 'vitest';
-import { render, screen, waitFor, within } from '../setup/test-utils';
+import { render, screen, waitFor } from '../setup/test-utils';
 import userEvent from '@testing-library/user-event';
 import { server, http, HttpResponse, delay } from '../setup/msw/server';
 import { Feature, Scenario, Given, When, Then, And } from '../setup/bdd-helpers';

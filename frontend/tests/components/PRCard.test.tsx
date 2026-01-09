@@ -166,7 +166,7 @@ describe('PRCard', () => {
 
         // Assert: Green status badge is visible
         // StatusBadge renders with a specific role or class based on status
-        const statusBadge = screen.getByTestId ? screen.queryByTestId('status-badge') : null;
+        const _statusBadge = screen.getByTestId ? screen.queryByTestId('status-badge') : null;
         // If no test-id, check for the PR number and title
         expect(screen.getByText(/#123/)).toBeInTheDocument();
         expect(screen.getByText(/Test PR/)).toBeInTheDocument();
@@ -851,7 +851,7 @@ describe('PRCard', () => {
 
       // Assert: Comment icon/count should not be shown when 0
       // We check that there's no standalone "0" that would be the comment count
-      const zeroElements = screen.queryAllByText('0');
+      const _zeroElements = screen.queryAllByText('0');
       // If there are any "0" elements, they shouldn't be for comments
       // (additions/deletions might show 0)
     });

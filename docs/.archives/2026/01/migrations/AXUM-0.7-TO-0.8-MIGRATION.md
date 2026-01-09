@@ -177,7 +177,7 @@ sea-orm = "1.0"
 
 ## API Contract Verification
 
-###Routes Tested:
+### Routes Tested:
 
 - ✅ `/health` - Health check
 - ✅ `/api/auth/register` - User registration

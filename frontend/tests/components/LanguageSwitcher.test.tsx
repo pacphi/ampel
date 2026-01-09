@@ -11,7 +11,7 @@
  */
 
 import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest';
-import { render, screen, waitFor, within, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 // Real i18n testing infrastructure
@@ -24,24 +24,14 @@ import {
 } from '../setup/i18n-instance';
 
 // RTL testing utilities
-import {
-  resetRTLState,
-  getRTLState,
-  expectRTLLayout,
-  expectLTRLayout,
-  setRTLState,
-} from '../setup/rtl-testing';
+import { resetRTLState, getRTLState, expectLTRLayout, setRTLState } from '../setup/rtl-testing';
 
 // Component under test
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import RTLProvider from '@/components/RTLProvider';
 
 // Constants for verification
-import {
-  SUPPORTED_LANGUAGES,
-  STORAGE_KEY_LANGUAGE,
-  STORAGE_KEY_FAVORITES,
-} from '@/components/i18n/constants/languages';
+import { STORAGE_KEY_LANGUAGE, STORAGE_KEY_FAVORITES } from '@/components/i18n/constants/languages';
 
 // ============================================================================
 // Test Setup
