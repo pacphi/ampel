@@ -21,6 +21,7 @@
 
 import { setupServer } from 'msw/node';
 import { handlers, resetSettingsState } from './handlers';
+import { i18nHandlers } from './handlers-i18n';
 
 /**
  * MSW Server instance for Node.js testing.
@@ -29,7 +30,7 @@ import { handlers, resetSettingsState } from './handlers';
  * - Resets handlers after each test
  * - Closes after all tests
  */
-export const server = setupServer(...handlers);
+export const server = setupServer(...handlers, ...i18nHandlers);
 
 /**
  * Start the server with default handlers.

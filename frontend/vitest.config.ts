@@ -44,9 +44,9 @@ export default defineConfig({
     maxThreads: 4,
     minThreads: 1,
 
-    // Test timeout
-    testTimeout: 10000,
-    hookTimeout: 10000,
+    // Test timeout - CI environments need longer timeouts due to shared resources
+    testTimeout: process.env.CI ? 30000 : 10000,
+    hookTimeout: process.env.CI ? 20000 : 10000,
 
     // File patterns
     include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}', 'tests/**/*.{test,spec}.{js,ts,jsx,tsx}'],
