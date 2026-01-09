@@ -70,7 +70,9 @@ pub async fn execute(args: CoverageArgs) -> Result<()> {
         // Cap coverage at 1.0 (100%) - extra keys don't count as extra coverage
         let coverage = (target_stats.total_keys as f32 / source_stats.total_keys as f32).min(1.0);
         // Use saturating subtraction to avoid underflow when target has more keys
-        let missing = source_stats.total_keys.saturating_sub(target_stats.total_keys);
+        let missing = source_stats
+            .total_keys
+            .saturating_sub(target_stats.total_keys);
 
         coverage_results.push(CoverageResult {
             language: lang.clone(),
