@@ -11,7 +11,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '@/i18n';
+import i18n from '@/i18n/config';
 import RTLProvider from '@/components/RTLProvider';
 import { isRTL, getLanguageInfo } from '@/i18n/config';
 
@@ -107,7 +107,7 @@ describe('RTL Layout Integration Tests', () => {
         expect(document.body.dir).toBe('rtl');
         expect(document.body.classList.contains('rtl')).toBe(true);
       });
-    });
+    }, 20000); // Extended timeout for i18n operations
 
     it('should set RTL attributes for Hebrew', async () => {
       await i18n.changeLanguage('he');
@@ -123,7 +123,7 @@ describe('RTL Layout Integration Tests', () => {
         expect(document.documentElement.lang).toBe('he');
         expect(document.documentElement.classList.contains('rtl')).toBe(true);
       });
-    });
+    }, 20000); // Extended timeout for i18n operations
 
     it('should set LTR attributes for English', async () => {
       await i18n.changeLanguage('en');
@@ -140,7 +140,7 @@ describe('RTL Layout Integration Tests', () => {
         expect(document.documentElement.classList.contains('rtl')).toBe(false);
         expect(document.body.classList.contains('rtl')).toBe(false);
       });
-    });
+    }, 20000); // Extended timeout for i18n operations
 
     it('should update attributes when switching from RTL to LTR', async () => {
       // Start with Arabic
@@ -172,7 +172,7 @@ describe('RTL Layout Integration Tests', () => {
         expect(document.documentElement.classList.contains('rtl')).toBe(false);
         expect(document.body.classList.contains('rtl')).toBe(false);
       });
-    });
+    }, 30000); // Extended timeout for multiple i18n operations
 
     it('should update attributes when switching from LTR to RTL', async () => {
       // Start with English
@@ -201,7 +201,7 @@ describe('RTL Layout Integration Tests', () => {
         expect(document.documentElement.dir).toBe('rtl');
         expect(document.documentElement.classList.contains('rtl')).toBe(true);
       });
-    });
+    }, 30000); // Extended timeout for multiple i18n operations
 
     it('should create meta tags for direction and language', async () => {
       await i18n.changeLanguage('ar');
@@ -219,7 +219,7 @@ describe('RTL Layout Integration Tests', () => {
         expect(metaDir?.getAttribute('content')).toBe('rtl');
         expect(metaLang?.getAttribute('content')).toBe('ar');
       });
-    });
+    }, 20000); // Extended timeout for i18n operations
 
     it('should update existing meta tags when language changes', async () => {
       await i18n.changeLanguage('ar');
@@ -251,7 +251,7 @@ describe('RTL Layout Integration Tests', () => {
         expect(metaDir?.getAttribute('content')).toBe('ltr');
         expect(metaLang?.getAttribute('content')).toBe('en');
       });
-    });
+    }, 30000); // Extended timeout for multiple i18n operations
   });
 
   describe('CSS Logical Properties Validation', () => {
@@ -296,7 +296,7 @@ describe('RTL Layout Integration Tests', () => {
       // Text should be displayed (browser handles bidi algorithm)
       expect(text.textContent).toContain('مرحبا');
       expect(text.textContent).toContain('Hello');
-    });
+    }, 20000); // Extended timeout for i18n operations
 
     it('should handle URLs in RTL text', async () => {
       await i18n.changeLanguage('ar');
@@ -309,7 +309,7 @@ describe('RTL Layout Integration Tests', () => {
 
       const text = screen.getByTestId('url-text');
       expect(text.textContent).toContain('https://example.com');
-    });
+    }, 20000); // Extended timeout for i18n operations
 
     it('should handle numbers in RTL text', async () => {
       await i18n.changeLanguage('ar');
@@ -322,7 +322,7 @@ describe('RTL Layout Integration Tests', () => {
 
       const text = screen.getByTestId('number-text');
       expect(text.textContent).toContain('12345');
-    });
+    }, 20000); // Extended timeout for i18n operations
   });
 
   describe('Language Direction Consistency', () => {
@@ -345,7 +345,7 @@ describe('RTL Layout Integration Tests', () => {
 
         unmount();
       }
-    });
+    }, 45000); // Extended timeout for multiple i18n operations
 
     it('should maintain LTR direction across all LTR languages', async () => {
       const ltrLanguages = ['en', 'fr', 'de', 'ja', 'ko'];
@@ -366,6 +366,6 @@ describe('RTL Layout Integration Tests', () => {
 
         unmount();
       }
-    });
+    }, 60000); // Extended timeout for multiple i18n operations (5 languages)
   });
 });

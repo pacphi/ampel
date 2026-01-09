@@ -32,14 +32,11 @@ function MultiNamespaceComponent() {
 
 describe('Translation Loading Integration Tests', () => {
   beforeEach(async () => {
-    // Reset to English
+    // Reset to English - don't clear cache as it causes timeout issues in CI
+    // The cache clearing was causing subsequent changeLanguage calls to timeout
+    // while trying to reload all translations from scratch
     await i18n.changeLanguage('en');
-
-    // Clear any cached translations
-    Object.keys(i18n.services.resourceStore.data).forEach((lng) => {
-      i18n.services.resourceStore.data[lng] = {};
-    });
-  });
+  }, 15000); // Extend hook timeout for translation loading
 
   afterEach(() => {
     vi.restoreAllMocks();

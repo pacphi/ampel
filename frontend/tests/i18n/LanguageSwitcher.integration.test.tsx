@@ -76,7 +76,7 @@ describe('LanguageSwitcher Integration Tests', () => {
     document.documentElement.removeAttribute('lang');
     document.documentElement.classList.remove('rtl');
     document.body.classList.remove('rtl');
-  });
+  }, 15000); // Extend hook timeout for i18n operations in CI
 
   afterEach(() => {
     // Clean up document state

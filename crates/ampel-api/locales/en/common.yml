@@ -40,8 +40,9 @@ en:
     retry: "Retry"
     back: "Back"
 
-  # Error Messages - Authentication
+  # Error Messages
   errors:
+    # Authentication Errors
     auth:
       invalid_credentials: "Invalid email or password"
       token_expired: "Your session has expired. Please log in again"
@@ -49,9 +50,7 @@ en:
       unauthorized: "You are not authorized to perform this action"
       already_exists: "An account with this email already exists"
       not_found: "Account not found"
-
-  # Error Messages - Validation
-  errors:
+    # Validation Errors
     validation:
       required: "This field is required"
       invalid_email: "Invalid email address"
@@ -59,9 +58,7 @@ en:
       passwords_no_match: "Passwords do not match"
       invalid_url: "Invalid URL format"
       invalid_format: "Invalid format"
-
-  # Error Messages - Provider
-  errors:
+    # Provider Errors
     provider:
       connection_failed: "Failed to connect to provider"
       authentication_failed: "Provider authentication failed"
@@ -69,9 +66,7 @@ en:
       repository_not_found: "Repository not found"
       permission_denied: "Permission denied to access this resource"
       api_error: "Provider API error"
-
-  # Error Messages - General
-  errors:
+    # General Errors
     general:
       server_error: "An unexpected server error occurred"
       network_error: "Network connection error"

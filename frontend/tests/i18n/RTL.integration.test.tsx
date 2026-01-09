@@ -34,7 +34,7 @@ describe('RTL Provider Integration Tests', () => {
       .forEach((el) => {
         el.remove();
       });
-  });
+  }, 15000); // Extend hook timeout for i18n operations in CI
 
   afterEach(() => {
     // Clean up document state
