@@ -62,7 +62,12 @@ export const supportedLanguages: SupportedLanguage[] = [
   'zh-TW',
 ];
 
-export type TranslationNamespace = 'common' | 'dashboard' | 'errors' | 'settings' | 'validation';
+export type TranslationNamespace =
+  | 'common'
+  | 'dashboard'
+  | 'errors'
+  | 'settings'
+  | 'validation';
 
 export interface CommonTranslations {
   actions: {
