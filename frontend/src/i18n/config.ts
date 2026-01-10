@@ -148,9 +148,9 @@ i18n
           'en-US': 'en',
           'zh-Hans': 'zh-CN',
           'zh-Hant': 'zh-TW',
-          'pt': 'pt-BR',
-          'es': 'es-ES',
-          'nb': 'no',
+          pt: 'pt-BR',
+          es: 'es-ES',
+          nb: 'no',
           'nb-NO': 'no',
         };
         return mapping[lng] || lng;

@@ -50,9 +50,9 @@ impl PlaceholderProtector {
                 format!("<x id=\"{}\" />", i),
                 format!("<x id={} />", i),
                 format!("<x id={}/>", i),
-                format!("&lt;x id=\"{}\"&gt;", i),        // HTML-escaped
+                format!("&lt;x id=\"{}\"&gt;", i), // HTML-escaped
                 format!("&lt;x id=\"{}\"/&gt;", i),
-                format!("< x id = \"{}\" / >", i),        // Extra spaces
+                format!("< x id = \"{}\" / >", i), // Extra spaces
             ];
 
             for pattern in &marker_patterns {
