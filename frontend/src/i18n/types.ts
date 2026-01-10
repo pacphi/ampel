@@ -121,6 +121,7 @@ export interface CommonTranslations {
     displayName: string;
     dontHaveAccount: string;
     email: string;
+    emailPlaceholder: string;
     forgotPassword: string;
     getStarted: string;
     login: string;
