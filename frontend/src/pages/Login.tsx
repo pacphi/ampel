@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
 import { CircleDot } from 'lucide-react';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 export default function Login() {
   const { t } = useTranslation(['common', 'validation', 'errors']);
@@ -56,7 +57,15 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md relative">
+        <div className="absolute top-4 right-4 rtl:right-auto rtl:left-4">
+          <LanguageSwitcher
+            variant="dropdown"
+            size="sm"
+            showSearch={false}
+            showFavorites={false}
+          />
+        </div>
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
             <CircleDot className="h-12 w-12 text-ampel-green" />
@@ -68,7 +77,7 @@ export default function Login() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">{t('common:auth.email')}</Label>
-              <Input id="email" type="email" placeholder="you@example.com" {...register('email')} />
+              <Input id="email" type="email" placeholder={t('common:auth.emailPlaceholder')} {...register('email')} />
               {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
             </div>
             <div className="space-y-2">

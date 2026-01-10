@@ -141,6 +141,20 @@ i18n
       caches: ['localStorage'],
       // LocalStorage key
       lookupLocalStorage: 'ampel-i18n-lng',
+      // Map detected languages to supported ones
+      // e.g., 'en-US' → 'en', 'zh-Hans' → 'zh-CN'
+      convertDetectedLanguage: (lng: string) => {
+        const mapping: Record<string, string> = {
+          'en-US': 'en',
+          'zh-Hans': 'zh-CN',
+          'zh-Hant': 'zh-TW',
+          'pt': 'pt-BR',
+          'es': 'es-ES',
+          'nb': 'no',
+          'nb-NO': 'no',
+        };
+        return mapping[lng] || lng;
+      },
     },
 
     // Interpolation settings

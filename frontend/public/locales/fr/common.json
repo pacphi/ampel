@@ -64,7 +64,8 @@
     "signingIn": "Connexion...",
     "username": "Nom d'utilisateur",
     "welcome": "Content de te revoir!",
-    "welcomeToAmpel": "Bienvenue chez Ampel"
+    "welcomeToAmpel": "Bienvenue chez Ampel",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "Langue actuelle",

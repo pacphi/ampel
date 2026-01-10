@@ -64,7 +64,8 @@
     "signingIn": "กำลังเข้าสู่ระบบ...",
     "username": "ชื่อผู้ใช้",
     "welcome": "ยินดีต้อนรับกลับ!",
-    "welcomeToAmpel": "ยินดีต้อนรับสู่ Ampel"
+    "welcomeToAmpel": "ยินดีต้อนรับสู่ Ampel",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "ภาษาปัจจุบัน",

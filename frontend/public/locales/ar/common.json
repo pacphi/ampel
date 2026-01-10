@@ -64,7 +64,8 @@
     "signingIn": "جار تسجيل الدخول...",
     "username": "اسم المستخدم",
     "welcome": "مرحبًا بعودتك!",
-    "welcomeToAmpel": "مرحبا بك في Ampel"
+    "welcomeToAmpel": "مرحبا بك في Ampel",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "اللغة الحالية",

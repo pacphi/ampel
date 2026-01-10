@@ -64,7 +64,8 @@
     "signingIn": "サインイン中...",
     "username": "ユーザー名",
     "welcome": "おかえり！",
-    "welcomeToAmpel": "アンペルへようこそ"
+    "welcomeToAmpel": "アンペルへようこそ",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "現在の言語",

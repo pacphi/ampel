@@ -64,7 +64,8 @@
     "signingIn": "Вход в систему...",
     "username": "Имя пользователя",
     "welcome": "Добро пожаловать!",
-    "welcomeToAmpel": "Добро пожаловать в Ampel"
+    "welcomeToAmpel": "Добро пожаловать в Ampel",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "Текущий язык",

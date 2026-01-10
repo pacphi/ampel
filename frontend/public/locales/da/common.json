@@ -64,7 +64,8 @@
     "signingIn": "Logerer ind...",
     "username": "Brugernavn",
     "welcome": "Velkommen tilbage!",
-    "welcomeToAmpel": "Velkommen til Ampel"
+    "welcomeToAmpel": "Velkommen til Ampel",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "Nuværende sprog",

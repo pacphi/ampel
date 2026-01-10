@@ -1,7 +1,7 @@
 # Translation Workflow Guide
 
-**Version:** 1.0
-**Date:** 2025-12-27
+**Version:** 2.0
+**Date:** 2026-01-10
 **Status:** Production Ready
 
 ## Table of Contents
@@ -10,8 +10,12 @@
 2. [Adding New Translation Keys](#adding-new-translation-keys)
 3. [Using the CLI Tools](#using-the-cli-tools)
 4. [Translation Service Integration](#translation-service-integration)
-5. [CI/CD Automation](#cicd-automation)
-6. [Troubleshooting](#troubleshooting)
+5. [Placeholder Handling](#placeholder-handling)
+6. [Validation and Quality Assurance](#validation-and-quality-assurance)
+7. [Common Pitfalls and Solutions](#common-pitfalls-and-solutions)
+8. [CI/CD Automation](#cicd-automation)
+9. [Troubleshooting](#troubleshooting)
+10. [Reference Commands](#reference-commands)
 
 ---
 
@@ -19,169 +23,188 @@
 
 The Ampel i18n workflow uses `ampel-i18n-builder` for automated translation management. The system supports:
 
-- **3 Translation Providers**: DeepL (primary), Google Cloud Translation (fallback), OpenAI
-- **20 Languages**: Including RTL support for Hebrew and Arabic
+- **4 Translation Providers**: Systran (Tier 1), DeepL (Tier 2), Google (Tier 3), OpenAI (Tier 4)
+- **27 Languages**: Including RTL support for Hebrew and Arabic
 - **Dual Format**: YAML (backend/rust-i18n) + JSON (frontend/react-i18next)
-- **Automated Translation**: API-based translation with caching
+- **Automated Translation**: API-based translation with fallback and caching
+- **Placeholder Protection**: Automatic preservation of `{{variable}}` placeholders
 - **Type Safety**: Code generation for TypeScript and Rust
+
+### Supported Languages (27 total)
+
+| Code | Language | Script | Direction | Recommended Provider |
+|------|----------|--------|-----------|---------------------|
+| en | English (US) | Latin | LTR | (source) |
+| en-GB | English (UK) | Latin | LTR | DeepL |
+| de | German | Latin | LTR | DeepL |
+| fr | French | Latin | LTR | DeepL |
+| it | Italian | Latin | LTR | DeepL |
+| es-ES | Spanish (Spain) | Latin | LTR | DeepL |
+| es-MX | Spanish (Mexico) | Latin | LTR | DeepL |
+| pt-BR | Portuguese (Brazil) | Latin | LTR | DeepL |
+| nl | Dutch | Latin | LTR | DeepL |
+| da | Danish | Latin | LTR | DeepL |
+| sv | Swedish | Latin | LTR | DeepL |
+| no | Norwegian | Latin | LTR | DeepL |
+| fi | Finnish | Latin | LTR | DeepL |
+| pl | Polish | Latin | LTR | DeepL |
+| cs | Czech | Latin | LTR | DeepL |
+| ru | Russian | Cyrillic | LTR | DeepL |
+| sr | Serbian | Cyrillic | LTR | Google |
+| tr | Turkish | Latin | LTR | Google |
+| ja | Japanese | CJK | LTR | Google |
+| ko | Korean | Hangul | LTR | Google |
+| zh-CN | Chinese (Simplified) | CJK | LTR | Google |
+| zh-TW | Chinese (Traditional) | CJK | LTR | Google |
+| th | Thai | Thai | LTR | Google |
+| vi | Vietnamese | Latin | LTR | Google |
+| hi | Hindi | Devanagari | LTR | Google |
+| ar | Arabic | Arabic | **RTL** | Google |
+| he | Hebrew | Hebrew | **RTL** | Google |
 
 ### Architecture Flow
 
 ```mermaid
 graph TB
-    DEV[Developer adds English key] --> YAML[Update en/common.yml]
-    YAML --> CLI[ampel-i18n-builder CLI]
-    CLI --> API{Translation Provider}
-    API -->|DeepL| DEEPL[18 languages]
-    API -->|Google| GOOGLE[Thai, Arabic]
-    API -->|OpenAI| OPENAI[Fallback]
-    DEEPL --> CACHE[Redis Cache]
-    GOOGLE --> CACHE
-    OPENAI --> CACHE
-    CACHE --> VALIDATE[Validation]
-    VALIDATE --> BACKEND[YAML Bundles]
+    DEV[Developer adds English key] --> JSON[Update en/*.json]
+    JSON --> CLI[ampel-i18n-builder CLI]
+    CLI --> FALLBACK{Fallback Router}
+    FALLBACK -->|Tier 1| SYSTRAN[Systran]
+    FALLBACK -->|Tier 2| DEEPL[DeepL]
+    FALLBACK -->|Tier 3| GOOGLE[Google]
+    FALLBACK -->|Tier 4| OPENAI[OpenAI]
+    SYSTRAN --> PROTECT[Placeholder Protection]
+    DEEPL --> PROTECT
+    GOOGLE --> PROTECT
+    OPENAI --> PROTECT
+    PROTECT --> VALIDATE[Validation]
     VALIDATE --> FRONTEND[JSON Bundles]
-    BACKEND --> COMPILE[Rust Compile]
-    FRONTEND --> LAZY[React Lazy Load]
+    FRONTEND --> TYPES[TypeScript Types]
+    TYPES --> LAZY[React Lazy Load]
+```
+
+### File Structure
+
+```
+frontend/public/locales/
+├── en/                          # Source language (English US)
+│   ├── common.json             # Shared UI strings
+│   ├── dashboard.json          # Dashboard-specific strings
+│   ├── settings.json           # Settings page strings
+│   ├── errors.json             # Error messages
+│   └── validation.json         # Form validation messages
+├── de/                          # German translations
+│   ├── common.json
+│   ├── dashboard.json
+│   └── ...
+├── fr/                          # French translations
+└── ... (25 other languages)
+
+frontend/src/i18n/
+└── types.ts                     # Auto-generated TypeScript types
 ```
 
 ---
 
 ## Adding New Translation Keys
 
-### 1. Backend Translations (Rust)
+### Step 1: Add Keys to English Source File
 
-Backend translations are stored in `crates/ampel-api/locales/` and embedded at compile-time.
-
-#### Add to English Source File
-
-```yaml
-# crates/ampel-api/locales/en/common.yml
-dashboard:
-  title: 'Pull Request Dashboard'
-  subtitle: 'Unified view across all repositories'
-
-errors:
-  auth:
-    invalid_credentials: 'Invalid email or password'
-    token_expired: 'Your session has expired. Please login again.'
-
-pull_requests:
-  count:
-    one: '1 pull request'
-    other: '{{count}} pull requests'
-```
-
-#### Key Naming Conventions
-
-- Use **dot notation**: `dashboard.title`, not `dashboard-title`
-- **Group by feature**: `dashboard.*`, `settings.*`, `errors.*`
-- **Be specific**: `errors.auth.invalid_credentials`, not `errors.login`
-- **Preserve variables**: `{{variable}}` format (rust-i18n)
-
-#### Using in Rust Code
-
-```rust
-use rust_i18n::t;
-
-// Simple translation
-let title = t!("dashboard.title");
-
-// With variables
-let count_msg = t!("pull_requests.count", count = 5);
-
-// With locale override
-let msg = t!("errors.auth.token_expired", locale = "pt-BR");
-```
-
-### 2. Frontend Translations (React)
-
-Frontend translations are stored in `frontend/public/locales/` and lazy-loaded at runtime.
-
-#### Add to English Source File
+Edit the appropriate JSON file in `frontend/public/locales/en/`:
 
 ```json
-// frontend/public/locales/en/dashboard.json
+// settings.json - Example: Adding language preference keys
 {
-  "title": "Pull Request Dashboard",
-  "subtitle": "Unified view across all repositories",
-  "filters": {
-    "status": "Filter by status",
-    "assignee": "Filter by assignee"
-  },
-  "empty": {
-    "title": "No pull requests found",
-    "description": "Create your first PR to get started"
+  "language": {
+    "title": "Language",
+    "description": "Choose your preferred language for the interface"
   }
 }
 ```
 
-#### Key Naming Conventions
+**Key Naming Conventions:**
+- Use **camelCase** for key names: `displayName`, not `display-name`
+- Group related keys under **nested objects**
+- Use **descriptive names** that indicate purpose
+- **Preserve placeholder format**: `{{variable}}` (double braces for i18next)
 
-- Use **nested objects** for organization
-- **camelCase** for keys: `emptyState`, not `empty-state`
-- **Preserve variables**: `{variable}` or `{{variable}}` format (i18next)
+### Step 2: Integrate in React Components
 
-#### Using in React Code
+Use the `useTranslation` hook with namespace:
 
-```typescript
+```tsx
 import { useTranslation } from 'react-i18next';
 
-function Dashboard() {
-  const { t } = useTranslation('dashboard');
+function LanguageSettings() {
+  const { t } = useTranslation(['settings']);
 
   return (
     <div>
-      <h1>{t('title')}</h1>
-      <p>{t('subtitle')}</p>
-
-      {/* With variables */}
-      <p>{t('filters.status', { count: 5 })}</p>
-
-      {/* Nested keys */}
-      <p>{t('empty.title')}</p>
+      <label>{t('settings:language.title')}</label>
+      <p>{t('settings:language.description')}</p>
     </div>
   );
 }
 ```
 
-### 3. Pluralization
+**Namespace Pattern:** `namespace:key.path`
+- `settings:language.title` → `settings.json` → `language.title`
+- `common:app.loading` → `common.json` → `app.loading`
 
-Different languages have different plural rules. Use CLDR plural forms.
+### Step 3: Verify Missing Keys
 
-#### Backend (YAML)
+Before translation, check which languages are missing the new keys:
 
-```yaml
-# crates/ampel-api/locales/en/common.yml
-items:
-  one: "1 item"
-  other: "{{count}} items"
-
-# For languages with complex plurals (Russian, Polish, Finnish)
-# locales/ru/common.yml
-items:
-  one: "{{count}} элемент"      # 1, 21, 31, ...
-  few: "{{count}} элемента"     # 2-4, 22-24, ...
-  many: "{{count}} элементов"   # 0, 5-20, 25-30, ...
-  other: "{{count}} элементов"
+```bash
+cd crates/ampel-i18n-builder
+cargo run --bin cargo-i18n -- missing --translation-dir ../../frontend/public/locales
 ```
 
-#### Frontend (JSON)
-
-```json
-// frontend/public/locales/en/dashboard.json
-{
-  "pull_requests": "{{count}} pull request",
-  "pull_requests_plural": "{{count}} pull requests"
-}
+Output shows missing keys per language:
+```
+✓ Source language (en): 327 key(s)
+✗ de: 2 missing key(s)
+  - settings.language.description
+  - settings.language.title
+✗ fr: 2 missing key(s)
+  ...
 ```
 
+### Step 4: Run Translation
+
+Translate each language one-by-one (recommended for control):
+
+```bash
+cd crates/ampel-i18n-builder
+
+# Translate only missing keys in settings namespace for German
+cargo run --bin cargo-i18n -- translate \
+  --lang de \
+  --namespace settings \
+  --translation-dir ../../frontend/public/locales
+```
+
+### Step 5: Regenerate TypeScript Types
+
+```bash
+cargo run --bin cargo-i18n -- generate-types \
+  --translation-dir ../../frontend/public/locales
+```
+
+This reads all English locale files and generates `frontend/src/i18n/types.ts`.
+
+**Important:** The types file has a header:
 ```typescript
-const { t } = useTranslation('dashboard');
+// Auto-generated by ampel-i18n-builder
+// Do not edit manually
+```
 
-// Automatic plural selection
-t('pull_requests', { count: 1 }); // "1 pull request"
-t('pull_requests', { count: 5 }); // "5 pull requests"
+### Step 6: Validate
+
+```bash
+cd ../..  # Back to project root
+node scripts/validate-translations.js
+node scripts/i18n-coverage-report.js --format text
 ```
 
 ---
@@ -190,17 +213,39 @@ t('pull_requests', { count: 5 }); // "5 pull requests"
 
 ### Installation
 
-The CLI is not yet published as a binary. Build from source:
+Build from source (not yet published as binary):
 
 ```bash
 # Build the CLI
-cargo build --release --bin i18n-builder
+cargo build --release --bin cargo-i18n --package ampel-i18n-builder
 
 # Or use via cargo run
-cargo run --bin i18n-builder -- --help
+cargo run --package ampel-i18n-builder --bin cargo-i18n -- --help
 ```
 
 ### Configuration
+
+**Option 1: Environment File (Recommended)**
+
+Create `crates/ampel-i18n-builder/.env`:
+
+```bash
+# Tier 1 - Systran (Enterprise, highest quality)
+SYSTRAN_API_KEY=your-systran-key
+
+# Tier 2 - DeepL (Best for European languages)
+DEEPL_API_KEY=your-deepl-key
+
+# Tier 3 - Google Translate (Broad coverage)
+GOOGLE_API_KEY=your-google-key
+
+# Tier 4 - OpenAI (Fallback, context-aware)
+OPENAI_API_KEY=your-openai-key
+```
+
+**Critical:** Run CLI from `crates/ampel-i18n-builder/` directory to auto-load `.env`, OR specify full paths.
+
+**Option 2: YAML Configuration**
 
 Create `.ampel-i18n.yaml` in the project root:
 
@@ -208,167 +253,337 @@ Create `.ampel-i18n.yaml` in the project root:
 translation_dir: 'frontend/public/locales'
 
 translation:
-  # API keys (can also use environment variables)
-  deepl_api_key: null # Use DEEPL_API_KEY env var
-  google_api_key: null # Use GOOGLE_API_KEY env var
-  openai_api_key: null # Use OPENAI_API_KEY env var
+  systran_api_key: '${SYSTRAN_API_KEY}'
+  deepl_api_key: '${DEEPL_API_KEY}'
+  google_api_key: '${GOOGLE_API_KEY}'
+  openai_api_key: '${OPENAI_API_KEY}'
 
-  # Request timeout in seconds
-  timeout_secs: 30
-
-  # Batch size for translation requests
-  batch_size: 50
-```
-
-### Environment Variables
-
-```bash
-# DeepL API key (primary provider)
-export DEEPL_API_KEY="your-deepl-api-key"
-
-# Google Cloud Translation API key (fallback for Thai, Arabic)
-export GOOGLE_API_KEY="your-google-api-key"
-
-# OpenAI API key (optional fallback)
-export OPENAI_API_KEY="your-openai-api-key"
+  default_timeout_secs: 30
+  default_batch_size: 50
+  default_max_retries: 3
 ```
 
 ### CLI Commands
 
-#### Translate Files
+| Command | Description |
+|---------|-------------|
+| `translate` | Translate missing keys using AI translation |
+| `sync` | Sync all languages from source language |
+| `missing` | List missing translation keys per language |
+| `coverage` | Check translation coverage statistics |
+| `validate` | Validate translation files for errors |
+| `export` | Export translations (XLIFF, CSV, JSON) |
+| `import` | Import translations from external service |
+| `report` | Generate coverage reports |
+| `generate-types` | Generate TypeScript type definitions |
+
+#### Translate Command Options
 
 ```bash
-# Translate a single file to Finnish
-cargo run --bin i18n-builder -- translate \
-  --provider deepl \
-  --input crates/ampel-api/locales/en/common.yml \
-  --output crates/ampel-api/locales/fi/common.yml \
-  --target-lang fi
+cargo run --bin cargo-i18n -- translate --help
 
-# Translate frontend JSON
-cargo run --bin i18n-builder -- translate \
-  --provider deepl \
-  --input frontend/public/locales/en/dashboard.json \
-  --output frontend/public/locales/fi/dashboard.json \
-  --target-lang fi
-```
-
-#### Validate Translations
-
-```bash
-# Validate coverage (requires ≥95%)
-cargo run --bin i18n-builder -- validate \
-  --input-dir crates/ampel-api/locales \
-  --base-locale en \
-  --min-coverage 95
-
-# Check for missing keys
-cargo run --bin i18n-builder -- validate \
-  --input-dir frontend/public/locales \
-  --base-locale en \
-  --check missing
-
-# Check for variable mismatches
-cargo run --bin i18n-builder -- validate \
-  --input-dir crates/ampel-api/locales \
-  --check variables
-```
-
-#### Generate Type Definitions
-
-```bash
-# Generate TypeScript types from JSON translations
-cargo run --bin i18n-builder -- codegen \
-  --input frontend/public/locales/en/dashboard.json \
-  --output frontend/src/types/i18n.generated.ts \
-  --language typescript
-
-# Generate Rust types (future feature)
-cargo run --bin i18n-builder -- codegen \
-  --input crates/ampel-api/locales/en/common.yml \
-  --output crates/ampel-api/src/i18n.generated.rs \
-  --language rust
+Options:
+  --lang <LANG>              Target language code (required)
+  --namespace <NS>           Only translate specific namespace
+  --provider <PROVIDER>      Provider hint (systran, deepl, google, openai)
+  --no-fallback             Disable fallback, use only primary provider
+  --force                    Retranslate ALL keys, ignoring existing
+  --detect-untranslated     Retranslate keys with English values
+  --dry-run                 Preview changes without writing files
+  --translation-dir <PATH>   Path to translation directory
+  --timeout <SECS>          Override timeout (seconds)
+  --batch-size <SIZE>       Override batch size
 ```
 
 ---
 
 ## Translation Service Integration
 
-### Provider Selection
+### 4-Tier Provider Architecture
 
-The CLI automatically selects the best provider based on language:
+The CLI uses a tiered provider system with automatic fallback:
 
-| Provider   | Languages                     | Use Case                  |
-| ---------- | ----------------------------- | ------------------------- |
-| **DeepL**  | 18/20 (excludes Thai, Arabic) | Primary - highest quality |
-| **Google** | 20/20 (all languages)         | Fallback - broad coverage |
-| **OpenAI** | All languages                 | Emergency fallback        |
-
-### DeepL Integration
-
-DeepL provides the highest translation quality (92-98% accuracy).
-
-#### Supported Languages
-
-```rust
-// Automatically uses DeepL for these languages
-const DEEPL_LANGUAGES: &[&str] = &[
-    "en", "pt-BR", "es-ES", "de", "fr", "he",
-    "nl", "sr", "ru", "it", "pl", "zh-CN", "ja",
-    "fi", "sv", "no", "da", "cs"
-];
+```
+Tier 1: Systran → Fails? → Tier 2: DeepL → Fails? → Tier 3: Google → Fails? → Tier 4: OpenAI
 ```
 
-#### API Usage
+| Provider | Tier | Rate Limit | Batch Size | Best For |
+|----------|------|------------|------------|----------|
+| Systran | 1 | 100 req/sec | 50 | Enterprise, all languages |
+| DeepL | 2 | 10 req/sec | 50 | European languages (de, fr, fi, sv, etc.) |
+| Google | 3 | 100 req/sec | 100 | Asian/Middle Eastern (ar, ja, zh, etc.) |
+| OpenAI | 4 | Token-based | Unlimited | Complex/technical content |
 
-```rust
-use ampel_i18n_builder::translator::{Translator, TranslationProvider};
-use ampel_i18n_builder::config::Config;
+### Provider Selection
 
-#[tokio::main]
-async fn main() -> anyhow::Result<()> {
-    let config = Config::load()?;
-    let translator = Translator::new(TranslationProvider::DeepL, &config)?;
+**Automatic (Recommended):**
+```bash
+cargo run --bin cargo-i18n -- translate --lang de
+# Uses first available provider, falls back on failure
+```
 
-    let mut texts = HashMap::new();
-    texts.insert("greeting".to_string(), json!("Hello, world!"));
+**Explicit Provider (No Fallback):**
+```bash
+cargo run --bin cargo-i18n -- translate --lang de --provider deepl --no-fallback
+```
 
-    let translations = translator.translate_batch(&texts, "fi").await?;
-    println!("Finnish: {}", translations["greeting"]);
+### Translation Output Example
 
-    Ok(())
+```
+→ Fallback mode enabled: Translating to de
+✓ Found 1 namespace(s): settings
+  → settings - 2 missing key(s)
+INFO: Attempting translation with Systran (Tier 1)... [1/3]
+ERROR: Systran (Tier 1) failed: API error 401 Unauthorized
+INFO: Attempting translation with Google (Tier 3)... [2/3]
+INFO: ✓ Translation successful with Google (Tier 3)
+WARN: Used fallback provider Google (Tier 3) after 1 failure(s)
+    ✓ Wrote 2 translations to ../../frontend/public/locales/de/settings.json
+✓ Translation complete!
+```
+
+---
+
+## Placeholder Handling
+
+### The Placeholder Problem
+
+i18next uses double-brace placeholders for variable interpolation:
+
+```json
+{
+  "greeting": "Hello, {{name}}!",
+  "items": "{{count}} items in cart",
+  "pr": {
+    "number": "#{{number}}"
+  }
 }
 ```
 
-### Google Cloud Translation
+**The Problem:** Translation APIs like Google Translate will translate placeholder names:
+- `{{number}}` → `{{Nummer}}` (German)
+- `{{number}}` → `{{número}}` (Spanish)
+- `{{count}}` → `{{数量}}` (Chinese)
 
-Used for Thai and Arabic, which DeepL doesn't support.
-
-#### Setup
-
-1. Create a Google Cloud project
-2. Enable Cloud Translation API
-3. Create API key or service account credentials
-4. Set `GOOGLE_API_KEY` environment variable
-
-#### API Usage
-
-```bash
-# Translate Thai content
-cargo run --bin i18n-builder -- translate \
-  --provider google \
-  --input crates/ampel-api/locales/en/common.yml \
-  --output crates/ampel-api/locales/th/common.yml \
-  --target-lang th
+**The Impact:** i18next looks for exact placeholder names. When you call:
+```tsx
+t('pr.number', { number: 123 })
 ```
 
-### Caching Strategy
+It expects `{{number}}` in the translation. If the translation has `{{Nummer}}`, it renders literally as `#{{Nummer}}` instead of `#123`.
 
-Translations are cached to reduce API costs:
+### The Solution: PlaceholderProtector
 
-1. **Redis Cache** (production): 1-hour TTL
-2. **File Cache** (development): Indefinite
-3. **Memory Cache** (testing): Session-only
+The Google translator includes automatic placeholder protection (`crates/ampel-i18n-builder/src/translator/google.rs`):
+
+```rust
+struct PlaceholderProtector {
+    placeholders: Vec<String>,
+}
+
+impl PlaceholderProtector {
+    /// Protect placeholders by replacing with XML markers
+    fn protect(text: &str) -> (String, Self) {
+        // "Hello {{name}}!" → "Hello <x id="0"/>!"
+        // Placeholders stored: ["{{name}}"]
+    }
+
+    /// Restore original placeholders from markers
+    fn restore(&self, text: &str) -> String {
+        // "Hallo <x id="0"/>!" → "Hallo {{name}}!"
+    }
+}
+```
+
+**How It Works:**
+1. **Before Translation:** `"#{{number}}"` → `"#<x id="0"/>"`
+2. **API Translates:** `"#<x id="0"/>"` → `"Nr.<x id="0"/>"` (German)
+3. **After Translation:** `"Nr.<x id="0"/>"` → `"Nr.{{number}}"`
+
+### Manual Placeholder Fixes
+
+If you encounter translations with incorrect placeholders (from before the fix), correct them:
+
+```bash
+# Using Python for safe JSON manipulation
+python3 -c "
+import json
+with open('frontend/public/locales/de/dashboard.json', 'r') as f:
+    data = json.load(f)
+data['pr']['number'] = '#{{number}}'
+with open('frontend/public/locales/de/dashboard.json', 'w') as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
+"
+```
+
+### Placeholder Best Practices
+
+1. **Keep placeholder names simple and English:** `{{count}}`, `{{name}}`, `{{field}}`
+2. **Avoid special characters** in placeholder names
+3. **Document placeholder usage** in comments or companion docs
+4. **Always validate after translation** to catch placeholder issues
+
+### Arabic Singular Forms (Special Case)
+
+Arabic singular forms may lose `{{count}}` placeholder intentionally:
+
+```json
+// English
+"pullRequests_one": "{{count}} pull request"
+
+// Arabic (after translation)
+"pullRequests_one": "pull request واحد"  // "واحد" means "one"
+```
+
+This is **linguistically correct** for Arabic - the word "واحد" (one) replaces the numeral. The `_other` form retains `{{count}}` for plural amounts.
+
+---
+
+## Validation and Quality Assurance
+
+### Available Validation Scripts
+
+#### 1. Main Validation Script
+
+```bash
+./scripts/i18n-validate.sh --frontend
+```
+
+Checks:
+- JSON syntax validity
+- Coverage threshold (default 95%)
+- Missing keys detection
+
+#### 2. Advanced Quality Validator
+
+```bash
+node scripts/validate-translations.js
+node scripts/validate-translations.js de    # Single language
+```
+
+Checks:
+- Completeness (missing keys/files)
+- **Placeholder preservation** (critical - flags mismatches)
+- Untranslated content detection (English text in non-English files)
+- Empty translation detection
+- Character set analysis
+
+**Quality Tiers:**
+- **Excellent (95%+):** Production ready
+- **Good (80-94%):** Acceptable with minor issues
+- **Acceptable (60-79%):** Needs review
+- **Poor (<60%):** Requires attention
+
+#### 3. Coverage Report
+
+```bash
+node scripts/i18n-coverage-report.js --format text
+node scripts/i18n-coverage-report.js --format json --output report.json
+node scripts/i18n-coverage-report.js --format markdown
+```
+
+### Post-Translation Checklist
+
+1. **Check for missing keys:**
+   ```bash
+   cargo run --bin cargo-i18n -- missing
+   ```
+   Expected: `✓ All translations complete - no missing keys`
+
+2. **Run quality validation:**
+   ```bash
+   node scripts/validate-translations.js
+   ```
+   Watch for: `Placeholder mismatch` errors (critical)
+
+3. **Generate coverage report:**
+   ```bash
+   node scripts/i18n-coverage-report.js --format text
+   ```
+   Expected: 100% coverage for all languages
+
+4. **Regenerate types:**
+   ```bash
+   cargo run --bin cargo-i18n -- generate-types
+   ```
+
+---
+
+## Common Pitfalls and Solutions
+
+### Pitfall 1: Running from Wrong Directory
+
+**Problem:** API keys not loaded, translations fail with "No translation providers available."
+
+**Solution:** Run from `crates/ampel-i18n-builder/` to auto-load `.env`, or use explicit paths:
+```bash
+# Option A: Run from i18n-builder directory
+cd crates/ampel-i18n-builder
+cargo run --bin cargo-i18n -- translate --lang de --translation-dir ../../frontend/public/locales
+
+# Option B: Use --package flag from project root (env not loaded)
+cargo run --package ampel-i18n-builder --bin cargo-i18n -- translate --lang de
+```
+
+### Pitfall 2: Translated Placeholders (Pre-Fix)
+
+**Problem:** `{{number}}` becomes `{{Nummer}}` in German translations created before the PlaceholderProtector fix.
+
+**Solution:**
+1. New translations automatically protected (fix implemented 2026-01-10)
+2. For existing bad translations, fix manually:
+   ```bash
+   python3 -c "
+   import json
+   with open('frontend/public/locales/de/dashboard.json', 'r') as f:
+       data = json.load(f)
+   data['pr']['number'] = '#{{number}}'
+   with open('frontend/public/locales/de/dashboard.json', 'w') as f:
+       json.dump(data, f, ensure_ascii=False, indent=2)
+   "
+   ```
+
+### Pitfall 3: Forgetting to Regenerate Types
+
+**Problem:** TypeScript errors after adding new keys - keys not recognized.
+
+**Solution:** Always run after adding/modifying keys:
+```bash
+cargo run --bin cargo-i18n -- generate-types --translation-dir ../../frontend/public/locales
+```
+
+### Pitfall 4: API Rate Limits
+
+**Problem:** Translation fails with "Rate limit exceeded."
+
+**Solution:**
+```bash
+# DeepL free tier: 500,000 chars/month
+# Check your usage:
+curl -H "Authorization: DeepL-Auth-Key $DEEPL_API_KEY" \
+  https://api-free.deepl.com/v2/usage
+
+# Use --batch-size to reduce request frequency
+cargo run --bin cargo-i18n -- translate --lang de --batch-size 25
+```
+
+### Pitfall 5: Full-Width Characters in CJK Translations
+
+**Problem:** Japanese/Chinese may include full-width variants of ASCII characters (e.g., `＃` instead of `#`).
+
+**Example:** `"＃{{番号}}"` instead of `"#{{number}}"`
+
+**Solution:** Manually verify CJK translations and correct:
+```bash
+python3 -c "
+import json
+with open('frontend/public/locales/ja/dashboard.json', 'r') as f:
+    data = json.load(f)
+data['pr']['number'] = '#{{number}}'  # Use ASCII #
+with open('frontend/public/locales/ja/dashboard.json', 'w') as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
+"
+```
 
 ---
 
@@ -378,8 +593,6 @@ Translations are cached to reduce API costs:
 
 The workflow runs on every PR that modifies translation files.
 
-#### Workflow Jobs
-
 ```yaml
 # .github/workflows/i18n-validation.yml
 
@@ -388,185 +601,171 @@ name: i18n Validation
 on:
   pull_request:
     paths:
-      - 'crates/ampel-api/locales/**'
       - 'frontend/public/locales/**'
       - 'crates/ampel-i18n-builder/**'
 
 jobs:
-  validate-backend:
+  validate-translations:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Build i18n-builder
-        run: cargo build --release --bin i18n-builder
+        run: cargo build --release --bin cargo-i18n --package ampel-i18n-builder
 
-      - name: Validate backend translations
+      - name: Check missing translations
         run: |
-          ./target/release/i18n-builder validate \
-            --input-dir crates/ampel-api/locales \
-            --base-locale en \
-            --min-coverage 95
-```
+          ./target/release/cargo-i18n missing \
+            --translation-dir frontend/public/locales
 
-#### Coverage Report
+      - name: Validate translations
+        run: node scripts/validate-translations.js
 
-The CI generates a coverage report and posts it to the PR:
+      - name: Generate coverage report
+        run: node scripts/i18n-coverage-report.js --format markdown > coverage.md
 
-```markdown
-## Translation Coverage Report
-
-**Overall Coverage:** 96.5%
-
-| Language | Coverage | Translated | Missing | Status |
-| -------- | -------- | ---------- | ------- | ------ |
-| en       | 100.0%   | 150        | 0       | ✅     |
-| es       | 98.0%    | 147        | 3       | ✅     |
-| fi       | 97.3%    | 146        | 4       | ✅     |
-| ar       | 92.0%    | 138        | 12      | ❌     |
+      - name: Post coverage to PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const coverage = fs.readFileSync('coverage.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: coverage
+            });
 ```
 
 ### Pre-commit Hooks
-
-Install local validation hooks:
 
 ```bash
 # Install hooks
 ./scripts/install-git-hooks.sh
 
-# Hooks installed:
-# - pre-commit: Validates translation files (<5s)
-# - commit-msg: Enforces i18n commit conventions
-```
-
-#### Pre-commit Validation
-
-```bash
-# Runs automatically before commit
-git add crates/ampel-api/locales/en/common.yml
-git commit -m "feat(i18n): add new dashboard keys"
-
-# Output:
-# ✓ Backend YAML validation passed
-# ✓ Coverage check passed (96.5% >= 95%)
-# ✓ No missing translations
-```
-
-#### Bypass Hook (Emergency Only)
-
-```bash
-# Skip validation for urgent commits
-git commit --no-verify
-
-# ⚠️ Warning: CI will still validate on PR
+# Runs automatically before commit:
+# - Validates JSON syntax
+# - Checks for placeholder mismatches
+# - Verifies coverage threshold
 ```
 
 ---
 
 ## Troubleshooting
 
-### Common Issues
-
-#### 1. API Key Not Found
+### API Key Not Found
 
 ```
-Error: Config("DeepL API key not found. Set DEEPL_API_KEY env var or config")
+Error: Configuration error: No translation providers available. Configure at least one API key.
 ```
 
 **Solution:**
-
 ```bash
-# Set environment variable
-export DEEPL_API_KEY="your-api-key"
+# Ensure .env file exists in crates/ampel-i18n-builder/
+cat crates/ampel-i18n-builder/.env
 
-# Or add to .ampel-i18n.yaml
-translation:
-  deepl_api_key: "your-api-key"  # Not recommended for production
+# Or set environment variables
+export GOOGLE_API_KEY="your-key"
+export OPENAI_API_KEY="your-key"
 ```
 
-#### 2. Translation Failed
+### Translation Failed - Unauthorized
 
 ```
-Error: Translation failed for language 'fi': Rate limit exceeded
+ERROR: Systran (Tier 1) failed: API error 401 Unauthorized
 ```
 
-**Solution:**
+**Solution:** This is normal if you don't have a Systran key. The system falls back to the next tier.
 
-```bash
-# DeepL free tier: 500,000 chars/month
-# Upgrade to paid plan or wait for rate limit reset
+### Variable Mismatch Warning
 
-# Check your usage:
-curl -H "Authorization: DeepL-Auth-Key $DEEPL_API_KEY" \
-  https://api-free.deepl.com/v2/usage
+```
+⚠️ Warning: Placeholders mismatch in key 'pr.number'
+   Original: ["{{number}}"]
+   Translated: ["{{Nummer}}"]
 ```
 
-#### 3. Validation Failed
+**Solution:** This indicates a translation from before the PlaceholderProtector fix. Manually correct the placeholder.
+
+### Coverage Below Threshold
 
 ```
 Error: Coverage below threshold: 92.0% < 95.0%
 ```
 
 **Solution:**
-
 ```bash
 # Find missing translations
-cargo run --bin i18n-builder -- validate \
-  --input-dir crates/ampel-api/locales \
-  --check missing \
-  --verbose
+cargo run --bin cargo-i18n -- missing --translation-dir ../../frontend/public/locales
 
-# Output shows which keys are missing
-# Missing in 'fi': dashboard.new_feature, settings.advanced
+# Translate missing keys
+cargo run --bin cargo-i18n -- translate --lang de --namespace settings
 ```
 
-#### 4. Variable Mismatch
+---
 
-```
-Error: Variable mismatch in key 'pull_requests.count':
-  source has ["count"], translation has []
-```
+## Reference Commands
 
-**Solution:**
-
-```yaml
-# Fix the translation to include {{count}}
-# Before:
-pull_requests:
-  count:
-    other: "Pull requests"  # Missing {{count}}
-
-# After:
-pull_requests:
-  count:
-    other: "{{count}} pull requests"  # ✓ Correct
-```
-
-#### 5. Invalid YAML Syntax
-
-```
-Error: Failed to parse YAML: invalid type at line 5
-```
-
-**Solution:**
+### Quick Reference
 
 ```bash
-# Validate YAML syntax
-yamllint -c .yamllint.yml crates/ampel-api/locales/fi/common.yml
+# Check missing translations
+cargo run --bin cargo-i18n -- missing
 
-# Common issues:
-# - Wrong indentation (use 2 spaces)
-# - Missing quotes around special characters
-# - Trailing whitespace
+# Translate specific language/namespace
+cargo run --bin cargo-i18n -- translate --lang de --namespace settings
+
+# Force re-translate all keys
+cargo run --bin cargo-i18n -- translate --lang de --force
+
+# Generate TypeScript types
+cargo run --bin cargo-i18n -- generate-types
+
+# Check coverage
+cargo run --bin cargo-i18n -- coverage --min-coverage 95
+
+# Validate translations
+node scripts/validate-translations.js
+
+# Generate coverage report
+node scripts/i18n-coverage-report.js --format text
 ```
 
-### Getting Help
+### Full Translation Workflow (Copy-Paste Ready)
 
-1. **Check the logs**: Run CLI with `--verbose` flag
-2. **Validate locally**: Use `validate` command before committing
-3. **Review documentation**: See [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)
-4. **Open an issue**: Include error output and relevant files
+```bash
+# 1. Add keys to English source file (manual edit)
+# Edit: frontend/public/locales/en/settings.json
+
+# 2. Navigate to i18n-builder directory
+cd crates/ampel-i18n-builder
+
+# 3. Verify missing keys
+cargo run --bin cargo-i18n -- missing --translation-dir ../../frontend/public/locales
+
+# 4. Translate all languages
+for lang in ar cs da de en-GB es-ES es-MX fi fr he hi it ja ko nl no pl pt-BR ru sr sv th tr vi zh-CN zh-TW; do
+  cargo run --bin cargo-i18n -- translate \
+    --lang "$lang" \
+    --namespace settings \
+    --translation-dir ../../frontend/public/locales
+done
+
+# 5. Regenerate types
+cargo run --bin cargo-i18n -- generate-types --translation-dir ../../frontend/public/locales
+
+# 6. Validate
+cd ../..
+node scripts/validate-translations.js
+
+# 7. Check coverage
+node scripts/i18n-coverage-report.js --format text
+```
 
 ---
 
@@ -574,76 +773,81 @@ yamllint -c .yamllint.yml crates/ampel-api/locales/fi/common.yml
 
 ### 1. Write Clear Source Text
 
-```yaml
-# ❌ Bad: Ambiguous
-button: 'OK'
+```json
+// ❌ Bad: Ambiguous
+{ "button": "OK" }
 
-# ✅ Good: Clear context
-dialog:
-  confirm_button: 'Confirm changes'
-  cancel_button: 'Cancel'
+// ✅ Good: Clear context
+{
+  "dialog": {
+    "confirmButton": "Confirm changes",
+    "cancelButton": "Cancel"
+  }
+}
 ```
 
-### 2. Provide Context
+### 2. Use Consistent Terminology
 
-```yaml
-# Add comments for translators
-# Context: Button label for submitting a form
-submit: 'Submit'
+```json
+// ✅ Consistent
+{
+  "pullRequest": {
+    "title": "Pull Request",
+    "create": "Create Pull Request",
+    "list": "Pull Requests"
+  }
+}
 
-# Context: Status indicator for completed tasks
-status:
-  completed: 'Completed'
+// ❌ Inconsistent
+{
+  "pullRequest": {
+    "title": "PR",
+    "create": "Create Merge Request",
+    "list": "Code Reviews"
+  }
+}
 ```
 
-### 3. Use Consistent Terminology
-
-```yaml
-# ✅ Consistent
-pull_request:
-  title: "Pull Request"
-  create: "Create Pull Request"
-  list: "Pull Requests"
-
-# ❌ Inconsistent
-pull_request:
-  title: "PR"
-  create: "Create Merge Request"
-  list: "Code Reviews"
-```
-
-### 4. Test RTL Languages
+### 3. Test RTL Languages
 
 ```bash
 # Test Hebrew/Arabic layout
-REACT_APP_I18N_DEBUG=true npm run dev
-
-# Navigate to Settings > Language > Hebrew
-# Check for layout issues:
+# Navigate to Settings > Language > Hebrew/Arabic
+# Check for:
 # - Text alignment
 # - Icon direction
 # - Modal positioning
+# - Form field alignment
 ```
 
-### 5. Validate Before Committing
+### 4. Validate Before Committing
 
 ```bash
 # Run full validation suite
-./scripts/i18n-validate.sh --all
+./scripts/i18n-validate.sh --frontend
 
 # Check coverage
-node frontend/scripts/i18n-coverage-report.js --check --min-coverage 95
+node scripts/i18n-coverage-report.js --check --min-coverage 95
 ```
 
 ---
 
-## Next Steps
+## Appendix: Session History
 
-- **[DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)** - Quick start for developers
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture details
-- **[CI_CD_SETUP.md](CI_CD_SETUP.md)** - CI/CD configuration guide
+### Changes Made (2026-01-10)
+
+**Translation Files (26 languages):**
+- Added `language.title` and `language.description` to all `*/settings.json`
+- Fixed `pr.number` placeholder in all `*/dashboard.json` (24 languages)
+
+**Code Changes:**
+- `crates/ampel-i18n-builder/src/translator/google.rs` - Added `PlaceholderProtector` struct
+- Added 5 unit tests for placeholder protection
+
+**Documentation:**
+- Updated this file from v1.0 to v2.0 with placeholder handling section
 
 ---
 
-**Last Updated:** 2025-12-27
+**Last Updated:** 2026-01-10
 **Maintained By:** Ampel Development Team

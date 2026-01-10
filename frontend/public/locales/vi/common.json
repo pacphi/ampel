@@ -64,7 +64,8 @@
     "signingIn": "Đang đăng nhập...",
     "username": "Tên người dùng",
     "welcome": "Chào mừng bạn trở lại!",
-    "welcomeToAmpel": "Chào mừng đến với Ampel"
+    "welcomeToAmpel": "Chào mừng đến với Ampel",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "Ngôn ngữ hiện tại",

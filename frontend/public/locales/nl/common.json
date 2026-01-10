@@ -64,7 +64,8 @@
     "signingIn": "Aanmelden...",
     "username": "Gebruikersnaam",
     "welcome": "Welkom terug!",
-    "welcomeToAmpel": "Welkom bij Ampel"
+    "welcomeToAmpel": "Welkom bij Ampel",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "Huidige taal",

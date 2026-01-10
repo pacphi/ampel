@@ -64,7 +64,8 @@
     "signingIn": "正在登录...",
     "username": "用户名",
     "welcome": "欢迎回来！",
-    "welcomeToAmpel": "欢迎来到Ampel"
+    "welcomeToAmpel": "欢迎来到Ampel",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "当前语言",

@@ -64,7 +64,8 @@
     "signingIn": "Пријављивање...",
     "username": "Корисничко име",
     "welcome": "Добродошли назад!",
-    "welcomeToAmpel": "Добродошли у Ампел"
+    "welcomeToAmpel": "Добродошли у Ампел",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "Тренутни језик",

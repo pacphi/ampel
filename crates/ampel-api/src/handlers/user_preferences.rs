@@ -8,28 +8,36 @@ use crate::extractors::AuthUser;
 use crate::handlers::{ApiError, ApiResponse};
 use crate::AppState;
 
-/// List of supported language codes (20 languages)
+/// List of supported language codes (27 languages)
+/// Matches frontend/src/i18n/config.ts SUPPORTED_LANGUAGES
 const SUPPORTED_LANGUAGES: &[&str] = &[
-    "en", // English
-    "es", // Spanish
-    "fr", // French
-    "de", // German
-    "it", // Italian
-    "pt", // Portuguese
-    "ru", // Russian
-    "ja", // Japanese
-    "zh", // Chinese
-    "ko", // Korean
-    "ar", // Arabic
-    "hi", // Hindi
-    "nl", // Dutch
-    "pl", // Polish
-    "tr", // Turkish
-    "sv", // Swedish
-    "da", // Danish
-    "fi", // Finnish
-    "no", // Norwegian
-    "cs", // Czech
+    "en",    // English (US)
+    "en-GB", // English (UK)
+    "fr",    // French
+    "de",    // German
+    "it",    // Italian
+    "ru",    // Russian
+    "ja",    // Japanese
+    "ko",    // Korean
+    "ar",    // Arabic (RTL)
+    "he",    // Hebrew (RTL)
+    "hi",    // Hindi
+    "nl",    // Dutch
+    "pl",    // Polish
+    "sr",    // Serbian
+    "th",    // Thai
+    "tr",    // Turkish
+    "sv",    // Swedish
+    "da",    // Danish
+    "fi",    // Finnish
+    "vi",    // Vietnamese
+    "no",    // Norwegian
+    "cs",    // Czech
+    "pt-BR", // Portuguese (Brazil)
+    "zh-CN", // Chinese (Simplified)
+    "zh-TW", // Chinese (Traditional)
+    "es-ES", // Spanish (Spain)
+    "es-MX", // Spanish (Mexico)
 ];
 
 #[derive(Debug, Serialize)]
@@ -101,8 +109,8 @@ mod tests {
     fn test_supported_languages_count() {
         assert_eq!(
             SUPPORTED_LANGUAGES.len(),
-            20,
-            "Expected 20 supported languages"
+            27,
+            "Expected 27 supported languages"
         );
     }
 

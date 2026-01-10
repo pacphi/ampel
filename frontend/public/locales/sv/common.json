@@ -64,7 +64,8 @@
     "signingIn": "Loggar in...",
     "username": "Användarnamn",
     "welcome": "Välkommen tillbaka!",
-    "welcomeToAmpel": "Välkommen till Ampel"
+    "welcomeToAmpel": "Välkommen till Ampel",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "Nuvarande språk",

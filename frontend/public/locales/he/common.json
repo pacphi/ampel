@@ -64,7 +64,8 @@
     "signingIn": "מתחבר...",
     "username": "שם משתמש",
     "welcome": "ברוכים השבים!",
-    "welcomeToAmpel": "ברוך הבא לאמפל"
+    "welcomeToAmpel": "ברוך הבא לאמפל",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "השפה הנוכחית",

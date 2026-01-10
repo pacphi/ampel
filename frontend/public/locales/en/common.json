@@ -47,7 +47,8 @@
     "dontHaveAccount": "Don't have an account?",
     "alreadyHaveAccount": "Already have an account?",
     "signInToContinue": "Sign in to your account to continue",
-    "confirmPassword": "Confirm Password"
+    "confirmPassword": "Confirm Password",
+    "emailPlaceholder": "you@example.com"
   },
   "navigation": {
     "dashboard": "Dashboard",

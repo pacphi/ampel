@@ -70,7 +70,8 @@
     "unauthorised": "Unauthorised",
     "username": "Username",
     "welcome": "Welcome back!",
-    "welcomeToAmpel": "Welcome to Ampel"
+    "welcomeToAmpel": "Welcome to Ampel",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "Current language",

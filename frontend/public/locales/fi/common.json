@@ -64,7 +64,8 @@
     "signingIn": "Kirjautuminen sisään...",
     "username": "Käyttäjätunnus",
     "welcome": "Tervetuloa takaisin!",
-    "welcomeToAmpel": "Tervetuloa Ampeliin"
+    "welcomeToAmpel": "Tervetuloa Ampeliin",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "Nykyinen kieli",

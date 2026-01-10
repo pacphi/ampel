@@ -64,7 +64,8 @@
     "signingIn": "Přihlašování...",
     "username": "Uživatelské jméno",
     "welcome": "Vítej zpět!",
-    "welcomeToAmpel": "Vítejte v Ampelu"
+    "welcomeToAmpel": "Vítejte v Ampelu",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "Aktuální jazyk",

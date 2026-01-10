@@ -64,7 +64,8 @@
     "signingIn": "로그인 중...",
     "username": "사용자 이름",
     "welcome": "다시 오신 것을 환영합니다!",
-    "welcomeToAmpel": "Ampel에 오신 것을 환영합니다"
+    "welcomeToAmpel": "Ampel에 오신 것을 환영합니다",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "현재 언어",

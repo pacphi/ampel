@@ -64,7 +64,8 @@
     "signingIn": "Giriş yapılıyor...",
     "username": "Kullanıcı adı",
     "welcome": "Tekrar hoşgeldiniz!",
-    "welcomeToAmpel": "Ampel'e hoş geldiniz"
+    "welcomeToAmpel": "Ampel'e hoş geldiniz",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "Mevcut dil",

@@ -64,7 +64,8 @@
     "signingIn": "साइन इन हो रहा है...",
     "username": "उपयोगकर्ता नाम",
     "welcome": "वापसी पर स्वागत है!",
-    "welcomeToAmpel": "अम्पेल में आपका स्वागत है"
+    "welcomeToAmpel": "अम्पेल में आपका स्वागत है",
+    "emailPlaceholder": "you@example.com"
   },
   "language": {
     "current": "वर्तमान भाषा",
