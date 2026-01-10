@@ -71,6 +71,7 @@ lettre.workspace = true
 
 # Internationalization
 rust-i18n = "3.0"
+serde_yaml = "0.9"
 cookie = "0.18"
 
 # Internal

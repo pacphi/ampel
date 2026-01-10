@@ -1,4 +1,14 @@
-rust_i18n::i18n!("locales", fallback = "en");
+pub mod i18n_backend;
+
+use i18n_backend::NestedYamlBackend;
+
+// Initialize rust-i18n with our custom nested YAML backend
+// The backend reads from locales/{lang}/*.yml at runtime
+rust_i18n::i18n!(
+    "locales",
+    fallback = "en",
+    backend = NestedYamlBackend::new(concat!(env!("CARGO_MANIFEST_DIR"), "/locales"))
+);
 
 pub mod cache;
 pub mod config;
