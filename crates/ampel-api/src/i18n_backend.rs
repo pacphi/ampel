@@ -61,7 +61,10 @@ impl NestedYamlBackend {
         if let Ok(entries) = fs::read_dir(dir) {
             for entry in entries.flatten() {
                 let path = entry.path();
-                if path.extension().map_or(false, |ext| ext == "yml" || ext == "yaml") {
+                if path
+                    .extension()
+                    .is_some_and(|ext| ext == "yml" || ext == "yaml")
+                {
                     if let Ok(content) = fs::read_to_string(&path) {
                         if let Ok(yaml) = serde_yaml::from_str::<Value>(&content) {
                             Self::flatten_yaml(&yaml, String::new(), &mut translations);
@@ -179,7 +182,10 @@ mod tests {
 
         // Check that English locale is available
         let locales = backend.available_locales();
-        assert!(locales.contains(&"en"), "English locale should be available");
+        assert!(
+            locales.contains(&"en"),
+            "English locale should be available"
+        );
 
         // Check that a known translation key works
         let translation = backend.translate("en", "errors.auth.invalid_credentials");
