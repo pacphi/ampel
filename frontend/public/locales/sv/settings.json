@@ -39,6 +39,10 @@
     "timezone": "Tidszon",
     "timezoneDescription": "Ställ in din tidszon för datum och tider"
   },
+  "language": {
+    "description": "Välj ditt önskade språk för gränssnittet",
+    "title": "Språk"
+  },
   "notifications": {
     "email": "E-postmeddelanden",
     "emailDescription": "Få aviseringar via e-post",

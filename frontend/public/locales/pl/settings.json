@@ -39,6 +39,10 @@
     "timezone": "Strefa czasowa",
     "timezoneDescription": "Ustaw swoją strefę czasową dla dat i godzin"
   },
+  "language": {
+    "description": "Wybierz preferowany język interfejsu",
+    "title": "Język"
+  },
   "notifications": {
     "email": "Powiadomienia e-mail",
     "emailDescription": "Otrzymuj powiadomienia e-mailem",

@@ -39,6 +39,10 @@
     "timezone": "Saat dilimi",
     "timezoneDescription": "Tarih ve saatler için saat diliminizi ayarlayın."
   },
+  "language": {
+    "description": "Arayüz için tercih ettiğiniz dili seçin.",
+    "title": "Dil"
+  },
   "notifications": {
     "email": "E-posta bildirimleri",
     "emailDescription": "E-posta yoluyla bildirim alın",

@@ -53,6 +53,10 @@
     "notConnected": "Not Connected",
     "title": "Integrations"
   },
+  "language": {
+    "description": "Choose your preferred language for the interface",
+    "title": "Language"
+  },
   "notifications": {
     "desktop": "Desktop Notifications",
     "disabled": "Disabled",

@@ -82,6 +82,10 @@
     "showForks": "Show forks",
     "showForksDescription": "Include forked repositories"
   },
+  "language": {
+    "title": "Language",
+    "description": "Choose your preferred language for the interface"
+  },
   "prFilters": {
     "title": "PR Filters",
     "description": "Configure global filters for pull request processing. These apply to auto-merge rules across all repositories.",

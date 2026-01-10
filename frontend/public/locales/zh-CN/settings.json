@@ -39,6 +39,10 @@
     "timezone": "时区",
     "timezoneDescription": "设置日期和时间的时区"
   },
+  "language": {
+    "description": "请选择您偏好的界面语言。",
+    "title": "语言"
+  },
   "notifications": {
     "email": "电子邮件通知",
     "emailDescription": "通过电子邮件接收通知",

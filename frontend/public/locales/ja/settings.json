@@ -39,6 +39,10 @@
     "timezone": "タイムゾーン",
     "timezoneDescription": "日付と時間のタイムゾーンを設定します"
   },
+  "language": {
+    "description": "インターフェースの優先言語を選択してください",
+    "title": "言語"
+  },
   "notifications": {
     "email": "メール通知",
     "emailDescription": "メールで通知を受け取る",

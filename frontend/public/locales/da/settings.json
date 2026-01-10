@@ -39,6 +39,10 @@
     "timezone": "Tidszone",
     "timezoneDescription": "Indstil din tidszone for datoer og klokkeslæt"
   },
+  "language": {
+    "description": "Vælg dit foretrukne sprog til brugerfladen",
+    "title": "Sprog"
+  },
   "notifications": {
     "email": "E-mail-notifikationer",
     "emailDescription": "Modtag notifikationer via e-mail",

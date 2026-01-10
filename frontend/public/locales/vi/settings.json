@@ -39,6 +39,10 @@
     "timezone": "Múi giờ",
     "timezoneDescription": "Hãy thiết lập múi giờ của bạn cho ngày và giờ."
   },
+  "language": {
+    "description": "Chọn ngôn ngữ bạn muốn sử dụng cho giao diện.",
+    "title": "Ngôn ngữ"
+  },
   "notifications": {
     "email": "Thông báo qua email",
     "emailDescription": "Nhận thông báo qua email",

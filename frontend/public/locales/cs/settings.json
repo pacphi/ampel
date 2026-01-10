@@ -39,6 +39,10 @@
     "timezone": "Časové pásmo",
     "timezoneDescription": "Nastavení časového pásma pro data a časy"
   },
+  "language": {
+    "description": "Vyberte preferovaný jazyk rozhraní",
+    "title": "Jazyk"
+  },
   "notifications": {
     "email": "E-mailová oznámení",
     "emailDescription": "Dostávejte oznámení e-mailem",

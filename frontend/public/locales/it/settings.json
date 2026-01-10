@@ -39,6 +39,10 @@
     "timezone": "Fuso orario",
     "timezoneDescription": "Imposta il fuso orario per date e orari"
   },
+  "language": {
+    "description": "Scegli la lingua preferita per l'interfaccia",
+    "title": "Lingua"
+  },
   "notifications": {
     "email": "Notifiche e-mail",
     "emailDescription": "Ricevi notifiche via email",

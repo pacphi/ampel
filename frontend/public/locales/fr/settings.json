@@ -39,6 +39,10 @@
     "timezone": "Fuseau horaire",
     "timezoneDescription": "Définissez votre fuseau horaire pour les dates et les heures."
   },
+  "language": {
+    "description": "Choisissez la langue de votre choix pour l'interface.",
+    "title": "Langue"
+  },
   "notifications": {
     "email": "notifications par e-mail",
     "emailDescription": "Recevez des notifications par e-mail",

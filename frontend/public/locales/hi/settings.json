@@ -39,6 +39,10 @@
     "timezone": "समय क्षेत्र",
     "timezoneDescription": "तारीखों और समय के लिए अपना समय क्षेत्र सेट करें"
   },
+  "language": {
+    "description": "इंटरफ़ेस के लिए अपनी पसंदीदा भाषा चुनें",
+    "title": "भाषा"
+  },
   "notifications": {
     "email": "ईमेल सूचनाएं",
     "emailDescription": "ईमेल के माध्यम से सूचनाएं प्राप्त करें",

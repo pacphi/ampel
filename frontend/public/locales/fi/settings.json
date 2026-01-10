@@ -39,6 +39,10 @@
     "timezone": "Aikavyöhyke",
     "timezoneDescription": "Aseta aikavyöhykkeesi päivämäärille ja kellonajoille"
   },
+  "language": {
+    "description": "Valitse käyttöliittymän kieli",
+    "title": "Kieli"
+  },
   "notifications": {
     "email": "Sähköposti-ilmoitukset",
     "emailDescription": "Vastaanota ilmoituksia sähköpostitse",

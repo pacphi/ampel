@@ -39,6 +39,10 @@
     "timezone": "Zeitzone",
     "timezoneDescription": "Legen Sie Ihre Zeitzone für Datum und Uhrzeit fest."
   },
+  "language": {
+    "description": "Wählen Sie Ihre bevorzugte Sprache für die Benutzeroberfläche.",
+    "title": "Sprache"
+  },
   "notifications": {
     "email": "E-Mail-Benachrichtigungen",
     "emailDescription": "Benachrichtigungen per E-Mail erhalten",

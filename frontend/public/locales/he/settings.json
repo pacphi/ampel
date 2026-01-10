@@ -39,6 +39,10 @@
     "timezone": "אזור זמן",
     "timezoneDescription": "הגדר את אזור הזמן שלך לתאריכים ושעות"
   },
+  "language": {
+    "description": "בחר את השפה המועדפת עליך לממשק",
+    "title": "שָׂפָה"
+  },
   "notifications": {
     "email": "התראות דוא\"ל",
     "emailDescription": "קבל התראות באמצעות דוא\"ל",

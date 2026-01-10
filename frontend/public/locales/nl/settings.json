@@ -39,6 +39,10 @@
     "timezone": "Tijdzone",
     "timezoneDescription": "Stel uw tijdzone in voor datums en tijden."
   },
+  "language": {
+    "description": "Kies uw voorkeurstaal voor de interface.",
+    "title": "Taal"
+  },
   "notifications": {
     "email": "E-mailmeldingen",
     "emailDescription": "Ontvang meldingen via e-mail.",

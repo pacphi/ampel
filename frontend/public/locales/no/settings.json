@@ -39,6 +39,10 @@
     "timezone": "Tidssone",
     "timezoneDescription": "Angi tidssonen din for datoer og klokkeslett"
   },
+  "language": {
+    "description": "Velg ditt foretrukne språk for grensesnittet",
+    "title": "Språk"
+  },
   "notifications": {
     "email": "E-postvarsler",
     "emailDescription": "Motta varsler via e-post",

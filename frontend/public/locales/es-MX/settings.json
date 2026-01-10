@@ -39,6 +39,10 @@
     "timezone": "Zona horaria",
     "timezoneDescription": "Establezca su zona horaria para fechas y horas"
   },
+  "language": {
+    "description": "Elige tu idioma preferido para la interfaz",
+    "title": "Idioma"
+  },
   "notifications": {
     "email": "Notificaciones por correo electrónico",
     "emailDescription": "Recibir notificaciones por correo electrónico",

@@ -376,6 +376,10 @@ export interface SettingsTranslations {
     timezone: string;
     timezoneDescription: string;
   };
+  language: {
+    description: string;
+    title: string;
+  };
   notifications: {
     email: string;
     emailDescription: string;
