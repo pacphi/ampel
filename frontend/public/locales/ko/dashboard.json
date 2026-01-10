@@ -42,7 +42,7 @@
     "comments": "댓글",
     "createdAt": "생성됨",
     "deletions": "삭제",
-    "number": "#{{숫자}}",
+    "number": "#{{number}}",
     "sourceBranch": "소스 브랜치",
     "targetBranch": "대상 브랜치",
     "updatedAt": "업데이트됨"

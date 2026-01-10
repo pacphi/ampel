@@ -42,7 +42,7 @@
     "comments": "評論",
     "createdAt": "創建時間",
     "deletions": "刪除",
-    "number": "＃{{數字}}",
+    "number": "#{{number}}",
     "sourceBranch": "源分支",
     "targetBranch": "目標分支",
     "updatedAt": "更新時間"

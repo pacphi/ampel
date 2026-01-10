@@ -42,7 +42,7 @@
     "comments": "コメント",
     "createdAt": "作成されました",
     "deletions": "削除",
-    "number": "＃{{番号}}",
+    "number": "#{{number}}",
     "sourceBranch": "ソースブランチ",
     "targetBranch": "ターゲットブランチ",
     "updatedAt": "更新済み"

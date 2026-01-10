@@ -42,7 +42,7 @@
     "comments": "Kommentit",
     "createdAt": "Luotu",
     "deletions": "Poistot",
-    "number": "#{{määrä}}",
+    "number": "#{{number}}",
     "sourceBranch": "Lähdehaara",
     "targetBranch": "Kohdehaara",
     "updatedAt": "Päivitetty"

@@ -42,7 +42,7 @@
     "comments": "Коментари",
     "createdAt": "Креирано",
     "deletions": "Брисања",
-    "number": "#{{број}}",
+    "number": "#{{number}}",
     "sourceBranch": "Изворна грана",
     "targetBranch": "Циљна грана",
     "updatedAt": "Ажурирано"

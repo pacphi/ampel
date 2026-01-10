@@ -42,7 +42,7 @@
     "comments": "Komentáře",
     "createdAt": "Vytvořeno",
     "deletions": "Smazání",
-    "number": "#{{číslo}}",
+    "number": "#{{number}}",
     "sourceBranch": "Zdrojová větev",
     "targetBranch": "Cílová větev",
     "updatedAt": "Aktualizováno"

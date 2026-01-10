@@ -42,7 +42,7 @@
     "comments": "Комментарии",
     "createdAt": "Создано",
     "deletions": "Удаления",
-    "number": "#{{число}}",
+    "number": "#{{number}}",
     "sourceBranch": "Исходная ветка",
     "targetBranch": "Целевая ветка",
     "updatedAt": "Обновлено"

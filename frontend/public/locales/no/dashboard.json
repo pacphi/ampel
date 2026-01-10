@@ -42,7 +42,7 @@
     "comments": "Kommentarer",
     "createdAt": "Opprettet",
     "deletions": "Slettinger",
-    "number": "#{{tall}}",
+    "number": "#{{number}}",
     "sourceBranch": "Kildegren",
     "targetBranch": "Målgren",
     "updatedAt": "Oppdatert"

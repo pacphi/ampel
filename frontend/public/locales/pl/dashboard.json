@@ -42,7 +42,7 @@
     "comments": "Uwagi",
     "createdAt": "Stworzony",
     "deletions": "Usunięcia",
-    "number": "#{{numer}}",
+    "number": "#{{number}}",
     "sourceBranch": "Gałąź źródłowa",
     "targetBranch": "Gałąź docelowa",
     "updatedAt": "Zaktualizowano"

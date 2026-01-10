@@ -42,7 +42,7 @@
     "comments": "टिप्पणियाँ",
     "createdAt": "सृजन किया गया",
     "deletions": "हटाए गए",
-    "number": "#{{संख्या}}",
+    "number": "#{{number}}",
     "sourceBranch": "स्रोत शाखा",
     "targetBranch": "लक्ष्य शाखा",
     "updatedAt": "अपडेट किया गया"

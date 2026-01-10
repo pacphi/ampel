@@ -4,12 +4,65 @@ use async_trait::async_trait;
 use governor::{Quota, RateLimiter as GovernorRateLimiter};
 use lru::LruCache;
 use nonzero_ext::*;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::num::NonZeroUsize;
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 use tracing::{debug, warn};
+
+/// Placeholder protection for translation
+/// Extracts {{name}} placeholders and replaces with protected markers
+struct PlaceholderProtector {
+    placeholders: Vec<String>,
+}
+
+impl PlaceholderProtector {
+    /// Protect placeholders in text by replacing with markers
+    fn protect(text: &str) -> (String, Self) {
+        let re = Regex::new(r"\{\{([^}]+)\}\}").unwrap();
+        let mut placeholders = Vec::new();
+        let mut protected = text.to_string();
+
+        for cap in re.captures_iter(text) {
+            let full_match = cap.get(0).unwrap().as_str();
+            placeholders.push(full_match.to_string());
+        }
+
+        // Replace in reverse order to preserve indices
+        for (i, placeholder) in placeholders.iter().enumerate() {
+            // Use XML-like markers that translation APIs preserve
+            protected = protected.replace(placeholder, &format!("<x id=\"{}\"/>", i));
+        }
+
+        (protected, Self { placeholders })
+    }
+
+    /// Restore original placeholders from markers
+    fn restore(&self, text: &str) -> String {
+        let mut restored = text.to_string();
+
+        for (i, placeholder) in self.placeholders.iter().enumerate() {
+            // Handle various marker formats that might come back from API
+            let marker_patterns = [
+                format!("<x id=\"{}\"/>", i),
+                format!("<x id=\"{}\" />", i),
+                format!("<x id={} />", i),
+                format!("<x id={}/>", i),
+                format!("&lt;x id=\"{}\"&gt;", i),        // HTML-escaped
+                format!("&lt;x id=\"{}\"/&gt;", i),
+                format!("< x id = \"{}\" / >", i),        // Extra spaces
+            ];
+
+            for pattern in &marker_patterns {
+                restored = restored.replace(pattern, placeholder);
+            }
+        }
+
+        restored
+    }
+}
 
 /// Cache key for translation lookups
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -134,12 +187,19 @@ impl GoogleTranslator {
         let mut attempt = 0;
         let mut delay = self.retry_policy.initial_delay_ms;
 
+        // Protect placeholders before translation
+        let protected: Vec<(String, PlaceholderProtector)> = texts
+            .iter()
+            .map(|t| PlaceholderProtector::protect(t))
+            .collect();
+        let protected_texts: Vec<String> = protected.iter().map(|(t, _)| t.clone()).collect();
+
         loop {
             // Wait for rate limiter token
             self.rate_limiter.until_ready().await;
 
             let request = GoogleRequest {
-                q: texts.to_vec(),
+                q: protected_texts.clone(),
                 target: target_lang.to_string(),
                 source: "en".to_string(),
                 format: "text".to_string(),
@@ -158,11 +218,13 @@ impl GoogleTranslator {
 
                     if status.is_success() {
                         let google_response: GoogleResponse = resp.json().await?;
+                        // Restore placeholders after translation
                         return Ok(google_response
                             .data
                             .translations
                             .into_iter()
-                            .map(|t| t.translated_text)
+                            .zip(protected.iter())
+                            .map(|(t, (_, protector))| protector.restore(&t.translated_text))
                             .collect());
                     }
 
@@ -403,5 +465,44 @@ mod tests {
         assert_eq!(policy.initial_delay_ms, 1000);
         assert_eq!(policy.max_delay_ms, 30000);
         assert_eq!(policy.backoff_multiplier, 2.0);
+    }
+
+    #[test]
+    fn test_placeholder_protect_simple() {
+        let (protected, protector) = PlaceholderProtector::protect("Hello {{name}}!");
+        assert_eq!(protected, "Hello <x id=\"0\"/>!");
+        assert_eq!(protector.placeholders, vec!["{{name}}"]);
+    }
+
+    #[test]
+    fn test_placeholder_protect_multiple() {
+        let (protected, protector) =
+            PlaceholderProtector::protect("{{count}} items in {{container}}");
+        assert_eq!(protected, "<x id=\"0\"/> items in <x id=\"1\"/>");
+        assert_eq!(protector.placeholders, vec!["{{count}}", "{{container}}"]);
+    }
+
+    #[test]
+    fn test_placeholder_restore() {
+        let (_, protector) = PlaceholderProtector::protect("{{count}} items");
+        let restored = protector.restore("<x id=\"0\"/> éléments");
+        assert_eq!(restored, "{{count}} éléments");
+    }
+
+    #[test]
+    fn test_placeholder_no_placeholders() {
+        let (protected, protector) = PlaceholderProtector::protect("Hello world!");
+        assert_eq!(protected, "Hello world!");
+        assert!(protector.placeholders.is_empty());
+    }
+
+    #[test]
+    fn test_placeholder_roundtrip() {
+        let original = "#{{number}}";
+        let (protected, protector) = PlaceholderProtector::protect(original);
+        // Simulate translation (only the "#" part would change)
+        let translated = protected.replace("#", "Nr.");
+        let restored = protector.restore(&translated);
+        assert_eq!(restored, "Nr.{{number}}");
     }
 }

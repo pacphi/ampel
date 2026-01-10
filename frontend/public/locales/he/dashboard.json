@@ -42,7 +42,7 @@
     "comments": "הערות",
     "createdAt": "נוצר",
     "deletions": "מחיקות",
-    "number": "#{{מִספָּר}}",
+    "number": "#{{number}}",
     "sourceBranch": "ענף מקור",
     "targetBranch": "ענף מטרה",
     "updatedAt": "עודכן"

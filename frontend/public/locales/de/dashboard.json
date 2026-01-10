@@ -42,7 +42,7 @@
     "comments": "Kommentare",
     "createdAt": "Erstellt",
     "deletions": "Löschungen",
-    "number": "#{{Nummer}}",
+    "number": "#{{number}}",
     "sourceBranch": "Quellzweig",
     "targetBranch": "Zielzweig",
     "updatedAt": "Aktualisiert"

@@ -42,7 +42,7 @@
     "comments": "Yorumlar",
     "createdAt": "Oluşturuldu",
     "deletions": "Silinmeler",
-    "number": "#{{sayı}}",
+    "number": "#{{number}}",
     "sourceBranch": "Kaynak dalı",
     "targetBranch": "Hedef şube",
     "updatedAt": "Güncellendi"

@@ -42,7 +42,7 @@
     "comments": "Comentarios",
     "createdAt": "Creado",
     "deletions": "Eliminaciones",
-    "number": "#{{número}}",
+    "number": "#{{number}}",
     "sourceBranch": "Rama de origen",
     "targetBranch": "Rama de destino",
     "updatedAt": "Actualizado"

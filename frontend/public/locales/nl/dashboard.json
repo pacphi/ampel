@@ -42,7 +42,7 @@
     "comments": "Opmerkingen",
     "createdAt": "Gemaakt",
     "deletions": "Verwijderingen",
-    "number": "#{{nummer}}",
+    "number": "#{{number}}",
     "sourceBranch": "Brontak",
     "targetBranch": "Doelfiliaal",
     "updatedAt": "Bijgewerkt"

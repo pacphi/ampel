@@ -42,7 +42,7 @@
     "comments": "Kommentarer",
     "createdAt": "Skapad",
     "deletions": "Borttagningar",
-    "number": "#{{antal}}",
+    "number": "#{{number}}",
     "sourceBranch": "Källgren",
     "targetBranch": "Målgren",
     "updatedAt": "Uppdaterad"

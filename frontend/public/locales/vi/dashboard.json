@@ -42,7 +42,7 @@
     "comments": "Bình luận",
     "createdAt": "Tạo",
     "deletions": "Xóa",
-    "number": "#{{con số}}",
+    "number": "#{{number}}",
     "sourceBranch": "Nhánh nguồn",
     "targetBranch": "Chi nhánh mục tiêu",
     "updatedAt": "Đã cập nhật"
