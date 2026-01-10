@@ -172,8 +172,8 @@ jobs:
           node scripts/i18n-coverage-report.js --format json > frontend-coverage.json
           node scripts/i18n-coverage-report.js --format markdown > frontend-coverage.md
 
-          # Extract coverage percentage
-          COVERAGE=$(jq -r '.overall_coverage' frontend-coverage.json)
+          # Extract coverage percentage (frontend uses camelCase: overallCoverage)
+          COVERAGE=$(jq -r '.overallCoverage' frontend-coverage.json)
           echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
 
       - name: Upload frontend coverage artifact
@@ -326,8 +326,9 @@ jobs:
         id: combined-report
         run: |
           # Combine backend and frontend coverage
+          # Backend uses snake_case, frontend uses camelCase
           BACKEND_COV=$(jq -r '.overall_coverage' ./coverage/backend-coverage.json)
-          FRONTEND_COV=$(jq -r '.overall_coverage' ./coverage/frontend-coverage.json)
+          FRONTEND_COV=$(jq -r '.overallCoverage' ./coverage/frontend-coverage.json)
 
           # Calculate average coverage
           TOTAL_COV=$(echo "scale=2; ($BACKEND_COV + $FRONTEND_COV) / 2" | bc)
