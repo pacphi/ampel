@@ -14,13 +14,12 @@
 2. [Current State Assessment](#current-state-assessment)
 3. [Scope Definition](#scope-definition)
 4. [Implementation Plan](#implementation-plan)
-5. [Detailed Task Breakdown](#detailed-task-breakdown)
-6. [File Inventory](#file-inventory)
-7. [Translation Key Specifications](#translation-key-specifications)
-8. [Backend i18n Integration](#backend-i18n-integration)
-9. [Testing Strategy](#testing-strategy)
-10. [Validation Checklist](#validation-checklist)
-11. [Rollout Plan](#rollout-plan)
+5. [File Inventory](#file-inventory)
+6. [Translation Key Specifications](#translation-key-specifications)
+7. [Backend i18n Integration](#backend-i18n-integration)
+8. [Testing Strategy](#testing-strategy)
+9. [Validation Checklist](#validation-checklist)
+10. [Rollout Plan](#rollout-plan)
 
 ---
 
@@ -39,9 +38,9 @@ This document outlines the complete implementation plan for internationalizing t
 
 ### Recent Completions (Reference)
 
-| Commit | Description |
-|--------|-------------|
-| `24bc31b` | LanguageSwitcher added to Login Page |
+| Commit    | Description                                         |
+| --------- | --------------------------------------------------- |
+| `24bc31b` | LanguageSwitcher added to Login Page                |
 | `c11be77` | `emailPlaceholder` added to CommonTranslations.auth |
 
 ---
@@ -50,25 +49,25 @@ This document outlines the complete implementation plan for internationalizing t
 
 ### Pages with Full i18n ✅
 
-| Page | Namespaces Used | Status |
-|------|-----------------|--------|
-| Login.tsx | common, validation, errors | Complete |
-| Dashboard.tsx | common, dashboard, errors | Complete |
-| Settings.tsx | common, settings, validation, errors | Complete |
+| Page          | Namespaces Used                      | Status   |
+| ------------- | ------------------------------------ | -------- |
+| Login.tsx     | common, validation, errors           | Complete |
+| Dashboard.tsx | common, dashboard, errors            | Complete |
+| Settings.tsx  | common, settings, validation, errors | Complete |
 
 ### Pages Requiring i18n ⚠️
 
-| Page | Current State | i18n Status |
-|------|---------------|-------------|
-| Analytics.tsx | Hardcoded English | **None** |
-| Merge.tsx | Hardcoded English | **None** |
-| Register.tsx | Partial useTranslation | **Partial** (placeholder still hardcoded) |
-| Repositories.tsx | Hardcoded English | **None** |
+| Page             | Current State          | i18n Status                               |
+| ---------------- | ---------------------- | ----------------------------------------- |
+| Analytics.tsx    | Hardcoded English      | **None**                                  |
+| Merge.tsx        | Hardcoded English      | **None**                                  |
+| Register.tsx     | Partial useTranslation | **Partial** (placeholder still hardcoded) |
+| Repositories.tsx | Hardcoded English      | **None**                                  |
 
 ### Components Requiring i18n ⚠️
 
-| Component | Location | Status |
-|-----------|----------|--------|
+| Component              | Location            | Status   |
+| ---------------------- | ------------------- | -------- |
 | MergeResultsDialog.tsx | `components/merge/` | **None** |
 
 ---
@@ -345,21 +344,21 @@ export default function Analytics() {
 
 **Key Mappings:**
 
-| Hardcoded String | Translation Key |
-|------------------|-----------------|
-| `"Analytics"` | `analytics:title` |
-| `"PRs Merged (30d)"` | `analytics:summary.prsMerged` |
-| `"Avg Merge Time"` | `analytics:summary.avgMergeTime` |
-| `"Avg Review Time"` | `analytics:summary.avgReviewTime` |
-| `"Bot PRs"` | `analytics:summary.botPrs` |
-| `"Repository Health Scores"` | `analytics:health.title` |
-| `"Merge Time"` | `analytics:health.mergeTime` |
-| `"Throughput"` | `analytics:health.throughput` |
-| `"Review Time"` | `analytics:health.reviewTime` |
-| `"Stale PRs"` | `analytics:health.stalePrs` |
-| `"/week"` | `analytics:health.perWeek` |
-| `"No health data available yet"` | `analytics:empty.title` |
-| `"Health scores are calculated..."` | `analytics:empty.description` |
+| Hardcoded String                    | Translation Key                   |
+| ----------------------------------- | --------------------------------- |
+| `"Analytics"`                       | `analytics:title`                 |
+| `"PRs Merged (30d)"`                | `analytics:summary.prsMerged`     |
+| `"Avg Merge Time"`                  | `analytics:summary.avgMergeTime`  |
+| `"Avg Review Time"`                 | `analytics:summary.avgReviewTime` |
+| `"Bot PRs"`                         | `analytics:summary.botPrs`        |
+| `"Repository Health Scores"`        | `analytics:health.title`          |
+| `"Merge Time"`                      | `analytics:health.mergeTime`      |
+| `"Throughput"`                      | `analytics:health.throughput`     |
+| `"Review Time"`                     | `analytics:health.reviewTime`     |
+| `"Stale PRs"`                       | `analytics:health.stalePrs`       |
+| `"/week"`                           | `analytics:health.perWeek`        |
+| `"No health data available yet"`    | `analytics:empty.title`           |
+| `"Health scores are calculated..."` | `analytics:empty.description`     |
 
 #### Step 2.2: Update Merge.tsx
 
@@ -375,22 +374,22 @@ export default function Merge() {
 
 **Key Mappings:**
 
-| Hardcoded String | Translation Key |
-|------------------|-----------------|
-| `"Bulk Merge"` | `merge:title` |
-| `"Select and merge multiple..."` | `merge:subtitle` |
-| `"Merge Options"` | `merge:options.title` |
-| `"Configure how selected..."` | `merge:options.description` |
-| `"Merge Strategy"` | `merge:options.strategy` |
-| `"Squash and merge"` | `merge:options.strategies.squash` |
-| `"Create a merge commit"` | `merge:options.strategies.merge` |
-| `"Rebase and merge"` | `merge:options.strategies.rebase` |
-| `"Delete branches after merge"` | `merge:options.deleteBranch` |
+| Hardcoded String                  | Translation Key                                             |
+| --------------------------------- | ----------------------------------------------------------- |
+| `"Bulk Merge"`                    | `merge:title`                                               |
+| `"Select and merge multiple..."`  | `merge:subtitle`                                            |
+| `"Merge Options"`                 | `merge:options.title`                                       |
+| `"Configure how selected..."`     | `merge:options.description`                                 |
+| `"Merge Strategy"`                | `merge:options.strategy`                                    |
+| `"Squash and merge"`              | `merge:options.strategies.squash`                           |
+| `"Create a merge commit"`         | `merge:options.strategies.merge`                            |
+| `"Rebase and merge"`              | `merge:options.strategies.rebase`                           |
+| `"Delete branches after merge"`   | `merge:options.deleteBranch`                                |
 | `"Select All"` / `"Deselect All"` | `merge:selection.selectAll` / `merge:selection.deselectAll` |
-| `"Ready to Merge"` | `merge:sections.readyTitle` |
-| `"Not Ready"` | `merge:sections.notReadyTitle` |
-| `"Draft"`, `"Conflicts"`, etc. | `merge:blockers.*` |
-| Toast messages | `merge:toast.*` |
+| `"Ready to Merge"`                | `merge:sections.readyTitle`                                 |
+| `"Not Ready"`                     | `merge:sections.notReadyTitle`                              |
+| `"Draft"`, `"Conflicts"`, etc.    | `merge:blockers.*`                                          |
+| Toast messages                    | `merge:toast.*`                                             |
 
 #### Step 2.3: Update MergeResultsDialog.tsx
 
@@ -503,45 +502,45 @@ Create English source files for new namespaces:
 # crates/ampel-api/locales/en/analytics.yml
 analytics:
   errors:
-    repository_not_found: "Repository not found"
-    no_data_available: "No analytics data available"
-    calculation_failed: "Failed to calculate health score"
+    repository_not_found: 'Repository not found'
+    no_data_available: 'No analytics data available'
+    calculation_failed: 'Failed to calculate health score'
 ```
 
 ```yaml
 # crates/ampel-api/locales/en/merge.yml
 merge:
   errors:
-    no_prs_specified: "No pull requests specified"
-    too_many_prs: "Cannot merge more than %{max} PRs at once"
-    pr_not_found: "Pull request %{id} not found"
-    repository_not_found: "Repository not found"
-    provider_account_not_found: "Provider account not found"
-    repository_not_linked: "Repository not linked to account"
-    token_error: "Token error: %{error}"
-    verify_state_failed: "Failed to verify PR state: %{error}"
-    merge_not_completed: "Merge not completed"
-    operation_not_found: "Merge operation not found"
+    no_prs_specified: 'No pull requests specified'
+    too_many_prs: 'Cannot merge more than %{max} PRs at once'
+    pr_not_found: 'Pull request %{id} not found'
+    repository_not_found: 'Repository not found'
+    provider_account_not_found: 'Provider account not found'
+    repository_not_linked: 'Repository not linked to account'
+    token_error: 'Token error: %{error}'
+    verify_state_failed: 'Failed to verify PR state: %{error}'
+    merge_not_completed: 'Merge not completed'
+    operation_not_found: 'Merge operation not found'
 
   status:
-    success: "Success"
-    failed: "Failed"
-    skipped: "Skipped"
-    unknown: "Unknown"
+    success: 'Success'
+    failed: 'Failed'
+    skipped: 'Skipped'
+    unknown: 'Unknown'
 ```
 
 ```yaml
 # crates/ampel-api/locales/en/repositories.yml
 repositories:
   errors:
-    not_found: "Repository not found"
-    already_added: "Repository already added"
-    provider_not_connected: "Provider not connected"
-    invalid_provider: "Invalid provider type"
+    not_found: 'Repository not found'
+    already_added: 'Repository already added'
+    provider_not_connected: 'Provider not connected'
+    invalid_provider: 'Invalid provider type'
 
   success:
-    added: "Repository added successfully"
-    removed: "Repository removed successfully"
+    added: 'Repository added successfully'
+    removed: 'Repository removed successfully'
 ```
 
 #### Step 4.2: Update Handler Files
@@ -630,6 +629,7 @@ node scripts/i18n-coverage-report.js --format text
 ```
 
 Expected output:
+
 ```
 ✓ All 27 languages at 100% coverage
 ✓ No missing keys detected
@@ -655,32 +655,32 @@ make test
 
 ### Files to Create
 
-| Path | Type | Description |
-|------|------|-------------|
-| `frontend/public/locales/en/analytics.json` | JSON | Analytics namespace (English source) |
-| `frontend/public/locales/en/merge.json` | JSON | Merge namespace (English source) |
-| `frontend/public/locales/en/repositories.json` | JSON | Repositories namespace (English source) |
-| `frontend/public/locales/{26 langs}/analytics.json` | JSON | Translated analytics (auto-generated) |
-| `frontend/public/locales/{26 langs}/merge.json` | JSON | Translated merge (auto-generated) |
+| Path                                                   | Type | Description                              |
+| ------------------------------------------------------ | ---- | ---------------------------------------- |
+| `frontend/public/locales/en/analytics.json`            | JSON | Analytics namespace (English source)     |
+| `frontend/public/locales/en/merge.json`                | JSON | Merge namespace (English source)         |
+| `frontend/public/locales/en/repositories.json`         | JSON | Repositories namespace (English source)  |
+| `frontend/public/locales/{26 langs}/analytics.json`    | JSON | Translated analytics (auto-generated)    |
+| `frontend/public/locales/{26 langs}/merge.json`        | JSON | Translated merge (auto-generated)        |
 | `frontend/public/locales/{26 langs}/repositories.json` | JSON | Translated repositories (auto-generated) |
-| `crates/ampel-api/locales/en/analytics.yml` | YAML | Backend analytics locale |
-| `crates/ampel-api/locales/en/merge.yml` | YAML | Backend merge locale |
-| `crates/ampel-api/locales/en/repositories.yml` | YAML | Backend repositories locale |
+| `crates/ampel-api/locales/en/analytics.yml`            | YAML | Backend analytics locale                 |
+| `crates/ampel-api/locales/en/merge.yml`                | YAML | Backend merge locale                     |
+| `crates/ampel-api/locales/en/repositories.yml`         | YAML | Backend repositories locale              |
 
 ### Files to Modify
 
-| Path | Changes |
-|------|---------|
-| `frontend/src/pages/Analytics.tsx` | Add useTranslation, replace hardcoded strings |
-| `frontend/src/pages/Merge.tsx` | Add useTranslation, replace hardcoded strings |
-| `frontend/src/pages/Register.tsx` | Add displayName placeholder |
-| `frontend/src/pages/Repositories.tsx` | Add useTranslation, replace hardcoded strings |
-| `frontend/src/components/merge/MergeResultsDialog.tsx` | Add useTranslation |
-| `frontend/public/locales/en/common.json` | Add displayNamePlaceholder, provider names |
-| `frontend/src/i18n/types.ts` | Auto-regenerated with new interfaces |
-| `crates/ampel-api/src/handlers/bulk_merge.rs` | Replace hardcoded strings with t!() |
-| `crates/ampel-api/src/handlers/analytics.rs` | Replace hardcoded strings with t!() |
-| `crates/ampel-api/src/handlers/repositories.rs` | Replace hardcoded strings with t!() |
+| Path                                                   | Changes                                       |
+| ------------------------------------------------------ | --------------------------------------------- |
+| `frontend/src/pages/Analytics.tsx`                     | Add useTranslation, replace hardcoded strings |
+| `frontend/src/pages/Merge.tsx`                         | Add useTranslation, replace hardcoded strings |
+| `frontend/src/pages/Register.tsx`                      | Add displayName placeholder                   |
+| `frontend/src/pages/Repositories.tsx`                  | Add useTranslation, replace hardcoded strings |
+| `frontend/src/components/merge/MergeResultsDialog.tsx` | Add useTranslation                            |
+| `frontend/public/locales/en/common.json`               | Add displayNamePlaceholder, provider names    |
+| `frontend/src/i18n/types.ts`                           | Auto-regenerated with new interfaces          |
+| `crates/ampel-api/src/handlers/bulk_merge.rs`          | Replace hardcoded strings with t!()           |
+| `crates/ampel-api/src/handlers/analytics.rs`           | Replace hardcoded strings with t!()           |
+| `crates/ampel-api/src/handlers/repositories.rs`        | Replace hardcoded strings with t!()           |
 
 ---
 
