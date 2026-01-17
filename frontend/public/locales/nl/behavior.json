@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Wachttijd tussen opeenvolgende samenvoegingen",
+    "placeholder": "5",
+    "title": "Samenvoegvertraging (seconden)"
+  },
+  "options": {
+    "allowNoReviews": "Samenvoeging toestaan zonder beoordelingen",
+    "allowNoReviewsDescription": "Sta het samenvoegen van pull requests zonder beoordelingen toe.",
+    "deleteBranch": "Verwijder branches na samenvoeging",
+    "deleteBranchDescription": "Verwijder automatisch bronbranches na een succesvolle samenvoeging.",
+    "requireApproval": "Goedkeuring is vereist vóór samenvoeging.",
+    "requireApprovalDescription": "Wacht op handmatige goedkeuring voordat u de samenvoeging uitvoert."
+  },
+  "strategy": {
+    "description": "Kies hoe pull-requests standaard moeten worden samengevoegd.",
+    "merge": "Maak een merge-commit aan",
+    "mergeDescription": "Alle commits zijn bewaard gebleven.",
+    "rebase": "Herbaseer en voeg samen",
+    "rebaseDescription": "Lineaire commitgeschiedenis",
+    "squash": "Samenvoegen en platdrukken",
+    "squashDescription": "Combineer alle commits tot één.",
+    "title": "Standaard samenvoegingsstrategie"
+  },
+  "title": "Samenvoegingsgedrag",
+  "toast": {
+    "updateFailed": "Instellingen bijwerken mislukt",
+    "updated": "Instellingen bijgewerkt",
+    "updatedDescription": "De instellingen voor het samenvoegen van gegevens zijn opgeslagen."
+  }
+}

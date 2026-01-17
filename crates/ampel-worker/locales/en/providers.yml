@@ -1,0 +1,5 @@
+en:
+  providers:
+    worker:
+      no_account: "No provider account configured for repository"
+      account_not_found: "Provider account not found for repository"

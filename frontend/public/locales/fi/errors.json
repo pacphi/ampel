@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "Tilin luominen epäonnistui",
+    "forbidden": "Sinulla ei ole oikeutta käyttää tätä resurssia",
+    "invalidCredentials": "Virheellinen käyttäjätunnus tai salasana",
+    "invalidEmailOrPassword": "Virheellinen sähköpostiosoite tai salasana",
+    "loginFailed": "Kirjautuminen epäonnistui",
+    "registrationFailed": "Rekisteröinti epäonnistui",
+    "sessionExpired": "Istuntosi on vanhentunut. Kirjaudu sisään uudelleen.",
+    "tokenExpired": "Todennustunnus on vanhentunut",
+    "unauthorized": "Luvaton pääsy"
+  },
+  "boundary": {
+    "description": "Odottamaton virhe tapahtui. Yritä uudelleen.",
+    "details": "Virheen tiedot (vain kehittäjille)",
+    "reload": "Lataa sivu uudelleen",
+    "title": "Jokin meni pieleen",
+    "tryAgain": "Yritä uudelleen"
+  },
+  "general": {
+    "unknownError": "Tuntematon virhe tapahtui"
+  },
+  "generic": {
+    "goHome": "Siirry kojelautaan",
+    "message": "Odottamaton virhe tapahtui. Yritä uudelleen.",
+    "retry": "Yritä uudelleen",
+    "somethingWentWrong": "Jotain meni pieleen. Yritä uudelleen.",
+    "title": "Jokin meni pieleen"
+  },
+  "network": {
+    "message": "Palvelimeen ei saada yhteyttä. Tarkista internetyhteytesi.",
+    "offline": "Olet tällä hetkellä offline-tilassa",
+    "title": "Verkkovirhe"
+  },
+  "notFound": {
+    "goHome": "Palaa kojelautaan",
+    "message": "Etsimääsi sivua ei ole olemassa.",
+    "title": "Sivua ei löytynyt"
+  },
+  "pr": {
+    "approveFailed": "Pull-pyynnön hyväksyminen epäonnistui",
+    "commentFailed": "Kommentin lähettäminen epäonnistui",
+    "loadFailed": "Pull-pyyntöjen lataaminen epäonnistui",
+    "mergeFailed": "Pull-pyynnön yhdistäminen epäonnistui"
+  },
+  "provider": {
+    "connectionFailed": "Yhteyden muodostaminen palveluntarjoajaan {{provider}} epäonnistui",
+    "invalidToken": "Virheellinen {{provider}}-token",
+    "notFound": "Resurssia ei löytynyt osoitteesta {{provider}}",
+    "rateLimited": "{{provider}} API-nopeusraja ylitetty"
+  },
+  "repository": {
+    "accessDenied": "Pääsy arkistoon evätty",
+    "loadFailed": "Repositorioiden lataaminen epäonnistui",
+    "notFound": "Arkistoa ei löytynyt"
+  },
+  "validation": {
+    "invalidEmail": "Anna kelvollinen sähköpostiosoite",
+    "invalidUrl": "Anna kelvollinen URL-osoite",
+    "maxLength": "Enintään {{max}} merkkiä",
+    "minLength": "Vähintään {{min}} merkkiä",
+    "passwordMismatch": "Salasanat eivät täsmää",
+    "required": "Tämä kenttä on pakollinen"
+  }
+}

@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Errore API del provider: %{message} (stato: %{status_code})'
+      auth_failed: 'Autenticazione fallita: %{reason}'
+      config_error: 'Errore di configurazione: %{reason}'
+      invalid_response: 'Risposta non valida: %{reason}'
+      network_error: 'Errore di rete: %{reason}'
+      not_found: 'Risorsa non trovata: %{resource}'
+      not_supported: 'Operazione non supportata: %{operation}'
+      permission_denied: 'Permesso negato: %{reason}'
+      rate_limit_exceeded: 'Limite di velocità superato. Reimposta alle: %{reset_time}'
+      serialization_error: 'Errore di serializzazione: %{reason}'
+    github:
+      api_error: 'Errore API: %{status}'
+      invalid_token: Token non valido
+      merge_checks_failed: La PR non può essere unita (controllare lo stato dei controlli e delle revisioni)
+      merge_conflict: Conflitto di unione o ramo principale modificato
+      merge_failed: Impossibile unire la richiesta pull
+      merge_not_mergeable: La richiesta di pull non è unificabile
+      pr_fetch_failed: Impossibile ottenere la richiesta di pull
+      pr_not_found: Richiesta di pull n.%{numero} non trovata
+      prs_fetch_failed: Impossibile elencare le richieste di pull
+      rate_limit_failed: Impossibile ottenere il limite di velocità
+      repo_fetch_failed: Impossibile ottenere il repository
+      repo_not_found: Repository %{owner}/%{repo} non trovato
+      repos_fetch_failed: Impossibile elencare i repository
+      reviews_fetch_failed: Impossibile ottenere recensioni
+      token_invalid: Token non valido o scaduto
+      user_fetch_failed: Impossibile ottenere l'utente
+    worker:
+      account_not_found: Account del fornitore non trovato
+      no_account: Il repository non ha un account provider associato

@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Account: Read",
+      "pullRequestsRead": "Pull requests: Read",
+      "pullRequestsWrite": "Pull requests: Write",
+      "repositoriesRead": "Repositories: Read",
+      "repositoriesWrite": "Repositories: Write"
+    },
+    "steps": {
+      "step1": "Go to Bitbucket → Personal settings → App passwords",
+      "step2": "Click \"Create app password\"",
+      "step3": "Enter a label for the password",
+      "step4": "Select the required permissions:",
+      "step5": "Click \"Create\" and copy the password"
+    },
+    "title": "Bitbucket App Password Instructions"
+  },
+  "common": {
+    "expirationWarning": "Consider setting an expiration date for better security.",
+    "minimalScopes": "Only grant the minimum required permissions.",
+    "securityNote": "Keep your token secure and never share it publicly."
+  },
+  "github": {
+    "note": "Fine-grained tokens are also supported with repository access permissions.",
+    "scopes": {
+      "readOrg": "read:org (Read org and team membership)",
+      "readUser": "read:user (Read user profile data)",
+      "repo": "repo (Full control of private repositories)"
+    },
+    "steps": {
+      "step1": "Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)",
+      "step2": "Click \"Generate new token (classic)\"",
+      "step3": "Give your token a descriptive name",
+      "step4": "Select the required scopes:",
+      "step5": "Click \"Generate token\" and copy it immediately"
+    },
+    "title": "GitHub Token Instructions"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "api (Full API access)",
+      "readApi": "read_api (Read-only API access)",
+      "readRepository": "read_repository (Read repository access)"
+    },
+    "steps": {
+      "step1": "Go to GitLab → User Settings → Access Tokens",
+      "step2": "Enter a token name and optional expiration date",
+      "step3": "Select the required scopes:",
+      "step4": "Click \"Create personal access token\" and copy it"
+    },
+    "title": "GitLab Token Instructions"
+  },
+  "title": "Provider Instructions"
+}

@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Ajouter",
+    "enable": "Activer les notifications par e-mail",
+    "enableDescription": "Envoyer des notifications par e-mail (SMTP)",
+    "fromAddress": "Adresse de provenance",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "Hôte SMTP",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "Mot de passe SMTP",
+    "smtpPasswordPlaceholder": "Saisissez le mot de passe",
+    "smtpPort": "Port SMTP",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "Nom d'utilisateur SMTP",
+    "smtpUserPlaceholder": "utilisateur@exemple.com",
+    "testFailed": "Échec de l'envoi de l'e-mail de test",
+    "testMessage": "Envoyer un e-mail de test",
+    "testSending": "Envoi...",
+    "testSuccess": "Courriel de test envoyé",
+    "title": "Notifications par e-mail",
+    "toAddresses": "À l'adresse",
+    "toAddressesDescription": "Destinataires des courriels de notification",
+    "toAddressesPlaceholder": "email@exemple.com",
+    "useTls": "Utilisez TLS"
+  },
+  "merge": {
+    "description": "Choisissez quand recevoir des notifications pour les opérations de fusion",
+    "notifyOnConflict": "Notification en cas de conflits de fusion",
+    "notifyOnConflictDescription": "Envoyer une notification en cas de conflit de fusion détecté",
+    "notifyOnFailure": "Notification en cas d'échec de fusion",
+    "notifyOnFailureDescription": "Envoyer une notification en cas d'échec des opérations de fusion",
+    "notifyOnSuccess": "Notification en cas de fusion réussie",
+    "notifyOnSuccessDescription": "Envoyer une notification lorsque les demandes de fusion sont réussies.",
+    "title": "Notifications de fusion"
+  },
+  "slack": {
+    "channel": "Canal (facultatif)",
+    "channelDescription": "Remplacer le canal par défaut configuré dans le webhook",
+    "channelPlaceholder": "#général",
+    "enable": "Activer les notifications Slack",
+    "enableDescription": "Envoyer des notifications à un canal Slack",
+    "testFailed": "Échec de l'envoi du message de test",
+    "testMessage": "Envoyer un message de test",
+    "testSending": "Envoi...",
+    "testSuccess": "Message de test envoyé",
+    "title": "Notifications Slack",
+    "webhookUrl": "URL du webhook",
+    "webhookUrlDescription": "Créez un webhook entrant dans votre espace de travail Slack.",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Paramètres de notification",
+  "toast": {
+    "updateFailed": "Échec de la mise à jour des paramètres",
+    "updated": "Paramètres mis à jour",
+    "updatedDescription": "Les paramètres de notification ont été enregistrés."
+  }
+}

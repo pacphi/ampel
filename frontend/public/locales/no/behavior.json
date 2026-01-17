@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Ventetid mellom påfølgende sammenslåinger",
+    "placeholder": "5",
+    "title": "Forsinkelse ved sammenslåing (sekunder)"
+  },
+  "options": {
+    "allowNoReviews": "Tillat sammenslåing uten gjennomganger",
+    "allowNoReviewsDescription": "Tillat sammenslåing av PR-er som ikke har noen anmeldelser",
+    "deleteBranch": "Slett grener etter sammenslåing",
+    "deleteBranchDescription": "Slett kildegrener automatisk etter vellykket sammenslåing",
+    "requireApproval": "Krev godkjenning før sammenslåing",
+    "requireApprovalDescription": "Vent på manuell godkjenning før du utfører sammenslåingen"
+  },
+  "strategy": {
+    "description": "Velg hvordan pull-forespørsler skal slås sammen som standard",
+    "merge": "Opprett en fletteforpliktelse",
+    "mergeDescription": "Alle commits er bevart",
+    "rebase": "Rebase og fusjoner",
+    "rebaseDescription": "Lineær commit-historikk",
+    "squash": "Squash og fusjoner",
+    "squashDescription": "Kombiner alle commits til én",
+    "title": "Standard sammenslåingsstrategi"
+  },
+  "title": "Sammenslåingsatferd",
+  "toast": {
+    "updateFailed": "Kunne ikke oppdatere innstillingene",
+    "updated": "Innstillingene er oppdatert",
+    "updatedDescription": "Innstillingene for sammenslåingsvirkemåte er lagret"
+  }
+}

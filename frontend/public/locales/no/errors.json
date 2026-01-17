@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "Kunne ikke opprette konto",
+    "forbidden": "Du har ikke tilgang til denne ressursen",
+    "invalidCredentials": "Ugyldig brukernavn eller passord",
+    "invalidEmailOrPassword": "Ugyldig e-post eller passord",
+    "loginFailed": "Innlogging mislyktes",
+    "registrationFailed": "Registreringen mislyktes",
+    "sessionExpired": "Økten din er utløpt. Vennligst logg inn på nytt.",
+    "tokenExpired": "Autentiseringstokenet er utløpt",
+    "unauthorized": "Uautorisert tilgang"
+  },
+  "boundary": {
+    "description": "Det oppsto en uventet feil. Prøv på nytt.",
+    "details": "Feildetaljer (kun utvikler)",
+    "reload": "Last inn siden på nytt",
+    "title": "Noe gikk galt",
+    "tryAgain": "Prøv igjen"
+  },
+  "general": {
+    "unknownError": "Det oppsto en ukjent feil"
+  },
+  "generic": {
+    "goHome": "Gå til dashbordet",
+    "message": "Det oppsto en uventet feil. Prøv på nytt.",
+    "retry": "Prøv igjen",
+    "somethingWentWrong": "Noe gikk galt. Prøv igjen.",
+    "title": "Noe gikk galt"
+  },
+  "network": {
+    "message": "Kan ikke koble til serveren. Sjekk internettforbindelsen din.",
+    "offline": "Du er for øyeblikket frakoblet",
+    "title": "Nettverksfeil"
+  },
+  "notFound": {
+    "goHome": "Gå tilbake til dashbordet",
+    "message": "Siden du leter etter finnes ikke.",
+    "title": "Siden ble ikke funnet"
+  },
+  "pr": {
+    "approveFailed": "Kunne ikke godkjenne pull-forespørselen",
+    "commentFailed": "Kunne ikke legge inn kommentar",
+    "loadFailed": "Kunne ikke laste inn pull-forespørsler",
+    "mergeFailed": "Kunne ikke slå sammen pull-forespørselen"
+  },
+  "provider": {
+    "connectionFailed": "Kunne ikke koble til {{provider}}",
+    "invalidToken": "Ugyldig {{provider}}-token",
+    "notFound": "Ressursen ble ikke funnet på {{provider}}",
+    "rateLimited": "API-hastighetsgrensen for {{provider}} er overskredet"
+  },
+  "repository": {
+    "accessDenied": "Tilgang til arkivet nektet",
+    "loadFailed": "Kunne ikke laste inn arkivene",
+    "notFound": "Arkivet ble ikke funnet"
+  },
+  "validation": {
+    "invalidEmail": "Vennligst skriv inn en gyldig e-postadresse",
+    "invalidUrl": "Vennligst skriv inn en gyldig URL",
+    "maxLength": "Må ikke overskride {{max}} tegn",
+    "minLength": "Må være minst {{min}} tegn",
+    "passwordMismatch": "Passordene samsvarer ikke",
+    "required": "Dette feltet er obligatorisk"
+  }
+}

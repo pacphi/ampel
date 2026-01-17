@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "健康スコアはPR指標に基づいて1時間ごとに計算されます",
+    "title": "健康データはまだ入手できません"
+  },
+  "health": {
+    "mergeTime": "マージ時間",
+    "perWeek": "{{count}}/週",
+    "reviewTime": "レビュータイム",
+    "stalePrs": "古いPR",
+    "throughput": "スループット",
+    "title": "リポジトリの健全性スコア"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "平均マージ時間",
+    "avgReviewTime": "平均レビュー時間",
+    "botPrs": "ボットPR",
+    "prsMerged": "PR がマージされました ({{days}}d)"
+  },
+  "title": "分析"
+}

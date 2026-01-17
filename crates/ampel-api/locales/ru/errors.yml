@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: Этот аккаунт уже подключен. Используйте команду PATCH для обновления токена.
+      invalid_provider_type: Неверный тип поставщика
+      invalid_token: Недействительный токен
+      not_found: Учетная запись не найдена
+      provider_no_user_id: Поставщик не вернул идентификатор пользователя.
+      provider_no_username: Поставщик не вернул имя пользователя.
+      validation_failed: 'Проверка токена не удалась: %{error}'
+    auth:
+      email_in_use: Электронная почта уже используется
+      email_registered: Адрес электронной почты уже зарегистрирован
+      invalid_credentials: Неверный адрес электронной почты или пароль.
+      invalid_refresh_token: Недействительный или просроченный токен обновления
+      user_not_found: Пользователь не найден
+    encryption:
+      decrypt_failed: 'Ошибка расшифровки: %{error}'
+      failed: 'Ошибка шифрования: %{error}'
+    general:
+      internal: Внутренняя ошибка
+      serialization_failed: 'Не удалось сериализовать области видимости: %{error}'
+    network:
+      connection_failed: Соединение не удалось.
+      timeout: Запрос истек по времени.
+    provider:
+      decrypt_failed: 'Не удалось расшифровать токен: %{error}'
+      error: 'Ошибка поставщика: %{error}'
+    pull_request:
+      merge_failed: 'Слияние не удалось: %{reason}'
+      not_found: Запрос на слияние не найден.
+    rate_limit:
+      exceeded: Превышен лимит скорости.
+    repository:
+      already_added: Репозиторий уже добавлен
+      invalid_provider: Неверный поставщик
+      invalid_provider_db: Недопустимый тип поставщика в базе данных.
+      no_account_linked: Репозиторий не связан с учетной записью.
+      not_found: Репозиторий не найден
+      not_found_for_pr: Репозиторий для PR не найден.
+      provider_not_connected: Поставщик услуг не подключен

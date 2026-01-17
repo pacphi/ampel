@@ -1,0 +1,105 @@
+{
+  "title": "Dashboard",
+  "prDashboard": "PR Dashboard",
+  "subtitle": "Manage your pull requests across all providers",
+  "empty": {
+    "title": "No pull requests found",
+    "description": "Connect your Git providers to start tracking PRs",
+    "action": "Connect Provider"
+  },
+  "filters": {
+    "all": "All",
+    "open": "Open",
+    "closed": "Closed",
+    "merged": "Merged",
+    "draft": "Draft",
+    "provider": "Provider",
+    "repository": "Repository",
+    "author": "Author",
+    "assignee": "Assignee",
+    "label": "Label",
+    "onlyWithPrs": "Show repositories with Open PRs",
+    "prStatus": {
+      "all": "All PRs",
+      "ready": "Ready",
+      "pending": "Pending",
+      "blocked": "Blocked"
+    }
+  },
+  "status": {
+    "green": "Ready to merge",
+    "yellow": "In progress",
+    "red": "Blocked",
+    "draft": "Draft",
+    "merged": "Merged",
+    "closed": "Closed"
+  },
+  "actions": {
+    "merge": "Merge",
+    "approve": "Approve",
+    "requestChanges": "Request Changes",
+    "comment": "Comment",
+    "viewOnProvider": "View on {{provider}}",
+    "refresh": "Refresh",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All"
+  },
+  "stats": {
+    "total": "Total PRs",
+    "totalRepositories": "Total Repositories",
+    "open": "Open",
+    "openPRs": "Open PRs",
+    "ready": "Ready to merge",
+    "readyToMerge": "Ready to Merge",
+    "inProgress": "In progress",
+    "blocked": "Blocked",
+    "needsAttention": "Needs Attention"
+  },
+  "views": {
+    "grid": "Grid view",
+    "list": "List view",
+    "table": "Table view",
+    "prs": "Pull requests view",
+    "repositoryGrid": "Repository grid view",
+    "repositoryList": "Repository list view",
+    "pullRequests": "Pull requests view"
+  },
+  "sort": {
+    "title": "Sort by",
+    "updated": "Last updated",
+    "created": "Created date",
+    "author": "Author",
+    "status": "Status",
+    "repository": "Repository"
+  },
+  "pr": {
+    "number": "#{{number}}",
+    "author": "Author",
+    "sourceBranch": "Source branch",
+    "targetBranch": "Target branch",
+    "additions": "Additions",
+    "deletions": "Deletions",
+    "comments": "Comments",
+    "createdAt": "Created",
+    "updatedAt": "Updated"
+  },
+  "blockers": {
+    "draft": "Draft",
+    "conflicts": "Conflicts",
+    "ciFailed": "CI failed",
+    "ciPending": "CI pending",
+    "changesRequested": "Changes requested",
+    "awaitingReview": "Awaiting review",
+    "needsReview": "Needs review"
+  },
+  "table": {
+    "columns": {
+      "status": "Status",
+      "repository": "Repository",
+      "visibility": "Visibility",
+      "provider": "Provider",
+      "prs": "PRs",
+      "lastUpdated": "Last Updated"
+    }
+  }
+}

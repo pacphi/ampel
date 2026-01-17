@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: To konto jest już połączone. Użyj PATCH, aby zaktualizować token.
+      invalid_provider_type: Nieprawidłowy typ dostawcy
+      invalid_token: Nieprawidłowy token
+      not_found: Konto nie zostało znalezione
+      provider_no_user_id: Dostawca nie zwrócił identyfikatora użytkownika
+      provider_no_username: Dostawca nie zwrócił nazwy użytkownika
+      validation_failed: 'Nieudana walidacja tokena: %{error}'
+    auth:
+      email_in_use: E-mail jest już używany
+      email_registered: E-mail już zarejestrowany
+      invalid_credentials: Nieprawidłowy adres e-mail lub hasło
+      invalid_refresh_token: Nieprawidłowy lub wygasły token odświeżania
+      user_not_found: Użytkownik nie został znaleziony
+    encryption:
+      decrypt_failed: 'Błąd deszyfrowania: %{error}'
+      failed: 'Błąd szyfrowania: %{error}'
+    general:
+      internal: Błąd wewnętrzny
+      serialization_failed: 'Nie udało się zserializować zakresów: %{error}'
+    network:
+      connection_failed: Połączenie nieudane
+      timeout: Żądanie przekroczyło limit czasu
+    provider:
+      decrypt_failed: 'Nie udało się odszyfrować tokena: %{error}'
+      error: 'Błąd dostawcy: %{error}'
+    pull_request:
+      merge_failed: 'Scalenie nie powiodło się: %{reason}'
+      not_found: Nie znaleziono żądania ściągnięcia
+    rate_limit:
+      exceeded: Przekroczono limit szybkości
+    repository:
+      already_added: Repozytorium już dodane
+      invalid_provider: Nieprawidłowy dostawca
+      invalid_provider_db: Nieprawidłowy typ dostawcy w bazie danych
+      no_account_linked: Repozytorium nie jest powiązane z kontem
+      not_found: Nie znaleziono repozytorium
+      not_found_for_pr: Nie znaleziono repozytorium dla PR
+      provider_not_connected: Dostawca nie jest połączony

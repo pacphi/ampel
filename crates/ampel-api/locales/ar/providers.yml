@@ -1,0 +1,37 @@
+providers:
+  # GitHub provider
+  github:
+    token_invalid: "رمز غير صالح أو منتهي الصلاحية"
+    api_error: "خطأ في واجهة برمجة التطبيقات: %{status}"
+    user_fetch_failed: "فشل الحصول على المستخدم"
+    invalid_token: "رمز غير صالح"
+    repos_fetch_failed: "فشل في سرد المستودعات"
+    repo_fetch_failed: "فشل في الحصول على المستودع"
+    repo_not_found: "المستودع %{owner}/%{repo} غير موجود"
+    prs_fetch_failed: "فشل في سرد طلبات السحب"
+    pr_not_found: "طلب السحب #%{number} غير موجود"
+    pr_fetch_failed: "فشل في الحصول على طلب السحب"
+    reviews_fetch_failed: "فشل في الحصول على المراجعات"
+    merge_not_mergeable: "لا يمكن دمج طلب السحب"
+    merge_conflict: "تعارض في الدمج أو تم تعديل الفرع الرئيسي"
+    merge_checks_failed: "لا يمكن دمج طلب السحب (تحقق من فحوصات الحالة والمراجعات)"
+    merge_failed: "فشل في دمج طلب السحب"
+    rate_limit_failed: "فشل في الحصول على حد المعدل"
+
+  # General provider errors
+  general:
+    auth_failed: "فشل المصادقة: %{reason}"
+    rate_limit_exceeded: "تم تجاوز حد المعدل. يعاد الضبط في: %{reset_time}"
+    not_found: "المورد غير موجود: %{resource}"
+    permission_denied: "تم رفض الإذن: %{reason}"
+    invalid_response: "استجابة غير صالحة: %{reason}"
+    network_error: "خطأ في الشبكة: %{reason}"
+    api_error: "خطأ في واجهة برمجة تطبيقات المزود: %{message} (الحالة: %{status_code})"
+    serialization_error: "خطأ في التسلسل: %{reason}"
+    config_error: "خطأ في التكوين: %{reason}"
+    not_supported: "العملية غير مدعومة: %{operation}"
+
+  # Worker job errors
+  worker:
+    no_account: "المستودع ليس له حساب مزود مرتبط"
+    account_not_found: "حساب المزود غير موجود"

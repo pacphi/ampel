@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Dodaj wszystko ({{count}})",
+    "close": "Zamknąć",
+    "empty": "Nie znaleziono nowych repozytoriów do dodania",
+    "title": "Dodaj z {{provider}}"
+  },
+  "empty": {
+    "description": "Aby rozpocząć, dodaj repozytoria od połączonych dostawców",
+    "title": "Nie znaleziono repozytoriów"
+  },
+  "providers": {
+    "connected": "(Połączony)",
+    "title": "Połącz dostawcę"
+  },
+  "search": {
+    "placeholder": "Przeszukaj repozytoria..."
+  },
+  "table": {
+    "actions": "Akcje",
+    "provider": "Dostawca",
+    "prs": "Otwarte PR-y",
+    "repository": "Magazyn",
+    "status": "Status"
+  },
+  "title": "Repozytoria",
+  "toast": {
+    "addFailed": "Nie udało się dodać repozytorium",
+    "added": "Dodano repozytorium",
+    "addedDescription": "{{name}} został dodany do Twojego pulpitu nawigacyjnego",
+    "bulkAddFailed": "Nie udało się dodać repozytoriów",
+    "bulkAddFailedDescription": "Nie można dodać żadnego z wybranych repozytoriów",
+    "bulkAdded": "Dodano repozytoria",
+    "bulkAddedDescription": "Pomyślnie dodano {{count}} repozytoriów{{failed}}",
+    "bulkAddedFailed": "({{count}} nie powiodło się)",
+    "removeFailed": "Nie udało się usunąć repozytorium",
+    "removed": "Repozytorium usunięte",
+    "removedDescription": "{{name}} został usunięty z Twojego pulpitu nawigacyjnego"
+  }
+}

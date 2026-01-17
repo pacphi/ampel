@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "계정으로 돌아가기",
+    "form": {
+      "accountLabel": "계정 라벨",
+      "accountLabelDescription": "이 계정을 식별하기 위한 친근한 이름",
+      "accountLabelPlaceholder": "예: 업무용 GitHub, 개인용 GitLab",
+      "provider": "공급자",
+      "selectProvider": "제공업체를 선택하세요",
+      "token": "개인 액세스 토큰",
+      "tokenDescription": "토큰은 암호화되어 안전하게 저장됩니다.",
+      "tokenPlaceholder": "개인 액세스 토큰을 입력하세요"
+    },
+    "submit": "계정 연결",
+    "submitting": "연결 중...",
+    "subtitle": "새로운 Git 공급자 계정을 연결하세요",
+    "title": "공급자 계정 추가"
+  },
+  "addAccount": "계정 추가",
+  "addFirstAccount": "첫 번째 계정을 추가하세요",
+  "card": {
+    "actions": {
+      "delete": "계정 삭제",
+      "edit": "계정 수정",
+      "setDefault": "기본값으로 설정",
+      "validate": "토큰 유효성 검사"
+    },
+    "expires": "만료됨",
+    "neverExpires": "만료되지 않습니다",
+    "repositories": "저장소",
+    "status": {
+      "default": "기본",
+      "expired": "만료됨",
+      "invalid": "유효하지 않은",
+      "pending": "보류 중",
+      "valid": "유효한"
+    },
+    "validated": "검증됨"
+  },
+  "delete": {
+    "cancel": "취소",
+    "confirm": "삭제",
+    "deleting": "삭제 중...",
+    "description": "\"{{label}}\" 계정을 삭제하시겠습니까? 이 작업을 해도 저장소는 삭제되지 않으며, 다른 계정에 다시 연결해야 합니다.",
+    "title": "계정 삭제"
+  },
+  "description": "연결된 Git 제공업체 계정을 관리하세요",
+  "edit": {
+    "accountInfo": "계정 정보",
+    "backToAccounts": "계정으로 돌아가기",
+    "form": {
+      "accountLabel": "계정 라벨",
+      "accountLabelPlaceholder": "예: Work GitHub",
+      "currentToken": "현재 토큰",
+      "token": "개인 액세스 토큰",
+      "tokenDescription": "현재 토큰을 유지하려면 비워 두십시오.",
+      "tokenPlaceholder": "업데이트하려면 새 토큰을 입력하세요."
+    },
+    "notFound": "계정을 찾을 수 없습니다",
+    "submit": "변경 사항 저장",
+    "submitting": "절약...",
+    "subtitle": "계정 설정 업데이트",
+    "title": "계정 수정"
+  },
+  "noAccountsYet": "아직 연결된 계정이 없습니다.",
+  "title": "공급자 계정",
+  "toast": {
+    "connected": "계정 연결됨",
+    "connectedDescription": "{{provider}} 계정에 성공적으로 연결되었습니다.",
+    "connectionFailed": "계정 추가에 실패했습니다",
+    "defaultUpdateFailed": "기본값을 업데이트하는 데 실패했습니다.",
+    "defaultUpdated": "기본 계정이 업데이트되었습니다.",
+    "defaultUpdatedDescription": "기본 계정이 변경되었습니다.",
+    "deleteFailed": "계정 삭제에 실패했습니다",
+    "deleted": "계정이 삭제되었습니다",
+    "deletedDescription": "계정이 성공적으로 삭제되었습니다.",
+    "tokenInvalid": "토큰이 유효하지 않습니다",
+    "tokenInvalidDescription": "토큰이 유효하지 않거나 만료되었습니다.",
+    "tokenValid": "토큰 유효함",
+    "tokenValidDescription": "계정 토큰이 유효하고 활성화되어 있습니다.",
+    "updateFailed": "계정 업데이트에 실패했습니다",
+    "updated": "계정이 업데이트되었습니다.",
+    "updatedDescription": "계정 설정이 저장되었습니다.",
+    "validationFailed": "유효성 검사 실패"
+  }
+}

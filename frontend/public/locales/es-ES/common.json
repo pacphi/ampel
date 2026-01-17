@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "Agregar",
+    "apply": "Aplicar",
+    "cancel": "Cancelar",
+    "clear": "Claro",
+    "delete": "Borrar",
+    "edit": "Editar",
+    "hideEmail": "Ocultar correo electrónico",
+    "refresh": "Refrescar",
+    "refreshing": "Refrescante...",
+    "remove": "Eliminar",
+    "reset": "Restablecer valores predeterminados",
+    "save": "Ahorrar",
+    "saving": "Ahorro...",
+    "showEmail": "Mostrar correo electrónico",
+    "viewOnProvider": "Ver en {{provider}}"
+  },
+  "app": {
+    "add": "Agregar",
+    "apply": "Aplicar",
+    "back": "Atrás",
+    "cancel": "Cancelar",
+    "clear": "Claro",
+    "close": "Cerca",
+    "delete": "Borrar",
+    "description": "Gestión unificada de solicitudes de extracción",
+    "edit": "Editar",
+    "error": "Se produjo un error",
+    "filter": "Filtrar",
+    "info": "Información",
+    "loading": "Cargando...",
+    "name": "Ampel",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "remove": "Eliminar",
+    "reset": "Reiniciar",
+    "retry": "Rever",
+    "save": "Ahorrar",
+    "search": "Buscar",
+    "success": "Éxito",
+    "title": "Panel de relaciones públicas de Ampel",
+    "warning": "Advertencia"
+  },
+  "auth": {
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "confirmPassword": "confirmar Contraseña",
+    "createAccount": "Crear una cuenta",
+    "creatingAccount": "Creando cuenta...",
+    "displayName": "Nombre para mostrar",
+    "displayNamePlaceholder": "Juan Pérez",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "¿Has olvidado tu contraseña?",
+    "getStarted": "Comience a usar Ampel",
+    "login": "Acceso",
+    "loginSuccess": "Inicio de sesión exitoso",
+    "logout": "Cerrar sesión",
+    "logoutSuccess": "Cierre de sesión exitoso",
+    "password": "Contraseña",
+    "resetPassword": "Restablecer contraseña",
+    "signIn": "Iniciar sesión",
+    "signInToContinue": "Inicie sesión en su cuenta para continuar",
+    "signUp": "Inscribirse",
+    "signingIn": "Iniciando sesión...",
+    "username": "Nombre de usuario",
+    "welcome": "¡Bienvenido de nuevo!",
+    "welcomeToAmpel": "Bienvenido a Ampel"
+  },
+  "language": {
+    "current": "Idioma actual",
+    "select": "Seleccionar idioma"
+  },
+  "navigation": {
+    "analytics": "Analítica",
+    "dashboard": "Panel",
+    "documentation": "Documentación",
+    "help": "Ayuda",
+    "merge": "Unir",
+    "organizations": "Organizaciones",
+    "profile": "Perfil",
+    "pullRequests": "Solicitudes de extracción",
+    "repositories": "Repositorios",
+    "settings": "Ajustes"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} comentario",
+    "comments_other": "{{count}} comentarios",
+    "pullRequests_one": "{{count}} solicitud de extracción",
+    "pullRequests_other": "{{count}} solicitudes de extracción",
+    "requests_one": "{{count}} solicitud",
+    "requests_other": "{{count}} solicitudes"
+  },
+  "status": {
+    "trafficLight": "Estado del semáforo"
+  },
+  "theme": {
+    "auto": "Auto",
+    "dark": "Modo oscuro",
+    "light": "Modo claro",
+    "toggle": "Cambiar tema"
+  },
+  "time": {
+    "daysAgo": "Hace {{count}} días",
+    "daysAgo_other": "Hace {{count}} días",
+    "hoursAgo": "Hace {{count}} horas",
+    "hoursAgo_other": "Hace {{count}} horas",
+    "minutesAgo": "Hace {{count}} minuto",
+    "minutesAgo_other": "Hace {{count}} minutos",
+    "monthsAgo": "Hace {{count}} meses",
+    "monthsAgo_other": "Hace {{count}} meses",
+    "now": "En este momento",
+    "weeksAgo": "Hace {{count}} semana",
+    "weeksAgo_other": "Hace {{count}} semanas"
+  },
+  "visibility": {
+    "archived": "Archivado",
+    "private": "Privado",
+    "public": "Público"
+  }
+}

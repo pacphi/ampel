@@ -1,0 +1,14 @@
+# Invalid placeholder usage
+common:
+  validation:
+    # Mismatched placeholder names
+    min_length_en: "Must be at least %{count} characters"
+    min_length_fr: "Doit contenir au moins %{nombre} caractères"  # Wrong variable name
+
+    # Missing placeholders
+    max_length_en: "Must be at most %{count} characters"
+    max_length_de: "Darf maximal Zeichen enthalten"  # Missing placeholder
+
+    # Extra placeholders
+    range_en: "Must be between %{min} and %{max}"
+    range_es: "Debe estar entre %{min}, %{max} y %{extra}"  # Extra variable

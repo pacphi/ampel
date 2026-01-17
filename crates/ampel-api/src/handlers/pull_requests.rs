@@ -2,6 +2,7 @@ use axum::{
     extract::{Path, Query, State},
     Json,
 };
+use rust_i18n::t;
 use sea_orm::EntityTrait;
 use uuid::Uuid;
 
@@ -33,7 +34,7 @@ pub async fn list_pull_requests(
     for pr in prs {
         let repo = RepoQueries::find_by_id(&state.db, pr.repository_id)
             .await?
-            .ok_or_else(|| ApiError::internal("Repository not found for PR"))?;
+            .ok_or_else(|| ApiError::internal(t!("errors.repository.not_found_for_pr")))?;
 
         let checks: Vec<CICheck> = CICheckQueries::find_by_pull_request(&state.db, pr.id)
             .await?
@@ -76,11 +77,11 @@ pub async fn list_repository_prs(
 ) -> Result<Json<ApiResponse<Vec<PullRequestWithDetails>>>, ApiError> {
     let repo = RepoQueries::find_by_id(&state.db, repo_id)
         .await?
-        .ok_or_else(|| ApiError::not_found("Repository not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.repository.not_found")))?;
 
     // Verify ownership
     if repo.user_id != auth.user_id {
-        return Err(ApiError::not_found("Repository not found"));
+        return Err(ApiError::not_found(t!("errors.repository.not_found")));
     }
 
     let prs = PrQueries::find_open_by_repository(&state.db, repo_id).await?;
@@ -124,20 +125,20 @@ pub async fn get_pull_request(
 ) -> Result<Json<ApiResponse<PullRequestWithDetails>>, ApiError> {
     let repo = RepoQueries::find_by_id(&state.db, repo_id)
         .await?
-        .ok_or_else(|| ApiError::not_found("Repository not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.repository.not_found")))?;
 
     // Verify ownership
     if repo.user_id != auth.user_id {
-        return Err(ApiError::not_found("Repository not found"));
+        return Err(ApiError::not_found(t!("errors.repository.not_found")));
     }
 
     let pr = PrQueries::find_by_id(&state.db, pr_id)
         .await?
-        .ok_or_else(|| ApiError::not_found("Pull request not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.pull_request.not_found")))?;
 
     // Verify PR belongs to repo
     if pr.repository_id != repo_id {
-        return Err(ApiError::not_found("Pull request not found"));
+        return Err(ApiError::not_found(t!("errors.pull_request.not_found")));
     }
 
     let checks: Vec<CICheck> = CICheckQueries::find_by_pull_request(&state.db, pr.id)
@@ -174,41 +175,42 @@ pub async fn merge_pull_request(
 ) -> Result<Json<ApiResponse<MergeResultResponse>>, ApiError> {
     let repo = RepoQueries::find_by_id(&state.db, repo_id)
         .await?
-        .ok_or_else(|| ApiError::not_found("Repository not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.repository.not_found")))?;
 
     // Verify ownership
     if repo.user_id != auth.user_id {
-        return Err(ApiError::not_found("Repository not found"));
+        return Err(ApiError::not_found(t!("errors.repository.not_found")));
     }
 
     let pr = PrQueries::find_by_id(&state.db, pr_id)
         .await?
-        .ok_or_else(|| ApiError::not_found("Pull request not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.pull_request.not_found")))?;
 
     // Verify PR belongs to repo
     if pr.repository_id != repo_id {
-        return Err(ApiError::not_found("Pull request not found"));
+        return Err(ApiError::not_found(t!("errors.pull_request.not_found")));
     }
 
     let provider_type: GitProvider = repo
         .provider
         .parse()
-        .map_err(|_| ApiError::internal("Invalid provider"))?;
+        .map_err(|_| ApiError::internal(t!("errors.repository.invalid_provider_db")))?;
 
     // Get provider account
-    let account = provider_account::Entity::find_by_id(
-        repo.provider_account_id
-            .ok_or(ApiError::bad_request("Repository not linked to account"))?,
-    )
+    let account = provider_account::Entity::find_by_id(repo.provider_account_id.ok_or(
+        ApiError::bad_request(t!("errors.repository.no_account_linked")),
+    )?)
     .one(&state.db)
     .await?
-    .ok_or(ApiError::not_found("Provider account not found"))?;
+    .ok_or(ApiError::not_found(t!("errors.account.not_found")))?;
 
     // Decrypt access token
     let access_token = state
         .encryption_service
         .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(format!("Failed to decrypt token: {}", e)))?;
+        .map_err(|e| {
+            ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string()))
+        })?;
 
     // Create credentials
     let credentials = ampel_providers::traits::ProviderCredentials::Pat {
@@ -223,7 +225,12 @@ pub async fn merge_pull_request(
     let result = provider
         .merge_pull_request(&credentials, &repo.owner, &repo.name, pr.number, &merge_req)
         .await
-        .map_err(|e| ApiError::bad_request(format!("Merge failed: {}", e)))?;
+        .map_err(|e| {
+            ApiError::bad_request(t!(
+                "errors.pull_request.merge_failed",
+                reason = e.to_string()
+            ))
+        })?;
 
     // Update PR state in database
     if result.merged {
@@ -259,41 +266,42 @@ pub async fn refresh_pull_request(
 ) -> Result<Json<ApiResponse<PullRequestWithDetails>>, ApiError> {
     let repo = RepoQueries::find_by_id(&state.db, repo_id)
         .await?
-        .ok_or_else(|| ApiError::not_found("Repository not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.repository.not_found")))?;
 
     // Verify ownership
     if repo.user_id != auth.user_id {
-        return Err(ApiError::not_found("Repository not found"));
+        return Err(ApiError::not_found(t!("errors.repository.not_found")));
     }
 
     let pr = PrQueries::find_by_id(&state.db, pr_id)
         .await?
-        .ok_or_else(|| ApiError::not_found("Pull request not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.pull_request.not_found")))?;
 
     // Verify PR belongs to repo
     if pr.repository_id != repo_id {
-        return Err(ApiError::not_found("Pull request not found"));
+        return Err(ApiError::not_found(t!("errors.pull_request.not_found")));
     }
 
     let provider_type: GitProvider = repo
         .provider
         .parse()
-        .map_err(|_| ApiError::internal("Invalid provider"))?;
+        .map_err(|_| ApiError::internal(t!("errors.repository.invalid_provider_db")))?;
 
     // Get provider account
-    let account = provider_account::Entity::find_by_id(
-        repo.provider_account_id
-            .ok_or(ApiError::bad_request("Repository not linked to account"))?,
-    )
+    let account = provider_account::Entity::find_by_id(repo.provider_account_id.ok_or(
+        ApiError::bad_request(t!("errors.repository.no_account_linked")),
+    )?)
     .one(&state.db)
     .await?
-    .ok_or(ApiError::not_found("Provider account not found"))?;
+    .ok_or(ApiError::not_found(t!("errors.account.not_found")))?;
 
     // Decrypt access token
     let access_token = state
         .encryption_service
         .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(format!("Failed to decrypt token: {}", e)))?;
+        .map_err(|e| {
+            ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string()))
+        })?;
 
     // Create credentials
     let credentials = ampel_providers::traits::ProviderCredentials::Pat {
@@ -309,7 +317,7 @@ pub async fn refresh_pull_request(
     let fresh_pr = provider
         .get_pull_request(&credentials, &repo.owner, &repo.name, pr.number)
         .await
-        .map_err(|e| ApiError::internal(format!("Provider error: {}", e)))?;
+        .map_err(|e| ApiError::internal(t!("errors.provider.error", error = e.to_string())))?;
 
     // Update PR in database
     let state_str = fresh_pr.state.clone();

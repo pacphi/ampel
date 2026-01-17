@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "返回帳戶",
+    "form": {
+      "accountLabel": "帳戶標籤",
+      "accountLabelDescription": "用於識別此帳戶的友好名稱",
+      "accountLabelPlaceholder": "例如，工作用的 GitHub，個人用的 GitLab",
+      "provider": "提供者",
+      "selectProvider": "選擇服務提供者",
+      "token": "個人訪問令牌",
+      "tokenDescription": "您的令牌已加密並安全儲存。",
+      "tokenPlaceholder": "請輸入您的個人存取令牌"
+    },
+    "submit": "連結帳戶",
+    "submitting": "正在連接...",
+    "subtitle": "連接新的 Git 提供者帳戶",
+    "title": "新增提供者帳戶"
+  },
+  "addAccount": "新增帳戶",
+  "addFirstAccount": "新增您的第一個帳戶",
+  "card": {
+    "actions": {
+      "delete": "刪除帳戶",
+      "edit": "編輯帳戶",
+      "setDefault": "設定為預設值",
+      "validate": "驗證令牌"
+    },
+    "expires": "過期",
+    "neverExpires": "永不過期",
+    "repositories": "倉庫",
+    "status": {
+      "default": "預設",
+      "expired": "已到期",
+      "invalid": "無效的",
+      "pending": "待辦的",
+      "valid": "有效的"
+    },
+    "validated": "已驗證"
+  },
+  "delete": {
+    "cancel": "取消",
+    "confirm": "刪除",
+    "deleting": "正在刪除…",
+    "description": "您確定要刪除帳戶「{{label}}」嗎？此操作不會刪除儲存庫，但需要將它們重新連結到另一個帳戶。",
+    "title": "刪除帳戶"
+  },
+  "description": "管理您已連線的 Git 提供者帳戶",
+  "edit": {
+    "accountInfo": "帳號資訊",
+    "backToAccounts": "返回帳戶",
+    "form": {
+      "accountLabel": "帳戶標籤",
+      "accountLabelPlaceholder": "例如，GitHub 工作",
+      "currentToken": "當前令牌",
+      "token": "個人訪問令牌",
+      "tokenDescription": "留空以保留當前令牌",
+      "tokenPlaceholder": "輸入新令牌進行更新"
+    },
+    "notFound": "未找到帳戶",
+    "submit": "儲存變更",
+    "submitting": "儲存...",
+    "subtitle": "更新帳戶設定",
+    "title": "編輯帳戶"
+  },
+  "noAccountsYet": "尚未連接任何帳戶",
+  "title": "供應商帳戶",
+  "toast": {
+    "connected": "帳戶已連接",
+    "connectedDescription": "已成功連線 {{provider}} 帳戶",
+    "connectionFailed": "新增帳戶失敗",
+    "defaultUpdateFailed": "更新預設值失敗",
+    "defaultUpdated": "預設帳戶已更新",
+    "defaultUpdatedDescription": "預設帳戶已更改",
+    "deleteFailed": "刪除帳戶失敗",
+    "deleted": "帳戶已刪除",
+    "deletedDescription": "帳戶已成功刪除",
+    "tokenInvalid": "令牌無效",
+    "tokenInvalidDescription": "令牌無效或已過期。",
+    "tokenValid": "令牌有效",
+    "tokenValidDescription": "帳戶令牌有效且處於啟動狀態",
+    "updateFailed": "帳戶更新失敗",
+    "updated": "帳戶已更新",
+    "updatedDescription": "帳戶設定已儲存",
+    "validationFailed": "驗證失敗"
+  }
+}

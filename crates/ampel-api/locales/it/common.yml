@@ -1,0 +1,9 @@
+# Translation file for $lang
+# This is a placeholder - translations should be added via professional translation service
+# See: docs/localization/TRANSLATION_WORKFLOW.md
+
+$lang:
+  app:
+    name: "Ampel"
+    tagline: "TODO: Translate"
+    description: "TODO: Translate"

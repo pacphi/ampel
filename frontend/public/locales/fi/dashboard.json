@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "Hyväksyä",
+    "comment": "Kommentti",
+    "deselectAll": "Poista kaikkien valinta",
+    "merge": "Yhdistää",
+    "refresh": "Päivitä",
+    "requestChanges": "Pyydä muutoksia",
+    "selectAll": "Valitse kaikki",
+    "viewOnProvider": "Näytä {{provider}}-palvelussa"
+  },
+  "blockers": {
+    "awaitingReview": "Odotetaan tarkistusta",
+    "changesRequested": "Pyydetyt muutokset",
+    "ciFailed": "CI epäonnistui",
+    "ciPending": "CI vireillä",
+    "conflicts": "Konfliktit",
+    "draft": "Luonnos",
+    "needsReview": "Tarvitsee tarkistuksen"
+  },
+  "empty": {
+    "action": "Yhdistä palveluntarjoaja",
+    "description": "Yhdistä Git-palveluntarjoajasi aloittaaksesi PR-tapahtumien seurannan",
+    "title": "Ei pull-pyyntöjä"
+  },
+  "filters": {
+    "all": "Kaikki",
+    "assignee": "Määräysvaltalainen",
+    "author": "Kirjoittaja",
+    "closed": "Suljettu",
+    "draft": "Luonnos",
+    "label": "Tarra",
+    "merged": "Yhdistetty",
+    "onlyWithPrs": "Näytä avoimet PR:t sisältävät tietovarastot",
+    "open": "Avata",
+    "prStatus": {
+      "all": "Kaikki PR:t",
+      "blocked": "Estetty",
+      "pending": "Odottaa",
+      "ready": "Valmis"
+    },
+    "provider": "Palveluntarjoaja",
+    "repository": "Arkisto"
+  },
+  "pr": {
+    "additions": "Lisäykset",
+    "author": "Kirjoittaja",
+    "comments": "Kommentit",
+    "createdAt": "Luotu",
+    "deletions": "Poistot",
+    "number": "#{{number}}",
+    "sourceBranch": "Lähdehaara",
+    "targetBranch": "Kohdehaara",
+    "updatedAt": "Päivitetty"
+  },
+  "prDashboard": "PR-hallintapaneeli",
+  "sort": {
+    "author": "Kirjoittaja",
+    "created": "Luontipäivämäärä",
+    "repository": "Arkisto",
+    "status": "Status",
+    "title": "Lajittele",
+    "updated": "Viimeksi päivitetty"
+  },
+  "stats": {
+    "blocked": "Estetty",
+    "inProgress": "Käynnissä",
+    "needsAttention": "Tarvitsee huomiota",
+    "open": "Avata",
+    "openPRs": "Avoimet PR:t",
+    "ready": "Valmis yhdistämään",
+    "readyToMerge": "Valmis yhdistämään",
+    "total": "PR:ien kokonaismäärä",
+    "totalRepositories": "Tietovarastoja yhteensä"
+  },
+  "status": {
+    "closed": "Suljettu",
+    "draft": "Luonnos",
+    "green": "Valmis yhdistämään",
+    "merged": "Yhdistetty",
+    "red": "Estetty",
+    "yellow": "Käynnissä"
+  },
+  "subtitle": "Hallitse pull-pyyntöjäsi kaikissa palveluntarjoajissa",
+  "table": {
+    "columns": {
+      "lastUpdated": "Viimeksi päivitetty",
+      "provider": "Palveluntarjoaja",
+      "prs": "PR:t",
+      "repository": "Arkisto",
+      "status": "Status",
+      "visibility": "Näkyvyys"
+    }
+  },
+  "title": "Kojelauta",
+  "views": {
+    "grid": "Ruudukkonäkymä",
+    "list": "Listanäkymä",
+    "prs": "Pull-pyyntöjen näkymä",
+    "pullRequests": "Pull-pyyntöjen näkymä",
+    "repositoryGrid": "Tietovaraston ruudukkonäkymä",
+    "repositoryList": "Tietovarastoluettelonäkymä",
+    "table": "Taulukkonäkymä"
+  }
+}

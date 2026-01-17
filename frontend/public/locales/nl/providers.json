@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Account: Lezen",
+      "pullRequestsRead": "Pull-verzoeken: Lezen",
+      "pullRequestsWrite": "Pull-aanvragen: Schrijf",
+      "repositoriesRead": "Repositories: Lezen",
+      "repositoriesWrite": "Repositories: Schrijven"
+    },
+    "steps": {
+      "step1": "Ga naar Bitbucket → Persoonlijke instellingen → App-wachtwoorden",
+      "step2": "Klik op \"App-wachtwoord aanmaken\"",
+      "step3": "Voer een label in voor het wachtwoord.",
+      "step4": "Selecteer de gewenste machtigingen:",
+      "step5": "Klik op \"Aanmaken\" en kopieer het wachtwoord."
+    },
+    "title": "Instructies voor het wachtwoord van de Bitbucket-app"
+  },
+  "common": {
+    "expirationWarning": "Overweeg een vervaldatum in te stellen voor betere beveiliging.",
+    "minimalScopes": "Verleen alleen de minimaal vereiste machtigingen.",
+    "securityNote": "Bewaar uw token veilig en deel het nooit openbaar."
+  },
+  "github": {
+    "note": "Ook gedetailleerde tokens worden ondersteund, in combinatie met toegangsrechten tot de repository.",
+    "scopes": {
+      "readOrg": "read:org (Lees over organisatie- en teamlidmaatschap)",
+      "readUser": "read:user (Gebruikersprofielgegevens lezen)",
+      "repo": "repo (Volledige controle over privé-repositories)"
+    },
+    "steps": {
+      "step1": "Ga naar GitHub-instellingen → Ontwikkelaarsinstellingen → Persoonlijke toegangstokens → Tokens (klassiek)",
+      "step2": "Klik op \"Nieuw token genereren (klassiek)\"",
+      "step3": "Geef je token een beschrijvende naam.",
+      "step4": "Selecteer de gewenste scopes:",
+      "step5": "Klik op \"Token genereren\" en kopieer het direct."
+    },
+    "title": "Instructies voor het verkrijgen van een GitHub-token"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "API (Volledige API-toegang)",
+      "readApi": "read_api (Alleen-lezen API-toegang)",
+      "readRepository": "read_repository (Toegang tot leesrechten voor de repository)"
+    },
+    "steps": {
+      "step1": "Ga naar GitLab → Gebruikersinstellingen → Toegangstokens",
+      "step2": "Voer een tokennaam en een optionele vervaldatum in.",
+      "step3": "Selecteer de gewenste scopes:",
+      "step4": "Klik op \"Persoonlijk toegangstoken aanmaken\" en kopieer het."
+    },
+    "title": "Instructies voor het verkrijgen van een GitLab-token"
+  },
+  "title": "Instructies voor de zorgverlener"
+}

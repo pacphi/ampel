@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Zurück zu den Konten",
+    "form": {
+      "accountLabel": "Kontobezeichnung",
+      "accountLabelDescription": "Ein aussagekräftiger Name zur Identifizierung dieses Kontos",
+      "accountLabelPlaceholder": "z. B. geschäftliches GitHub, privates GitLab",
+      "provider": "Anbieter",
+      "selectProvider": "Wählen Sie einen Anbieter aus",
+      "token": "Persönliches Zugriffstoken",
+      "tokenDescription": "Ihr Token ist verschlüsselt und sicher gespeichert",
+      "tokenPlaceholder": "Geben Sie Ihr persönliches Zugriffstoken ein."
+    },
+    "submit": "Konto verbinden",
+    "submitting": "Verbindung wird hergestellt...",
+    "subtitle": "Verbinden Sie ein neues Git-Anbieterkonto",
+    "title": "Anbieterkonto hinzufügen"
+  },
+  "addAccount": "Konto hinzufügen",
+  "addFirstAccount": "Fügen Sie Ihr erstes Konto hinzu",
+  "card": {
+    "actions": {
+      "delete": "Konto löschen",
+      "edit": "Konto bearbeiten",
+      "setDefault": "Als Standard festlegen",
+      "validate": "Token validieren"
+    },
+    "expires": "Läuft ab",
+    "neverExpires": "Läuft nie ab",
+    "repositories": "Repositories",
+    "status": {
+      "default": "Standard",
+      "expired": "Abgelaufen",
+      "invalid": "Ungültig",
+      "pending": "Ausstehend",
+      "valid": "Gültig"
+    },
+    "validated": "Bestätigt"
+  },
+  "delete": {
+    "cancel": "Stornieren",
+    "confirm": "Löschen",
+    "deleting": "Löschen...",
+    "description": "Sind Sie sicher, dass Sie das Konto \"{{label}}\" löschen möchten? Dadurch werden die Repositories nicht gelöscht, sie müssen aber mit einem anderen Konto neu verknüpft werden.",
+    "title": "Konto löschen"
+  },
+  "description": "Verwalten Sie Ihre verbundenen Git-Anbieterkonten.",
+  "edit": {
+    "accountInfo": "Kontoinformationen",
+    "backToAccounts": "Zurück zu den Konten",
+    "form": {
+      "accountLabel": "Kontobezeichnung",
+      "accountLabelPlaceholder": "z.B. GitHub (Arbeit)",
+      "currentToken": "Aktuelles Token",
+      "token": "Persönliches Zugriffstoken",
+      "tokenDescription": "Lassen Sie dieses Feld leer, um das aktuelle Token beizubehalten.",
+      "tokenPlaceholder": "Geben Sie ein neues Token ein, um es zu aktualisieren."
+    },
+    "notFound": "Konto nicht gefunden",
+    "submit": "Änderungen speichern",
+    "submitting": "Speichern...",
+    "subtitle": "Kontoeinstellungen aktualisieren",
+    "title": "Konto bearbeiten"
+  },
+  "noAccountsYet": "Noch keine Konten verbunden",
+  "title": "Anbieterkonten",
+  "toast": {
+    "connected": "Konto verbunden",
+    "connectedDescription": "{{provider}} Konto erfolgreich verbunden",
+    "connectionFailed": "Konto konnte nicht hinzugefügt werden",
+    "defaultUpdateFailed": "Standardaktualisierung fehlgeschlagen",
+    "defaultUpdated": "Standardkonto aktualisiert",
+    "defaultUpdatedDescription": "Das Standardkonto wurde geändert",
+    "deleteFailed": "Konto konnte nicht gelöscht werden",
+    "deleted": "Konto gelöscht",
+    "deletedDescription": "Das Konto wurde erfolgreich entfernt.",
+    "tokenInvalid": "Token ungültig",
+    "tokenInvalidDescription": "Das Token ist ungültig oder abgelaufen.",
+    "tokenValid": "Token gültig",
+    "tokenValidDescription": "Das Kontotoken ist gültig und aktiv.",
+    "updateFailed": "Kontoaktualisierung fehlgeschlagen",
+    "updated": "Konto aktualisiert",
+    "updatedDescription": "Die Kontoeinstellungen wurden gespeichert.",
+    "validationFailed": "Validierung fehlgeschlagen"
+  }
+}

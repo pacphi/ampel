@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { settingsApi, type UpdateNotificationPreferencesRequest } from '@/api/settings';
 import { useToast } from '@/components/ui/use-toast';
@@ -10,6 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Plus, X, Send, Mail, MessageSquare } from 'lucide-react';
 
 export function NotificationsSettings() {
+  const { t } = useTranslation(['notifications']);
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [newToEmail, setNewToEmail] = useState('');
@@ -25,15 +27,15 @@ export function NotificationsSettings() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notification-preferences'] });
       toast({
-        title: 'Settings updated',
-        description: 'Your notification settings have been saved.',
+        title: t('notifications:toast.updated'),
+        description: t('notifications:toast.updatedDescription'),
       });
     },
     onError: (error: unknown) => {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Failed to update settings',
+        title: t('notifications:toast.updateFailed'),
         description: axiosError.response?.data?.error || 'An error occurred',
       });
     },
@@ -43,16 +45,16 @@ export function NotificationsSettings() {
     mutationFn: () => settingsApi.testSlack(),
     onSuccess: () => {
       toast({
-        title: 'Test successful',
-        description: 'Slack test message sent successfully!',
+        title: t('notifications:slack.testSuccess'),
+        description: t('notifications:slack.testSuccess'),
       });
     },
     onError: (error: unknown) => {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Test failed',
-        description: axiosError.response?.data?.error || 'Failed to send test message',
+        title: t('notifications:slack.testFailed'),
+        description: axiosError.response?.data?.error || t('notifications:slack.testFailed'),
       });
     },
   });
@@ -61,16 +63,16 @@ export function NotificationsSettings() {
     mutationFn: () => settingsApi.testEmail(),
     onSuccess: () => {
       toast({
-        title: 'Test successful',
-        description: 'Test email sent successfully!',
+        title: t('notifications:email.testSuccess'),
+        description: t('notifications:email.testSuccess'),
       });
     },
     onError: (error: unknown) => {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Test failed',
-        description: axiosError.response?.data?.error || 'Failed to send test email',
+        title: t('notifications:email.testFailed'),
+        description: axiosError.response?.data?.error || t('notifications:email.testFailed'),
       });
     },
   });
@@ -109,13 +111,13 @@ export function NotificationsSettings() {
         <CardHeader>
           <div className="flex items-center gap-2">
             <MessageSquare className="h-5 w-5" />
-            <CardTitle>Slack Notifications</CardTitle>
+            <CardTitle>{t('notifications:slack.title')}</CardTitle>
           </div>
-          <CardDescription>Receive notifications via Slack webhook</CardDescription>
+          <CardDescription>{t('notifications:slack.enableDescription')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
-            <Label>Enable Slack notifications</Label>
+            <Label>{t('notifications:slack.enable')}</Label>
             <Switch
               checked={prefs?.slackEnabled || false}
               onCheckedChange={(checked) => handleUpdate({ slackEnabled: checked })}
@@ -123,24 +125,27 @@ export function NotificationsSettings() {
           </div>
 
           <div className="space-y-2">
-            <Label>Webhook URL</Label>
+            <Label>{t('notifications:slack.webhookUrl')}</Label>
             <Input
               type="url"
-              placeholder="https://hooks.slack.com/services/..."
+              placeholder={t('notifications:slack.webhookUrlPlaceholder')}
               value={prefs?.slackWebhookUrl || ''}
               onChange={(e) => handleUpdate({ slackWebhookUrl: e.target.value })}
             />
+            <p className="text-sm text-muted-foreground">
+              {t('notifications:slack.webhookUrlDescription')}
+            </p>
           </div>
 
           <div className="space-y-2">
-            <Label>Channel (optional)</Label>
+            <Label>{t('notifications:slack.channel')}</Label>
             <Input
-              placeholder="#deployments"
+              placeholder={t('notifications:slack.channelPlaceholder')}
               value={prefs?.slackChannel || ''}
               onChange={(e) => handleUpdate({ slackChannel: e.target.value })}
             />
             <p className="text-sm text-muted-foreground">
-              Override the default channel configured in the webhook
+              {t('notifications:slack.channelDescription')}
             </p>
           </div>
 
@@ -151,7 +156,9 @@ export function NotificationsSettings() {
             disabled={testSlackMutation.isPending || !prefs?.slackWebhookUrl}
           >
             <Send className="h-4 w-4 mr-2" />
-            {testSlackMutation.isPending ? 'Sending...' : 'Send Test Message'}
+            {testSlackMutation.isPending
+              ? t('notifications:slack.testSending')
+              : t('notifications:slack.testMessage')}
           </Button>
         </CardContent>
       </Card>
@@ -161,13 +168,13 @@ export function NotificationsSettings() {
         <CardHeader>
           <div className="flex items-center gap-2">
             <Mail className="h-5 w-5" />
-            <CardTitle>Email Notifications</CardTitle>
+            <CardTitle>{t('notifications:email.title')}</CardTitle>
           </div>
-          <CardDescription>Receive notifications via email (SMTP)</CardDescription>
+          <CardDescription>{t('notifications:email.enableDescription')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
-            <Label>Enable email notifications</Label>
+            <Label>{t('notifications:email.enable')}</Label>
             <Switch
               checked={prefs?.emailEnabled || false}
               onCheckedChange={(checked) => handleUpdate({ emailEnabled: checked })}
@@ -176,18 +183,18 @@ export function NotificationsSettings() {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>SMTP Host</Label>
+              <Label>{t('notifications:email.smtpHost')}</Label>
               <Input
-                placeholder="smtp.gmail.com"
+                placeholder={t('notifications:email.smtpHostPlaceholder')}
                 value={prefs?.smtpHost || ''}
                 onChange={(e) => handleUpdate({ smtpHost: e.target.value })}
               />
             </div>
             <div className="space-y-2">
-              <Label>SMTP Port</Label>
+              <Label>{t('notifications:email.smtpPort')}</Label>
               <Input
                 type="number"
-                placeholder="587"
+                placeholder={t('notifications:email.smtpPortPlaceholder')}
                 value={prefs?.smtpPort || ''}
                 onChange={(e) =>
                   handleUpdate({ smtpPort: parseInt(e.target.value, 10) || undefined })
@@ -198,37 +205,38 @@ export function NotificationsSettings() {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Username</Label>
+              <Label>{t('notifications:email.smtpUser')}</Label>
               <Input
-                placeholder="user@example.com"
+                placeholder={t('notifications:email.smtpUserPlaceholder')}
                 value={prefs?.smtpUsername || ''}
                 onChange={(e) => handleUpdate({ smtpUsername: e.target.value })}
               />
             </div>
             <div className="space-y-2">
-              <Label>Password</Label>
+              <Label>{t('notifications:email.smtpPassword')}</Label>
               <Input
                 type="password"
-                placeholder="Enter password"
+                placeholder={t('notifications:email.smtpPasswordPlaceholder')}
                 onChange={(e) => handleUpdate({ smtpPassword: e.target.value })}
               />
-              <p className="text-xs text-muted-foreground">Password is encrypted before storage</p>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label>From Email</Label>
+            <Label>{t('notifications:email.fromAddress')}</Label>
             <Input
               type="email"
-              placeholder="ampel@example.com"
+              placeholder={t('notifications:email.fromAddressPlaceholder')}
               value={prefs?.smtpFromEmail || ''}
               onChange={(e) => handleUpdate({ smtpFromEmail: e.target.value })}
             />
           </div>
 
           <div className="space-y-2">
-            <Label>To Emails</Label>
-            <p className="text-sm text-muted-foreground mb-2">Recipients for notification emails</p>
+            <Label>{t('notifications:email.toAddresses')}</Label>
+            <p className="text-sm text-muted-foreground mb-2">
+              {t('notifications:email.toAddressesDescription')}
+            </p>
             <div className="flex flex-wrap gap-2 mb-3">
               {prefs?.smtpToEmails?.map((email) => (
                 <span
@@ -249,7 +257,7 @@ export function NotificationsSettings() {
             <div className="flex gap-2">
               <Input
                 type="email"
-                placeholder="email@example.com"
+                placeholder={t('notifications:email.toAddressesPlaceholder')}
                 value={newToEmail}
                 onChange={(e) => setNewToEmail(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addToEmail()}
@@ -262,13 +270,13 @@ export function NotificationsSettings() {
                 disabled={!newToEmail.trim() || updateMutation.isPending}
               >
                 <Plus className="h-4 w-4 mr-1" />
-                Add
+                {t('notifications:email.add')}
               </Button>
             </div>
           </div>
 
           <div className="flex items-center justify-between">
-            <Label>Use TLS</Label>
+            <Label>{t('notifications:email.useTls')}</Label>
             <Switch
               checked={prefs?.smtpUseTls ?? true}
               onCheckedChange={(checked) => handleUpdate({ smtpUseTls: checked })}
@@ -282,7 +290,9 @@ export function NotificationsSettings() {
             disabled={testEmailMutation.isPending || !prefs?.smtpHost}
           >
             <Send className="h-4 w-4 mr-2" />
-            {testEmailMutation.isPending ? 'Sending...' : 'Send Test Email'}
+            {testEmailMutation.isPending
+              ? t('notifications:email.testSending')
+              : t('notifications:email.testMessage')}
           </Button>
         </CardContent>
       </Card>
@@ -290,17 +300,15 @@ export function NotificationsSettings() {
       {/* Merge Notification Triggers */}
       <Card>
         <CardHeader>
-          <CardTitle>Merge Notifications</CardTitle>
-          <CardDescription>
-            Choose when to receive notifications for merge operations
-          </CardDescription>
+          <CardTitle>{t('notifications:merge.title')}</CardTitle>
+          <CardDescription>{t('notifications:merge.description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <Label>Notify on successful merges</Label>
+              <Label>{t('notifications:merge.notifyOnSuccess')}</Label>
               <p className="text-sm text-muted-foreground">
-                Send notification when PRs are successfully merged
+                {t('notifications:merge.notifyOnSuccessDescription')}
               </p>
             </div>
             <Switch
@@ -311,9 +319,9 @@ export function NotificationsSettings() {
 
           <div className="flex items-center justify-between">
             <div>
-              <Label>Notify on failed merges</Label>
+              <Label>{t('notifications:merge.notifyOnFailure')}</Label>
               <p className="text-sm text-muted-foreground">
-                Send notification when merge operations fail
+                {t('notifications:merge.notifyOnFailureDescription')}
               </p>
             </div>
             <Switch

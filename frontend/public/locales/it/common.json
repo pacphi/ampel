@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "Aggiungere",
+    "apply": "Fare domanda a",
+    "cancel": "Cancellare",
+    "clear": "Chiaro",
+    "delete": "Eliminare",
+    "edit": "Modificare",
+    "hideEmail": "Nascondi email",
+    "refresh": "Aggiorna",
+    "refreshing": "Rinfrescante...",
+    "remove": "Rimuovere",
+    "reset": "Ripristina impostazioni predefinite",
+    "save": "Salva",
+    "saving": "Risparmio...",
+    "showEmail": "Mostra email",
+    "viewOnProvider": "Visualizza su {{provider}}"
+  },
+  "app": {
+    "add": "Aggiungere",
+    "apply": "Fare domanda a",
+    "back": "Indietro",
+    "cancel": "Cancellare",
+    "clear": "Chiaro",
+    "close": "Vicino",
+    "delete": "Eliminare",
+    "description": "Gestione unificata delle richieste di pull",
+    "edit": "Modificare",
+    "error": "Si è verificato un errore",
+    "filter": "Filtro",
+    "info": "Informazioni",
+    "loading": "Caricamento...",
+    "name": "Ampel",
+    "next": "Prossimo",
+    "previous": "Precedente",
+    "remove": "Rimuovere",
+    "reset": "Reset",
+    "retry": "Riprova",
+    "save": "Salva",
+    "search": "Ricerca",
+    "success": "Successo",
+    "title": "Dashboard PR di Ampel",
+    "warning": "Avvertimento"
+  },
+  "auth": {
+    "alreadyHaveAccount": "Hai già un account?",
+    "confirmPassword": "Conferma password",
+    "createAccount": "Creare un account",
+    "creatingAccount": "Creazione account in corso...",
+    "displayName": "Nome da visualizzare",
+    "displayNamePlaceholder": "John Doe",
+    "dontHaveAccount": "Non hai un account?",
+    "email": "E-mail",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "Ha dimenticato la password?",
+    "getStarted": "Inizia con Ampel",
+    "login": "Login",
+    "loginSuccess": "Accesso riuscito",
+    "logout": "Esci",
+    "logoutSuccess": "Disconnessione avvenuta con successo",
+    "password": "Password",
+    "resetPassword": "Reimposta password",
+    "signIn": "Registrazione",
+    "signInToContinue": "Accedi al tuo account per continuare",
+    "signUp": "Iscrizione",
+    "signingIn": "Accesso in corso...",
+    "username": "Nome utente",
+    "welcome": "Bentornato!",
+    "welcomeToAmpel": "Benvenuti ad Ampel"
+  },
+  "language": {
+    "current": "Lingua corrente",
+    "select": "Seleziona la lingua"
+  },
+  "navigation": {
+    "analytics": "Analisi",
+    "dashboard": "Pannello di controllo",
+    "documentation": "Documentazione",
+    "help": "Aiuto",
+    "merge": "Unisci",
+    "organizations": "Organizzazioni",
+    "profile": "Profilo",
+    "pullRequests": "Richieste di pull",
+    "repositories": "Depositi",
+    "settings": "Impostazioni"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} commento",
+    "comments_other": "{{count}} commenti",
+    "pullRequests_one": "{{count}} richiesta di pull",
+    "pullRequests_other": "{{count}} richieste di pull",
+    "requests_one": "{{count}} richiesta",
+    "requests_other": "{{count}} richieste"
+  },
+  "status": {
+    "trafficLight": "Stato del semaforo"
+  },
+  "theme": {
+    "auto": "Auto",
+    "dark": "Modalità scura",
+    "light": "Modalità luce",
+    "toggle": "Attiva/disattiva tema"
+  },
+  "time": {
+    "daysAgo": "{{count}} giorno fa",
+    "daysAgo_other": "{{count}} giorni fa",
+    "hoursAgo": "{{count}} ora fa",
+    "hoursAgo_other": "{{count}} ore fa",
+    "minutesAgo": "{{count}} minuto fa",
+    "minutesAgo_other": "{{count}} minuti fa",
+    "monthsAgo": "{{count}} mese fa",
+    "monthsAgo_other": "{{count}} mesi fa",
+    "now": "Proprio adesso",
+    "weeksAgo": "{{count}} settimana fa",
+    "weeksAgo_other": "{{count}} settimane fa"
+  },
+  "visibility": {
+    "archived": "Archiviato",
+    "private": "Privato",
+    "public": "Pubblico"
+  }
+}

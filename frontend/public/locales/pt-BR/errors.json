@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "Falha ao criar a conta",
+    "forbidden": "Você não tem permissão para acessar este recurso.",
+    "invalidCredentials": "Nome de usuário ou senha inválidos",
+    "invalidEmailOrPassword": "E-mail ou senha inválidos",
+    "loginFailed": "falha no login",
+    "registrationFailed": "Falha no registro",
+    "sessionExpired": "Sua sessão expirou. Por favor, faça login novamente.",
+    "tokenExpired": "O token de autenticação expirou.",
+    "unauthorized": "Acesso não autorizado"
+  },
+  "boundary": {
+    "description": "Ocorreu um erro inesperado. Tente novamente.",
+    "details": "Detalhes do erro (somente para desenvolvedores)",
+    "reload": "Recarregar página",
+    "title": "Algo deu errado",
+    "tryAgain": "Tente novamente"
+  },
+  "general": {
+    "unknownError": "Ocorreu um erro desconhecido."
+  },
+  "generic": {
+    "goHome": "Acesse o painel de controle.",
+    "message": "Ocorreu um erro inesperado. Tente novamente.",
+    "retry": "Tente novamente",
+    "somethingWentWrong": "Algo deu errado. Por favor, tente novamente.",
+    "title": "Algo deu errado"
+  },
+  "network": {
+    "message": "Não foi possível conectar ao servidor. Verifique sua conexão com a internet.",
+    "offline": "Você está offline no momento.",
+    "title": "Erro de rede"
+  },
+  "notFound": {
+    "goHome": "Voltar ao painel de controle",
+    "message": "A página que você está procurando não existe.",
+    "title": "Página não encontrada"
+  },
+  "pr": {
+    "approveFailed": "Falha ao aprovar a solicitação de pull request",
+    "commentFailed": "Não foi possível publicar o comentário.",
+    "loadFailed": "Falha ao carregar as solicitações de pull",
+    "mergeFailed": "Falha ao mesclar a solicitação de pull request"
+  },
+  "provider": {
+    "connectionFailed": "Falha ao conectar-se a {{provider}}",
+    "invalidToken": "Token {{provider}} inválido",
+    "notFound": "Recurso não encontrado em {{provider}}",
+    "rateLimited": "O limite de requisições da API do provedor foi excedido."
+  },
+  "repository": {
+    "accessDenied": "Acesso ao repositório negado",
+    "loadFailed": "Falha ao carregar os repositórios.",
+    "notFound": "Repositório não encontrado"
+  },
+  "validation": {
+    "invalidEmail": "Por favor, insira um endereço de e-mail válido.",
+    "invalidUrl": "Por favor, insira um URL válido.",
+    "maxLength": "Não deve exceder {{max}} caracteres",
+    "minLength": "Deve ter pelo menos {{min}} caracteres",
+    "passwordMismatch": "As senhas não coincidem.",
+    "required": "Este campo é obrigatório"
+  }
+}

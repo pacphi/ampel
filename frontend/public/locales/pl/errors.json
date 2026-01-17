@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "Nie udało się utworzyć konta",
+    "forbidden": "Nie masz uprawnień dostępu do tego zasobu",
+    "invalidCredentials": "Nieprawidłowa nazwa użytkownika lub hasło",
+    "invalidEmailOrPassword": "Nieprawidłowy adres e-mail lub hasło",
+    "loginFailed": "Logowanie nieudane",
+    "registrationFailed": "Rejestracja nie powiodła się",
+    "sessionExpired": "Twoja sesja wygasła. Zaloguj się ponownie.",
+    "tokenExpired": "Token uwierzytelniający wygasł",
+    "unauthorized": "Nieautoryzowany dostęp"
+  },
+  "boundary": {
+    "description": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.",
+    "details": "Szczegóły błędu (tylko w wersji deweloperskiej)",
+    "reload": "Odśwież stronę",
+    "title": "Coś poszło nie tak",
+    "tryAgain": "Spróbuj ponownie"
+  },
+  "general": {
+    "unknownError": "Wystąpił nieznany błąd"
+  },
+  "generic": {
+    "goHome": "Przejdź do pulpitu nawigacyjnego",
+    "message": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.",
+    "retry": "Spróbuj ponownie",
+    "somethingWentWrong": "Coś poszło nie tak. Spróbuj ponownie.",
+    "title": "Coś poszło nie tak"
+  },
+  "network": {
+    "message": "Nie można połączyć się z serwerem. Sprawdź połączenie internetowe.",
+    "offline": "Obecnie jesteś offline",
+    "title": "Błąd sieciowy"
+  },
+  "notFound": {
+    "goHome": "Powrót do pulpitu nawigacyjnego",
+    "message": "Strona, której szukasz nie istnieje.",
+    "title": "Strona nie znaleziona"
+  },
+  "pr": {
+    "approveFailed": "Nie udało się zatwierdzić żądania ściągnięcia",
+    "commentFailed": "Nie udało się opublikować komentarza",
+    "loadFailed": "Nie udało się załadować żądań ściągnięcia",
+    "mergeFailed": "Nie udało się scalić żądania ściągnięcia"
+  },
+  "provider": {
+    "connectionFailed": "Nie udało się połączyć z {{provider}}",
+    "invalidToken": "Nieprawidłowy token {{provider}}",
+    "notFound": "Nie znaleziono zasobu u {{provider}}",
+    "rateLimited": "Przekroczono limit szybkości API {{provider}}"
+  },
+  "repository": {
+    "accessDenied": "Dostęp do repozytorium zabroniony",
+    "loadFailed": "Nie udało się załadować repozytoriów",
+    "notFound": "Nie znaleziono repozytorium"
+  },
+  "validation": {
+    "invalidEmail": "Proszę podać prawidłowy adres e-mail",
+    "invalidUrl": "Proszę podać prawidłowy adres URL",
+    "maxLength": "Nie może przekroczyć {{max}} znaków",
+    "minLength": "Musi mieć co najmniej {{min}} znaków",
+    "passwordMismatch": "Hasła nie pasują",
+    "required": "To pole jest wymagane"
+  }
+}

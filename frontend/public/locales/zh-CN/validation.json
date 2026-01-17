@@ -1,0 +1,35 @@
+{
+  "alphanum": "{{field}} 只能包含字母和数字",
+  "date": "请输入有效日期",
+  "dateRange": "结束日期必须晚于开始日期",
+  "email": "请输入有效的电子邮件地址",
+  "fields": {
+    "confirmPassword": "确认密码",
+    "displayName": "显示名称",
+    "email": "电子邮件",
+    "password": "密码"
+  },
+  "fileSize": "文件大小不得超过 {{max}}",
+  "fileType": "文件类型必须为 {{types}}",
+  "integer": "{{field}} 必须为整数",
+  "invalidEmail": "无效的电子邮件地址",
+  "max": "{{field}} 不得超过 {{max}}",
+  "maxLength": "{{field}} 不得超过 {{max}} 个字符",
+  "messages": {
+    "displayNameRequired": "显示名称是必需的",
+    "emailRequired": "电子邮件是必需的",
+    "passwordMinLength": "密码必须至少为8个字符",
+    "passwordRequired": "密码是必需的"
+  },
+  "min": "{{field}} 必须至少为 {{min}}",
+  "minLength": "{{field}} 必须至少包含 {{min}} 个字符",
+  "negative": "{{field}} 必须为负数",
+  "numeric": "{{field}} 必须是一个数字",
+  "passwordMismatch": "密码不匹配",
+  "passwordsDontMatch": "密码不匹配",
+  "pattern": "{{field}} 格式无效",
+  "positive": "{{field}} 必须为正数",
+  "required": "{{field}} 是必填项",
+  "unique": "{{field}} 已存在",
+  "url": "请输入有效的网址"
+}

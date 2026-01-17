@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "Chấp thuận",
+    "comment": "Bình luận",
+    "deselectAll": "Bỏ chọn tất cả",
+    "merge": "Hợp nhất",
+    "refresh": "Làm cho khỏe lại",
+    "requestChanges": "Yêu cầu thay đổi",
+    "selectAll": "Chọn tất cả",
+    "viewOnProvider": "Xem trên {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Đang chờ xem xét",
+    "changesRequested": "Yêu cầu thay đổi",
+    "ciFailed": "CI thất bại",
+    "ciPending": "CI đang chờ xử lý",
+    "conflicts": "Xung đột",
+    "draft": "Bản nháp",
+    "needsReview": "Cần xem xét lại"
+  },
+  "empty": {
+    "action": "Nhà cung cấp kết nối",
+    "description": "Kết nối các nhà cung cấp Git của bạn để bắt đầu theo dõi các yêu cầu kéo (PR).",
+    "title": "Không tìm thấy yêu cầu kéo nào."
+  },
+  "filters": {
+    "all": "Tất cả",
+    "assignee": "Người được chỉ định",
+    "author": "Tác giả",
+    "closed": "Đóng cửa",
+    "draft": "Bản nháp",
+    "label": "Nhãn",
+    "merged": "Đã hợp nhất",
+    "onlyWithPrs": "Hiển thị các kho lưu trữ có yêu cầu kéo đang mở (Open PRs)",
+    "open": "Mở",
+    "prStatus": {
+      "all": "Tất cả các yêu cầu mua hàng",
+      "blocked": "Bị chặn",
+      "pending": "Chưa giải quyết",
+      "ready": "Sẵn sàng"
+    },
+    "provider": "Nhà cung cấp",
+    "repository": "Kho lưu trữ"
+  },
+  "pr": {
+    "additions": "Bổ sung",
+    "author": "Tác giả",
+    "comments": "Bình luận",
+    "createdAt": "Tạo",
+    "deletions": "Xóa",
+    "number": "#{{number}}",
+    "sourceBranch": "Nhánh nguồn",
+    "targetBranch": "Chi nhánh mục tiêu",
+    "updatedAt": "Đã cập nhật"
+  },
+  "prDashboard": "Bảng điều khiển PR",
+  "sort": {
+    "author": "Tác giả",
+    "created": "Ngày tạo",
+    "repository": "Kho lưu trữ",
+    "status": "Trạng thái",
+    "title": "Sắp xếp theo",
+    "updated": "Cập nhật lần cuối"
+  },
+  "stats": {
+    "blocked": "Bị chặn",
+    "inProgress": "Đang tiến hành",
+    "needsAttention": "Cần được chú ý",
+    "open": "Mở",
+    "openPRs": "Yêu cầu kéo mở",
+    "ready": "Sẵn sàng hợp nhất",
+    "readyToMerge": "Sẵn sàng hợp nhất",
+    "total": "Tổng số PR",
+    "totalRepositories": "Tổng số kho lưu trữ"
+  },
+  "status": {
+    "closed": "Đóng cửa",
+    "draft": "Bản nháp",
+    "green": "Sẵn sàng hợp nhất",
+    "merged": "Đã hợp nhất",
+    "red": "Bị chặn",
+    "yellow": "Đang tiến hành"
+  },
+  "subtitle": "Quản lý các yêu cầu kéo (pull request) của bạn trên tất cả các nhà cung cấp.",
+  "table": {
+    "columns": {
+      "lastUpdated": "Cập nhật lần cuối",
+      "provider": "Nhà cung cấp",
+      "prs": "PRs",
+      "repository": "Kho lưu trữ",
+      "status": "Trạng thái",
+      "visibility": "Khả năng hiển thị"
+    }
+  },
+  "title": "Bảng điều khiển",
+  "views": {
+    "grid": "Chế độ xem dạng lưới",
+    "list": "Chế độ xem danh sách",
+    "prs": "Chế độ xem yêu cầu kéo",
+    "pullRequests": "Chế độ xem yêu cầu kéo",
+    "repositoryGrid": "Chế độ xem lưới kho lưu trữ",
+    "repositoryList": "Chế độ xem danh sách kho lưu trữ",
+    "table": "Chế độ xem dạng bảng"
+  }
+}

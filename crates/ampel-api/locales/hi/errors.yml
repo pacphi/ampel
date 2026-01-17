@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: यह खाता पहले से ही कनेक्टेड है। टोकन को अपडेट करने के लिए PATCH कमांड का उपयोग करें।
+      invalid_provider_type: अमान्य प्रदाता प्रकार
+      invalid_token: अमान्य टोकन
+      not_found: खाता नहीं मिला
+      provider_no_user_id: प्रदाता ने उपयोगकर्ता आईडी वापस नहीं की
+      provider_no_username: प्रदाता ने उपयोगकर्ता नाम वापस नहीं किया
+      validation_failed: 'टोकन सत्यापन विफल: %{त्रुटि}'
+    auth:
+      email_in_use: ईमेल पहले से ही उपयोग में है
+      email_registered: ईमेल पहले से ही पंजीकृत है
+      invalid_credentials: अमान्य ईमेल या पासवर्ड
+      invalid_refresh_token: अमान्य या समाप्त हो चुका रिफ्रेश टोकन
+      user_not_found: उपयोगकर्ता नहीं मिला
+    encryption:
+      decrypt_failed: 'डिक्रिप्शन त्रुटि: %{error}'
+      failed: 'एन्क्रिप्शन त्रुटि: %{error}'
+    general:
+      internal: आंतरिक त्रुटि
+      serialization_failed: 'स्कोप को क्रमबद्ध करने में विफल: %{error}'
+    network:
+      connection_failed: कनेक्शन विफल
+      timeout: अनुरोध का समय समाप्त हो गया
+    provider:
+      decrypt_failed: 'टोकन को डिक्रिप्ट करने में विफल: %{error}'
+      error: 'प्रदाता त्रुटि: %{error}'
+    pull_request:
+      merge_failed: 'विलय विफल: %{कारण}'
+      not_found: पुल अनुरोध नहीं मिला
+    rate_limit:
+      exceeded: दर सीमा पार हो गई
+    repository:
+      already_added: रिपॉजिटरी पहले ही जोड़ दी गई है
+      invalid_provider: अमान्य प्रदाता
+      invalid_provider_db: डेटाबेस में अमान्य प्रदाता प्रकार
+      no_account_linked: रिपॉजिटरी खाते से लिंक नहीं है
+      not_found: रिपॉजिटरी नहीं मिली
+      not_found_for_pr: पीआर के लिए रिपॉजिटरी नहीं मिली
+      provider_not_connected: प्रदाता कनेक्टेड नहीं है

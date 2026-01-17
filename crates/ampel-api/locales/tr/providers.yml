@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Sağlayıcı API hatası: %{mesaj} (durum: %{durum_kodu})'
+      auth_failed: 'Kimlik doğrulama başarısız oldu: %{reason}'
+      config_error: 'Yapılandırma hatası: %{reason}'
+      invalid_response: 'Geçersiz yanıt: %{reason}'
+      network_error: 'Ağ hatası: %{reason}'
+      not_found: 'Kaynak bulunamadı: %{resource}'
+      not_supported: 'İşlem desteklenmiyor: %{operation}'
+      permission_denied: 'Erişim reddedildi: %{reason}'
+      rate_limit_exceeded: 'Hız sınırı aşıldı. Sıfırlama zamanı: %{reset_time}'
+      serialization_error: 'Serileştirme hatası: %{reason}'
+    github:
+      api_error: 'API hatası: %{status}'
+      invalid_token: Geçersiz belirteç
+      merge_checks_failed: Çekme isteği birleştirilemiyor (durum kontrollerini ve incelemeleri kontrol edin)
+      merge_conflict: Birleştirme çakışması veya ana dal değiştirildi.
+      merge_failed: Çekme isteği birleştirme işlemi başarısız oldu.
+      merge_not_mergeable: Çekme isteği birleştirilemez.
+      pr_fetch_failed: Çekme isteği alınamadı.
+      pr_not_found: 'Çekme isteği #%{number} bulunamadı'
+      prs_fetch_failed: Çekme isteklerini listeleme başarısız oldu.
+      rate_limit_failed: Hız sınırlaması alınamadı.
+      repo_fetch_failed: Depoya erişim başarısız oldu.
+      repo_not_found: '%{owner}/%{repo} deposu bulunamadı.'
+      repos_fetch_failed: Depoları listeleme başarısız oldu.
+      reviews_fetch_failed: Yorum alamadım.
+      token_invalid: Geçersiz veya süresi dolmuş belirteç
+      user_fetch_failed: Kullanıcı alınamadı.
+    worker:
+      account_not_found: Sağlayıcı hesabı bulunamadı.
+      no_account: Deponun ilişkili bir sağlayıcı hesabı yok.

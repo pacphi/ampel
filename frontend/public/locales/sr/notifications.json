@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Додај",
+    "enable": "Омогући обавештења е-поштом",
+    "enableDescription": "Шаљи обавештења путем имејла (SMTP)",
+    "fromAddress": "Адреса одакле",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTP хост",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "СМТП лозинка",
+    "smtpPasswordPlaceholder": "Унесите лозинку",
+    "smtpPort": "СМТП порт",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP корисничко име",
+    "smtpUserPlaceholder": "korisnik@example.com",
+    "testFailed": "Слање тест имејла није успело",
+    "testMessage": "Пошаљи пробну е-пошту",
+    "testSending": "Слање...",
+    "testSuccess": "Пробна е-пошта је послата",
+    "title": "Обавештења путем е-поште",
+    "toAddresses": "Адресе за",
+    "toAddressesDescription": "Примаоци имејлова са обавештењима",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "Користите TLS"
+  },
+  "merge": {
+    "description": "Изаберите када ћете примати обавештења за операције спајања",
+    "notifyOnConflict": "Обавести ме о конфликтима спајања",
+    "notifyOnConflictDescription": "Пошаљи обавештење када се открију конфликти спајања",
+    "notifyOnFailure": "Обавести ме о неуспешним спајањима",
+    "notifyOnFailureDescription": "Пошаљи обавештење када операције спајања не успеју",
+    "notifyOnSuccess": "Обавести о успешним спајањима",
+    "notifyOnSuccessDescription": "Пошаљи обавештење када се захтеви за претплату успешно споје",
+    "title": "Обавештења о спајању"
+  },
+  "slack": {
+    "channel": "Канал (опционо)",
+    "channelDescription": "Замени подразумевани канал конфигурисан у вебхуку",
+    "channelPlaceholder": "#опште",
+    "enable": "Омогући Slack обавештења",
+    "enableDescription": "Слање обавештења на Slack канал",
+    "testFailed": "Слање тест поруке није успело",
+    "testMessage": "Пошаљи тест поруку",
+    "testSending": "Слање...",
+    "testSuccess": "Тест порука је послата",
+    "title": "Slack обавештења",
+    "webhookUrl": "URL вебхука",
+    "webhookUrlDescription": "Креирајте долазни вебхук у свом Slack радном простору",
+    "webhookUrlPlaceholder": "хттпс://хоокс.слацк.цом/сервицес/..."
+  },
+  "title": "Подешавања обавештења",
+  "toast": {
+    "updateFailed": "Ажурирање подешавања није успело",
+    "updated": "Подешавања су ажурирана",
+    "updatedDescription": "Подешавања обавештења су сачувана"
+  }
+}

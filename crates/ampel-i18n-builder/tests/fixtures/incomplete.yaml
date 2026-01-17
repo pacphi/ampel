@@ -1,0 +1,18 @@
+# Incomplete translation with missing keys
+common:
+  app:
+    name: "Ampel"
+    # Missing tagline
+
+  pull_requests:
+    count:
+      one: "%{count} pull request"
+      # Missing other plural form
+    # Missing status section
+
+  actions:
+    save: "Save"
+    # Missing cancel, delete, merge
+
+# Missing dashboard section
+# Missing settings section

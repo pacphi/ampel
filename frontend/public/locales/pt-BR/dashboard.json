@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "Aprovar",
+    "comment": "Comentário",
+    "deselectAll": "Desmarcar tudo",
+    "merge": "Fusão",
+    "refresh": "Atualizar",
+    "requestChanges": "Solicitar alterações",
+    "selectAll": "Selecionar tudo",
+    "viewOnProvider": "Ver em {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Aguardando revisão",
+    "changesRequested": "Alterações solicitadas",
+    "ciFailed": "CI falhou",
+    "ciPending": "CI pendente",
+    "conflicts": "Conflitos",
+    "draft": "Rascunho",
+    "needsReview": "Precisa de revisão"
+  },
+  "empty": {
+    "action": "Conectar provedor",
+    "description": "Conecte seus provedores Git para começar a rastrear PRs.",
+    "title": "Nenhuma solicitação de pull request encontrada"
+  },
+  "filters": {
+    "all": "Todos",
+    "assignee": "Cedente",
+    "author": "Autor",
+    "closed": "Fechado",
+    "draft": "Rascunho",
+    "label": "Rótulo",
+    "merged": "Fundido",
+    "onlyWithPrs": "Exibir repositórios com PRs abertos",
+    "open": "Abrir",
+    "prStatus": {
+      "all": "Todos os RPs",
+      "blocked": "Bloqueado",
+      "pending": "Pendente",
+      "ready": "Preparar"
+    },
+    "provider": "Fornecedor",
+    "repository": "Repositório"
+  },
+  "pr": {
+    "additions": "Adições",
+    "author": "Autor",
+    "comments": "Comentários",
+    "createdAt": "Criado",
+    "deletions": "Exclusões",
+    "number": "#{{number}}",
+    "sourceBranch": "Ramo de origem",
+    "targetBranch": "Filial alvo",
+    "updatedAt": "Atualizado"
+  },
+  "prDashboard": "Painel de RP",
+  "sort": {
+    "author": "Autor",
+    "created": "Data de criação",
+    "repository": "Repositório",
+    "status": "Status",
+    "title": "Ordenar por",
+    "updated": "Última atualização"
+  },
+  "stats": {
+    "blocked": "Bloqueado",
+    "inProgress": "Em andamento",
+    "needsAttention": "Precisa de atenção",
+    "open": "Abrir",
+    "openPRs": "Abrir PRs",
+    "ready": "Pronto para fusão",
+    "readyToMerge": "Pronto para fusão",
+    "total": "Total de PRs",
+    "totalRepositories": "Total de repositórios"
+  },
+  "status": {
+    "closed": "Fechado",
+    "draft": "Rascunho",
+    "green": "Pronto para fusão",
+    "merged": "Fundido",
+    "red": "Bloqueado",
+    "yellow": "Em andamento"
+  },
+  "subtitle": "Gerencie suas solicitações de pull em todos os provedores.",
+  "table": {
+    "columns": {
+      "lastUpdated": "Última atualização",
+      "provider": "Fornecedor",
+      "prs": "Relações Públicas",
+      "repository": "Repositório",
+      "status": "Status",
+      "visibility": "Visibilidade"
+    }
+  },
+  "title": "Painel",
+  "views": {
+    "grid": "Visualização em grade",
+    "list": "Visualização em lista",
+    "prs": "Visualização de solicitações de pull",
+    "pullRequests": "Visualização de solicitações de pull",
+    "repositoryGrid": "Visualização em grade do repositório",
+    "repositoryList": "Visualização da lista de repositórios",
+    "table": "Visualização em tabela"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "Genehmigen",
+    "comment": "Kommentar",
+    "deselectAll": "Alle abwählen",
+    "merge": "Verschmelzen",
+    "refresh": "Aktualisieren",
+    "requestChanges": "Änderungen anfordern",
+    "selectAll": "Alle auswählen",
+    "viewOnProvider": "Ansehen auf {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Überprüfung ausstehend",
+    "changesRequested": "Änderungen angefordert",
+    "ciFailed": "CI fehlgeschlagen",
+    "ciPending": "CI steht noch aus",
+    "conflicts": "Konflikte",
+    "draft": "Entwurf",
+    "needsReview": "Überprüfung erforderlich"
+  },
+  "empty": {
+    "action": "Connect Provider",
+    "description": "Verbinden Sie Ihre Git-Anbieter, um mit der Verfolgung von Pull Requests zu beginnen.",
+    "title": "Es wurden keine Pull-Requests gefunden."
+  },
+  "filters": {
+    "all": "Alle",
+    "assignee": "Abtretungsempfänger",
+    "author": "Autor",
+    "closed": "Geschlossen",
+    "draft": "Entwurf",
+    "label": "Etikett",
+    "merged": "Zusammengeführt",
+    "onlyWithPrs": "Repositories mit offenen Pull Requests anzeigen",
+    "open": "Offen",
+    "prStatus": {
+      "all": "Alle PRs",
+      "blocked": "Blockiert",
+      "pending": "Ausstehend",
+      "ready": "Bereit"
+    },
+    "provider": "Anbieter",
+    "repository": "Repository"
+  },
+  "pr": {
+    "additions": "Ergänzungen",
+    "author": "Autor",
+    "comments": "Kommentare",
+    "createdAt": "Erstellt",
+    "deletions": "Löschungen",
+    "number": "#{{number}}",
+    "sourceBranch": "Quellzweig",
+    "targetBranch": "Zielzweig",
+    "updatedAt": "Aktualisiert"
+  },
+  "prDashboard": "PR-Dashboard",
+  "sort": {
+    "author": "Autor",
+    "created": "Erstellungsdatum",
+    "repository": "Repository",
+    "status": "Status",
+    "title": "Sortieren nach",
+    "updated": "Letzte Aktualisierung"
+  },
+  "stats": {
+    "blocked": "Blockiert",
+    "inProgress": "Im Gange",
+    "needsAttention": "Aufmerksamkeit erforderlich",
+    "open": "Offen",
+    "openPRs": "Offene PRs",
+    "ready": "Bereit zur Fusion",
+    "readyToMerge": "Bereit zur Fusion",
+    "total": "Gesamt-PRs",
+    "totalRepositories": "Gesamtzahl der Repositories"
+  },
+  "status": {
+    "closed": "Geschlossen",
+    "draft": "Entwurf",
+    "green": "Bereit zur Fusion",
+    "merged": "Zusammengeführt",
+    "red": "Blockiert",
+    "yellow": "Im Gange"
+  },
+  "subtitle": "Verwalten Sie Ihre Pull Requests über alle Provider hinweg.",
+  "table": {
+    "columns": {
+      "lastUpdated": "Letzte Aktualisierung",
+      "provider": "Anbieter",
+      "prs": "PRs",
+      "repository": "Repository",
+      "status": "Status",
+      "visibility": "Sichtweite"
+    }
+  },
+  "title": "Armaturenbrett",
+  "views": {
+    "grid": "Rasteransicht",
+    "list": "Listenansicht",
+    "prs": "Ansicht der Pull-Anfragen",
+    "pullRequests": "Ansicht der Pull-Anfragen",
+    "repositoryGrid": "Repository-Rasteransicht",
+    "repositoryList": "Repository-Listenansicht",
+    "table": "Tabellenansicht"
+  }
+}

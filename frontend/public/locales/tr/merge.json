@@ -1,0 +1,96 @@
+{
+  "actions": {
+    "merge": "{{count}} PR'larını birleştirin",
+    "merging": "Birleştiriliyor..."
+  },
+  "blockers": {
+    "awaitingReview": "İnceleme Bekleniyor",
+    "changesRequested": "Değişiklik Talepleri",
+    "ciFailed": "CI Başarısız Oldu",
+    "ciPending": "CI Beklemede",
+    "conflicts": "Çatışmaları Var",
+    "draft": "Taslak",
+    "needsReview": "Gözden Geçirilmesi Gerekiyor"
+  },
+  "dialog": {
+    "cancel": "İptal etmek",
+    "deleteBranch": "Birleştirmeden sonra dalı sil",
+    "merge": "PR'yi birleştir",
+    "merging": "Birleştiriliyor...",
+    "strategy": {
+      "merge": "Bir birleştirme taahhüdü oluşturun",
+      "mergeDescription": "Tüm commit'ler korunmuştur.",
+      "rebase": "Yeniden temel al ve birleştir",
+      "rebaseDescription": "Doğrusal taahhüt geçmişi",
+      "squash": "Sıkıştırma ve birleştirme",
+      "squashDescription": "Tüm commit'leri tek bir commit'te birleştirin.",
+      "title": "Birleşme Stratejisi"
+    },
+    "subtitle": "Bu çekme isteği için birleştirme seçeneklerini yapılandırın.",
+    "title": "Çekme İsteğini Birleştir"
+  },
+  "emptyState": {
+    "noPrsReady": "Şu anda birleşmeye hazır hiçbir pull request yok. Pull request'lerin birleştirilmesi gerekiyor:",
+    "requirements": {
+      "ciPassing": "Tüm CI kontrolleri başarılı.",
+      "noConflicts": "Birleştirme çakışması yok.",
+      "requiredApprovals": "Gerekli onaylar"
+    }
+  },
+  "options": {
+    "deleteBranch": "Birleştirme işleminden sonra kaynak dalı silin.",
+    "description": "Çekme isteklerinin nasıl birleştirileceğini yapılandırın.",
+    "strategies": {
+      "merge": "Bir birleştirme taahhüdü oluşturun",
+      "rebase": "Yeniden temel al ve birleştir",
+      "squash": "Sıkıştırma ve birleştirme"
+    },
+    "strategy": "Birleşme Stratejisi",
+    "title": "Birleştirme Seçenekleri"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PR'ler"
+  },
+  "results": {
+    "allSuccess": "Tüm çekme istekleri başarıyla birleştirildi!",
+    "close": "Kapalı",
+    "stats": {
+      "failed": "Arızalı",
+      "merged": "Birleştirildi",
+      "skipped": "Atlandı",
+      "total": "Toplam"
+    },
+    "status": {
+      "failed": "arızalı",
+      "skipped": "atlandı",
+      "success": "başarı"
+    },
+    "summary": "{{success}} ile birleştirildi, {{failed}} başarısız oldu, {{skipped}} atlandı.",
+    "title": "Sonuçları Birleştir"
+  },
+  "sections": {
+    "notReadyDescription": "Birleştirmeyi engelleyen engellere sahip çekme istekleri",
+    "notReadyTitle": "Hazır Değil",
+    "readyDescription": "Birleştirme gereksinimlerinin tümünü karşılayan çekme istekleri",
+    "readyTitle": "Birleşmeye Hazır"
+  },
+  "selection": {
+    "count": "{{selected}} / {{total}} seçildi",
+    "deselectAll": "Tümünü Seçimi Kaldır",
+    "selectAll": "Tümünü Seç"
+  },
+  "subtitle": "Birden fazla çekme isteğini aynı anda seçin ve birleştirin.",
+  "title": "Toplu Birleştirme",
+  "toast": {
+    "failed": "Birleştirme başarısız oldu",
+    "failedDescription": "#{{number}} birleştirme işlemi başarısız oldu: {{error}}",
+    "mergeFailed": "Birleştirme Başarısız Oldu",
+    "mergeSuccess": "Birleştirme Başarılı",
+    "mergeSuccessDescription": "{{count}} çekme isteği başarıyla birleştirildi.",
+    "someMergesFailed": "Bazı birleştirmeler başarısız oldu.",
+    "someMergesFailedDescription": "{{success}} birleştirildi, {{failed}} başarısız oldu",
+    "success": "PR birleştirildi",
+    "successDescription": "#{{number}}: {{title}} başarıyla birleştirildi."
+  }
+}

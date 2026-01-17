@@ -4,6 +4,38 @@ import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Dashboard from './Dashboard';
 
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'dashboard:title': 'Dashboard',
+        'dashboard:filters.onlyWithPrs': 'Only show repos with PRs',
+        'dashboard:views.repositoryGrid': 'Repository grid view',
+        'dashboard:views.repositoryList': 'Repository list view',
+        'dashboard:views.pullRequests': 'Pull requests view',
+        'dashboard:stats.totalRepositories': 'Total Repositories',
+        'dashboard:stats.openPRs': 'Open PRs',
+        'dashboard:stats.readyToMerge': 'Ready to Merge',
+        'dashboard:stats.needsAttention': 'Needs Attention',
+        'dashboard:emptyState.title': 'No repositories found',
+        'dashboard:emptyState.description':
+          'Add repositories from the Repositories page to get started',
+        'dashboard:breakdown.public': 'Public',
+        'dashboard:breakdown.private': 'Private',
+        'dashboard:breakdown.archived': 'Archived',
+        'common:actions.refresh': 'Refresh',
+        'common:actions.refreshing': 'Refreshing...',
+      };
+      return translations[key] || key;
+    },
+    i18n: { language: 'en', changeLanguage: vi.fn() },
+    ready: true,
+  }),
+  initReactI18next: { type: '3rdParty', init: vi.fn() },
+  Trans: ({ children }: { children: React.ReactNode }) => children,
+}));
+
 // Mock API modules
 vi.mock('@/api/dashboard', () => ({
   dashboardApi: {

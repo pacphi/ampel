@@ -202,6 +202,7 @@ pub async fn create_test_user(
         display_name: Set(Some(display_name.to_string())),
         avatar_url: Set(None),
         password_hash: Set("$argon2id$v=19$m=19456,t=2,p=1$test$test".to_string()),
+        language: Set(None),
         created_at: Set(now),
         updated_at: Set(now),
     };

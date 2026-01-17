@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "追加",
+    "apply": "適用",
+    "cancel": "キャンセル",
+    "clear": "クリア",
+    "delete": "削除",
+    "edit": "編集",
+    "hideEmail": "メールを非表示",
+    "refresh": "更新",
+    "refreshing": "更新中...",
+    "remove": "削除",
+    "reset": "デフォルトにリセット",
+    "save": "保存",
+    "saving": "保存中...",
+    "showEmail": "メールを表示",
+    "viewOnProvider": "{{provider}}で表示"
+  },
+  "app": {
+    "add": "追加",
+    "apply": "適用する",
+    "back": "戻る",
+    "cancel": "キャンセル",
+    "clear": "クリア",
+    "close": "近い",
+    "delete": "消去",
+    "description": "統合プルリクエスト管理",
+    "edit": "編集",
+    "error": "エラーが発生しました",
+    "filter": "フィルター",
+    "info": "情報",
+    "loading": "読み込み中...",
+    "name": "アンペル",
+    "next": "次",
+    "previous": "前の",
+    "remove": "削除",
+    "reset": "リセット",
+    "retry": "リトライ",
+    "save": "保存",
+    "search": "検索",
+    "success": "成功",
+    "title": "Ampel PRダッシュボード",
+    "warning": "警告"
+  },
+  "auth": {
+    "alreadyHaveAccount": "すでにアカウントをお持ちですか？",
+    "confirmPassword": "パスワードを確認",
+    "createAccount": "アカウントを作成",
+    "creatingAccount": "アカウントを作成中...",
+    "displayName": "表示名",
+    "displayNamePlaceholder": "ジョン・ドゥ",
+    "dontHaveAccount": "アカウントはまだありませんか？",
+    "email": "メール",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "getStarted": "Ampelを始めましょう",
+    "login": "ログイン",
+    "loginSuccess": "ログイン成功",
+    "logout": "ログアウト",
+    "logoutSuccess": "ログアウトに成功しました",
+    "password": "パスワード",
+    "resetPassword": "パスワードをリセットする",
+    "signIn": "サインイン",
+    "signInToContinue": "続けるにはアカウントにサインインしてください",
+    "signUp": "サインアップ",
+    "signingIn": "サインイン中...",
+    "username": "ユーザー名",
+    "welcome": "おかえり！",
+    "welcomeToAmpel": "アンペルへようこそ"
+  },
+  "language": {
+    "current": "現在の言語",
+    "select": "言語を選択"
+  },
+  "navigation": {
+    "analytics": "分析",
+    "dashboard": "ダッシュボード",
+    "documentation": "ドキュメント",
+    "help": "ヘルプ",
+    "merge": "マージ",
+    "organizations": "組織",
+    "profile": "プロフィール",
+    "pullRequests": "プルリクエスト",
+    "repositories": "リポジトリ",
+    "settings": "設定"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} コメント",
+    "comments_other": "{{count}} コメント",
+    "pullRequests_one": "{{count}} プルリクエスト",
+    "pullRequests_other": "{{count}} プルリクエスト",
+    "requests_one": "{{count}} リクエスト",
+    "requests_other": "{{count}} リクエスト"
+  },
+  "status": {
+    "trafficLight": "信号灯のステータス"
+  },
+  "theme": {
+    "auto": "オート",
+    "dark": "ダークモード",
+    "light": "ライトモード",
+    "toggle": "テーマを切り替え"
+  },
+  "time": {
+    "daysAgo": "{{count}}日前",
+    "daysAgo_other": "{{count}}日前",
+    "hoursAgo": "{{count}}時間前",
+    "hoursAgo_other": "{{count}}時間前",
+    "minutesAgo": "{{count}}分前",
+    "minutesAgo_other": "{{count}}分前",
+    "monthsAgo": "{{count}}か月前",
+    "monthsAgo_other": "{{count}}か月前",
+    "now": "ちょうど今",
+    "weeksAgo": "{{count}}週間前",
+    "weeksAgo_other": "{{count}} 週間前"
+  },
+  "visibility": {
+    "archived": "アーカイブ済み",
+    "private": "プライベート",
+    "public": "公開"
+  }
+}

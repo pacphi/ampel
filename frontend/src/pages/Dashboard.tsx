@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { dashboardApi } from '@/api/dashboard';
 import { pullRequestsApi } from '@/api/pullRequests';
 import { settingsApi } from '@/api/settings';
@@ -48,6 +49,7 @@ function isReadyToMerge(pr: PullRequestWithDetails, skipReviewRequirement: boole
 }
 
 export default function Dashboard() {
+  const { t } = useTranslation(['dashboard', 'common']);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const { filters, setFilters, filterRepositories } = useRepositoryFilters();
   const queryClient = useQueryClient();
@@ -158,7 +160,7 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <h1 className="text-2xl font-bold">{t('dashboard:title')}</h1>
         <div className="flex items-center gap-4">
           {viewMode !== 'prs' && (
             <div className="flex items-center gap-2">
@@ -170,20 +172,20 @@ export default function Dashboard() {
                 }
               />
               <Label htmlFor="only-with-prs" className="text-sm cursor-pointer">
-                Show repositories with Open PRs
+                {t('dashboard:filters.onlyWithPrs')}
               </Label>
             </div>
           )}
           <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-            {isRefreshing ? 'Refreshing...' : 'Refresh'}
+            {isRefreshing ? t('common:actions.refreshing') : t('common:actions.refresh')}
           </Button>
           <div className="flex border rounded-md">
             <Button
               variant={viewMode === 'grid' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setViewMode('grid')}
-              title="Repository grid view"
+              title={t('dashboard:views.repositoryGrid')}
             >
               <Grid className="h-4 w-4" />
             </Button>
@@ -191,7 +193,7 @@ export default function Dashboard() {
               variant={viewMode === 'list' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setViewMode('list')}
-              title="Repository list view"
+              title={t('dashboard:views.repositoryList')}
             >
               <List className="h-4 w-4" />
             </Button>
@@ -199,7 +201,7 @@ export default function Dashboard() {
               variant={viewMode === 'prs' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setViewMode('prs')}
-              title="Pull requests view"
+              title={t('dashboard:views.pullRequests')}
             >
               <GitPullRequest className="h-4 w-4" />
             </Button>
@@ -211,7 +213,7 @@ export default function Dashboard() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <ErrorBoundary>
           <SummaryBreakdownTile
-            title="Total Repositories"
+            title={t('dashboard:stats.totalRepositories')}
             count={summary?.totalRepositories || 0}
             breakdown={summary?.repositoryBreakdown || { public: 0, private: 0, archived: 0 }}
             icon={Boxes}
@@ -220,7 +222,7 @@ export default function Dashboard() {
         </ErrorBoundary>
         <ErrorBoundary>
           <SummaryBreakdownTile
-            title="Open PRs"
+            title={t('dashboard:stats.openPRs')}
             count={summary?.totalOpenPrs || 0}
             breakdown={summary?.openPrsBreakdown || { public: 0, private: 0, archived: 0 }}
             icon={GitPullRequest}
@@ -229,7 +231,7 @@ export default function Dashboard() {
         </ErrorBoundary>
         <ErrorBoundary>
           <SummaryBreakdownTile
-            title="Ready to Merge"
+            title={t('dashboard:stats.readyToMerge')}
             count={readyToMergeCount}
             breakdown={readyToMergeBreakdown}
             icon={GreenStatusIcon}
@@ -239,7 +241,7 @@ export default function Dashboard() {
         </ErrorBoundary>
         <ErrorBoundary>
           <SummaryBreakdownTile
-            title="Needs Attention"
+            title={t('dashboard:stats.needsAttention')}
             count={summary?.statusCounts.red || 0}
             breakdown={needsAttentionBreakdown}
             icon={RedStatusIcon}

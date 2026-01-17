@@ -14,6 +14,7 @@
 .PHONY: docker docker-build docker-up docker-down docker-restart docker-logs
 .PHONY: deploy deploy-fly
 .PHONY: gh-ci gh-release gh-watch gh-runs gh-status
+.PHONY: i18n build-i18n build-i18n-release test-i18n install-i18n clean-i18n
 
 # =============================================================================
 # Help
@@ -73,6 +74,14 @@ help:
 	@echo "  gh-watch         - Watch the latest workflow run"
 	@echo "  gh-runs          - List recent workflow runs"
 	@echo "  gh-status        - View CI workflow status"
+	@echo ""
+	@echo "Internationalization (i18n):"
+	@echo "  build-i18n       - Build cargo-i18n CLI tool (debug)"
+	@echo "  build-i18n-release - Build cargo-i18n (release)"
+	@echo "  test-i18n        - Run tests for i18n-builder crate"
+	@echo "  install-i18n     - Install cargo-i18n CLI tool locally"
+	@echo "  clean-i18n       - Clean i18n-builder build artifacts"
+	@echo "  i18n ARGS='...'  - Run cargo-i18n tool (e.g., make i18n ARGS='--help')"
 
 # =============================================================================
 # Setup & Dependencies
@@ -451,6 +460,62 @@ gh-runs: _check-gh
 # View CI workflow status
 gh-status: _check-gh
 	@gh run list --workflow=ci.yml --limit 5
+
+# =============================================================================
+# Internationalization (i18n)
+# =============================================================================
+
+# Build the cargo-i18n CLI tool (debug mode)
+build-i18n:
+	@echo "==> Building cargo-i18n CLI tool..."
+	cargo build --package ampel-i18n-builder --bin cargo-i18n
+
+# Build the cargo-i18n CLI tool (release mode)
+build-i18n-release:
+	@echo "==> Building cargo-i18n CLI tool (release)..."
+	cargo build --package ampel-i18n-builder --bin cargo-i18n --release
+
+# Run tests for the i18n-builder crate only
+test-i18n:
+	@echo "==> Running i18n-builder tests..."
+	cargo test --package ampel-i18n-builder --all-features
+
+# Run tests for i18n-builder with coverage
+test-i18n-coverage:
+	@echo "==> Running i18n-builder tests with coverage..."
+	@command -v cargo-llvm-cov >/dev/null 2>&1 || { \
+		echo "Installing cargo-llvm-cov..."; \
+		cargo install cargo-llvm-cov --locked; \
+	}
+	@rustup component add llvm-tools-preview 2>/dev/null || true
+	@mkdir -p coverage/i18n
+	cargo llvm-cov \
+		--package ampel-i18n-builder \
+		--all-features \
+		--html \
+		--output-dir coverage/i18n
+	@echo ""
+	@echo "==> I18n coverage report: coverage/i18n/index.html"
+
+# Install the cargo-i18n tool to ~/.cargo/bin
+install-i18n:
+	@echo "==> Installing cargo-i18n CLI tool..."
+	cargo install --path crates/ampel-i18n-builder --bin cargo-i18n --force
+	@echo ""
+	@echo "cargo-i18n installed to ~/.cargo/bin/cargo-i18n"
+	@echo "Run 'cargo i18n --help' to get started"
+
+# Clean i18n-builder build artifacts
+clean-i18n:
+	@echo "==> Cleaning i18n-builder artifacts..."
+	cargo clean --package ampel-i18n-builder
+
+# Run the cargo-i18n tool with custom arguments
+# Usage: make i18n ARGS='--help'
+# Usage: make i18n ARGS='generate --lang es'
+i18n:
+	@echo "==> Running cargo-i18n..."
+	cargo run --package ampel-i18n-builder --bin cargo-i18n -- $(ARGS)
 
 # Monitoring targets
 include Makefile.monitoring

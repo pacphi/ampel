@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Compte : Lire",
+      "pullRequestsRead": "Demandes de fusion : Lire",
+      "pullRequestsWrite": "Demandes de fusion : Écrire",
+      "repositoriesRead": "Dépôts : Lire",
+      "repositoriesWrite": "Dépôts : Écrire"
+    },
+    "steps": {
+      "step1": "Accédez à Bitbucket → Paramètres personnels → Mots de passe des applications",
+      "step2": "Cliquez sur « Créer un mot de passe pour l'application »",
+      "step3": "Saisissez un libellé pour le mot de passe",
+      "step4": "Sélectionnez les autorisations requises :",
+      "step5": "Cliquez sur « Créer » et copiez le mot de passe"
+    },
+    "title": "Instructions relatives au mot de passe de l'application Bitbucket"
+  },
+  "common": {
+    "expirationWarning": "Pour une meilleure sécurité, envisagez de définir une date d'expiration.",
+    "minimalScopes": "N'accordez que les autorisations minimales requises.",
+    "securityNote": "Conservez votre jeton en sécurité et ne le partagez jamais publiquement."
+  },
+  "github": {
+    "note": "Les jetons à granularité fine sont également pris en charge avec les autorisations d'accès au référentiel.",
+    "scopes": {
+      "readOrg": "lire:org (Adhésion à l'organisation et à l'équipe de lecture)",
+      "readUser": "lire:utilisateur (Lire les données du profil utilisateur)",
+      "repo": "dépôt (Contrôle total des dépôts privés)"
+    },
+    "steps": {
+      "step1": "Accédez à Paramètres GitHub → Paramètres développeur → Jetons d'accès personnels → Jetons (classiques)",
+      "step2": "Cliquez sur « Générer un nouveau jeton (classique) »",
+      "step3": "Donnez un nom descriptif à votre jeton",
+      "step4": "Sélectionnez les étendues requises :",
+      "step5": "Cliquez sur « Générer un jeton » et copiez-le immédiatement."
+    },
+    "title": "Instructions relatives aux jetons GitHub"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "API (Accès complet à l'API)",
+      "readApi": "read_api (Accès API en lecture seule)",
+      "readRepository": "lire_référentiel (Accès au référentiel en lecture)"
+    },
+    "steps": {
+      "step1": "Accédez à GitLab → Paramètres utilisateur → Jetons d'accès",
+      "step2": "Saisissez un nom de jeton et une date d'expiration facultative",
+      "step3": "Sélectionnez les étendues requises :",
+      "step4": "Cliquez sur « Créer un jeton d’accès personnel » et copiez-le."
+    },
+    "title": "Instructions relatives aux jetons GitLab"
+  },
+  "title": "Instructions du fournisseur"
+}

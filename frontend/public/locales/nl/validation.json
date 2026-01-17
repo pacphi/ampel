@@ -1,0 +1,35 @@
+{
+  "alphanum": "{{field}} mag alleen letters en cijfers bevatten.",
+  "date": "Voer een geldige datum in.",
+  "dateRange": "De einddatum moet na de startdatum liggen.",
+  "email": "Voer een geldig e-mailadres in.",
+  "fields": {
+    "confirmPassword": "Bevestig wachtwoord",
+    "displayName": "Weergavenaam",
+    "email": "E-mail",
+    "password": "Wachtwoord"
+  },
+  "fileSize": "De bestandsgrootte mag niet groter zijn dan {{max}}.",
+  "fileType": "Het bestandstype moet {{types}} zijn.",
+  "integer": "{{field}} moet een geheel getal zijn",
+  "invalidEmail": "Ongeldig e-mailadres",
+  "max": "{{field}} mag niet groter zijn dan {{max}}",
+  "maxLength": "{{field}} mag niet meer dan {{max}} tekens bevatten",
+  "messages": {
+    "displayNameRequired": "De weergavenaam is verplicht.",
+    "emailRequired": "Een e-mailadres is verplicht.",
+    "passwordMinLength": "Het wachtwoord moet minimaal 8 tekens lang zijn.",
+    "passwordRequired": "Wachtwoord vereist"
+  },
+  "min": "{{field}} moet minimaal {{min}} zijn.",
+  "minLength": "{{field}} moet minimaal {{min}} tekens bevatten",
+  "negative": "{{field}} moet negatief zijn",
+  "numeric": "{{field}} moet een getal zijn",
+  "passwordMismatch": "De wachtwoorden komen niet overeen.",
+  "passwordsDontMatch": "De wachtwoorden komen niet overeen.",
+  "pattern": "Het formaat {{field}} is ongeldig.",
+  "positive": "{{field}} moet positief zijn",
+  "required": "{{field}} is vereist",
+  "unique": "{{field}} bestaat al",
+  "url": "Voer een geldige URL in."
+}

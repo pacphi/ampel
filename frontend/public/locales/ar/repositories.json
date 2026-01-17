@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "أضف الكل ({{count}})",
+    "close": "يغلق",
+    "empty": "لم يتم العثور على أي مستودعات جديدة لإضافتها",
+    "title": "أضف من {{provider}}"
+  },
+  "empty": {
+    "description": "أضف المستودعات من موفري الخدمات المتصلين بك للبدء",
+    "title": "لم يتم العثور على أي مستودعات"
+  },
+  "providers": {
+    "connected": "(متصل)",
+    "title": "ربط مزود الخدمة"
+  },
+  "search": {
+    "placeholder": "مستودعات البحث..."
+  },
+  "table": {
+    "actions": "الإجراءات",
+    "provider": "مزود",
+    "prs": "طلبات السحب المفتوحة",
+    "repository": "مستودع",
+    "status": "حالة"
+  },
+  "title": "المستودعات",
+  "toast": {
+    "addFailed": "فشل إضافة المستودع",
+    "added": "تمت إضافة المستودع",
+    "addedDescription": "تمت إضافة {{name}} إلى لوحة التحكم الخاصة بك",
+    "bulkAddFailed": "فشل إضافة المستودعات",
+    "bulkAddFailedDescription": "تعذر إضافة أي من المستودعات المحددة",
+    "bulkAdded": "تمت إضافة المستودعات",
+    "bulkAddedDescription": "تمت إضافة المستودعات {{count}} بنجاح {{failed}}",
+    "bulkAddedFailed": "(فشل {{count}})",
+    "removeFailed": "فشل حذف المستودع",
+    "removed": "تمت إزالة المستودع",
+    "removedDescription": "تمت إزالة {{name}} من لوحة التحكم الخاصة بك"
+  }
+}

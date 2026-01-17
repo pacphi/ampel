@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Добавлять",
+    "enable": "Включить уведомления по электронной почте",
+    "enableDescription": "Отправка уведомлений по электронной почте (SMTP)",
+    "fromAddress": "От адреса",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTP-хост",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "Пароль SMTP",
+    "smtpPasswordPlaceholder": "Введите пароль",
+    "smtpPort": "SMTP-порт",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "Имя пользователя SMTP",
+    "smtpUserPlaceholder": "user@example.com",
+    "testFailed": "Не удалось отправить тестовое письмо.",
+    "testMessage": "Отправить тестовое письмо",
+    "testSending": "Отправка...",
+    "testSuccess": "Тестовое письмо отправлено.",
+    "title": "Уведомления по электронной почте",
+    "toAddresses": "Адреса",
+    "toAddressesDescription": "Получатели уведомлений по электронной почте",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "Используйте TLS"
+  },
+  "merge": {
+    "description": "Выберите, когда получать уведомления об операциях слияния.",
+    "notifyOnConflict": "Уведомлять о конфликтах слияния",
+    "notifyOnConflictDescription": "Отправлять уведомление при обнаружении конфликтов слияния.",
+    "notifyOnFailure": "Уведомлять о неудачных слияниях",
+    "notifyOnFailureDescription": "Отправлять уведомления при сбое операций слияния",
+    "notifyOnSuccess": "Уведомление об успешном слиянии",
+    "notifyOnSuccessDescription": "Отправлять уведомление об успешном слиянии запросов на слияние.",
+    "title": "Уведомления о слиянии"
+  },
+  "slack": {
+    "channel": "Канал (опционально)",
+    "channelDescription": "Переопределите канал по умолчанию, настроенный в веб-хуке.",
+    "channelPlaceholder": "#общий",
+    "enable": "Включить уведомления в Slack",
+    "enableDescription": "Отправляйте уведомления в канал Slack.",
+    "testFailed": "Не удалось отправить тестовое сообщение.",
+    "testMessage": "Отправить тестовое сообщение",
+    "testSending": "Отправка...",
+    "testSuccess": "Тестовое сообщение отправлено",
+    "title": "Уведомления Slack",
+    "webhookUrl": "URL веб-перехватчика",
+    "webhookUrlDescription": "Создайте входящий веб-хук в своем рабочем пространстве Slack.",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Настройки уведомлений",
+  "toast": {
+    "updateFailed": "Не удалось обновить настройки.",
+    "updated": "Настройки обновлены",
+    "updatedDescription": "Настройки уведомлений сохранены."
+  }
+}

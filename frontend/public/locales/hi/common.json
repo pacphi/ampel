@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "जोड़ें",
+    "apply": "लागू करें",
+    "cancel": "रद्द करें",
+    "clear": "साफ़ करें",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "hideEmail": "ईमेल छुपाएं",
+    "refresh": "ताजा करें",
+    "refreshing": "ताजगी दें...",
+    "remove": "निकालें",
+    "reset": "डिफ़ॉल्ट पर रीसेट करें",
+    "save": "सहेजें",
+    "saving": "सहेजा जा रहा है...",
+    "showEmail": "ईमेल दिखाएं",
+    "viewOnProvider": "{{provider}} पर देखें"
+  },
+  "app": {
+    "add": "जोड़ें",
+    "apply": "आवेदन करना",
+    "back": "पीछे",
+    "cancel": "रद्द करना",
+    "clear": "स्पष्ट",
+    "close": "बंद करना",
+    "delete": "मिटाना",
+    "description": "एकीकृत पुल अनुरोध प्रबंधन",
+    "edit": "संपादन करना",
+    "error": "एक त्रुटि पाई गई",
+    "filter": "फ़िल्टर",
+    "info": "जानकारी",
+    "loading": "लोड हो रहा है...",
+    "name": "अम्पेल",
+    "next": "अगला",
+    "previous": "पहले का",
+    "remove": "निकालें",
+    "reset": "रीसेट करें",
+    "retry": "पुन: प्रयास करें",
+    "save": "बचाना",
+    "search": "खोज",
+    "success": "सफलता",
+    "title": "एम्पेल पीआर डैशबोर्ड",
+    "warning": "चेतावनी"
+  },
+  "auth": {
+    "alreadyHaveAccount": "पहले से ही एक खाता है?",
+    "confirmPassword": "पासवर्ड की पुष्टि करें",
+    "createAccount": "खाता बनाएं",
+    "creatingAccount": "खाता बनाया जा रहा है...",
+    "displayName": "प्रदर्शन नाम",
+    "displayNamePlaceholder": "जॉन डो",
+    "dontHaveAccount": "खाता नहीं है?",
+    "email": "ईमेल",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "पासवर्ड भूल गए?",
+    "getStarted": "Ampel के साथ शुरू करें",
+    "login": "लॉग इन करें",
+    "loginSuccess": "लॉग इन सफल",
+    "logout": "लॉग आउट",
+    "logoutSuccess": "लॉगआउट सफल रहा",
+    "password": "पासवर्ड",
+    "resetPassword": "पासवर्ड रीसेट",
+    "signIn": "साइन इन करें",
+    "signInToContinue": "जारी रखने के लिए अपने खाते में साइन इन करें",
+    "signUp": "साइन अप करें",
+    "signingIn": "साइन इन हो रहा है...",
+    "username": "उपयोगकर्ता नाम",
+    "welcome": "वापसी पर स्वागत है!",
+    "welcomeToAmpel": "अम्पेल में आपका स्वागत है"
+  },
+  "language": {
+    "current": "वर्तमान भाषा",
+    "select": "भाषा चुने"
+  },
+  "navigation": {
+    "analytics": "विश्लेषण",
+    "dashboard": "डैशबोर्ड",
+    "documentation": "प्रलेखन",
+    "help": "मदद",
+    "merge": "मर्ज करें",
+    "organizations": "संगठनों",
+    "profile": "प्रोफ़ाइल",
+    "pullRequests": "पुल अनुरोध",
+    "repositories": "डेटा संग्रह स्थान",
+    "settings": "सेटिंग्स"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} टिप्पणी",
+    "comments_other": "{{count}} टिप्पणियां",
+    "pullRequests_one": "{{count}} पुल अनुरोध",
+    "pullRequests_other": "{{count}} पुल अनुरोध",
+    "requests_one": "{{count}} अनुरोध",
+    "requests_other": "{{count}} अनुरोध"
+  },
+  "status": {
+    "trafficLight": "यातायात बत्ती की स्थिति"
+  },
+  "theme": {
+    "auto": "ऑटो",
+    "dark": "डार्क मोड",
+    "light": "लाइट मोड",
+    "toggle": "थीम टॉगल करें"
+  },
+  "time": {
+    "daysAgo": "{{count}} दिन पहले",
+    "daysAgo_other": "{{count}} दिन पहले",
+    "hoursAgo": "{{count}} घंटा पहले",
+    "hoursAgo_other": "{{count}} घंटे पहले",
+    "minutesAgo": "{{count}} मिनट पहले",
+    "minutesAgo_other": "{{count}} मिनट पहले",
+    "monthsAgo": "{{count}} महीने पहले",
+    "monthsAgo_other": "{{count}} महीने पहले",
+    "now": "बस अब ",
+    "weeksAgo": "{{count}} सप्ताह पहले",
+    "weeksAgo_other": "{{count}} सप्ताह पहले"
+  },
+  "visibility": {
+    "archived": "संग्रहीत",
+    "private": "निजी",
+    "public": "सार्वजनिक"
+  }
+}

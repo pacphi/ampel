@@ -1,0 +1,10 @@
+validation:
+  # Account validation
+  account:
+    valid: "صالح"
+    invalid: "غير صالح"
+
+  # General validation
+  general:
+    required: "هذا الحقل مطلوب"
+    invalid_format: "تنسيق غير صالح"

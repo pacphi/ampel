@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Hälsoresultat beräknas varje timme baserat på PR-värden",
+    "title": "Inga hälsodata tillgängliga ännu"
+  },
+  "health": {
+    "mergeTime": "Sammanslagningstid",
+    "perWeek": "{{count}}/vecka",
+    "reviewTime": "Granskningstid",
+    "stalePrs": "Inaktuella PR-resultat",
+    "throughput": "Genomströmning",
+    "title": "Hälsoresultat för arkivet"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Genomsnittlig sammanslagningstid",
+    "avgReviewTime": "Genomsnittlig granskningstid",
+    "botPrs": "Bot-PR:er",
+    "prsMerged": "PR-er sammanslagna ({{days}}d)"
+  },
+  "title": "Analys"
+}

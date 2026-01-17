@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "Tillägga",
+    "apply": "Tillämpas",
+    "cancel": "Avboka",
+    "clear": "Rensa",
+    "delete": "Radera",
+    "edit": "Redigera",
+    "hideEmail": "Dölj e-postadress",
+    "refresh": "Uppdatera",
+    "refreshing": "Uppfriskande...",
+    "remove": "Ta bort",
+    "reset": "Återställ till standardinställningar",
+    "save": "Spara",
+    "saving": "Sparande...",
+    "showEmail": "Visa e-postadress",
+    "viewOnProvider": "Visa på {{provider}}"
+  },
+  "app": {
+    "add": "Tillägga",
+    "apply": "Tillämpas",
+    "back": "Tillbaka",
+    "cancel": "Avboka",
+    "clear": "Rensa",
+    "close": "Nära",
+    "delete": "Radera",
+    "description": "Enhetlig hantering av pull requests",
+    "edit": "Redigera",
+    "error": "Ett fel uppstod",
+    "filter": "Filtrera",
+    "info": "Information",
+    "loading": "Belastning...",
+    "name": "Ampel",
+    "next": "Nästa",
+    "previous": "Tidigare",
+    "remove": "Ta bort",
+    "reset": "Återställa",
+    "retry": "Försöka igen",
+    "save": "Spara",
+    "search": "Söka",
+    "success": "Framgång",
+    "title": "Ampel PR-instrumentpanel",
+    "warning": "Varning"
+  },
+  "auth": {
+    "alreadyHaveAccount": "Har du redan ett konto?",
+    "confirmPassword": "Bekräfta lösenord",
+    "createAccount": "Skapa ett konto",
+    "creatingAccount": "Skapar konto...",
+    "displayName": "Visningsnamn",
+    "displayNamePlaceholder": "John Doe",
+    "dontHaveAccount": "Har du inget konto?",
+    "email": "E-post",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "Glömt lösenordet?",
+    "getStarted": "Kom igång med Ampel",
+    "login": "Inloggning",
+    "loginSuccess": "Inloggningen lyckades",
+    "logout": "Utloggning",
+    "logoutSuccess": "Utloggning lyckades",
+    "password": "Lösenord",
+    "resetPassword": "Återställ lösenord",
+    "signIn": "Logga in",
+    "signInToContinue": "Logga in på ditt konto för att fortsätta",
+    "signUp": "Registrera dig",
+    "signingIn": "Loggar in...",
+    "username": "Användarnamn",
+    "welcome": "Välkommen tillbaka!",
+    "welcomeToAmpel": "Välkommen till Ampel"
+  },
+  "language": {
+    "current": "Nuvarande språk",
+    "select": "Välj språk"
+  },
+  "navigation": {
+    "analytics": "Analys",
+    "dashboard": "Instrumentpanel",
+    "documentation": "Dokumentation",
+    "help": "Hjälp",
+    "merge": "Slå ihop",
+    "organizations": "Organisationer",
+    "profile": "Profil",
+    "pullRequests": "Pull Requests",
+    "repositories": "Förvar",
+    "settings": "Inställningar"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} kommentar",
+    "comments_other": "{{count}} kommentarer",
+    "pullRequests_one": "{{count}} pull request",
+    "pullRequests_other": "{{count}} pull requests",
+    "requests_one": "{{count}} begäran",
+    "requests_other": "{{count}} förfrågningar"
+  },
+  "status": {
+    "trafficLight": "Trafikljusstatus"
+  },
+  "theme": {
+    "auto": "Bil",
+    "dark": "Mörkt läge",
+    "light": "Ljusläge",
+    "toggle": "Växla tema"
+  },
+  "time": {
+    "daysAgo": "för {{count}} dagar sedan",
+    "daysAgo_other": "för {{count}} dagar sedan",
+    "hoursAgo": "för {{count}} timme sedan",
+    "hoursAgo_other": "för {{count}} timmar sedan",
+    "minutesAgo": "för {{count}} minuter sedan",
+    "minutesAgo_other": "för {{count}} minuter sedan",
+    "monthsAgo": "för {{count}} månad sedan",
+    "monthsAgo_other": "för {{count}} månader sedan",
+    "now": "Just nu",
+    "weeksAgo": "för {{count}} vecka sedan",
+    "weeksAgo_other": "för {{count}} veckor sedan"
+  },
+  "visibility": {
+    "archived": "Arkiverad",
+    "private": "Privat",
+    "public": "Offentlig"
+  }
+}

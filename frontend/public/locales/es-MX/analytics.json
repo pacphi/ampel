@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Los puntajes de salud se calculan cada hora en función de las métricas de relaciones públicas.",
+    "title": "Aún no hay datos sanitarios disponibles"
+  },
+  "health": {
+    "mergeTime": "Tiempo de fusión",
+    "perWeek": "{{count}}/semana",
+    "reviewTime": "Hora de revisión",
+    "stalePrs": "Relaciones públicas obsoletas",
+    "throughput": "Rendimiento",
+    "title": "Puntuaciones de salud del repositorio"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Tiempo promedio de fusión",
+    "avgReviewTime": "Tiempo promedio de revisión",
+    "botPrs": "Relaciones públicas de bots",
+    "prsMerged": "Relaciones públicas fusionadas ({{days}}d)"
+  },
+  "title": "Analítica"
+}

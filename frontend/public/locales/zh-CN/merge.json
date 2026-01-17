@@ -1,0 +1,96 @@
+{
+  "actions": {
+    "merge": "合并 {{count}} PR",
+    "merging": "合并中……"
+  },
+  "blockers": {
+    "awaitingReview": "待审核",
+    "changesRequested": "请求更改",
+    "ciFailed": "CI失败",
+    "ciPending": "CI 待定",
+    "conflicts": "存在冲突",
+    "draft": "草稿",
+    "needsReview": "需要审查"
+  },
+  "dialog": {
+    "cancel": "取消",
+    "deleteBranch": "合并后删除分支",
+    "merge": "合并 PR",
+    "merging": "合并中……",
+    "strategy": {
+      "merge": "创建合并提交",
+      "mergeDescription": "所有提交记录均已保留",
+      "rebase": "重新定基并合并",
+      "rebaseDescription": "线性提交历史",
+      "squash": "挤压和合并",
+      "squashDescription": "将所有提交合并为一个提交",
+      "title": "合并战略"
+    },
+    "subtitle": "为该 PR 配置合并选项",
+    "title": "合并拉取请求"
+  },
+  "emptyState": {
+    "noPrsReady": "目前没有可以合并的 PR。PR 需要：",
+    "requirements": {
+      "ciPassing": "所有 CI 检查均通过",
+      "noConflicts": "无合并冲突",
+      "requiredApprovals": "所需审批"
+    }
+  },
+  "options": {
+    "deleteBranch": "合并后删除源分支",
+    "description": "配置拉取请求的合并方式",
+    "strategies": {
+      "merge": "创建合并提交",
+      "rebase": "重新定基并合并",
+      "squash": "挤压和合并"
+    },
+    "strategy": "合并战略",
+    "title": "合并选项"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PR"
+  },
+  "results": {
+    "allSuccess": "所有 PR 已成功合并！",
+    "close": "关闭",
+    "stats": {
+      "failed": "失败的",
+      "merged": "合并",
+      "skipped": "跳过",
+      "total": "全部的"
+    },
+    "status": {
+      "failed": "失败的",
+      "skipped": "跳过",
+      "success": "成功"
+    },
+    "summary": "已完成，{{success}} 已合并，{{failed}} 失败，{{skipped}} 已跳过",
+    "title": "合并结果"
+  },
+  "sections": {
+    "notReadyDescription": "存在阻塞导致合并的拉取请求",
+    "notReadyTitle": "尚未准备好",
+    "readyDescription": "符合所有合并要求的拉取请求",
+    "readyTitle": "准备合并"
+  },
+  "selection": {
+    "count": "{{selected}} 中的 {{total}} 已选择",
+    "deselectAll": "取消选择所有",
+    "selectAll": "全选"
+  },
+  "subtitle": "一次性选择并合并多个 PR",
+  "title": "批量合并",
+  "toast": {
+    "failed": "合并失败",
+    "failedDescription": "合并失败 #{{number}}: {{error}}",
+    "mergeFailed": "合并失败",
+    "mergeSuccess": "合并成功",
+    "mergeSuccessDescription": "已成功合并 {{count}} 个拉取请求",
+    "someMergesFailed": "部分合并失败",
+    "someMergesFailedDescription": "{{success}} 已合并，{{failed}} 失败",
+    "success": "PR合并",
+    "successDescription": "已成功合并 #{{number}}: {{title}}"
+  }
+}

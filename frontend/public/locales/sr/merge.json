@@ -1,0 +1,96 @@
+{
+  "actions": {
+    "merge": "Споји {{count}} захтеве за подршку",
+    "merging": "Спајање..."
+  },
+  "blockers": {
+    "awaitingReview": "Чека се преглед",
+    "changesRequested": "Захтеване измене",
+    "ciFailed": "Конфигурациони интегритет није успео",
+    "ciPending": "ЦИ на чекању",
+    "conflicts": "Има сукобе",
+    "draft": "Нацрт",
+    "needsReview": "Потребан је преглед"
+  },
+  "dialog": {
+    "cancel": "Откажи",
+    "deleteBranch": "Обриши грану након спајања",
+    "merge": "Споји односе с јавношћу",
+    "merging": "Спајање...",
+    "strategy": {
+      "merge": "Направите commit за спајање",
+      "mergeDescription": "Све измене су сачуване",
+      "rebase": "Ребазирање и спајање",
+      "rebaseDescription": "Историја линеарних извршења",
+      "squash": "Стисни и споји",
+      "squashDescription": "Споји све комите у један",
+      "title": "Стратегија спајања"
+    },
+    "subtitle": "Конфигуришите опције спајања за овај захтев за захтев за претходни захтев (PR)",
+    "title": "Захтев за спајање"
+  },
+  "emptyState": {
+    "noPrsReady": "Ниједан пријемник није спреман за спајање. Пријемницима је потребно:",
+    "requirements": {
+      "ciPassing": "Све CI провере су прошле",
+      "noConflicts": "Нема сукоба спајања",
+      "requiredApprovals": "Потребна одобрења"
+    }
+  },
+  "options": {
+    "deleteBranch": "Обриши изворну грану након спајања",
+    "description": "Конфигуришите како ће се захтеви за повлачење спојити",
+    "strategies": {
+      "merge": "Направите commit за спајање",
+      "rebase": "Ребазирање и спајање",
+      "squash": "Стисни и споји"
+    },
+    "strategy": "Стратегија спајања",
+    "title": "Опције спајања"
+  },
+  "repository": {
+    "prCount": "{{count}} односи с јавношћу",
+    "prCount_other": "{{count}} PR-ови"
+  },
+  "results": {
+    "allSuccess": "Сви захтеви за претплату су успешно спојени!",
+    "close": "Затвори",
+    "stats": {
+      "failed": "Неуспешно",
+      "merged": "Спојено",
+      "skipped": "Прескочено",
+      "total": "Укупно"
+    },
+    "status": {
+      "failed": "неуспешно",
+      "skipped": "прескочено",
+      "success": "успех"
+    },
+    "summary": "Завршено са спојеним {{success}}, {{failed}} неуспешно, {{skipped}} прескочено",
+    "title": "Споји резултате"
+  },
+  "sections": {
+    "notReadyDescription": "Захтеви за повлачење који имају блокаторе који спречавају спајање",
+    "notReadyTitle": "Није спремно",
+    "readyDescription": "Захтеви за повлачење који испуњавају све захтеве за спајање",
+    "readyTitle": "Спремно за спајање"
+  },
+  "selection": {
+    "count": "Изабрано {{selected}} од {{total}}",
+    "deselectAll": "Поништи избор свих",
+    "selectAll": "Изабери све"
+  },
+  "subtitle": "Изаберите и спојите више захтева за претплату одједном",
+  "title": "Масовно спајање",
+  "toast": {
+    "failed": "Спајање није успело",
+    "failedDescription": "Спајање није успело #{{number}}: {{error}}",
+    "mergeFailed": "Спајање није успело",
+    "mergeSuccess": "Спајање је успешно",
+    "mergeSuccessDescription": "Успешно спојени захтеви за повлачење {{count}}",
+    "someMergesFailed": "Нека спајања нису успела",
+    "someMergesFailedDescription": "{{success}} спојено, {{failed}} није успело",
+    "success": "PR спојен",
+    "successDescription": "Успешно спојено #{{number}}: {{title}}"
+  }
+}

@@ -1,0 +1,51 @@
+# Arabic translations (RTL, 6 plural forms)
+common:
+  app:
+    name: "أمبل"
+    tagline: "إدارة موحدة لطلبات السحب"
+
+  pull_requests:
+    count:
+      zero: "لا توجد طلبات سحب"
+      one: "طلب سحب واحد"
+      two: "طلبا سحب"
+      few: "%{count} طلبات سحب"
+      many: "%{count} طلب سحب"
+      other: "%{count} طلب سحب"
+    status:
+      open: "مفتوح"
+      merged: "مدمج"
+      closed: "مغلق"
+
+  actions:
+    save: "حفظ"
+    cancel: "إلغاء"
+    delete: "حذف"
+    merge: "دمج طلب السحب"
+
+  validation:
+    required: "هذا الحقل مطلوب"
+    invalid_email: "عنوان بريد إلكتروني غير صالح"
+    min_length: "يجب أن يكون %{count} أحرف على الأقل"
+
+dashboard:
+  title: "لوحة التحكم"
+  empty_state: "لم يتم العثور على طلبات سحب"
+  filters:
+    all: "الكل"
+    mine: "خاصتي"
+    team: "الفريق"
+  summary:
+    total: "إجمالي طلبات السحب"
+    ready_to_merge: "جاهز للدمج"
+    needs_review: "يحتاج إلى مراجعة"
+
+settings:
+  title: "الإعدادات"
+  profile:
+    name: "الاسم"
+    email: "البريد الإلكتروني"
+    timezone: "المنطقة الزمنية"
+  notifications:
+    email_enabled: "إشعارات البريد الإلكتروني"
+    slack_enabled: "إشعارات Slack"

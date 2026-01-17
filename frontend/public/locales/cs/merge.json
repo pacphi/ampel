@@ -1,0 +1,96 @@
+{
+  "actions": {
+    "merge": "Sloučit {{count}} PR",
+    "merging": "Sloučení..."
+  },
+  "blockers": {
+    "awaitingReview": "Čeká na kontrolu",
+    "changesRequested": "Požadované změny",
+    "ciFailed": "CI selhala",
+    "ciPending": "CI čeká na vyřízení",
+    "conflicts": "Má konflikty",
+    "draft": "Návrh",
+    "needsReview": "Potřebuje kontrolu"
+  },
+  "dialog": {
+    "cancel": "Zrušit",
+    "deleteBranch": "Smazat větev po sloučení",
+    "merge": "Sloučit PR",
+    "merging": "Sloučení...",
+    "strategy": {
+      "merge": "Vytvořte sloučený commit",
+      "mergeDescription": "Všechny commity zachovány",
+      "rebase": "Znovu vyjádřit a sloučit",
+      "rebaseDescription": "Lineární historie commitů",
+      "squash": "Stlačit a sloučit",
+      "squashDescription": "Sloučit všechny commity do jednoho",
+      "title": "Strategie sloučení"
+    },
+    "subtitle": "Nakonfigurujte možnosti sloučení pro tento požadavek na žádost o přijetí žádosti (PR)",
+    "title": "Request na sloučení"
+  },
+  "emptyState": {
+    "noPrsReady": "Žádní PR nejsou připraveni ke sloučení. PR potřebují:",
+    "requirements": {
+      "ciPassing": "Všechny kontroly CI prošly úspěšně",
+      "noConflicts": "Žádné konflikty sloučení",
+      "requiredApprovals": "Požadovaná schválení"
+    }
+  },
+  "options": {
+    "deleteBranch": "Smazat zdrojovou větev po sloučení",
+    "description": "Konfigurace způsobu sloučení žádostí o změny",
+    "strategies": {
+      "merge": "Vytvořte sloučený commit",
+      "rebase": "Znovu vyjádřit a sloučit",
+      "squash": "Stlačit a sloučit"
+    },
+    "strategy": "Strategie sloučení",
+    "title": "Možnosti sloučení"
+  },
+  "repository": {
+    "prCount": "{{count}} Odkazy na příspěvek",
+    "prCount_other": "{{count}} PR"
+  },
+  "results": {
+    "allSuccess": "Všechny žádosti o příspěvek byly úspěšně sloučeny!",
+    "close": "Blízko",
+    "stats": {
+      "failed": "Selhalo",
+      "merged": "Sloučeno",
+      "skipped": "Přeskočeno",
+      "total": "Celkový"
+    },
+    "status": {
+      "failed": "selhal",
+      "skipped": "přeskočeno",
+      "success": "úspěch"
+    },
+    "summary": "Dokončeno se sloučením {{success}}, {{failed}} selhalo, {{skipped}} přeskočeno",
+    "title": "Sloučit výsledky"
+  },
+  "sections": {
+    "notReadyDescription": "Žádosti o načtení, které mají blokátory bránící sloučení",
+    "notReadyTitle": "Není připraveno",
+    "readyDescription": "Žádosti o nahrání (pull requests), které splňují všechny požadavky na sloučení",
+    "readyTitle": "Připraveno ke sloučení"
+  },
+  "selection": {
+    "count": "Vybráno {{selected}} z {{total}}",
+    "deselectAll": "Zrušit výběr všeho",
+    "selectAll": "Vybrat vše"
+  },
+  "subtitle": "Výběr a sloučení více žádostí o příspěvek najednou",
+  "title": "Hromadné sloučení",
+  "toast": {
+    "failed": "Sloučení se nezdařilo",
+    "failedDescription": "Nepodařilo se sloučit #{{number}}: {{error}}",
+    "mergeFailed": "Sloučení se nezdařilo",
+    "mergeSuccess": "Sloučení úspěšné",
+    "mergeSuccessDescription": "Úspěšně sloučeny {{count}} žádosti o změnu obsahu (pull requesty)",
+    "someMergesFailed": "Některá sloučení se nezdařilo",
+    "someMergesFailedDescription": "{{success}} sloučeno, {{failed}} selhalo",
+    "success": "Sloučení PR",
+    "successDescription": "Úspěšně sloučeno #{{number}}: {{title}}"
+  }
+}

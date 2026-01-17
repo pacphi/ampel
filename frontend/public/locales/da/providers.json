@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Konto: Læs",
+      "pullRequestsRead": "Pull-anmodninger: Læs",
+      "pullRequestsWrite": "Pull-anmodninger: Skriv",
+      "repositoriesRead": "Arkiver: Læs",
+      "repositoriesWrite": "Arkiver: Skriv"
+    },
+    "steps": {
+      "step1": "Gå til Bitbucket → Personlige indstillinger → App-adgangskoder",
+      "step2": "Klik på \"Opret app-adgangskode\"",
+      "step3": "Indtast en etiket til adgangskoden",
+      "step4": "Vælg de nødvendige tilladelser:",
+      "step5": "Klik på \"Opret\" og kopier adgangskoden"
+    },
+    "title": "Instruktioner til adgangskoder til Bitbucket-appen"
+  },
+  "common": {
+    "expirationWarning": "Overvej at sætte en udløbsdato for bedre sikkerhed.",
+    "minimalScopes": "Giv kun de minimalt nødvendige tilladelser.",
+    "securityNote": "Hold din token sikker, og del den aldrig offentligt."
+  },
+  "github": {
+    "note": "Finkornede tokens understøttes også med adgangstilladelser til arkivet.",
+    "scopes": {
+      "readOrg": "read:org (Læs org og teammedlemskab)",
+      "readUser": "læs:bruger (Læs brugerprofildata)",
+      "repo": "repo (Fuld kontrol over private arkiver)"
+    },
+    "steps": {
+      "step1": "Gå til GitHub-indstillinger → Udviklerindstillinger → Personlige adgangstokens → Tokens (klassisk)",
+      "step2": "Klik på \"Generer nyt token (klassisk)\"",
+      "step3": "Giv din token et beskrivende navn",
+      "step4": "Vælg de nødvendige omfang:",
+      "step5": "Klik på \"Generer token\" og kopier det med det samme"
+    },
+    "title": "GitHub-tokeninstruktioner"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "api (fuld API-adgang)",
+      "readApi": "read_api (Skrivebeskyttet API-adgang)",
+      "readRepository": "read_repository (Læseadgang til arkiv)"
+    },
+    "steps": {
+      "step1": "Gå til GitLab → Brugerindstillinger → Adgangstokens",
+      "step2": "Indtast et tokennavn og en valgfri udløbsdato",
+      "step3": "Vælg de nødvendige omfang:",
+      "step4": "Klik på \"Opret personlig adgangstoken\" og kopier den"
+    },
+    "title": "GitLab-tokeninstruktioner"
+  },
+  "title": "Udbyderinstruktioner"
+}

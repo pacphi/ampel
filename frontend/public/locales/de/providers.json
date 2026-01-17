@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Konto: Lesen",
+      "pullRequestsRead": "Pull-Anfragen: Lesen",
+      "pullRequestsWrite": "Pull-Anfragen: Schreiben",
+      "repositoriesRead": "Repositorien: Lesen",
+      "repositoriesWrite": "Repositories: Schreiben"
+    },
+    "steps": {
+      "step1": "Gehe zu Bitbucket → Persönliche Einstellungen → App-Passwörter",
+      "step2": "Klicken Sie auf „App-Passwort erstellen“.",
+      "step3": "Geben Sie eine Bezeichnung für das Passwort ein",
+      "step4": "Wählen Sie die erforderlichen Berechtigungen aus:",
+      "step5": "Klicken Sie auf „Erstellen“ und kopieren Sie das Passwort."
+    },
+    "title": "Bitbucket App-Passwortanweisungen"
+  },
+  "common": {
+    "expirationWarning": "Erwägen Sie, zur Erhöhung der Sicherheit ein Ablaufdatum festzulegen.",
+    "minimalScopes": "Erteilen Sie nur die minimal erforderlichen Berechtigungen.",
+    "securityNote": "Bewahren Sie Ihr Token sicher auf und geben Sie es niemals öffentlich weiter."
+  },
+  "github": {
+    "note": "Feingranulare Token werden auch mit Repository-Zugriffsberechtigungen unterstützt.",
+    "scopes": {
+      "readOrg": "read:org (Organisation und Teammitgliedschaft lesen)",
+      "readUser": "read:user (Lesen der Benutzerprofildaten)",
+      "repo": "repo (Volle Kontrolle über private Repositories)"
+    },
+    "steps": {
+      "step1": "Gehen Sie zu GitHub-Einstellungen → Entwicklereinstellungen → Persönliche Zugriffstoken → Token (klassisch)",
+      "step2": "Klicken Sie auf „Neues Token generieren (klassisch)“.",
+      "step3": "Gib deinem Token einen aussagekräftigen Namen",
+      "step4": "Wählen Sie die erforderlichen Bereiche aus:",
+      "step5": "Klicken Sie auf „Token generieren“ und kopieren Sie ihn sofort."
+    },
+    "title": "GitHub-Token-Anleitung"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "API (Voller API-Zugriff)",
+      "readApi": "read_api (Nur-Lesezugriff auf die API)",
+      "readRepository": "read_repository (Zugriff auf das Repository lesen)"
+    },
+    "steps": {
+      "step1": "Gehen Sie zu GitLab → Benutzereinstellungen → Zugriffstoken",
+      "step2": "Geben Sie einen Token-Namen und optional ein Ablaufdatum ein.",
+      "step3": "Wählen Sie die erforderlichen Bereiche aus:",
+      "step4": "Klicken Sie auf „Persönliches Zugriffstoken erstellen“ und kopieren Sie es."
+    },
+    "title": "GitLab-Token-Anleitung"
+  },
+  "title": "Anweisungen für den Anbieter"
+}

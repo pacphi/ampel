@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "連続マージ間の待機時間",
+    "placeholder": "5",
+    "title": "マージ遅延（秒）"
+  },
+  "options": {
+    "allowNoReviews": "レビューなしでマージを許可する",
+    "allowNoReviewsDescription": "レビューのないPRのマージを許可する",
+    "deleteBranch": "マージ後にブランチを削除する",
+    "deleteBranchDescription": "マージが成功した後にソースブランチを自動的に削除する",
+    "requireApproval": "マージ前に承認が必要",
+    "requireApprovalDescription": "マージを実行する前に手動承認を待機します"
+  },
+  "strategy": {
+    "description": "プルリクエストをデフォルトでマージする方法を選択します",
+    "merge": "マージコミットを作成する",
+    "mergeDescription": "すべてのコミットは保存されます",
+    "rebase": "リベースとマージ",
+    "rebaseDescription": "線形コミット履歴",
+    "squash": "押しつぶして結合する",
+    "squashDescription": "すべてのコミットを1つにまとめる",
+    "title": "デフォルトのマージ戦略"
+  },
+  "title": "マージ動作",
+  "toast": {
+    "updateFailed": "設定の更新に失敗しました",
+    "updated": "設定が更新されました",
+    "updatedDescription": "マージ動作の設定が保存されました"
+  }
+}

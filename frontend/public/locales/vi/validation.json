@@ -1,0 +1,35 @@
+{
+  "alphanum": "{{field}} chỉ được chứa chữ cái và số.",
+  "date": "Vui lòng nhập ngày hợp lệ",
+  "dateRange": "Ngày kết thúc phải sau ngày bắt đầu.",
+  "email": "Vui lòng nhập địa chỉ email hợp lệ.",
+  "fields": {
+    "confirmPassword": "Xác nhận mật khẩu",
+    "displayName": "Tên hiển thị",
+    "email": "E-mail",
+    "password": "Mật khẩu"
+  },
+  "fileSize": "Kích thước tệp không được vượt quá {{max}}",
+  "fileType": "Loại tệp phải là {{types}}",
+  "integer": "{{field}} phải là một số nguyên",
+  "invalidEmail": "Địa chỉ email không hợp lệ",
+  "max": "{{field}} không được vượt quá {{max}}",
+  "maxLength": "{{field}} không được vượt quá {{max}} ký tự",
+  "messages": {
+    "displayNameRequired": "Tên hiển thị là bắt buộc",
+    "emailRequired": "Cần có email.",
+    "passwordMinLength": "Mật khẩu phải có ít nhất 8 ký tự.",
+    "passwordRequired": "Cần có mật khẩu."
+  },
+  "min": "{{field}} phải có giá trị tối thiểu là {{min}}",
+  "minLength": "{{field}} phải có ít nhất {{min}} ký tự",
+  "negative": "{{field}} phải là số âm",
+  "numeric": "{{field}} phải là một số",
+  "passwordMismatch": "Mật khẩu không khớp",
+  "passwordsDontMatch": "Mật khẩu không khớp",
+  "pattern": "Định dạng {{field}} không hợp lệ",
+  "positive": "{{field}} phải dương",
+  "required": "{{field}} là bắt buộc",
+  "unique": "{{field}} đã tồn tại",
+  "url": "Vui lòng nhập URL hợp lệ"
+}

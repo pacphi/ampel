@@ -6,6 +6,53 @@ import Repositories from './Repositories';
 import type { RepositoryWithStatus, DiscoveredRepository } from '@/types';
 import type { UseQueryResult, UseMutationResult } from '@tanstack/react-query';
 
+// Mock react-i18next with translations
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string, options?: Record<string, unknown>) => {
+      const translations: Record<string, string> = {
+        // repositories namespace
+        'repositories:title': 'Repositories',
+        'repositories:providers.title': 'Connect a Provider',
+        'repositories:providers.connected': '(Connected)',
+        'repositories:addFrom.title': `Add from ${options?.provider ?? '{{provider}}'}`,
+        'repositories:addFrom.addAll': `Add All (${options?.count ?? '{{count}}'})`,
+        'repositories:addFrom.close': 'Close',
+        'repositories:addFrom.empty': 'No new repositories found to add',
+        'repositories:search.placeholder': 'Search repositories...',
+        'repositories:table.status': 'Status',
+        'repositories:table.repository': 'Repository',
+        'repositories:table.provider': 'Provider',
+        'repositories:table.prs': 'Open PRs',
+        'repositories:table.actions': 'Actions',
+        'repositories:empty.title': 'No repositories found',
+        'repositories:empty.description':
+          'Add repositories from your connected providers to get started',
+        'repositories:toast.added': 'Repository Added',
+        'repositories:toast.addedDescription': `${options?.name ?? '{{name}}'} has been added to your dashboard`,
+        'repositories:toast.addFailed': 'Failed to Add Repository',
+        'repositories:toast.removed': 'Repository Removed',
+        'repositories:toast.removedDescription': `${options?.name ?? '{{name}}'} has been removed from your dashboard`,
+        'repositories:toast.removeFailed': 'Failed to Remove Repository',
+        'repositories:toast.bulkAdded': 'Repositories Added',
+        'repositories:toast.bulkAddedDescription': `Successfully added ${options?.count ?? '{{count}}'} repositories${options?.failed ?? ''}`,
+        'repositories:toast.bulkAddedFailed': ` (${options?.count ?? '{{count}}'} failed)`,
+        'repositories:toast.bulkAddFailed': 'Failed to Add Repositories',
+        'repositories:toast.bulkAddFailedDescription':
+          'Could not add any of the selected repositories',
+        // common namespace
+        'common:providers.github': 'GitHub',
+        'common:providers.gitlab': 'GitLab',
+        'common:providers.bitbucket': 'Bitbucket',
+        // errors namespace
+        'errors:general.unknownError': 'An unknown error occurred',
+      };
+      return translations[key] ?? key;
+    },
+    i18n: { language: 'en' },
+  }),
+}));
+
 vi.mock('@/hooks/useRepositories', () => ({
   useRepositories: vi.fn(),
   useAddRepository: vi.fn(),
@@ -245,7 +292,7 @@ describe('Repositories', () => {
       });
 
       expect(
-        screen.getByText('Connect a provider and add repositories to get started')
+        screen.getByText('Add repositories from your connected providers to get started')
       ).toBeInTheDocument();
     });
   });
@@ -424,8 +471,8 @@ describe('Repositories', () => {
         });
 
         expect(mockToast).toHaveBeenCalledWith({
-          title: 'Repository added',
-          description: 'testorg/newrepo has been added to your watchlist',
+          title: 'Repository Added',
+          description: 'testorg/newrepo has been added to your dashboard',
         });
       }
     });
@@ -489,7 +536,7 @@ describe('Repositories', () => {
         await waitFor(() => {
           expect(mockToast).toHaveBeenCalledWith({
             variant: 'destructive',
-            title: 'Failed to add repository',
+            title: 'Failed to Add Repository',
             description: 'Already exists',
           });
         });
@@ -550,8 +597,8 @@ describe('Repositories', () => {
         });
 
         expect(mockToast).toHaveBeenCalledWith({
-          title: 'Repository removed',
-          description: 'owner1/repo1 has been removed from your watchlist',
+          title: 'Repository Removed',
+          description: 'owner1/repo1 has been removed from your dashboard',
         });
       }
     });
@@ -619,8 +666,8 @@ describe('Repositories', () => {
       });
 
       expect(mockToast).toHaveBeenCalledWith({
-        title: 'Repositories added',
-        description: '2 repositories added to your watchlist',
+        title: 'Repositories Added',
+        description: 'Successfully added 2 repositories',
       });
     });
   });

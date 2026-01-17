@@ -1,4 +1,5 @@
 use chrono::{DateTime, Duration, Utc};
+use rust_i18n::t;
 use sea_orm::{DatabaseConnection, EntityTrait, QueryOrder, QuerySelect};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -96,12 +97,12 @@ impl PollRepositoryJob {
         // Get provider account
         let account_id = repo
             .provider_account_id
-            .ok_or_else(|| anyhow::anyhow!("Repository has no associated provider account"))?;
+            .ok_or_else(|| anyhow::anyhow!(t!("providers.worker.no_account")))?;
 
         let account = provider_account::Entity::find_by_id(account_id)
             .one(db)
             .await?
-            .ok_or_else(|| anyhow::anyhow!("Provider account not found"))?;
+            .ok_or_else(|| anyhow::anyhow!(t!("providers.worker.account_not_found")))?;
 
         // Decrypt access token
         let access_token = encryption_service.decrypt(&account.access_token_encrypted)?;

@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Hinzufügen",
+    "enable": "E-Mail-Benachrichtigungen aktivieren",
+    "enableDescription": "Benachrichtigungen per E-Mail (SMTP) senden",
+    "fromAddress": "Von Adresse",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTP-Host",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "SMTP-Passwort",
+    "smtpPasswordPlaceholder": "Passwort eingeben",
+    "smtpPort": "SMTP-Port",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP-Benutzername",
+    "smtpUserPlaceholder": "user@example.com",
+    "testFailed": "Test-E-Mail konnte nicht gesendet werden",
+    "testMessage": "Test-E-Mail senden",
+    "testSending": "Wird gesendet...",
+    "testSuccess": "Test-E-Mail gesendet",
+    "title": "E-Mail-Benachrichtigungen",
+    "toAddresses": "An Adressen",
+    "toAddressesDescription": "Empfänger von Benachrichtigungs-E-Mails",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "Verwenden Sie TLS"
+  },
+  "merge": {
+    "description": "Wählen Sie aus, wann Sie Benachrichtigungen für Zusammenführungsvorgänge erhalten möchten.",
+    "notifyOnConflict": "Benachrichtigung bei Zusammenführungskonflikten",
+    "notifyOnConflictDescription": "Senden Sie eine Benachrichtigung, wenn Zusammenführungskonflikte erkannt werden.",
+    "notifyOnFailure": "Benachrichtigung bei fehlgeschlagenen Zusammenführungen",
+    "notifyOnFailureDescription": "Senden Sie eine Benachrichtigung, wenn Zusammenführungsvorgänge fehlschlagen.",
+    "notifyOnSuccess": "Benachrichtigung bei erfolgreichen Zusammenführungen",
+    "notifyOnSuccessDescription": "Sende eine Benachrichtigung, wenn PRs erfolgreich zusammengeführt wurden",
+    "title": "Zusammenführungsbenachrichtigungen"
+  },
+  "slack": {
+    "channel": "Kanal (optional)",
+    "channelDescription": "Überschreiben Sie den im Webhook konfigurierten Standardkanal.",
+    "channelPlaceholder": "#allgemein",
+    "enable": "Slack-Benachrichtigungen aktivieren",
+    "enableDescription": "Sende Benachrichtigungen an einen Slack-Kanal",
+    "testFailed": "Testnachricht konnte nicht gesendet werden",
+    "testMessage": "Testnachricht senden",
+    "testSending": "Wird gesendet...",
+    "testSuccess": "Testnachricht gesendet",
+    "title": "Slack-Benachrichtigungen",
+    "webhookUrl": "Webhook-URL",
+    "webhookUrlDescription": "Erstellen Sie einen eingehenden Webhook in Ihrem Slack-Workspace.",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Benachrichtigungseinstellungen",
+  "toast": {
+    "updateFailed": "Einstellungen konnten nicht aktualisiert werden",
+    "updated": "Einstellungen aktualisiert",
+    "updatedDescription": "Benachrichtigungseinstellungen wurden gespeichert"
+  }
+}

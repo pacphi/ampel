@@ -1,0 +1,35 @@
+{
+  "alphanum": "{{field}} يجب أن يحتوي على أحرف وأرقام فقط",
+  "date": "الرجاء إدخال تاريخ صالح",
+  "dateRange": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية",
+  "email": "الرجاء إدخال عنوان بريد إلكتروني صالح",
+  "fields": {
+    "confirmPassword": "تأكيد كلمة المرور",
+    "displayName": "اسم العرض",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور"
+  },
+  "fileSize": "يجب ألا يتجاوز حجم الملف {{max}}",
+  "fileType": "يجب أن يكون نوع الملف {{types}}",
+  "integer": "{{field}} يجب أن يكون عدد صحيح",
+  "invalidEmail": "عنوان البريد الإلكتروني غير صالح",
+  "max": "{{field}} يجب ألا يتجاوز {{max}}",
+  "maxLength": "{{field}} يجب ألا يتجاوز {{max}} حرف",
+  "messages": {
+    "displayNameRequired": "اسم العرض مطلوب",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "passwordMinLength": "يجب أن تكون كلمة المرور على الأقل 8 أحرف",
+    "passwordRequired": "كلمة المرور مطلوبة"
+  },
+  "min": "{{field}} يجب أن يكون على الأقل {{min}}",
+  "minLength": "{{field}} يجب أن يكون على الأقل {{min}} حرف",
+  "negative": "{{field}} يجب أن يكون سلبي",
+  "numeric": "{{field}} يجب أن يكون رقم",
+  "passwordMismatch": "كلمات المرور غير متطابقة",
+  "passwordsDontMatch": "كلمات المرور غير متطابقة",
+  "pattern": "تنسيق {{field}} غير صالح",
+  "positive": "{{field}} يجب أن يكون إيجابي",
+  "required": "{{field}} مطلوب",
+  "unique": "{{field}} موجود بالفعل",
+  "url": "الرجاء إدخال عنوان URL صالح"
+}

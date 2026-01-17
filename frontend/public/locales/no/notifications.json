@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Legge til",
+    "enable": "Aktiver e-postvarsler",
+    "enableDescription": "Send varsler via e-post (SMTP)",
+    "fromAddress": "Fra adresse",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTP-vert",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "SMTP-passord",
+    "smtpPasswordPlaceholder": "Skriv inn passord",
+    "smtpPort": "SMTP-port",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP-brukernavn",
+    "smtpUserPlaceholder": "bruker@eksempel.com",
+    "testFailed": "Kunne ikke sende test-e-post",
+    "testMessage": "Send test-e-post",
+    "testSending": "Sender...",
+    "testSuccess": "Test-e-post sendt",
+    "title": "E-postvarsler",
+    "toAddresses": "Til adresser",
+    "toAddressesDescription": "Mottakere av e-postvarsler",
+    "toAddressesPlaceholder": "epost@eksempel.com",
+    "useTls": "Bruk TLS"
+  },
+  "merge": {
+    "description": "Velg når du vil motta varsler om sammenslåingsoperasjoner",
+    "notifyOnConflict": "Varsle om sammenslåingskonflikter",
+    "notifyOnConflictDescription": "Send varsel når det oppdages sammenslåingskonflikter",
+    "notifyOnFailure": "Varsle om mislykkede sammenslåinger",
+    "notifyOnFailureDescription": "Send varsel når sammenslåingsoperasjoner mislykkes",
+    "notifyOnSuccess": "Varsle om vellykkede sammenslåinger",
+    "notifyOnSuccessDescription": "Send varsel når PR-er er slått sammen",
+    "title": "Slå sammen varsler"
+  },
+  "slack": {
+    "channel": "Kanal (valgfritt)",
+    "channelDescription": "Overstyr standardkanalen som er konfigurert i webhooken",
+    "channelPlaceholder": "#general",
+    "enable": "Aktiver Slack-varsler",
+    "enableDescription": "Send varsler til en Slack-kanal",
+    "testFailed": "Kunne ikke sende testmeldingen",
+    "testMessage": "Send testmelding",
+    "testSending": "Sender...",
+    "testSuccess": "Testmelding sendt",
+    "title": "Slack-varsler",
+    "webhookUrl": "Webhook-URL",
+    "webhookUrlDescription": "Opprett en innkommende webhook i Slack-arbeidsområdet ditt",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Varslingsinnstillinger",
+  "toast": {
+    "updateFailed": "Kunne ikke oppdatere innstillingene",
+    "updated": "Innstillingene er oppdatert",
+    "updatedDescription": "Varslingsinnstillingene er lagret"
+  }
+}

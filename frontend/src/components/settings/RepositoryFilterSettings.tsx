@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -5,17 +6,15 @@ import { Globe, Lock, Archive } from 'lucide-react';
 import { useRepositoryFilters } from '@/hooks/useRepositoryFilters';
 
 export function RepositoryFilterSettings() {
+  const { t } = useTranslation(['settings']);
   const { filters, setFilters } = useRepositoryFilters();
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Repository Visibility Filters</CardTitle>
-          <CardDescription>
-            Control which repositories are displayed in the dashboard based on their visibility and
-            status
-          </CardDescription>
+          <CardTitle>{t('settings:repositories.visibility.title')}</CardTitle>
+          <CardDescription>{t('settings:repositories.visibility.description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Show Public Repositories */}
@@ -23,9 +22,9 @@ export function RepositoryFilterSettings() {
             <div className="flex items-center gap-2">
               <Globe className="h-4 w-4 text-muted-foreground" />
               <div>
-                <Label>Show public repositories</Label>
+                <Label>{t('settings:repositories.visibility.public')}</Label>
                 <p className="text-sm text-muted-foreground">
-                  Display repositories that are publicly accessible
+                  {t('settings:repositories.visibility.publicDescription')}
                 </p>
               </div>
             </div>
@@ -45,9 +44,9 @@ export function RepositoryFilterSettings() {
             <div className="flex items-center gap-2">
               <Lock className="h-4 w-4 text-muted-foreground" />
               <div>
-                <Label>Show private repositories</Label>
+                <Label>{t('settings:repositories.visibility.private')}</Label>
                 <p className="text-sm text-muted-foreground">
-                  Display repositories with restricted access
+                  {t('settings:repositories.visibility.privateDescription')}
                 </p>
               </div>
             </div>
@@ -67,9 +66,9 @@ export function RepositoryFilterSettings() {
             <div className="flex items-center gap-2">
               <Archive className="h-4 w-4 text-muted-foreground" />
               <div>
-                <Label>Show archived repositories</Label>
+                <Label>{t('settings:repositories.visibility.archived')}</Label>
                 <p className="text-sm text-muted-foreground">
-                  Display repositories that have been archived
+                  {t('settings:repositories.visibility.archivedDescription')}
                 </p>
               </div>
             </div>
@@ -87,8 +86,7 @@ export function RepositoryFilterSettings() {
           {/* Note about Bitbucket */}
           <div className="mt-6 rounded-md bg-muted p-4">
             <p className="text-sm text-muted-foreground">
-              <strong>Note:</strong> Bitbucket does not support the archive feature. All Bitbucket
-              repositories are treated as non-archived.
+              {t('settings:repositories.visibility.bitbucketNote')}
             </p>
           </div>
         </CardContent>

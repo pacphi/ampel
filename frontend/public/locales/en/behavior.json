@@ -1,0 +1,31 @@
+{
+  "title": "Merge Behavior",
+  "strategy": {
+    "title": "Default Merge Strategy",
+    "description": "Choose how pull requests should be merged by default",
+    "squash": "Squash and merge",
+    "squashDescription": "Combine all commits into one",
+    "merge": "Create a merge commit",
+    "mergeDescription": "All commits preserved",
+    "rebase": "Rebase and merge",
+    "rebaseDescription": "Linear commit history"
+  },
+  "delay": {
+    "title": "Merge Delay (seconds)",
+    "description": "Wait time between consecutive merges",
+    "placeholder": "5"
+  },
+  "options": {
+    "deleteBranch": "Delete branches after merge",
+    "deleteBranchDescription": "Automatically delete source branches after successful merge",
+    "requireApproval": "Require approval before merge",
+    "requireApprovalDescription": "Wait for manual approval before executing merge",
+    "allowNoReviews": "Allow merge without reviews",
+    "allowNoReviewsDescription": "Allow merging PRs that have no reviews"
+  },
+  "toast": {
+    "updated": "Settings updated",
+    "updatedDescription": "Merge behavior settings have been saved",
+    "updateFailed": "Failed to update settings"
+  }
+}

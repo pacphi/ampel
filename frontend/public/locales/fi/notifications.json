@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Lisätä",
+    "enable": "Ota sähköposti-ilmoitukset käyttöön",
+    "enableDescription": "Lähetä ilmoituksia sähköpostitse (SMTP)",
+    "fromAddress": "Lähettäjän osoite",
+    "fromAddressPlaceholder": "noreply@esimerkki.com",
+    "smtpHost": "SMTP-isäntä",
+    "smtpHostPlaceholder": "smtp.esimerkki.com",
+    "smtpPassword": "SMTP-salasana",
+    "smtpPasswordPlaceholder": "Syötä salasana",
+    "smtpPort": "SMTP-portti",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP-käyttäjätunnus",
+    "smtpUserPlaceholder": "käyttäjä@esimerkki.com",
+    "testFailed": "Testisähköpostin lähettäminen epäonnistui",
+    "testMessage": "Lähetä testisähköposti",
+    "testSending": "Lähetetään...",
+    "testSuccess": "Testisähköposti lähetetty",
+    "title": "Sähköposti-ilmoitukset",
+    "toAddresses": "Vastaanottajaosoitteet",
+    "toAddressesDescription": "Ilmoitussähköpostien vastaanottajat",
+    "toAddressesPlaceholder": "sähköposti@esimerkki.com",
+    "useTls": "Käytä TLS:ää"
+  },
+  "merge": {
+    "description": "Valitse, milloin haluat vastaanottaa ilmoituksia yhdistämistoiminnoista",
+    "notifyOnConflict": "Ilmoita yhdistämisristiriidoista",
+    "notifyOnConflictDescription": "Lähetä ilmoitus, kun yhdistämisristiriitoja havaitaan",
+    "notifyOnFailure": "Ilmoita epäonnistuneista yhdistämisistä",
+    "notifyOnFailureDescription": "Lähetä ilmoitus, kun yhdistämistoiminnot epäonnistuvat",
+    "notifyOnSuccess": "Ilmoita onnistuneista yhdistämisistä",
+    "notifyOnSuccessDescription": "Lähetä ilmoitus, kun PR:t on yhdistetty onnistuneesti",
+    "title": "Yhdistämisilmoitukset"
+  },
+  "slack": {
+    "channel": "Kanava (valinnainen)",
+    "channelDescription": "Ohita webhookissa määritetty oletuskanava",
+    "channelPlaceholder": "#yleinen",
+    "enable": "Ota Slack-ilmoitukset käyttöön",
+    "enableDescription": "Lähetä ilmoituksia Slack-kanavalle",
+    "testFailed": "Testiviestin lähettäminen epäonnistui",
+    "testMessage": "Lähetä testiviesti",
+    "testSending": "Lähetetään...",
+    "testSuccess": "Testiviesti lähetetty",
+    "title": "Slack-ilmoitukset",
+    "webhookUrl": "Webhookin URL-osoite",
+    "webhookUrlDescription": "Luo saapuva webhook Slack-työtilaan",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Ilmoitusasetukset",
+  "toast": {
+    "updateFailed": "Asetusten päivittäminen epäonnistui",
+    "updated": "Asetukset päivitetty",
+    "updatedDescription": "Ilmoitusasetukset on tallennettu"
+  }
+}

@@ -1,0 +1,64 @@
+[package]
+name = "ampel-i18n-builder"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "cargo-i18n"
+path = "src/main.rs"
+
+[lib]
+name = "ampel_i18n_builder"
+path = "src/lib.rs"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1.43", features = ["full"] }
+async-trait = "0.1"
+
+# HTTP client
+reqwest = { version = "0.12", features = ["json"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_yaml = "0.9"
+
+# CLI
+clap = { version = "4.5", features = ["derive"] }
+
+# Configuration
+config = "0.14"
+toml = "0.8"
+
+# Caching
+redis = { version = "0.28", optional = true }
+
+# Error handling
+thiserror = "2.0"
+anyhow = "1.0"
+
+# Utilities
+chrono = "0.4"
+regex = "1.11"
+colored = "2.1"
+indicatif = "0.17"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+secrecy = "0.10"
+dotenv = "0.15"
+
+# Rate limiting and caching
+governor = "0.6"
+nonzero_ext = "0.3"
+lru = "0.12"
+
+[dev-dependencies]
+tokio-test = "0.4"
+mockito = "1.6"
+tempfile = "3.14"
+
+[features]
+default = []
+redis-cache = ["redis"]
+integration-tests = [] # Enable feature-gated tests that make real API calls

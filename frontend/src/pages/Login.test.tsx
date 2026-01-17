@@ -6,6 +6,31 @@ import Login from './Login';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/components/ui/use-toast';
 
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'common:auth.welcomeToAmpel': 'Welcome to Ampel',
+        'common:auth.signInToContinue': 'Sign in to your account to continue',
+        'common:auth.email': 'Email',
+        'common:auth.password': 'Password',
+        'common:auth.signIn': 'Sign In',
+        'common:auth.signingIn': 'Signing in...',
+        'common:auth.dontHaveAccount': "Don't have an account?",
+        'common:auth.signUp': 'Sign Up',
+        'validation:invalidEmail': 'Invalid email address',
+        'validation:messages.passwordRequired': 'Password is required',
+        'errors:auth.loginFailed': 'Login failed',
+        'errors:auth.invalidEmailOrPassword': 'Invalid email or password',
+      };
+      return translations[key] || key;
+    },
+    i18n: { language: 'en', changeLanguage: vi.fn() },
+    ready: true,
+  }),
+}));
+
 // Mock the hooks
 vi.mock('@/hooks/useAuth', () => ({
   useAuth: vi.fn(),

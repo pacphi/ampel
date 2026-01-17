@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: Det här kontot är redan anslutet. Använd PATCH för att uppdatera token.
+      invalid_provider_type: Ogiltig leverantörstyp
+      invalid_token: Ogiltig token
+      not_found: Kontot hittades inte
+      provider_no_user_id: Leverantören returnerade inte användar-ID
+      provider_no_username: Leverantören returnerade inte användarnamnet
+      validation_failed: 'Tokenvalidering misslyckades: %{error}'
+    auth:
+      email_in_use: E-postadressen används redan
+      email_registered: E-postadressen är redan registrerad
+      invalid_credentials: Ogiltig e-postadress eller lösenord
+      invalid_refresh_token: Ogiltig eller utgången uppdateringstoken
+      user_not_found: Användaren hittades inte
+    encryption:
+      decrypt_failed: 'Dekrypteringsfel: %{error}'
+      failed: 'Krypteringsfel: %{fel}'
+    general:
+      internal: Internt fel
+      serialization_failed: 'Misslyckades med att serialisera omfång: %{error}'
+    network:
+      connection_failed: Anslutningen misslyckades
+      timeout: Begäran har nått tidsgränsen
+    provider:
+      decrypt_failed: 'Misslyckades med att dekryptera token: %{error}'
+      error: 'Leverantörsfel: %{fel}'
+    pull_request:
+      merge_failed: 'Sammanslagningen misslyckades: %{reason}'
+      not_found: Pull-förfrågan hittades inte
+    rate_limit:
+      exceeded: Hastighetsgränsen har överskridits
+    repository:
+      already_added: Arkivet har redan lagts till
+      invalid_provider: Ogiltig leverantör
+      invalid_provider_db: Ogiltig leverantörstyp i databasen
+      no_account_linked: Arkivet är inte länkat till kontot
+      not_found: Arkivet hittades inte
+      not_found_for_pr: Arkivet hittades inte för PR
+      provider_not_connected: Leverantören är inte ansluten

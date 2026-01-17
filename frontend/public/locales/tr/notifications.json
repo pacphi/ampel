@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Eklemek",
+    "enable": "E-posta bildirimlerini etkinleştirin",
+    "enableDescription": "E-posta yoluyla bildirim gönder (SMTP)",
+    "fromAddress": "Gönderen Adresi",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTP Sunucusu",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "SMTP Şifresi",
+    "smtpPasswordPlaceholder": "Şifrenizi girin",
+    "smtpPort": "SMTP Bağlantı Noktası",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP Kullanıcı Adı",
+    "smtpUserPlaceholder": "user@example.com",
+    "testFailed": "Test e-postası gönderilemedi.",
+    "testMessage": "Test E-postası Gönder",
+    "testSending": "Gönderiliyor...",
+    "testSuccess": "Test e-postası gönderildi.",
+    "title": "E-posta Bildirimleri",
+    "toAddresses": "Adreslere",
+    "toAddressesDescription": "Bildirim e-postalarının alıcıları",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "TLS kullanın"
+  },
+  "merge": {
+    "description": "Birleştirme işlemleri için bildirimleri ne zaman almak istediğinizi seçin.",
+    "notifyOnConflict": "Birleştirme çakışmaları hakkında bildirim gönder",
+    "notifyOnConflictDescription": "Birleştirme çakışmaları tespit edildiğinde bildirim gönder",
+    "notifyOnFailure": "Başarısız birleştirmelerde bildirim gönder",
+    "notifyOnFailureDescription": "Birleştirme işlemleri başarısız olduğunda bildirim gönder",
+    "notifyOnSuccess": "Başarılı birleştirmelerde bildirim gönder",
+    "notifyOnSuccessDescription": "Çekme istekleri başarıyla birleştirildiğinde bildirim gönder",
+    "title": "Birleştirme Bildirimleri"
+  },
+  "slack": {
+    "channel": "Kanal (isteğe bağlı)",
+    "channelDescription": "Webhook'ta yapılandırılmış varsayılan kanalı geçersiz kılın.",
+    "channelPlaceholder": "#genel",
+    "enable": "Slack bildirimlerini etkinleştirin",
+    "enableDescription": "Slack kanalına bildirim gönder",
+    "testFailed": "Test mesajı gönderilemedi.",
+    "testMessage": "Test Mesajı Gönder",
+    "testSending": "Gönderiliyor...",
+    "testSuccess": "Test mesajı gönderildi.",
+    "title": "Slack Bildirimleri",
+    "webhookUrl": "Webhook URL",
+    "webhookUrlDescription": "Slack çalışma alanınızda gelen bir webhook oluşturun.",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Bildirim Ayarları",
+  "toast": {
+    "updateFailed": "Ayarlar güncellenemedi.",
+    "updated": "Ayarlar güncellendi",
+    "updatedDescription": "Bildirim ayarları kaydedildi."
+  }
+}

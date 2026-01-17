@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Adicionar tudo ({{count}})",
+    "close": "Fechar",
+    "empty": "Nenhum novo repositório encontrado para adicionar.",
+    "title": "Adicionar de {{provider}}"
+  },
+  "empty": {
+    "description": "Adicione repositórios de seus provedores conectados para começar.",
+    "title": "Nenhum repositório encontrado"
+  },
+  "providers": {
+    "connected": "(Conectado)",
+    "title": "Conectar um provedor"
+  },
+  "search": {
+    "placeholder": "Repositórios de pesquisa..."
+  },
+  "table": {
+    "actions": "Ações",
+    "provider": "Fornecedor",
+    "prs": "Abrir PRs",
+    "repository": "Repositório",
+    "status": "Status"
+  },
+  "title": "Repositórios",
+  "toast": {
+    "addFailed": "Falha ao adicionar repositório",
+    "added": "Repositório adicionado",
+    "addedDescription": "{{name}} foi adicionado ao seu painel de controle",
+    "bulkAddFailed": "Falha ao adicionar repositórios",
+    "bulkAddFailedDescription": "Não foi possível adicionar nenhum dos repositórios selecionados.",
+    "bulkAdded": "Repositórios adicionados",
+    "bulkAddedDescription": "Repositórios adicionados com sucesso{{count}}",
+    "bulkAddedFailed": "({{count}} falhou)",
+    "removeFailed": "Falha ao remover o repositório",
+    "removed": "Repositório removido",
+    "removedDescription": "{{name}} foi removido do seu painel de controle"
+  }
+}

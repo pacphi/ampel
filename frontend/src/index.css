@@ -57,3 +57,129 @@ body {
   background-color: var(--color-background);
   color: var(--color-foreground);
 }
+
+/* RTL Support - Logical Properties */
+@layer utilities {
+  /* Margin utilities with logical properties */
+  .ms-auto {
+    margin-inline-start: auto;
+  }
+  .me-auto {
+    margin-inline-end: auto;
+  }
+  .ms-1 {
+    margin-inline-start: 0.25rem;
+  }
+  .ms-2 {
+    margin-inline-start: 0.5rem;
+  }
+  .ms-3 {
+    margin-inline-start: 0.75rem;
+  }
+  .ms-4 {
+    margin-inline-start: 1rem;
+  }
+  .ms-6 {
+    margin-inline-start: 1.5rem;
+  }
+  .ms-8 {
+    margin-inline-start: 2rem;
+  }
+
+  .me-1 {
+    margin-inline-end: 0.25rem;
+  }
+  .me-2 {
+    margin-inline-end: 0.5rem;
+  }
+  .me-3 {
+    margin-inline-end: 0.75rem;
+  }
+  .me-4 {
+    margin-inline-end: 1rem;
+  }
+  .me-6 {
+    margin-inline-end: 1.5rem;
+  }
+  .me-8 {
+    margin-inline-end: 2rem;
+  }
+
+  /* Padding utilities with logical properties */
+  .ps-1 {
+    padding-inline-start: 0.25rem;
+  }
+  .ps-2 {
+    padding-inline-start: 0.5rem;
+  }
+  .ps-3 {
+    padding-inline-start: 0.75rem;
+  }
+  .ps-4 {
+    padding-inline-start: 1rem;
+  }
+  .ps-6 {
+    padding-inline-start: 1.5rem;
+  }
+  .ps-8 {
+    padding-inline-start: 2rem;
+  }
+
+  .pe-1 {
+    padding-inline-end: 0.25rem;
+  }
+  .pe-2 {
+    padding-inline-end: 0.5rem;
+  }
+  .pe-3 {
+    padding-inline-end: 0.75rem;
+  }
+  .pe-4 {
+    padding-inline-end: 1rem;
+  }
+  .pe-6 {
+    padding-inline-end: 1.5rem;
+  }
+  .pe-8 {
+    padding-inline-end: 2rem;
+  }
+
+  /* Text alignment with logical properties */
+  .text-start {
+    text-align: start;
+  }
+  .text-end {
+    text-align: end;
+  }
+
+  /* Border utilities with logical properties */
+  .border-s {
+    border-inline-start-width: 1px;
+  }
+  .border-e {
+    border-inline-end-width: 1px;
+  }
+  .border-s-2 {
+    border-inline-start-width: 2px;
+  }
+  .border-e-2 {
+    border-inline-end-width: 2px;
+  }
+
+  /* RTL-specific overrides */
+  .rtl .rotate-90 {
+    transform: rotate(-90deg);
+  }
+  .rtl .rotate-180 {
+    transform: rotate(-180deg);
+  }
+  .rtl .rotate-270 {
+    transform: rotate(-270deg);
+  }
+}
+
+/* Loading state for translations */
+.i18n-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}

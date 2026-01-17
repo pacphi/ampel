@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Tillbaka till konton",
+    "form": {
+      "accountLabel": "Kontoetikett",
+      "accountLabelDescription": "Ett vänligt namn för att identifiera detta konto",
+      "accountLabelPlaceholder": "t.ex. Arbets-GitHub, Personligt GitLab",
+      "provider": "Leverantör",
+      "selectProvider": "Välj en leverantör",
+      "token": "Personlig åtkomsttoken",
+      "tokenDescription": "Din token är krypterad och lagras säkert",
+      "tokenPlaceholder": "Ange din personliga åtkomsttoken"
+    },
+    "submit": "Anslut konto",
+    "submitting": "Ansluter...",
+    "subtitle": "Anslut ett nytt Git-leverantörskonto",
+    "title": "Lägg till leverantörskonto"
+  },
+  "addAccount": "Lägg till konto",
+  "addFirstAccount": "Lägg till ditt första konto",
+  "card": {
+    "actions": {
+      "delete": "Ta bort konto",
+      "edit": "Redigera konto",
+      "setDefault": "Ange som standard",
+      "validate": "Validera token"
+    },
+    "expires": "Utgår",
+    "neverExpires": "Går aldrig ut",
+    "repositories": "arkiv",
+    "status": {
+      "default": "Standard",
+      "expired": "Utgången",
+      "invalid": "Ogiltig",
+      "pending": "I avvaktan på",
+      "valid": "Giltig"
+    },
+    "validated": "Validerad"
+  },
+  "delete": {
+    "cancel": "Avboka",
+    "confirm": "Radera",
+    "deleting": "Tar bort...",
+    "description": "Är du säker på att du vill ta bort kontot \"{{label}}\"? Detta kommer inte att ta bort arkiven, men de måste länkas om till ett annat konto.",
+    "title": "Ta bort konto"
+  },
+  "description": "Hantera dina anslutna Git-leverantörskonton",
+  "edit": {
+    "accountInfo": "Kontoinformation",
+    "backToAccounts": "Tillbaka till konton",
+    "form": {
+      "accountLabel": "Kontoetikett",
+      "accountLabelPlaceholder": "t.ex. Arbeta GitHub",
+      "currentToken": "Nuvarande token",
+      "token": "Personlig åtkomsttoken",
+      "tokenDescription": "Lämna tomt för att behålla aktuell token",
+      "tokenPlaceholder": "Ange ny token för att uppdatera"
+    },
+    "notFound": "Kontot hittades inte",
+    "submit": "Spara ändringar",
+    "submitting": "Sparande...",
+    "subtitle": "Uppdatera kontoinställningar",
+    "title": "Redigera konto"
+  },
+  "noAccountsYet": "Inga konton är anslutna ännu",
+  "title": "Leverantörskonton",
+  "toast": {
+    "connected": "Konto anslutet",
+    "connectedDescription": "Kontot {{provider}} har anslutits",
+    "connectionFailed": "Misslyckades med att lägga till konto",
+    "defaultUpdateFailed": "Misslyckades med att uppdatera standardvärdet",
+    "defaultUpdated": "Standardkonto uppdaterat",
+    "defaultUpdatedDescription": "Standardkontot har ändrats",
+    "deleteFailed": "Misslyckades med att ta bort kontot",
+    "deleted": "Konto raderat",
+    "deletedDescription": "Kontot har tagits bort",
+    "tokenInvalid": "Ogiltig token",
+    "tokenInvalidDescription": "Token är ogiltig eller har löpt ut",
+    "tokenValid": "Giltig token",
+    "tokenValidDescription": "Kontotokenet är giltigt och aktivt",
+    "updateFailed": "Misslyckades med att uppdatera kontot",
+    "updated": "Konto uppdaterat",
+    "updatedDescription": "Kontoinställningarna har sparats",
+    "validationFailed": "Valideringen misslyckades"
+  }
+}

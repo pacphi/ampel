@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "กลับไปที่บัญชี",
+    "form": {
+      "accountLabel": "ป้ายกำกับบัญชี",
+      "accountLabelDescription": "ชื่อที่เป็นมิตรเพื่อระบุบัญชีนี้",
+      "accountLabelPlaceholder": "เช่น GitHub สำหรับทำงาน, GitLab สำหรับส่วนตัว",
+      "provider": "ผู้ให้บริการ",
+      "selectProvider": "เลือกผู้ให้บริการ",
+      "token": "โทเค็นการเข้าถึงส่วนบุคคล",
+      "tokenDescription": "โทเค็นของคุณได้รับการเข้ารหัสและจัดเก็บอย่างปลอดภัย",
+      "tokenPlaceholder": "ป้อนรหัสการเข้าถึงส่วนบุคคลของคุณ"
+    },
+    "submit": "เชื่อมต่อบัญชี",
+    "submitting": "กำลังเชื่อมต่อ...",
+    "subtitle": "เชื่อมต่อบัญชีผู้ให้บริการ Git ใหม่",
+    "title": "เพิ่มบัญชีผู้ให้บริการ"
+  },
+  "addAccount": "เพิ่มบัญชี",
+  "addFirstAccount": "เพิ่มบัญชีแรกของคุณ",
+  "card": {
+    "actions": {
+      "delete": "ลบบัญชี",
+      "edit": "แก้ไขบัญชี",
+      "setDefault": "ตั้งค่าเป็นค่าเริ่มต้น",
+      "validate": "ตรวจสอบโทเค็น"
+    },
+    "expires": "หมดอายุ",
+    "neverExpires": "ไม่มีวันหมดอายุ",
+    "repositories": "ที่เก็บข้อมูล",
+    "status": {
+      "default": "ค่าเริ่มต้น",
+      "expired": "หมดอายุ",
+      "invalid": "ไม่ถูกต้อง",
+      "pending": "รอดำเนินการ",
+      "valid": "ถูกต้อง"
+    },
+    "validated": "ได้รับการตรวจสอบแล้ว"
+  },
+  "delete": {
+    "cancel": "ยกเลิก",
+    "confirm": "ลบ",
+    "deleting": "กำลังลบ...",
+    "description": "คุณแน่ใจหรือไม่ว่าต้องการลบบัญชี \"{{label}}\"? การดำเนินการนี้จะไม่ลบที่เก็บข้อมูล แต่จะต้องเชื่อมโยงกับบัญชีอื่นอีกครั้ง",
+    "title": "ลบบัญชีผู้ใช้"
+  },
+  "description": "จัดการบัญชีผู้ให้บริการ Git ที่เชื่อมต่อของคุณ",
+  "edit": {
+    "accountInfo": "ข้อมูลบัญชี",
+    "backToAccounts": "กลับไปที่บัญชี",
+    "form": {
+      "accountLabel": "ป้ายกำกับบัญชี",
+      "accountLabelPlaceholder": "เช่น ทำงานบน GitHub",
+      "currentToken": "โทเค็นปัจจุบัน",
+      "token": "โทเค็นการเข้าถึงส่วนบุคคล",
+      "tokenDescription": "เว้นว่างไว้เพื่อคงโทเค็นปัจจุบันไว้",
+      "tokenPlaceholder": "ป้อนโทเค็นใหม่เพื่ออัปเดต"
+    },
+    "notFound": "ไม่พบบัญชีผู้ใช้",
+    "submit": "บันทึกการเปลี่ยนแปลง",
+    "submitting": "ประหยัด...",
+    "subtitle": "อัปเดตการตั้งค่าบัญชี",
+    "title": "แก้ไขบัญชี"
+  },
+  "noAccountsYet": "ยังไม่ได้เชื่อมต่อบัญชีใดๆ",
+  "title": "บัญชีผู้ให้บริการ",
+  "toast": {
+    "connected": "บัญชีเชื่อมต่อแล้ว",
+    "connectedDescription": "เชื่อมต่อบัญชี {{provider}} สำเร็จแล้ว",
+    "connectionFailed": "ไม่สามารถเพิ่มบัญชีได้",
+    "defaultUpdateFailed": "ไม่สามารถอัปเดตค่าเริ่มต้นได้",
+    "defaultUpdated": "บัญชีเริ่มต้นได้รับการอัปเดตแล้ว",
+    "defaultUpdatedDescription": "บัญชีเริ่มต้นได้ถูกเปลี่ยนแปลงแล้ว",
+    "deleteFailed": "ไม่สามารถลบบัญชีได้",
+    "deleted": "บัญชีถูกลบแล้ว",
+    "deletedDescription": "บัญชีดังกล่าวถูกลบออกเรียบร้อยแล้ว",
+    "tokenInvalid": "โทเค็นไม่ถูกต้อง",
+    "tokenInvalidDescription": "โทเค็นไม่ถูกต้องหรือหมดอายุแล้ว",
+    "tokenValid": "โทเค็นถูกต้อง",
+    "tokenValidDescription": "โทเค็นบัญชีถูกต้องและใช้งานได้",
+    "updateFailed": "ไม่สามารถอัปเดตบัญชีได้",
+    "updated": "บัญชีได้รับการอัปเดตแล้ว",
+    "updatedDescription": "การตั้งค่าบัญชีได้รับการบันทึกแล้ว",
+    "validationFailed": "การตรวจสอบความถูกต้องล้มเหลว"
+  }
+}

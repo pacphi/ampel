@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: 이 계정은 이미 연결되어 있습니다. 토큰을 업데이트하려면 PATCH 명령어를 사용하세요.
+      invalid_provider_type: 잘못된 공급자 유형입니다
+      invalid_token: 잘못된 토큰입니다
+      not_found: 계정을 찾을 수 없습니다
+      provider_no_user_id: 제공업체에서 사용자 ID를 반환하지 않았습니다.
+      provider_no_username: 제공자가 사용자 이름을 반환하지 않았습니다.
+      validation_failed: '토큰 유효성 검사 실패: %{error}'
+    auth:
+      email_in_use: 이미 사용 중인 이메일입니다.
+      email_registered: 이메일 주소가 이미 등록되었습니다.
+      invalid_credentials: 잘못된 이메일 또는 비밀번호입니다.
+      invalid_refresh_token: 유효하지 않거나 만료된 새로 고침 토큰
+      user_not_found: 사용자를 찾을 수 없습니다
+    encryption:
+      decrypt_failed: '복호화 오류: %{error}'
+      failed: '암호화 오류: %{error}'
+    general:
+      internal: 내부 오류
+      serialization_failed: '스코프 직렬화에 실패했습니다: %{error}'
+    network:
+      connection_failed: 연결 실패
+      timeout: 요청 시간이 초과되었습니다
+    provider:
+      decrypt_failed: '토큰 복호화에 실패했습니다: %{error}'
+      error: '공급자 오류: %{error}'
+    pull_request:
+      merge_failed: '병합 실패: %{reason}'
+      not_found: 풀 리퀘스트를 찾을 수 없습니다.
+    rate_limit:
+      exceeded: 속도 제한 초과
+    repository:
+      already_added: 저장소가 이미 추가되었습니다
+      invalid_provider: 잘못된 공급자
+      invalid_provider_db: 데이터베이스에 잘못된 공급자 유형이 있습니다.
+      no_account_linked: 저장소가 계정에 연결되지 않았습니다.
+      not_found: 저장소를 찾을 수 없습니다
+      not_found_for_pr: PR에 대한 저장소를 찾을 수 없습니다.
+      provider_not_connected: 공급자가 연결되지 않았습니다.

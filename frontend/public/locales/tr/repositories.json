@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Tümünü Ekle ({{count}})",
+    "close": "Kapalı",
+    "empty": "Eklenecek yeni depo bulunamadı.",
+    "title": "{{provider}}'dan ekle"
+  },
+  "empty": {
+    "description": "Başlamak için bağlı sağlayıcılarınızdan depolar ekleyin.",
+    "title": "Hiçbir depo bulunamadı."
+  },
+  "providers": {
+    "connected": "(Bağlantılı)",
+    "title": "Bir Sağlayıcı Bağlayın"
+  },
+  "search": {
+    "placeholder": "Depolarda arama yap..."
+  },
+  "table": {
+    "actions": "Eylemler",
+    "provider": "Sağlayıcı",
+    "prs": "Açık PR'lar",
+    "repository": "Depo",
+    "status": "Durum"
+  },
+  "title": "Depolar",
+  "toast": {
+    "addFailed": "Depo Ekleme Başarısız Oldu",
+    "added": "Depo Eklendi",
+    "addedDescription": "{{name}} gösterge panelinize eklendi.",
+    "bulkAddFailed": "Depo Ekleme Başarısız Oldu",
+    "bulkAddFailedDescription": "Seçilen depoların hiçbiri eklenemedi.",
+    "bulkAdded": "Depolar Eklendi",
+    "bulkAddedDescription": "{{count}} depo başarıyla eklendi{{failed}}",
+    "bulkAddedFailed": "({{count}} başarısız oldu)",
+    "removeFailed": "Depoyu Kaldırma Başarısız Oldu",
+    "removed": "Depo Kaldırıldı",
+    "removedDescription": "{{name}} kontrol panelinizden kaldırıldı."
+  }
+}

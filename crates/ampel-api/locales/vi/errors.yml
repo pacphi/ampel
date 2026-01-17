@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: Tài khoản này đã được kết nối. Hãy sử dụng lệnh PATCH để cập nhật mã thông báo.
+      invalid_provider_type: Loại nhà cung cấp không hợp lệ
+      invalid_token: Mã thông báo không hợp lệ
+      not_found: Không tìm thấy tài khoản
+      provider_no_user_id: Nhà cung cấp không trả về ID người dùng.
+      provider_no_username: Nhà cung cấp không trả về tên người dùng.
+      validation_failed: 'Xác thực mã thông báo thất bại: %{error}'
+    auth:
+      email_in_use: Địa chỉ email hiện đang được sử dụng.
+      email_registered: Email đã được đăng ký
+      invalid_credentials: Email hoặc mật khẩu không hợp lệ
+      invalid_refresh_token: Mã thông báo làm mới không hợp lệ hoặc đã hết hạn
+      user_not_found: Không tìm thấy người dùng
+    encryption:
+      decrypt_failed: 'Lỗi giải mã: %{error}'
+      failed: 'Lỗi mã hóa: %{error}'
+    general:
+      internal: Lỗi nội bộ
+      serialization_failed: 'Không thể tuần tự hóa phạm vi: %{error}'
+    network:
+      connection_failed: Kết nối thất bại
+      timeout: Yêu cầu đã hết thời gian chờ
+    provider:
+      decrypt_failed: 'Không thể giải mã token: %{error}'
+      error: 'Lỗi nhà cung cấp: %{error}'
+    pull_request:
+      merge_failed: 'Hợp nhất thất bại: %{reason}'
+      not_found: Không tìm thấy yêu cầu kéo (pull request).
+    rate_limit:
+      exceeded: Đã vượt quá giới hạn tỷ lệ
+    repository:
+      already_added: Kho lưu trữ đã được thêm
+      invalid_provider: Nhà cung cấp không hợp lệ
+      invalid_provider_db: Loại nhà cung cấp không hợp lệ trong cơ sở dữ liệu
+      no_account_linked: Kho lưu trữ không được liên kết với tài khoản
+      not_found: Không tìm thấy kho lưu trữ
+      not_found_for_pr: Không tìm thấy kho lưu trữ cho PR
+      provider_not_connected: Nhà cung cấp chưa được kết nối

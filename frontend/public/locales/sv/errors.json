@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "Misslyckades med att skapa konto",
+    "forbidden": "Du har inte behörighet att komma åt den här resursen",
+    "invalidCredentials": "Ogiltigt användarnamn eller lösenord",
+    "invalidEmailOrPassword": "Ogiltig e-postadress eller lösenord",
+    "loginFailed": "Inloggningen misslyckades",
+    "registrationFailed": "Registreringen misslyckades",
+    "sessionExpired": "Din session har löpt ut. Vänligen logga in igen.",
+    "tokenExpired": "Autentiseringstoken har löpt ut",
+    "unauthorized": "Obehörig åtkomst"
+  },
+  "boundary": {
+    "description": "Ett oväntat fel uppstod. Försök igen.",
+    "details": "Felinformation (endast utvecklare)",
+    "reload": "Ladda om sidan",
+    "title": "Något gick fel",
+    "tryAgain": "Försök igen"
+  },
+  "general": {
+    "unknownError": "Ett okänt fel uppstod"
+  },
+  "generic": {
+    "goHome": "Gå till instrumentpanelen",
+    "message": "Ett oväntat fel uppstod. Försök igen.",
+    "retry": "Försök igen",
+    "somethingWentWrong": "Något gick fel. Försök igen.",
+    "title": "Något gick fel"
+  },
+  "network": {
+    "message": "Det gick inte att ansluta till servern. Kontrollera din internetanslutning.",
+    "offline": "Du är för närvarande offline",
+    "title": "Nätverksfel"
+  },
+  "notFound": {
+    "goHome": "Återgå till instrumentpanelen",
+    "message": "Sidan du söker finns inte.",
+    "title": "Sidan hittades inte"
+  },
+  "pr": {
+    "approveFailed": "Kunde inte godkänna pull-förfrågan",
+    "commentFailed": "Misslyckades med att publicera kommentaren",
+    "loadFailed": "Misslyckades med att läsa in pull requests",
+    "mergeFailed": "Misslyckades med att sammanfoga pull-förfrågan"
+  },
+  "provider": {
+    "connectionFailed": "Misslyckades med att ansluta till {{provider}}",
+    "invalidToken": "Ogiltig {{provider}}-token",
+    "notFound": "Resursen hittades inte på {{provider}}",
+    "rateLimited": "API-hastighetsgränsen för {{provider}} har överskridits"
+  },
+  "repository": {
+    "accessDenied": "Åtkomst till arkivet nekad",
+    "loadFailed": "Misslyckades med att ladda arkiven",
+    "notFound": "Arkivet hittades inte"
+  },
+  "validation": {
+    "invalidEmail": "Ange en giltig e-postadress",
+    "invalidUrl": "Ange en giltig URL",
+    "maxLength": "Får inte överstiga {{max}} tecken",
+    "minLength": "Måste vara minst {{min}} tecken",
+    "passwordMismatch": "Lösenorden matchar inte",
+    "required": "Detta fält är obligatoriskt"
+  }
+}

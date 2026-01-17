@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Dialog,
   DialogContent,
@@ -16,6 +17,8 @@ interface MergeResultsDialogProps {
 }
 
 export function MergeResultsDialog({ open, onOpenChange, results }: MergeResultsDialogProps) {
+  const { t } = useTranslation(['merge']);
+
   if (!results) return null;
 
   const getStatusIcon = (status: string) => {
@@ -44,15 +47,32 @@ export function MergeResultsDialog({ open, onOpenChange, results }: MergeResults
     }
   };
 
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'success':
+        return t('merge:results.status.success');
+      case 'failed':
+        return t('merge:results.status.failed');
+      case 'skipped':
+        return t('merge:results.status.skipped');
+      default:
+        return status;
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Merge Results</DialogTitle>
+          <DialogTitle>{t('merge:results.title')}</DialogTitle>
           <DialogDescription>
             {results.status === 'completed' && results.failed === 0
-              ? 'All PRs merged successfully!'
-              : `Completed with ${results.success} merged, ${results.failed} failed, ${results.skipped} skipped`}
+              ? t('merge:results.allSuccess')
+              : t('merge:results.summary', {
+                  success: results.success,
+                  failed: results.failed,
+                  skipped: results.skipped,
+                })}
           </DialogDescription>
         </DialogHeader>
 
@@ -60,19 +80,19 @@ export function MergeResultsDialog({ open, onOpenChange, results }: MergeResults
         <div className="grid grid-cols-4 gap-4 py-4">
           <div className="text-center p-3 rounded-lg bg-muted">
             <div className="text-2xl font-bold">{results.total}</div>
-            <div className="text-sm text-muted-foreground">Total</div>
+            <div className="text-sm text-muted-foreground">{t('merge:results.stats.total')}</div>
           </div>
           <div className="text-center p-3 rounded-lg bg-green-500/10">
             <div className="text-2xl font-bold text-green-700">{results.success}</div>
-            <div className="text-sm text-green-600">Merged</div>
+            <div className="text-sm text-green-600">{t('merge:results.stats.merged')}</div>
           </div>
           <div className="text-center p-3 rounded-lg bg-red-500/10">
             <div className="text-2xl font-bold text-red-700">{results.failed}</div>
-            <div className="text-sm text-red-600">Failed</div>
+            <div className="text-sm text-red-600">{t('merge:results.stats.failed')}</div>
           </div>
           <div className="text-center p-3 rounded-lg bg-yellow-500/10">
             <div className="text-2xl font-bold text-yellow-700">{results.skipped}</div>
-            <div className="text-sm text-yellow-600">Skipped</div>
+            <div className="text-sm text-yellow-600">{t('merge:results.stats.skipped')}</div>
           </div>
         </div>
 
@@ -101,14 +121,14 @@ export function MergeResultsDialog({ open, onOpenChange, results }: MergeResults
                   result.status
                 )}`}
               >
-                {result.status}
+                {getStatusLabel(result.status)}
               </span>
             </div>
           ))}
         </div>
 
         <div className="flex justify-end pt-4">
-          <Button onClick={() => onOpenChange(false)}>Close</Button>
+          <Button onClick={() => onOpenChange(false)}>{t('merge:results.close')}</Button>
         </div>
       </DialogContent>
     </Dialog>

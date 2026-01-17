@@ -1,11 +1,14 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LogOut, Moon, Sun } from 'lucide-react';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Header() {
+  const { t } = useTranslation(['dashboard', 'common']);
   const { user, logout } = useAuth();
   const { setTheme, resolvedTheme } = useTheme();
   const navigate = useNavigate();
@@ -31,10 +34,11 @@ export default function Header() {
   return (
     <header className="flex h-16 items-center justify-between border-b bg-card px-6">
       <div className="flex items-center gap-4">
-        <h1 className="text-lg font-semibold">PR Dashboard</h1>
+        <h1 className="text-lg font-semibold">{t('dashboard:prDashboard')}</h1>
       </div>
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={toggleTheme}>
+        <LanguageSwitcher variant="inline" size="sm" />
+        <Button variant="ghost" size="icon" onClick={toggleTheme} title={t('common:theme.toggle')}>
           {resolvedTheme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
         <div className="flex items-center gap-3">
@@ -48,7 +52,7 @@ export default function Header() {
             </div>
           )}
         </div>
-        <Button variant="ghost" size="icon" onClick={handleLogout}>
+        <Button variant="ghost" size="icon" onClick={handleLogout} title={t('common:auth.logout')}>
           <LogOut className="h-5 w-5" />
         </Button>
       </div>

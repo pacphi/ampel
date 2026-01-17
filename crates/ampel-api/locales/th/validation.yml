@@ -1,0 +1,8 @@
+en:
+  validation:
+    account:
+      invalid: ไม่ถูกต้อง
+      valid: ถูกต้อง
+    general:
+      invalid_format: รูปแบบไม่ถูกต้อง
+      required: ช่องนี้จำเป็นต้องกรอก

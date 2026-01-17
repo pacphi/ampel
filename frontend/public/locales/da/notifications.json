@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Tilføje",
+    "enable": "Aktivér e-mail-notifikationer",
+    "enableDescription": "Send notifikationer via e-mail (SMTP)",
+    "fromAddress": "Fra adresse",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTP-vært",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "SMTP-adgangskode",
+    "smtpPasswordPlaceholder": "Indtast adgangskode",
+    "smtpPort": "SMTP-port",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP-brugernavn",
+    "smtpUserPlaceholder": "bruger@eksempel.com",
+    "testFailed": "Kunne ikke sende test-e-mail",
+    "testMessage": "Send test-e-mail",
+    "testSending": "Sender...",
+    "testSuccess": "Testmail sendt",
+    "title": "E-mail-notifikationer",
+    "toAddresses": "Til adresser",
+    "toAddressesDescription": "Modtagere af notifikationsmails",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "Brug TLS"
+  },
+  "merge": {
+    "description": "Vælg, hvornår du vil modtage notifikationer om fletningshandlinger",
+    "notifyOnConflict": "Giv besked om sammenflettede konflikter",
+    "notifyOnConflictDescription": "Send besked, når der registreres sammenflettede konflikter",
+    "notifyOnFailure": "Giv besked om mislykkede fusioner",
+    "notifyOnFailureDescription": "Send besked, når fletningshandlinger mislykkes",
+    "notifyOnSuccess": "Giv besked om vellykkede fusioner",
+    "notifyOnSuccessDescription": "Send besked, når PR'er er blevet flettet sammen",
+    "title": "Fletningsmeddelelser"
+  },
+  "slack": {
+    "channel": "Kanal (valgfrit)",
+    "channelDescription": "Tilsidesæt standardkanalen, der er konfigureret i webhooken",
+    "channelPlaceholder": "#generel",
+    "enable": "Aktivér Slack-notifikationer",
+    "enableDescription": "Send notifikationer til en Slack-kanal",
+    "testFailed": "Kunne ikke sende testbeskeden",
+    "testMessage": "Send testbesked",
+    "testSending": "Sender...",
+    "testSuccess": "Testbesked sendt",
+    "title": "Slack-notifikationer",
+    "webhookUrl": "Webhook-URL",
+    "webhookUrlDescription": "Opret en indgående webhook i dit Slack-arbejdsområde",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Meddelelsesindstillinger",
+  "toast": {
+    "updateFailed": "Indstillingerne kunne ikke opdateres",
+    "updated": "Indstillinger opdateret",
+    "updatedDescription": "Notifikationsindstillingerne er blevet gemt"
+  }
+}

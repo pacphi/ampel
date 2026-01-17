@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Terug naar Accounts",
+    "form": {
+      "accountLabel": "Accountlabel",
+      "accountLabelDescription": "Een gebruiksvriendelijke naam om dit account te identificeren.",
+      "accountLabelPlaceholder": "bijv. GitHub voor werk, GitLab voor persoonlijk gebruik",
+      "provider": "Aanbieder",
+      "selectProvider": "Selecteer een aanbieder",
+      "token": "Persoonlijk toegangstoken",
+      "tokenDescription": "Uw token is versleuteld en veilig opgeslagen.",
+      "tokenPlaceholder": "Voer uw persoonlijke toegangstoken in."
+    },
+    "submit": "Account koppelen",
+    "submitting": "Verbinden...",
+    "subtitle": "Een nieuw Git-provideraccount koppelen",
+    "title": "Provideraccount toevoegen"
+  },
+  "addAccount": "Account toevoegen",
+  "addFirstAccount": "Voeg je eerste account toe",
+  "card": {
+    "actions": {
+      "delete": "Account verwijderen",
+      "edit": "Account bewerken",
+      "setDefault": "Instellen als standaard",
+      "validate": "Valideer token"
+    },
+    "expires": "Verloopt",
+    "neverExpires": "Verloopt nooit",
+    "repositories": "repositories",
+    "status": {
+      "default": "Standaard",
+      "expired": "Verlopen",
+      "invalid": "Ongeldig",
+      "pending": "In behandeling",
+      "valid": "Geldig"
+    },
+    "validated": "Gevalideerd"
+  },
+  "delete": {
+    "cancel": "Annuleren",
+    "confirm": "Verwijderen",
+    "deleting": "Verwijderen...",
+    "description": "Weet je zeker dat je het account \"{{label}}\" wilt verwijderen? Dit verwijdert de repositories niet, maar ze moeten wel opnieuw aan een ander account worden gekoppeld.",
+    "title": "Account verwijderen"
+  },
+  "description": "Beheer uw gekoppelde Git-provideraccounts.",
+  "edit": {
+    "accountInfo": "Accountgegevens",
+    "backToAccounts": "Terug naar Accounts",
+    "form": {
+      "accountLabel": "Accountlabel",
+      "accountLabelPlaceholder": "bijv. Werk GitHub",
+      "currentToken": "Huidig token",
+      "token": "Persoonlijk toegangstoken",
+      "tokenDescription": "Laat dit veld leeg om het huidige token te behouden.",
+      "tokenPlaceholder": "Voer een nieuw token in om bij te werken"
+    },
+    "notFound": "Account niet gevonden",
+    "submit": "Wijzigingen opslaan",
+    "submitting": "Besparing...",
+    "subtitle": "Accountinstellingen bijwerken",
+    "title": "Account bewerken"
+  },
+  "noAccountsYet": "Er zijn nog geen accounts gekoppeld.",
+  "title": "Aanbiedersaccounts",
+  "toast": {
+    "connected": "Account gekoppeld",
+    "connectedDescription": "Succesvol verbonden met {{provider}} account",
+    "connectionFailed": "Account toevoegen mislukt",
+    "defaultUpdateFailed": "Het bijwerken van de standaardinstellingen is mislukt.",
+    "defaultUpdated": "Standaardaccount bijgewerkt",
+    "defaultUpdatedDescription": "Het standaardaccount is gewijzigd.",
+    "deleteFailed": "Account verwijderen mislukt",
+    "deleted": "Account verwijderd",
+    "deletedDescription": "Het account is succesvol verwijderd.",
+    "tokenInvalid": "Ongeldig token",
+    "tokenInvalidDescription": "Het token is ongeldig of verlopen.",
+    "tokenValid": "Token geldig",
+    "tokenValidDescription": "Het accounttoken is geldig en actief.",
+    "updateFailed": "Account bijwerken mislukt",
+    "updated": "Account bijgewerkt",
+    "updatedDescription": "De accountinstellingen zijn opgeslagen.",
+    "validationFailed": "Validatie mislukt"
+  }
+}

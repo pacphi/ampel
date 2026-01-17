@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "يضيف",
+    "enable": "تفعيل إشعارات البريد الإلكتروني",
+    "enableDescription": "إرسال الإشعارات عبر البريد الإلكتروني (SMTP)",
+    "fromAddress": "عنوان المرسل",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "مضيف SMTP",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "كلمة مرور SMTP",
+    "smtpPasswordPlaceholder": "أدخل كلمة المرور",
+    "smtpPort": "منفذ SMTP",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "اسم مستخدم SMTP",
+    "smtpUserPlaceholder": "user@example.com",
+    "testFailed": "فشل إرسال البريد الإلكتروني التجريبي",
+    "testMessage": "إرسال بريد إلكتروني تجريبي",
+    "testSending": "إرسال...",
+    "testSuccess": "تم إرسال بريد إلكتروني تجريبي",
+    "title": "إشعارات البريد الإلكتروني",
+    "toAddresses": "إلى العناوين",
+    "toAddressesDescription": "مستلمو رسائل البريد الإلكتروني الخاصة بالإشعارات",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "استخدم بروتوكول TLS"
+  },
+  "merge": {
+    "description": "اختر وقت تلقي الإشعارات الخاصة بعمليات الدمج",
+    "notifyOnConflict": "إشعار بتعارضات الدمج",
+    "notifyOnConflictDescription": "إرسال إشعار عند اكتشاف تعارضات الدمج",
+    "notifyOnFailure": "إشعار عند فشل عمليات الدمج",
+    "notifyOnFailureDescription": "إرسال إشعار عند فشل عمليات الدمج",
+    "notifyOnSuccess": "إشعار عند نجاح عمليات الدمج",
+    "notifyOnSuccessDescription": "إرسال إشعار عند دمج طلبات السحب بنجاح",
+    "title": "إشعارات الدمج"
+  },
+  "slack": {
+    "channel": "القناة (اختياري)",
+    "channelDescription": "تجاوز القناة الافتراضية المُكوّنة في webhook",
+    "channelPlaceholder": "#عام",
+    "enable": "تفعيل إشعارات سلاك",
+    "enableDescription": "إرسال الإشعارات إلى قناة سلاك",
+    "testFailed": "فشل إرسال رسالة الاختبار",
+    "testMessage": "إرسال رسالة اختبار",
+    "testSending": "إرسال...",
+    "testSuccess": "تم إرسال رسائل اختبار",
+    "title": "إشعارات سلاك",
+    "webhookUrl": "رابط الويب هوك",
+    "webhookUrlDescription": "أنشئ رابط ويب وارد في مساحة عمل Slack الخاصة بك",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "إعدادات الإشعارات",
+  "toast": {
+    "updateFailed": "فشل تحديث الإعدادات",
+    "updated": "تم تحديث الإعدادات",
+    "updatedDescription": "تم حفظ إعدادات الإشعارات"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Agregar todo ({{count}})",
+    "close": "Cerca",
+    "empty": "No se encontraron nuevos repositorios para agregar",
+    "title": "Añadir desde {{provider}}"
+  },
+  "empty": {
+    "description": "Agregue repositorios de sus proveedores conectados para comenzar",
+    "title": "No se encontraron repositorios"
+  },
+  "providers": {
+    "connected": "(Conectado)",
+    "title": "Conectar un proveedor"
+  },
+  "search": {
+    "placeholder": "Buscar repositorios..."
+  },
+  "table": {
+    "actions": "Comportamiento",
+    "provider": "Proveedor",
+    "prs": "Relaciones públicas abiertas",
+    "repository": "Repositorio",
+    "status": "Estado"
+  },
+  "title": "Repositorios",
+  "toast": {
+    "addFailed": "No se pudo agregar el repositorio",
+    "added": "Repositorio añadido",
+    "addedDescription": "{{name}} se ha añadido a tu panel de control",
+    "bulkAddFailed": "No se pudieron agregar repositorios",
+    "bulkAddFailedDescription": "No se pudo agregar ninguno de los repositorios seleccionados",
+    "bulkAdded": "Repositorios añadidos",
+    "bulkAddedDescription": "Se agregaron correctamente {{count}} repositorios{{failed}}",
+    "bulkAddedFailed": "({{count}} falló)",
+    "removeFailed": "No se pudo eliminar el repositorio",
+    "removed": "Repositorio eliminado",
+    "removedDescription": "{{name}} ha sido eliminado de tu panel de control"
+  }
+}

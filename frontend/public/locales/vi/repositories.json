@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Thêm tất cả ({{count}})",
+    "close": "Đóng",
+    "empty": "Không tìm thấy kho lưu trữ mới nào để thêm.",
+    "title": "Thêm từ {{provider}}"
+  },
+  "empty": {
+    "description": "Thêm kho lưu trữ từ các nhà cung cấp đã kết nối của bạn để bắt đầu.",
+    "title": "Không tìm thấy kho lưu trữ nào"
+  },
+  "providers": {
+    "connected": "(Đã kết nối)",
+    "title": "Kết nối với nhà cung cấp"
+  },
+  "search": {
+    "placeholder": "Tìm kiếm trong các kho lưu trữ..."
+  },
+  "table": {
+    "actions": "Hành động",
+    "provider": "Nhà cung cấp",
+    "prs": "Yêu cầu kéo mở",
+    "repository": "Kho lưu trữ",
+    "status": "Trạng thái"
+  },
+  "title": "Kho lưu trữ",
+  "toast": {
+    "addFailed": "Thêm kho lưu trữ không thành công",
+    "added": "Đã thêm kho lưu trữ",
+    "addedDescription": "{{name}} đã được thêm vào bảng điều khiển của bạn",
+    "bulkAddFailed": "Không thể thêm kho lưu trữ",
+    "bulkAddFailedDescription": "Không thể thêm bất kỳ kho lưu trữ nào đã chọn.",
+    "bulkAdded": "Các kho lưu trữ đã được thêm",
+    "bulkAddedDescription": "Đã thêm thành công {{count}} kho lưu trữ{{failed}}",
+    "bulkAddedFailed": "({{count}} thất bại)",
+    "removeFailed": "Không thể xóa kho lưu trữ",
+    "removed": "Kho lưu trữ đã bị xóa",
+    "removedDescription": "{{name}} đã bị xóa khỏi bảng điều khiển của bạn"
+  }
+}

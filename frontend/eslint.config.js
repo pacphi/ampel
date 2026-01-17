@@ -50,7 +50,10 @@ export default [
         },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-empty-object-type': 'off',
       'react-hooks/immutability': 'off',
     },
@@ -61,6 +64,35 @@ export default [
       globals: {
         ...globals.node,
       },
+    },
+  },
+  // Test files configuration
+  {
+    files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', 'tests/**/*.{ts,tsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        // Vitest globals
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        vi: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        test: 'readonly',
+        jest: 'readonly',
+        // Browser globals for DOM testing
+        IntersectionObserverCallback: 'readonly',
+        IntersectionObserverInit: 'readonly',
+        ResizeObserverCallback: 'readonly',
+        ResizeObserverEntry: 'readonly',
+      },
+    },
+    rules: {
+      // Allow non-component exports in test files
+      'react-refresh/only-export-components': 'off',
     },
   },
 ];

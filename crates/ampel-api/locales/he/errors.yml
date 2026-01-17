@@ -1,0 +1,57 @@
+errors:
+  # Authentication errors
+  auth:
+    email_registered: "כתובת האימייל כבר רשומה"
+    invalid_credentials: "כתובת אימייל או סיסמה שגויים"
+    invalid_refresh_token: "אסימון רענון לא חוקי או פג תוקף"
+    user_not_found: "משתמש לא נמצא"
+    email_in_use: "כתובת האימייל כבר בשימוש"
+
+  # Repository errors
+  repository:
+    not_found: "המאגר לא נמצא"
+    already_added: "המאגר כבר נוסף"
+    invalid_provider: "ספק לא חוקי"
+    provider_not_connected: "הספק לא מחובר"
+    invalid_provider_db: "סוג ספק לא חוקי במסד הנתונים"
+    not_found_for_pr: "המאגר לא נמצא עבור ה-PR"
+    no_account_linked: "המאגר לא מקושר לחשבון"
+
+  # Pull request errors
+  pull_request:
+    not_found: "בקשת משיכה לא נמצאה"
+    merge_failed: "המיזוג נכשל: %{reason}"
+
+  # Account errors
+  account:
+    not_found: "החשבון לא נמצא"
+    invalid_provider_type: "סוג ספק לא חוקי"
+    validation_failed: "אימות האסימון נכשל: %{error}"
+    invalid_token: "אסימון לא חוקי"
+    provider_no_user_id: "הספק לא החזיר מזהה משתמש"
+    provider_no_username: "הספק לא החזיר שם משתמש"
+    already_connected: "חשבון זה כבר מחובר. השתמש ב-PATCH לעדכון האסימון."
+
+  # Provider errors
+  provider:
+    error: "שגיאת ספק: %{error}"
+    decrypt_failed: "פענוח האסימון נכשל: %{error}"
+
+  # Encryption errors
+  encryption:
+    failed: "שגיאת הצפנה: %{error}"
+    decrypt_failed: "שגיאת פענוח: %{error}"
+
+  # General errors
+  general:
+    internal: "שגיאה פנימית"
+    serialization_failed: "סידור ההיקפים נכשל: %{error}"
+
+  # Network errors
+  network:
+    timeout: "תם זמן הבקשה"
+    connection_failed: "החיבור נכשל"
+
+  # Rate limit
+  rate_limit:
+    exceeded: "חריגה ממגבלת השיעור"

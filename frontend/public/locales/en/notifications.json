@@ -1,0 +1,57 @@
+{
+  "title": "Notification Settings",
+  "slack": {
+    "title": "Slack Notifications",
+    "enable": "Enable Slack notifications",
+    "enableDescription": "Send notifications to a Slack channel",
+    "webhookUrl": "Webhook URL",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/...",
+    "webhookUrlDescription": "Create an incoming webhook in your Slack workspace",
+    "channel": "Channel (optional)",
+    "channelPlaceholder": "#general",
+    "channelDescription": "Override the default channel configured in the webhook",
+    "testMessage": "Send Test Message",
+    "testSending": "Sending...",
+    "testSuccess": "Test message sent",
+    "testFailed": "Failed to send test message"
+  },
+  "email": {
+    "title": "Email Notifications",
+    "enable": "Enable email notifications",
+    "enableDescription": "Send notifications via email (SMTP)",
+    "smtpHost": "SMTP Host",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPort": "SMTP Port",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP Username",
+    "smtpUserPlaceholder": "user@example.com",
+    "smtpPassword": "SMTP Password",
+    "smtpPasswordPlaceholder": "Enter password",
+    "fromAddress": "From Address",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "toAddresses": "To Addresses",
+    "toAddressesPlaceholder": "email@example.com",
+    "toAddressesDescription": "Recipients for notification emails",
+    "useTls": "Use TLS",
+    "testMessage": "Send Test Email",
+    "testSending": "Sending...",
+    "testSuccess": "Test email sent",
+    "testFailed": "Failed to send test email",
+    "add": "Add"
+  },
+  "merge": {
+    "title": "Merge Notifications",
+    "description": "Choose when to receive notifications for merge operations",
+    "notifyOnSuccess": "Notify on successful merges",
+    "notifyOnSuccessDescription": "Send notification when PRs are successfully merged",
+    "notifyOnFailure": "Notify on failed merges",
+    "notifyOnFailureDescription": "Send notification when merge operations fail",
+    "notifyOnConflict": "Notify on merge conflicts",
+    "notifyOnConflictDescription": "Send notification when merge conflicts are detected"
+  },
+  "toast": {
+    "updated": "Settings updated",
+    "updatedDescription": "Notification settings have been saved",
+    "updateFailed": "Failed to update settings"
+  }
+}

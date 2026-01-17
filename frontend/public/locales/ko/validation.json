@@ -1,0 +1,35 @@
+{
+  "alphanum": "{{field}}는 문자와 숫자만 포함해야 합니다",
+  "date": "유효한 날짜를 입력해 주세요",
+  "dateRange": "종료 날짜는 시작 날짜 이후여야 합니다",
+  "email": "유효한 이메일 주소를 입력해 주세요",
+  "fields": {
+    "confirmPassword": "비밀번호 확인",
+    "displayName": "표시 이름",
+    "email": "이메일",
+    "password": "비밀번호"
+  },
+  "fileSize": "파일 크기는 {{max}}를 초과하지 않아야 합니다",
+  "fileType": "파일 유형은 {{types}}이어야 합니다",
+  "integer": "{{field}}는 정수여야 합니다",
+  "invalidEmail": "유효하지 않은 이메일 주소입니다",
+  "max": "{{field}}는 {{max}}를 초과하지 않아야 합니다",
+  "maxLength": "{{field}}는 {{max}} 문자를 초과하지 않아야 합니다",
+  "messages": {
+    "displayNameRequired": "표시 이름이 필요합니다",
+    "emailRequired": "이메일이 필요합니다",
+    "passwordMinLength": "비밀번호는 최소 8자 이상이어야 합니다",
+    "passwordRequired": "비밀번호가 필요합니다"
+  },
+  "min": "{{field}}는 최소한 {{min}}이어야 합니다",
+  "minLength": "{{field}}는 최소 {{min}} 문자 이상이어야 합니다",
+  "negative": "{{field}}는 음수이어야 합니다",
+  "numeric": "{{field}}는 숫자여야 합니다",
+  "passwordMismatch": "비밀번호가 일치하지 않습니다",
+  "passwordsDontMatch": "비밀번호가 일치하지 않습니다",
+  "pattern": "{{field}} 형식이 유효하지 않습니다",
+  "positive": "{{field}}는 양수여야 합니다",
+  "required": "{{field}}가 필요합니다",
+  "unique": "{{field}}는 이미 존재합니다",
+  "url": "유효한 URL을 입력해 주세요"
+}

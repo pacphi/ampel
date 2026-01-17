@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "Kontoen kunne ikke oprettes",
+    "forbidden": "Du har ikke tilladelse til at få adgang til denne ressource",
+    "invalidCredentials": "Ugyldigt brugernavn eller adgangskode",
+    "invalidEmailOrPassword": "Ugyldig e-mail eller adgangskode",
+    "loginFailed": "Login mislykkedes",
+    "registrationFailed": "Registreringen mislykkedes",
+    "sessionExpired": "Din session er udløbet. Log venligst ind igen.",
+    "tokenExpired": "Godkendelsestokenet er udløbet",
+    "unauthorized": "Uautoriseret adgang"
+  },
+  "boundary": {
+    "description": "Der opstod en uventet fejl. Prøv igen.",
+    "details": "Fejloplysninger (kun udviklere)",
+    "reload": "Genindlæs siden",
+    "title": "Noget gik galt",
+    "tryAgain": "Prøv igen"
+  },
+  "general": {
+    "unknownError": "Der opstod en ukendt fejl"
+  },
+  "generic": {
+    "goHome": "Gå til dashboard",
+    "message": "Der opstod en uventet fejl. Prøv igen.",
+    "retry": "Prøv igen",
+    "somethingWentWrong": "Noget gik galt. Prøv igen.",
+    "title": "Noget gik galt"
+  },
+  "network": {
+    "message": "Kan ikke oprette forbindelse til serveren. Tjek venligst din internetforbindelse.",
+    "offline": "Du er i øjeblikket offline",
+    "title": "Netværksfejl"
+  },
+  "notFound": {
+    "goHome": "Tilbage til dashboardet",
+    "message": "Den side, du leder efter, findes ikke.",
+    "title": "Siden blev ikke fundet"
+  },
+  "pr": {
+    "approveFailed": "Kunne ikke godkende pull-anmodning",
+    "commentFailed": "Kunne ikke sende en kommentar",
+    "loadFailed": "Kunne ikke indlæse pull-anmodninger",
+    "mergeFailed": "Kunne ikke flette pull-anmodningen"
+  },
+  "provider": {
+    "connectionFailed": "Kunne ikke oprette forbindelse til {{provider}}",
+    "invalidToken": "Ugyldig {{provider}}-token",
+    "notFound": "Ressourcen blev ikke fundet på {{provider}}",
+    "rateLimited": "API-hastighedsgrænsen for {{provider}} er overskredet"
+  },
+  "repository": {
+    "accessDenied": "Adgang til arkiv nægtet",
+    "loadFailed": "Kunne ikke indlæse arkiver",
+    "notFound": "Arkivet blev ikke fundet"
+  },
+  "validation": {
+    "invalidEmail": "Indtast venligst en gyldig e-mailadresse",
+    "invalidUrl": "Indtast venligst en gyldig URL",
+    "maxLength": "Må ikke overstige {{max}} tegn",
+    "minLength": "Skal være mindst {{min}} tegn",
+    "passwordMismatch": "Adgangskoderne stemmer ikke overens",
+    "required": "Dette felt er påkrævet"
+  }
+}

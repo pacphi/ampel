@@ -1,0 +1,8 @@
+en:
+  validation:
+    account:
+      invalid: nieważny
+      valid: ważny
+    general:
+      invalid_format: Nieprawidłowy format
+      required: To pole jest wymagane

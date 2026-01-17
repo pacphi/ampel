@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "すべて追加 ({{count}})",
+    "close": "近い",
+    "empty": "追加する新しいリポジトリが見つかりません",
+    "title": "{{provider}}から追加"
+  },
+  "empty": {
+    "description": "開始するには、接続されたプロバイダーからリポジトリを追加してください",
+    "title": "リポジトリが見つかりません"
+  },
+  "providers": {
+    "connected": "（接続済み）",
+    "title": "プロバイダーを接続する"
+  },
+  "search": {
+    "placeholder": "リポジトリを検索..."
+  },
+  "table": {
+    "actions": "アクション",
+    "provider": "プロバイダー",
+    "prs": "オープンPR",
+    "repository": "リポジトリ",
+    "status": "状態"
+  },
+  "title": "リポジトリ",
+  "toast": {
+    "addFailed": "リポジトリの追加に失敗しました",
+    "added": "リポジトリを追加しました",
+    "addedDescription": "{{name}} がダッシュボードに追加されました",
+    "bulkAddFailed": "リポジトリの追加に失敗しました",
+    "bulkAddFailedDescription": "選択したリポジトリを追加できませんでした",
+    "bulkAdded": "追加されたリポジトリ",
+    "bulkAddedDescription": "{{count}} 個のリポジトリ{{failed}}を正常に追加しました",
+    "bulkAddedFailed": "({{count}} 失敗)",
+    "removeFailed": "リポジトリの削除に失敗しました",
+    "removed": "リポジトリが削除されました",
+    "removedDescription": "{{name}} はダッシュボードから削除されました"
+  }
+}

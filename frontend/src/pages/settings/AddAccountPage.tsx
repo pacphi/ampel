@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from '@tanstack/react-query';
 import { accountsApi } from '@/api/accounts';
 import type { GitProvider } from '@/types';
@@ -20,6 +21,7 @@ import { TokenInstructions } from '@/components/settings/TokenInstructions';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 export function AddAccountPage() {
+  const { t } = useTranslation(['accounts', 'errors', 'common']);
   const navigate = useNavigate();
   const { toast } = useToast();
   const [showToken, setShowToken] = useState(false);
@@ -36,8 +38,8 @@ export function AddAccountPage() {
     mutationFn: (data: AddAccountRequest) => accountsApi.addAccount(data),
     onSuccess: () => {
       toast({
-        title: 'Account connected',
-        description: 'Your account has been added successfully.',
+        title: t('accounts:toast.connected'),
+        description: t('accounts:toast.connectedDescription', { provider: formData.provider }),
       });
       navigate('/settings/accounts');
     },
@@ -45,8 +47,8 @@ export function AddAccountPage() {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Failed to add account',
-        description: axiosError.response?.data?.error || 'An error occurred',
+        title: t('accounts:toast.connectionFailed'),
+        description: axiosError.response?.data?.error || t('errors:generic'),
       });
     },
   });
@@ -55,15 +57,15 @@ export function AddAccountPage() {
     const newErrors: Partial<Record<keyof AddAccountRequest, string>> = {};
 
     if (!formData.accountLabel.trim()) {
-      newErrors.accountLabel = 'Account label is required';
+      newErrors.accountLabel = t('accounts:add.form.accountLabelRequired');
     }
 
     if (!formData.accessToken.trim()) {
-      newErrors.accessToken = 'Access token is required';
+      newErrors.accessToken = t('accounts:add.form.tokenRequired');
     }
 
     if (formData.provider === 'bitbucket' && !formData.username?.trim()) {
-      newErrors.username = 'Username is required for Bitbucket';
+      newErrors.username = t('accounts:add.form.usernameRequired');
     }
 
     setErrors(newErrors);
@@ -91,27 +93,25 @@ export function AddAccountPage() {
     <div className="space-y-4">
       <Button variant="ghost" onClick={() => navigate('/settings/accounts')} className="mb-2">
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to Accounts
+        {t('accounts:add.backToAccounts')}
       </Button>
 
       <Card>
         <CardHeader>
-          <CardTitle>Add Provider Account</CardTitle>
-          <CardDescription>
-            Connect a new Git provider account using a Personal Access Token
-          </CardDescription>
+          <CardTitle>{t('accounts:add.title')}</CardTitle>
+          <CardDescription>{t('accounts:add.subtitle')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Provider Selection */}
             <div className="space-y-2">
-              <Label htmlFor="provider">Provider</Label>
+              <Label htmlFor="provider">{t('accounts:add.form.provider')}</Label>
               <Select
                 value={formData.provider}
                 onValueChange={(value) => handleProviderChange(value as GitProvider)}
               >
                 <SelectTrigger id="provider">
-                  <SelectValue />
+                  <SelectValue placeholder={t('accounts:add.form.selectProvider')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="github">GitHub</SelectItem>
@@ -124,18 +124,18 @@ export function AddAccountPage() {
             {/* Instance URL for self-hosted */}
             {(formData.provider === 'gitlab' || formData.provider === 'bitbucket') && (
               <div className="space-y-2">
-                <Label htmlFor="instanceUrl">Instance URL (optional, for self-hosted)</Label>
+                <Label htmlFor="instanceUrl">{t('accounts:add.form.instanceUrl')}</Label>
                 <Input
                   id="instanceUrl"
                   type="url"
-                  placeholder="https://gitlab.company.com"
+                  placeholder={t('accounts:add.form.instanceUrlPlaceholder')}
                   value={formData.instanceUrl || ''}
                   onChange={(e) =>
                     setFormData({ ...formData, instanceUrl: e.target.value || undefined })
                   }
                 />
                 <p className="text-xs text-muted-foreground">
-                  Leave empty to use the cloud version ({formData.provider}.com)
+                  {t('accounts:add.form.instanceUrlDescription', { provider: formData.provider })}
                 </p>
               </div>
             )}
@@ -143,11 +143,11 @@ export function AddAccountPage() {
             {/* Account Label */}
             <div className="space-y-2">
               <Label htmlFor="accountLabel">
-                Account Label <span className="text-destructive">*</span>
+                {t('accounts:add.form.accountLabel')} <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="accountLabel"
-                placeholder="e.g., Work GitHub, Personal GitLab"
+                placeholder={t('accounts:add.form.accountLabelPlaceholder')}
                 value={formData.accountLabel}
                 onChange={(e) => setFormData({ ...formData, accountLabel: e.target.value })}
                 className={errors.accountLabel ? 'border-destructive' : ''}
@@ -156,7 +156,7 @@ export function AddAccountPage() {
                 <p className="text-xs text-destructive">{errors.accountLabel}</p>
               )}
               <p className="text-xs text-muted-foreground">
-                A friendly name to identify this account
+                {t('accounts:add.form.accountLabelDescription')}
               </p>
             </div>
 
@@ -166,20 +166,16 @@ export function AddAccountPage() {
             {/* Access Token */}
             <div className="space-y-2">
               <Label htmlFor="accessToken">
-                {formData.provider === 'bitbucket' ? 'App Password' : 'Personal Access Token'}{' '}
+                {formData.provider === 'bitbucket'
+                  ? t('accounts:add.form.appPassword')
+                  : t('accounts:add.form.token')}{' '}
                 <span className="text-destructive">*</span>
               </Label>
               <div className="relative">
                 <Input
                   id="accessToken"
                   type={showToken ? 'text' : 'password'}
-                  placeholder={
-                    formData.provider === 'github'
-                      ? 'ghp_...'
-                      : formData.provider === 'gitlab'
-                        ? 'glpat-...'
-                        : 'App password'
-                  }
+                  placeholder={t(`accounts:add.form.tokenPlaceholder_${formData.provider}`)}
                   value={formData.accessToken}
                   onChange={(e) => setFormData({ ...formData, accessToken: e.target.value })}
                   className={errors.accessToken ? 'border-destructive pr-10' : 'pr-10'}
@@ -190,7 +186,9 @@ export function AddAccountPage() {
                   size="icon"
                   className="absolute right-0 top-0 h-full"
                   onClick={() => setShowToken(!showToken)}
-                  title={showToken ? 'Hide token' : 'Show token'}
+                  title={
+                    showToken ? t('accounts:add.form.hideToken') : t('accounts:add.form.showToken')
+                  }
                 >
                   {showToken ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
@@ -204,18 +202,19 @@ export function AddAccountPage() {
             {formData.provider === 'bitbucket' && (
               <div className="space-y-2">
                 <Label htmlFor="username">
-                  Bitbucket Username <span className="text-destructive">*</span>
+                  {t('accounts:add.form.bitbucketUsername')}{' '}
+                  <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="username"
-                  placeholder="your-username"
+                  placeholder={t('accounts:add.form.bitbucketUsernamePlaceholder')}
                   value={formData.username || ''}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                   className={errors.username ? 'border-destructive' : ''}
                 />
                 {errors.username && <p className="text-xs text-destructive">{errors.username}</p>}
                 <p className="text-xs text-muted-foreground">
-                  Required for Basic Authentication with Bitbucket
+                  {t('accounts:add.form.bitbucketUsernameDescription')}
                 </p>
               </div>
             )}
@@ -228,10 +227,12 @@ export function AddAccountPage() {
                 onClick={() => navigate('/settings/accounts')}
                 disabled={addAccountMutation.isPending}
               >
-                Cancel
+                {t('common:cancel')}
               </Button>
               <Button type="submit" disabled={addAccountMutation.isPending}>
-                {addAccountMutation.isPending ? 'Connecting...' : 'Connect Account'}
+                {addAccountMutation.isPending
+                  ? t('accounts:add.submitting')
+                  : t('accounts:add.submit')}
               </Button>
             </div>
           </form>

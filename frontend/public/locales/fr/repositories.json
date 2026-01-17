@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Ajouter tout ({{count}})",
+    "close": "Fermer",
+    "empty": "Aucun nouveau dépôt trouvé à ajouter",
+    "title": "Ajouter à partir de {{provider}}"
+  },
+  "empty": {
+    "description": "Ajoutez des dépôts provenant de vos fournisseurs connectés pour commencer.",
+    "title": "Aucun dépôt trouvé"
+  },
+  "providers": {
+    "connected": "(Connecté)",
+    "title": "Connecter un fournisseur"
+  },
+  "search": {
+    "placeholder": "Rechercher dans les dépôts..."
+  },
+  "table": {
+    "actions": "Actes",
+    "provider": "Fournisseur",
+    "prs": "PR ouvertes",
+    "repository": "Dépôt",
+    "status": "Statut"
+  },
+  "title": "Dépôts",
+  "toast": {
+    "addFailed": "Échec de l'ajout du dépôt",
+    "added": "Dépôt ajouté",
+    "addedDescription": "{{name}} a été ajouté à votre tableau de bord",
+    "bulkAddFailed": "Échec de l'ajout des dépôts",
+    "bulkAddFailedDescription": "Impossible d'ajouter aucun des dépôts sélectionnés.",
+    "bulkAdded": "Dépôts ajoutés",
+    "bulkAddedDescription": "Dépôts {{count}} ajoutés avec succès{{failed}}",
+    "bulkAddedFailed": "({{count}} a échoué)",
+    "removeFailed": "Échec de la suppression du dépôt",
+    "removed": "Dépôt supprimé",
+    "removedDescription": "{{name}} a été supprimé de votre tableau de bord"
+  }
+}

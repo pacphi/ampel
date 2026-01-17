@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "Approuver",
+    "comment": "Commentaire",
+    "deselectAll": "Désélectionnez tout",
+    "merge": "Fusionner",
+    "refresh": "Rafraîchir",
+    "requestChanges": "Demande de modifications",
+    "selectAll": "Tout sélectionner",
+    "viewOnProvider": "Voir sur {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "En attente d'évaluation",
+    "changesRequested": "Modifications demandées",
+    "ciFailed": "L'intégration continue a échoué",
+    "ciPending": "CI en attente",
+    "conflicts": "Conflits",
+    "draft": "Brouillon",
+    "needsReview": "Nécessite une révision"
+  },
+  "empty": {
+    "action": "Fournisseur de connexion",
+    "description": "Connectez vos fournisseurs Git pour commencer à suivre les demandes de tirage.",
+    "title": "Aucune demande d'extraction trouvée"
+  },
+  "filters": {
+    "all": "Tous",
+    "assignee": "Cessionnaire",
+    "author": "Auteur",
+    "closed": "Fermé",
+    "draft": "Brouillon",
+    "label": "Étiquette",
+    "merged": "Fusionné",
+    "onlyWithPrs": "Afficher les dépôts avec des demandes de tirage ouvertes",
+    "open": "Ouvrir",
+    "prStatus": {
+      "all": "Tous les PR",
+      "blocked": "Bloqué",
+      "pending": "En attente",
+      "ready": "Prêt"
+    },
+    "provider": "Fournisseur",
+    "repository": "Dépôt"
+  },
+  "pr": {
+    "additions": "Ajouts",
+    "author": "Auteur",
+    "comments": "Commentaires",
+    "createdAt": "Créé",
+    "deletions": "Suppressions",
+    "number": "#{{number}}",
+    "sourceBranch": "Branche source",
+    "targetBranch": "succursale cible",
+    "updatedAt": "Mis à jour"
+  },
+  "prDashboard": "Tableau de bord RP",
+  "sort": {
+    "author": "Auteur",
+    "created": "Date de création",
+    "repository": "Dépôt",
+    "status": "Statut",
+    "title": "Trier par",
+    "updated": "Dernière mise à jour"
+  },
+  "stats": {
+    "blocked": "Bloqué",
+    "inProgress": "En cours",
+    "needsAttention": "Nécessite une attention particulière",
+    "open": "Ouvrir",
+    "openPRs": "PR ouvertes",
+    "ready": "Prêt à fusionner",
+    "readyToMerge": "Prêt à fusionner",
+    "total": "RP totaux",
+    "totalRepositories": "Dépôts totaux"
+  },
+  "status": {
+    "closed": "Fermé",
+    "draft": "Brouillon",
+    "green": "Prêt à fusionner",
+    "merged": "Fusionné",
+    "red": "Bloqué",
+    "yellow": "En cours"
+  },
+  "subtitle": "Gérez vos demandes d'extraction sur tous les fournisseurs",
+  "table": {
+    "columns": {
+      "lastUpdated": "Dernière mise à jour",
+      "provider": "Fournisseur",
+      "prs": "RP",
+      "repository": "Dépôt",
+      "status": "Statut",
+      "visibility": "Visibilité"
+    }
+  },
+  "title": "Tableau de bord",
+  "views": {
+    "grid": "Vue en grille",
+    "list": "Vue liste",
+    "prs": "vue des demandes d'extraction",
+    "pullRequests": "vue des demandes d'extraction",
+    "repositoryGrid": "Vue en grille du référentiel",
+    "repositoryList": "Vue de la liste des dépôts",
+    "table": "Vue tableau"
+  }
+}

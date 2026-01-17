@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "לְאַשֵׁר",
+    "comment": "הֶעָרָה",
+    "deselectAll": "בטל את הבחירה של הכל",
+    "merge": "לְמַזֵג",
+    "refresh": "לְרַעֲנֵן",
+    "requestChanges": "בקשת שינויים",
+    "selectAll": "בחר הכל",
+    "viewOnProvider": "הצג ב-{{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "ממתין לביקורת",
+    "changesRequested": "נדרשות שינויים",
+    "ciFailed": "CI נכשל",
+    "ciPending": "CI ממתין",
+    "conflicts": "סכסוכים",
+    "draft": "טיוטה",
+    "needsReview": "דורש בחינה"
+  },
+  "empty": {
+    "action": "ספק חיבור",
+    "description": "חברו את ספקי ה-Git שלכם כדי להתחיל לעקוב אחר PRs",
+    "title": "לא נמצאו בקשות משיכה"
+  },
+  "filters": {
+    "all": "כֹּל",
+    "assignee": "נִמחֶה",
+    "author": "מְחַבֵּר",
+    "closed": "סָגוּר",
+    "draft": "טְיוּטָה",
+    "label": "מַדבֵּקָה",
+    "merged": "ממוזג",
+    "onlyWithPrs": "הצג מאגרים עם PRs פתוחים",
+    "open": "לִפְתוֹחַ",
+    "prStatus": {
+      "all": "כל יחסי הציבור",
+      "blocked": "חָסוּם",
+      "pending": "תָלוּי וְעוֹמֵד",
+      "ready": "מוּכָן"
+    },
+    "provider": "ספק",
+    "repository": "מאגר"
+  },
+  "pr": {
+    "additions": "תוספות",
+    "author": "מחבר",
+    "comments": "הערות",
+    "createdAt": "נוצר",
+    "deletions": "מחיקות",
+    "number": "#{{number}}",
+    "sourceBranch": "ענף מקור",
+    "targetBranch": "ענף מטרה",
+    "updatedAt": "עודכן"
+  },
+  "prDashboard": "לוח PR",
+  "sort": {
+    "author": "מְחַבֵּר",
+    "created": "תאריך יצירה",
+    "repository": "מאגר",
+    "status": "סטָטוּס",
+    "title": "מיין לפי",
+    "updated": "עודכן לאחרונה"
+  },
+  "stats": {
+    "blocked": "חָסוּם",
+    "inProgress": "בתהליך",
+    "needsAttention": "דורש תשומת לב",
+    "open": "לִפְתוֹחַ",
+    "openPRs": "PRs פתוחים",
+    "ready": "מוכן למיזוג",
+    "readyToMerge": "מוכן למיזוג",
+    "total": "סך כל היחסי ציבור",
+    "totalRepositories": "סה\"כ מאגרים"
+  },
+  "status": {
+    "closed": "סָגוּר",
+    "draft": "טְיוּטָה",
+    "green": "מוכן למיזוג",
+    "merged": "ממוזג",
+    "red": "חָסוּם",
+    "yellow": "בתהליך"
+  },
+  "subtitle": "נהל את בקשות המשיכה שלך בכל הספקים",
+  "table": {
+    "columns": {
+      "lastUpdated": "עדכון אחרון",
+      "provider": "ספק",
+      "prs": "יחסי ציבור",
+      "repository": "מאגר",
+      "status": "סטָטוּס",
+      "visibility": "רְאוּת"
+    }
+  },
+  "title": "PR Dashboard",
+  "views": {
+    "grid": "תצוגת רשת",
+    "list": "תצוגת רשימה",
+    "prs": "תצוגת בקשות משיכה",
+    "pullRequests": "תצוגת בקשות משיכה",
+    "repositoryGrid": "תצוגת רשת מאגר",
+    "repositoryList": "תצוגת רשימת מאגר",
+    "table": "תצוגת טבלה"
+  }
+}

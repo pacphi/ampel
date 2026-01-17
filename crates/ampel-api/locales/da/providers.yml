@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Udbyder-API-fejl: %{message} (status: %{status_code})'
+      auth_failed: 'Godkendelse mislykkedes: %{reason}'
+      config_error: 'Konfigurationsfejl: %{reason}'
+      invalid_response: 'Ugyldigt svar: %{reason}'
+      network_error: 'Netværksfejl: %{reason}'
+      not_found: 'Ressource ikke fundet: %{resource}'
+      not_supported: 'Handling understøttes ikke: %{operation}'
+      permission_denied: 'Tilladelse nægtet: %{reason}'
+      rate_limit_exceeded: 'Hastighedsgrænse overskredet. Nulstilles kl.: %{reset_time}'
+      serialization_error: 'Serialiseringsfejl: %{reason}'
+    github:
+      api_error: 'API-fejl: %{status}'
+      invalid_token: Ugyldig token
+      merge_checks_failed: Pull-anmodninger kan ikke flettes (tjek status, tjek og gennemgange)
+      merge_conflict: Fletningskonflikt eller hovedgren blev ændret
+      merge_failed: Kunne ikke flette pull-anmodningen
+      merge_not_mergeable: Pull-anmodningen kan ikke flettes
+      pr_fetch_failed: Kunne ikke hente pull-anmodningen
+      pr_not_found: 'Pull-anmodning #%{number} ikke fundet'
+      prs_fetch_failed: Kunne ikke vise pull requests
+      rate_limit_failed: Kunne ikke hente hastighedsgrænsen
+      repo_fetch_failed: Kunne ikke hente arkivet
+      repo_not_found: Lager %{owner}/%{repo} ikke fundet
+      repos_fetch_failed: Kunne ikke liste arkiver
+      reviews_fetch_failed: Kunne ikke hente anmeldelser
+      token_invalid: Ugyldig eller udløbet token
+      user_fetch_failed: Kunne ikke hente brugeren
+    worker:
+      account_not_found: Udbyderkonto ikke fundet
+      no_account: Lageret har ingen tilknyttet udbyderkonto

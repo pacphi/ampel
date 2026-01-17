@@ -1,0 +1,8 @@
+en:
+  validation:
+    account:
+      invalid: 無效的
+      valid: 有效的
+    general:
+      invalid_format: 格式無效
+      required: 此欄位是必需的

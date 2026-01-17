@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "추가하다",
+    "enable": "이메일 알림 활성화",
+    "enableDescription": "이메일(SMTP)을 통해 알림을 보냅니다.",
+    "fromAddress": "발신 주소",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTP 호스트",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "SMTP 비밀번호",
+    "smtpPasswordPlaceholder": "비밀번호를 입력하세요",
+    "smtpPort": "SMTP 포트",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP 사용자 이름",
+    "smtpUserPlaceholder": "user@example.com",
+    "testFailed": "테스트 이메일 전송에 실패했습니다.",
+    "testMessage": "테스트 이메일 보내기",
+    "testSending": "배상...",
+    "testSuccess": "테스트 이메일이 발송되었습니다.",
+    "title": "이메일 알림",
+    "toAddresses": "받는 주소",
+    "toAddressesDescription": "알림 이메일 수신자",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "TLS를 사용하세요"
+  },
+  "merge": {
+    "description": "병합 작업에 대한 알림을 받을 시기를 선택하세요.",
+    "notifyOnConflict": "병합 충돌 발생 시 알림",
+    "notifyOnConflictDescription": "병합 충돌이 감지되면 알림을 보냅니다.",
+    "notifyOnFailure": "병합 실패 시 알림",
+    "notifyOnFailureDescription": "병합 작업 실패 시 알림 전송",
+    "notifyOnSuccess": "병합 성공 시 알림",
+    "notifyOnSuccessDescription": "PR이 성공적으로 병합되면 알림을 보냅니다.",
+    "title": "병합 알림"
+  },
+  "slack": {
+    "channel": "채널 (선택 사항)",
+    "channelDescription": "웹훅에 구성된 기본 채널을 재정의합니다.",
+    "channelPlaceholder": "#일반적인",
+    "enable": "Slack 알림 활성화",
+    "enableDescription": "슬랙 채널로 알림을 보내세요",
+    "testFailed": "테스트 메시지 전송에 실패했습니다.",
+    "testMessage": "테스트 메시지 전송",
+    "testSending": "배상...",
+    "testSuccess": "테스트 메시지가 전송되었습니다.",
+    "title": "슬랙 알림",
+    "webhookUrl": "웹훅 URL",
+    "webhookUrlDescription": "Slack 워크스페이스에 수신 웹훅을 생성하세요",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "알림 설정",
+  "toast": {
+    "updateFailed": "설정 업데이트에 실패했습니다",
+    "updated": "설정이 업데이트되었습니다.",
+    "updatedDescription": "알림 설정이 저장되었습니다."
+  }
+}

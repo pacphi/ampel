@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "Schvalovat",
+    "comment": "Komentář",
+    "deselectAll": "Zrušit výběr všeho",
+    "merge": "Spojit",
+    "refresh": "Obnovit",
+    "requestChanges": "Žádost o změny",
+    "selectAll": "Vybrat vše",
+    "viewOnProvider": "Zobrazit na {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Čeká na kontrolu",
+    "changesRequested": "Požadované změny",
+    "ciFailed": "CI selhala",
+    "ciPending": "CI čeká na vyřízení",
+    "conflicts": "Konflikty",
+    "draft": "Návrh",
+    "needsReview": "Vyžaduje kontrolu"
+  },
+  "empty": {
+    "action": "Připojení poskytovatele",
+    "description": "Propojte své poskytovatele Gitu a začněte sledovat PR.",
+    "title": "Nenalezeny žádné pull requesty"
+  },
+  "filters": {
+    "all": "Vše",
+    "assignee": "Nabyvatel",
+    "author": "Autor",
+    "closed": "ZAVŘENO",
+    "draft": "Návrh",
+    "label": "Označení",
+    "merged": "Sloučeno",
+    "onlyWithPrs": "Zobrazit repozitáře s otevřenými PR",
+    "open": "OTEVŘENO",
+    "prStatus": {
+      "all": "Všechny žádosti o zaměstnání",
+      "blocked": "Zablokováno",
+      "pending": "Čeká na vyřízení",
+      "ready": "Připraveno"
+    },
+    "provider": "Poskytovatel",
+    "repository": "Úložiště"
+  },
+  "pr": {
+    "additions": "Dodatky",
+    "author": "Autor",
+    "comments": "Komentáře",
+    "createdAt": "Vytvořeno",
+    "deletions": "Smazání",
+    "number": "#{{number}}",
+    "sourceBranch": "Zdrojová větev",
+    "targetBranch": "Cílová větev",
+    "updatedAt": "Aktualizováno"
+  },
+  "prDashboard": "PR Dashboard",
+  "sort": {
+    "author": "Autor",
+    "created": "Datum vytvoření",
+    "repository": "Úložiště",
+    "status": "Postavení",
+    "title": "Seřadit podle",
+    "updated": "Naposledy aktualizováno"
+  },
+  "stats": {
+    "blocked": "Zablokováno",
+    "inProgress": "Probíhá",
+    "needsAttention": "Vyžaduje pozornost",
+    "open": "OTEVŘENO",
+    "openPRs": "Otevřené PR",
+    "ready": "Připraveno ke sloučení",
+    "readyToMerge": "Připraveno ke sloučení",
+    "total": "Celkový počet PR",
+    "totalRepositories": "Celkový počet repozitářů"
+  },
+  "status": {
+    "closed": "ZAVŘENO",
+    "draft": "Návrh",
+    "green": "Připraveno ke sloučení",
+    "merged": "Sloučeno",
+    "red": "Zablokováno",
+    "yellow": "Probíhá"
+  },
+  "subtitle": "Spravujte své pull requesty napříč všemi poskytovateli",
+  "table": {
+    "columns": {
+      "lastUpdated": "Naposledy aktualizováno",
+      "provider": "Poskytovatel",
+      "prs": "PR",
+      "repository": "Úložiště",
+      "status": "Postavení",
+      "visibility": "Viditelnost"
+    }
+  },
+  "title": "Dashboard",
+  "views": {
+    "grid": "Zobrazení mřížky",
+    "list": "Seznam",
+    "prs": "Zobrazení žádostí o načtení",
+    "pullRequests": "Zobrazení žádostí o načtení",
+    "repositoryGrid": "Zobrazení mřížky úložiště",
+    "repositoryList": "Seznam úložiště",
+    "table": "Zobrazení tabulky"
+  }
+}

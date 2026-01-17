@@ -1,0 +1,8 @@
+en:
+  validation:
+    account:
+      invalid: неверный
+      valid: действительный
+    general:
+      invalid_format: Неверный формат
+      required: Это поле обязательно к заполнению

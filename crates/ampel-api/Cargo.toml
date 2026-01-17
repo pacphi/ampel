@@ -69,10 +69,16 @@ utoipa-swagger-ui.workspace = true
 # Email
 lettre.workspace = true
 
+# Internationalization
+rust-i18n = "3.0"
+serde_yaml = "0.9"
+cookie = "0.18"
+
 # Internal
 ampel-core.workspace = true
 ampel-db.workspace = true
 ampel-providers.workspace = true
+ampel-i18n-builder = { path = "../ampel-i18n-builder" }
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }

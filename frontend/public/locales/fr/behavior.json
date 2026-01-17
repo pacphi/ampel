@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Délai d'attente entre deux fusions consécutives",
+    "placeholder": "5",
+    "title": "Délai de fusion (secondes)"
+  },
+  "options": {
+    "allowNoReviews": "Autoriser la fusion sans révision",
+    "allowNoReviewsDescription": "Autoriser la fusion des demandes de fusion sans révision",
+    "deleteBranch": "Supprimer les branches après la fusion",
+    "deleteBranchDescription": "Suppression automatique des branches sources après une fusion réussie",
+    "requireApproval": "L'approbation est requise avant la fusion.",
+    "requireApprovalDescription": "Attendez l'approbation manuelle avant d'exécuter la fusion."
+  },
+  "strategy": {
+    "description": "Choisissez comment les demandes d'extraction doivent être fusionnées par défaut",
+    "merge": "Créer un commit de fusion",
+    "mergeDescription": "Tous les commits sont préservés",
+    "rebase": "Rebaser et fusionner",
+    "rebaseDescription": "Historique linéaire des commits",
+    "squash": "Écraser et fusionner",
+    "squashDescription": "Combiner tous les commits en un seul",
+    "title": "Stratégie de fusion par défaut"
+  },
+  "title": "Comportement de fusion",
+  "toast": {
+    "updateFailed": "Échec de la mise à jour des paramètres",
+    "updated": "Paramètres mis à jour",
+    "updatedDescription": "Les paramètres de comportement de fusion ont été enregistrés."
+  }
+}

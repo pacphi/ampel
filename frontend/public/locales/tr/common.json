@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "Eklemek",
+    "apply": "Uygula",
+    "cancel": "İptal etmek",
+    "clear": "Temizlemek",
+    "delete": "Silmek",
+    "edit": "Düzenlemek",
+    "hideEmail": "E-postayı gizle",
+    "refresh": "Yenile",
+    "refreshing": "Ferahlatıcı...",
+    "remove": "Kaldırmak",
+    "reset": "Varsayılan ayarlara sıfırla",
+    "save": "Kaydetmek",
+    "saving": "Tasarruf...",
+    "showEmail": "E-postayı göster",
+    "viewOnProvider": "{{provider}} üzerinden görüntüle"
+  },
+  "app": {
+    "add": "Eklemek",
+    "apply": "Uygula",
+    "back": "Geri",
+    "cancel": "İptal etmek",
+    "clear": "Temizlemek",
+    "close": "Kapalı",
+    "delete": "Silmek",
+    "description": "Birleşik çekme isteği yönetimi",
+    "edit": "Düzenlemek",
+    "error": "Bir hata oluştu.",
+    "filter": "Filtrele",
+    "info": "Bilgi",
+    "loading": "Yükleniyor...",
+    "name": "Ampel",
+    "next": "Sonraki",
+    "previous": "Öncesi",
+    "remove": "Kaldırmak",
+    "reset": "Sıfırla",
+    "retry": "Tekrar dene",
+    "save": "Kaydetmek",
+    "search": "Aramak",
+    "success": "Başarı",
+    "title": "Ampel PR Kontrol Paneli",
+    "warning": "Uyarı"
+  },
+  "auth": {
+    "alreadyHaveAccount": "Zaten hesabınız var mı?",
+    "confirmPassword": "Şifreyi Onayla",
+    "createAccount": "Bir hesap oluşturun",
+    "creatingAccount": "Hesap oluşturuluyor...",
+    "displayName": "Ekran adı",
+    "displayNamePlaceholder": "John Doe",
+    "dontHaveAccount": "Hesabınız yok mu?",
+    "email": "E-posta",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "Parolanızı mı unuttunuz?",
+    "getStarted": "Ampel ile başlayın",
+    "login": "Giriş yapmak",
+    "loginSuccess": "Giriş başarılı",
+    "logout": "Çıkış yap",
+    "logoutSuccess": "Çıkış işlemi başarılı.",
+    "password": "Şifre",
+    "resetPassword": "Şifreyi sıfırla",
+    "signIn": "Giriş yap",
+    "signInToContinue": "Devam etmek için hesabınıza giriş yapın.",
+    "signUp": "Üye olmak",
+    "signingIn": "Giriş yapılıyor...",
+    "username": "Kullanıcı adı",
+    "welcome": "Tekrar hoşgeldiniz!",
+    "welcomeToAmpel": "Ampel'e hoş geldiniz"
+  },
+  "language": {
+    "current": "Mevcut dil",
+    "select": "Dil seçin"
+  },
+  "navigation": {
+    "analytics": "Analitik",
+    "dashboard": "Kontrol Paneli",
+    "documentation": "Dokümantasyon",
+    "help": "Yardım",
+    "merge": "Birleştir",
+    "organizations": "Organizasyonlar",
+    "profile": "Profil",
+    "pullRequests": "Çekme İstekleri",
+    "repositories": "Depolar",
+    "settings": "Ayarlar"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} yorum",
+    "comments_other": "{{count}} yorum",
+    "pullRequests_one": "{{count}} çekme isteği",
+    "pullRequests_other": "{{count}} çekme isteği",
+    "requests_one": "{{count}} istek",
+    "requests_other": "{{count}} istek"
+  },
+  "status": {
+    "trafficLight": "Trafik Işığı Durumu"
+  },
+  "theme": {
+    "auto": "Otomatik",
+    "dark": "Karanlık mod",
+    "light": "Açık mod",
+    "toggle": "Temayı değiştir"
+  },
+  "time": {
+    "daysAgo": "{{count}} gün önce",
+    "daysAgo_other": "{{count}} gün önce",
+    "hoursAgo": "{{count}} saat önce",
+    "hoursAgo_other": "{{count}} saat önce",
+    "minutesAgo": "{{count}} dakika önce",
+    "minutesAgo_other": "{{count}} dakika önce",
+    "monthsAgo": "{{count}} ay önce",
+    "monthsAgo_other": "{{count}} ay önce",
+    "now": "Şu anda",
+    "weeksAgo": "{{count}} hafta önce",
+    "weeksAgo_other": "{{count}} hafta önce"
+  },
+  "visibility": {
+    "archived": "Arşivlendi",
+    "private": "Özel",
+    "public": "Halk"
+  }
+}

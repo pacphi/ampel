@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Powrót do kont",
+    "form": {
+      "accountLabel": "Etykieta konta",
+      "accountLabelDescription": "Przyjazna nazwa identyfikująca to konto",
+      "accountLabelPlaceholder": "np. Praca GitHub, Osobisty GitLab",
+      "provider": "Dostawca",
+      "selectProvider": "Wybierz dostawcę",
+      "token": "Token dostępu osobistego",
+      "tokenDescription": "Twój token jest szyfrowany i bezpiecznie przechowywany",
+      "tokenPlaceholder": "Wprowadź swój osobisty token dostępu"
+    },
+    "submit": "Połącz konto",
+    "submitting": "Złączony...",
+    "subtitle": "Połącz nowe konto dostawcy Git",
+    "title": "Dodaj konto dostawcy"
+  },
+  "addAccount": "Dodaj konto",
+  "addFirstAccount": "Dodaj swoje pierwsze konto",
+  "card": {
+    "actions": {
+      "delete": "Usuń konto",
+      "edit": "Edytuj konto",
+      "setDefault": "Ustaw jako domyślne",
+      "validate": "Sprawdź token"
+    },
+    "expires": "Wygasa",
+    "neverExpires": "Nigdy nie wygasa",
+    "repositories": "repozytoria",
+    "status": {
+      "default": "Domyślny",
+      "expired": "Wygasły",
+      "invalid": "Nieważny",
+      "pending": "Aż do",
+      "valid": "Ważny"
+    },
+    "validated": "Zweryfikowany"
+  },
+  "delete": {
+    "cancel": "Anulować",
+    "confirm": "Usuwać",
+    "deleting": "Usuwanie...",
+    "description": "Czy na pewno chcesz usunąć konto „{{label}}”? Nie spowoduje to usunięcia repozytoriów, ale konieczne będzie ich ponowne powiązanie z innym kontem.",
+    "title": "Usuń konto"
+  },
+  "description": "Zarządzaj połączonymi kontami dostawcy Git",
+  "edit": {
+    "accountInfo": "Informacje o koncie",
+    "backToAccounts": "Powrót do kont",
+    "form": {
+      "accountLabel": "Etykieta konta",
+      "accountLabelPlaceholder": "np. Praca GitHub",
+      "currentToken": "Aktualny token",
+      "token": "Token dostępu osobistego",
+      "tokenDescription": "Pozostaw puste, aby zachować obecny token",
+      "tokenPlaceholder": "Wprowadź nowy token, aby zaktualizować"
+    },
+    "notFound": "Konto nie zostało znalezione",
+    "submit": "Zapisz zmiany",
+    "submitting": "Oszczędność...",
+    "subtitle": "Zaktualizuj ustawienia konta",
+    "title": "Edytuj konto"
+  },
+  "noAccountsYet": "Nie połączono jeszcze żadnych kont",
+  "title": "Konta dostawców",
+  "toast": {
+    "connected": "Konto połączone",
+    "connectedDescription": "Pomyślnie połączono konto {{provider}}",
+    "connectionFailed": "Nie udało się dodać konta",
+    "defaultUpdateFailed": "Nie udało się zaktualizować ustawień domyślnych",
+    "defaultUpdated": "Zaktualizowano domyślne konto",
+    "defaultUpdatedDescription": "Zmieniono domyślne konto",
+    "deleteFailed": "Nie udało się usunąć konta",
+    "deleted": "Konto usunięte",
+    "deletedDescription": "Konto zostało pomyślnie usunięte",
+    "tokenInvalid": "Token nieprawidłowy",
+    "tokenInvalidDescription": "Token jest nieprawidłowy lub wygasł",
+    "tokenValid": "Token ważny",
+    "tokenValidDescription": "Token konta jest ważny i aktywny",
+    "updateFailed": "Nie udało się zaktualizować konta",
+    "updated": "Konto zaktualizowane",
+    "updatedDescription": "Ustawienia konta zostały zapisane",
+    "validationFailed": "Walidacja nie powiodła się"
+  }
+}

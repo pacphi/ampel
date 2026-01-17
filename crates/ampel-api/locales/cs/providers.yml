@@ -1,0 +1,37 @@
+providers:
+  # GitHub provider
+  github:
+    token_invalid: "Neplatný nebo vypršený token"
+    api_error: "Chyba API: %{status}"
+    user_fetch_failed: "Nepodařilo se načíst uživatele"
+    invalid_token: "Neplatný token"
+    repos_fetch_failed: "Nepodařilo se vypsat repozitáře"
+    repo_fetch_failed: "Nepodařilo se načíst repozitář"
+    repo_not_found: "Repozitář %{owner}/%{repo} nebyl nalezen"
+    prs_fetch_failed: "Nepodařilo se vypsat pull requesty"
+    pr_not_found: "Pull request #%{number} nebyl nalezen"
+    pr_fetch_failed: "Nepodařilo se načíst pull request"
+    reviews_fetch_failed: "Nepodařilo se načíst recenze"
+    merge_not_mergeable: "Pull request nelze sloučit"
+    merge_conflict: "Konflikt při sloučení nebo byla změněna hlavní větev"
+    merge_checks_failed: "Pull request nelze sloučit (zkontrolujte stavové kontroly a recenze)"
+    merge_failed: "Nepodařilo se sloučit pull request"
+    rate_limit_failed: "Nepodařilo se získat limit četnosti"
+
+  # General provider errors
+  general:
+    auth_failed: "Ověření selhalo: %{reason}"
+    rate_limit_exceeded: "Limit četnosti překročen. Obnoví se v: %{reset_time}"
+    not_found: "Prostředek nebyl nalezen: %{resource}"
+    permission_denied: "Přístup odepřen: %{reason}"
+    invalid_response: "Neplatná odpověď: %{reason}"
+    network_error: "Chyba sítě: %{reason}"
+    api_error: "Chyba API poskytovatele: %{message} (stav: %{status_code})"
+    serialization_error: "Chyba serializace: %{reason}"
+    config_error: "Chyba konfigurace: %{reason}"
+    not_supported: "Operace není podporována: %{operation}"
+
+  # Worker job errors
+  worker:
+    no_account: "Repozitář nemá přidružený účet poskytovatele"
+    account_not_found: "Účet poskytovatele nebyl nalezen"

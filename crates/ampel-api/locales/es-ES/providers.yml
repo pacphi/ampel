@@ -1,0 +1,37 @@
+providers:
+  # GitHub provider
+  github:
+    token_invalid: "Token no válido o caducado"
+    api_error: "Error de API: %{status}"
+    user_fetch_failed: "Error al obtener el usuario"
+    invalid_token: "Token no válido"
+    repos_fetch_failed: "Error al listar repositorios"
+    repo_fetch_failed: "Error al obtener el repositorio"
+    repo_not_found: "Repositorio %{owner}/%{repo} no encontrado"
+    prs_fetch_failed: "Error al listar pull requests"
+    pr_not_found: "Pull request #%{number} no encontrada"
+    pr_fetch_failed: "Error al obtener pull request"
+    reviews_fetch_failed: "Error al obtener revisiones"
+    merge_not_mergeable: "La pull request no se puede fusionar"
+    merge_conflict: "Conflicto de fusión o la rama principal fue modificada"
+    merge_checks_failed: "La pull request no se puede fusionar (compruebe las verificaciones de estado y revisiones)"
+    merge_failed: "Error al fusionar pull request"
+    rate_limit_failed: "Error al obtener el límite de velocidad"
+
+  # General provider errors
+  general:
+    auth_failed: "Error de autenticación: %{reason}"
+    rate_limit_exceeded: "Límite de velocidad excedido. Se restablece a las: %{reset_time}"
+    not_found: "Recurso no encontrado: %{resource}"
+    permission_denied: "Permiso denegado: %{reason}"
+    invalid_response: "Respuesta no válida: %{reason}"
+    network_error: "Error de red: %{reason}"
+    api_error: "Error de API del proveedor: %{message} (estado: %{status_code})"
+    serialization_error: "Error de serialización: %{reason}"
+    config_error: "Error de configuración: %{reason}"
+    not_supported: "Operación no admitida: %{operation}"
+
+  # Worker job errors
+  worker:
+    no_account: "El repositorio no tiene una cuenta de proveedor asociada"
+    account_not_found: "Cuenta de proveedor no encontrada"

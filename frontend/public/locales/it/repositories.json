@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Aggiungi tutto ({{count}})",
+    "close": "Vicino",
+    "empty": "Nessun nuovo repository trovato da aggiungere",
+    "title": "Aggiungi da {{provider}}"
+  },
+  "empty": {
+    "description": "Aggiungi repository dai tuoi provider connessi per iniziare",
+    "title": "Nessun repository trovato"
+  },
+  "providers": {
+    "connected": "(Collegato)",
+    "title": "Connetti un fornitore"
+  },
+  "search": {
+    "placeholder": "Cerca nei repository..."
+  },
+  "table": {
+    "actions": "Azioni",
+    "provider": "Fornitore",
+    "prs": "PR aperti",
+    "repository": "Deposito",
+    "status": "Stato"
+  },
+  "title": "Depositi",
+  "toast": {
+    "addFailed": "Impossibile aggiungere il repository",
+    "added": "Repository aggiunto",
+    "addedDescription": "{{name}} è stato aggiunto alla tua dashboard",
+    "bulkAddFailed": "Impossibile aggiungere repository",
+    "bulkAddFailedDescription": "Impossibile aggiungere nessuno dei repository selezionati",
+    "bulkAdded": "Repository aggiunti",
+    "bulkAddedDescription": "Aggiunti correttamente {{count}} repository{{failed}}",
+    "bulkAddedFailed": "({{count}} fallito)",
+    "removeFailed": "Impossibile rimuovere il repository",
+    "removed": "Repository rimosso",
+    "removedDescription": "{{name}} è stato rimosso dalla tua dashboard"
+  }
+}

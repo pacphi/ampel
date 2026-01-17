@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "加入全部 ({{count}})",
+    "close": "關閉",
+    "empty": "未找到要新增的新儲存庫",
+    "title": "從 {{provider}} 新增"
+  },
+  "empty": {
+    "description": "新增來自已連線提供者的儲存庫即可開始使用",
+    "title": "未找到儲存庫"
+  },
+  "providers": {
+    "connected": "（已連接）",
+    "title": "聯繫服務提供者"
+  },
+  "search": {
+    "placeholder": "搜尋儲存庫…"
+  },
+  "table": {
+    "actions": "行動",
+    "provider": "提供者",
+    "prs": "開放的 PR",
+    "repository": "儲存庫",
+    "status": "地位"
+  },
+  "title": "儲存庫",
+  "toast": {
+    "addFailed": "新增儲存庫失敗",
+    "added": "已新增儲存庫",
+    "addedDescription": "{{name}} 已新增至您的儀表板",
+    "bulkAddFailed": "新增儲存庫失敗",
+    "bulkAddFailedDescription": "無法新增任何選定的儲存庫",
+    "bulkAdded": "新增儲存庫",
+    "bulkAddedDescription": "已成功新增 {{count}} 儲存庫{{failed}}",
+    "bulkAddedFailed": "（{{count}} 失敗）",
+    "removeFailed": "刪除儲存庫失敗",
+    "removed": "倉庫已移除",
+    "removedDescription": "{{name}} 已從您的儀表板移除"
+  }
+}

@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: 此账户已连接。请使用 PATCH 函数更新令牌。
+      invalid_provider_type: 无效的提供商类型
+      invalid_token: 无效令牌
+      not_found: 未找到帐户
+      provider_no_user_id: 提供商未返回用户 ID
+      provider_no_username: 提供商未返回用户名
+      validation_failed: 令牌验证失败：%{error}
+    auth:
+      email_in_use: 邮箱已在使用中
+      email_registered: 邮箱已注册
+      invalid_credentials: 无效的电子邮件地址或密码
+      invalid_refresh_token: 无效或已过期的刷新令牌
+      user_not_found: 用户未找到
+    encryption:
+      decrypt_failed: 解密错误：%{error}
+      failed: 加密错误：%{error}
+    general:
+      internal: 内部错误
+      serialization_failed: 序列化作用域失败：%{error}
+    network:
+      connection_failed: 连接失败
+      timeout: 请求超时
+    provider:
+      decrypt_failed: 解密令牌失败：%{error}
+      error: 提供商错误：%{error}
+    pull_request:
+      merge_failed: 合并失败：%{reason}
+      not_found: 未找到拉取请求
+    rate_limit:
+      exceeded: 超出速率限制
+    repository:
+      already_added: 存储库已添加
+      invalid_provider: 无效的提供商
+      invalid_provider_db: 数据库中的提供商类型无效
+      no_account_linked: 存储库未关联到帐户
+      not_found: 未找到存储库
+      not_found_for_pr: 未找到 PR 的仓库
+      provider_not_connected: 服务提供商未连接

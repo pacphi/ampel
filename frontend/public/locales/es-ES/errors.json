@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "No se pudo crear la cuenta",
+    "forbidden": "No tienes permiso para acceder a este recurso.",
+    "invalidCredentials": "Nombre de usuario o contraseña no válidos",
+    "invalidEmailOrPassword": "Correo electrónico o contraseña no válidos",
+    "loginFailed": "error de inicio de sesion",
+    "registrationFailed": "El registro falló",
+    "sessionExpired": "Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.",
+    "tokenExpired": "El token de autenticación ha expirado",
+    "unauthorized": "Acceso no autorizado"
+  },
+  "boundary": {
+    "description": "Se produjo un error inesperado. Inténtalo de nuevo.",
+    "details": "Detalles del error (solo para desarrolladores)",
+    "reload": "Recargar página",
+    "title": "Algo salió mal",
+    "tryAgain": "Intentar otra vez"
+  },
+  "general": {
+    "unknownError": "Se produjo un error desconocido"
+  },
+  "generic": {
+    "goHome": "Ir al panel de control",
+    "message": "Se produjo un error inesperado. Inténtalo de nuevo.",
+    "retry": "Intentar otra vez",
+    "somethingWentWrong": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "title": "Algo salió mal"
+  },
+  "network": {
+    "message": "No se puede conectar al servidor. Por favor, revise su conexión a internet.",
+    "offline": "Actualmente estás desconectado",
+    "title": "Error de red"
+  },
+  "notFound": {
+    "goHome": "Regresar al panel de control",
+    "message": "La página que estás buscando no existe.",
+    "title": "Página no encontrada"
+  },
+  "pr": {
+    "approveFailed": "No se pudo aprobar la solicitud de extracción",
+    "commentFailed": "No se pudo publicar el comentario",
+    "loadFailed": "No se pudieron cargar las solicitudes de extracción",
+    "mergeFailed": "No se pudo fusionar la solicitud de extracción"
+  },
+  "provider": {
+    "connectionFailed": "No se pudo conectar con {{provider}}",
+    "invalidToken": "Token {{provider}} no válido",
+    "notFound": "Recurso no encontrado en {{provider}}",
+    "rateLimited": "Se excedió el límite de velocidad de la API de {{provider}}"
+  },
+  "repository": {
+    "accessDenied": "Acceso al repositorio denegado",
+    "loadFailed": "No se pudieron cargar los repositorios",
+    "notFound": "Repositorio no encontrado"
+  },
+  "validation": {
+    "invalidEmail": "Por favor, introduce una dirección de correo electrónico válida",
+    "invalidUrl": "Por favor, introduzca una URL válida",
+    "maxLength": "No debe exceder {{max}} caracteres",
+    "minLength": "Debe tener al menos {{min}} caracteres",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "required": "Este campo es obligatorio"
+  }
+}

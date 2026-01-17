@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "건강 점수는 PR 지표를 기반으로 시간 단위로 계산됩니다.",
+    "title": "아직 건강 관련 데이터가 없습니다."
+  },
+  "health": {
+    "mergeTime": "병합 시간",
+    "perWeek": "{{count}}/주",
+    "reviewTime": "검토 시간",
+    "stalePrs": "오래된 PR",
+    "throughput": "처리량",
+    "title": "저장소 상태 점수"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "평균 병합 시간",
+    "avgReviewTime": "평균 검토 시간",
+    "botPrs": "봇 PR",
+    "prsMerged": "PR 병합됨({{days}}d)"
+  },
+  "title": "해석학"
+}

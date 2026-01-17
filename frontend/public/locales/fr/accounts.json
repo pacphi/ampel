@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Retour à la page Comptes",
+    "form": {
+      "accountLabel": "Étiquette du compte",
+      "accountLabelDescription": "Un nom convivial pour identifier ce compte",
+      "accountLabelPlaceholder": "Par exemple, GitHub professionnel, GitLab personnel",
+      "provider": "Fournisseur",
+      "selectProvider": "Sélectionnez un fournisseur",
+      "token": "Jeton d'accès personnel",
+      "tokenDescription": "Votre jeton est chiffré et stocké en toute sécurité.",
+      "tokenPlaceholder": "Saisissez votre jeton d'accès personnel"
+    },
+    "submit": "Compte de connexion",
+    "submitting": "De liaison...",
+    "subtitle": "Connectez un nouveau compte de fournisseur Git",
+    "title": "Ajouter un compte fournisseur"
+  },
+  "addAccount": "Ajouter un compte",
+  "addFirstAccount": "Ajoutez votre premier compte",
+  "card": {
+    "actions": {
+      "delete": "Supprimer le compte",
+      "edit": "Modifier le compte",
+      "setDefault": "Définir comme valeur par défaut",
+      "validate": "Valider le jeton"
+    },
+    "expires": "Expire",
+    "neverExpires": "Ne périme jamais",
+    "repositories": "dépôts",
+    "status": {
+      "default": "Défaut",
+      "expired": "Expiré",
+      "invalid": "Invalide",
+      "pending": "En attente",
+      "valid": "Valide"
+    },
+    "validated": "Validé"
+  },
+  "delete": {
+    "cancel": "Annuler",
+    "confirm": "Supprimer",
+    "deleting": "Suppression en cours...",
+    "description": "Êtes-vous sûr de vouloir supprimer le compte « {{label}} » ? Cela ne supprimera pas les dépôts, mais ils devront être reliés à un autre compte.",
+    "title": "Supprimer le compte"
+  },
+  "description": "Gérez vos comptes de fournisseur Git connectés",
+  "edit": {
+    "accountInfo": "Informations sur le compte",
+    "backToAccounts": "Retour à la page Comptes",
+    "form": {
+      "accountLabel": "Étiquette du compte",
+      "accountLabelPlaceholder": "Par exemple, GitHub au travail",
+      "currentToken": "Jeton actuel",
+      "token": "Jeton d'accès personnel",
+      "tokenDescription": "Laisser vide pour conserver le jeton actuel",
+      "tokenPlaceholder": "Saisissez un nouveau jeton pour mettre à jour"
+    },
+    "notFound": "Compte introuvable",
+    "submit": "Enregistrer les modifications",
+    "submitting": "Économie...",
+    "subtitle": "Mettre à jour les paramètres du compte",
+    "title": "Modifier le compte"
+  },
+  "noAccountsYet": "Aucun compte connecté pour le moment",
+  "title": "Comptes fournisseurs",
+  "toast": {
+    "connected": "Compte connecté",
+    "connectedDescription": "Connexion réussie au compte {{provider}}",
+    "connectionFailed": "Impossible d'ajouter le compte",
+    "defaultUpdateFailed": "Échec de la mise à jour par défaut",
+    "defaultUpdated": "Compte par défaut mis à jour",
+    "defaultUpdatedDescription": "Le compte par défaut a été modifié.",
+    "deleteFailed": "Impossible de supprimer le compte",
+    "deleted": "Compte supprimé",
+    "deletedDescription": "Le compte a été supprimé avec succès.",
+    "tokenInvalid": "Jeton invalide",
+    "tokenInvalidDescription": "Le jeton est invalide ou a expiré.",
+    "tokenValid": "Jeton valide",
+    "tokenValidDescription": "Le jeton du compte est valide et actif.",
+    "updateFailed": "Impossible de mettre à jour le compte",
+    "updated": "Compte mis à jour",
+    "updatedDescription": "Les paramètres du compte ont été enregistrés.",
+    "validationFailed": "La validation a échoué"
+  }
+}

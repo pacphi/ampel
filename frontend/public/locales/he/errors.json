@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "נכשל ביצירת חשבון",
+    "forbidden": "אין לך הרשאה לגשת למשאב הזה",
+    "invalidCredentials": "שם משתמש או סיסמה לא חוקיים",
+    "invalidEmailOrPassword": "דואר אלקטרוני או סיסמה לא חוקיים",
+    "loginFailed": "התחברות נכשלה",
+    "registrationFailed": "הרשמה נכשלה",
+    "sessionExpired": "הסשן שלך פג תוקפו. אנא התחבר שוב.",
+    "tokenExpired": "פג תוקף אסימון האימות",
+    "unauthorized": "גישה לא מורשית"
+  },
+  "boundary": {
+    "description": "אירעה שגיאה בלתי צפויה. אנא נסה שוב.",
+    "details": "פרטי שגיאה (למפתחים בלבד)",
+    "reload": "טען מחדש את הדף",
+    "title": "משהו השתבש",
+    "tryAgain": "נסה שוב"
+  },
+  "general": {
+    "unknownError": "אירעה שגיאה לא ידועה"
+  },
+  "generic": {
+    "goHome": "עבור ללוח המחוונים",
+    "message": "אירעה שגיאה בלתי צפויה. אנא נסה שוב.",
+    "retry": "נסה שוב",
+    "somethingWentWrong": "משהו השתבש. אנא נסה שוב.",
+    "title": "משהו השתבש"
+  },
+  "network": {
+    "message": "לא ניתן להתחבר לשרת. אנא בדוק את חיבור האינטרנט שלך.",
+    "offline": "אתה לא מחובר כרגע",
+    "title": "שגיאת רשת"
+  },
+  "notFound": {
+    "goHome": "חזרה ללוח המחוונים",
+    "message": "הדף שאתה מחפש אינו קיים.",
+    "title": "הדף לא נמצא"
+  },
+  "pr": {
+    "approveFailed": "נכשל אישור בקשת המשיכה",
+    "commentFailed": "פרסום התגובה נכשל",
+    "loadFailed": "נכשלה טעינת בקשות משיכה",
+    "mergeFailed": "נכשלה בקשת ה-pull המיזוג"
+  },
+  "provider": {
+    "connectionFailed": "נכשלה ההתחברות ל-{{provider}}",
+    "invalidToken": "אסימון {{provider}} לא חוקי",
+    "notFound": "המשאב לא נמצא ב-{{provider}}",
+    "rateLimited": "חריגה ממגבלת קצב ה-API של {{provider}}"
+  },
+  "repository": {
+    "accessDenied": "הגישה למאגר נדחתה",
+    "loadFailed": "טעינת המאגרים נכשלה",
+    "notFound": "המאגר לא נמצא"
+  },
+  "validation": {
+    "invalidEmail": "אנא הזן כתובת דוא\"ל תקפה",
+    "invalidUrl": "אנא הזן כתובת URL חוקית",
+    "maxLength": "אסור לעלות על {{max}} תווים",
+    "minLength": "חייב להיות באורך של לפחות {{min}} תווים",
+    "passwordMismatch": "הסיסמאות אינן תואמות",
+    "required": "שדה זה נדרש"
+  }
+}

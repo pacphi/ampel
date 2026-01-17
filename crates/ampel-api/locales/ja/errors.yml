@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: このアカウントはすでに接続されています。PATCHを使用してトークンを更新してください。
+      invalid_provider_type: プロバイダの種類が無効です
+      invalid_token: 無効なトークン
+      not_found: アカウントが見つかりません
+      provider_no_user_id: プロバイダーがユーザーIDを返しませんでした
+      provider_no_username: プロバイダーがユーザー名を返しませんでした
+      validation_failed: 'トークンの検証に失敗しました: %{error}'
+    auth:
+      email_in_use: メールアドレスはすでに使用されています
+      email_registered: メールアドレスはすでに登録されています
+      invalid_credentials: メールアドレスまたはパスワードが無効です
+      invalid_refresh_token: 無効または期限切れのリフレッシュトークン
+      user_not_found: ユーザーが見つかりません
+    encryption:
+      decrypt_failed: '復号エラー: %{error}'
+      failed: '暗号化エラー: %{error}'
+    general:
+      internal: 内部エラー
+      serialization_failed: 'スコープのシリアル化に失敗しました: %{error}'
+    network:
+      connection_failed: 接続に失敗しました
+      timeout: リクエストがタイムアウトしました
+    provider:
+      decrypt_failed: 'トークンの復号に失敗しました: %{error}'
+      error: 'プロバイダー エラー: %{error}'
+    pull_request:
+      merge_failed: 'マージに失敗しました: %{reason}'
+      not_found: プルリクエストが見つかりません
+    rate_limit:
+      exceeded: レート制限を超えました
+    repository:
+      already_added: リポジトリはすでに追加されています
+      invalid_provider: 無効なプロバイダー
+      invalid_provider_db: データベース内のプロバイダタイプが無効です
+      no_account_linked: リポジトリがアカウントにリンクされていません
+      not_found: リポジトリが見つかりません
+      not_found_for_pr: PRのリポジトリが見つかりません
+      provider_not_connected: プロバイダーが接続されていません

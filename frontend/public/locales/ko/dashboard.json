@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "승인",
+    "comment": "댓글",
+    "deselectAll": "모두 선택 취소",
+    "merge": "병합",
+    "refresh": "새로 고침",
+    "requestChanges": "변경 요청",
+    "selectAll": "모두 선택",
+    "viewOnProvider": "{{provider}}에서 보기"
+  },
+  "blockers": {
+    "awaitingReview": "검토 대기 중",
+    "changesRequested": "변경 요청됨",
+    "ciFailed": "CI 실패",
+    "ciPending": "CI 대기 중",
+    "conflicts": "충돌",
+    "draft": "초안",
+    "needsReview": "검토 필요"
+  },
+  "empty": {
+    "action": "제공자 연결",
+    "description": "Git 제공자를 연결하여 PR 추적을 시작하세요",
+    "title": "찾을 수 있는 풀 요청이 없습니다"
+  },
+  "filters": {
+    "all": "모두",
+    "assignee": "담당자",
+    "author": "저자",
+    "closed": "닫힘",
+    "draft": "초안",
+    "label": "라벨",
+    "merged": "병합됨",
+    "onlyWithPrs": "열린 PR이 있는 저장소 보기",
+    "open": "열림",
+    "prStatus": {
+      "all": "모든 PR",
+      "blocked": "막힌",
+      "pending": "보류 중",
+      "ready": "준비가 된"
+    },
+    "provider": "제공자",
+    "repository": "저장소"
+  },
+  "pr": {
+    "additions": "추가사항",
+    "author": "저자",
+    "comments": "댓글",
+    "createdAt": "생성됨",
+    "deletions": "삭제",
+    "number": "#{{number}}",
+    "sourceBranch": "소스 브랜치",
+    "targetBranch": "대상 브랜치",
+    "updatedAt": "업데이트됨"
+  },
+  "prDashboard": "PR 대시보드",
+  "sort": {
+    "author": "저자",
+    "created": "생성 날짜",
+    "repository": "저장소",
+    "status": "상태",
+    "title": "정렬 기준",
+    "updated": "마지막 업데이트"
+  },
+  "stats": {
+    "blocked": "차단됨",
+    "inProgress": "진행 중",
+    "needsAttention": "주의 필요",
+    "open": "열림",
+    "openPRs": "열린 PRs",
+    "ready": "병합 준비 완료",
+    "readyToMerge": "병합 준비 완료",
+    "total": "총 PRs",
+    "totalRepositories": "총 저장소"
+  },
+  "status": {
+    "closed": "닫힘",
+    "draft": "드래프트",
+    "green": "병합 준비 완료",
+    "merged": "병합됨",
+    "red": "차단됨",
+    "yellow": "진행 중"
+  },
+  "subtitle": "모든 제공자에 걸친 풀 리퀘스트 관리",
+  "table": {
+    "columns": {
+      "lastUpdated": "최종 업데이트",
+      "provider": "공급자",
+      "prs": "홍보 담당자",
+      "repository": "저장소",
+      "status": "상태",
+      "visibility": "시계"
+    }
+  },
+  "title": "대시보드",
+  "views": {
+    "grid": "그리드 뷰",
+    "list": "목록 보기",
+    "prs": "풀 리퀘스트 뷰",
+    "pullRequests": "풀 리퀘스트 뷰",
+    "repositoryGrid": "저장소 그리드 뷰",
+    "repositoryList": "저장소 목록 뷰",
+    "table": "테이블 보기"
+  }
+}

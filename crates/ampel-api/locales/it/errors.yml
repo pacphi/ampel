@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: Questo account è già connesso. Usa PATCH per aggiornare il token.
+      invalid_provider_type: Tipo di provider non valido
+      invalid_token: Token non valido
+      not_found: Account non trovato
+      provider_no_user_id: Il provider non ha restituito l'ID utente
+      provider_no_username: Il provider non ha restituito il nome utente
+      validation_failed: 'Convalida del token non riuscita: %{error}'
+    auth:
+      email_in_use: Email già in uso
+      email_registered: Email già registrata
+      invalid_credentials: Email o password non valide
+      invalid_refresh_token: Token di aggiornamento non valido o scaduto
+      user_not_found: Utente non trovato
+    encryption:
+      decrypt_failed: 'Errore di decrittazione: %{error}'
+      failed: 'Errore di crittografia: %{error}'
+    general:
+      internal: Errore interno
+      serialization_failed: 'Impossibile serializzare gli ambiti: %{error}'
+    network:
+      connection_failed: Connessione fallita
+      timeout: Richiesta scaduta
+    provider:
+      decrypt_failed: 'Impossibile decifrare il token: %{error}'
+      error: 'Errore del provider: %{error}'
+    pull_request:
+      merge_failed: 'Unione fallita: %{reason}'
+      not_found: Richiesta di pull non trovata
+    rate_limit:
+      exceeded: Limite di velocità superato
+    repository:
+      already_added: Repository già aggiunto
+      invalid_provider: Fornitore non valido
+      invalid_provider_db: Tipo di provider non valido nel database
+      no_account_linked: Repository non collegato all'account
+      not_found: Repository non trovato
+      not_found_for_pr: Repository non trovato per PR
+      provider_not_connected: Fornitore non connesso

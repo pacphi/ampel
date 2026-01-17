@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "Утвердить",
+    "comment": "Комментарий",
+    "deselectAll": "Снять все отметки",
+    "merge": "Слияние",
+    "refresh": "Обновить",
+    "requestChanges": "Запросить изменения",
+    "selectAll": "Выбрать все",
+    "viewOnProvider": "Посмотреть на {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Ожидает обзора",
+    "changesRequested": "Запрошены изменения",
+    "ciFailed": "CI не удалось",
+    "ciPending": "CI в ожидании",
+    "conflicts": "Конфликты",
+    "draft": "Черновик",
+    "needsReview": "Требуется проверка"
+  },
+  "empty": {
+    "action": "Подключить провайдера",
+    "description": "Подключите ваши Git провайдеры для отслеживания PR",
+    "title": "Запросы на вытягивание не найдены"
+  },
+  "filters": {
+    "all": "Все",
+    "assignee": "Исполнитель",
+    "author": "Автор",
+    "closed": "Закрыто",
+    "draft": "Черновик",
+    "label": "Метка",
+    "merged": "Слияние",
+    "onlyWithPrs": "Показать репозитории с открытыми запросами на вытягивание",
+    "open": "Открыть",
+    "prStatus": {
+      "all": "Все PR",
+      "blocked": "Заблокировано",
+      "pending": "В ожидании",
+      "ready": "Готовый"
+    },
+    "provider": "Провайдер",
+    "repository": "Репозиторий"
+  },
+  "pr": {
+    "additions": "Добавления",
+    "author": "Автор",
+    "comments": "Комментарии",
+    "createdAt": "Создано",
+    "deletions": "Удаления",
+    "number": "#{{number}}",
+    "sourceBranch": "Исходная ветка",
+    "targetBranch": "Целевая ветка",
+    "updatedAt": "Обновлено"
+  },
+  "prDashboard": "Панель PR",
+  "sort": {
+    "author": "Автор",
+    "created": "Дата создания",
+    "repository": "Репозиторий",
+    "status": "Статус",
+    "title": "Сортировать по",
+    "updated": "Последнее обновление"
+  },
+  "stats": {
+    "blocked": "Заблокировано",
+    "inProgress": "В процессе",
+    "needsAttention": "Требует внимания",
+    "open": "Открыто",
+    "openPRs": "Открытые PR",
+    "ready": "Готово к слиянию",
+    "readyToMerge": "Готово к слиянию",
+    "total": "Всего PR",
+    "totalRepositories": "Всего репозиториев"
+  },
+  "status": {
+    "closed": "Закрыто",
+    "draft": "Черновик",
+    "green": "Готово к слиянию",
+    "merged": "Слияние",
+    "red": "Заблокировано",
+    "yellow": "В процессе"
+  },
+  "subtitle": "Управляйте вашими запросами на вытягивание от всех провайдеров",
+  "table": {
+    "columns": {
+      "lastUpdated": "Последнее обновление",
+      "provider": "Поставщик",
+      "prs": "PR-ы",
+      "repository": "Репозиторий",
+      "status": "Статус",
+      "visibility": "Видимость"
+    }
+  },
+  "title": "Панель управления",
+  "views": {
+    "grid": "Вид сетки",
+    "list": "Вид списка",
+    "prs": "Просмотр запросов на вытягивание",
+    "pullRequests": "Вид запросов на вытягивание",
+    "repositoryGrid": "Вид сетки репозитория",
+    "repositoryList": "Просмотр списка репозиториев",
+    "table": "Табличный вид"
+  }
+}

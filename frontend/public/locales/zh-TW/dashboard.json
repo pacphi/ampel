@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "批准",
+    "comment": "評論",
+    "deselectAll": "取消全選",
+    "merge": "合併",
+    "refresh": "刷新",
+    "requestChanges": "請求更改",
+    "selectAll": "全選",
+    "viewOnProvider": "在 {{provider}} 上查看"
+  },
+  "blockers": {
+    "awaitingReview": "等待審查",
+    "changesRequested": "需要變更",
+    "ciFailed": "CI失敗",
+    "ciPending": "CI 等待中",
+    "conflicts": "衝突",
+    "draft": "草稿",
+    "needsReview": "需要審查"
+  },
+  "empty": {
+    "action": "連接提供者",
+    "description": "連接您的Git提供商以開始追蹤PR",
+    "title": "找不到拉取請求"
+  },
+  "filters": {
+    "all": "全部",
+    "assignee": "受託人",
+    "author": "作者",
+    "closed": "已關閉",
+    "draft": "草稿",
+    "label": "標籤",
+    "merged": "已合併",
+    "onlyWithPrs": "顯示有開放PR的存儲庫",
+    "open": "開放的",
+    "prStatus": {
+      "all": "所有公關稿",
+      "blocked": "已屏蔽",
+      "pending": "待辦的",
+      "ready": "準備好"
+    },
+    "provider": "提供者",
+    "repository": "存儲庫"
+  },
+  "pr": {
+    "additions": "添加",
+    "author": "作者",
+    "comments": "評論",
+    "createdAt": "創建時間",
+    "deletions": "刪除",
+    "number": "#{{number}}",
+    "sourceBranch": "源分支",
+    "targetBranch": "目標分支",
+    "updatedAt": "更新時間"
+  },
+  "prDashboard": "PR 儀表板",
+  "sort": {
+    "author": "作者",
+    "created": "創建日期",
+    "repository": "存儲庫",
+    "status": "狀態",
+    "title": "排序方式",
+    "updated": "最後更新"
+  },
+  "stats": {
+    "blocked": "被阻擋",
+    "inProgress": "進行中",
+    "needsAttention": "需要注意",
+    "open": "開放",
+    "openPRs": "開放的PR",
+    "ready": "準備合併",
+    "readyToMerge": "準備合併",
+    "total": "總 PRs",
+    "totalRepositories": "總存儲庫"
+  },
+  "status": {
+    "closed": "已關閉",
+    "draft": "草稿",
+    "green": "準備合併",
+    "merged": "已合併",
+    "red": "被阻擋",
+    "yellow": "進行中"
+  },
+  "subtitle": "管理您在所有提供商中的拉取請求",
+  "table": {
+    "columns": {
+      "lastUpdated": "最後更新時間",
+      "provider": "提供者",
+      "prs": "公關人員",
+      "repository": "儲存庫",
+      "status": "地位",
+      "visibility": "能見度"
+    }
+  },
+  "title": "儀表板",
+  "views": {
+    "grid": "網格視圖",
+    "list": "列表視圖",
+    "prs": "拉取請求視圖",
+    "pullRequests": "拉取請求視圖",
+    "repositoryGrid": "存儲庫網格視圖",
+    "repositoryList": "存儲庫列表視圖",
+    "table": "表格視圖"
+  }
+}

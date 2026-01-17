@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "เพิ่ม",
+    "enable": "เปิดใช้งานการแจ้งเตือนทางอีเมล",
+    "enableDescription": "ส่งการแจ้งเตือนผ่านอีเมล (SMTP)",
+    "fromAddress": "จากที่อยู่",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "โฮสต์ SMTP",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "รหัสผ่าน SMTP",
+    "smtpPasswordPlaceholder": "ป้อนรหัสผ่าน",
+    "smtpPort": "พอร์ต SMTP",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "ชื่อผู้ใช้ SMTP",
+    "smtpUserPlaceholder": "user@example.com",
+    "testFailed": "ไม่สามารถส่งอีเมลทดสอบได้",
+    "testMessage": "ส่งอีเมลทดสอบ",
+    "testSending": "กำลังส่ง...",
+    "testSuccess": "ส่งอีเมลทดสอบแล้ว",
+    "title": "การแจ้งเตือนทางอีเมล",
+    "toAddresses": "ถึงที่อยู่",
+    "toAddressesDescription": "ผู้รับอีเมลแจ้งเตือน",
+    "toAddressesPlaceholder": "อีเมล@example.com",
+    "useTls": "ใช้ TLS"
+  },
+  "merge": {
+    "description": "เลือกเวลาที่จะรับการแจ้งเตือนสำหรับการดำเนินการผสานข้อมูล",
+    "notifyOnConflict": "แจ้งเตือนเมื่อเกิดข้อขัดแย้งในการรวมโค้ด",
+    "notifyOnConflictDescription": "ส่งการแจ้งเตือนเมื่อตรวจพบข้อขัดแย้งในการรวมไฟล์",
+    "notifyOnFailure": "แจ้งเตือนเมื่อการรวมข้อมูลล้มเหลว",
+    "notifyOnFailureDescription": "ส่งการแจ้งเตือนเมื่อการรวมข้อมูลล้มเหลว",
+    "notifyOnSuccess": "แจ้งเตือนเมื่อการรวมข้อมูลสำเร็จ",
+    "notifyOnSuccessDescription": "ส่งการแจ้งเตือนเมื่อ Pull Request (PR) ถูกผสานสำเร็จแล้ว",
+    "title": "การแจ้งเตือนการรวม"
+  },
+  "slack": {
+    "channel": "ช่องสัญญาณ (ไม่บังคับ)",
+    "channelDescription": "แทนที่ช่องทางเริ่มต้นที่กำหนดค่าไว้ในเว็บฮุค",
+    "channelPlaceholder": "#ทั่วไป",
+    "enable": "เปิดใช้งานการแจ้งเตือนของ Slack",
+    "enableDescription": "ส่งการแจ้งเตือนไปยังช่อง Slack",
+    "testFailed": "ไม่สามารถส่งข้อความทดสอบได้",
+    "testMessage": "ส่งข้อความทดสอบ",
+    "testSending": "กำลังส่ง...",
+    "testSuccess": "ส่งข้อความทดสอบแล้ว",
+    "title": "การแจ้งเตือน Slack",
+    "webhookUrl": "URL ของเว็บฮุค",
+    "webhookUrlDescription": "สร้าง webhook ขาเข้าในพื้นที่ทำงาน Slack ของคุณ",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "การตั้งค่าการแจ้งเตือน",
+  "toast": {
+    "updateFailed": "ไม่สามารถอัปเดตการตั้งค่าได้",
+    "updated": "การตั้งค่าได้รับการอัปเดตแล้ว",
+    "updatedDescription": "การตั้งค่าการแจ้งเตือนได้รับการบันทึกแล้ว"
+  }
+}

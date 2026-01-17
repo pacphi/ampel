@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { accountsApi } from '@/api/accounts';
 import type { ProviderAccount } from '@/types/account';
@@ -19,6 +20,7 @@ import {
 import { Plus } from 'lucide-react';
 
 export function AccountsListPage() {
+  const { t } = useTranslation(['accounts', 'common']);
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -34,8 +36,8 @@ export function AccountsListPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
       toast({
-        title: 'Account deleted',
-        description: 'The account has been removed successfully.',
+        title: t('accounts:toast.deleted'),
+        description: t('accounts:toast.deletedDescription'),
       });
       setDeleteConfirm(null);
     },
@@ -43,7 +45,7 @@ export function AccountsListPage() {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Failed to delete account',
+        title: t('accounts:toast.deleteFailed'),
         description: axiosError.response?.data?.error || 'An error occurred',
       });
     },
@@ -55,14 +57,14 @@ export function AccountsListPage() {
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
       if (data.isValid) {
         toast({
-          title: 'Token valid',
-          description: 'The account token is valid and active.',
+          title: t('accounts:toast.tokenValid'),
+          description: t('accounts:toast.tokenValidDescription'),
         });
       } else {
         toast({
           variant: 'destructive',
-          title: 'Token invalid',
-          description: data.errorMessage || 'The token is invalid or expired.',
+          title: t('accounts:toast.tokenInvalid'),
+          description: data.errorMessage || t('accounts:toast.tokenInvalidDescription'),
         });
       }
     },
@@ -70,7 +72,7 @@ export function AccountsListPage() {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Validation failed',
+        title: t('accounts:toast.validationFailed'),
         description: axiosError.response?.data?.error || 'An error occurred',
       });
     },
@@ -81,15 +83,15 @@ export function AccountsListPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
       toast({
-        title: 'Default account updated',
-        description: 'The default account has been changed.',
+        title: t('accounts:toast.defaultUpdated'),
+        description: t('accounts:toast.defaultUpdatedDescription'),
       });
     },
     onError: (error: unknown) => {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Failed to update default',
+        title: t('accounts:toast.defaultUpdateFailed'),
         description: axiosError.response?.data?.error || 'An error occurred',
       });
     },
@@ -139,15 +141,12 @@ export function AccountsListPage() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <div>
-            <CardTitle>Provider Accounts</CardTitle>
-            <CardDescription>
-              Manage your connected Git provider accounts. You can connect multiple accounts per
-              provider.
-            </CardDescription>
+            <CardTitle>{t('accounts:title')}</CardTitle>
+            <CardDescription>{t('accounts:description')}</CardDescription>
           </div>
           <Button onClick={() => navigate('/settings/accounts/add')}>
             <Plus className="h-4 w-4 mr-2" />
-            Add Account
+            {t('accounts:addAccount')}
           </Button>
         </CardHeader>
         <CardContent>
@@ -157,10 +156,10 @@ export function AccountsListPage() {
             </div>
           ) : !accounts || accounts.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">No accounts connected yet</p>
+              <p className="text-muted-foreground mb-4">{t('accounts:noAccountsYet')}</p>
               <Button onClick={() => navigate('/settings/accounts/add')}>
                 <Plus className="h-4 w-4 mr-2" />
-                Add Your First Account
+                {t('accounts:addFirstAccount')}
               </Button>
             </div>
           ) : (
@@ -202,22 +201,23 @@ export function AccountsListPage() {
       <Dialog open={deleteConfirm !== null} onOpenChange={() => setDeleteConfirm(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Account</DialogTitle>
+            <DialogTitle>{t('accounts:delete.title')}</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete the account "{deleteConfirm?.accountLabel}"? This will
-              not delete repositories, but they will need to be re-linked to another account.
+              {t('accounts:delete.description', { label: deleteConfirm?.accountLabel })}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteConfirm(null)}>
-              Cancel
+              {t('common:actions.cancel')}
             </Button>
             <Button
               variant="destructive"
               onClick={confirmDelete}
               disabled={deleteMutation.isPending}
             >
-              {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+              {deleteMutation.isPending
+                ? t('accounts:delete.deleting')
+                : t('accounts:delete.confirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

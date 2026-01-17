@@ -13,6 +13,9 @@ frontend/.vite/
 .env.local
 .env.*.local
 
+# i18n builder local config (may contain API keys)
+.ampel-i18n.yaml
+
 # IDE
 .idea/
 .vscode/
@@ -38,6 +41,9 @@ npm-debug.log*
 # Coverage
 coverage/
 *.lcov
+
+# Claude
+.claude/
 
 # Claude Flow generated files
 .claude/settings.local.json
@@ -67,12 +73,13 @@ claude-flow
 # Removed Windows wrapper files per user request
 hive-mind-prompt-*.txt
 
+# Ralph
+.ralph/
+ralph
+
 # agentic-qe generated files
 .agentic-qe
 aqe
-
-# archived
-.archives/
 
 # Prevent undefined directory from misconfigured CARGO_HOME/RUSTUP_HOME
 undefined/

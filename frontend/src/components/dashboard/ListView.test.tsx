@@ -1,8 +1,31 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import ListView from './ListView';
 import type { RepositoryWithStatus } from '@/types';
+
+// Mock react-i18next with translation key mappings for ListView
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'table.columns.status': 'Status',
+        'table.columns.repository': 'Repository',
+        'table.columns.visibility': 'Visibility',
+        'table.columns.provider': 'Provider',
+        'table.columns.prs': 'PRs',
+        'table.columns.lastUpdated': 'Last Updated',
+      };
+      return translations[key] || key;
+    },
+    i18n: {
+      language: 'en',
+      changeLanguage: vi.fn(),
+    },
+    ready: true,
+  }),
+}));
+
+import ListView from './ListView';
 
 function renderListView(repositories: Partial<RepositoryWithStatus>[]) {
   const queryClient = new QueryClient({
@@ -21,6 +44,10 @@ function renderListView(repositories: Partial<RepositoryWithStatus>[]) {
 }
 
 describe('ListView', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   describe('Empty State', () => {
     it('shows empty state when no repositories', () => {
       renderListView([]);

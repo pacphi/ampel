@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Lỗi API của nhà cung cấp: %{message} (trạng thái: %{status_code})'
+      auth_failed: 'Xác thực thất bại: %{reason}'
+      config_error: 'Lỗi cấu hình: %{reason}'
+      invalid_response: 'Phản hồi không hợp lệ: %{reason}'
+      network_error: 'Lỗi mạng: %{reason}'
+      not_found: 'Không tìm thấy tài nguyên: %{resource}'
+      not_supported: 'Thao tác không được hỗ trợ: %{operation}'
+      permission_denied: 'Quyền truy cập bị từ chối: %{reason}'
+      rate_limit_exceeded: 'Đã vượt quá giới hạn số lượt truy cập. Khởi động lại lúc: %{reset_time}'
+      serialization_error: 'Lỗi tuần tự hóa: %{reason}'
+    github:
+      api_error: 'Lỗi API: %{status}'
+      invalid_token: Mã thông báo không hợp lệ
+      merge_checks_failed: Yêu cầu kéo không thể được hợp nhất (vui lòng kiểm tra trạng thái và đánh giá).
+      merge_conflict: Xung đột hợp nhất hoặc nhánh chính đã bị sửa đổi
+      merge_failed: Không thể hợp nhất yêu cầu kéo (pull request).
+      merge_not_mergeable: Yêu cầu kéo (pull request) không thể hợp nhất.
+      pr_fetch_failed: Không thể lấy yêu cầu kéo (pull request).
+      pr_not_found: 'Không tìm thấy yêu cầu kéo #%{number}'
+      prs_fetch_failed: Không thể liệt kê các yêu cầu kéo
+      rate_limit_failed: Không thể đạt được giới hạn tỷ lệ
+      repo_fetch_failed: Không thể tải kho lưu trữ
+      repo_not_found: Không tìm thấy kho lưu trữ %{owner}/%{repo}
+      repos_fetch_failed: Không thể liệt kê các kho lưu trữ.
+      reviews_fetch_failed: Không nhận được đánh giá
+      token_invalid: Mã thông báo không hợp lệ hoặc đã hết hạn
+      user_fetch_failed: Không thể lấy thông tin người dùng
+    worker:
+      account_not_found: Không tìm thấy tài khoản nhà cung cấp
+      no_account: Kho lưu trữ không có tài khoản nhà cung cấp liên kết.

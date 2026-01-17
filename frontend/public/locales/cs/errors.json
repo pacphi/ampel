@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "Vytvoření účtu se nezdařilo",
+    "forbidden": "Nemáte oprávnění k přístupu k tomuto zdroji.",
+    "invalidCredentials": "Neplatné uživatelské jméno nebo heslo",
+    "invalidEmailOrPassword": "Neplatný e-mail nebo heslo",
+    "loginFailed": "Přihlášení se nezdařilo",
+    "registrationFailed": "Registrace se nezdařila",
+    "sessionExpired": "Vaše relace vypršela. Přihlaste se prosím znovu.",
+    "tokenExpired": "Platnost ověřovacího tokenu vypršela",
+    "unauthorized": "Neoprávněný přístup"
+  },
+  "boundary": {
+    "description": "Došlo k neočekávané chybě. Zkuste to prosím znovu.",
+    "details": "Podrobnosti o chybě (pouze pro vývojáře)",
+    "reload": "Znovu načíst stránku",
+    "title": "Něco se pokazilo",
+    "tryAgain": "Zkuste to znovu"
+  },
+  "general": {
+    "unknownError": "Došlo k neznámé chybě"
+  },
+  "generic": {
+    "goHome": "Přejít na řídicí panel",
+    "message": "Došlo k neočekávané chybě. Zkuste to prosím znovu.",
+    "retry": "Zkuste to znovu",
+    "somethingWentWrong": "Něco se pokazilo. Zkuste to prosím znovu.",
+    "title": "Něco se pokazilo"
+  },
+  "network": {
+    "message": "Nelze se připojit k serveru. Zkontrolujte prosím připojení k internetu.",
+    "offline": "Momentálně jste offline",
+    "title": "Chyba sítě"
+  },
+  "notFound": {
+    "goHome": "Zpět na řídicí panel",
+    "message": "Stránka, kterou hledáte, neexistuje.",
+    "title": "Stránka nenalezena"
+  },
+  "pr": {
+    "approveFailed": "Schválení žádosti o změnu se nezdařilo",
+    "commentFailed": "Nepodařilo se odeslat komentář",
+    "loadFailed": "Nepodařilo se načíst žádosti o změny",
+    "mergeFailed": "Nepodařilo se sloučit žádost o změnu obsahu (pull request)"
+  },
+  "provider": {
+    "connectionFailed": "Nepodařilo se připojit k {{provider}}",
+    "invalidToken": "Neplatný token {{provider}}",
+    "notFound": "Zdroj nebyl nalezen na {{provider}}",
+    "rateLimited": "{{provider}} překročen limit rychlosti API"
+  },
+  "repository": {
+    "accessDenied": "Přístup k repozitáři byl zamítnut",
+    "loadFailed": "Nepodařilo se načíst repozitáře",
+    "notFound": "Úložiště nenalezeno"
+  },
+  "validation": {
+    "invalidEmail": "Zadejte prosím platnou e-mailovou adresu",
+    "invalidUrl": "Zadejte platnou URL adresu",
+    "maxLength": "Nesmí překročit {{max}} znaků",
+    "minLength": "Musí obsahovat alespoň {{min}} znaků",
+    "passwordMismatch": "Hesla se neshodují",
+    "required": "Toto pole je povinné"
+  }
+}

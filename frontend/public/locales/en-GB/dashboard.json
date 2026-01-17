@@ -1,0 +1,118 @@
+{
+  "actions": {
+    "approve": "Approve",
+    "comment": "Comment",
+    "deselectAll": "Deselect All",
+    "merge": "Merge",
+    "refresh": "Refresh",
+    "requestChanges": "Request Changes",
+    "selectAll": "Select All",
+    "viewOnProvider": "View on {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Awaiting review",
+    "changesRequested": "Changes requested",
+    "ciFailed": "CI failed",
+    "ciPending": "CI pending",
+    "conflicts": "Conflicts",
+    "draft": "Draft",
+    "needsReview": "Needs review"
+  },
+  "empty": {
+    "action": "Connect Provider",
+    "description": "Connect your Git providers to start tracking PRs",
+    "title": "No pull requests found"
+  },
+  "filters": {
+    "all": "All",
+    "assignee": "Assignee",
+    "author": "Author",
+    "closed": "Closed",
+    "draft": "Draft",
+    "label": "Label",
+    "merged": "Merged",
+    "onlyWithPrs": "Show repositories with Open PRs",
+    "open": "Open",
+    "prStatus": {
+      "all": "All PRs",
+      "blocked": "Blocked",
+      "pending": "Pending",
+      "ready": "Ready"
+    },
+    "provider": "Provider",
+    "repository": "Repository"
+  },
+  "pr": {
+    "additions": "Additions",
+    "author": "Author",
+    "comments": "Comments",
+    "createdAt": "Created",
+    "deletions": "Deletions",
+    "number": "#{{number}}",
+    "sourceBranch": "Source branch",
+    "targetBranch": "Target branch",
+    "updatedAt": "Updated"
+  },
+  "prDashboard": "PR Dashboard",
+  "pullRequests": {
+    "count": "{{count}} PR",
+    "count_other": "{{count}} PRs",
+    "filters": {
+      "all": "All",
+      "closed": "Closed",
+      "merged": "Merged",
+      "open": "Open"
+    },
+    "noPullRequests": "No pull requests found",
+    "title": "Pull Requests"
+  },
+  "sort": {
+    "author": "Author",
+    "created": "Created date",
+    "repository": "Repository",
+    "status": "Status",
+    "title": "Sort by",
+    "updated": "Last updated"
+  },
+  "stats": {
+    "blocked": "Blocked",
+    "inProgress": "In progress",
+    "needsAttention": "Needs Attention",
+    "open": "Open",
+    "openPRs": "Open PRs",
+    "ready": "Ready to merge",
+    "readyToMerge": "Ready to Merge",
+    "total": "Total PRs",
+    "totalRepositories": "Total Repositories"
+  },
+  "status": {
+    "closed": "Closed",
+    "draft": "Draft",
+    "green": "Ready to merge",
+    "merged": "Merged",
+    "red": "Blocked",
+    "unknown": "Unknown",
+    "yellow": "In progress"
+  },
+  "subtitle": "Manage your pull requests across all providers",
+  "table": {
+    "columns": {
+      "lastUpdated": "Last Updated",
+      "provider": "Provider",
+      "prs": "PRs",
+      "repository": "Repository",
+      "status": "Status",
+      "visibility": "Visibility"
+    }
+  },
+  "title": "Dashboard",
+  "views": {
+    "grid": "Grid view",
+    "list": "List view",
+    "prs": "Pull requests view",
+    "pullRequests": "Pull requests view",
+    "repositoryGrid": "Repository grid view",
+    "repositoryList": "Repository list view",
+    "table": "Table view"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "創建帳戶失敗",
+    "forbidden": "您無權訪問此資源",
+    "invalidCredentials": "無效的使用者名稱或密碼",
+    "invalidEmailOrPassword": "無效的電子郵件或密碼",
+    "loginFailed": "登錄失敗",
+    "registrationFailed": "註冊失敗",
+    "sessionExpired": "您的會話已過期。請再次登入。",
+    "tokenExpired": "身份驗證令牌已過期",
+    "unauthorized": "未經授權的訪問"
+  },
+  "boundary": {
+    "description": "發生意外錯誤，請重試。",
+    "details": "錯誤詳情（僅限開發人員）",
+    "reload": "重新載入頁面",
+    "title": "出問題了",
+    "tryAgain": "重試"
+  },
+  "general": {
+    "unknownError": "發生未知錯誤"
+  },
+  "generic": {
+    "goHome": "前往儀表板",
+    "message": "發生了意外的錯誤。請再試一次。",
+    "retry": "再試一次",
+    "somethingWentWrong": "出錯了，請重試。",
+    "title": "出了些問題"
+  },
+  "network": {
+    "message": "無法連接到服務器。請檢查您的網路連接。",
+    "offline": "您目前處於離線狀態",
+    "title": "網路錯誤"
+  },
+  "notFound": {
+    "goHome": "返回儀表板",
+    "message": "您正在尋找的頁面不存在。",
+    "title": "找不到頁面"
+  },
+  "pr": {
+    "approveFailed": "批准拉取請求失敗",
+    "commentFailed": "發布評論失敗",
+    "loadFailed": "無法加載拉取請求",
+    "mergeFailed": "無法合併拉取請求"
+  },
+  "provider": {
+    "connectionFailed": "無法連接到 {{provider}}",
+    "invalidToken": "無效的 {{provider}} 令牌",
+    "notFound": "{{provider}} 上找不到資源",
+    "rateLimited": "{{provider}} API的速率限制已超過"
+  },
+  "repository": {
+    "accessDenied": "存取庫被拒絕",
+    "loadFailed": "載入存儲庫失敗",
+    "notFound": "找不到存儲庫"
+  },
+  "validation": {
+    "invalidEmail": "請輸入有效的電子郵件地址",
+    "invalidUrl": "請輸入有效的網址",
+    "maxLength": "不得超過 {{max}} 個字符",
+    "minLength": "必須至少有 {{min}} 個字符",
+    "passwordMismatch": "密碼不匹配",
+    "required": "此欄位為必填"
+  }
+}

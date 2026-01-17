@@ -3,6 +3,7 @@ use axum::{
     http::StatusCode,
     Json,
 };
+use rust_i18n::t;
 use sea_orm::{ColumnTrait, EntityTrait, QueryFilter};
 use serde::Deserialize;
 use uuid::Uuid;
@@ -72,11 +73,11 @@ pub async fn get_repository(
 ) -> Result<Json<ApiResponse<RepositoryWithStatus>>, ApiError> {
     let repo = RepoQueries::find_by_id(&state.db, id)
         .await?
-        .ok_or_else(|| ApiError::not_found("Repository not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.repository.not_found")))?;
 
     // Verify ownership
     if repo.user_id != auth.user_id {
-        return Err(ApiError::not_found("Repository not found"));
+        return Err(ApiError::not_found(t!("errors.repository.not_found")));
     }
 
     let prs = PrQueries::find_open_by_repository(&state.db, repo.id).await?;
@@ -100,7 +101,7 @@ pub async fn discover_repositories(
     let provider_type: GitProvider = query
         .provider
         .parse()
-        .map_err(|_| ApiError::bad_request("Invalid provider"))?;
+        .map_err(|_| ApiError::bad_request(t!("errors.repository.invalid_provider")))?;
 
     // Get provider account
     let account = provider_account::Entity::find()
@@ -109,13 +110,15 @@ pub async fn discover_repositories(
         .filter(provider_account::Column::IsDefault.eq(true))
         .one(&state.db)
         .await?
-        .ok_or_else(|| ApiError::bad_request("Provider not connected"))?;
+        .ok_or_else(|| ApiError::bad_request(t!("errors.repository.provider_not_connected")))?;
 
     // Decrypt access token
     let access_token = state
         .encryption_service
         .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(format!("Failed to decrypt token: {}", e)))?;
+        .map_err(|e| {
+            ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string()))
+        })?;
 
     // Create credentials
     let credentials = ampel_providers::traits::ProviderCredentials::Pat {
@@ -137,7 +140,9 @@ pub async fn discover_repositories(
             let page_repos = provider
                 .list_repositories(&credentials, page, per_page)
                 .await
-                .map_err(|e| ApiError::internal(format!("Provider error: {}", e)))?;
+                .map_err(|e| {
+                    ApiError::internal(t!("errors.provider.error", error = e.to_string()))
+                })?;
 
             let count = page_repos.len();
             all_repos.extend(page_repos);
@@ -161,7 +166,7 @@ pub async fn discover_repositories(
         provider
             .list_repositories(&credentials, page, per_page)
             .await
-            .map_err(|e| ApiError::internal(format!("Provider error: {}", e)))?
+            .map_err(|e| ApiError::internal(t!("errors.provider.error", error = e.to_string())))?
     };
 
     Ok(Json(ApiResponse::success(repos)))
@@ -180,13 +185,15 @@ pub async fn add_repository(
         .filter(provider_account::Column::IsDefault.eq(true))
         .one(&state.db)
         .await?
-        .ok_or_else(|| ApiError::bad_request("Provider not connected"))?;
+        .ok_or_else(|| ApiError::bad_request(t!("errors.repository.provider_not_connected")))?;
 
     // Decrypt access token
     let access_token = state
         .encryption_service
         .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(format!("Failed to decrypt token: {}", e)))?;
+        .map_err(|e| {
+            ApiError::internal(t!("errors.provider.decrypt_failed", error = e.to_string()))
+        })?;
 
     // Create credentials
     let credentials = ampel_providers::traits::ProviderCredentials::Pat {
@@ -204,9 +211,9 @@ pub async fn add_repository(
         .await
         .map_err(|e| match e {
             ampel_providers::ProviderError::NotFound(_) => {
-                ApiError::not_found("Repository not found")
+                ApiError::not_found(t!("errors.repository.not_found"))
             }
-            _ => ApiError::internal(format!("Provider error: {}", e)),
+            _ => ApiError::internal(t!("errors.provider.error", error = e.to_string())),
         })?;
 
     // Check if already added
@@ -219,7 +226,7 @@ pub async fn add_repository(
     .await?
     .is_some()
     {
-        return Err(ApiError::bad_request("Repository already added"));
+        return Err(ApiError::bad_request(t!("errors.repository.already_added")));
     }
 
     // Create repository
@@ -253,11 +260,11 @@ pub async fn remove_repository(
 ) -> Result<StatusCode, ApiError> {
     let repo = RepoQueries::find_by_id(&state.db, id)
         .await?
-        .ok_or_else(|| ApiError::not_found("Repository not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.repository.not_found")))?;
 
     // Verify ownership
     if repo.user_id != auth.user_id {
-        return Err(ApiError::not_found("Repository not found"));
+        return Err(ApiError::not_found(t!("errors.repository.not_found")));
     }
 
     RepoQueries::delete(&state.db, id).await?;
@@ -274,11 +281,11 @@ pub async fn update_repository(
 ) -> Result<Json<ApiResponse<Repository>>, ApiError> {
     let repo = RepoQueries::find_by_id(&state.db, id)
         .await?
-        .ok_or_else(|| ApiError::not_found("Repository not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.repository.not_found")))?;
 
     // Verify ownership
     if repo.user_id != auth.user_id {
-        return Err(ApiError::not_found("Repository not found"));
+        return Err(ApiError::not_found(t!("errors.repository.not_found")));
     }
 
     if let Some(poll_interval) = body.poll_interval_seconds {
@@ -287,7 +294,7 @@ pub async fn update_repository(
 
     let updated = RepoQueries::find_by_id(&state.db, id)
         .await?
-        .ok_or_else(|| ApiError::not_found("Repository not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.repository.not_found")))?;
 
     let repo_model: Repository = updated.into();
     Ok(Json(ApiResponse::success(repo_model)))

@@ -1,0 +1,35 @@
+{
+  "alphanum": "{{field}} får endast innehålla bokstäver och siffror",
+  "date": "Ange ett giltigt datum",
+  "dateRange": "Slutdatumet måste vara efter startdatumet",
+  "email": "Ange en giltig e-postadress",
+  "fields": {
+    "confirmPassword": "Bekräfta lösenord",
+    "displayName": "Visningsnamn",
+    "email": "E-post",
+    "password": "Lösenord"
+  },
+  "fileSize": "Filstorleken får inte överstiga {{max}}",
+  "fileType": "Filtypen måste vara {{types}}",
+  "integer": "{{field}} måste vara ett heltal",
+  "invalidEmail": "Ogiltig e-postadress",
+  "max": "{{field}} får inte överstiga {{max}}",
+  "maxLength": "{{field}} får inte överstiga {{max}} tecken",
+  "messages": {
+    "displayNameRequired": "Visningsnamn krävs",
+    "emailRequired": "E-postadress krävs",
+    "passwordMinLength": "Lösenordet måste vara minst 8 tecken långt",
+    "passwordRequired": "Lösenord krävs"
+  },
+  "min": "{{field}} måste vara minst {{min}}",
+  "minLength": "{{field}} måste vara minst {{min}} tecken",
+  "negative": "{{field}} måste vara negativt",
+  "numeric": "{{field}} måste vara ett tal",
+  "passwordMismatch": "Lösenorden matchar inte",
+  "passwordsDontMatch": "Lösenorden matchar inte",
+  "pattern": "Formatet {{field}} är ogiltigt",
+  "positive": "{{field}} måste vara positivt",
+  "required": "{{field}} är obligatoriskt",
+  "unique": "{{field}} finns redan",
+  "url": "Ange en giltig URL"
+}

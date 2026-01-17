@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: บัญชีนี้เชื่อมต่ออยู่แล้ว ใช้ PATCH เพื่ออัปเดตโทเค็น
+      invalid_provider_type: ประเภทผู้ให้บริการไม่ถูกต้อง
+      invalid_token: โทเค็นไม่ถูกต้อง
+      not_found: ไม่พบบัญชีผู้ใช้
+      provider_no_user_id: ผู้ให้บริการไม่ได้ส่งคืนรหัสผู้ใช้
+      provider_no_username: ผู้ให้บริการไม่ได้ส่งชื่อผู้ใช้กลับมา
+      validation_failed: 'การตรวจสอบโทเค็นล้มเหลว: %{error}'
+    auth:
+      email_in_use: อีเมลถูกใช้งานอยู่แล้ว
+      email_registered: อีเมลลงทะเบียนแล้ว
+      invalid_credentials: อีเมลหรือรหัสผ่านไม่ถูกต้อง
+      invalid_refresh_token: โทเค็นรีเฟรชไม่ถูกต้องหรือหมดอายุแล้ว
+      user_not_found: ไม่พบผู้ใช้
+    encryption:
+      decrypt_failed: 'ข้อผิดพลาดในการถอดรหัส: %{error}'
+      failed: 'ข้อผิดพลาดในการเข้ารหัส: %{error}'
+    general:
+      internal: ข้อผิดพลาดภายใน
+      serialization_failed: 'ไม่สามารถแปลงขอบเขตเป็นรูปแบบอนุกรมได้: %{ข้อผิดพลาด}'
+    network:
+      connection_failed: การเชื่อมต่อล้มเหลว
+      timeout: การร้องขอหมดเวลา
+    provider:
+      decrypt_failed: 'ไม่สามารถถอดรหัสโทเค็นได้: %{ข้อผิดพลาด}'
+      error: 'ข้อผิดพลาดของผู้ให้บริการ: %{error}'
+    pull_request:
+      merge_failed: 'การรวมล้มเหลว: %{เหตุผล}'
+      not_found: ไม่พบ Pull request
+    rate_limit:
+      exceeded: เกินขีดจำกัดอัตรา
+    repository:
+      already_added: เพิ่มที่เก็บข้อมูลเรียบร้อยแล้ว
+      invalid_provider: ผู้ให้บริการไม่ถูกต้อง
+      invalid_provider_db: ประเภทผู้ให้บริการไม่ถูกต้องในฐานข้อมูล
+      no_account_linked: ที่เก็บข้อมูลไม่ได้เชื่อมโยงกับบัญชี
+      not_found: ไม่พบที่เก็บข้อมูล
+      not_found_for_pr: ไม่พบที่เก็บข้อมูลสำหรับ PR
+      provider_not_connected: ผู้ให้บริการไม่ได้เชื่อมต่อ

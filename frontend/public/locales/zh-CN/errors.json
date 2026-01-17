@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "创建帐户失败",
+    "forbidden": "您没有权限访问此资源",
+    "invalidCredentials": "用户名或密码无效",
+    "invalidEmailOrPassword": "电子邮件或密码无效",
+    "loginFailed": "登录失败",
+    "registrationFailed": "注册失败",
+    "sessionExpired": "您的会话已过期，请重新登录。",
+    "tokenExpired": "身份验证令牌已过期",
+    "unauthorized": "未经授权的访问"
+  },
+  "boundary": {
+    "description": "发生意外错误，请重试。",
+    "details": "错误详情（仅限开发人员）",
+    "reload": "重新加载页面",
+    "title": "出问题了",
+    "tryAgain": "重试"
+  },
+  "general": {
+    "unknownError": "发生未知错误"
+  },
+  "generic": {
+    "goHome": "前往控制面板",
+    "message": "发生意外错误，请重试。",
+    "retry": "再试一次",
+    "somethingWentWrong": "出错了，请重试。",
+    "title": "出问题了"
+  },
+  "network": {
+    "message": "无法连接到服务器。请检查您的网络连接。",
+    "offline": "您目前处于离线状态",
+    "title": "网络错误"
+  },
+  "notFound": {
+    "goHome": "返回仪表盘",
+    "message": "您要查找的页面不存在。",
+    "title": "页面未找到"
+  },
+  "pr": {
+    "approveFailed": "拉取请求未获批准",
+    "commentFailed": "发表评论失败。",
+    "loadFailed": "拉取请求加载失败",
+    "mergeFailed": "合并拉取请求失败"
+  },
+  "provider": {
+    "connectionFailed": "无法连接到 {{provider}}",
+    "invalidToken": "无效的 {{provider}} 令牌",
+    "notFound": "在 {{provider}} 上未找到资源",
+    "rateLimited": "{{provider}} API 速率限制已超出"
+  },
+  "repository": {
+    "accessDenied": "拒绝访问存储库",
+    "loadFailed": "加载存储库失败",
+    "notFound": "未找到存储库"
+  },
+  "validation": {
+    "invalidEmail": "请输入有效的电子邮件地址",
+    "invalidUrl": "请输入有效的网址",
+    "maxLength": "不得超过 {{max}} 个字符",
+    "minLength": "必须至少包含 {{min}} 个字符",
+    "passwordMismatch": "密码不匹配",
+    "required": "此字段是必需的"
+  }
+}

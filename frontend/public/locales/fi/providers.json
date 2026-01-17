@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Tili: Luku",
+      "pullRequestsRead": "Pull-pyynnöt: Lue",
+      "pullRequestsWrite": "Pull-pyynnöt: Kirjoita",
+      "repositoriesRead": "Tietovarastot: Lue",
+      "repositoriesWrite": "Tietovarastot: Kirjoita"
+    },
+    "steps": {
+      "step1": "Siirry kohtaan Bitbucket → Henkilökohtaiset asetukset → Sovellussalasanat",
+      "step2": "Napsauta \"Luo sovelluksen salasana\"",
+      "step3": "Anna salasanalle otsikko",
+      "step4": "Valitse tarvittavat käyttöoikeudet:",
+      "step5": "Napsauta \"Luo\" ja kopioi salasana"
+    },
+    "title": "Bitbucket-sovelluksen salasanan ohjeet"
+  },
+  "common": {
+    "expirationWarning": "Harkitse vanhenemispäivämäärän asettamista paremman turvallisuuden takaamiseksi.",
+    "minimalScopes": "Myönnä vain vähimmäisvaatimukset täyttävät oikeudet.",
+    "securityNote": "Pidä tunnuksesi turvassa äläkä koskaan jaa sitä julkisesti."
+  },
+  "github": {
+    "note": "Tarkennettuja tokeneita tuetaan myös tietovaraston käyttöoikeuksilla.",
+    "scopes": {
+      "readOrg": "read:org (Lue organisaatio ja tiimin jäsenyys)",
+      "readUser": "read:user (Lue käyttäjäprofiilin tiedot)",
+      "repo": "repo (Yksityisten arkistojen täysi hallinta)"
+    },
+    "steps": {
+      "step1": "Siirry kohtaan GitHub-asetukset → Kehittäjäasetukset → Henkilökohtaiset käyttöoikeustunnukset → Tunnukset (klassiset)",
+      "step2": "Klikkaa \"Luo uusi token (klassinen)\"",
+      "step3": "Anna tunnuksellesi kuvaava nimi",
+      "step4": "Valitse tarvittavat laajuusalueet:",
+      "step5": "Klikkaa \"Luo tunnus\" ja kopioi se heti"
+    },
+    "title": "GitHub-tokenin ohjeet"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "api (täysi API-käyttöoikeus)",
+      "readApi": "read_api (Vain luku -API-käyttöoikeus)",
+      "readRepository": "read_repository (Lukutietovaraston käyttöoikeus)"
+    },
+    "steps": {
+      "step1": "Siirry kohtaan GitLab → Käyttäjäasetukset → Käyttöoikeustunnukset",
+      "step2": "Anna tunnuksen nimi ja halutessasi vanhenemispäivämäärä",
+      "step3": "Valitse tarvittavat laajuusalueet:",
+      "step4": "Klikkaa \"Luo henkilökohtainen käyttöoikeustunnus\" ja kopioi se."
+    },
+    "title": "GitLab-tokenin ohjeet"
+  },
+  "title": "Palveluntarjoajan ohjeet"
+}

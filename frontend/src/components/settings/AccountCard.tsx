@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { ProviderAccount } from '@/types/account';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -31,6 +32,7 @@ export function AccountCard({
   onSetDefault,
   isLoading = false,
 }: AccountCardProps) {
+  const { t } = useTranslation(['accounts']);
   const [isValidating, setIsValidating] = useState(false);
 
   const ProviderIcon =
@@ -46,28 +48,28 @@ export function AccountCard({
         return (
           <Badge variant="success" className="gap-1">
             <CheckCircle2 className="h-3 w-3" />
-            Valid
+            {t('accounts:card.status.valid')}
           </Badge>
         );
       case 'invalid':
         return (
           <Badge variant="destructive" className="gap-1">
             <XCircle className="h-3 w-3" />
-            Invalid
+            {t('accounts:card.status.invalid')}
           </Badge>
         );
       case 'expired':
         return (
           <Badge variant="warning" className="gap-1">
             <AlertCircle className="h-3 w-3" />
-            Expired
+            {t('accounts:card.status.expired')}
           </Badge>
         );
       case 'pending':
         return (
           <Badge variant="secondary" className="gap-1">
             <Clock className="h-3 w-3" />
-            Pending
+            {t('accounts:card.status.pending')}
           </Badge>
         );
     }
@@ -94,7 +96,7 @@ export function AccountCard({
                 {account.isDefault && (
                   <Badge variant="outline" className="gap-1">
                     <Star className="h-3 w-3 fill-current" />
-                    Default
+                    {t('accounts:card.status.default')}
                   </Badge>
                 )}
               </div>
@@ -107,10 +109,12 @@ export function AccountCard({
           </div>
 
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>{account.repositoryCount} repositories</span>
+            <span>
+              {account.repositoryCount} {t('accounts:card.repositories')}
+            </span>
             {account.lastValidatedAt && (
               <span>
-                Validated{' '}
+                {t('accounts:card.validated')}{' '}
                 {new Date(account.lastValidatedAt).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
@@ -119,7 +123,7 @@ export function AccountCard({
             )}
             {account.tokenExpiresAt && (
               <span>
-                Expires{' '}
+                {t('accounts:card.expires')}{' '}
                 {new Date(account.tokenExpiresAt).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
@@ -137,7 +141,7 @@ export function AccountCard({
           size="sm"
           onClick={handleValidate}
           disabled={isLoading || isValidating}
-          title="Validate token"
+          title={t('accounts:card.actions.validate')}
         >
           <RefreshCw className={`h-4 w-4 ${isValidating ? 'animate-spin' : ''}`} />
         </Button>
@@ -147,7 +151,7 @@ export function AccountCard({
             size="sm"
             onClick={() => onSetDefault(account)}
             disabled={isLoading}
-            title="Set as default"
+            title={t('accounts:card.actions.setDefault')}
           >
             <Star className="h-4 w-4" />
           </Button>
@@ -157,7 +161,7 @@ export function AccountCard({
           size="sm"
           onClick={() => onEdit(account)}
           disabled={isLoading}
-          title="Edit account"
+          title={t('accounts:card.actions.edit')}
         >
           <Pencil className="h-4 w-4" />
         </Button>
@@ -166,7 +170,7 @@ export function AccountCard({
           size="sm"
           onClick={() => onDelete(account)}
           disabled={isLoading}
-          title="Delete account"
+          title={t('accounts:card.actions.delete')}
         >
           <Trash2 className="h-4 w-4 text-destructive" />
         </Button>

@@ -1,0 +1,96 @@
+{
+  "actions": {
+    "merge": "دمج {{count}} طلبات السحب",
+    "merging": "جارٍ الدمج..."
+  },
+  "blockers": {
+    "awaitingReview": "في انتظار المراجعة",
+    "changesRequested": "التغييرات المطلوبة",
+    "ciFailed": "فشل التكامل المستمر",
+    "ciPending": "معلق CI",
+    "conflicts": "لديه تضارب في المصالح",
+    "draft": "مسودة",
+    "needsReview": "يحتاج إلى مراجعة"
+  },
+  "dialog": {
+    "cancel": "يلغي",
+    "deleteBranch": "حذف الفرع بعد الدمج",
+    "merge": "دمج العلاقات العامة",
+    "merging": "جارٍ الدمج...",
+    "strategy": {
+      "merge": "أنشئ التزام دمج",
+      "mergeDescription": "تم حفظ جميع التغييرات",
+      "rebase": "إعادة التأسيس والدمج",
+      "rebaseDescription": "سجل الالتزامات الخطي",
+      "squash": "اسحق وادمج",
+      "squashDescription": "دمج جميع الالتزامات في التزام واحد",
+      "title": "استراتيجية الدمج"
+    },
+    "subtitle": "قم بتكوين خيارات الدمج لهذا الطلب.",
+    "title": "طلب دمج السحب"
+  },
+  "emptyState": {
+    "noPrsReady": "لا توجد طلبات سحب جاهزة للدمج. تحتاج طلبات السحب إلى:",
+    "requirements": {
+      "ciPassing": "جميع فحوصات التكامل المستمر ناجحة",
+      "noConflicts": "لا توجد تعارضات في الدمج",
+      "requiredApprovals": "الموافقات المطلوبة"
+    }
+  },
+  "options": {
+    "deleteBranch": "احذف فرع المصدر بعد الدمج",
+    "description": "قم بضبط كيفية دمج طلبات السحب",
+    "strategies": {
+      "merge": "أنشئ التزام دمج",
+      "rebase": "إعادة التأسيس والدمج",
+      "squash": "اسحق وادمج"
+    },
+    "strategy": "استراتيجية الدمج",
+    "title": "خيارات الدمج"
+  },
+  "repository": {
+    "prCount": "{{count}} العلاقات العامة",
+    "prCount_other": "{{count}} طلبات السحب"
+  },
+  "results": {
+    "allSuccess": "تم دمج جميع طلبات السحب بنجاح!",
+    "close": "يغلق",
+    "stats": {
+      "failed": "فشل",
+      "merged": "تم الدمج",
+      "skipped": "تم التخطي",
+      "total": "المجموع"
+    },
+    "status": {
+      "failed": "فشل",
+      "skipped": "تم تخطيه",
+      "success": "نجاح"
+    },
+    "summary": "اكتملت العملية بنجاح، حيث تم دمج العنصر {{success}}، وفشل العنصر {{failed}}، وتم تخطي العنصر {{skipped}}",
+    "title": "نتائج الدمج"
+  },
+  "sections": {
+    "notReadyDescription": "طلبات السحب التي تحتوي على عوائق تمنع الدمج",
+    "notReadyTitle": "غير جاهز",
+    "readyDescription": "طلبات السحب التي تستوفي جميع متطلبات الدمج",
+    "readyTitle": "جاهز للاندماج"
+  },
+  "selection": {
+    "count": "{{selected}} من {{total}} المحدد",
+    "deselectAll": "قم بإلغاء تحديد الكل",
+    "selectAll": "حدد الكل"
+  },
+  "subtitle": "حدد وادمج طلبات السحب المتعددة في وقت واحد",
+  "title": "دمج جماعي",
+  "toast": {
+    "failed": "فشل الدمج",
+    "failedDescription": "فشل دمج #{{number}}: {{error}}",
+    "mergeFailed": "فشل الدمج",
+    "mergeSuccess": "تم الدمج بنجاح",
+    "mergeSuccessDescription": "تم دمج طلبات السحب {{count}} بنجاح",
+    "someMergesFailed": "فشلت بعض عمليات الدمج",
+    "someMergesFailedDescription": "تم دمج العنصر {{success}}، وفشل العنصر {{failed}}",
+    "success": "تم دمج العلاقات العامة",
+    "successDescription": "تم الدمج بنجاح #{{number}}: {{title}}"
+  }
+}

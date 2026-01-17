@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "承認する",
+    "comment": "コメント",
+    "deselectAll": "すべての選択を解除",
+    "merge": "マージ",
+    "refresh": "更新",
+    "requestChanges": "変更をリクエストする",
+    "selectAll": "すべて選択",
+    "viewOnProvider": "{{provider}}で表示"
+  },
+  "blockers": {
+    "awaitingReview": "レビュー待ち",
+    "changesRequested": "変更が要求されました",
+    "ciFailed": "CIが失敗しました",
+    "ciPending": "CIが保留中",
+    "conflicts": "競合",
+    "draft": "ドラフト",
+    "needsReview": "レビューが必要"
+  },
+  "empty": {
+    "action": "プロバイダーを接続する",
+    "description": "PRの追跡を開始するためにGitプロバイダーを接続してください",
+    "title": "プルリクエストが見つかりません"
+  },
+  "filters": {
+    "all": "すべて",
+    "assignee": "担当者",
+    "author": "著者",
+    "closed": "閉じた",
+    "draft": "ドラフト",
+    "label": "ラベル",
+    "merged": "マージ済み",
+    "onlyWithPrs": "オープンなPRがあるリポジトリを表示する",
+    "open": "オープン",
+    "prStatus": {
+      "all": "すべてのPR",
+      "blocked": "ブロックされました",
+      "pending": "保留中",
+      "ready": "準備ができて"
+    },
+    "provider": "プロバイダー",
+    "repository": "リポジトリ"
+  },
+  "pr": {
+    "additions": "追加",
+    "author": "著者",
+    "comments": "コメント",
+    "createdAt": "作成されました",
+    "deletions": "削除",
+    "number": "#{{number}}",
+    "sourceBranch": "ソースブランチ",
+    "targetBranch": "ターゲットブランチ",
+    "updatedAt": "更新済み"
+  },
+  "prDashboard": "PRダッシュボード",
+  "sort": {
+    "author": "著者",
+    "created": "作成日",
+    "repository": "リポジトリ",
+    "status": "ステータス",
+    "title": "並び替え",
+    "updated": "最終更新"
+  },
+  "stats": {
+    "blocked": "ブロックされました",
+    "inProgress": "進行中",
+    "needsAttention": "注意が必要",
+    "open": "オープン",
+    "openPRs": "オープンなPR",
+    "ready": "マージ準備完了",
+    "readyToMerge": "マージ準備完了",
+    "total": "合計PR",
+    "totalRepositories": "リポジトリ総数"
+  },
+  "status": {
+    "closed": "閉じられた",
+    "draft": "ドラフト",
+    "green": "マージ準備完了",
+    "merged": "マージされました",
+    "red": "ブロックされました",
+    "yellow": "進行中"
+  },
+  "subtitle": "すべてのプロバイダーでプルリクエストを管理する",
+  "table": {
+    "columns": {
+      "lastUpdated": "最終更新日",
+      "provider": "プロバイダー",
+      "prs": "PR",
+      "repository": "リポジトリ",
+      "status": "状態",
+      "visibility": "可視性"
+    }
+  },
+  "title": "ダッシュボード",
+  "views": {
+    "grid": "グリッドビュー",
+    "list": "リストビュー",
+    "prs": "プルリクエストビュー",
+    "pullRequests": "プルリクエストビュー",
+    "repositoryGrid": "リポジトリグリッドビュー",
+    "repositoryList": "リポジトリリストビュー",
+    "table": "テーブルビュー"
+  }
+}

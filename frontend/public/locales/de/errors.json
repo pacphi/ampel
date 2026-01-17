@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "Konto konnte nicht erstellt werden",
+    "forbidden": "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen.",
+    "invalidCredentials": "Ungültiger Benutzername oder ungültiges Passwort",
+    "invalidEmailOrPassword": "Ungültige E-Mail-Adresse oder ungültiges Passwort",
+    "loginFailed": "Fehler bei der Anmeldung",
+    "registrationFailed": "Registrierung fehlgeschlagen",
+    "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+    "tokenExpired": "Das Authentifizierungstoken ist abgelaufen.",
+    "unauthorized": "Unbefugter Zugriff"
+  },
+  "boundary": {
+    "description": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "details": "Fehlerdetails (nur für Entwickler)",
+    "reload": "Seite neu laden",
+    "title": "Etwas ist schiefgelaufen.",
+    "tryAgain": "Versuchen Sie es erneut"
+  },
+  "general": {
+    "unknownError": "Es ist ein unbekannter Fehler aufgetreten."
+  },
+  "generic": {
+    "goHome": "Zum Dashboard wechseln",
+    "message": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "retry": "Versuchen Sie es erneut",
+    "somethingWentWrong": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "title": "Etwas ist schiefgelaufen."
+  },
+  "network": {
+    "message": "Es konnte keine Verbindung zum Server hergestellt werden. Bitte überprüfen Sie Ihre Internetverbindung.",
+    "offline": "Sie sind derzeit offline.",
+    "title": "Netzwerkfehler"
+  },
+  "notFound": {
+    "goHome": "Zurück zum Dashboard",
+    "message": "Die gesuchte Seite existiert nicht.",
+    "title": "Seite nicht gefunden"
+  },
+  "pr": {
+    "approveFailed": "Pull-Anfrage konnte nicht genehmigt werden",
+    "commentFailed": "Kommentar konnte nicht veröffentlicht werden",
+    "loadFailed": "Pull-Anfragen konnten nicht geladen werden",
+    "mergeFailed": "Zusammenführung des Pull-Requests fehlgeschlagen"
+  },
+  "provider": {
+    "connectionFailed": "Verbindung zu {{provider}} fehlgeschlagen",
+    "invalidToken": "Ungültiges {{provider}}-Token",
+    "notFound": "Ressource nicht gefunden auf {{provider}}",
+    "rateLimited": "{{provider}} API-Ratenlimit überschritten"
+  },
+  "repository": {
+    "accessDenied": "Zugriff auf das Repository verweigert",
+    "loadFailed": "Fehler beim Laden der Repositories",
+    "notFound": "Repository nicht gefunden"
+  },
+  "validation": {
+    "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "invalidUrl": "Bitte geben Sie eine gültige URL ein.",
+    "maxLength": "Darf nicht mehr als {{max}} Zeichen",
+    "minLength": "Muss mindestens {{min}} Zeichen enthalten",
+    "passwordMismatch": "Die Passwörter stimmen nicht überein.",
+    "required": "Dieses Feld ist erforderlich"
+  }
+}

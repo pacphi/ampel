@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "アカウントの作成に失敗しました",
+    "forbidden": "このリソースへのアクセス許可がありません",
+    "invalidCredentials": "無効なユーザー名またはパスワード",
+    "invalidEmailOrPassword": "無効なメールアドレスまたはパスワード",
+    "loginFailed": "ログインに失敗しました",
+    "registrationFailed": "登録に失敗しました",
+    "sessionExpired": "セッションが期限切れです。再度ログインしてください。",
+    "tokenExpired": "認証トークンの有効期限が切れています",
+    "unauthorized": "無許可のアクセス"
+  },
+  "boundary": {
+    "description": "予期しないエラーが発生しました。もう一度お試しください。",
+    "details": "エラーの詳細（開発者のみ）",
+    "reload": "ページを再読み込み",
+    "title": "問題が発生しました",
+    "tryAgain": "もう一度やり直してください"
+  },
+  "general": {
+    "unknownError": "不明なエラーが発生しました"
+  },
+  "generic": {
+    "goHome": "ダッシュボードに移動",
+    "message": "予期しないエラーが発生しました。もう一度お試しください。",
+    "retry": "再試行",
+    "somethingWentWrong": "問題が発生しました。もう一度お試しください。",
+    "title": "何かが間違っています"
+  },
+  "network": {
+    "message": "サーバーに接続できません。インターネット接続をご確認ください。",
+    "offline": "現在、オフラインです",
+    "title": "ネットワークエラー"
+  },
+  "notFound": {
+    "goHome": "ダッシュボードに戻る",
+    "message": "お探しのページは存在しません。",
+    "title": "ページが見つかりません"
+  },
+  "pr": {
+    "approveFailed": "プルリクエストの承認に失敗しました",
+    "commentFailed": "コメントの投稿に失敗しました",
+    "loadFailed": "プルリクエストの読み込みに失敗しました",
+    "mergeFailed": "プルリクエストのマージに失敗しました"
+  },
+  "provider": {
+    "connectionFailed": "{{provider}}への接続に失敗しました",
+    "invalidToken": "無効な{{provider}}トークン",
+    "notFound": "{{provider}}上のリソースが見つかりません",
+    "rateLimited": "{{provider}} APIのレート制限を超えました"
+  },
+  "repository": {
+    "accessDenied": "リポジトリへのアクセスが拒否されました",
+    "loadFailed": "リポジトリの読み込みに失敗しました",
+    "notFound": "リポジトリが見つかりません"
+  },
+  "validation": {
+    "invalidEmail": "有効なメールアドレスを入力してください",
+    "invalidUrl": "有効なURLを入力してください",
+    "maxLength": "{{max}}文字を超えてはなりません",
+    "minLength": "{{min}}文字以上でなければなりません",
+    "passwordMismatch": "パスワードが一致しません",
+    "required": "このフィールドは必須です"
+  }
+}

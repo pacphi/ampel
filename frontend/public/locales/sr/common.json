@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "Додај",
+    "apply": "Примени",
+    "cancel": "Откажи",
+    "clear": "Јасно",
+    "delete": "Обриши",
+    "edit": "Измени",
+    "hideEmail": "Сакриј имејл",
+    "refresh": "Освежи",
+    "refreshing": "Освежавање...",
+    "remove": "Уклони",
+    "reset": "Ресетуј на подразумеване вредности",
+    "save": "Сачувај",
+    "saving": "Чување...",
+    "showEmail": "Прикажи имејл",
+    "viewOnProvider": "Погледајте на {{provider}}"
+  },
+  "app": {
+    "add": "Додај",
+    "apply": "Примени",
+    "back": "Назад",
+    "cancel": "Откажи",
+    "clear": "Јасно",
+    "close": "Затвори",
+    "delete": "Обриши",
+    "description": "Уједињено управљање захтевима за повлачење",
+    "edit": "Измени",
+    "error": "Дошло је до грешке",
+    "filter": "Филтер",
+    "info": "Информације",
+    "loading": "Учитавање...",
+    "name": "Ампел",
+    "next": "Следеће",
+    "previous": "Претходно",
+    "remove": "Уклони",
+    "reset": "Ресетуј",
+    "retry": "Покушај поново",
+    "save": "Сачувај",
+    "search": "Претрага",
+    "success": "Успех",
+    "title": "Ampel PR Dashboard",
+    "warning": "Упозорење"
+  },
+  "auth": {
+    "alreadyHaveAccount": "Већ имате налог?",
+    "confirmPassword": "Потврдите лозинку",
+    "createAccount": "Направи налог",
+    "creatingAccount": "Креирање налога...",
+    "displayName": "Приказано име",
+    "displayNamePlaceholder": "Џон Доу",
+    "dontHaveAccount": "Немате налог?",
+    "email": "Е-пошта",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "Заборавили сте лозинку?",
+    "getStarted": "Почните са Ампелом",
+    "login": "Пријава",
+    "loginSuccess": "Пријава је успешна",
+    "logout": "Одјава",
+    "logoutSuccess": "Одјава је успешна",
+    "password": "Лозинка",
+    "resetPassword": "Ресетуј лозинку",
+    "signIn": "Пријавите се",
+    "signInToContinue": "Пријавите се на свој налог да бисте наставили",
+    "signUp": "Региструј се",
+    "signingIn": "Пријављивање...",
+    "username": "Корисничко име",
+    "welcome": "Добродошли назад!",
+    "welcomeToAmpel": "Добродошли у Ампел"
+  },
+  "language": {
+    "current": "Тренутни језик",
+    "select": "Изаберите језик"
+  },
+  "navigation": {
+    "analytics": "Аналитика",
+    "dashboard": "Контролна табла",
+    "documentation": "Документација",
+    "help": "Помоћ",
+    "merge": "Споји",
+    "organizations": "Организације",
+    "profile": "Профил",
+    "pullRequests": "Захтеви за повлачење",
+    "repositories": "Репозиторијуми",
+    "settings": "Подешавања"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} коментар",
+    "comments_other": "{{count}} коментара",
+    "pullRequests_one": "{{count}} захтев за повлачење",
+    "pullRequests_other": "{{count}} захтева за повлачење",
+    "requests_one": "{{count}} захтев",
+    "requests_other": "{{count}} захтева"
+  },
+  "status": {
+    "trafficLight": "Статус семафора"
+  },
+  "theme": {
+    "auto": "Аутоматски",
+    "dark": "Тамни режим",
+    "light": "Светли режим",
+    "toggle": "Укључи/искључи тему"
+  },
+  "time": {
+    "daysAgo": "пре {{count}} дана",
+    "daysAgo_other": "пре {{count}} дана",
+    "hoursAgo": "пре {{count}} сата",
+    "hoursAgo_other": "пре {{count}} сати",
+    "minutesAgo": "пре {{count}} минута",
+    "minutesAgo_other": "пре {{count}} минута",
+    "monthsAgo": "пре {{count}} месеца",
+    "monthsAgo_other": "пре {{count}} месеци",
+    "now": "Управо сада",
+    "weeksAgo": "пре {{count}} недеље",
+    "weeksAgo_other": "пре {{count}} недеља"
+  },
+  "visibility": {
+    "archived": "Архивирано",
+    "private": "Приватно",
+    "public": "Јавно"
+  }
+}

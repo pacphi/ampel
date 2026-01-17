@@ -1,0 +1,35 @@
+{
+  "required": "{{field}} is required",
+  "email": "Please enter a valid email address",
+  "invalidEmail": "Invalid email address",
+  "url": "Please enter a valid URL",
+  "minLength": "{{field}} must be at least {{min}} characters",
+  "maxLength": "{{field}} must not exceed {{max}} characters",
+  "min": "{{field}} must be at least {{min}}",
+  "max": "{{field}} must not exceed {{max}}",
+  "pattern": "{{field}} format is invalid",
+  "passwordMismatch": "Passwords do not match",
+  "passwordsDontMatch": "Passwords don't match",
+  "unique": "{{field}} already exists",
+  "alphanum": "{{field}} must contain only letters and numbers",
+  "numeric": "{{field}} must be a number",
+  "integer": "{{field}} must be an integer",
+  "positive": "{{field}} must be positive",
+  "negative": "{{field}} must be negative",
+  "date": "Please enter a valid date",
+  "dateRange": "End date must be after start date",
+  "fileSize": "File size must not exceed {{max}}",
+  "fileType": "File type must be {{types}}",
+  "fields": {
+    "email": "Email",
+    "password": "Password",
+    "displayName": "Display name",
+    "confirmPassword": "Confirm password"
+  },
+  "messages": {
+    "passwordRequired": "Password is required",
+    "emailRequired": "Email is required",
+    "displayNameRequired": "Display name is required",
+    "passwordMinLength": "Password must be at least 8 characters"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Toevoegen",
+    "enable": "E-mailmeldingen inschakelen",
+    "enableDescription": "Verzend meldingen via e-mail (SMTP)",
+    "fromAddress": "Van adres",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTP-host",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "SMTP-wachtwoord",
+    "smtpPasswordPlaceholder": "Voer wachtwoord in",
+    "smtpPort": "SMTP-poort",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP-gebruikersnaam",
+    "smtpUserPlaceholder": "gebruiker@voorbeeld.com",
+    "testFailed": "Het verzenden van de testmail is mislukt.",
+    "testMessage": "Test-e-mail verzenden",
+    "testSending": "Verzenden...",
+    "testSuccess": "Test-e-mail verzonden",
+    "title": "E-mailmeldingen",
+    "toAddresses": "Naar adressen",
+    "toAddressesDescription": "Ontvangers van notificatie-e-mails",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "Gebruik TLS"
+  },
+  "merge": {
+    "description": "Kies wanneer u meldingen wilt ontvangen voor samenvoegingsbewerkingen.",
+    "notifyOnConflict": "Melden bij samenvoegingsconflicten",
+    "notifyOnConflictDescription": "Verzend een melding wanneer er samenvoegingsconflicten worden gedetecteerd.",
+    "notifyOnFailure": "Melden bij mislukte samenvoegingen",
+    "notifyOnFailureDescription": "Verzend een melding wanneer samenvoegbewerkingen mislukken.",
+    "notifyOnSuccess": "Melden bij succesvolle samenvoegingen",
+    "notifyOnSuccessDescription": "Stuur een melding wanneer pull requests succesvol zijn samengevoegd.",
+    "title": "Samenvoegingsmeldingen"
+  },
+  "slack": {
+    "channel": "Kanaal (optioneel)",
+    "channelDescription": "Het standaardkanaal dat in de webhook is geconfigureerd, overschrijven.",
+    "channelPlaceholder": "#algemeen",
+    "enable": "Slack-meldingen inschakelen",
+    "enableDescription": "Verzend meldingen naar een Slack-kanaal",
+    "testFailed": "Het verzenden van het testbericht is mislukt.",
+    "testMessage": "Testbericht verzenden",
+    "testSending": "Verzenden...",
+    "testSuccess": "Testbericht verzonden",
+    "title": "Slack-meldingen",
+    "webhookUrl": "Webhook-URL",
+    "webhookUrlDescription": "Maak een inkomende webhook aan in je Slack-werkruimte.",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Meldingsinstellingen",
+  "toast": {
+    "updateFailed": "Instellingen bijwerken mislukt",
+    "updated": "Instellingen bijgewerkt",
+    "updatedDescription": "De meldingsinstellingen zijn opgeslagen."
+  }
+}

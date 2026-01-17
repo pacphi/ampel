@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "Toevoegen",
+    "apply": "Toepassen",
+    "cancel": "Annuleren",
+    "clear": "Duidelijk",
+    "delete": "Verwijderen",
+    "edit": "Bewerking",
+    "hideEmail": "E-mailadres verbergen",
+    "refresh": "Vernieuwen",
+    "refreshing": "Verfrissend...",
+    "remove": "Verwijderen",
+    "reset": "Terugzetten naar standaardinstellingen",
+    "save": "Redden",
+    "saving": "Besparing...",
+    "showEmail": "E-mailadres weergeven",
+    "viewOnProvider": "Bekijken op {{provider}}"
+  },
+  "app": {
+    "add": "Toevoegen",
+    "apply": "Toepassen",
+    "back": "Rug",
+    "cancel": "Annuleren",
+    "clear": "Duidelijk",
+    "close": "Dichtbij",
+    "delete": "Verwijderen",
+    "description": "Uniform beheer van pull-aanvragen",
+    "edit": "Bewerking",
+    "error": "Er is een fout opgetreden.",
+    "filter": "Filter",
+    "info": "Informatie",
+    "loading": "Laden...",
+    "name": "Ampel",
+    "next": "Volgende",
+    "previous": "Vorig",
+    "remove": "Verwijderen",
+    "reset": "Reset",
+    "retry": "Opnieuw proberen",
+    "save": "Redden",
+    "search": "Zoekopdracht",
+    "success": "Succes",
+    "title": "Ampel PR-dashboard",
+    "warning": "Waarschuwing"
+  },
+  "auth": {
+    "alreadyHaveAccount": "Heb je al een account?",
+    "confirmPassword": "Bevestig wachtwoord",
+    "createAccount": "Een account aanmaken",
+    "creatingAccount": "Een account aanmaken...",
+    "displayName": "Weergavenaam",
+    "displayNamePlaceholder": "John Doe",
+    "dontHaveAccount": "Nog geen account?",
+    "email": "E-mail",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "getStarted": "Begin met Ampel",
+    "login": "Login",
+    "loginSuccess": "Inloggen is gelukt",
+    "logout": "Uitloggen",
+    "logoutSuccess": "Succesvol uitloggen",
+    "password": "Wachtwoord",
+    "resetPassword": "Wachtwoord opnieuw instellen",
+    "signIn": "Inloggen",
+    "signInToContinue": "Meld u aan bij uw account om verder te gaan.",
+    "signUp": "Aanmelden",
+    "signingIn": "Aanmelden...",
+    "username": "Gebruikersnaam",
+    "welcome": "Welkom terug!",
+    "welcomeToAmpel": "Welkom bij Ampel"
+  },
+  "language": {
+    "current": "Huidige taal",
+    "select": "Selecteer taal"
+  },
+  "navigation": {
+    "analytics": "Analyses",
+    "dashboard": "Dashboard",
+    "documentation": "Documentatie",
+    "help": "Hulp",
+    "merge": "Samenvoegen",
+    "organizations": "Organisaties",
+    "profile": "Profiel",
+    "pullRequests": "Pull-aanvragen",
+    "repositories": "Repositories",
+    "settings": "Instellingen"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} reactie",
+    "comments_other": "{{count}} reacties",
+    "pullRequests_one": "{{count}} pull request",
+    "pullRequests_other": "{{count}} pull requests",
+    "requests_one": "{{count}} verzoek",
+    "requests_other": "{{count}} verzoeken"
+  },
+  "status": {
+    "trafficLight": "Verkeerslichtstatus"
+  },
+  "theme": {
+    "auto": "Auto",
+    "dark": "Donkere modus",
+    "light": "Lichtmodus",
+    "toggle": "Thema wisselen"
+  },
+  "time": {
+    "daysAgo": "{{count}} dag geleden",
+    "daysAgo_other": "{{count}} dagen geleden",
+    "hoursAgo": "{{count}} uur geleden",
+    "hoursAgo_other": "{{count}} uur geleden",
+    "minutesAgo": "{{count}} minuut geleden",
+    "minutesAgo_other": "{{count}} minuten geleden",
+    "monthsAgo": "{{count}} maand geleden",
+    "monthsAgo_other": "{{count}} maanden geleden",
+    "now": "Zojuist",
+    "weeksAgo": "{{count}} week geleden",
+    "weeksAgo_other": "{{count}} weken geleden"
+  },
+  "visibility": {
+    "archived": "Gearchiveerd",
+    "private": "Privé",
+    "public": "Openbaar"
+  }
+}

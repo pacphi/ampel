@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "健康评分根据公关指标每小时计算一次。",
+    "title": "目前尚无健康数据。"
+  },
+  "health": {
+    "mergeTime": "合并时间",
+    "perWeek": "{{count}}/周",
+    "reviewTime": "复习时间",
+    "stalePrs": "过期的PR",
+    "throughput": "吞吐量",
+    "title": "存储库健康评分"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "平均合并时间",
+    "avgReviewTime": "平均审核时间",
+    "botPrs": "机器人 PR",
+    "prsMerged": "PR 已合并（{{days}}d）"
+  },
+  "title": "分析"
+}

@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "जोड़ना",
+    "enable": "ईमेल सूचनाएं चालू करें",
+    "enableDescription": "ईमेल (एसएमटीपी) के माध्यम से सूचनाएं भेजें",
+    "fromAddress": "इस पते से",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "एसएमटीपी होस्ट",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "एसएमटीपी पासवर्ड",
+    "smtpPasswordPlaceholder": "पास वर्ड दर्ज करें",
+    "smtpPort": "एसएमटीपी पोर्ट",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "एसएमटीपी उपयोगकर्ता नाम",
+    "smtpUserPlaceholder": "user@example.com",
+    "testFailed": "परीक्षण ईमेल भेजने में विफल",
+    "testMessage": "परीक्षण ईमेल भेजें",
+    "testSending": "भेजा जा रहा है...",
+    "testSuccess": "परीक्षण ईमेल भेजा गया",
+    "title": "ईमेल सूचनाएं",
+    "toAddresses": "पतों पर",
+    "toAddressesDescription": "सूचना ईमेल प्राप्त करने वाले",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "TLS का उपयोग करें"
+  },
+  "merge": {
+    "description": "मर्ज ऑपरेशन के लिए सूचनाएं कब प्राप्त करनी हैं, यह चुनें",
+    "notifyOnConflict": "विलय विरोध होने पर सूचित करें",
+    "notifyOnConflictDescription": "मर्ज संबंधी विरोध पाए जाने पर सूचना भेजें",
+    "notifyOnFailure": "असफल विलय होने पर सूचित करें",
+    "notifyOnFailureDescription": "मर्ज ऑपरेशन विफल होने पर सूचना भेजें",
+    "notifyOnSuccess": "सफल विलय होने पर सूचना दें",
+    "notifyOnSuccessDescription": "पीआर सफलतापूर्वक मर्ज होने पर सूचना भेजें",
+    "title": "मर्ज सूचनाएं"
+  },
+  "slack": {
+    "channel": "चैनल (वैकल्पिक)",
+    "channelDescription": "वेबहुक में कॉन्फ़िगर किए गए डिफ़ॉल्ट चैनल को ओवरराइड करें",
+    "channelPlaceholder": "#सामान्य",
+    "enable": "स्लैक नोटिफिकेशन चालू करें",
+    "enableDescription": "स्लैक चैनल पर सूचनाएं भेजें",
+    "testFailed": "परीक्षण संदेश भेजने में विफल",
+    "testMessage": "परीक्षण संदेश भेजें",
+    "testSending": "भेजा जा रहा है...",
+    "testSuccess": "परीक्षण संदेश भेजा गया",
+    "title": "स्लैक सूचनाएं",
+    "webhookUrl": "वेबहुक यूआरएल",
+    "webhookUrlDescription": "अपने स्लैक वर्कस्पेस में एक इनकमिंग वेबहुक बनाएं",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "अधिसूचना सेटिंग्स",
+  "toast": {
+    "updateFailed": "सेटिंग्स अपडेट करने में विफल",
+    "updated": "सेटिंग्स अपडेट हो गईं",
+    "updatedDescription": "नोटिफिकेशन सेटिंग्स सहेज ली गई हैं।"
+  }
+}

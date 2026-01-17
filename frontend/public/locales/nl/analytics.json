@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "De gezondheidsscore wordt elk uur berekend op basis van PR-gegevens.",
+    "title": "Er zijn nog geen gezondheidsgegevens beschikbaar."
+  },
+  "health": {
+    "mergeTime": "Samenvoegtijd",
+    "perWeek": "{{count}}/week",
+    "reviewTime": "Reviewtijd",
+    "stalePrs": "Verouderde PR's",
+    "throughput": "Doorvoer",
+    "title": "Gezondheidsscores van de database"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Gemiddelde samenvoegtijd",
+    "avgReviewTime": "Gemiddelde beoordelingstijd",
+    "botPrs": "Bot PR's",
+    "prsMerged": "Pull requests samengevoegd ({{days}}d)"
+  },
+  "title": "Analyses"
+}

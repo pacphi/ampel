@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import StatusBadge from './StatusBadge';
 import MergeDialog from './MergeDialog';
 import { Button } from '@/components/ui/button';
@@ -26,16 +27,24 @@ interface PRCardProps {
 }
 
 // Get blockers explaining why a PR isn't ready to merge
-function getBlockers(pr: PullRequestWithDetails, skipReviewRequirement = false) {
+function getBlockers(
+  pr: PullRequestWithDetails,
+  skipReviewRequirement = false,
+  t: (key: string) => string
+) {
   const blockers: { label: string; type: 'warning' | 'error'; icon: React.ReactNode }[] = [];
 
   if (pr.isDraft) {
-    blockers.push({ label: 'Draft', type: 'warning', icon: <CircleDot className="h-3 w-3" /> });
+    blockers.push({
+      label: t('dashboard:blockers.draft'),
+      type: 'warning',
+      icon: <CircleDot className="h-3 w-3" />,
+    });
   }
 
   if (pr.hasConflicts) {
     blockers.push({
-      label: 'Conflicts',
+      label: t('dashboard:blockers.conflicts'),
       type: 'error',
       icon: <AlertCircle className="h-3 w-3" />,
     });
@@ -49,9 +58,17 @@ function getBlockers(pr: PullRequestWithDetails, skipReviewRequirement = false) 
     const hasPending = pr.ciChecks.some((c) => c.status === 'queued' || c.status === 'in_progress');
 
     if (hasFailed) {
-      blockers.push({ label: 'CI failed', type: 'error', icon: <X className="h-3 w-3" /> });
+      blockers.push({
+        label: t('dashboard:blockers.ciFailed'),
+        type: 'error',
+        icon: <X className="h-3 w-3" />,
+      });
     } else if (hasPending) {
-      blockers.push({ label: 'CI pending', type: 'warning', icon: <Clock className="h-3 w-3" /> });
+      blockers.push({
+        label: t('dashboard:blockers.ciPending'),
+        type: 'warning',
+        icon: <Clock className="h-3 w-3" />,
+      });
     }
   }
 
@@ -63,19 +80,23 @@ function getBlockers(pr: PullRequestWithDetails, skipReviewRequirement = false) 
 
       if (hasChangesRequested) {
         blockers.push({
-          label: 'Changes requested',
+          label: t('dashboard:blockers.changesRequested'),
           type: 'error',
           icon: <MessageSquare className="h-3 w-3" />,
         });
       } else if (!hasApproval) {
         blockers.push({
-          label: 'Awaiting review',
+          label: t('dashboard:blockers.awaitingReview'),
           type: 'warning',
           icon: <Eye className="h-3 w-3" />,
         });
       }
     } else {
-      blockers.push({ label: 'Needs review', type: 'warning', icon: <Eye className="h-3 w-3" /> });
+      blockers.push({
+        label: t('dashboard:blockers.needsReview'),
+        type: 'warning',
+        icon: <Eye className="h-3 w-3" />,
+      });
     }
   }
 
@@ -87,9 +108,10 @@ export default function PRCard({
   showRepo = true,
   skipReviewRequirement = false,
 }: PRCardProps) {
+  const { t } = useTranslation(['dashboard', 'common']);
   const [mergeOpen, setMergeOpen] = useState(false);
   const canMerge = pr.status === 'green' && pr.isMergeable !== false && !pr.hasConflicts;
-  const blockers = pr.status !== 'green' ? getBlockers(pr, skipReviewRequirement) : [];
+  const blockers = pr.status !== 'green' ? getBlockers(pr, skipReviewRequirement, t) : [];
 
   return (
     <>
@@ -121,7 +143,7 @@ export default function PRCard({
                   className="bg-ampel-green hover:bg-ampel-green/90"
                 >
                   <GitMerge className="h-4 w-4 mr-1" />
-                  Merge
+                  {t('dashboard:actions.merge')}
                 </Button>
               )}
               <a

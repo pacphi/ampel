@@ -6,6 +6,7 @@ mod m20250105_000005_skip_review_setting;
 mod m20250120_000001_provider_accounts;
 mod m20251223_000001_repository_filters;
 mod m20251224_000001_performance_indexes;
+mod m20251227_000001_user_language;
 
 use sea_orm_migration::prelude::*;
 
@@ -23,6 +24,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20250120_000001_provider_accounts::Migration),
             Box::new(m20251223_000001_repository_filters::Migration),
             Box::new(m20251224_000001_performance_indexes::Migration),
+            Box::new(m20251227_000001_user_language::Migration),
         ]
     }
 }

@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "アカウント: 読む",
+      "pullRequestsRead": "プルリクエスト: 読む",
+      "pullRequestsWrite": "プルリクエスト: 書き込み",
+      "repositoriesRead": "リポジトリ: 読む",
+      "repositoriesWrite": "リポジトリ: 書き込み"
+    },
+    "steps": {
+      "step1": "Bitbucket → 個人設定 → アプリパスワードに移動します",
+      "step2": "「アプリパスワードを作成」をクリックします",
+      "step3": "パスワードのラベルを入力してください",
+      "step4": "必要な権限を選択します:",
+      "step5": "「作成」をクリックしてパスワードをコピーします"
+    },
+    "title": "Bitbucket アプリのパスワード設定手順"
+  },
+  "common": {
+    "expirationWarning": "セキュリティ強化のため有効期限を設定することを検討してください。",
+    "minimalScopes": "必要最小限の権限のみ付与します。",
+    "securityNote": "トークンを安全に保管し、公開しないでください。"
+  },
+  "github": {
+    "note": "リポジトリ アクセス権限では、きめ細かなトークンもサポートされます。",
+    "scopes": {
+      "readOrg": "read:org (組織とチームのメンバーシップを読む)",
+      "readUser": "read:user (ユーザープロフィールデータの読み取り)",
+      "repo": "repo (プライベートリポジトリのフルコントロール)"
+    },
+    "steps": {
+      "step1": "GitHub 設定 → 開発者設定 → 個人アクセス トークン → トークン (クラシック) に移動します。",
+      "step2": "「新しいトークンを生成（クラシック）」をクリックします",
+      "step3": "トークンにわかりやすい名前を付けます",
+      "step4": "必要なスコープを選択します。",
+      "step5": "「トークンを生成」をクリックしてすぐにコピーします"
+    },
+    "title": "GitHubトークンの手順"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "api (フルAPIアクセス)",
+      "readApi": "read_api (読み取り専用 API アクセス)",
+      "readRepository": "read_repository (リポジトリの読み取りアクセス)"
+    },
+    "steps": {
+      "step1": "GitLab → ユーザー設定 → アクセストークンに移動します",
+      "step2": "トークン名と有効期限（オプション）を入力します",
+      "step3": "必要なスコープを選択します。",
+      "step4": "「個人アクセストークンを作成」をクリックしてコピーします"
+    },
+    "title": "GitLabトークンの手順"
+  },
+  "title": "プロバイダーの指示"
+}

@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "Hesap oluşturulamadı.",
+    "forbidden": "Bu kaynağa erişim izniniz yok.",
+    "invalidCredentials": "Geçersiz kullanıcı adı veya şifre",
+    "invalidEmailOrPassword": "Geçersiz e-posta veya şifre",
+    "loginFailed": "giriş başarısız oldu",
+    "registrationFailed": "Kayıt işlemi başarısız oldu.",
+    "sessionExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.",
+    "tokenExpired": "Kimlik doğrulama belirtecinin süresi doldu.",
+    "unauthorized": "Yetkisiz erişim"
+  },
+  "boundary": {
+    "description": "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
+    "details": "Hata Ayrıntıları (Sadece Geliştiriciler İçin)",
+    "reload": "Sayfayı Yeniden Yükle",
+    "title": "Bir şeyler ters gitti.",
+    "tryAgain": "Tekrar deneyin"
+  },
+  "general": {
+    "unknownError": "Bilinmeyen bir hata oluştu."
+  },
+  "generic": {
+    "goHome": "Kontrol paneline git",
+    "message": "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
+    "retry": "Tekrar deneyin",
+    "somethingWentWrong": "Bir sorun oluştu. Lütfen tekrar deneyin.",
+    "title": "Bir şeyler ters gitti."
+  },
+  "network": {
+    "message": "Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edin.",
+    "offline": "Şu anda çevrimdışısınız.",
+    "title": "Ağ hatası"
+  },
+  "notFound": {
+    "goHome": "Kontrol paneline geri dön",
+    "message": "Aradığınız sayfa mevcut değil.",
+    "title": "Sayfa bulunamadı."
+  },
+  "pr": {
+    "approveFailed": "Çekme isteği onaylanamadı.",
+    "commentFailed": "Yorum gönderilemedi.",
+    "loadFailed": "Çekme istekleri yüklenemedi.",
+    "mergeFailed": "Çekme isteği birleştirme başarısız oldu."
+  },
+  "provider": {
+    "connectionFailed": "{{provider}} ile bağlantı kurulamadı.",
+    "invalidToken": "Geçersiz {{provider}} belirteci",
+    "notFound": "Kaynak {{provider}} üzerinde bulunamadı.",
+    "rateLimited": "{{provider}} API kullanım limiti aşıldı"
+  },
+  "repository": {
+    "accessDenied": "Depoya erişim engellendi.",
+    "loadFailed": "Depolar yüklenemedi.",
+    "notFound": "Depo bulunamadı."
+  },
+  "validation": {
+    "invalidEmail": "Geçerli bir e",
+    "invalidUrl": "Lütfen geçerli bir URL girin.",
+    "maxLength": "{{max}} karakteri geçmemelidir.",
+    "minLength": "En az {{min}} karakter olmalıdır.",
+    "passwordMismatch": "Şifreler eşleşmiyor.",
+    "required": "Bu alan zorunludur."
+  }
+}

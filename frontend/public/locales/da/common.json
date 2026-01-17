@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "Tilføje",
+    "apply": "Anvende",
+    "cancel": "Ophæve",
+    "clear": "Klar",
+    "delete": "Slet",
+    "edit": "Redigere",
+    "hideEmail": "Skjul e-mail",
+    "refresh": "Opfriske",
+    "refreshing": "Forfriskende...",
+    "remove": "Fjerne",
+    "reset": "Nulstil til standardindstillinger",
+    "save": "Spare",
+    "saving": "Gemmer...",
+    "showEmail": "Vis e-mail",
+    "viewOnProvider": "Vis på {{provider}}"
+  },
+  "app": {
+    "add": "Tilføje",
+    "apply": "Anvende",
+    "back": "Tilbage",
+    "cancel": "Ophæve",
+    "clear": "Klar",
+    "close": "Tæt",
+    "delete": "Slet",
+    "description": "Samlet administration af pull-anmodninger",
+    "edit": "Redigere",
+    "error": "Der opstod en fejl",
+    "filter": "Filter",
+    "info": "Information",
+    "loading": "Indlæser...",
+    "name": "Ampel",
+    "next": "Næste",
+    "previous": "Tidligere",
+    "remove": "Fjerne",
+    "reset": "Nulstil",
+    "retry": "Prøv igen",
+    "save": "Spare",
+    "search": "Søge",
+    "success": "Succes",
+    "title": "Ampel PR-dashboard",
+    "warning": "Advarsel"
+  },
+  "auth": {
+    "alreadyHaveAccount": "Har du allerede en konto?",
+    "confirmPassword": "Bekræft adgangskode",
+    "createAccount": "Opret en konto",
+    "creatingAccount": "Opretter konto...",
+    "displayName": "Vist navn",
+    "displayNamePlaceholder": "John Doe",
+    "dontHaveAccount": "Har du ikke en konto?",
+    "email": "E-mail",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "Glemt adgangskode?",
+    "getStarted": "Kom i gang med Ampel",
+    "login": "Log ind",
+    "loginSuccess": "Login lykkedes",
+    "logout": "Log ud",
+    "logoutSuccess": "Udlogning lykkedes",
+    "password": "Adgangskode",
+    "resetPassword": "Nulstil adgangskode",
+    "signIn": "Log ind",
+    "signInToContinue": "Log ind på din konto for at fortsætte",
+    "signUp": "Tilmeld dig",
+    "signingIn": "Logerer ind...",
+    "username": "Brugernavn",
+    "welcome": "Velkommen tilbage!",
+    "welcomeToAmpel": "Velkommen til Ampel"
+  },
+  "language": {
+    "current": "Nuværende sprog",
+    "select": "Vælg sprog"
+  },
+  "navigation": {
+    "analytics": "Analyse",
+    "dashboard": "Dashboard",
+    "documentation": "Dokumentation",
+    "help": "Hjælp",
+    "merge": "Flet",
+    "organizations": "Organisationer",
+    "profile": "Profil",
+    "pullRequests": "Pull-anmodninger",
+    "repositories": "Arkiver",
+    "settings": "Indstillinger"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} kommentar",
+    "comments_other": "{{count}} kommentarer",
+    "pullRequests_one": "{{count}} pull-anmodning",
+    "pullRequests_other": "{{count}} pull-anmodninger",
+    "requests_one": "{{count}} anmodning",
+    "requests_other": "{{count}} anmodninger"
+  },
+  "status": {
+    "trafficLight": "Status for trafiklys"
+  },
+  "theme": {
+    "auto": "Bil",
+    "dark": "Mørk tilstand",
+    "light": "Lystilstand",
+    "toggle": "Slå tema til/fra"
+  },
+  "time": {
+    "daysAgo": "for {{count}} dag siden",
+    "daysAgo_other": "For {{count}} dage siden",
+    "hoursAgo": "for {{count}} time siden",
+    "hoursAgo_other": "For {{count}} timer siden",
+    "minutesAgo": "For {{count}} minutter siden",
+    "minutesAgo_other": "For {{count}} minutter siden",
+    "monthsAgo": "for {{count}} måned siden",
+    "monthsAgo_other": "For {{count}} måneder siden",
+    "now": "Lige nu",
+    "weeksAgo": "for {{count}} uge siden",
+    "weeksAgo_other": "For {{count}} uger siden"
+  },
+  "visibility": {
+    "archived": "Arkiveret",
+    "private": "Privat",
+    "public": "Offentlig"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "添加",
+    "apply": "应用",
+    "cancel": "取消",
+    "clear": "清除",
+    "delete": "删除",
+    "edit": "编辑",
+    "hideEmail": "隐藏电子邮件",
+    "refresh": "刷新",
+    "refreshing": "正在刷新...",
+    "remove": "删除",
+    "reset": "重置为默认",
+    "save": "保存",
+    "saving": "保存中...",
+    "showEmail": "显示邮件",
+    "viewOnProvider": "在 {{provider}} 上查看"
+  },
+  "app": {
+    "add": "添加",
+    "apply": "申请",
+    "back": "后退",
+    "cancel": "取消",
+    "clear": "清除",
+    "close": "关闭",
+    "delete": "删除",
+    "description": "统一的拉取请求管理",
+    "edit": "编辑",
+    "error": "发生错误",
+    "filter": "筛选",
+    "info": "信息",
+    "loading": "加载中...",
+    "name": "安培尔",
+    "next": "下一个",
+    "previous": "以前的",
+    "remove": "移除",
+    "reset": "重置",
+    "retry": "重试",
+    "save": "节省",
+    "search": "搜索",
+    "success": "成功",
+    "title": "安培尔公关仪表盘",
+    "warning": "警告"
+  },
+  "auth": {
+    "alreadyHaveAccount": "已经有一个账户？",
+    "confirmPassword": "确认密码",
+    "createAccount": "创建账户",
+    "creatingAccount": "正在创建帐户...",
+    "displayName": "显示名称",
+    "displayNamePlaceholder": "约翰·多伊",
+    "dontHaveAccount": "没有账户？",
+    "email": "电子邮件",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "忘记密码？",
+    "getStarted": "开始使用Ampel",
+    "login": "登录",
+    "loginSuccess": "登录成功",
+    "logout": "注销",
+    "logoutSuccess": "成功登出",
+    "password": "密码",
+    "resetPassword": "重置密码",
+    "signIn": "登录",
+    "signInToContinue": "登录您的账户以继续",
+    "signUp": "报名",
+    "signingIn": "正在登录...",
+    "username": "用户名",
+    "welcome": "欢迎回来！",
+    "welcomeToAmpel": "欢迎来到Ampel"
+  },
+  "language": {
+    "current": "当前语言",
+    "select": "选择语言"
+  },
+  "navigation": {
+    "analytics": "分析",
+    "dashboard": "仪表板",
+    "documentation": "文档",
+    "help": "帮助",
+    "merge": "合并",
+    "organizations": "组织",
+    "profile": "轮廓",
+    "pullRequests": "拉取请求",
+    "repositories": "存储库",
+    "settings": "设置"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} 条评论",
+    "comments_other": "{{count}} 条评论",
+    "pullRequests_one": "{{count}} 个拉取请求",
+    "pullRequests_other": "{{count}} 个拉取请求",
+    "requests_one": "{{count}} 请求",
+    "requests_other": "{{count}} 请求"
+  },
+  "status": {
+    "trafficLight": "交通灯状态"
+  },
+  "theme": {
+    "auto": "汽车",
+    "dark": "深色模式",
+    "light": "浅色模式",
+    "toggle": "切换主题"
+  },
+  "time": {
+    "daysAgo": "{{count}} 天前",
+    "daysAgo_other": "{{count}} 天前",
+    "hoursAgo": "{{count}} 小时前",
+    "hoursAgo_other": "{{count}} 小时前",
+    "minutesAgo": "{{count}} 分钟前",
+    "minutesAgo_other": "{{count}} 分钟前",
+    "monthsAgo": "{{count}} 个月前",
+    "monthsAgo_other": "{{count}} 个月前",
+    "now": "现在",
+    "weeksAgo": "{{count}} 周前",
+    "weeksAgo_other": "{{count}} 周前"
+  },
+  "visibility": {
+    "archived": "已归档",
+    "private": "私有",
+    "public": "公开"
+  }
+}

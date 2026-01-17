@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Zdravotní skóre se vypočítává každou hodinu na základě metrik PR.",
+    "title": "Zatím nejsou k dispozici žádné zdravotní údaje"
+  },
+  "health": {
+    "mergeTime": "Čas sloučení",
+    "perWeek": "{{count}}/týden",
+    "reviewTime": "Čas kontroly",
+    "stalePrs": "Zastaralé PR",
+    "throughput": "Propustnost",
+    "title": "Skóre stavu repozitáře"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Průměrný čas sloučení",
+    "avgReviewTime": "Průměrná doba kontroly",
+    "botPrs": "PR botů",
+    "prsMerged": "Sloučení žádostí o zaměstnání ({{days}}d)"
+  },
+  "title": "Analytika"
+}

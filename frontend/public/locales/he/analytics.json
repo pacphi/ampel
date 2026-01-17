@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "ציוני בריאות מחושבים מדי שעה על סמך מדדי יחסי ציבור",
+    "title": "אין עדיין נתוני בריאות זמינים"
+  },
+  "health": {
+    "mergeTime": "זמן מיזוג",
+    "perWeek": "שבוע",
+    "reviewTime": "זמן סקירה",
+    "stalePrs": "יחסי ציבור מעופשים",
+    "throughput": "תפוקה",
+    "title": "ציוני בריאות המאגר"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "זמן מיזוג ממוצע",
+    "avgReviewTime": "זמן סקירה ממוצע",
+    "botPrs": "יחסי ציבור של בוטים",
+    "prsMerged": "יחסי ציבור מוזגו ({{days}}d)"
+  },
+  "title": "אנליטיקס"
+}

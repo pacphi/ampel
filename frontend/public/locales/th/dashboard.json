@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "อนุมัติ",
+    "comment": "ความคิดเห็น",
+    "deselectAll": "ยกเลิกการเลือกทั้งหมด",
+    "merge": "ผสาน",
+    "refresh": "รีเฟรช",
+    "requestChanges": "ขอให้เปลี่ยนแปลง",
+    "selectAll": "เลือกทั้งหมด",
+    "viewOnProvider": "ดูบน {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "รอการตรวจสอบ",
+    "changesRequested": "ขอให้เปลี่ยนแปลง",
+    "ciFailed": "CI ล้มเหลว",
+    "ciPending": "CI รอดำเนินการ",
+    "conflicts": "ข้อขัดแย้ง",
+    "draft": "ร่าง",
+    "needsReview": "ต้องการการตรวจสอบ"
+  },
+  "empty": {
+    "action": "เชื่อมต่อผู้ให้บริการ",
+    "description": "เชื่อมต่อผู้ให้บริการ Git ของคุณเพื่อเริ่มติดตาม PR",
+    "title": "ไม่พบคำขอดึง"
+  },
+  "filters": {
+    "all": "ทั้งหมด",
+    "assignee": "ผู้รับมอบหมาย",
+    "author": "ผู้เขียน",
+    "closed": "ปิด",
+    "draft": "ร่าง",
+    "label": "ป้ายกำกับ",
+    "merged": "ผสานแล้ว",
+    "onlyWithPrs": "แสดงที่เก็บข้อมูลที่มีคำขอดึงที่เปิดอยู่",
+    "open": "เปิด",
+    "prStatus": {
+      "all": "ประชาสัมพันธ์ทั้งหมด",
+      "blocked": "บล็อก",
+      "pending": "รอดำเนินการ",
+      "ready": "พร้อม"
+    },
+    "provider": "ผู้ให้บริการ",
+    "repository": "ที่เก็บข้อมูล"
+  },
+  "pr": {
+    "additions": "การเพิ่มเติม",
+    "author": "ผู้เขียน",
+    "comments": "ความคิดเห็น",
+    "createdAt": "สร้าง",
+    "deletions": "การลบ",
+    "number": "#{{number}}",
+    "sourceBranch": "สาขาต้นทาง",
+    "targetBranch": "สาขาเป้าหมาย",
+    "updatedAt": "อัปเดต"
+  },
+  "prDashboard": "แดชบอร์ด PR",
+  "sort": {
+    "author": "ผู้เขียน",
+    "created": "วันที่สร้าง",
+    "repository": "ที่เก็บข้อมูล",
+    "status": "สถานะ",
+    "title": "เรียงตาม",
+    "updated": "อัปเดตล่าสุด"
+  },
+  "stats": {
+    "blocked": "ถูกบล็อก",
+    "inProgress": "กำลังดำเนินการ",
+    "needsAttention": "ต้องการความสนใจ",
+    "open": "เปิด",
+    "openPRs": "เปิด PRs",
+    "ready": "พร้อมสำหรับการผสาน",
+    "readyToMerge": "พร้อมสำหรับการผสาน",
+    "total": "PRs ทั้งหมด",
+    "totalRepositories": "ทั้งหมดของที่เก็บข้อมูล"
+  },
+  "status": {
+    "closed": "ปิด",
+    "draft": "ร่าง",
+    "green": "พร้อมสำหรับการผสาน",
+    "merged": "ถูกผสาน",
+    "red": "ถูกบล็อก",
+    "yellow": "กำลังดำเนินการ"
+  },
+  "subtitle": "จัดการคำขอดึงของคุณในทุกผู้ให้บริการ",
+  "table": {
+    "columns": {
+      "lastUpdated": "อัปเดตล่าสุด",
+      "provider": "ผู้ให้บริการ",
+      "prs": "พีอาร์",
+      "repository": "ที่เก็บข้อมูล",
+      "status": "สถานะ",
+      "visibility": "การมองเห็น"
+    }
+  },
+  "title": "แดชบอร์ด",
+  "views": {
+    "grid": "มุมมองแบบตาราง",
+    "list": "มุมมองแบบรายการ",
+    "prs": "มุมมองการร้องขอดึง",
+    "pullRequests": "มุมมองการร้องขอดึง",
+    "repositoryGrid": "มุมมองแบบกริดของที่เก็บข้อมูล",
+    "repositoryList": "มุมมองรายการที่เก็บข้อมูล",
+    "table": "มุมมองแบบตาราง"
+  }
+}

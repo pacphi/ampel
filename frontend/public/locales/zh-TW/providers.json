@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "帳戶：閱讀",
+      "pullRequestsRead": "拉取請求：讀取",
+      "pullRequestsWrite": "拉取請求：編寫",
+      "repositoriesRead": "儲存庫：讀取",
+      "repositoriesWrite": "儲存庫：寫入"
+    },
+    "steps": {
+      "step1": "前往 Bitbucket → 個人設定 → 應用程式密碼",
+      "step2": "點擊“建立應用程式密碼”",
+      "step3": "請輸入密碼標籤",
+      "step4": "請選擇所需的權限：",
+      "step5": "點擊“建立”並複製密碼"
+    },
+    "title": "Bitbucket 應用程式密碼說明"
+  },
+  "common": {
+    "expirationWarning": "為了提高安全性，建議設定有效期限。",
+    "minimalScopes": "僅授予所需的最低權限。",
+    "securityNote": "妥善保管您的令牌，切勿公開分享。"
+  },
+  "github": {
+    "note": "儲存庫存取權限也支援細粒度令牌。",
+    "scopes": {
+      "readOrg": "read:org（讀取組織和團隊成員資訊）",
+      "readUser": "讀取:用戶（讀取用戶個人資料數據）",
+      "repo": "倉庫（對私有倉庫的完全控制權）"
+    },
+    "steps": {
+      "step1": "前往 GitHub 設定 → 開發者設定 → 個人存取權令牌 → 令牌（經典）",
+      "step2": "點擊“生成新令牌（經典）”",
+      "step3": "給你的代幣一個描述性的名字",
+      "step4": "選擇所需的範圍：",
+      "step5": "點擊“生成令牌”並立即複製。"
+    },
+    "title": "GitHub Token 使用說明"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "API（完整 API 存取權限）",
+      "readApi": "read_api（只讀 API 存取）",
+      "readRepository": "read_repository（讀取儲存庫存取權限）"
+    },
+    "steps": {
+      "step1": "前往 GitLab → 使用者設定 → 存取權令牌",
+      "step2": "輸入令牌名稱和可選的過期日期",
+      "step3": "選擇所需的範圍：",
+      "step4": "點擊“建立個人存取權杖”並複製它"
+    },
+    "title": "GitLab Token 使用說明"
+  },
+  "title": "提供者說明"
+}

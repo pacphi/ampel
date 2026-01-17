@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Leverandør-API-feil: %{message} (status: %{status_code})'
+      auth_failed: 'Autentisering mislyktes: %{reason}'
+      config_error: 'Konfigurasjonsfeil: %{reason}'
+      invalid_response: 'Ugyldig svar: %{reason}'
+      network_error: 'Nettverksfeil: %{reason}'
+      not_found: 'Ressurs ikke funnet: %{resource}'
+      not_supported: 'Operasjonen støttes ikke: %{operation}'
+      permission_denied: 'Tillatelse nektet: %{reason}'
+      rate_limit_exceeded: 'Hastighetsgrensen er overskredet. Tilbakestilles kl.: %{reset_time}'
+      serialization_error: 'Serialiseringsfeil: %{reason}'
+    github:
+      api_error: 'API-feil: %{status}'
+      invalid_token: Ugyldig token
+      merge_checks_failed: Pull-forespørsler kan ikke slås sammen (sjekk status, kontroller og gjennomganger)
+      merge_conflict: Sammenslåingskonflikt eller hovedgrenen ble endret
+      merge_failed: Kunne ikke slå sammen pull-forespørselen
+      merge_not_mergeable: Pull-forespørselen kan ikke slås sammen
+      pr_fetch_failed: Kunne ikke hente pull-forespørselen
+      pr_not_found: 'Finner ikke pull-forespørsel #%{number}'
+      prs_fetch_failed: Kunne ikke liste opp pull-forespørsler
+      rate_limit_failed: Kunne ikke hente hastighetsgrensen
+      repo_fetch_failed: Klarte ikke å hente depotet
+      repo_not_found: Arkiv %{owner}/%{repo} ikke funnet
+      repos_fetch_failed: Kunne ikke liste opp arkiver
+      reviews_fetch_failed: Kunne ikke hente anmeldelser
+      token_invalid: Ugyldig eller utløpt token
+      user_fetch_failed: Klarte ikke å hente brukeren
+    worker:
+      account_not_found: Leverandørkontoen ble ikke funnet
+      no_account: Repositoriet har ingen tilknyttet leverandørkonto

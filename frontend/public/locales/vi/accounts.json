@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Trở lại trang Tài khoản",
+    "form": {
+      "accountLabel": "Nhãn tài khoản",
+      "accountLabelDescription": "Một cái tên thân thiện để nhận diện tài khoản này.",
+      "accountLabelPlaceholder": "Ví dụ: GitHub công việc, GitLab cá nhân",
+      "provider": "Nhà cung cấp",
+      "selectProvider": "Chọn nhà cung cấp",
+      "token": "Mã truy cập cá nhân",
+      "tokenDescription": "Mã thông báo của bạn được mã hóa và lưu trữ an toàn.",
+      "tokenPlaceholder": "Nhập mã truy cập cá nhân của bạn"
+    },
+    "submit": "Kết nối tài khoản",
+    "submitting": "Đang kết nối...",
+    "subtitle": "Kết nối tài khoản nhà cung cấp Git mới",
+    "title": "Thêm tài khoản nhà cung cấp"
+  },
+  "addAccount": "Thêm tài khoản",
+  "addFirstAccount": "Thêm tài khoản đầu tiên của bạn",
+  "card": {
+    "actions": {
+      "delete": "Xóa tài khoản",
+      "edit": "Chỉnh sửa tài khoản",
+      "setDefault": "Đặt làm mặc định",
+      "validate": "Xác thực mã thông báo"
+    },
+    "expires": "Hết hạn",
+    "neverExpires": "Không bao giờ hết hạn",
+    "repositories": "kho lưu trữ",
+    "status": {
+      "default": "Mặc định",
+      "expired": "Hết hạn",
+      "invalid": "Không hợp lệ",
+      "pending": "Chưa giải quyết",
+      "valid": "Có hiệu lực"
+    },
+    "validated": "Đã xác thực"
+  },
+  "delete": {
+    "cancel": "Hủy bỏ",
+    "confirm": "Xóa bỏ",
+    "deleting": "Đang xóa...",
+    "description": "Bạn có chắc chắn muốn xóa tài khoản \"{{label}}\" không? Thao tác này sẽ không xóa các kho lưu trữ, nhưng chúng cần được liên kết lại với một tài khoản khác.",
+    "title": "Xóa tài khoản"
+  },
+  "description": "Quản lý các tài khoản nhà cung cấp Git đã kết nối của bạn",
+  "edit": {
+    "accountInfo": "Thông tin tài khoản",
+    "backToAccounts": "Trở lại trang Tài khoản",
+    "form": {
+      "accountLabel": "Nhãn tài khoản",
+      "accountLabelPlaceholder": "Ví dụ: Work GitHub",
+      "currentToken": "Mã thông báo hiện tại",
+      "token": "Mã truy cập cá nhân",
+      "tokenDescription": "Để trống nếu muốn giữ nguyên mã thông báo hiện tại.",
+      "tokenPlaceholder": "Nhập mã thông báo mới để cập nhật"
+    },
+    "notFound": "Không tìm thấy tài khoản",
+    "submit": "Lưu thay đổi",
+    "submitting": "Đang lưu...",
+    "subtitle": "Cập nhật cài đặt tài khoản",
+    "title": "Chỉnh sửa tài khoản"
+  },
+  "noAccountsYet": "Chưa có tài khoản nào được kết nối.",
+  "title": "Tài khoản nhà cung cấp",
+  "toast": {
+    "connected": "Tài khoản đã được kết nối",
+    "connectedDescription": "Đã kết nối thành công tài khoản {{provider}}",
+    "connectionFailed": "Thêm tài khoản không thành công",
+    "defaultUpdateFailed": "Không thể cập nhật cài đặt mặc định",
+    "defaultUpdated": "Tài khoản mặc định đã được cập nhật",
+    "defaultUpdatedDescription": "Tài khoản mặc định đã được thay đổi.",
+    "deleteFailed": "Không thể xóa tài khoản",
+    "deleted": "Tài khoản đã bị xóa",
+    "deletedDescription": "Tài khoản đã được xóa thành công.",
+    "tokenInvalid": "Mã thông báo không hợp lệ",
+    "tokenInvalidDescription": "Mã thông báo không hợp lệ hoặc đã hết hạn",
+    "tokenValid": "Mã thông báo hợp lệ",
+    "tokenValidDescription": "Mã thông báo tài khoản hợp lệ và đang hoạt động.",
+    "updateFailed": "Không thể cập nhật tài khoản",
+    "updated": "Tài khoản đã được cập nhật",
+    "updatedDescription": "Cài đặt tài khoản đã được lưu.",
+    "validationFailed": "Xác thực thất bại"
+  }
+}

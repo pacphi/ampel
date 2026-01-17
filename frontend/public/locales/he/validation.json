@@ -1,0 +1,35 @@
+{
+  "alphanum": "{{field}} חייב להכיל אותיות ומספרים בלבד",
+  "date": "אנא הזן תאריך תקין",
+  "dateRange": "תאריך הסיום חייב להיות אחרי תאריך ההתחלה",
+  "email": "אנא הזן כתובת דוא\"ל תקפה",
+  "fields": {
+    "confirmPassword": "אשר סיסמה",
+    "displayName": "שם לתצוגה",
+    "email": "דואר אלקטרוני",
+    "password": "סיסמה"
+  },
+  "fileSize": "גודל הקובץ לא יעלה על {{max}}",
+  "fileType": "סוג הקובץ חייב להיות {{types}}",
+  "integer": "{{field}} חייב להיות מספר שלם",
+  "invalidEmail": "כתובת דואר אלקטרוני לא חוקית",
+  "max": "אסור שמספר המספרים של {{field}} יעלה על {{max}}",
+  "maxLength": "אסור לעלות על {{field}} תווים (ללא עלות של {{max}})",
+  "messages": {
+    "displayNameRequired": "שם לתצוגה הוא חובה",
+    "emailRequired": "דואר אלקטרוני הוא חובה",
+    "passwordMinLength": "הסיסמה חייבת להיות באורך של לפחות 8 תווים",
+    "passwordRequired": "סיסמה היא חובה"
+  },
+  "min": "אורך המספר {{field}} חייב להיות לפחות {{min}}",
+  "minLength": "חייב להיות לפחות {{min}} תווים",
+  "negative": "{{field}} חייב להיות שלילי",
+  "numeric": "{{field}} חייב להיות מספר",
+  "passwordMismatch": "הסיסמאות אינן תואמות",
+  "passwordsDontMatch": "הסיסמאות אינן תואמות",
+  "pattern": "הפורמט {{field}} אינו חוקי",
+  "positive": "{{field}} חייב להיות חיובי",
+  "required": "שדה חובה",
+  "unique": "{{field}} כבר קיים",
+  "url": "אנא הזן כתובת URL חוקית"
+}

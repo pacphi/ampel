@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Les scores de santé sont calculés toutes les heures en fonction des indicateurs de relations publiques.",
+    "title": "Aucune donnée sanitaire disponible pour le moment"
+  },
+  "health": {
+    "mergeTime": "Temps de fusion",
+    "perWeek": "{{count}}/semaine",
+    "reviewTime": "Temps de révision",
+    "stalePrs": "Relations publiques obsolètes",
+    "throughput": "débit",
+    "title": "Scores de santé du référentiel"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Temps de fusion moyen",
+    "avgReviewTime": "Temps moyen de révision",
+    "botPrs": "bots PR",
+    "prsMerged": "PR fusionnées ({{days}}d)"
+  },
+  "title": "Analytique"
+}

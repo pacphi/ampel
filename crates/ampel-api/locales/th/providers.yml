@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'ข้อผิดพลาด API ของผู้ให้บริการ: %{message} (สถานะ: %{status_code})'
+      auth_failed: 'การตรวจสอบสิทธิ์ล้มเหลว: %{reason}'
+      config_error: 'ข้อผิดพลาดในการกำหนดค่า: %{reason}'
+      invalid_response: 'การตอบสนองไม่ถูกต้อง: %{reason}'
+      network_error: 'ข้อผิดพลาดเครือข่าย: %{reason}'
+      not_found: 'ไม่พบทรัพยากร: %{resource}'
+      not_supported: 'การดำเนินการนี้ไม่รองรับ: %{operation}'
+      permission_denied: 'การอนุญาตถูกปฏิเสธ: %{reason}'
+      rate_limit_exceeded: 'เกินขีดจำกัดอัตราการใช้งานแล้ว ระบบจะรีเซ็ตเวลา: %{reset_time}'
+      serialization_error: 'ข้อผิดพลาดในการแปลงข้อมูลเป็นอนุกรม: %{reason}'
+    github:
+      api_error: 'ข้อผิดพลาด API: %{status}'
+      invalid_token: โทเค็นไม่ถูกต้อง
+      merge_checks_failed: ไม่สามารถรวม Pull request ได้ (โปรดตรวจสอบสถานะการตรวจสอบและการรีวิว)
+      merge_conflict: เกิดข้อขัดแย้งในการผสาน หรือมีการแก้ไขสาขาหลัก
+      merge_failed: ไม่สามารถรวม pull request ได้
+      merge_not_mergeable: ไม่สามารถรวม Pull request ได้
+      pr_fetch_failed: ไม่สามารถรับ pull request ได้
+      pr_not_found: 'ไม่พบ Pull request หมายเลข #%{number}'
+      prs_fetch_failed: ไม่สามารถแสดงรายการคำขอพูลได้
+      rate_limit_failed: ไม่สามารถกำหนดขีดจำกัดอัตราได้
+      repo_fetch_failed: ไม่สามารถดึงข้อมูลจากแหล่งเก็บข้อมูลได้
+      repo_not_found: ไม่พบที่เก็บข้อมูล %{owner}/%{repo}
+      repos_fetch_failed: ไม่สามารถแสดงรายการแหล่งเก็บข้อมูลได้
+      reviews_fetch_failed: ไม่ได้รับรีวิว
+      token_invalid: โทเค็นไม่ถูกต้องหรือหมดอายุแล้ว
+      user_fetch_failed: ไม่สามารถรับข้อมูลผู้ใช้ได้
+    worker:
+      account_not_found: ไม่พบบัญชีผู้ให้บริการ
+      no_account: ที่เก็บข้อมูลไม่มีบัญชีผู้ให้บริการที่เชื่อมโยงอยู่

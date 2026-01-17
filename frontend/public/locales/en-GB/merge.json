@@ -1,0 +1,96 @@
+{
+  "actions": {
+    "merge": "Merge {{count}} PRs",
+    "merging": "Merging..."
+  },
+  "blockers": {
+    "awaitingReview": "Awaiting Review",
+    "changesRequested": "Changes Requested",
+    "ciFailed": "CI Failed",
+    "ciPending": "CI Pending",
+    "conflicts": "Has Conflicts",
+    "draft": "Draft",
+    "needsReview": "Needs Review"
+  },
+  "dialog": {
+    "cancel": "Cancel",
+    "deleteBranch": "Delete branch after merge",
+    "merge": "Merge PR",
+    "merging": "Merging...",
+    "strategy": {
+      "merge": "Create a merge commit",
+      "mergeDescription": "All commits preserved",
+      "rebase": "Rebase and merge",
+      "rebaseDescription": "Linear commit history",
+      "squash": "Squash and merge",
+      "squashDescription": "Combine all commits into one",
+      "title": "Merge Strategy"
+    },
+    "subtitle": "Configure merge options for this PR",
+    "title": "Merge Pull Request"
+  },
+  "emptyState": {
+    "noPrsReady": "No PRs are ready to merge. PRs need:",
+    "requirements": {
+      "ciPassing": "All CI checks passing",
+      "noConflicts": "No merge conflicts",
+      "requiredApprovals": "Required approvals"
+    }
+  },
+  "options": {
+    "deleteBranch": "Delete source branch after merge",
+    "description": "Configure how pull requests will be merged",
+    "strategies": {
+      "merge": "Create a merge commit",
+      "rebase": "Rebase and merge",
+      "squash": "Squash and merge"
+    },
+    "strategy": "Merge Strategy",
+    "title": "Merge Options"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PRs"
+  },
+  "results": {
+    "allSuccess": "All PRs merged successfully!",
+    "close": "Close",
+    "stats": {
+      "failed": "Failed",
+      "merged": "Merged",
+      "skipped": "Skipped",
+      "total": "Total"
+    },
+    "status": {
+      "failed": "failed",
+      "skipped": "skipped",
+      "success": "success"
+    },
+    "summary": "Completed with {{success}} merged, {{failed}} failed, {{skipped}} skipped",
+    "title": "Merge Results"
+  },
+  "sections": {
+    "notReadyDescription": "Pull requests that have blockers preventing merge",
+    "notReadyTitle": "Not Ready",
+    "readyDescription": "Pull requests that meet all merge requirements",
+    "readyTitle": "Ready to Merge"
+  },
+  "selection": {
+    "count": "{{selected}} of {{total}} selected",
+    "deselectAll": "Deselect All",
+    "selectAll": "Select All"
+  },
+  "subtitle": "Select and merge multiple PRs at once",
+  "title": "Bulk Merge",
+  "toast": {
+    "failed": "Merge failed",
+    "failedDescription": "Failed to merge #{{number}}: {{error}}",
+    "mergeFailed": "Merge Failed",
+    "mergeSuccess": "Merge Successful",
+    "mergeSuccessDescription": "Successfully merged {{count}} pull requests",
+    "someMergesFailed": "Some merges failed",
+    "someMergesFailedDescription": "{{success}} merged, {{failed}} failed",
+    "success": "PR Merged",
+    "successDescription": "Successfully merged #{{number}}: {{title}}"
+  }
+}

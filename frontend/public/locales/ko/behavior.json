@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "연속 병합 간 대기 시간",
+    "placeholder": "5",
+    "title": "병합 지연 시간(초)"
+  },
+  "options": {
+    "allowNoReviews": "검토 없이 병합 허용",
+    "allowNoReviewsDescription": "리뷰가 없는 PR의 병합을 허용합니다.",
+    "deleteBranch": "병합 후 브랜치 삭제",
+    "deleteBranchDescription": "병합 성공 후 소스 브랜치를 자동으로 삭제합니다.",
+    "requireApproval": "병합 전에 승인이 필요합니다",
+    "requireApprovalDescription": "병합을 실행하기 전에 수동 승인을 기다리세요."
+  },
+  "strategy": {
+    "description": "기본적으로 풀 리퀘스트를 병합하는 방법을 선택하세요.",
+    "merge": "병합 커밋을 생성합니다.",
+    "mergeDescription": "모든 커밋이 보존됩니다.",
+    "rebase": "리베이스 및 병합",
+    "rebaseDescription": "선형 커밋 기록",
+    "squash": "스쿼시 앤 병합",
+    "squashDescription": "모든 커밋을 하나로 합칩니다.",
+    "title": "기본 병합 전략"
+  },
+  "title": "병합 동작",
+  "toast": {
+    "updateFailed": "설정 업데이트에 실패했습니다",
+    "updated": "설정이 업데이트되었습니다.",
+    "updatedDescription": "병합 동작 설정이 저장되었습니다."
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "Hinzufügen",
+    "apply": "Anwenden",
+    "cancel": "Stornieren",
+    "clear": "Klar",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "hideEmail": "E-Mail-Adresse ausblenden",
+    "refresh": "Aktualisieren",
+    "refreshing": "Erfrischend...",
+    "remove": "Entfernen",
+    "reset": "Auf Standardeinstellungen zurücksetzen",
+    "save": "Speichern",
+    "saving": "Speichern...",
+    "showEmail": "E-Mail anzeigen",
+    "viewOnProvider": "Ansehen auf {{provider}}"
+  },
+  "app": {
+    "add": "Hinzufügen",
+    "apply": "Anwenden",
+    "back": "Zurück",
+    "cancel": "Stornieren",
+    "clear": "Klar",
+    "close": "Schließen",
+    "delete": "Löschen",
+    "description": "Einheitliches Pull-Request-Management",
+    "edit": "Bearbeiten",
+    "error": "Es ist ein Fehler aufgetreten",
+    "filter": "Filter",
+    "info": "Information",
+    "loading": "Laden...",
+    "name": "Ampel",
+    "next": "Nächste",
+    "previous": "Vorherige",
+    "remove": "Entfernen",
+    "reset": "Zurücksetzen",
+    "retry": "Wiederholen",
+    "save": "Speichern",
+    "search": "Suchen",
+    "success": "Erfolg",
+    "title": "Ampel PR Dashboard",
+    "warning": "Warnung"
+  },
+  "auth": {
+    "alreadyHaveAccount": "Sie haben bereits ein Konto?",
+    "confirmPassword": "Passwort bestätigen",
+    "createAccount": "Ein Konto erstellen",
+    "creatingAccount": "Konto wird erstellt...",
+    "displayName": "Anzeigename",
+    "displayNamePlaceholder": "John Doe",
+    "dontHaveAccount": "Sie haben noch kein Konto?",
+    "email": "E-Mail",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "Passwort vergessen?",
+    "getStarted": "Legen Sie los mit Ampel",
+    "login": "Login",
+    "loginSuccess": "Anmeldung erfolgreich",
+    "logout": "Abmelden",
+    "logoutSuccess": "Abmeldung erfolgreich",
+    "password": "Passwort",
+    "resetPassword": "Passwort zurücksetzen",
+    "signIn": "anmelden",
+    "signInToContinue": "Melden Sie sich in Ihrem Konto an, um fortzufahren.",
+    "signUp": "Melden Sie sich an",
+    "signingIn": "Anmelden...",
+    "username": "Benutzername",
+    "welcome": "Willkommen zurück!",
+    "welcomeToAmpel": "Willkommen bei Ampel"
+  },
+  "language": {
+    "current": "Aktuelle Sprache",
+    "select": "Sprache auswählen"
+  },
+  "navigation": {
+    "analytics": "Analysen",
+    "dashboard": "Armaturenbrett",
+    "documentation": "Dokumentation",
+    "help": "Helfen",
+    "merge": "Verschmelzen",
+    "organizations": "Organisationen",
+    "profile": "Profil",
+    "pullRequests": "Pull Requests",
+    "repositories": "Repositories",
+    "settings": "Einstellungen"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} Kommentar",
+    "comments_other": "{{count}} Kommentare",
+    "pullRequests_one": "{{count}} Pull-Anfrage",
+    "pullRequests_other": "{{count}} Pull-Anfragen",
+    "requests_one": "{{count}} Anfrage",
+    "requests_other": "{{count}} Anfragen"
+  },
+  "status": {
+    "trafficLight": "Ampelstatus"
+  },
+  "theme": {
+    "auto": "Auto",
+    "dark": "Dunkelmodus",
+    "light": "Hellmodus",
+    "toggle": "Design umschalten"
+  },
+  "time": {
+    "daysAgo": "{{count}} Tag zuvor",
+    "daysAgo_other": "{{count}} Tage zuvor",
+    "hoursAgo": "{{count}} vor einer Stunde",
+    "hoursAgo_other": "{{count}} Stunden zuvor",
+    "minutesAgo": "{{count}} vor einer Minute",
+    "minutesAgo_other": "{{count}} Minuten zuvor",
+    "monthsAgo": "{{count}} vor einem Monat",
+    "monthsAgo_other": "{{count}} Monate her",
+    "now": "Soeben",
+    "weeksAgo": "{{count}} vor einer Woche",
+    "weeksAgo_other": "{{count}} Wochen her"
+  },
+  "visibility": {
+    "archived": "Archiviert",
+    "private": "Privat",
+    "public": "Öffentlich"
+  }
+}

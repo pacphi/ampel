@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "सभी जोड़ें ({{count}})",
+    "close": "बंद करना",
+    "empty": "जोड़ने के लिए कोई नई रिपॉजिटरी नहीं मिली",
+    "title": "{{provider}} से जोड़ें"
+  },
+  "empty": {
+    "description": "शुरुआत करने के लिए अपने कनेक्टेड प्रोवाइडर्स से रिपॉजिटरी जोड़ें।",
+    "title": "कोई रिपॉजिटरी नहीं मिली"
+  },
+  "providers": {
+    "connected": "(जुड़े हुए)",
+    "title": "किसी प्रदाता से संपर्क करें"
+  },
+  "search": {
+    "placeholder": "रिपॉजिटरी खोजें..."
+  },
+  "table": {
+    "actions": "कार्रवाई",
+    "provider": "प्रदाता",
+    "prs": "ओपन पीआर",
+    "repository": "कोष",
+    "status": "स्थिति"
+  },
+  "title": "डेटा संग्रह स्थान",
+  "toast": {
+    "addFailed": "रिपॉजिटरी जोड़ने में विफल",
+    "added": "रिपॉजिटरी जोड़ी गई",
+    "addedDescription": "{{name}} आपके डैशबोर्ड में जोड़ दिया गया है",
+    "bulkAddFailed": "रिपॉजिटरी जोड़ने में विफल",
+    "bulkAddFailedDescription": "चयनित रिपॉजिटरी में से किसी को भी जोड़ा नहीं जा सका।",
+    "bulkAdded": "रिपॉजिटरी जोड़ी गई",
+    "bulkAddedDescription": "{{count}} रिपॉजिटरी सफलतापूर्वक जोड़ दी गई हैं{{failed}}",
+    "bulkAddedFailed": "({{count}} असफल रहा)",
+    "removeFailed": "रिपॉजिटरी को हटाने में विफल",
+    "removed": "रिपॉजिटरी हटा दी गई",
+    "removedDescription": "{{name}} को आपके डैशबोर्ड से हटा दिया गया है"
+  }
+}

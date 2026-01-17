@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "Impossibile creare l'account",
+    "forbidden": "Non hai l'autorizzazione per accedere a questa risorsa",
+    "invalidCredentials": "Nome utente o password non validi",
+    "invalidEmailOrPassword": "Email o password non valide",
+    "loginFailed": "Accesso non riuscito",
+    "registrationFailed": "Registrazione fallita",
+    "sessionExpired": "La tua sessione è scaduta. Effettua nuovamente l'accesso.",
+    "tokenExpired": "Il token di autenticazione è scaduto",
+    "unauthorized": "Accesso non autorizzato"
+  },
+  "boundary": {
+    "description": "Si è verificato un errore imprevisto. Riprova.",
+    "details": "Dettagli errore (solo Dev)",
+    "reload": "Ricarica pagina",
+    "title": "Qualcosa è andato storto",
+    "tryAgain": "Riprova"
+  },
+  "general": {
+    "unknownError": "Si è verificato un errore sconosciuto"
+  },
+  "generic": {
+    "goHome": "Vai alla dashboard",
+    "message": "Si è verificato un errore imprevisto. Riprova.",
+    "retry": "Riprova",
+    "somethingWentWrong": "Si è verificato un errore. Riprova.",
+    "title": "Qualcosa è andato storto"
+  },
+  "network": {
+    "message": "Impossibile connettersi al server. Controlla la tua connessione Internet.",
+    "offline": "Al momento sei offline",
+    "title": "Errore di rete"
+  },
+  "notFound": {
+    "goHome": "Torna alla dashboard",
+    "message": "La pagina che stai cercando non esiste.",
+    "title": "Pagina non trovata"
+  },
+  "pr": {
+    "approveFailed": "Impossibile approvare la richiesta di pull",
+    "commentFailed": "Impossibile pubblicare il commento",
+    "loadFailed": "Impossibile caricare le richieste pull",
+    "mergeFailed": "Impossibile unire la richiesta pull"
+  },
+  "provider": {
+    "connectionFailed": "Impossibile connettersi a {{provider}}",
+    "invalidToken": "Token {{provider}} non valido",
+    "notFound": "Risorsa non trovata su {{provider}}",
+    "rateLimited": "Limite di velocità API {{provider}} superato"
+  },
+  "repository": {
+    "accessDenied": "Accesso al repository negato",
+    "loadFailed": "Impossibile caricare i repository",
+    "notFound": "Repository non trovato"
+  },
+  "validation": {
+    "invalidEmail": "Si prega di inserire un indirizzo email valido",
+    "invalidUrl": "Inserisci un URL valido",
+    "maxLength": "Non deve superare {{max}} caratteri",
+    "minLength": "Deve contenere almeno {{min}} caratteri",
+    "passwordMismatch": "Le password non corrispondono",
+    "required": "Questo campo è obbligatorio"
+  }
+}

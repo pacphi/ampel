@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Alles toevoegen ({{count}})",
+    "close": "Dichtbij",
+    "empty": "Er zijn geen nieuwe repositories gevonden om toe te voegen.",
+    "title": "Toevoegen vanaf {{provider}}"
+  },
+  "empty": {
+    "description": "Voeg repositories van uw verbonden providers toe om te beginnen.",
+    "title": "Geen repositories gevonden"
+  },
+  "providers": {
+    "connected": "(Aangesloten)",
+    "title": "Verbind een provider"
+  },
+  "search": {
+    "placeholder": "Zoek in repositories..."
+  },
+  "table": {
+    "actions": "Acties",
+    "provider": "Aanbieder",
+    "prs": "Open PR's",
+    "repository": "Opslagplaats",
+    "status": "Status"
+  },
+  "title": "Repositories",
+  "toast": {
+    "addFailed": "Het toevoegen van de repository is mislukt.",
+    "added": "Repository toegevoegd",
+    "addedDescription": "{{name}} is toegevoegd aan je dashboard",
+    "bulkAddFailed": "Het toevoegen van repositories is mislukt.",
+    "bulkAddFailedDescription": "Het is niet mogelijk om een van de geselecteerde repositories toe te voegen.",
+    "bulkAdded": "Repositories toegevoegd",
+    "bulkAddedDescription": "Repositories {{count}} succesvol toegevoegd{{failed}}",
+    "bulkAddedFailed": "({{count}} mislukt)",
+    "removeFailed": "Het verwijderen van de repository is mislukt.",
+    "removed": "Repository verwijderd",
+    "removedDescription": "{{name}} is verwijderd van je dashboard"
+  }
+}

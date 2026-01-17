@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Terveyspisteet lasketaan tunneittain PR-mittareiden perusteella",
+    "title": "Terveystietoja ei vielä saatavilla"
+  },
+  "health": {
+    "mergeTime": "Yhdistämisaika",
+    "perWeek": "{{count}}/viikko",
+    "reviewTime": "Arviointiaika",
+    "stalePrs": "Vanhentuneet PR:t",
+    "throughput": "Läpäisykyky",
+    "title": "Tietovaraston kuntopisteet"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Keskimääräinen yhdistämisaika",
+    "avgReviewTime": "Keskimääräinen tarkistusaika",
+    "botPrs": "Bottien PR:t",
+    "prsMerged": "Yhdistetyt PR:t ({{days}}d)"
+  },
+  "title": "Analytiikka"
+}

@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Adicionar",
+    "enable": "Ativar notificações por e-mail",
+    "enableDescription": "Enviar notificações por e-mail (SMTP)",
+    "fromAddress": "Do endereço",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "Host SMTP",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "Senha SMTP",
+    "smtpPasswordPlaceholder": "Digite a senha",
+    "smtpPort": "Porta SMTP",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "Nome de usuário SMTP",
+    "smtpUserPlaceholder": "usuário@exemplo.com",
+    "testFailed": "Falha ao enviar o e-mail de teste",
+    "testMessage": "Enviar e-mail de teste",
+    "testSending": "Enviando...",
+    "testSuccess": "E-mail de teste enviado",
+    "title": "Notificações por e-mail",
+    "toAddresses": "Para endereços",
+    "toAddressesDescription": "Destinatários dos e-mails de notificação",
+    "toAddressesPlaceholder": "email@exemplo.com",
+    "useTls": "Use TLS"
+  },
+  "merge": {
+    "description": "Escolha quando receber notificações sobre operações de mesclagem.",
+    "notifyOnConflict": "Notificar sobre conflitos de mesclagem",
+    "notifyOnConflictDescription": "Enviar notificação quando forem detectados conflitos de mesclagem.",
+    "notifyOnFailure": "Notificar sobre falhas de mesclagem",
+    "notifyOnFailureDescription": "Enviar notificação quando as operações de mesclagem falharem",
+    "notifyOnSuccess": "Notificar sobre fusões bem-sucedidas",
+    "notifyOnSuccessDescription": "Enviar notificação quando as solicitações de pull forem mescladas com sucesso.",
+    "title": "Mesclar notificações"
+  },
+  "slack": {
+    "channel": "Canal (opcional)",
+    "channelDescription": "Substituir o canal padrão configurado no webhook",
+    "channelPlaceholder": "#em geral",
+    "enable": "Ativar notificações do Slack",
+    "enableDescription": "Enviar notificações para um canal do Slack",
+    "testFailed": "Falha ao enviar mensagem de teste",
+    "testMessage": "Enviar mensagem de teste",
+    "testSending": "Enviando...",
+    "testSuccess": "Mensagem de teste enviada",
+    "title": "Notificações do Slack",
+    "webhookUrl": "URL do Webhook",
+    "webhookUrlDescription": "Crie um webhook de entrada no seu espaço de trabalho do Slack.",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Configurações de notificação",
+  "toast": {
+    "updateFailed": "Falha ao atualizar as configurações",
+    "updated": "Configurações atualizadas",
+    "updatedDescription": "As configurações de notificação foram salvas."
+  }
+}

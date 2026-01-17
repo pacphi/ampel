@@ -1,0 +1,41 @@
+en:
+  errors:
+    account:
+      already_connected: Овај налог је већ повезан. Користите PATCH да бисте ажурирали токен.
+      invalid_provider_type: Неважећи тип добављача
+      invalid_token: Неважећи токен
+      not_found: Налог није пронађен
+      provider_no_user_id: Провајдер није вратио ИД корисника
+      provider_no_username: Провајдер није вратио корисничко име
+      validation_failed: 'Валидација токена није успела: %{error}'
+    auth:
+      email_in_use: Имејл адреса је већ у употреби
+      email_registered: Имејл адреса је већ регистрована
+      invalid_credentials: Неважећа имејл адреса или лозинка
+      invalid_refresh_token: Неважећи или истекли токен за освежавање
+      user_not_found: Корисник није пронађен
+    encryption:
+      decrypt_failed: 'Грешка у дешифровању: %{error}'
+      failed: 'Грешка у шифровању: %{error}'
+    general:
+      internal: Интерна грешка
+      serialization_failed: 'Серијализација опсега није успела: %{error}'
+    network:
+      connection_failed: Повезивање није успело
+      timeout: Временско ограничење захтева је истекло
+    provider:
+      decrypt_failed: 'Дешифровање токена није успело: %{error}'
+      error: 'Грешка добављача: %{error}'
+    pull_request:
+      merge_failed: 'Спајање није успело: %{reason}'
+      not_found: Захтев за повлачење није пронађен
+    rate_limit:
+      exceeded: Прекорачено ограничење брзине
+    repository:
+      already_added: Репозиторијум је већ додат
+      invalid_provider: Неважећи добављач
+      invalid_provider_db: Неважећи тип добављача у бази података
+      no_account_linked: Репозиторијум није повезан са налогом
+      not_found: Репозиторијум није пронађен
+      not_found_for_pr: Репозиторијум није пронађен за PR
+      provider_not_connected: Провајдер није повезан

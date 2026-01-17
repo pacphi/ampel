@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Sağlık puanları, PR ölçütlerine göre saatlik olarak hesaplanır.",
+    "title": "Henüz sağlık verisi mevcut değil."
+  },
+  "health": {
+    "mergeTime": "Birleştirme Zamanı",
+    "perWeek": "{{count}}/hafta",
+    "reviewTime": "İnceleme Zamanı",
+    "stalePrs": "Eski PR'lar",
+    "throughput": "Verim",
+    "title": "Depo Sağlık Puanları"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Ortalama Birleştirme Süresi",
+    "avgReviewTime": "Ortalama İnceleme Süresi",
+    "botPrs": "Bot PR'ları",
+    "prsMerged": "PR'lar Birleştirildi ({{days}}d)"
+  },
+  "title": "Analitik"
+}

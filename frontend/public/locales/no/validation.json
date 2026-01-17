@@ -1,0 +1,35 @@
+{
+  "alphanum": "{{field}} må kun inneholde bokstaver og tall",
+  "date": "Vennligst skriv inn en gyldig dato",
+  "dateRange": "Sluttdatoen må være etter startdatoen",
+  "email": "Vennligst skriv inn en gyldig e-postadresse",
+  "fields": {
+    "confirmPassword": "Bekreft passord",
+    "displayName": "Visningsnavn",
+    "email": "E-post",
+    "password": "Passord"
+  },
+  "fileSize": "Filstørrelsen må ikke overstige {{max}}",
+  "fileType": "Filtypen må være {{types}}",
+  "integer": "{{field}} må være et heltall",
+  "invalidEmail": "Ugyldig e-postadresse",
+  "max": "{{field}} må ikke overstige {{max}}",
+  "maxLength": "{{field}} må ikke overskride {{max}} tegn",
+  "messages": {
+    "displayNameRequired": "Visningsnavn er obligatorisk",
+    "emailRequired": "E-post er påkrevd",
+    "passwordMinLength": "Passordet må være minst 8 tegn",
+    "passwordRequired": "Passord kreves"
+  },
+  "min": "{{field}} må være minst {{min}}",
+  "minLength": "{{field}} må være minst {{min}} tegn",
+  "negative": "{{field}} må være negativ",
+  "numeric": "{{field}} må være et tall",
+  "passwordMismatch": "Passordene samsvarer ikke",
+  "passwordsDontMatch": "Passordene samsvarer ikke",
+  "pattern": "Formatet {{field}} er ugyldig",
+  "positive": "{{field}} må være positiv",
+  "required": "{{field}} er obligatorisk",
+  "unique": "{{field}} finnes allerede",
+  "url": "Vennligst skriv inn en gyldig URL"
+}

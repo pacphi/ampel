@@ -19,6 +19,7 @@ async fn create_test_user(db: &sea_orm::DatabaseConnection) -> Uuid {
         password_hash: Set("$argon2id$test".to_string()),
         display_name: Set(Some("Test User".to_string())),
         avatar_url: Set(None),
+        language: Set(None),
         created_at: Set(Utc::now()),
         updated_at: Set(Utc::now()),
     };

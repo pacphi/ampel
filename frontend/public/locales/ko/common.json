@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "추가",
+    "apply": "적용",
+    "cancel": "취소",
+    "clear": "지우기",
+    "delete": "삭제",
+    "edit": "편집",
+    "hideEmail": "이메일 숨기기",
+    "refresh": "새로 고침",
+    "refreshing": "새로 고침 중...",
+    "remove": "제거",
+    "reset": "기본값으로 재설정",
+    "save": "저장",
+    "saving": "저장 중...",
+    "showEmail": "이메일 보기",
+    "viewOnProvider": "{{provider}}에서 보기"
+  },
+  "app": {
+    "add": "추가",
+    "apply": "적용하다",
+    "back": "뒤쪽에",
+    "cancel": "취소",
+    "clear": "분명한",
+    "close": "닫다",
+    "delete": "삭제",
+    "description": "통합 풀 리퀘스트 관리",
+    "edit": "편집하다",
+    "error": "오류가 발생했습니다",
+    "filter": "필터",
+    "info": "정보",
+    "loading": "로딩 중...",
+    "name": "암펠",
+    "next": "다음",
+    "previous": "이전의",
+    "remove": "제거",
+    "reset": "재설정",
+    "retry": "다시 해 보다",
+    "save": "구하다",
+    "search": "찾다",
+    "success": "성공",
+    "title": "암펠 PR 대시보드",
+    "warning": "경고"
+  },
+  "auth": {
+    "alreadyHaveAccount": "이미 계정이 있으신가요?",
+    "confirmPassword": "비밀번호 확인",
+    "createAccount": "계정 생성",
+    "creatingAccount": "계정 생성 중...",
+    "displayName": "표시 이름",
+    "displayNamePlaceholder": "존 도",
+    "dontHaveAccount": "계정이 없으신가요?",
+    "email": "이메일",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "비밀번호를 잊으셨나요?",
+    "getStarted": "Ampel 시작하기",
+    "login": "로그인",
+    "loginSuccess": "로그인 성공",
+    "logout": "로그아웃",
+    "logoutSuccess": "로그아웃 성공",
+    "password": "비밀번호",
+    "resetPassword": "비밀번호 재설정",
+    "signIn": "로그인",
+    "signInToContinue": "계속하려면 계정에 로그인하세요",
+    "signUp": "가입하기",
+    "signingIn": "로그인 중...",
+    "username": "사용자 이름",
+    "welcome": "다시 오신 것을 환영합니다!",
+    "welcomeToAmpel": "Ampel에 오신 것을 환영합니다"
+  },
+  "language": {
+    "current": "현재 언어",
+    "select": "언어를 선택하세요"
+  },
+  "navigation": {
+    "analytics": "분석",
+    "dashboard": "계기반",
+    "documentation": "선적 서류 비치",
+    "help": "돕다",
+    "merge": "병합",
+    "organizations": "조직",
+    "profile": "윤곽",
+    "pullRequests": "풀 리퀘스트",
+    "repositories": "저장소",
+    "settings": "설정"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} 댓글",
+    "comments_other": "{{count}}개의 댓글",
+    "pullRequests_one": "{{count}}개의 풀 요청",
+    "pullRequests_other": "{{count}}개의 풀 요청들",
+    "requests_one": "{{count}}개의 요청",
+    "requests_other": "{{count}}개의 요청들"
+  },
+  "status": {
+    "trafficLight": "신호등 상태"
+  },
+  "theme": {
+    "auto": "자동",
+    "dark": "다크 모드",
+    "light": "라이트 모드",
+    "toggle": "테마 전환"
+  },
+  "time": {
+    "daysAgo": "{{count}}일 전",
+    "daysAgo_other": "{{count}}일 전",
+    "hoursAgo": "{{count}}시간 전",
+    "hoursAgo_other": "{{count}}시간 전",
+    "minutesAgo": "{{count}}분 전",
+    "minutesAgo_other": "{{count}}분 전",
+    "monthsAgo": "{{count}}개월 전",
+    "monthsAgo_other": "{{count}}개월 전",
+    "now": "방금",
+    "weeksAgo": "{{count}}주 전",
+    "weeksAgo_other": "{{count}}주 전"
+  },
+  "visibility": {
+    "archived": "보관됨",
+    "private": "비공개",
+    "public": "공개"
+  }
+}

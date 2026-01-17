@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "חזרה לחשבונות",
+    "form": {
+      "accountLabel": "תווית חשבון",
+      "accountLabelDescription": "שם ידידותי לזיהוי חשבון זה",
+      "accountLabelPlaceholder": "לדוגמה, GitHub עבודה, GitLab אישי",
+      "provider": "ספק",
+      "selectProvider": "בחר ספק",
+      "token": "אסימון גישה אישי",
+      "tokenDescription": "האסימון שלך מוצפן ומאוחסן בצורה מאובטחת",
+      "tokenPlaceholder": "הזן את אסימון הגישה האישי שלך"
+    },
+    "submit": "חבר חשבון",
+    "submitting": "מְקַשֵׁר...",
+    "subtitle": "חיבור חשבון ספק Git חדש",
+    "title": "הוסף חשבון ספק"
+  },
+  "addAccount": "הוסף חשבון",
+  "addFirstAccount": "הוסף את החשבון הראשון שלך",
+  "card": {
+    "actions": {
+      "delete": "מחיקת חשבון",
+      "edit": "עריכת חשבון",
+      "setDefault": "הגדר כברירת מחדל",
+      "validate": "אימות אסימון"
+    },
+    "expires": "פג תוקף",
+    "neverExpires": "לעולם לא פג תוקף",
+    "repositories": "מאגרים",
+    "status": {
+      "default": "בְּרִירַת מֶחדָל",
+      "expired": "פג תוקף",
+      "invalid": "לֹא בְּתוֹקֶף",
+      "pending": "תָלוּי וְעוֹמֵד",
+      "valid": "תָקֵף"
+    },
+    "validated": "אומת"
+  },
+  "delete": {
+    "cancel": "לְבַטֵל",
+    "confirm": "לִמְחוֹק",
+    "deleting": "מוחק...",
+    "description": "האם אתה בטוח שברצונך למחוק את החשבון \"{{label}}\"? פעולה זו לא תמחק מאגרים, אך יהיה צורך לקשר אותם מחדש לחשבון אחר.",
+    "title": "מחיקת חשבון"
+  },
+  "description": "ניהול חשבונות ספקי Git המחוברים שלך",
+  "edit": {
+    "accountInfo": "פרטי חשבון",
+    "backToAccounts": "חזרה לחשבונות",
+    "form": {
+      "accountLabel": "תווית חשבון",
+      "accountLabelPlaceholder": "לדוגמה, עבודה ב-GitHub",
+      "currentToken": "אסימון נוכחי",
+      "token": "אסימון גישה אישי",
+      "tokenDescription": "השאר ריק כדי לשמור את האסימון הנוכחי",
+      "tokenPlaceholder": "הזן אסימון חדש כדי לעדכן"
+    },
+    "notFound": "החשבון לא נמצא",
+    "submit": "שמירת שינויים",
+    "submitting": "חִסָכוֹן...",
+    "subtitle": "עדכון הגדרות חשבון",
+    "title": "עריכת חשבון"
+  },
+  "noAccountsYet": "עדיין אין חשבונות מחוברים",
+  "title": "חשבונות ספקים",
+  "toast": {
+    "connected": "חשבון מחובר",
+    "connectedDescription": "חשבון {{provider}} חובר בהצלחה",
+    "connectionFailed": "הוספת חשבון נכשלה",
+    "defaultUpdateFailed": "נכשל עדכון ברירת המחדל",
+    "defaultUpdated": "חשבון ברירת המחדל עודכן",
+    "defaultUpdatedDescription": "חשבון ברירת המחדל שונה",
+    "deleteFailed": "מחיקת החשבון נכשלה",
+    "deleted": "החשבון נמחק",
+    "deletedDescription": "החשבון הוסר בהצלחה",
+    "tokenInvalid": "אסימון לא תקין",
+    "tokenInvalidDescription": "האסימון אינו תקין או פג תוקפו",
+    "tokenValid": "אסימון תקף",
+    "tokenValidDescription": "אסימון החשבון תקף ופעיל",
+    "updateFailed": "עדכון החשבון נכשל",
+    "updated": "החשבון עודכן",
+    "updatedDescription": "הגדרות החשבון נשמרו",
+    "validationFailed": "האימות נכשל"
+  }
+}

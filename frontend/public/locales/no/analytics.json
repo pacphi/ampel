@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Helsepoeng beregnes hver time basert på PR-målinger",
+    "title": "Ingen helsedata tilgjengelig ennå"
+  },
+  "health": {
+    "mergeTime": "Sammenslåingstid",
+    "perWeek": "{{count}}/uke",
+    "reviewTime": "Gjennomgangstid",
+    "stalePrs": "Foreldede PR-er",
+    "throughput": "Gjennomstrømning",
+    "title": "Helsepoeng for arkivet"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Gjennomsnittlig sammenslåingstid",
+    "avgReviewTime": "Gjennomsnittlig gjennomgangstid",
+    "botPrs": "Bot-PR-er",
+    "prsMerged": "PR-er slått sammen ({{days}}d)"
+  },
+  "title": "Analyse"
+}

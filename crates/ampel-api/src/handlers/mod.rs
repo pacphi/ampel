@@ -9,6 +9,7 @@ pub mod pr_filters;
 pub mod pull_requests;
 pub mod repositories;
 pub mod teams;
+pub mod user_preferences;
 pub mod user_settings;
 
 use axum::{http::StatusCode, response::IntoResponse, Json};

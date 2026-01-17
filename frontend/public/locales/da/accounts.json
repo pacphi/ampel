@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Tilbage til konti",
+    "form": {
+      "accountLabel": "Kontoetiket",
+      "accountLabelDescription": "Et brugervenligt navn til at identificere denne konto",
+      "accountLabelPlaceholder": "f.eks. Arbejds-GitHub, Personlig GitLab",
+      "provider": "Udbyder",
+      "selectProvider": "Vælg en udbyder",
+      "token": "Personlig adgangstoken",
+      "tokenDescription": "Din token er krypteret og opbevaret sikkert",
+      "tokenPlaceholder": "Indtast din personlige adgangstoken"
+    },
+    "submit": "Forbind konto",
+    "submitting": "Forbinder...",
+    "subtitle": "Tilslut en ny Git-udbyderkonto",
+    "title": "Tilføj udbyderkonto"
+  },
+  "addAccount": "Tilføj konto",
+  "addFirstAccount": "Tilføj din første konto",
+  "card": {
+    "actions": {
+      "delete": "Slet konto",
+      "edit": "Rediger konto",
+      "setDefault": "Angiv som standard",
+      "validate": "Valider token"
+    },
+    "expires": "Udløber",
+    "neverExpires": "Udløber aldrig",
+    "repositories": "arkiver",
+    "status": {
+      "default": "Misligholdelse",
+      "expired": "Udløbet",
+      "invalid": "Ugyldig",
+      "pending": "Indtil",
+      "valid": "Gyldig"
+    },
+    "validated": "Valideret"
+  },
+  "delete": {
+    "cancel": "Ophæve",
+    "confirm": "Slet",
+    "deleting": "Sletter...",
+    "description": "Er du sikker på, at du vil slette kontoen \"{{label}}\"? Dette vil ikke slette arkiver, men de skal linkes til en anden konto igen.",
+    "title": "Slet konto"
+  },
+  "description": "Administrer dine tilknyttede Git-udbyderkonti",
+  "edit": {
+    "accountInfo": "Kontooplysninger",
+    "backToAccounts": "Tilbage til konti",
+    "form": {
+      "accountLabel": "Kontoetiket",
+      "accountLabelPlaceholder": "f.eks. Arbejd GitHub",
+      "currentToken": "Nuværende token",
+      "token": "Personlig adgangstoken",
+      "tokenDescription": "Lad feltet stå tomt for at beholde det aktuelle token",
+      "tokenPlaceholder": "Indtast nyt token for at opdatere"
+    },
+    "notFound": "Kontoen blev ikke fundet",
+    "submit": "Gem ændringer",
+    "submitting": "Gemmer...",
+    "subtitle": "Opdater kontoindstillinger",
+    "title": "Rediger konto"
+  },
+  "noAccountsYet": "Ingen konti tilknyttet endnu",
+  "title": "Udbyderkonti",
+  "toast": {
+    "connected": "Konto forbundet",
+    "connectedDescription": "Kontoen {{provider}} er blevet forbundet",
+    "connectionFailed": "Kontoen kunne ikke tilføjes",
+    "defaultUpdateFailed": "Kunne ikke opdatere standardindstillingen",
+    "defaultUpdated": "Standardkonto opdateret",
+    "defaultUpdatedDescription": "Standardkontoen er blevet ændret",
+    "deleteFailed": "Kontoen kunne ikke slettes",
+    "deleted": "Konto slettet",
+    "deletedDescription": "Kontoen er blevet fjernet",
+    "tokenInvalid": "Ugyldig token",
+    "tokenInvalidDescription": "Tokenet er ugyldigt eller udløbet",
+    "tokenValid": "Gyldig token",
+    "tokenValidDescription": "Kontotokenet er gyldigt og aktivt",
+    "updateFailed": "Kontoen kunne ikke opdateres",
+    "updated": "Konto opdateret",
+    "updatedDescription": "Kontoindstillingerne er blevet gemt",
+    "validationFailed": "Validering mislykkedes"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Czas oczekiwania pomiędzy kolejnymi połączeniami",
+    "placeholder": "5",
+    "title": "Opóźnienie scalania (sekundy)"
+  },
+  "options": {
+    "allowNoReviews": "Zezwól na scalanie bez recenzji",
+    "allowNoReviewsDescription": "Zezwól na scalanie PR-ów, które nie mają recenzji",
+    "deleteBranch": "Usuń gałęzie po scaleniu",
+    "deleteBranchDescription": "Automatyczne usuwanie gałęzi źródłowych po pomyślnym scaleniu",
+    "requireApproval": "Wymagaj zatwierdzenia przed scaleniem",
+    "requireApprovalDescription": "Poczekaj na zatwierdzenie ręczne przed wykonaniem scalenia"
+  },
+  "strategy": {
+    "description": "Wybierz, w jaki sposób żądania ściągnięcia mają być domyślnie scalane",
+    "merge": "Utwórz zatwierdzenie scalenia",
+    "mergeDescription": "Wszystkie zatwierdzenia zachowane",
+    "rebase": "Zmiana bazy i scalenie",
+    "rebaseDescription": "Liniowa historia zatwierdzania",
+    "squash": "Zgniatanie i łączenie",
+    "squashDescription": "Połącz wszystkie zatwierdzenia w jedno",
+    "title": "Domyślna strategia scalania"
+  },
+  "title": "Zachowanie scalania",
+  "toast": {
+    "updateFailed": "Nie udało się zaktualizować ustawień",
+    "updated": "Ustawienia zaktualizowane",
+    "updatedDescription": "Ustawienia zachowania scalania zostały zapisane"
+  }
+}

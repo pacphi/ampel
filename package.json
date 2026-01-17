@@ -9,8 +9,17 @@
     "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\""
   },
   "devDependencies": {
+    "@secretlint/secretlint-rule-aws": "^11.2.5",
+    "@secretlint/secretlint-rule-basicauth": "^11.2.5",
+    "@secretlint/secretlint-rule-gcp": "^11.2.5",
+    "@secretlint/secretlint-rule-npm": "^11.2.5",
+    "@secretlint/secretlint-rule-preset-recommend": "^11.2.5",
+    "@secretlint/secretlint-rule-privatekey": "^11.2.5",
+    "@secretlint/secretlint-rule-sendgrid": "^11.2.5",
+    "@secretlint/secretlint-rule-slack": "^11.2.5",
     "markdownlint-cli2": "^0.19.1",
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "secretlint": "^11.2.5"
   },
   "packageManager": "pnpm@10.24.0"
 }

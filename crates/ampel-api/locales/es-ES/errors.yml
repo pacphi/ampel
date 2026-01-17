@@ -1,0 +1,57 @@
+errors:
+  # Authentication errors
+  auth:
+    email_registered: "Correo electrónico ya registrado"
+    invalid_credentials: "Correo electrónico o contraseña no válidos"
+    invalid_refresh_token: "Token de actualización no válido o caducado"
+    user_not_found: "Usuario no encontrado"
+    email_in_use: "El correo electrónico ya está en uso"
+
+  # Repository errors
+  repository:
+    not_found: "Repositorio no encontrado"
+    already_added: "Repositorio ya añadido"
+    invalid_provider: "Proveedor no válido"
+    provider_not_connected: "Proveedor no conectado"
+    invalid_provider_db: "Tipo de proveedor no válido en la base de datos"
+    not_found_for_pr: "Repositorio no encontrado para la PR"
+    no_account_linked: "Repositorio no vinculado a la cuenta"
+
+  # Pull request errors
+  pull_request:
+    not_found: "Pull request no encontrada"
+    merge_failed: "Fusión fallida: %{reason}"
+
+  # Account errors
+  account:
+    not_found: "Cuenta no encontrada"
+    invalid_provider_type: "Tipo de proveedor no válido"
+    validation_failed: "Error en la validación del token: %{error}"
+    invalid_token: "Token no válido"
+    provider_no_user_id: "El proveedor no devolvió el ID de usuario"
+    provider_no_username: "El proveedor no devolvió el nombre de usuario"
+    already_connected: "Esta cuenta ya está conectada. Use PATCH para actualizar el token."
+
+  # Provider errors
+  provider:
+    error: "Error del proveedor: %{error}"
+    decrypt_failed: "Error al descifrar el token: %{error}"
+
+  # Encryption errors
+  encryption:
+    failed: "Error de cifrado: %{error}"
+    decrypt_failed: "Error de descifrado: %{error}"
+
+  # General errors
+  general:
+    internal: "Error interno"
+    serialization_failed: "Error al serializar ámbitos: %{error}"
+
+  # Network errors
+  network:
+    timeout: "Se agotó el tiempo de espera de la solicitud"
+    connection_failed: "Fallo en la conexión"
+
+  # Rate limit
+  rate_limit:
+    exceeded: "Límite de velocidad excedido"

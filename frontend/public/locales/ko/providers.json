@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "계정: 읽기",
+      "pullRequestsRead": "풀 리퀘스트: 읽기",
+      "pullRequestsWrite": "풀 리퀘스트: 작성",
+      "repositoriesRead": "저장소: 읽기",
+      "repositoriesWrite": "저장소: 쓰기"
+    },
+    "steps": {
+      "step1": "Bitbucket → 개인 설정 → 앱 암호로 이동하세요.",
+      "step2": "\"앱 비밀번호 생성\"을 클릭하세요.",
+      "step3": "비밀번호에 사용할 레이블을 입력하세요",
+      "step4": "필요한 권한을 선택하세요:",
+      "step5": "\"생성\"을 클릭하고 비밀번호를 복사하세요."
+    },
+    "title": "Bitbucket 앱 비밀번호 설정 방법"
+  },
+  "common": {
+    "expirationWarning": "보안 강화를 위해 만료일을 설정하는 것을 고려해 보세요.",
+    "minimalScopes": "필요한 최소한의 권한만 부여하십시오.",
+    "securityNote": "토큰을 안전하게 보관하고 절대 공개적으로 공유하지 마십시오."
+  },
+  "github": {
+    "note": "저장소 접근 권한에 대한 세분화된 토큰도 지원됩니다.",
+    "scopes": {
+      "readOrg": "read:org (조직 및 팀 구성원 읽기)",
+      "readUser": "read:user (사용자 프로필 데이터 읽기)",
+      "repo": "리포지토리(개인 리포지토리에 대한 완전한 제어 권한)"
+    },
+    "steps": {
+      "step1": "GitHub 설정 → 개발자 설정 → 개인 액세스 토큰 → 토큰(기존 방식)으로 이동하세요.",
+      "step2": "\"새 토큰 생성(기존 방식)\"을 클릭하세요.",
+      "step3": "토큰에 설명적인 이름을 지정하세요.",
+      "step4": "필요한 범위를 선택하십시오:",
+      "step5": "\"토큰 생성\"을 클릭하고 생성된 토큰을 즉시 복사하세요."
+    },
+    "title": "GitHub 토큰 사용 방법"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "API (전체 API 접근 권한)",
+      "readApi": "read_api (읽기 전용 API 접근)",
+      "readRepository": "read_repository (저장소 읽기 접근 권한)"
+    },
+    "steps": {
+      "step1": "GitLab → 사용자 설정 → 액세스 토큰으로 이동하세요.",
+      "step2": "토큰 이름을 입력하고, 만료일은 선택 사항입니다.",
+      "step3": "필요한 범위를 선택하십시오:",
+      "step4": "\"개인 액세스 토큰 생성\"을 클릭하고 복사하세요."
+    },
+    "title": "GitLab 토큰 사용 방법"
+  },
+  "title": "제공자 지침"
+}

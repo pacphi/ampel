@@ -1,0 +1,122 @@
+{
+  "actions": {
+    "add": "Adicionar",
+    "apply": "Aplicar",
+    "cancel": "Cancelar",
+    "clear": "Claro",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "hideEmail": "Ocultar e-mail",
+    "refresh": "Atualizar",
+    "refreshing": "Refrescante...",
+    "remove": "Remover",
+    "reset": "Restaurar padrões de fábrica",
+    "save": "Salvar",
+    "saving": "Salvando...",
+    "showEmail": "Mostrar e-mail",
+    "viewOnProvider": "Ver em {{provider}}"
+  },
+  "app": {
+    "add": "Adicionar",
+    "apply": "Aplicar",
+    "back": "Voltar",
+    "cancel": "Cancelar",
+    "clear": "Claro",
+    "close": "Fechar",
+    "delete": "Excluir",
+    "description": "Gerenciamento unificado de solicitações de pull",
+    "edit": "Editar",
+    "error": "Ocorreu um erro.",
+    "filter": "Filtro",
+    "info": "Informação",
+    "loading": "Carregando...",
+    "name": "Ampel",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "remove": "Remover",
+    "reset": "Reiniciar",
+    "retry": "Tentar novamente",
+    "save": "Salvar",
+    "search": "Procurar",
+    "success": "Sucesso",
+    "title": "Painel de Relações Públicas da Ampel",
+    "warning": "Aviso"
+  },
+  "auth": {
+    "alreadyHaveAccount": "Já tem uma conta?",
+    "confirmPassword": "Confirme sua senha",
+    "createAccount": "Criar uma conta",
+    "creatingAccount": "Criando conta...",
+    "displayName": "Nome de exibição",
+    "displayNamePlaceholder": "João Ninguém",
+    "dontHaveAccount": "Não tem uma conta?",
+    "email": "E-mail",
+    "emailPlaceholder": "you@example.com",
+    "forgotPassword": "Esqueceu sua senha?",
+    "getStarted": "Comece a usar o Ampel",
+    "login": "Conecte-se",
+    "loginSuccess": "Login realizado com sucesso",
+    "logout": "Sair",
+    "logoutSuccess": "Logout realizado com sucesso",
+    "password": "Senha",
+    "resetPassword": "Redefinir senha",
+    "signIn": "Entrar",
+    "signInToContinue": "Inicie sessão na sua conta para continuar.",
+    "signUp": "Inscrever-se",
+    "signingIn": "Entrando...",
+    "username": "Nome de usuário",
+    "welcome": "Bem vindo de volta!",
+    "welcomeToAmpel": "Bem-vindo à Ampel"
+  },
+  "language": {
+    "current": "Idioma atual",
+    "select": "Selecione o idioma"
+  },
+  "navigation": {
+    "analytics": "Análises",
+    "dashboard": "Painel",
+    "documentation": "Documentação",
+    "help": "Ajuda",
+    "merge": "Fusão",
+    "organizations": "Organizações",
+    "profile": "Perfil",
+    "pullRequests": "Solicitações de Pull Requests",
+    "repositories": "Repositórios",
+    "settings": "Configurações"
+  },
+  "pluralization": {
+    "comments_one": "{{count}} comentário",
+    "comments_other": "{{count}} comentários",
+    "pullRequests_one": "{{count}} solicitação de pull request",
+    "pullRequests_other": "{{count}} solicitações de pull",
+    "requests_one": "{{count}} solicitações",
+    "requests_other": "{{count}} solicitações"
+  },
+  "status": {
+    "trafficLight": "Status do semáforo"
+  },
+  "theme": {
+    "auto": "Auto",
+    "dark": "Modo escuro",
+    "light": "Modo claro",
+    "toggle": "Alternar tema"
+  },
+  "time": {
+    "daysAgo": "{{count}} dia atrás",
+    "daysAgo_other": "{{count}} dias atrás",
+    "hoursAgo": "{{count}} hora atrás",
+    "hoursAgo_other": "{{count}} horas atrás",
+    "minutesAgo": "{{count}} minuto atrás",
+    "minutesAgo_other": "{{count}} minutos atrás",
+    "monthsAgo": "{{count}} mês atrás",
+    "monthsAgo_other": "{{count}} meses atrás",
+    "now": "Agora mesmo",
+    "weeksAgo": "{{count}} semana atrás",
+    "weeksAgo_other": "{{count}} semanas atrás"
+  },
+  "visibility": {
+    "archived": "Arquivado",
+    "private": "Privado",
+    "public": "Público"
+  }
+}

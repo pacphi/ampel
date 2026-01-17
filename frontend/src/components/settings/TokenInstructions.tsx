@@ -1,5 +1,6 @@
 import type { GitProvider } from '@/types';
 import { ExternalLink } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface TokenInstructionsProps {
   provider: GitProvider;
@@ -13,43 +14,45 @@ interface InstructionInfo {
 }
 
 export function TokenInstructions({ provider }: TokenInstructionsProps) {
+  const { t } = useTranslation(['providers']);
+
   const instructions: Record<GitProvider, InstructionInfo> = {
     github: {
-      title: 'Create a GitHub Personal Access Token',
+      title: t('providers:github.title'),
       steps: [
-        'Go to GitHub Settings > Developer settings > Personal access tokens',
-        'Click "Generate new token (classic)" or "Fine-grained tokens"',
-        'For Classic: Select scopes: repo, read:user',
-        'For Fine-grained: Grant repository access and select permissions: Contents (Read), Metadata (Read), Pull requests (Read/Write)',
-        "Copy the generated token immediately (it won't be shown again)",
+        t('providers:github.steps.step1'),
+        t('providers:github.steps.step2'),
+        t('providers:github.steps.step3'),
+        t('providers:github.steps.step4'),
+        t('providers:github.steps.step5'),
       ],
       link: 'https://github.com/settings/tokens',
-      linkText: 'GitHub Token Settings',
+      linkText: t('providers:github.linkText'),
     },
     gitlab: {
-      title: 'Create a GitLab Personal Access Token',
+      title: t('providers:gitlab.title'),
       steps: [
-        'Go to GitLab User Settings > Access Tokens',
-        'Enter a name and optional expiration date',
-        'Select scopes: api, read_user',
-        'Click "Create personal access token"',
-        "Copy the token immediately (it won't be shown again)",
+        t('providers:gitlab.steps.step1'),
+        t('providers:gitlab.steps.step2'),
+        t('providers:gitlab.steps.step3'),
+        t('providers:gitlab.steps.step4'),
+        t('providers:gitlab.steps.step5'),
       ],
       link: 'https://gitlab.com/-/user_settings/personal_access_tokens',
-      linkText: 'GitLab Token Settings',
+      linkText: t('providers:gitlab.linkText'),
     },
     bitbucket: {
-      title: 'Create a Bitbucket App Password',
+      title: t('providers:bitbucket.title'),
       steps: [
-        'Go to Bitbucket Settings > Personal Settings > App passwords',
-        'Click "Create app password"',
-        'Enter a label for the password',
-        'Select permissions: Account (Read), Repositories (Read), Pull requests (Read/Write)',
-        'Click "Create" and copy the generated password',
-        "You'll also need to provide your Bitbucket username",
+        t('providers:bitbucket.steps.step1'),
+        t('providers:bitbucket.steps.step2'),
+        t('providers:bitbucket.steps.step3'),
+        t('providers:bitbucket.steps.step4'),
+        t('providers:bitbucket.steps.step5'),
+        t('providers:bitbucket.steps.step6'),
       ],
       link: 'https://bitbucket.org/account/settings/app-passwords/',
-      linkText: 'Bitbucket App Passwords',
+      linkText: t('providers:bitbucket.linkText'),
     },
   };
 

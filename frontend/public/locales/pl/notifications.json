@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Dodać",
+    "enable": "Włącz powiadomienia e-mail",
+    "enableDescription": "Wysyłaj powiadomienia e-mailem (SMTP)",
+    "fromAddress": "Z adresu",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "Host SMTP",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "Hasło SMTP",
+    "smtpPasswordPlaceholder": "Wprowadź hasło",
+    "smtpPort": "Port SMTP",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "Nazwa użytkownika SMTP",
+    "smtpUserPlaceholder": "użytkownik@example.com",
+    "testFailed": "Nie udało się wysłać e-maila testowego",
+    "testMessage": "Wyślij e-mail testowy",
+    "testSending": "Przesyłka...",
+    "testSuccess": "E-mail testowy został wysłany",
+    "title": "Powiadomienia e-mail",
+    "toAddresses": "Do adresów",
+    "toAddressesDescription": "Odbiorcy powiadomień e-mail",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "Użyj TLS"
+  },
+  "merge": {
+    "description": "Wybierz, kiedy chcesz otrzymywać powiadomienia o operacjach scalania",
+    "notifyOnConflict": "Powiadom o konfliktach scalania",
+    "notifyOnConflictDescription": "Wyślij powiadomienie w przypadku wykrycia konfliktów podczas scalania",
+    "notifyOnFailure": "Powiadom o nieudanych połączeniach",
+    "notifyOnFailureDescription": "Wyślij powiadomienie, gdy operacje scalania zakończą się niepowodzeniem",
+    "notifyOnSuccess": "Powiadom o pomyślnym połączeniu",
+    "notifyOnSuccessDescription": "Wyślij powiadomienie, gdy PR zostaną pomyślnie scalone",
+    "title": "Powiadomienia o scaleniu"
+  },
+  "slack": {
+    "channel": "Kanał (opcjonalnie)",
+    "channelDescription": "Zastąp domyślny kanał skonfigurowany w webhooku",
+    "channelPlaceholder": "#ogólny",
+    "enable": "Włącz powiadomienia Slack",
+    "enableDescription": "Wysyłaj powiadomienia do kanału Slack",
+    "testFailed": "Nie udało się wysłać wiadomości testowej",
+    "testMessage": "Wyślij wiadomość testową",
+    "testSending": "Przesyłka...",
+    "testSuccess": "Wiadomość testowa wysłana",
+    "title": "Powiadomienia Slack",
+    "webhookUrl": "Adres URL webhooka",
+    "webhookUrlDescription": "Utwórz przychodzący webhook w swojej przestrzeni roboczej Slack",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Ustawienia powiadomień",
+  "toast": {
+    "updateFailed": "Nie udało się zaktualizować ustawień",
+    "updated": "Ustawienia zaktualizowane",
+    "updatedDescription": "Ustawienia powiadomień zostały zapisane"
+  }
+}

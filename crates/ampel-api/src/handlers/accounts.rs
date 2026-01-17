@@ -4,6 +4,7 @@ use axum::{
     Json,
 };
 use chrono::Utc;
+use rust_i18n::t;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, EntityTrait, PaginatorTrait, QueryFilter, Set, TransactionTrait,
 };
@@ -153,7 +154,7 @@ pub async fn add_account(
     let provider_type: GitProvider = request
         .provider
         .parse()
-        .map_err(|_| ApiError::bad_request("Invalid provider type"))?;
+        .map_err(|_| ApiError::bad_request(t!("errors.account.invalid_provider_type")))?;
 
     // 2. Create provider instance
     let provider = state
@@ -170,23 +171,28 @@ pub async fn add_account(
     let validation = provider
         .validate_credentials(&credentials)
         .await
-        .map_err(|e| ApiError::bad_request(format!("Token validation failed: {}", e)))?;
+        .map_err(|e| {
+            ApiError::bad_request(t!(
+                "errors.account.validation_failed",
+                error = e.to_string()
+            ))
+        })?;
 
     if !validation.is_valid {
         return Err(ApiError::bad_request(
             validation
                 .error_message
-                .unwrap_or_else(|| "Invalid token".to_string()),
+                .unwrap_or_else(|| t!("errors.account.invalid_token").to_string()),
         ));
     }
 
     let provider_user_id = validation
         .user_id
-        .ok_or_else(|| ApiError::bad_request("Provider did not return user ID"))?;
+        .ok_or_else(|| ApiError::bad_request(t!("errors.account.provider_no_user_id")))?;
 
     let provider_username = validation
         .username
-        .ok_or_else(|| ApiError::bad_request("Provider did not return username"))?;
+        .ok_or_else(|| ApiError::bad_request(t!("errors.account.provider_no_username")))?;
 
     // 5. Check for duplicate account (same provider_user_id)
     let existing = provider_account::Entity::find()
@@ -198,16 +204,14 @@ pub async fn add_account(
         .await?;
 
     if existing.is_some() {
-        return Err(ApiError::conflict(
-            "This account is already connected. Use PATCH to update the token.",
-        ));
+        return Err(ApiError::conflict(t!("errors.account.already_connected")));
     }
 
     // 6. Encrypt and store token
     let token_encrypted = state
         .encryption_service
         .encrypt(&request.access_token)
-        .map_err(|e| ApiError::internal(format!("Encryption error: {}", e)))?;
+        .map_err(|e| ApiError::internal(t!("errors.encryption.failed", error = e.to_string())))?;
 
     // 7. Check if this should be the default account for this provider
     let is_first = provider_account::Entity::find()
@@ -220,8 +224,12 @@ pub async fn add_account(
 
     // 8. Create account record
     let now = Utc::now();
-    let scopes_json = serde_json::to_string(&validation.scopes)
-        .map_err(|e| ApiError::internal(format!("Failed to serialize scopes: {}", e)))?;
+    let scopes_json = serde_json::to_string(&validation.scopes).map_err(|e| {
+        ApiError::internal(t!(
+            "errors.general.serialization_failed",
+            error = e.to_string()
+        ))
+    })?;
 
     let account = provider_account::ActiveModel {
         id: Set(Uuid::new_v4()),
@@ -271,11 +279,11 @@ pub async fn get_account(
     let account = provider_account::Entity::find_by_id(account_id)
         .one(&state.db)
         .await?
-        .ok_or_else(|| ApiError::not_found("Account not found"))?;
+        .ok_or_else(|| ApiError::not_found(t!("errors.account.not_found")))?;
 
     // Verify ownership
     if account.user_id != auth.user_id {
-        return Err(ApiError::not_found("Account not found"));
+        return Err(ApiError::not_found(t!("errors.account.not_found")));
     }
 
     // Get repository count
@@ -326,7 +334,7 @@ pub async fn update_account(
         let provider_type: GitProvider = account
             .provider
             .parse()
-            .map_err(|_| ApiError::internal("Invalid provider type in database"))?;
+            .map_err(|_| ApiError::internal(t!("errors.repository.invalid_provider_db")))?;
         let provider = state
             .provider_factory
             .create(provider_type, account.instance_url.clone());
@@ -341,21 +349,25 @@ pub async fn update_account(
         let validation = provider
             .validate_credentials(&credentials)
             .await
-            .map_err(|e| ApiError::bad_request(format!("Token validation failed: {}", e)))?;
+            .map_err(|e| {
+                ApiError::bad_request(t!(
+                    "errors.account.validation_failed",
+                    error = e.to_string()
+                ))
+            })?;
 
         if !validation.is_valid {
             return Err(ApiError::bad_request(
                 validation
                     .error_message
-                    .unwrap_or_else(|| "Invalid token".to_string()),
+                    .unwrap_or_else(|| t!("errors.account.invalid_token").to_string()),
             ));
         }
 
         // Encrypt new token
-        let token_encrypted = state
-            .encryption_service
-            .encrypt(&new_token)
-            .map_err(|e| ApiError::internal(format!("Encryption error: {}", e)))?;
+        let token_encrypted = state.encryption_service.encrypt(&new_token).map_err(|e| {
+            ApiError::internal(t!("errors.encryption.failed", error = e.to_string()))
+        })?;
 
         active.access_token_encrypted = Set(token_encrypted);
         active.last_validated_at = Set(Some(now));
@@ -363,8 +375,12 @@ pub async fn update_account(
 
         // Update scopes and expiration if available
         if !validation.scopes.is_empty() {
-            let scopes_json = serde_json::to_string(&validation.scopes)
-                .map_err(|e| ApiError::internal(format!("Failed to serialize scopes: {}", e)))?;
+            let scopes_json = serde_json::to_string(&validation.scopes).map_err(|e| {
+                ApiError::internal(t!(
+                    "errors.general.serialization_failed",
+                    error = e.to_string()
+                ))
+            })?;
             active.scopes = Set(Some(scopes_json));
         }
         if validation.expires_at.is_some() {
@@ -459,7 +475,12 @@ pub async fn validate_account(
     let token = state
         .encryption_service
         .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(format!("Decryption error: {}", e)))?;
+        .map_err(|e| {
+            ApiError::internal(t!(
+                "errors.encryption.decrypt_failed",
+                error = e.to_string()
+            ))
+        })?;
 
     // Create provider instance
     let provider_type: GitProvider = account

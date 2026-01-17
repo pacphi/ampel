@@ -1,0 +1,8 @@
+en:
+  validation:
+    account:
+      invalid: अमान्य
+      valid: वैध
+    general:
+      invalid_format: अमान्य प्रारूप
+      required: यह फ़ील्ड आवश्यक है

@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "追加",
+    "enable": "メール通知を有効にする",
+    "enableDescription": "電子メール（SMTP）で通知を送信する",
+    "fromAddress": "送信元アドレス",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTPホスト",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "SMTPパスワード",
+    "smtpPasswordPlaceholder": "パスワードを入力してください",
+    "smtpPort": "SMTPポート",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTPユーザー名",
+    "smtpUserPlaceholder": "ユーザー@example.com",
+    "testFailed": "テストメールの送信に失敗しました",
+    "testMessage": "テストメールを送信",
+    "testSending": "送信中...",
+    "testSuccess": "テストメールを送信しました",
+    "title": "メール通知",
+    "toAddresses": "宛先アドレス",
+    "toAddressesDescription": "通知メールの受信者",
+    "toAddressesPlaceholder": "メール@example.com",
+    "useTls": "TLSを使用する"
+  },
+  "merge": {
+    "description": "マージ操作の通知をいつ受け取るかを選択する",
+    "notifyOnConflict": "マージ競合を通知する",
+    "notifyOnConflictDescription": "マージの競合が検出されたときに通知を送信する",
+    "notifyOnFailure": "失敗したマージを通知する",
+    "notifyOnFailureDescription": "マージ操作が失敗したときに通知を送信する",
+    "notifyOnSuccess": "マージ成功時に通知する",
+    "notifyOnSuccessDescription": "PR が正常にマージされたら通知を送信する",
+    "title": "マージ通知"
+  },
+  "slack": {
+    "channel": "チャンネル（オプション）",
+    "channelDescription": "Webhookで設定されたデフォルトのチャネルを上書きする",
+    "channelPlaceholder": "＃一般的な",
+    "enable": "Slack通知を有効にする",
+    "enableDescription": "Slackチャンネルに通知を送信する",
+    "testFailed": "テストメッセージの送信に失敗しました",
+    "testMessage": "テストメッセージを送信",
+    "testSending": "送信中...",
+    "testSuccess": "テストメッセージを送信しました",
+    "title": "Slack通知",
+    "webhookUrl": "ウェブフックURL",
+    "webhookUrlDescription": "Slackワークスペースで受信Webhookを作成する",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "通知設定",
+  "toast": {
+    "updateFailed": "設定の更新に失敗しました",
+    "updated": "設定が更新されました",
+    "updatedDescription": "通知設定が保存されました"
+  }
+}

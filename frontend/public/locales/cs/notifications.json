@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Přidat",
+    "enable": "Povolit e-mailová oznámení",
+    "enableDescription": "Odesílat oznámení e-mailem (SMTP)",
+    "fromAddress": "Adresa odesílatele",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "Hostitel SMTP",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "Heslo SMTP",
+    "smtpPasswordPlaceholder": "Zadejte heslo",
+    "smtpPort": "SMTP port",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "Uživatelské jméno SMTP",
+    "smtpUserPlaceholder": "uzivatel@example.com",
+    "testFailed": "Nepodařilo se odeslat testovací e-mail",
+    "testMessage": "Odeslat zkušební e-mail",
+    "testSending": "Odesílání...",
+    "testSuccess": "Testovací e-mail odeslán",
+    "title": "E-mailová oznámení",
+    "toAddresses": "Adresy pro příjemce",
+    "toAddressesDescription": "Příjemci e-mailových oznámení",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "Použít TLS"
+  },
+  "merge": {
+    "description": "Vyberte, kdy chcete dostávat oznámení o operacích sloučení",
+    "notifyOnConflict": "Upozornit na konflikty sloučení",
+    "notifyOnConflictDescription": "Odeslat oznámení při zjištění konfliktů sloučení",
+    "notifyOnFailure": "Upozornit na neúspěšné sloučení",
+    "notifyOnFailureDescription": "Odeslat oznámení, když se operace sloučení nezdaří",
+    "notifyOnSuccess": "Upozornit na úspěšné sloučení",
+    "notifyOnSuccessDescription": "Odeslat oznámení po úspěšném sloučení PR",
+    "title": "Oznámení o sloučení"
+  },
+  "slack": {
+    "channel": "Kanál (volitelné)",
+    "channelDescription": "Přepsat výchozí kanál nakonfigurovaný ve webhooku",
+    "channelPlaceholder": "#generál",
+    "enable": "Povolit oznámení Slacku",
+    "enableDescription": "Odesílání oznámení do kanálu Slack",
+    "testFailed": "Nepodařilo se odeslat testovací zprávu",
+    "testMessage": "Odeslat testovací zprávu",
+    "testSending": "Odesílání...",
+    "testSuccess": "Testovací zpráva odeslána",
+    "title": "Oznámení ze Slacku",
+    "webhookUrl": "URL webhooku",
+    "webhookUrlDescription": "Vytvořte příchozí webhook ve svém pracovním prostoru Slacku",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Nastavení oznámení",
+  "toast": {
+    "updateFailed": "Nastavení se nepodařilo aktualizovat",
+    "updated": "Nastavení aktualizováno",
+    "updatedDescription": "Nastavení oznámení byla uložena"
+  }
+}

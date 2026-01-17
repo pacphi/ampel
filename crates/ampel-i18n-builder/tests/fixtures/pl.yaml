@@ -1,0 +1,48 @@
+# Polish translations (3 plural forms)
+common:
+  app:
+    name: "Ampel"
+    tagline: "Ujednolicone zarządzanie PR"
+
+  pull_requests:
+    count:
+      one: "%{count} pull request"
+      few: "%{count} pull requesty"
+      many: "%{count} pull requestów"
+    status:
+      open: "Otwarty"
+      merged: "Scalony"
+      closed: "Zamknięty"
+
+  actions:
+    save: "Zapisz"
+    cancel: "Anuluj"
+    delete: "Usuń"
+    merge: "Scal PR"
+
+  validation:
+    required: "To pole jest wymagane"
+    invalid_email: "Nieprawidłowy adres e-mail"
+    min_length: "Musi mieć co najmniej %{count} znaków"
+
+dashboard:
+  title: "Pulpit"
+  empty_state: "Nie znaleziono pull requestów"
+  filters:
+    all: "Wszystkie"
+    mine: "Moje"
+    team: "Zespół"
+  summary:
+    total: "Wszystkie PR"
+    ready_to_merge: "Gotowe do scalenia"
+    needs_review: "Wymaga przeglądu"
+
+settings:
+  title: "Ustawienia"
+  profile:
+    name: "Imię"
+    email: "E-mail"
+    timezone: "Strefa czasowa"
+  notifications:
+    email_enabled: "Powiadomienia e-mail"
+    slack_enabled: "Powiadomienia Slack"

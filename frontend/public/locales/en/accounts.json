@@ -1,0 +1,86 @@
+{
+  "title": "Provider Accounts",
+  "description": "Manage your connected Git provider accounts",
+  "addAccount": "Add Account",
+  "addFirstAccount": "Add Your First Account",
+  "noAccountsYet": "No accounts connected yet",
+  "card": {
+    "status": {
+      "valid": "Valid",
+      "invalid": "Invalid",
+      "expired": "Expired",
+      "pending": "Pending",
+      "default": "Default"
+    },
+    "repositories": "repositories",
+    "validated": "Validated",
+    "expires": "Expires",
+    "neverExpires": "Never expires",
+    "actions": {
+      "edit": "Edit account",
+      "delete": "Delete account",
+      "validate": "Validate token",
+      "setDefault": "Set as default"
+    }
+  },
+  "add": {
+    "title": "Add Provider Account",
+    "subtitle": "Connect a new Git provider account",
+    "backToAccounts": "Back to Accounts",
+    "form": {
+      "provider": "Provider",
+      "selectProvider": "Select a provider",
+      "accountLabel": "Account Label",
+      "accountLabelPlaceholder": "e.g., Work GitHub, Personal GitLab",
+      "accountLabelDescription": "A friendly name to identify this account",
+      "token": "Personal Access Token",
+      "tokenPlaceholder": "Enter your personal access token",
+      "tokenDescription": "Your token is encrypted and stored securely"
+    },
+    "submit": "Connect Account",
+    "submitting": "Connecting..."
+  },
+  "edit": {
+    "title": "Edit Account",
+    "subtitle": "Update account settings",
+    "backToAccounts": "Back to Accounts",
+    "notFound": "Account not found",
+    "accountInfo": "Account Information",
+    "form": {
+      "accountLabel": "Account Label",
+      "accountLabelPlaceholder": "e.g., Work GitHub",
+      "token": "Personal Access Token",
+      "tokenPlaceholder": "Enter new token to update",
+      "tokenDescription": "Leave empty to keep current token",
+      "currentToken": "Current token"
+    },
+    "submit": "Save Changes",
+    "submitting": "Saving..."
+  },
+  "delete": {
+    "title": "Delete Account",
+    "description": "Are you sure you want to delete the account \"{{label}}\"? This will not delete repositories, but they will need to be re-linked to another account.",
+    "cancel": "Cancel",
+    "confirm": "Delete",
+    "deleting": "Deleting..."
+  },
+  "toast": {
+    "connected": "Account connected",
+    "connectedDescription": "Successfully connected {{provider}} account",
+    "connectionFailed": "Failed to add account",
+    "updated": "Account updated",
+    "updatedDescription": "Account settings have been saved",
+    "updateFailed": "Failed to update account",
+    "deleted": "Account deleted",
+    "deletedDescription": "The account has been removed successfully",
+    "deleteFailed": "Failed to delete account",
+    "tokenValid": "Token valid",
+    "tokenValidDescription": "The account token is valid and active",
+    "tokenInvalid": "Token invalid",
+    "tokenInvalidDescription": "The token is invalid or expired",
+    "validationFailed": "Validation failed",
+    "defaultUpdated": "Default account updated",
+    "defaultUpdatedDescription": "The default account has been changed",
+    "defaultUpdateFailed": "Failed to update default"
+  }
+}

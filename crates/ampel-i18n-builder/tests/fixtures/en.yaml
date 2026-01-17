@@ -1,0 +1,47 @@
+# English source translations
+common:
+  app:
+    name: "Ampel"
+    tagline: "Unified PR Management"
+
+  pull_requests:
+    count:
+      one: "%{count} pull request"
+      other: "%{count} pull requests"
+    status:
+      open: "Open"
+      merged: "Merged"
+      closed: "Closed"
+
+  actions:
+    save: "Save"
+    cancel: "Cancel"
+    delete: "Delete"
+    merge: "Merge PR"
+
+  validation:
+    required: "This field is required"
+    invalid_email: "Invalid email address"
+    min_length: "Must be at least %{count} characters"
+
+dashboard:
+  title: "Dashboard"
+  empty_state: "No pull requests found"
+  filters:
+    all: "All"
+    mine: "Mine"
+    team: "Team"
+  summary:
+    total: "Total PRs"
+    ready_to_merge: "Ready to Merge"
+    needs_review: "Needs Review"
+
+settings:
+  title: "Settings"
+  profile:
+    name: "Name"
+    email: "Email"
+    timezone: "Timezone"
+  notifications:
+    email_enabled: "Email notifications"
+    slack_enabled: "Slack notifications"

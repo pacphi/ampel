@@ -1,0 +1,33 @@
+en:
+  providers:
+    general:
+      api_error: 'Leverantörens API-fel: %{message} (status: %{status_code})'
+      auth_failed: 'Autentisering misslyckades: %{reason}'
+      config_error: 'Konfigurationsfel: %{reason}'
+      invalid_response: 'Ogiltigt svar: %{reason}'
+      network_error: 'Nätverksfel: %{reason}'
+      not_found: 'Resurs hittades inte: %{resource}'
+      not_supported: 'Operationen stöds inte: %{operation}'
+      permission_denied: 'Åtkomst nekad: %{reason}'
+      rate_limit_exceeded: 'Hastighetsgränsen har överskridits. Återställs vid: %{reset_time}'
+      serialization_error: 'Serialiseringsfel: %{reason}'
+    github:
+      api_error: 'API-fel: %{status}'
+      invalid_token: Ogiltig token
+      merge_checks_failed: Pull-förfrågan kan inte slås samman (kontrollera status, granskningar och kontroller)
+      merge_conflict: Sammanslagningskonflikt eller huvudgrenen ändrades
+      merge_failed: Misslyckades med att sammanfoga pull-förfrågan
+      merge_not_mergeable: Pull request kan inte slås samman
+      pr_fetch_failed: Misslyckades med att hämta pull request
+      pr_not_found: 'Pull-förfrågan #%{number} hittades inte'
+      prs_fetch_failed: Misslyckades med att lista pull requests
+      rate_limit_failed: Misslyckades med att hämta hastighetsgränsen
+      repo_fetch_failed: Misslyckades med att hämta arkivet
+      repo_not_found: Arkivet %{owner}/%{repo} hittades inte
+      repos_fetch_failed: Misslyckades med att lista arkiven
+      reviews_fetch_failed: Misslyckades med att hämta recensioner
+      token_invalid: Ogiltig eller utgången token
+      user_fetch_failed: Misslyckades med att hämta användaren
+    worker:
+      account_not_found: Leverantörskonto hittades inte
+      no_account: Arkivet har inget kopplat leverantörskonto

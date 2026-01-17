@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "Vedta",
+    "comment": "Kommentar",
+    "deselectAll": "Fjern merkingen av alle",
+    "merge": "Fusjonere",
+    "refresh": "Forfriske",
+    "requestChanges": "Be om endringer",
+    "selectAll": "Velg alle",
+    "viewOnProvider": "Vis på {{provider}}"
+  },
+  "blockers": {
+    "awaitingReview": "Venter på gjennomgang",
+    "changesRequested": "Forespurte endringer",
+    "ciFailed": "CI mislyktes",
+    "ciPending": "CI venter",
+    "conflicts": "Konflikter",
+    "draft": "Utkast",
+    "needsReview": "Trenger gjennomgang"
+  },
+  "empty": {
+    "action": "Koble til leverandør",
+    "description": "Koble til Git-leverandørene dine for å begynne å spore PR-er",
+    "title": "Ingen pull-forespørsler funnet"
+  },
+  "filters": {
+    "all": "Alle",
+    "assignee": "Rettighetshaver",
+    "author": "Forfatter",
+    "closed": "Lukket",
+    "draft": "Utkast",
+    "label": "Merkelapp",
+    "merged": "Sammenslått",
+    "onlyWithPrs": "Vis arkiver med åpne PR-er",
+    "open": "Åpne",
+    "prStatus": {
+      "all": "Alle PR-er",
+      "blocked": "Blokkert",
+      "pending": "I påvente av",
+      "ready": "Ferdig"
+    },
+    "provider": "Leverandør",
+    "repository": "Repository"
+  },
+  "pr": {
+    "additions": "Tillegg",
+    "author": "Forfatter",
+    "comments": "Kommentarer",
+    "createdAt": "Opprettet",
+    "deletions": "Slettinger",
+    "number": "#{{number}}",
+    "sourceBranch": "Kildegren",
+    "targetBranch": "Målgren",
+    "updatedAt": "Oppdatert"
+  },
+  "prDashboard": "PR-dashbord",
+  "sort": {
+    "author": "Forfatter",
+    "created": "Opprettet dato",
+    "repository": "Repository",
+    "status": "Status",
+    "title": "Sorter etter",
+    "updated": "Sist oppdatert"
+  },
+  "stats": {
+    "blocked": "Blokkert",
+    "inProgress": "Pågår",
+    "needsAttention": "Trenger oppmerksomhet",
+    "open": "Åpne",
+    "openPRs": "Åpne PR-er",
+    "ready": "Klar til sammenslåing",
+    "readyToMerge": "Klar til sammenslåing",
+    "total": "Totalt antall PR-er",
+    "totalRepositories": "Totalt antall arkiver"
+  },
+  "status": {
+    "closed": "Lukket",
+    "draft": "Utkast",
+    "green": "Klar til sammenslåing",
+    "merged": "Sammenslått",
+    "red": "Blokkert",
+    "yellow": "Pågår"
+  },
+  "subtitle": "Administrer pull-forespørslene dine på tvers av alle leverandører",
+  "table": {
+    "columns": {
+      "lastUpdated": "Sist oppdatert",
+      "provider": "Leverandør",
+      "prs": "PR-er",
+      "repository": "Repository",
+      "status": "Status",
+      "visibility": "Synlighet"
+    }
+  },
+  "title": "Dashbord",
+  "views": {
+    "grid": "Rutenettvisning",
+    "list": "Listevisning",
+    "prs": "Visning av pull-forespørsler",
+    "pullRequests": "Visning av pull-forespørsler",
+    "repositoryGrid": "Rutenettvisning for arkivet",
+    "repositoryList": "Visning av arkivliste",
+    "table": "Tabellvisning"
+  }
+}

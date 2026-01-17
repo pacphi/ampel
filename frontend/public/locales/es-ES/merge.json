@@ -1,0 +1,96 @@
+{
+  "actions": {
+    "merge": "Fusionar {{count}} PR",
+    "merging": "Fusionando..."
+  },
+  "blockers": {
+    "awaitingReview": "En espera de revisión",
+    "changesRequested": "Cambios solicitados",
+    "ciFailed": "CI fallido",
+    "ciPending": "IC pendiente",
+    "conflicts": "Tiene conflictos",
+    "draft": "Borrador",
+    "needsReview": "Necesita revisión"
+  },
+  "dialog": {
+    "cancel": "Cancelar",
+    "deleteBranch": "Eliminar rama después de la fusión",
+    "merge": "Fusionar relaciones públicas",
+    "merging": "Fusionando...",
+    "strategy": {
+      "merge": "Crear una confirmación de fusión",
+      "mergeDescription": "Se conservan todas las confirmaciones",
+      "rebase": "Rebase y fusión",
+      "rebaseDescription": "Historial de confirmaciones lineal",
+      "squash": "Aplastar y fusionar",
+      "squashDescription": "Combine todas las confirmaciones en una sola",
+      "title": "Estrategia de fusión"
+    },
+    "subtitle": "Configurar opciones de fusión para esta PR",
+    "title": "Solicitud de extracción de fusión"
+  },
+  "emptyState": {
+    "noPrsReady": "Ningún PR está listo para fusionarse. Los PR necesitan:",
+    "requirements": {
+      "ciPassing": "Todas las comprobaciones de CI pasan",
+      "noConflicts": "Sin conflictos de fusión",
+      "requiredApprovals": "Aprobaciones requeridas"
+    }
+  },
+  "options": {
+    "deleteBranch": "Eliminar la rama de origen después de la fusión",
+    "description": "Configurar cómo se fusionarán las solicitudes de extracción",
+    "strategies": {
+      "merge": "Crear una confirmación de fusión",
+      "rebase": "Rebase y fusión",
+      "squash": "Aplastar y fusionar"
+    },
+    "strategy": "Estrategia de fusión",
+    "title": "Opciones de fusión"
+  },
+  "repository": {
+    "prCount": "{{count}} Relaciones públicas",
+    "prCount_other": "{{count}} Relaciones públicas"
+  },
+  "results": {
+    "allSuccess": "¡Todos los PR se fusionaron exitosamente!",
+    "close": "Cerca",
+    "stats": {
+      "failed": "Fallido",
+      "merged": "Fusionado",
+      "skipped": "Omitido",
+      "total": "Total"
+    },
+    "status": {
+      "failed": "fallido",
+      "skipped": "omitido",
+      "success": "éxito"
+    },
+    "summary": "Completado con {{success}} fusionado, {{failed}} fallido, {{skipped}} omitido",
+    "title": "Resultados de la fusión"
+  },
+  "sections": {
+    "notReadyDescription": "Solicitudes de extracción que tienen bloqueadores que impiden la fusión",
+    "notReadyTitle": "No estoy listo",
+    "readyDescription": "Solicitudes de extracción que cumplen todos los requisitos de fusión",
+    "readyTitle": "Listo para fusionarse"
+  },
+  "selection": {
+    "count": "{{selected}} de {{total}} seleccionados",
+    "deselectAll": "Deseleccionar todo",
+    "selectAll": "Seleccionar todo"
+  },
+  "subtitle": "Seleccionar y fusionar varios PR a la vez",
+  "title": "Fusión masiva",
+  "toast": {
+    "failed": "La fusión falló",
+    "failedDescription": "No se pudo fusionar #{{number}}: {{error}}",
+    "mergeFailed": "Fusión fallida",
+    "mergeSuccess": "Fusión exitosa",
+    "mergeSuccessDescription": "Solicitudes de extracción {{count}} fusionadas exitosamente",
+    "someMergesFailed": "Algunas fusiones fallaron",
+    "someMergesFailedDescription": "{{success}} fusionado, {{failed}} falló",
+    "success": "Relaciones públicas fusionadas",
+    "successDescription": "Fusionado exitosamente #{{number}}: {{title}}"
+  }
+}

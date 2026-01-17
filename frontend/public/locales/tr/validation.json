@@ -1,0 +1,35 @@
+{
+  "alphanum": "{{field}} yalnızca harf ve rakam içermelidir.",
+  "date": "Lütfen geçerli bir tarih girin.",
+  "dateRange": "Bitiş tarihi başlangıç tarihinden sonra olmalıdır.",
+  "email": "Geçerli bir e",
+  "fields": {
+    "confirmPassword": "Şifreyi onaylayın",
+    "displayName": "Ekran adı",
+    "email": "E-posta",
+    "password": "Şifre"
+  },
+  "fileSize": "Dosya boyutu {{max}} değerini aşmamalıdır.",
+  "fileType": "Dosya türü {{types}} olmalıdır.",
+  "integer": "{{field}} bir tamsayı olmalıdır",
+  "invalidEmail": "Geçersiz e-posta adresi",
+  "max": "{{field}} değeri {{max}} değerini aşmamalıdır.",
+  "maxLength": "{{field}} alanı {{max}} karakteri geçmemelidir.",
+  "messages": {
+    "displayNameRequired": "Görüntülenen ad zorunludur.",
+    "emailRequired": "E-posta adresi gereklidir.",
+    "passwordMinLength": "Parola en az 8 karakter uzunluğunda olmalıdır.",
+    "passwordRequired": "Şifre gereklidir."
+  },
+  "min": "{{field}} en az {{min}} olmalıdır",
+  "minLength": "{{field}} en az {{min}} karakter uzunluğunda olmalıdır.",
+  "negative": "{{field}} negatif olmalıdır",
+  "numeric": "{{field}} bir sayı olmalıdır",
+  "passwordMismatch": "Şifreler eşleşmiyor.",
+  "passwordsDontMatch": "Şifreler eşleşmiyor.",
+  "pattern": "{{field}} formatı geçersiz",
+  "positive": "{{field}} pozitif olmalıdır",
+  "required": "{{field}} zorunludur",
+  "unique": "{{field}} zaten mevcut",
+  "url": "Lütfen geçerli bir URL girin."
+}

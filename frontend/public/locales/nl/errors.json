@@ -1,0 +1,65 @@
+{
+  "auth": {
+    "failedToCreateAccount": "Account aanmaken mislukt",
+    "forbidden": "Je hebt geen toestemming om deze bron te openen.",
+    "invalidCredentials": "Ongeldige gebruikersnaam of wachtwoord",
+    "invalidEmailOrPassword": "Ongeldig e-mailadres of wachtwoord",
+    "loginFailed": "Aanmelden mislukt",
+    "registrationFailed": "Registratie mislukt",
+    "sessionExpired": "Je sessie is verlopen. Log opnieuw in.",
+    "tokenExpired": "Authenticatietoken is verlopen.",
+    "unauthorized": "Ongeautoriseerde toegang"
+  },
+  "boundary": {
+    "description": "Er is een onverwachte fout opgetreden. Probeer het opnieuw.",
+    "details": "Foutdetails (alleen voor ontwikkelaars)",
+    "reload": "Pagina opnieuw laden",
+    "title": "Er is iets misgegaan.",
+    "tryAgain": "Probeer het opnieuw"
+  },
+  "general": {
+    "unknownError": "Er is een onbekende fout opgetreden."
+  },
+  "generic": {
+    "goHome": "Ga naar het dashboard",
+    "message": "Er is een onverwachte fout opgetreden. Probeer het opnieuw.",
+    "retry": "Probeer het opnieuw",
+    "somethingWentWrong": "Er is iets misgegaan. Probeer het opnieuw.",
+    "title": "Er is iets misgegaan."
+  },
+  "network": {
+    "message": "Kan geen verbinding maken met de server. Controleer uw internetverbinding.",
+    "offline": "Je bent momenteel offline.",
+    "title": "Netwerkfout"
+  },
+  "notFound": {
+    "goHome": "Terug naar het dashboard",
+    "message": "De pagina die u zoekt bestaat niet.",
+    "title": "Pagina niet gevonden"
+  },
+  "pr": {
+    "approveFailed": "Goedkeuring van het pullverzoek mislukt.",
+    "commentFailed": "Reactie plaatsen mislukt",
+    "loadFailed": "Het laden van pull-aanvragen is mislukt.",
+    "mergeFailed": "Het samenvoegen van de pull-aanvraag is mislukt."
+  },
+  "provider": {
+    "connectionFailed": "Verbinding met {{provider}} mislukt.",
+    "invalidToken": "Ongeldig {{provider}} token",
+    "notFound": "Bron niet gevonden op {{provider}}",
+    "rateLimited": "API-limiet van {{provider}} overschreden"
+  },
+  "repository": {
+    "accessDenied": "Toegang tot de repository geweigerd",
+    "loadFailed": "Het laden van de repositories is mislukt.",
+    "notFound": "Repository niet gevonden"
+  },
+  "validation": {
+    "invalidEmail": "Voer een geldig e-mailadres in.",
+    "invalidUrl": "Voer een geldige URL in.",
+    "maxLength": "Mag niet meer dan {{max}} tekens bevatten",
+    "minLength": "Moet minimaal {{min}} tekens bevatten",
+    "passwordMismatch": "De wachtwoorden komen niet overeen.",
+    "required": "Dit veld is verplicht."
+  }
+}

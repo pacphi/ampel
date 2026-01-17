@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { authApi } from '@/api/auth';
 import { prFiltersApi, type PrFilter } from '@/api/prFilters';
 import { useAuth } from '@/hooks/useAuth';
@@ -29,17 +30,23 @@ import { RepositoryFilterSettings } from '@/components/settings/RepositoryFilter
 import { AccountsListPage } from './settings/AccountsListPage';
 import { AddAccountPage } from './settings/AddAccountPage';
 import { EditAccountPage } from './settings/EditAccountPage';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 function SettingsNav() {
+  const { t } = useTranslation(['settings']);
   const location = useLocation();
 
   const links = [
-    { href: '/settings', label: 'Profile', icon: User },
-    { href: '/settings/accounts', label: 'Accounts', icon: User },
-    { href: '/settings/filters', label: 'PR Filters', icon: Filter },
-    { href: '/settings/repository-filters', label: 'Repository Filters', icon: Boxes },
-    { href: '/settings/notifications', label: 'Notifications', icon: Bell },
-    { href: '/settings/behavior', label: 'Behavior', icon: Settings2 },
+    { href: '/settings', label: t('settings:tabs.profile'), icon: User },
+    { href: '/settings/accounts', label: t('settings:tabs.accounts'), icon: User },
+    { href: '/settings/filters', label: t('settings:tabs.prFilters'), icon: Filter },
+    {
+      href: '/settings/repository-filters',
+      label: t('settings:tabs.repositoryFilters'),
+      icon: Boxes,
+    },
+    { href: '/settings/notifications', label: t('settings:tabs.notifications'), icon: Bell },
+    { href: '/settings/behavior', label: t('settings:tabs.behavior'), icon: Settings2 },
   ];
 
   return (
@@ -79,6 +86,7 @@ function maskEmail(email: string): string {
 }
 
 function ProfileSettings() {
+  const { t } = useTranslation(['settings', 'common', 'errors']);
   const { user, refreshUser } = useAuth();
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
@@ -92,16 +100,16 @@ function ProfileSettings() {
       await refreshUser();
       setIsEditing(false);
       toast({
-        title: 'Profile updated',
-        description: 'Your profile has been saved successfully.',
+        title: t('settings:profileUpdated'),
+        description: t('settings:profileUpdateSuccess'),
       });
     },
     onError: (error: unknown) => {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Failed to update profile',
-        description: axiosError.response?.data?.error || 'An error occurred',
+        title: t('settings:profileUpdateFailed'),
+        description: axiosError.response?.data?.error || t('common:app.error'),
       });
     },
   });
@@ -141,13 +149,13 @@ function ProfileSettings() {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <div>
-          <CardTitle>Profile</CardTitle>
-          <CardDescription>Your account information</CardDescription>
+          <CardTitle>{t('settings:account.profile')}</CardTitle>
+          <CardDescription>{t('settings:account.yourAccountInfo')}</CardDescription>
         </div>
         {!isEditing ? (
           <Button variant="outline" size="sm" onClick={handleEdit}>
             <Pencil className="h-4 w-4 mr-2" />
-            Edit
+            {t('common:app.edit')}
           </Button>
         ) : (
           <div className="flex gap-2">
@@ -158,24 +166,24 @@ function ProfileSettings() {
               disabled={updateMutation.isPending}
             >
               <X className="h-4 w-4 mr-2" />
-              Cancel
+              {t('common:app.cancel')}
             </Button>
             <Button size="sm" onClick={handleSave} disabled={updateMutation.isPending}>
               <Check className="h-4 w-4 mr-2" />
-              {updateMutation.isPending ? 'Saving...' : 'Save'}
+              {updateMutation.isPending ? t('common:actions.saving') : t('common:app.save')}
             </Button>
           </div>
         )}
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <label className="text-sm font-medium">Email</label>
+          <label className="text-sm font-medium">{t('settings:account.email')}</label>
           {isEditing ? (
             <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder={t('settings:account.emailPlaceholder')}
               className="mt-1"
             />
           ) : (
@@ -188,7 +196,7 @@ function ProfileSettings() {
                 size="icon"
                 className="h-6 w-6"
                 onClick={() => setShowEmail(!showEmail)}
-                title={showEmail ? 'Hide email' : 'Show email'}
+                title={showEmail ? t('common:actions.hideEmail') : t('common:actions.showEmail')}
               >
                 {showEmail ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
@@ -196,21 +204,23 @@ function ProfileSettings() {
           )}
         </div>
         <div>
-          <label className="text-sm font-medium">Display Name</label>
+          <label className="text-sm font-medium">{t('settings:account.displayName')}</label>
           {isEditing ? (
             <Input
               type="text"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              placeholder="Enter your display name"
+              placeholder={t('settings:account.displayNamePlaceholder')}
               className="mt-1"
             />
           ) : (
-            <p className="text-muted-foreground mt-1">{user?.displayName || 'Not set'}</p>
+            <p className="text-muted-foreground mt-1">
+              {user?.displayName || t('settings:account.notSet')}
+            </p>
           )}
         </div>
         <div>
-          <label className="text-sm font-medium">Member Since</label>
+          <label className="text-sm font-medium">{t('settings:account.memberSince')}</label>
           <p className="text-muted-foreground mt-1">
             {user?.createdAt
               ? new Date(user.createdAt).toLocaleDateString('en-US', {
@@ -219,8 +229,20 @@ function ProfileSettings() {
                   day: 'numeric',
                   timeZone: 'UTC',
                 })
-              : 'Unknown'}
+              : t('settings:account.unknown')}
           </p>
+        </div>
+        <div>
+          <label className="text-sm font-medium">
+            {t('settings:language.title', 'Language Preferences')}
+          </label>
+          <p className="text-sm text-muted-foreground mb-3">
+            {t(
+              'settings:language.description',
+              'Select your preferred language for the application'
+            )}
+          </p>
+          <LanguageSwitcher variant="dropdown" showSearch showFavorites />
         </div>
       </CardContent>
     </Card>
@@ -228,6 +250,7 @@ function ProfileSettings() {
 }
 
 function FiltersSettings() {
+  const { t } = useTranslation(['settings', 'common']);
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [newActor, setNewActor] = useState('');
@@ -243,16 +266,16 @@ function FiltersSettings() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pr-filters'] });
       toast({
-        title: 'Filters updated',
-        description: 'Your PR filter settings have been saved.',
+        title: t('settings:filtersUpdated'),
+        description: t('settings:filtersUpdateSuccess'),
       });
     },
     onError: (error: unknown) => {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Failed to update filters',
-        description: axiosError.response?.data?.error || 'An error occurred',
+        title: t('settings:filtersUpdateFailed'),
+        description: axiosError.response?.data?.error || t('common:app.error'),
       });
     },
   });
@@ -262,8 +285,8 @@ function FiltersSettings() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pr-filters'] });
       toast({
-        title: 'Filters reset',
-        description: 'Your PR filter settings have been reset to defaults.',
+        title: t('settings:filtersReset'),
+        description: t('settings:filtersResetSuccess'),
       });
     },
   });
@@ -309,11 +332,8 @@ function FiltersSettings() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <div>
-            <CardTitle>PR Filters</CardTitle>
-            <CardDescription>
-              Configure global filters for pull request processing. These apply to auto-merge rules
-              across all repositories.
-            </CardDescription>
+            <CardTitle>{t('settings:prFilters.title')}</CardTitle>
+            <CardDescription>{t('settings:prFilters.description')}</CardDescription>
           </div>
           <Button
             variant="outline"
@@ -322,16 +342,15 @@ function FiltersSettings() {
             disabled={resetMutation.isPending}
           >
             <RotateCcw className="h-4 w-4 mr-2" />
-            Reset to Defaults
+            {t('common:actions.reset')}
           </Button>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Allowed Actors */}
           <div>
-            <label className="text-sm font-medium">Allowed Actors (Bots/Users)</label>
+            <label className="text-sm font-medium">{t('settings:prFilters.allowedActors')}</label>
             <p className="text-sm text-muted-foreground mb-3">
-              Only process PRs from these trusted actors. Typically bots like dependabot, renovate,
-              etc.
+              {t('settings:prFilters.allowedActorsDescription')}
             </p>
             <div className="flex flex-wrap gap-2 mb-3">
               {filters?.allowedActors.map((actor) => (
@@ -352,7 +371,7 @@ function FiltersSettings() {
             </div>
             <div className="flex gap-2">
               <Input
-                placeholder="e.g., dependabot[bot]"
+                placeholder={t('settings:prFilters.allowedActorsPlaceholder')}
                 value={newActor}
                 onChange={(e) => setNewActor(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addActor()}
@@ -365,16 +384,16 @@ function FiltersSettings() {
                 disabled={!newActor.trim() || updateMutation.isPending}
               >
                 <Plus className="h-4 w-4 mr-1" />
-                Add
+                {t('common:app.add')}
               </Button>
             </div>
           </div>
 
           {/* Skip Labels */}
           <div>
-            <label className="text-sm font-medium">Skip Labels</label>
+            <label className="text-sm font-medium">{t('settings:prFilters.skipLabels')}</label>
             <p className="text-sm text-muted-foreground mb-3">
-              PRs with these labels will be skipped during auto-merge processing.
+              {t('settings:prFilters.skipLabelsDescription')}
             </p>
             <div className="flex flex-wrap gap-2 mb-3">
               {filters?.skipLabels.map((label) => (
@@ -395,7 +414,7 @@ function FiltersSettings() {
             </div>
             <div className="flex gap-2">
               <Input
-                placeholder="e.g., do-not-merge"
+                placeholder={t('settings:prFilters.skipLabelsPlaceholder')}
                 value={newLabel}
                 onChange={(e) => setNewLabel(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addLabel()}
@@ -408,20 +427,20 @@ function FiltersSettings() {
                 disabled={!newLabel.trim() || updateMutation.isPending}
               >
                 <Plus className="h-4 w-4 mr-1" />
-                Add
+                {t('common:app.add')}
               </Button>
             </div>
           </div>
 
           {/* Max Age */}
           <div>
-            <label className="text-sm font-medium">Max PR Age (Days)</label>
+            <label className="text-sm font-medium">{t('settings:prFilters.maxAgeDays')}</label>
             <p className="text-sm text-muted-foreground mb-3">
-              Skip PRs older than this many days. Leave empty for no limit.
+              {t('settings:prFilters.maxAgeDaysDescription')}
             </p>
             <Input
               type="number"
-              placeholder="e.g., 30"
+              placeholder={t('settings:prFilters.maxAgeDaysPlaceholder')}
               value={filters?.maxAgeDays ?? ''}
               onChange={(e) => {
                 const value = e.target.value ? parseInt(e.target.value, 10) : null;
@@ -438,9 +457,11 @@ function FiltersSettings() {
 }
 
 export default function Settings() {
+  const { t } = useTranslation(['settings']);
+
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Settings</h1>
+      <h1 className="text-2xl font-bold">{t('settings:title')}</h1>
       <div className="grid gap-6 md:grid-cols-[200px_1fr]">
         <SettingsNav />
         <div>

@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "approve": "अनुमोदित करें",
+    "comment": "टिप्पणी",
+    "deselectAll": "सभी का चयन रद्द करें",
+    "merge": "मर्ज करें",
+    "refresh": "ताज़ा करें",
+    "requestChanges": "परिवर्तन का अनुरोध करें",
+    "selectAll": "सभी का चयन करें",
+    "viewOnProvider": "{{provider}} पर देखें"
+  },
+  "blockers": {
+    "awaitingReview": "समीक्षा का इंतजार कर रहा है",
+    "changesRequested": "परिवर्तन का अनुरोध किया",
+    "ciFailed": "सीआई विफल रहा",
+    "ciPending": "CI लंबित है",
+    "conflicts": "संघर्ष",
+    "draft": "मसौदा",
+    "needsReview": "समीक्षा की आवश्यकता है"
+  },
+  "empty": {
+    "action": "प्रदाता से जुड़ें",
+    "description": "PRs की ट्रैकिंग शुरू करने के लिए अपने Git प्रदाताओं से जुड़ें",
+    "title": "कोई पुल अनुरोध नहीं मिला"
+  },
+  "filters": {
+    "all": "सभी",
+    "assignee": "असाइनी",
+    "author": "लेखक",
+    "closed": "बंद",
+    "draft": "ड्राफ़्ट",
+    "label": "लेबल",
+    "merged": "मर्ज किया गया",
+    "onlyWithPrs": "केवल खुले PRs के साथ रिपॉजिटरी दिखाएं",
+    "open": "खुला",
+    "prStatus": {
+      "all": "सभी पीआर",
+      "blocked": "अवरोधित",
+      "pending": "लंबित",
+      "ready": "तैयार"
+    },
+    "provider": "प्रदायक",
+    "repository": "रिपॉजिटरी"
+  },
+  "pr": {
+    "additions": "जोड़े गए",
+    "author": "लेखक",
+    "comments": "टिप्पणियाँ",
+    "createdAt": "सृजन किया गया",
+    "deletions": "हटाए गए",
+    "number": "#{{number}}",
+    "sourceBranch": "स्रोत शाखा",
+    "targetBranch": "लक्ष्य शाखा",
+    "updatedAt": "अपडेट किया गया"
+  },
+  "prDashboard": "PR डैशबोर्ड",
+  "sort": {
+    "author": "लेखक",
+    "created": "निर्मित तिथि",
+    "repository": "रिपॉजिटरी",
+    "status": "स्थिति",
+    "title": "द्वारा क्रमबद्ध करें",
+    "updated": "अंतिम अपडेट"
+  },
+  "stats": {
+    "blocked": "अवरुद्ध",
+    "inProgress": "प्रगति में",
+    "needsAttention": "ध्यान की आवश्यकता है",
+    "open": "खुला",
+    "openPRs": "खुले PRs",
+    "ready": "मर्ज करने के लिए तैयार",
+    "readyToMerge": "मर्ज करने के लिए तैयार",
+    "total": "कुल PRs",
+    "totalRepositories": "कुल रिपॉजिटरी"
+  },
+  "status": {
+    "closed": "बंद",
+    "draft": "मसौदा",
+    "green": "मर्ज करने के लिए तैयार",
+    "merged": "विलय",
+    "red": "अवरुद्ध",
+    "yellow": "प्रगति पर"
+  },
+  "subtitle": "सभी प्रदाताओं के आगर में अपने पुल अनुरोधों का प्रबंधन करें",
+  "table": {
+    "columns": {
+      "lastUpdated": "आखरी अपडेट",
+      "provider": "प्रदाता",
+      "prs": "पीआरएस",
+      "repository": "कोष",
+      "status": "स्थिति",
+      "visibility": "दृश्यता"
+    }
+  },
+  "title": "डैशबोर्ड",
+  "views": {
+    "grid": "ग्रिड दृश्य",
+    "list": "सूची दृश्य",
+    "prs": "पुल अनुरोध दृश्य",
+    "pullRequests": "पुल अनुरोध दृश्य",
+    "repositoryGrid": "रिपॉजिटरी ग्रिड दृश्य",
+    "repositoryList": "रिपॉजिटरी सूची दृश्य",
+    "table": "तालिका दृश्य"
+  }
+}
