@@ -3,6 +3,32 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Analytics from './Analytics';
 
+// Mock react-i18next with translations
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string, options?: Record<string, unknown>) => {
+      const translations: Record<string, string> = {
+        'analytics:title': 'Analytics',
+        'analytics:summary.prsMerged': `PRs Merged (${options?.days ?? '{{days}}'}d)`,
+        'analytics:summary.avgMergeTime': 'Avg Merge Time',
+        'analytics:summary.avgReviewTime': 'Avg Review Time',
+        'analytics:summary.botPrs': 'Bot PRs',
+        'analytics:health.title': 'Repository Health Scores',
+        'analytics:health.mergeTime': 'Merge Time',
+        'analytics:health.throughput': 'Throughput',
+        'analytics:health.perWeek': `${options?.count ?? '{{count}}'}/week`,
+        'analytics:health.reviewTime': 'Review Time',
+        'analytics:health.stalePrs': 'Stale PRs',
+        'analytics:empty.title': 'No health data available yet',
+        'analytics:empty.description': 'Health scores are calculated hourly based on PR metrics',
+        'analytics:loading.placeholder': '-',
+      };
+      return translations[key] ?? key;
+    },
+    i18n: { language: 'en' },
+  }),
+}));
+
 vi.mock('@/api/analytics', () => ({
   analyticsApi: {
     getSummary: vi.fn(),

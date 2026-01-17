@@ -23,7 +23,7 @@ fn test_dotenv_precedence() {
     .expect("Failed to write .env");
 
     // Change to temp directory
-    let original_dir = env::current_dir().expect("Failed to get current dir");
+    let original_dir = env::current_dir().ok();
     env::set_current_dir(temp_dir.path()).expect("Failed to change dir");
 
     // Load .env file
@@ -36,8 +36,10 @@ fn test_dotenv_precedence() {
     );
     assert_eq!(env::var("ANOTHER_VAR").ok(), Some("from_file".to_string()));
 
-    // Cleanup - restore directory and remove env vars
-    env::set_current_dir(original_dir).expect("Failed to restore dir");
+    // Cleanup - restore directory if possible and remove env vars
+    if let Some(dir) = original_dir {
+        let _ = env::set_current_dir(dir);
+    }
     env::remove_var("TEST_VAR_FROM_DOTENV");
     env::remove_var("ANOTHER_VAR");
 }
@@ -79,7 +81,7 @@ fn test_system_env_overrides_dotenv() {
 fn test_dotenv_missing_is_ok() {
     // Create a temporary directory WITHOUT .env file
     let temp_dir = TempDir::new().expect("Failed to create temp dir");
-    let original_dir = env::current_dir().expect("Failed to get current dir");
+    let original_dir = env::current_dir().ok();
     env::set_current_dir(temp_dir.path()).expect("Failed to change dir");
 
     // Loading .env when file doesn't exist should return an error
@@ -92,8 +94,10 @@ fn test_dotenv_missing_is_ok() {
     //     // Silent failure - application continues
     // }
 
-    // Cleanup
-    env::set_current_dir(original_dir).expect("Failed to restore dir");
+    // Cleanup - restore directory if possible
+    if let Some(dir) = original_dir {
+        let _ = env::set_current_dir(dir); // Ignore error if dir no longer exists
+    }
 }
 
 #[test]
@@ -116,7 +120,7 @@ OPENAI_API_KEY=test_openai_key
     )
     .expect("Failed to write .env");
 
-    let original_dir = env::current_dir().expect("Failed to get current dir");
+    let original_dir = env::current_dir().ok();
     env::set_current_dir(temp_dir.path()).expect("Failed to change dir");
 
     // Load .env
@@ -140,8 +144,10 @@ OPENAI_API_KEY=test_openai_key
         Some("test_openai_key".to_string())
     );
 
-    // Cleanup
-    env::set_current_dir(original_dir).expect("Failed to restore dir");
+    // Cleanup - restore directory if possible
+    if let Some(dir) = original_dir {
+        let _ = env::set_current_dir(dir);
+    }
     env::remove_var("SYSTRAN_API_KEY");
     env::remove_var("DEEPL_API_KEY");
     env::remove_var("GOOGLE_API_KEY");
@@ -165,7 +171,7 @@ AMPEL_I18N_MAX_RETRIES=5
     )
     .expect("Failed to write .env");
 
-    let original_dir = env::current_dir().expect("Failed to get current dir");
+    let original_dir = env::current_dir().ok();
     env::set_current_dir(temp_dir.path()).expect("Failed to change dir");
 
     dotenv::dotenv().expect("Failed to load .env");
@@ -184,8 +190,10 @@ AMPEL_I18N_MAX_RETRIES=5
         Some("5".to_string())
     );
 
-    // Cleanup
-    env::set_current_dir(original_dir).expect("Failed to restore dir");
+    // Cleanup - restore directory if possible
+    if let Some(dir) = original_dir {
+        let _ = env::set_current_dir(dir);
+    }
     env::remove_var("AMPEL_I18N_TIMEOUT_SECS");
     env::remove_var("AMPEL_I18N_BATCH_SIZE");
     env::remove_var("AMPEL_I18N_MAX_RETRIES");
