@@ -48,8 +48,10 @@
     "createAccount": "Vytvořit účet",
     "creatingAccount": "Vytváření účtu...",
     "displayName": "Zobrazovaný název",
+    "displayNamePlaceholder": "Jan Novák",
     "dontHaveAccount": "Nemáte účet?",
     "email": "E-mail",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "Zapomněli jste heslo?",
     "getStarted": "Začněte s Ampelem",
     "login": "Přihlášení",
@@ -64,8 +66,7 @@
     "signingIn": "Přihlašování...",
     "username": "Uživatelské jméno",
     "welcome": "Vítej zpět!",
-    "welcomeToAmpel": "Vítejte v Ampelu",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "Vítejte v Ampelu"
   },
   "language": {
     "current": "Aktuální jazyk",

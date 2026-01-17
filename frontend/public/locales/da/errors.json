@@ -10,10 +10,14 @@
     "tokenExpired": "Godkendelsestokenet er udløbet",
     "unauthorized": "Uautoriseret adgang"
   },
+  "general": {
+    "unknownError": "Der opstod en ukendt fejl"
+  },
   "generic": {
     "goHome": "Gå til dashboard",
     "message": "Der opstod en uventet fejl. Prøv igen.",
     "retry": "Prøv igen",
+    "somethingWentWrong": "Noget gik galt. Prøv igen.",
     "title": "Noget gik galt"
   },
   "network": {

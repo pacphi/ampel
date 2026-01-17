@@ -83,7 +83,7 @@ SYSTRAN_API_KEY=your-systran-api-key-here
 
 ---
 
-### Tier 4: OpenAI GPT-4 (Final Fallback)
+### Tier 4: OpenAI GPT-5-mini (Final Fallback)
 
 **Purpose:** Context-aware translations for complex content
 

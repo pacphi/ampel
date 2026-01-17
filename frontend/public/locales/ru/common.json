@@ -48,8 +48,10 @@
     "createAccount": "Создать аккаунт",
     "creatingAccount": "Создание аккаунта...",
     "displayName": "Отображаемое имя",
+    "displayNamePlaceholder": "Джон Доу",
     "dontHaveAccount": "Нет аккаунта?",
     "email": "Электронная почта",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "Забыли пароль?",
     "getStarted": "Начните с Ampel",
     "login": "Авторизоваться",
@@ -64,8 +66,7 @@
     "signingIn": "Вход в систему...",
     "username": "Имя пользователя",
     "welcome": "Добро пожаловать!",
-    "welcomeToAmpel": "Добро пожаловать в Ampel",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "Добро пожаловать в Ampel"
   },
   "language": {
     "current": "Текущий язык",

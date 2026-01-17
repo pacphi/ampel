@@ -128,7 +128,7 @@ This document defines a robust 4-tier translation provider architecture with int
 - **Best For**: Asian/Middle Eastern languages (ar, th, vi, zh, ja)
 - **Cost**: Pay-per-character
 
-#### Tier 4: OpenAI GPT-4.5 API
+#### Tier 4: OpenAI GPT-5-mini API
 
 - **Purpose**: Fallback for specialized content and edge cases
 - **Strengths**: Context-aware translation, placeholder preservation
@@ -210,7 +210,7 @@ translation:
       retry_delay_ms: 2000
       max_delay_ms: 60000
       backoff_multiplier: 2.0
-      model: 'gpt-4o' # Model selection
+      model: 'gpt-5-mini' # Model selection
       temperature: 0.3
       # Optional: Language preferences (typically not needed for OpenAI)
       # OpenAI handles all languages well but is expensive, so use as fallback
@@ -267,7 +267,7 @@ timeout_secs = 60
 max_retries = 2
 batch_size = 0
 rate_limit_per_sec = 0
-model = "gpt-4o"
+model = "gpt-5-mini"
 temperature = 0.3
 
 [translation.fallback]

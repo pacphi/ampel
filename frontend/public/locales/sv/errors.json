@@ -10,10 +10,14 @@
     "tokenExpired": "Autentiseringstoken har löpt ut",
     "unauthorized": "Obehörig åtkomst"
   },
+  "general": {
+    "unknownError": "Ett okänt fel uppstod"
+  },
   "generic": {
     "goHome": "Gå till instrumentpanelen",
     "message": "Ett oväntat fel uppstod. Försök igen.",
     "retry": "Försök igen",
+    "somethingWentWrong": "Något gick fel. Försök igen.",
     "title": "Något gick fel"
   },
   "network": {

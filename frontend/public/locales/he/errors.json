@@ -10,10 +10,14 @@
     "tokenExpired": "פג תוקף אסימון האימות",
     "unauthorized": "גישה לא מורשית"
   },
+  "general": {
+    "unknownError": "אירעה שגיאה לא ידועה"
+  },
   "generic": {
     "goHome": "עבור ללוח המחוונים",
     "message": "אירעה שגיאה בלתי צפויה. אנא נסה שוב.",
     "retry": "נסה שוב",
+    "somethingWentWrong": "משהו השתבש. אנא נסה שוב.",
     "title": "משהו השתבש"
   },
   "network": {

@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Wyniki dotyczące stanu zdrowia obliczane są co godzinę na podstawie wskaźników PR",
+    "title": "Brak jeszcze danych dotyczących stanu zdrowia"
+  },
+  "health": {
+    "mergeTime": "Czas scalania",
+    "perWeek": "{{count}}/tydzień",
+    "reviewTime": "Czas na recenzję",
+    "stalePrs": "Nieaktualne PR-y",
+    "throughput": "Przepustowość",
+    "title": "Wyniki oceny stanu zdrowia repozytorium"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Średni czas scalania",
+    "avgReviewTime": "Średni czas przeglądu",
+    "botPrs": "PR-y botów",
+    "prsMerged": "Połączono PR ({{days}}d)"
+  },
+  "title": "Analityka"
+}

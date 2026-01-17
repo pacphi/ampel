@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Điểm sức khỏe được tính theo giờ dựa trên các chỉ số PR.",
+    "title": "Hiện chưa có dữ liệu về sức khỏe."
+  },
+  "health": {
+    "mergeTime": "Thời gian hợp nhất",
+    "perWeek": "{{count}}/tuần",
+    "reviewTime": "Thời gian đánh giá",
+    "stalePrs": "Yêu cầu kéo (PR) cũ",
+    "throughput": "Thông lượng",
+    "title": "Điểm sức khỏe kho lưu trữ"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Thời gian hợp nhất trung bình",
+    "avgReviewTime": "Thời gian đánh giá trung bình",
+    "botPrs": "Yêu cầu kéo (PR) của Bot",
+    "prsMerged": "Các yêu cầu kéo đã được hợp nhất ({{days}}d)"
+  },
+  "title": "Phân tích"
+}

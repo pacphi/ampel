@@ -53,8 +53,10 @@
     "createAccount": "Create an account",
     "creatingAccount": "Creating account...",
     "displayName": "Display Name",
+    "displayNamePlaceholder": "John Doe",
     "dontHaveAccount": "Don't have an account?",
     "email": "Email",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "Forgot password?",
     "getStarted": "Get started with Ampel",
     "login": "Login",
@@ -70,8 +72,7 @@
     "unauthorised": "Unauthorised",
     "username": "Username",
     "welcome": "Welcome back!",
-    "welcomeToAmpel": "Welcome to Ampel",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "Welcome to Ampel"
   },
   "language": {
     "current": "Current language",

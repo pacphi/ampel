@@ -10,10 +10,14 @@
     "tokenExpired": "O token de autenticação expirou.",
     "unauthorized": "Acesso não autorizado"
   },
+  "general": {
+    "unknownError": "Ocorreu um erro desconhecido."
+  },
   "generic": {
     "goHome": "Acesse o painel de controle.",
     "message": "Ocorreu um erro inesperado. Tente novamente.",
     "retry": "Tente novamente",
+    "somethingWentWrong": "Algo deu errado. Por favor, tente novamente.",
     "title": "Algo deu errado"
   },
   "network": {

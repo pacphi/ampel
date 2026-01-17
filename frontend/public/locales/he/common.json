@@ -48,8 +48,10 @@
     "createAccount": "צור חשבון",
     "creatingAccount": "יוצר חשבון...",
     "displayName": "שם תצוגה",
+    "displayNamePlaceholder": "פְּלוֹנִי אַלמוֹנִי",
     "dontHaveAccount": "אין לך חשבון?",
     "email": "אֶלֶקטרוֹנִי",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "שכחת סיסמה?",
     "getStarted": "התחל עם Ampel",
     "login": "כְּנִיסָה לַמַעֲרֶכֶת",
@@ -64,8 +66,7 @@
     "signingIn": "מתחבר...",
     "username": "שם משתמש",
     "welcome": "ברוכים השבים!",
-    "welcomeToAmpel": "ברוך הבא לאמפל",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "ברוך הבא לאמפל"
   },
   "language": {
     "current": "השפה הנוכחית",

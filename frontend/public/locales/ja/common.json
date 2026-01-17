@@ -48,8 +48,10 @@
     "createAccount": "アカウントを作成",
     "creatingAccount": "アカウントを作成中...",
     "displayName": "表示名",
+    "displayNamePlaceholder": "ジョン・ドゥ",
     "dontHaveAccount": "アカウントはまだありませんか？",
     "email": "メール",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "パスワードをお忘れですか？",
     "getStarted": "Ampelを始めましょう",
     "login": "ログイン",
@@ -64,8 +66,7 @@
     "signingIn": "サインイン中...",
     "username": "ユーザー名",
     "welcome": "おかえり！",
-    "welcomeToAmpel": "アンペルへようこそ",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "アンペルへようこそ"
   },
   "language": {
     "current": "現在の言語",

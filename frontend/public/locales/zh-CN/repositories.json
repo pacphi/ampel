@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "添加全部 ({{count}})",
+    "close": "关闭",
+    "empty": "未找到要添加的新存储库",
+    "title": "从 {{provider}} 添加"
+  },
+  "empty": {
+    "description": "添加来自已连接提供商的存储库即可开始使用",
+    "title": "未找到存储库"
+  },
+  "providers": {
+    "connected": "（已连接）",
+    "title": "联系服务提供商"
+  },
+  "search": {
+    "placeholder": "搜索存储库……"
+  },
+  "table": {
+    "actions": "行动",
+    "provider": "提供者",
+    "prs": "开放的 PR",
+    "repository": "存储库",
+    "status": "地位"
+  },
+  "title": "存储库",
+  "toast": {
+    "addFailed": "添加存储库失败",
+    "added": "已添加存储库",
+    "addedDescription": "{{name}} 已添加到您的仪表板",
+    "bulkAddFailed": "添加存储库失败",
+    "bulkAddFailedDescription": "无法添加任何选定的存储库",
+    "bulkAdded": "新增存储库",
+    "bulkAddedDescription": "已成功添加 {{count}} 存储库{{failed}}",
+    "bulkAddedFailed": "（{{count}} 失败）",
+    "removeFailed": "删除存储库失败",
+    "removed": "仓库已移除",
+    "removedDescription": "{{name}} 已从您的仪表板中移除"
+  }
+}

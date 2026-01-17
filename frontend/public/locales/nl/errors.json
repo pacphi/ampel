@@ -10,10 +10,14 @@
     "tokenExpired": "Authenticatietoken is verlopen.",
     "unauthorized": "Ongeautoriseerde toegang"
   },
+  "general": {
+    "unknownError": "Er is een onbekende fout opgetreden."
+  },
   "generic": {
     "goHome": "Ga naar het dashboard",
     "message": "Er is een onverwachte fout opgetreden. Probeer het opnieuw.",
     "retry": "Probeer het opnieuw",
+    "somethingWentWrong": "Er is iets misgegaan. Probeer het opnieuw.",
     "title": "Er is iets misgegaan."
   },
   "network": {

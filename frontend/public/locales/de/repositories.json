@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Alle hinzufügen ({{count}})",
+    "close": "Schließen",
+    "empty": "Es wurden keine neuen Repositories zum Hinzufügen gefunden.",
+    "title": "Hinzufügen von {{provider}}"
+  },
+  "empty": {
+    "description": "Fügen Sie Repositories Ihrer verbundenen Anbieter hinzu, um loszulegen.",
+    "title": "Keine Repositories gefunden"
+  },
+  "providers": {
+    "connected": "(Verbunden)",
+    "title": "Verbinden Sie einen Anbieter"
+  },
+  "search": {
+    "placeholder": "Repositories durchsuchen..."
+  },
+  "table": {
+    "actions": "Aktionen",
+    "provider": "Anbieter",
+    "prs": "Offene PRs",
+    "repository": "Repository",
+    "status": "Status"
+  },
+  "title": "Repositories",
+  "toast": {
+    "addFailed": "Repository konnte nicht hinzugefügt werden",
+    "added": "Repository hinzugefügt",
+    "addedDescription": "{{name}} wurde Ihrem Dashboard hinzugefügt",
+    "bulkAddFailed": "Fehler beim Hinzufügen von Repositories",
+    "bulkAddFailedDescription": "Es konnte keines der ausgewählten Repositories hinzugefügt werden.",
+    "bulkAdded": "Hinzugefügte Repositories",
+    "bulkAddedDescription": "Erfolgreich hinzugefügte {{count}} Repositories{{failed}}",
+    "bulkAddedFailed": "({{count}} fehlgeschlagen)",
+    "removeFailed": "Repository konnte nicht entfernt werden",
+    "removed": "Repository entfernt",
+    "removedDescription": "{{name}} wurde aus Ihrem Dashboard entfernt."
+  }
+}

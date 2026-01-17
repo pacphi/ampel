@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "合併 {{count}} PR",
+    "merging": "合併中…"
+  },
+  "blockers": {
+    "awaitingReview": "待審核",
+    "changesRequested": "請求更改",
+    "ciFailed": "CI失敗",
+    "ciPending": "CI 待定",
+    "conflicts": "存在衝突",
+    "draft": "草稿",
+    "needsReview": "需要審查"
+  },
+  "emptyState": {
+    "noPrsReady": "目前沒有可以合併的 PR。 PR 需要：",
+    "requirements": {
+      "ciPassing": "所有 CI 檢查均通過",
+      "noConflicts": "無合併衝突",
+      "requiredApprovals": "所需審批"
+    }
+  },
+  "options": {
+    "deleteBranch": "合併後刪除來源分支",
+    "description": "配置拉取請求的合併方式",
+    "strategies": {
+      "merge": "建立合併提交",
+      "rebase": "重新定基並合併",
+      "squash": "擠壓和合併"
+    },
+    "strategy": "合併策略",
+    "title": "合併選項"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PR"
+  },
+  "results": {
+    "allSuccess": "所有 PR 已成功合併！",
+    "close": "關閉",
+    "stats": {
+      "failed": "失敗的",
+      "merged": "合併",
+      "skipped": "跳過",
+      "total": "全部的"
+    },
+    "status": {
+      "failed": "失敗的",
+      "skipped": "跳過",
+      "success": "成功"
+    },
+    "summary": "已完成，{{success}} 已合併，{{failed}} 失敗，{{skipped}} 已跳過",
+    "title": "合併結果"
+  },
+  "sections": {
+    "notReadyDescription": "存在阻塞導致合併的拉取請求",
+    "notReadyTitle": "尚未準備好",
+    "readyDescription": "符合所有合併要求的拉取請求",
+    "readyTitle": "準備合併"
+  },
+  "selection": {
+    "count": "{{selected}} 中的 {{total}} 已選擇",
+    "deselectAll": "取消選擇所有",
+    "selectAll": "全選"
+  },
+  "subtitle": "一次性選擇並合併多個 PR",
+  "title": "批量合併",
+  "toast": {
+    "mergeFailed": "合併失敗",
+    "mergeSuccess": "合併成功",
+    "mergeSuccessDescription": "已成功合併 {{count}} 個拉取請求",
+    "someMergesFailed": "部分合併失敗",
+    "someMergesFailedDescription": "{{success}} 已合併，{{failed}} 失敗"
+  }
+}

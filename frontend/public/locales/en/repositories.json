@@ -1,0 +1,40 @@
+{
+  "title": "Repositories",
+  "providers": {
+    "title": "Connect a Provider",
+    "connected": "(Connected)"
+  },
+  "addFrom": {
+    "title": "Add from {{provider}}",
+    "addAll": "Add All ({{count}})",
+    "close": "Close",
+    "empty": "No new repositories found to add"
+  },
+  "search": {
+    "placeholder": "Search repositories..."
+  },
+  "table": {
+    "status": "Status",
+    "repository": "Repository",
+    "provider": "Provider",
+    "prs": "Open PRs",
+    "actions": "Actions"
+  },
+  "empty": {
+    "title": "No repositories found",
+    "description": "Add repositories from your connected providers to get started"
+  },
+  "toast": {
+    "added": "Repository Added",
+    "addedDescription": "{{name}} has been added to your dashboard",
+    "addFailed": "Failed to Add Repository",
+    "removed": "Repository Removed",
+    "removedDescription": "{{name}} has been removed from your dashboard",
+    "removeFailed": "Failed to Remove Repository",
+    "bulkAdded": "Repositories Added",
+    "bulkAddedDescription": "Successfully added {{count}} repositories{{failed}}",
+    "bulkAddedFailed": " ({{count}} failed)",
+    "bulkAddFailed": "Failed to Add Repositories",
+    "bulkAddFailedDescription": "Could not add any of the selected repositories"
+  }
+}

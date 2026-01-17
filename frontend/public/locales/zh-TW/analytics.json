@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "健康評分根據公關指標每小時計算一次。",
+    "title": "目前尚無健康數據。"
+  },
+  "health": {
+    "mergeTime": "合併時間",
+    "perWeek": "{{count}}/週",
+    "reviewTime": "複習時間",
+    "stalePrs": "過期的PR",
+    "throughput": "吞吐量",
+    "title": "儲存庫健康評分"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "平均合併時間",
+    "avgReviewTime": "平均審核時間",
+    "botPrs": "機器人 PR",
+    "prsMerged": "PR 已合併（{{days}}d）"
+  },
+  "title": "分析"
+}

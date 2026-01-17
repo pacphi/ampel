@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "Merge {{count}} PRs",
+    "merging": "Zusammenführen..."
+  },
+  "blockers": {
+    "awaitingReview": "Überprüfung ausstehend",
+    "changesRequested": "Gewünschte Änderungen",
+    "ciFailed": "CI fehlgeschlagen",
+    "ciPending": "CI ausstehend",
+    "conflicts": "Hat Konflikte",
+    "draft": "Entwurf",
+    "needsReview": "Bedarfsprüfung"
+  },
+  "emptyState": {
+    "noPrsReady": "Es sind noch keine Pull Requests bereit zum Zusammenführen. Folgende Pull Requests werden benötigt:",
+    "requirements": {
+      "ciPassing": "Alle CI-Prüfungen bestanden",
+      "noConflicts": "Keine Merge-Konflikte",
+      "requiredApprovals": "Erforderliche Genehmigungen"
+    }
+  },
+  "options": {
+    "deleteBranch": "Quellzweig nach Zusammenführung löschen",
+    "description": "Konfigurieren Sie, wie Pull-Anfragen zusammengeführt werden.",
+    "strategies": {
+      "merge": "Erstelle einen Merge-Commit",
+      "rebase": "Rebase und Merge",
+      "squash": "Zusammenpressen und verschmelzen"
+    },
+    "strategy": "Fusionsstrategie",
+    "title": "Fusionsoptionen"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PRs"
+  },
+  "results": {
+    "allSuccess": "Alle Pull Requests wurden erfolgreich zusammengeführt!",
+    "close": "Schließen",
+    "stats": {
+      "failed": "Fehlgeschlagen",
+      "merged": "Zusammengeführt",
+      "skipped": "Übersprungen",
+      "total": "Gesamt"
+    },
+    "status": {
+      "failed": "fehlgeschlagen",
+      "skipped": "übersprungen",
+      "success": "Erfolg"
+    },
+    "summary": "Abgeschlossen mit {{success}} zusammengeführt, {{failed}} fehlgeschlagen, {{skipped}} übersprungen",
+    "title": "Zusammenführungsergebnisse"
+  },
+  "sections": {
+    "notReadyDescription": "Pull-Anfragen, die Blocker enthalten, die ein Zusammenführen verhindern",
+    "notReadyTitle": "Noch nicht bereit",
+    "readyDescription": "Pull-Anfragen, die alle Merge-Anforderungen erfüllen",
+    "readyTitle": "Bereit zur Fusion"
+  },
+  "selection": {
+    "count": "{{selected}} von {{total}} ausgewählt",
+    "deselectAll": "Alle abwählen",
+    "selectAll": "Alle auswählen"
+  },
+  "subtitle": "Mehrere PRs gleichzeitig auswählen und zusammenführen",
+  "title": "Massenzusammenführung",
+  "toast": {
+    "mergeFailed": "Zusammenführung fehlgeschlagen",
+    "mergeSuccess": "Zusammenführung erfolgreich",
+    "mergeSuccessDescription": "Pull-Anfragen erfolgreich zusammengeführt {{count}}",
+    "someMergesFailed": "Einige Zusammenführungen sind fehlgeschlagen.",
+    "someMergesFailedDescription": "{{success}} zusammengeführt, {{failed}} fehlgeschlagen"
+  }
+}

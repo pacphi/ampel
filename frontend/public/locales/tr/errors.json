@@ -10,10 +10,14 @@
     "tokenExpired": "Kimlik doğrulama belirtecinin süresi doldu.",
     "unauthorized": "Yetkisiz erişim"
   },
+  "general": {
+    "unknownError": "Bilinmeyen bir hata oluştu."
+  },
   "generic": {
     "goHome": "Kontrol paneline git",
     "message": "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
     "retry": "Tekrar deneyin",
+    "somethingWentWrong": "Bir sorun oluştu. Lütfen tekrar deneyin.",
     "title": "Bir şeyler ters gitti."
   },
   "network": {

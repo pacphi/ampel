@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Die Gesundheitswerte werden stündlich auf Basis von PR-Kennzahlen berechnet.",
+    "title": "Es liegen noch keine Gesundheitsdaten vor."
+  },
+  "health": {
+    "mergeTime": "Zusammenführungszeit",
+    "perWeek": "{{count}}/Woche",
+    "reviewTime": "Überprüfungszeit",
+    "stalePrs": "Veraltete PRs",
+    "throughput": "Durchsatz",
+    "title": "Repository-Gesundheitsbewertungen"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Durchschnittliche Zusammenführungszeit",
+    "avgReviewTime": "Durchschnittliche Rezensionszeit",
+    "botPrs": "Bot PRs",
+    "prsMerged": "PRs zusammengeführt ({{days}}d)"
+  },
+  "title": "Analysen"
+}

@@ -76,90 +76,89 @@ impl FallbackTranslationRouter {
         // Initialize providers in priority order (Tier 1 → Tier 4)
 
         // Tier 1: Systran
-        if let Some(api_key) = config
+        if !config.translation.providers.systran.enabled {
+            info!("⊘ Systran skipped (disabled in config)");
+        } else if let Some(api_key) = config
             .translation
             .systran_api_key
             .clone()
             .or_else(|| std::env::var("SYSTRAN_API_KEY").ok())
         {
-            if config.translation.providers.systran.enabled {
-                let timeout =
-                    Duration::from_secs(config.translation.providers.systran.timeout_secs);
-                let translator = SystranTranslator::new(api_key, timeout);
-                info!("✓ Systran translator initialized (Tier 1)");
-                providers.push(Box::new(translator));
-            }
+            let timeout = Duration::from_secs(config.translation.providers.systran.timeout_secs);
+            let translator = SystranTranslator::new(api_key, timeout);
+            info!("✓ Systran translator initialized (Tier 1)");
+            providers.push(Box::new(translator));
         } else if config.translation.fallback.skip_on_missing_key {
             info!("⊘ Systran skipped (no API key configured)");
         }
 
         // Tier 2: DeepL
-        if let Some(api_key) = config
+        if !config.translation.providers.deepl.enabled {
+            info!("⊘ DeepL skipped (disabled in config)");
+        } else if let Some(api_key) = config
             .translation
             .deepl_api_key
             .clone()
             .or_else(|| std::env::var("DEEPL_API_KEY").ok())
         {
-            if config.translation.providers.deepl.enabled {
-                let provider_config = ProviderConfig {
-                    api_key,
-                    timeout: Duration::from_secs(config.translation.providers.deepl.timeout_secs),
-                    max_retries: config.translation.providers.deepl.max_retries,
-                    batch_size: config.translation.providers.deepl.batch_size,
-                    rate_limit_per_sec: config.translation.providers.deepl.rate_limit_per_sec,
-                    retry_delay_ms: config.translation.providers.deepl.retry_delay_ms,
-                    max_delay_ms: config.translation.providers.deepl.max_delay_ms,
-                    backoff_multiplier: config.translation.providers.deepl.backoff_multiplier,
-                };
-                match DeepLTranslator::new(provider_config) {
-                    Ok(translator) => {
-                        info!("✓ DeepL translator initialized (Tier 2)");
-                        providers.push(Box::new(translator));
-                    }
-                    Err(e) => warn!("DeepL initialization failed: {}", e),
+            let provider_config = ProviderConfig {
+                api_key,
+                timeout: Duration::from_secs(config.translation.providers.deepl.timeout_secs),
+                max_retries: config.translation.providers.deepl.max_retries,
+                batch_size: config.translation.providers.deepl.batch_size,
+                rate_limit_per_sec: config.translation.providers.deepl.rate_limit_per_sec,
+                retry_delay_ms: config.translation.providers.deepl.retry_delay_ms,
+                max_delay_ms: config.translation.providers.deepl.max_delay_ms,
+                backoff_multiplier: config.translation.providers.deepl.backoff_multiplier,
+            };
+            match DeepLTranslator::new(provider_config) {
+                Ok(translator) => {
+                    info!("✓ DeepL translator initialized (Tier 2)");
+                    providers.push(Box::new(translator));
                 }
+                Err(e) => warn!("DeepL initialization failed: {}", e),
             }
         } else if config.translation.fallback.skip_on_missing_key {
             info!("⊘ DeepL skipped (no API key configured)");
         }
 
         // Tier 3: Google
-        if let Some(api_key) = config
+        if !config.translation.providers.google.enabled {
+            info!("⊘ Google skipped (disabled in config)");
+        } else if let Some(api_key) = config
             .translation
             .google_api_key
             .clone()
             .or_else(|| std::env::var("GOOGLE_API_KEY").ok())
         {
-            if config.translation.providers.google.enabled {
-                let timeout = Duration::from_secs(config.translation.providers.google.timeout_secs);
-                match GoogleTranslator::new(api_key, timeout) {
-                    Ok(translator) => {
-                        info!("✓ Google translator initialized (Tier 3)");
-                        providers.push(Box::new(translator));
-                    }
-                    Err(e) => warn!("Google initialization failed: {}", e),
+            let timeout = Duration::from_secs(config.translation.providers.google.timeout_secs);
+            match GoogleTranslator::new(api_key, timeout) {
+                Ok(translator) => {
+                    info!("✓ Google translator initialized (Tier 3)");
+                    providers.push(Box::new(translator));
                 }
+                Err(e) => warn!("Google initialization failed: {}", e),
             }
         } else if config.translation.fallback.skip_on_missing_key {
             info!("⊘ Google skipped (no API key configured)");
         }
 
         // Tier 4: OpenAI
-        if let Some(api_key) = config
+        if !config.translation.providers.openai.enabled {
+            info!("⊘ OpenAI skipped (disabled in config)");
+        } else if let Some(api_key) = config
             .translation
             .openai_api_key
             .clone()
             .or_else(|| std::env::var("OPENAI_API_KEY").ok())
         {
-            if config.translation.providers.openai.enabled {
-                let timeout = Duration::from_secs(config.translation.providers.openai.timeout_secs);
-                match OpenAITranslator::new(api_key, timeout) {
-                    Ok(translator) => {
-                        info!("✓ OpenAI translator initialized (Tier 4)");
-                        providers.push(Box::new(translator));
-                    }
-                    Err(e) => warn!("OpenAI initialization failed: {}", e),
+            let timeout = Duration::from_secs(config.translation.providers.openai.timeout_secs);
+            match OpenAITranslator::new(api_key, timeout) {
+                Ok(translator) => {
+                    info!("✓ OpenAI translator initialized (Tier 4)");
+                    providers.push(Box::new(translator));
                 }
+                Err(e) => warn!("OpenAI initialization failed: {}", e),
             }
         } else if config.translation.fallback.skip_on_missing_key {
             info!("⊘ OpenAI skipped (no API key configured)");

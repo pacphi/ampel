@@ -10,10 +10,14 @@
     "tokenExpired": "Das Authentifizierungstoken ist abgelaufen.",
     "unauthorized": "Unbefugter Zugriff"
   },
+  "general": {
+    "unknownError": "Es ist ein unbekannter Fehler aufgetreten."
+  },
   "generic": {
     "goHome": "Zum Dashboard wechseln",
     "message": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "retry": "Versuchen Sie es erneut",
+    "somethingWentWrong": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "title": "Etwas ist schiefgelaufen."
   },
   "network": {

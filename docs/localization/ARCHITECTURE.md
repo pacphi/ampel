@@ -195,7 +195,7 @@ translation:
       priority: 4
       timeout_secs: 60
       max_retries: 2
-      model: 'gpt-4o'
+      model: 'gpt-5-mini'
 
   # Fallback Strategy
   fallback:

@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "Scal {{count}} PR-ów",
+    "merging": "Łączenie..."
+  },
+  "blockers": {
+    "awaitingReview": "Oczekiwanie na recenzję",
+    "changesRequested": "Żądane zmiany",
+    "ciFailed": "CI nie powiodło się",
+    "ciPending": "Oczekiwanie na CI",
+    "conflicts": "Ma konflikty",
+    "draft": "Projekt",
+    "needsReview": "Potrzebny przegląd"
+  },
+  "emptyState": {
+    "noPrsReady": "Żadne PR nie jest gotowe do scalenia. PR-y potrzebują:",
+    "requirements": {
+      "ciPassing": "Wszystkie kontrole CI zaliczone",
+      "noConflicts": "Brak konfliktów scalania",
+      "requiredApprovals": "Wymagane zatwierdzenia"
+    }
+  },
+  "options": {
+    "deleteBranch": "Usuń gałąź źródłową po scaleniu",
+    "description": "Skonfiguruj sposób scalania żądań ściągnięcia",
+    "strategies": {
+      "merge": "Utwórz zatwierdzenie scalenia",
+      "rebase": "Zmiana bazy i scalenie",
+      "squash": "Zgniatanie i łączenie"
+    },
+    "strategy": "Strategia scalania",
+    "title": "Opcje scalania"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PR-y"
+  },
+  "results": {
+    "allSuccess": "Wszystkie PR-y zostały pomyślnie połączone!",
+    "close": "Zamknąć",
+    "stats": {
+      "failed": "Przegrany",
+      "merged": "Połączone",
+      "skipped": "Pominięto",
+      "total": "Całkowity"
+    },
+    "status": {
+      "failed": "przegrany",
+      "skipped": "pominięte",
+      "success": "sukces"
+    },
+    "summary": "Zakończono ze {{success}} scalono, {{failed}} nie powiodło się, {{skipped}} pominięto",
+    "title": "Połącz wyniki"
+  },
+  "sections": {
+    "notReadyDescription": "Żądania ściągnięcia zawierające blokady uniemożliwiające scalenie",
+    "notReadyTitle": "Nie gotowy",
+    "readyDescription": "Żądania ściągnięcia spełniające wszystkie wymagania scalania",
+    "readyTitle": "Gotowy do połączenia"
+  },
+  "selection": {
+    "count": "{{selected}} z {{total}} wybranych",
+    "deselectAll": "Odznacz wszystko",
+    "selectAll": "Zaznacz wszystko"
+  },
+  "subtitle": "Wybierz i scal wiele żądań dostępu jednocześnie",
+  "title": "Scalanie zbiorcze",
+  "toast": {
+    "mergeFailed": "Scalenie nie powiodło się",
+    "mergeSuccess": "Połączenie pomyślne",
+    "mergeSuccessDescription": "Pomyślnie scalono {{count}} żądań ściągnięcia",
+    "someMergesFailed": "Niektóre połączenia nie powiodły się",
+    "someMergesFailedDescription": "{{success}} scalono, {{failed}} nie powiodło się"
+  }
+}

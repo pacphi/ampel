@@ -10,10 +10,14 @@
     "tokenExpired": "認証トークンの有効期限が切れています",
     "unauthorized": "無許可のアクセス"
   },
+  "general": {
+    "unknownError": "不明なエラーが発生しました"
+  },
   "generic": {
     "goHome": "ダッシュボードに移動",
     "message": "予期しないエラーが発生しました。もう一度お試しください。",
     "retry": "再試行",
+    "somethingWentWrong": "問題が発生しました。もう一度お試しください。",
     "title": "何かが間違っています"
   },
   "network": {

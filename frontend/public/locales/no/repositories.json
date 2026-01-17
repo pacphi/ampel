@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Legg til alle ({{count}})",
+    "close": "Lukke",
+    "empty": "Ingen nye arkiver funnet å legge til",
+    "title": "Legg til fra {{provider}}"
+  },
+  "empty": {
+    "description": "Legg til arkiver fra dine tilkoblede leverandører for å komme i gang",
+    "title": "Ingen arkiver funnet"
+  },
+  "providers": {
+    "connected": "(Tilkoblet)",
+    "title": "Koble til en leverandør"
+  },
+  "search": {
+    "placeholder": "Søk i arkiver..."
+  },
+  "table": {
+    "actions": "Handlinger",
+    "provider": "Leverandør",
+    "prs": "Åpne PR-er",
+    "repository": "Repository",
+    "status": "Status"
+  },
+  "title": "Arkiver",
+  "toast": {
+    "addFailed": "Kunne ikke legge til arkivet",
+    "added": "Lagt til arkiv",
+    "addedDescription": "{{name}} er lagt til i dashbordet ditt",
+    "bulkAddFailed": "Kunne ikke legge til arkiver",
+    "bulkAddFailedDescription": "Kunne ikke legge til noen av de valgte arkivene",
+    "bulkAdded": "Lagrede arkiver",
+    "bulkAddedDescription": "Lagt til {{count}} arkiver{{failed}}",
+    "bulkAddedFailed": "({{count}} mislyktes)",
+    "removeFailed": "Kunne ikke fjerne depotet",
+    "removed": "Repository fjernet",
+    "removedDescription": "{{name}} er fjernet fra dashbordet ditt"
+  }
+}

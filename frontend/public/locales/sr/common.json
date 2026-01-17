@@ -48,8 +48,10 @@
     "createAccount": "Направи налог",
     "creatingAccount": "Креирање налога...",
     "displayName": "Приказано име",
+    "displayNamePlaceholder": "Џон Доу",
     "dontHaveAccount": "Немате налог?",
     "email": "Е-пошта",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "Заборавили сте лозинку?",
     "getStarted": "Почните са Ампелом",
     "login": "Пријава",
@@ -64,8 +66,7 @@
     "signingIn": "Пријављивање...",
     "username": "Корисничко име",
     "welcome": "Добродошли назад!",
-    "welcomeToAmpel": "Добродошли у Ампел",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "Добродошли у Ампел"
   },
   "language": {
     "current": "Тренутни језик",

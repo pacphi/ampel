@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { pullRequestsApi } from '@/api/pullRequests';
 import { mergeApi, type BulkMergeRequest, type BulkMergeResponse } from '@/api/merge';
 import { settingsApi } from '@/api/settings';
@@ -55,13 +56,17 @@ function groupByRepo(prs: PullRequestWithDetails[]) {
 import { MergeResultsDialog } from '@/components/merge/MergeResultsDialog';
 
 // Get blockers explaining why a PR isn't ready to merge
-function getBlockers(pr: PullRequestWithDetails, skipReviewRequirement = false) {
+function getBlockers(
+  pr: PullRequestWithDetails,
+  skipReviewRequirement = false,
+  t: (key: string) => string
+) {
   const blockers: { label: string; type: 'warning' | 'error'; icon: React.ReactNode }[] = [];
 
   // Check for draft
   if (pr.isDraft) {
     blockers.push({
-      label: 'Draft',
+      label: t('merge:blockers.draft'),
       type: 'warning',
       icon: <CircleDot className="h-3 w-3" />,
     });
@@ -70,7 +75,7 @@ function getBlockers(pr: PullRequestWithDetails, skipReviewRequirement = false) 
   // Check for conflicts
   if (pr.hasConflicts) {
     blockers.push({
-      label: 'Conflicts',
+      label: t('merge:blockers.conflicts'),
       type: 'error',
       icon: <AlertCircle className="h-3 w-3" />,
     });
@@ -86,13 +91,13 @@ function getBlockers(pr: PullRequestWithDetails, skipReviewRequirement = false) 
 
     if (hasFailed) {
       blockers.push({
-        label: 'CI failed',
+        label: t('merge:blockers.ciFailed'),
         type: 'error',
         icon: <X className="h-3 w-3" />,
       });
     } else if (hasPending) {
       blockers.push({
-        label: 'CI pending',
+        label: t('merge:blockers.ciPending'),
         type: 'warning',
         icon: <Clock className="h-3 w-3" />,
       });
@@ -107,13 +112,13 @@ function getBlockers(pr: PullRequestWithDetails, skipReviewRequirement = false) 
 
       if (hasChangesRequested) {
         blockers.push({
-          label: 'Changes requested',
+          label: t('merge:blockers.changesRequested'),
           type: 'error',
           icon: <MessageSquare className="h-3 w-3" />,
         });
       } else if (!hasApproval) {
         blockers.push({
-          label: 'Awaiting review',
+          label: t('merge:blockers.awaitingReview'),
           type: 'warning',
           icon: <Eye className="h-3 w-3" />,
         });
@@ -121,7 +126,7 @@ function getBlockers(pr: PullRequestWithDetails, skipReviewRequirement = false) 
     } else {
       // No reviews at all
       blockers.push({
-        label: 'Needs review',
+        label: t('merge:blockers.needsReview'),
         type: 'warning',
         icon: <Eye className="h-3 w-3" />,
       });
@@ -132,6 +137,7 @@ function getBlockers(pr: PullRequestWithDetails, skipReviewRequirement = false) 
 }
 
 export default function Merge() {
+  const { t } = useTranslation(['merge', 'common', 'errors']);
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -173,7 +179,7 @@ export default function Merge() {
 
     // If skipReviewRequirement is enabled, check if the only blocker is review-related
     if (skipReviewRequirement && pr.status === 'yellow') {
-      const blockers = getBlockers(pr, true); // Get blockers without review requirement
+      const blockers = getBlockers(pr, true, t); // Get blockers without review requirement
       return blockers.length === 0; // Mergeable if no other blockers
     }
 
@@ -190,14 +196,17 @@ export default function Merge() {
 
       if (data.failed === 0) {
         toast({
-          title: 'Merge successful',
-          description: `Successfully merged ${data.success} PR(s)`,
+          title: t('merge:toast.mergeSuccess'),
+          description: t('merge:toast.mergeSuccessDescription', { count: data.success }),
         });
       } else {
         toast({
           variant: 'destructive',
-          title: 'Some merges failed',
-          description: `${data.success} merged, ${data.failed} failed`,
+          title: t('merge:toast.someMergesFailed'),
+          description: t('merge:toast.someMergesFailedDescription', {
+            success: data.success,
+            failed: data.failed,
+          }),
         });
       }
     },
@@ -205,8 +214,8 @@ export default function Merge() {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Merge failed',
-        description: axiosError.response?.data?.error || 'An error occurred',
+        title: t('merge:toast.mergeFailed'),
+        description: axiosError.response?.data?.error || t('errors:generic.somethingWentWrong'),
       });
     },
   });
@@ -260,22 +269,22 @@ export default function Merge() {
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
             <GitMerge className="h-6 w-6" />
-            Bulk Merge
+            {t('merge:title')}
           </h1>
-          <p className="text-muted-foreground">Select and merge multiple pull requests at once</p>
+          <p className="text-muted-foreground">{t('merge:subtitle')}</p>
         </div>
       </div>
 
       {/* Merge Controls */}
       <Card>
         <CardHeader>
-          <CardTitle>Merge Options</CardTitle>
-          <CardDescription>Configure how selected PRs will be merged</CardDescription>
+          <CardTitle>{t('merge:options.title')}</CardTitle>
+          <CardDescription>{t('merge:options.description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-wrap gap-6">
             <div className="space-y-2">
-              <Label>Merge Strategy</Label>
+              <Label>{t('merge:options.strategy')}</Label>
               <Select
                 value={effectiveStrategy}
                 onValueChange={(v) => setStrategy(v as 'merge' | 'squash' | 'rebase')}
@@ -284,9 +293,9 @@ export default function Merge() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="squash">Squash and merge</SelectItem>
-                  <SelectItem value="merge">Create a merge commit</SelectItem>
-                  <SelectItem value="rebase">Rebase and merge</SelectItem>
+                  <SelectItem value="squash">{t('merge:options.strategies.squash')}</SelectItem>
+                  <SelectItem value="merge">{t('merge:options.strategies.merge')}</SelectItem>
+                  <SelectItem value="rebase">{t('merge:options.strategies.rebase')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -297,17 +306,19 @@ export default function Merge() {
                 checked={effectiveDeleteBranch}
                 onCheckedChange={setDeleteBranch}
               />
-              <Label htmlFor="delete-branch">Delete branches after merge</Label>
+              <Label htmlFor="delete-branch">{t('merge:options.deleteBranch')}</Label>
             </div>
           </div>
 
           <div className="flex items-center justify-between pt-4 border-t">
             <div className="text-sm text-muted-foreground">
-              {selectedIds.size} of {mergeablePrs.length} PRs selected
+              {t('merge:selection.count', { selected: selectedIds.size, total: mergeablePrs.length })}
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={selectAll}>
-                {selectedIds.size === mergeablePrs.length ? 'Deselect All' : 'Select All'}
+                {selectedIds.size === mergeablePrs.length
+                  ? t('merge:selection.deselectAll')
+                  : t('merge:selection.selectAll')}
               </Button>
               <Button
                 onClick={handleMerge}
@@ -315,8 +326,8 @@ export default function Merge() {
               >
                 <GitMerge className="h-4 w-4 mr-2" />
                 {bulkMergeMutation.isPending
-                  ? 'Merging...'
-                  : `Merge ${selectedIds.size} PR${selectedIds.size !== 1 ? 's' : ''}`}
+                  ? t('merge:actions.merging')
+                  : t('merge:actions.merge', { count: selectedIds.size })}
               </Button>
             </div>
           </div>
@@ -326,17 +337,17 @@ export default function Merge() {
       {/* PR List */}
       <Card>
         <CardHeader>
-          <CardTitle>Ready to Merge</CardTitle>
-          <CardDescription>PRs that have passed all checks and are ready to merge</CardDescription>
+          <CardTitle>{t('merge:sections.readyTitle')}</CardTitle>
+          <CardDescription>{t('merge:sections.readyDescription')}</CardDescription>
         </CardHeader>
         <CardContent>
           {mergeablePrs.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              No PRs are ready to merge. PRs must have:
+              {t('merge:emptyState.noPrsReady')}
               <ul className="mt-2 text-sm">
-                <li>All CI checks passing</li>
-                <li>Required approvals</li>
-                <li>No merge conflicts</li>
+                <li>{t('merge:emptyState.requirements.ciPassing')}</li>
+                <li>{t('merge:emptyState.requirements.requiredApprovals')}</li>
+                <li>{t('merge:emptyState.requirements.noConflicts')}</li>
               </ul>
             </div>
           ) : (
@@ -350,7 +361,7 @@ export default function Merge() {
                       {group.owner}/{group.name}
                     </span>
                     <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                      {group.prs.length} PR{group.prs.length !== 1 ? 's' : ''}
+                      {t('merge:repository.prCount', { count: group.prs.length })}
                     </span>
                   </div>
                   {/* PRs in this repo */}
@@ -407,8 +418,8 @@ export default function Merge() {
       {prs.length > mergeablePrs.length && (
         <Card>
           <CardHeader>
-            <CardTitle>Not Ready</CardTitle>
-            <CardDescription>PRs that need attention before they can be merged</CardDescription>
+            <CardTitle>{t('merge:sections.notReadyTitle')}</CardTitle>
+            <CardDescription>{t('merge:sections.notReadyDescription')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
@@ -421,13 +432,13 @@ export default function Merge() {
                       {group.owner}/{group.name}
                     </span>
                     <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                      {group.prs.length} PR{group.prs.length !== 1 ? 's' : ''}
+                      {t('merge:repository.prCount', { count: group.prs.length })}
                     </span>
                   </div>
                   {/* PRs in this repo */}
                   <div className="space-y-2 pl-2">
                     {group.prs.map((pr) => {
-                      const blockers = getBlockers(pr, skipReviewRequirement);
+                      const blockers = getBlockers(pr, skipReviewRequirement, t);
                       return (
                         <div key={pr.id} className="flex items-center gap-4 p-3 rounded-lg border">
                           {getStatusIcon(pr)}

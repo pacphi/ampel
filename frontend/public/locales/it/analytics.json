@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "I punteggi di salute vengono calcolati ogni ora in base alle metriche PR",
+    "title": "Nessun dato sanitario disponibile ancora"
+  },
+  "health": {
+    "mergeTime": "Tempo di unione",
+    "perWeek": "{{count}}/settimana",
+    "reviewTime": "Tempo di revisione",
+    "stalePrs": "PR obsoleti",
+    "throughput": "Capacità di elaborazione",
+    "title": "Punteggi di integrità del repository"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Tempo medio di unione",
+    "avgReviewTime": "Tempo medio di revisione",
+    "botPrs": "PR dei bot",
+    "prsMerged": "PR uniti ({{days}}d)"
+  },
+  "title": "Analisi"
+}

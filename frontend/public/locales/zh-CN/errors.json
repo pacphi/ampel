@@ -10,10 +10,14 @@
     "tokenExpired": "身份验证令牌已过期",
     "unauthorized": "未经授权的访问"
   },
+  "general": {
+    "unknownError": "发生未知错误"
+  },
   "generic": {
     "goHome": "前往控制面板",
     "message": "发生意外错误，请重试。",
     "retry": "再试一次",
+    "somethingWentWrong": "出错了，请重试。",
     "title": "出问题了"
   },
   "network": {

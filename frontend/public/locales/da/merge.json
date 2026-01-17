@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "Flet {{count}} PR'er",
+    "merging": "Sammenfletter..."
+  },
+  "blockers": {
+    "awaitingReview": "Venter på gennemgang",
+    "changesRequested": "Ønskede ændringer",
+    "ciFailed": "CI mislykkedes",
+    "ciPending": "CI afventer",
+    "conflicts": "Har konflikter",
+    "draft": "Udkast",
+    "needsReview": "Behov for gennemgang"
+  },
+  "emptyState": {
+    "noPrsReady": "Ingen PR'er er klar til at fusionere. PR'er har brug for:",
+    "requirements": {
+      "ciPassing": "Alle CI-kontroller bestået",
+      "noConflicts": "Ingen sammenflettede konflikter",
+      "requiredApprovals": "Nødvendige godkendelser"
+    }
+  },
+  "options": {
+    "deleteBranch": "Slet kildegrenen efter sammenlægning",
+    "description": "Konfigurer, hvordan pull-anmodninger skal flettes",
+    "strategies": {
+      "merge": "Opret en merge-commit",
+      "rebase": "Genbaser og flet",
+      "squash": "Squash og flet"
+    },
+    "strategy": "Fletningsstrategi",
+    "title": "Fletningsmuligheder"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PR'er"
+  },
+  "results": {
+    "allSuccess": "Alle PR'er er blevet flettet sammen!",
+    "close": "Tæt",
+    "stats": {
+      "failed": "Mislykkedes",
+      "merged": "Sammenflettet",
+      "skipped": "Springet over",
+      "total": "Total"
+    },
+    "status": {
+      "failed": "mislykkedes",
+      "skipped": "sprunget over",
+      "success": "succes"
+    },
+    "summary": "Færdiggjort med {{success}} fusioneret, {{failed}} mislykket, {{skipped}} sprunget over",
+    "title": "Flet resultater"
+  },
+  "sections": {
+    "notReadyDescription": "Pull-anmodninger, der har blokkere, der forhindrer sammenflettede filer",
+    "notReadyTitle": "Ikke klar",
+    "readyDescription": "Pull-anmodninger, der opfylder alle krav til sammenflettede elementer",
+    "readyTitle": "Klar til at fusionere"
+  },
+  "selection": {
+    "count": "{{selected}} af {{total}} valgt",
+    "deselectAll": "Fravælg alle",
+    "selectAll": "Vælg alle"
+  },
+  "subtitle": "Vælg og flet flere PR'er på én gang",
+  "title": "Massefletning",
+  "toast": {
+    "mergeFailed": "Fletning mislykkedes",
+    "mergeSuccess": "Fletningen lykkedes",
+    "mergeSuccessDescription": "{{count}} pull requests er blevet flettet sammen",
+    "someMergesFailed": "Nogle fusioner mislykkedes",
+    "someMergesFailedDescription": "{{success}} sammenflettet, {{failed}} mislykkedes"
+  }
+}

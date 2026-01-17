@@ -48,8 +48,10 @@
     "createAccount": "Opprett en konto",
     "creatingAccount": "Oppretter konto ...",
     "displayName": "Visningsnavn",
+    "displayNamePlaceholder": "John Doe",
     "dontHaveAccount": "Har du ikke en konto?",
     "email": "E-post",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "Glemt passord?",
     "getStarted": "Kom i gang med Ampel",
     "login": "Logg inn",
@@ -64,8 +66,7 @@
     "signingIn": "Logger inn...",
     "username": "Brukernavn",
     "welcome": "Velkommen tilbake!",
-    "welcomeToAmpel": "Velkommen til Ampel",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "Velkommen til Ampel"
   },
   "language": {
     "current": "Gjeldende språk",

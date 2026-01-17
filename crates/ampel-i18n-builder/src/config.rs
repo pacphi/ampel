@@ -306,13 +306,58 @@ impl Default for FallbackConfig {
 }
 
 impl Config {
-    /// Load configuration from .ampel-i18n.yaml in current directory
-    pub fn load() -> crate::error::Result<Self> {
-        let config_path = PathBuf::from(".ampel-i18n.yaml");
-
-        if !config_path.exists() {
-            return Ok(Self::default());
+    /// Find .ampel-i18n.yaml by searching up the directory tree
+    /// Also checks AMPEL_I18N_CONFIG environment variable
+    fn find_config_file() -> Option<PathBuf> {
+        // First check environment variable
+        if let Ok(config_path) = std::env::var("AMPEL_I18N_CONFIG") {
+            let path = PathBuf::from(config_path);
+            if path.exists() {
+                return Some(path);
+            }
+            tracing::warn!(
+                "AMPEL_I18N_CONFIG points to non-existent file: {}",
+                path.display()
+            );
         }
+
+        // Search up the directory tree from current working directory
+        let config_name = ".ampel-i18n.yaml";
+        let mut current_dir = std::env::current_dir().ok()?;
+
+        loop {
+            let config_path = current_dir.join(config_name);
+            if config_path.exists() {
+                return Some(config_path);
+            }
+
+            // Move to parent directory
+            if !current_dir.pop() {
+                // Reached filesystem root
+                break;
+            }
+        }
+
+        None
+    }
+
+    /// Load configuration from .ampel-i18n.yaml
+    /// Searches up the directory tree from current working directory
+    /// Also supports AMPEL_I18N_CONFIG environment variable for explicit path
+    pub fn load() -> crate::error::Result<Self> {
+        let config_path = match Self::find_config_file() {
+            Some(path) => {
+                tracing::info!("Loading config from: {}", path.display());
+                path
+            }
+            None => {
+                tracing::warn!(
+                    "No .ampel-i18n.yaml found in directory tree. Using default configuration with ALL providers enabled. \
+                     Create .ampel-i18n.yaml in your project root or set AMPEL_I18N_CONFIG environment variable."
+                );
+                return Ok(Self::default());
+            }
+        };
 
         let content = std::fs::read_to_string(&config_path)?;
         let mut config: Config = serde_yaml::from_str(&content)?;
@@ -679,5 +724,66 @@ translation:
         assert_eq!(config.translation.batch_size, 100);
         // New fields should use defaults
         assert_eq!(config.translation.default_timeout_secs, 30);
+    }
+
+    #[test]
+    fn test_find_config_file_returns_none_when_not_found() {
+        // Temporarily change to a directory without config
+        let temp_dir = std::env::temp_dir().join("ampel-i18n-test-no-config");
+        std::fs::create_dir_all(&temp_dir).ok();
+        let original_dir = std::env::current_dir().unwrap();
+        std::env::set_current_dir(&temp_dir).unwrap();
+
+        // Clear env var
+        std::env::remove_var("AMPEL_I18N_CONFIG");
+
+        let result = Config::find_config_file();
+        assert!(result.is_none());
+
+        // Restore
+        std::env::set_current_dir(original_dir).unwrap();
+        std::fs::remove_dir_all(&temp_dir).ok();
+    }
+
+    #[test]
+    fn test_find_config_file_uses_env_var() {
+        let temp_dir = std::env::temp_dir().join("ampel-i18n-test-env");
+        std::fs::create_dir_all(&temp_dir).ok();
+        let config_path = temp_dir.join(".ampel-i18n.yaml");
+        std::fs::write(&config_path, "translation:\n  timeout_secs: 30").unwrap();
+
+        std::env::set_var("AMPEL_I18N_CONFIG", config_path.to_str().unwrap());
+
+        let result = Config::find_config_file();
+        assert!(result.is_some());
+        assert_eq!(result.unwrap(), config_path);
+
+        // Cleanup
+        std::env::remove_var("AMPEL_I18N_CONFIG");
+        std::fs::remove_dir_all(&temp_dir).ok();
+    }
+
+    #[test]
+    fn test_find_config_file_searches_parent_dirs() {
+        let temp_dir = std::env::temp_dir().join("ampel-i18n-test-parent");
+        let nested_dir = temp_dir.join("sub1").join("sub2");
+        std::fs::create_dir_all(&nested_dir).ok();
+
+        // Create config in parent (temp_dir)
+        let config_path = temp_dir.join(".ampel-i18n.yaml");
+        std::fs::write(&config_path, "translation:\n  timeout_secs: 30").unwrap();
+
+        // Clear env var and change to nested dir
+        std::env::remove_var("AMPEL_I18N_CONFIG");
+        let original_dir = std::env::current_dir().unwrap();
+        std::env::set_current_dir(&nested_dir).unwrap();
+
+        let result = Config::find_config_file();
+        assert!(result.is_some());
+        assert_eq!(result.unwrap(), config_path);
+
+        // Cleanup
+        std::env::set_current_dir(original_dir).unwrap();
+        std::fs::remove_dir_all(&temp_dir).ok();
     }
 }

@@ -10,10 +10,14 @@
     "tokenExpired": "Le jeton d'authentification a expiré.",
     "unauthorized": "Accès non autorisé"
   },
+  "general": {
+    "unknownError": "Une erreur inconnue s'est produite."
+  },
   "generic": {
     "goHome": "Accéder au tableau de bord",
     "message": "Une erreur inattendue s'est produite. Veuillez réessayer.",
     "retry": "Essayer à nouveau",
+    "somethingWentWrong": "Une erreur s'est produite. Veuillez réessayer.",
     "title": "Quelque chose s'est mal passé"
   },
   "network": {

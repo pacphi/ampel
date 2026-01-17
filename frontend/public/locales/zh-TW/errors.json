@@ -10,10 +10,14 @@
     "tokenExpired": "身份驗證令牌已過期",
     "unauthorized": "未經授權的訪問"
   },
+  "general": {
+    "unknownError": "發生未知錯誤"
+  },
   "generic": {
     "goHome": "前往儀表板",
     "message": "發生了意外的錯誤。請再試一次。",
     "retry": "再試一次",
+    "somethingWentWrong": "出錯了，請重試。",
     "title": "出了些問題"
   },
   "network": {

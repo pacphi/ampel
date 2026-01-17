@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "Mesclar {{count}} PRs",
+    "merging": "Fusão..."
+  },
+  "blockers": {
+    "awaitingReview": "Aguardando revisão",
+    "changesRequested": "Alterações solicitadas",
+    "ciFailed": "CI falhou",
+    "ciPending": "IC pendente",
+    "conflicts": "Possui conflitos",
+    "draft": "Rascunho",
+    "needsReview": "Necessita de revisão"
+  },
+  "emptyState": {
+    "noPrsReady": "Nenhuma solicitação de pull request está pronta para ser mesclada. As solicitações de pull request precisam de:",
+    "requirements": {
+      "ciPassing": "Todas as verificações de CI foram aprovadas.",
+      "noConflicts": "Sem conflitos de mesclagem",
+      "requiredApprovals": "Aprovações necessárias"
+    }
+  },
+  "options": {
+    "deleteBranch": "Excluir branch de origem após merge",
+    "description": "Configure como as solicitações de pull serão mescladas.",
+    "strategies": {
+      "merge": "Criar um commit de mesclagem",
+      "rebase": "Rebase e merge",
+      "squash": "Comprima e funda"
+    },
+    "strategy": "Estratégia de Fusão",
+    "title": "Opções de mesclagem"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PRs"
+  },
+  "results": {
+    "allSuccess": "Todos os PRs foram mesclados com sucesso!",
+    "close": "Fechar",
+    "stats": {
+      "failed": "Fracassado",
+      "merged": "Fundido",
+      "skipped": "Ignorado",
+      "total": "Total"
+    },
+    "status": {
+      "failed": "fracassado",
+      "skipped": "pulado",
+      "success": "sucesso"
+    },
+    "summary": "Concluído com {{success}} mesclado, {{failed}} falhou, {{skipped}} ignorado",
+    "title": "Resultados da fusão"
+  },
+  "sections": {
+    "notReadyDescription": "Pull requests que possuem bloqueadores que impedem a mesclagem",
+    "notReadyTitle": "Não estou pronto",
+    "readyDescription": "Pull requests que atendam a todos os requisitos de merge",
+    "readyTitle": "Pronto para fusão"
+  },
+  "selection": {
+    "count": "{{selected}} de {{total}} selecionado",
+    "deselectAll": "Desmarcar tudo",
+    "selectAll": "Selecionar tudo"
+  },
+  "subtitle": "Selecione e mescle várias solicitações de pull simultaneamente.",
+  "title": "Fusão em massa",
+  "toast": {
+    "mergeFailed": "A fusão falhou.",
+    "mergeSuccess": "Fusão bem-sucedida",
+    "mergeSuccessDescription": "Mescladas com sucesso as solicitações de pull {{count}}",
+    "someMergesFailed": "Algumas fusões falharam",
+    "someMergesFailedDescription": "{{success}} mesclado, {{failed}} falhou"
+  }
+}

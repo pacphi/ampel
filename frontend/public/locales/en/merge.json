@@ -1,0 +1,75 @@
+{
+  "title": "Bulk Merge",
+  "subtitle": "Select and merge multiple PRs at once",
+  "options": {
+    "title": "Merge Options",
+    "description": "Configure how pull requests will be merged",
+    "strategy": "Merge Strategy",
+    "strategies": {
+      "squash": "Squash and merge",
+      "merge": "Create a merge commit",
+      "rebase": "Rebase and merge"
+    },
+    "deleteBranch": "Delete source branch after merge"
+  },
+  "selection": {
+    "count": "{{selected}} of {{total}} selected",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All"
+  },
+  "actions": {
+    "merge": "Merge {{count}} PRs",
+    "merging": "Merging..."
+  },
+  "sections": {
+    "readyTitle": "Ready to Merge",
+    "readyDescription": "Pull requests that meet all merge requirements",
+    "notReadyTitle": "Not Ready",
+    "notReadyDescription": "Pull requests that have blockers preventing merge"
+  },
+  "blockers": {
+    "draft": "Draft",
+    "conflicts": "Has Conflicts",
+    "ciFailed": "CI Failed",
+    "ciPending": "CI Pending",
+    "changesRequested": "Changes Requested",
+    "awaitingReview": "Awaiting Review",
+    "needsReview": "Needs Review"
+  },
+  "emptyState": {
+    "noPrsReady": "No PRs are ready to merge. PRs need:",
+    "requirements": {
+      "ciPassing": "All CI checks passing",
+      "requiredApprovals": "Required approvals",
+      "noConflicts": "No merge conflicts"
+    }
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PRs"
+  },
+  "toast": {
+    "mergeSuccess": "Merge Successful",
+    "mergeSuccessDescription": "Successfully merged {{count}} pull requests",
+    "someMergesFailed": "Some merges failed",
+    "someMergesFailedDescription": "{{success}} merged, {{failed}} failed",
+    "mergeFailed": "Merge Failed"
+  },
+  "results": {
+    "title": "Merge Results",
+    "allSuccess": "All PRs merged successfully!",
+    "summary": "Completed with {{success}} merged, {{failed}} failed, {{skipped}} skipped",
+    "stats": {
+      "total": "Total",
+      "merged": "Merged",
+      "failed": "Failed",
+      "skipped": "Skipped"
+    },
+    "status": {
+      "success": "success",
+      "failed": "failed",
+      "skipped": "skipped"
+    },
+    "close": "Close"
+  }
+}

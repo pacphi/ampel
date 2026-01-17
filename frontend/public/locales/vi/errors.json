@@ -10,10 +10,14 @@
     "tokenExpired": "Mã xác thực đã hết hạn",
     "unauthorized": "Truy cập trái phép"
   },
+  "general": {
+    "unknownError": "Đã xảy ra lỗi không xác định"
+  },
   "generic": {
     "goHome": "Đi đến bảng điều khiển",
     "message": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.",
     "retry": "Hãy thử lại",
+    "somethingWentWrong": "Đã xảy ra lỗi. Vui lòng thử lại.",
     "title": "Đã xảy ra lỗi"
   },
   "network": {

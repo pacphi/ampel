@@ -10,10 +10,14 @@
     "tokenExpired": "Platnost ověřovacího tokenu vypršela",
     "unauthorized": "Neoprávněný přístup"
   },
+  "general": {
+    "unknownError": "Došlo k neznámé chybě"
+  },
   "generic": {
     "goHome": "Přejít na řídicí panel",
     "message": "Došlo k neočekávané chybě. Zkuste to prosím znovu.",
     "retry": "Zkuste to znovu",
+    "somethingWentWrong": "Něco se pokazilo. Zkuste to prosím znovu.",
     "title": "Něco se pokazilo"
   },
   "network": {

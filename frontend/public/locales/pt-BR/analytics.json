@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Os índices de saúde são calculados a cada hora com base em métricas de relações públicas.",
+    "title": "Ainda não há dados de saúde disponíveis."
+  },
+  "health": {
+    "mergeTime": "Tempo de Fusão",
+    "perWeek": "{{count}}/semana",
+    "reviewTime": "Tempo de revisão",
+    "stalePrs": "Comunicados de imprensa obsoletos",
+    "throughput": "Capacidade de processamento",
+    "title": "Pontuações de saúde do repositório"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Tempo médio de fusão",
+    "avgReviewTime": "Tempo médio de revisão",
+    "botPrs": "Relações Públicas de Bots",
+    "prsMerged": "PRs mesclados ({{days}}d)"
+  },
+  "title": "Análises"
+}

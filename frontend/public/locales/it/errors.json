@@ -10,10 +10,14 @@
     "tokenExpired": "Il token di autenticazione è scaduto",
     "unauthorized": "Accesso non autorizzato"
   },
+  "general": {
+    "unknownError": "Si è verificato un errore sconosciuto"
+  },
   "generic": {
     "goHome": "Vai alla dashboard",
     "message": "Si è verificato un errore imprevisto. Riprova.",
     "retry": "Riprova",
+    "somethingWentWrong": "Si è verificato un errore. Riprova.",
     "title": "Qualcosa è andato storto"
   },
   "network": {

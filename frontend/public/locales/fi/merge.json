@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "Yhdistä {{count}} PR:t",
+    "merging": "Yhdistetään..."
+  },
+  "blockers": {
+    "awaitingReview": "Odotetaan tarkistusta",
+    "changesRequested": "Pyydetyt muutokset",
+    "ciFailed": "CI epäonnistui",
+    "ciPending": "CI Odottaa",
+    "conflicts": "Sisältää ristiriitoja",
+    "draft": "Luonnos",
+    "needsReview": "Tarpeiden tarkistus"
+  },
+  "emptyState": {
+    "noPrsReady": "Yksikään varainhoitaja ei ole valmis fuusioitumaan. Varainhoitajat tarvitsevat:",
+    "requirements": {
+      "ciPassing": "Kaikki CI-tarkastukset läpäisty",
+      "noConflicts": "Ei yhdistämisristiriitoja",
+      "requiredApprovals": "Vaaditut hyväksynnät"
+    }
+  },
+  "options": {
+    "deleteBranch": "Poista lähdehaara yhdistämisen jälkeen",
+    "description": "Määritä, miten pull-pyynnöt yhdistetään",
+    "strategies": {
+      "merge": "Luo yhdistämiskomentti",
+      "rebase": "Muuta pohjaa ja yhdistä",
+      "squash": "Litistä ja yhdistä"
+    },
+    "strategy": "Yhdistämisstrategia",
+    "title": "Yhdistämisasetukset"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PR:t"
+  },
+  "results": {
+    "allSuccess": "Kaikki PR:t yhdistettiin onnistuneesti!",
+    "close": "Lähellä",
+    "stats": {
+      "failed": "Epäonnistui",
+      "merged": "Yhdistetty",
+      "skipped": "Ohitettu",
+      "total": "Kokonais"
+    },
+    "status": {
+      "failed": "epäonnistui",
+      "skipped": "ohitettu",
+      "success": "menestys"
+    },
+    "summary": "Valmis, {{success}} yhdistetty, {{failed}} epäonnistui, {{skipped}} ohitettu",
+    "title": "Yhdistä tulokset"
+  },
+  "sections": {
+    "notReadyDescription": "Pull-pyynnöt, joissa on yhdistämisen estäviä estäjiä",
+    "notReadyTitle": "Ei valmis",
+    "readyDescription": "Pull-pyynnöt, jotka täyttävät kaikki yhdistämisvaatimukset",
+    "readyTitle": "Valmis yhdistämään"
+  },
+  "selection": {
+    "count": "{{selected}} / {{total}} valittu",
+    "deselectAll": "Poista kaikkien valinta",
+    "selectAll": "Valitse kaikki"
+  },
+  "subtitle": "Valitse ja yhdistä useita PR:iä kerralla",
+  "title": "Joukkoyhdistäminen",
+  "toast": {
+    "mergeFailed": "Yhdistäminen epäonnistui",
+    "mergeSuccess": "Yhdistäminen onnistui",
+    "mergeSuccessDescription": "{{count}} pull-pyyntöä yhdistettiin onnistuneesti",
+    "someMergesFailed": "Jotkin yhdistämiset epäonnistuivat",
+    "someMergesFailedDescription": "{{success}} yhdistetty, {{failed}} epäonnistui"
+  }
+}

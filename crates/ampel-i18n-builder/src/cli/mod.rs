@@ -203,7 +203,7 @@ pub enum TranslationProvider {
     DeepL,
     /// Google Cloud Translation API (requires GOOGLE_API_KEY) - Tier 3
     Google,
-    /// OpenAI GPT-4 (requires OPENAI_API_KEY) - Tier 4
+    /// OpenAI GPT-5-mini (requires OPENAI_API_KEY) - Tier 4
     OpenAI,
 }
 

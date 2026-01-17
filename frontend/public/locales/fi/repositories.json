@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Lisää kaikki ({{count}})",
+    "close": "Lähellä",
+    "empty": "Uusia lisättäviä arkistoja ei löytynyt",
+    "title": "Lisää osoitteesta {{provider}}"
+  },
+  "empty": {
+    "description": "Lisää tietovarastoja yhdistetyiltä palveluntarjoajiltasi aloittaaksesi",
+    "title": "Ei löytynyt arkistoja"
+  },
+  "providers": {
+    "connected": "(Yhdistetty)",
+    "title": "Yhdistä palveluntarjoaja"
+  },
+  "search": {
+    "placeholder": "Hae arkistoista..."
+  },
+  "table": {
+    "actions": "Toiminnot",
+    "provider": "Palveluntarjoaja",
+    "prs": "Avoimet PR:t",
+    "repository": "Arkisto",
+    "status": "Status"
+  },
+  "title": "Arkistot",
+  "toast": {
+    "addFailed": "Tietovaraston lisääminen epäonnistui",
+    "added": "Tietovarasto lisätty",
+    "addedDescription": "{{name}} on lisätty kojelautaasi",
+    "bulkAddFailed": "Tietovarastojen lisääminen epäonnistui",
+    "bulkAddFailedDescription": "Yhtäkään valituista arkistoista ei voitu lisätä",
+    "bulkAdded": "Lisätyt tietovarastot",
+    "bulkAddedDescription": "{{count}} arkistoa{{failed}} lisätty onnistuneesti",
+    "bulkAddedFailed": "({{count}} epäonnistui)",
+    "removeFailed": "Arkiston poistaminen epäonnistui",
+    "removed": "Tietovarasto poistettu",
+    "removedDescription": "{{name}} on poistettu kojelaudaltasi"
+  }
+}

@@ -15,8 +15,10 @@ import { useToast } from '@/components/ui/use-toast';
 import type { GitProvider, DiscoveredRepository } from '@/types';
 import { Plus, PlusCircle, Trash2, ExternalLink, Search, RefreshCw } from 'lucide-react';
 import { GithubIcon, GitlabIcon, BitbucketIcon } from '@/components/icons/ProviderIcons';
+import { useTranslation } from 'react-i18next';
 
 export default function Repositories() {
+  const { t } = useTranslation(['repositories', 'common', 'errors']);
   const { data: repositories, isLoading } = useRepositories();
   const { data: accounts } = useQuery({
     queryKey: ['accounts'],
@@ -41,15 +43,15 @@ export default function Repositories() {
         name: repo.name,
       });
       toast({
-        title: 'Repository added',
-        description: `${repo.fullName} has been added to your watchlist`,
+        title: t('repositories:toast.added'),
+        description: t('repositories:toast.addedDescription', { name: repo.fullName }),
       });
     } catch (error: unknown) {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Failed to add repository',
-        description: axiosError.response?.data?.error || 'An error occurred',
+        title: t('repositories:toast.addFailed'),
+        description: axiosError.response?.data?.error || t('errors:general.unknownError'),
       });
     }
   };
@@ -58,15 +60,15 @@ export default function Repositories() {
     try {
       await removeRepository.mutateAsync(id);
       toast({
-        title: 'Repository removed',
-        description: `${name} has been removed from your watchlist`,
+        title: t('repositories:toast.removed'),
+        description: t('repositories:toast.removedDescription', { name }),
       });
     } catch (error: unknown) {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Failed to remove repository',
-        description: axiosError.response?.data?.error || 'An error occurred',
+        title: t('repositories:toast.removeFailed'),
+        description: axiosError.response?.data?.error || t('errors:general.unknownError'),
       });
     }
   };
@@ -95,14 +97,17 @@ export default function Repositories() {
 
     if (successCount > 0) {
       toast({
-        title: 'Repositories added',
-        description: `${successCount} ${successCount === 1 ? 'repository' : 'repositories'} added to your watchlist${failCount > 0 ? `, ${failCount} failed` : ''}`,
+        title: t('repositories:toast.bulkAdded'),
+        description: t('repositories:toast.bulkAddedDescription', {
+          count: successCount,
+          failed: failCount > 0 ? t('repositories:toast.bulkAddedFailed', { count: failCount }) : '',
+        }),
       });
     } else {
       toast({
         variant: 'destructive',
-        title: 'Failed to add repositories',
-        description: 'Could not add any repositories',
+        title: t('repositories:toast.bulkAddFailed'),
+        description: t('repositories:toast.bulkAddFailedDescription'),
       });
     }
   };
@@ -134,13 +139,13 @@ export default function Repositories() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Repositories</h1>
+        <h1 className="text-2xl font-bold">{t('repositories:title')}</h1>
       </div>
 
       {/* Provider Connection */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Connect Providers</CardTitle>
+          <CardTitle className="text-lg">{t('repositories:providers.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex gap-4">
@@ -164,7 +169,7 @@ export default function Repositories() {
                 >
                   <ProviderIcon className="h-4 w-4 mr-2" />
                   {provider}
-                  {isProviderConnected(provider) && ' (Connected)'}
+                  {isProviderConnected(provider) && ` ${t('repositories:providers.connected')}`}
                 </Button>
               );
             })}
@@ -176,7 +181,9 @@ export default function Repositories() {
       {selectedProvider && (
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg capitalize">Add from {selectedProvider}</CardTitle>
+            <CardTitle className="text-lg capitalize">
+              {t('repositories:addFrom.title', { provider: selectedProvider })}
+            </CardTitle>
             <div className="flex items-center gap-2">
               {filteredDiscovered && filteredDiscovered.length > 0 && (
                 <Button
@@ -190,11 +197,11 @@ export default function Repositories() {
                   ) : (
                     <PlusCircle className="h-4 w-4 mr-2" />
                   )}
-                  Add all ({filteredDiscovered.length})
+                  {t('repositories:addFrom.addAll', { count: filteredDiscovered.length })}
                 </Button>
               )}
               <Button variant="ghost" size="sm" onClick={() => setSelectedProvider(null)}>
-                Close
+                {t('repositories:addFrom.close')}
               </Button>
             </div>
           </CardHeader>
@@ -230,7 +237,7 @@ export default function Repositories() {
               </div>
             ) : (
               <p className="text-center py-8 text-muted-foreground">
-                No additional repositories found
+                {t('repositories:addFrom.empty')}
               </p>
             )}
           </CardContent>
@@ -241,7 +248,7 @@ export default function Repositories() {
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search repositories..."
+          placeholder={t('repositories:search.placeholder')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-10"
@@ -258,11 +265,21 @@ export default function Repositories() {
           <table className="w-full">
             <thead>
               <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left text-sm font-medium">Status</th>
-                <th className="px-4 py-3 text-left text-sm font-medium">Repository</th>
-                <th className="px-4 py-3 text-left text-sm font-medium">Provider</th>
-                <th className="px-4 py-3 text-left text-sm font-medium">PRs</th>
-                <th className="px-4 py-3 text-left text-sm font-medium">Actions</th>
+                <th className="px-4 py-3 text-left text-sm font-medium">
+                  {t('repositories:table.status')}
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-medium">
+                  {t('repositories:table.repository')}
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-medium">
+                  {t('repositories:table.provider')}
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-medium">
+                  {t('repositories:table.prs')}
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-medium">
+                  {t('repositories:table.actions')}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -306,9 +323,9 @@ export default function Repositories() {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">No repositories found</p>
+          <p className="text-muted-foreground">{t('repositories:empty.title')}</p>
           <p className="text-sm text-muted-foreground mt-1">
-            Connect a provider and add repositories to get started
+            {t('repositories:empty.description')}
           </p>
         </div>
       )}

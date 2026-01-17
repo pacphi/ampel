@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "पीआर मर्ज करें {{count}}",
+    "merging": "विलय हो रहा है..."
+  },
+  "blockers": {
+    "awaitingReview": "समीक्षा की प्रतीक्षा में",
+    "changesRequested": "अनुरोधित परिवर्तन",
+    "ciFailed": "सीआई विफल",
+    "ciPending": "सीआई लंबित",
+    "conflicts": "विवाद हैं",
+    "draft": "मसौदा",
+    "needsReview": "समीक्षा की आवश्यकता है"
+  },
+  "emptyState": {
+    "noPrsReady": "कोई भी पीआर मर्ज करने के लिए तैयार नहीं है। पीआर में निम्नलिखित की आवश्यकता है:",
+    "requirements": {
+      "ciPassing": "सभी CI जांच सफल रहीं",
+      "noConflicts": "कोई विलय विरोध नहीं",
+      "requiredApprovals": "आवश्यक स्वीकृतियाँ"
+    }
+  },
+  "options": {
+    "deleteBranch": "मर्ज के बाद स्रोत शाखा को हटा दें",
+    "description": "यह कॉन्फ़िगर करें कि पुल रिक्वेस्ट को कैसे मर्ज किया जाएगा",
+    "strategies": {
+      "merge": "मर्ज कमिट बनाएं",
+      "rebase": "रिबेस और मर्ज",
+      "squash": "स्क्वैश और मर्ज"
+    },
+    "strategy": "विलय रणनीति",
+    "title": "विलय विकल्प"
+  },
+  "repository": {
+    "prCount": "{{count}} पीआर",
+    "prCount_other": "पीआर"
+  },
+  "results": {
+    "allSuccess": "सभी पीआर सफलतापूर्वक मर्ज हो गए!",
+    "close": "बंद करना",
+    "stats": {
+      "failed": "असफल",
+      "merged": "विलय होना",
+      "skipped": "छोड़ा गया",
+      "total": "कुल"
+    },
+    "status": {
+      "failed": "असफल",
+      "skipped": "को छोड़ दिया",
+      "success": "सफलता"
+    },
+    "summary": "{{success}} विलय के साथ पूर्ण हुआ, {{failed}} विफल रहा, {{skipped}} छोड़ा गया",
+    "title": "परिणामों को मर्ज करें"
+  },
+  "sections": {
+    "notReadyDescription": "वे पुल अनुरोध जिनमें मर्ज को रोकने वाले अवरोध मौजूद हैं",
+    "notReadyTitle": "तैयार नहीं है",
+    "readyDescription": "वे पुल अनुरोध जो विलय की सभी आवश्यकताओं को पूरा करते हैं",
+    "readyTitle": "विलय के लिए तैयार"
+  },
+  "selection": {
+    "count": "{{selected}} में से {{total}} चयनित",
+    "deselectAll": "सबको अचयनित करो",
+    "selectAll": "सबका चयन करें"
+  },
+  "subtitle": "एक साथ कई पीआर का चयन करें और उन्हें मर्ज करें",
+  "title": "बल्क मर्ज",
+  "toast": {
+    "mergeFailed": "विलय विफल",
+    "mergeSuccess": "विलय सफल रहा",
+    "mergeSuccessDescription": "{{count}} पुल अनुरोध सफलतापूर्वक मर्ज हो गए",
+    "someMergesFailed": "कुछ विलय विफल हो गए",
+    "someMergesFailedDescription": "{{success}} विलय हो गया, {{failed}} विफल रहा"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Tilføj alle ({{count}})",
+    "close": "Tæt",
+    "empty": "Ingen nye arkiver fundet at tilføje",
+    "title": "Tilføj fra {{provider}}"
+  },
+  "empty": {
+    "description": "Tilføj lagre fra dine tilsluttede udbydere for at komme i gang",
+    "title": "Ingen arkiver fundet"
+  },
+  "providers": {
+    "connected": "(Tilsluttet)",
+    "title": "Tilslut en udbyder"
+  },
+  "search": {
+    "placeholder": "Søg i arkiver..."
+  },
+  "table": {
+    "actions": "Handlinger",
+    "provider": "Udbyder",
+    "prs": "Åbne PR'er",
+    "repository": "Arkiv",
+    "status": "Status"
+  },
+  "title": "Arkiver",
+  "toast": {
+    "addFailed": "Kunne ikke tilføje arkiv",
+    "added": "Arkiv tilføjet",
+    "addedDescription": "{{name}} er blevet tilføjet til dit dashboard",
+    "bulkAddFailed": "Kunne ikke tilføje arkiver",
+    "bulkAddFailedDescription": "Kunne ikke tilføje nogen af de valgte arkiver",
+    "bulkAdded": "Lagre tilføjet",
+    "bulkAddedDescription": "Tilføjet {{count}} arkiver{{failed}}",
+    "bulkAddedFailed": "({{count}} mislykkedes)",
+    "removeFailed": "Kunne ikke fjerne arkivet",
+    "removed": "Arkiv fjernet",
+    "removedDescription": "{{name}} er blevet fjernet fra dit dashboard"
+  }
+}

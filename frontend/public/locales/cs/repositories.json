@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Přidat vše ({{count}})",
+    "close": "Blízko",
+    "empty": "Nebyly nalezeny žádné nové repozitáře k přidání.",
+    "title": "Přidat z {{provider}}"
+  },
+  "empty": {
+    "description": "Pro začátek přidejte repozitáře od připojených poskytovatelů",
+    "title": "Nenalezeny žádné repozitáře"
+  },
+  "providers": {
+    "connected": "(Připojeno)",
+    "title": "Připojení poskytovatele"
+  },
+  "search": {
+    "placeholder": "Hledat v repozitářích..."
+  },
+  "table": {
+    "actions": "Akce",
+    "provider": "Poskytovatel",
+    "prs": "Otevřené PR",
+    "repository": "Úložiště",
+    "status": "Postavení"
+  },
+  "title": "Repozitáře",
+  "toast": {
+    "addFailed": "Nepodařilo se přidat repozitář",
+    "added": "Přidáno úložiště",
+    "addedDescription": "{{name}} byl přidán do vašeho dashboardu",
+    "bulkAddFailed": "Nepodařilo se přidat repozitáře",
+    "bulkAddFailedDescription": "Nepodařilo se přidat žádné z vybraných repozitářů.",
+    "bulkAdded": "Přidané repozitáře",
+    "bulkAddedDescription": "Úspěšně přidány {{count}} repozitáře{{failed}}",
+    "bulkAddedFailed": "({{count}} selhalo)",
+    "removeFailed": "Nepodařilo se odebrat repozitář",
+    "removed": "Úložiště odstraněno",
+    "removedDescription": "{{name}} byl odstraněn z vašeho dashboardu"
+  }
+}

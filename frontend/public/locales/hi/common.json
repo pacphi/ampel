@@ -48,8 +48,10 @@
     "createAccount": "खाता बनाएं",
     "creatingAccount": "खाता बनाया जा रहा है...",
     "displayName": "प्रदर्शन नाम",
+    "displayNamePlaceholder": "जॉन डो",
     "dontHaveAccount": "खाता नहीं है?",
     "email": "ईमेल",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "पासवर्ड भूल गए?",
     "getStarted": "Ampel के साथ शुरू करें",
     "login": "लॉग इन करें",
@@ -64,8 +66,7 @@
     "signingIn": "साइन इन हो रहा है...",
     "username": "उपयोगकर्ता नाम",
     "welcome": "वापसी पर स्वागत है!",
-    "welcomeToAmpel": "अम्पेल में आपका स्वागत है",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "अम्पेल में आपका स्वागत है"
   },
   "language": {
     "current": "वर्तमान भाषा",

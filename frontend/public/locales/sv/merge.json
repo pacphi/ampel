@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "Sammanfoga {{count}} PR:er",
+    "merging": "Sammanfogar..."
+  },
+  "blockers": {
+    "awaitingReview": "Väntar på granskning",
+    "changesRequested": "Begärda ändringar",
+    "ciFailed": "CI misslyckades",
+    "ciPending": "CI väntar",
+    "conflicts": "Har konflikter",
+    "draft": "Förslag",
+    "needsReview": "Behöver granskning"
+  },
+  "emptyState": {
+    "noPrsReady": "Inga PR-medlemmar är redo att slås samman. PR-medlemmar behöver:",
+    "requirements": {
+      "ciPassing": "Alla CI-kontroller godkända",
+      "noConflicts": "Inga sammanslagningskonflikter",
+      "requiredApprovals": "Nödvändiga godkännanden"
+    }
+  },
+  "options": {
+    "deleteBranch": "Ta bort källgrenen efter sammanslagning",
+    "description": "Konfigurera hur pull requests ska slås samman",
+    "strategies": {
+      "merge": "Skapa en merge-commit",
+      "rebase": "Rebase och merge",
+      "squash": "Squash och sammanfoga"
+    },
+    "strategy": "Sammanslagningsstrategi",
+    "title": "Sammanfogningsalternativ"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PR:er"
+  },
+  "results": {
+    "allSuccess": "Alla PR-er har sammanfogats!",
+    "close": "Nära",
+    "stats": {
+      "failed": "Misslyckades",
+      "merged": "Sammanfogad",
+      "skipped": "Hoppade över",
+      "total": "Total"
+    },
+    "status": {
+      "failed": "misslyckades",
+      "skipped": "hoppade över",
+      "success": "framgång"
+    },
+    "summary": "Slutförd med {{success}} sammanfogad, {{failed}} misslyckad, {{skipped}} hoppad över",
+    "title": "Sammanfoga resultat"
+  },
+  "sections": {
+    "notReadyDescription": "Pull-förfrågningar som har blockerare som förhindrar sammanslagning",
+    "notReadyTitle": "Inte redo",
+    "readyDescription": "Hämtningsförfrågningar som uppfyller alla sammanslagningskrav",
+    "readyTitle": "Klar att slås samman"
+  },
+  "selection": {
+    "count": "{{selected}} av {{total}} valda",
+    "deselectAll": "Avmarkera alla",
+    "selectAll": "Markera alla"
+  },
+  "subtitle": "Markera och sammanfoga flera PR:er samtidigt",
+  "title": "Masssammanslagning",
+  "toast": {
+    "mergeFailed": "Sammanslagningen misslyckades",
+    "mergeSuccess": "Sammanslagningen lyckades",
+    "mergeSuccessDescription": "Sammanfogade {{count}} pull requests",
+    "someMergesFailed": "Vissa sammanslagningar misslyckades",
+    "someMergesFailedDescription": "{{success}} sammanfogad, {{failed}} misslyckades"
+  }
+}

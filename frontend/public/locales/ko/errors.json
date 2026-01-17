@@ -10,10 +10,14 @@
     "tokenExpired": "인증 토큰이 만료되었습니다",
     "unauthorized": "인증되지 않은 접근"
   },
+  "general": {
+    "unknownError": "알 수 없는 오류가 발생했습니다."
+  },
   "generic": {
     "goHome": "대시보드로 이동",
     "message": "예상치 못한 오류가 발생했습니다. 다시 시도해 주세요.",
     "retry": "다시 시도",
+    "somethingWentWrong": "오류가 발생했습니다. 다시 시도해 주세요.",
     "title": "문제가 발생했습니다"
   },
   "network": {

@@ -48,8 +48,10 @@
     "createAccount": "Tạo tài khoản",
     "creatingAccount": "Đang tạo tài khoản...",
     "displayName": "Tên hiển thị",
+    "displayNamePlaceholder": "John Doe",
     "dontHaveAccount": "Bạn chưa có tài khoản?",
     "email": "E-mail",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "Quên mật khẩu?",
     "getStarted": "Bắt đầu sử dụng Ampel",
     "login": "Đăng nhập",
@@ -64,8 +66,7 @@
     "signingIn": "Đang đăng nhập...",
     "username": "Tên người dùng",
     "welcome": "Chào mừng bạn trở lại!",
-    "welcomeToAmpel": "Chào mừng đến với Ampel",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "Chào mừng đến với Ampel"
   },
   "language": {
     "current": "Ngôn ngữ hiện tại",

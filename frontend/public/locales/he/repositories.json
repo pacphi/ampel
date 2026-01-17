@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "הוסף הכל ({{count}})",
+    "close": "לִסְגוֹר",
+    "empty": "לא נמצאו מאגרים חדשים להוספה",
+    "title": "הוסף מ- {{provider}}"
+  },
+  "empty": {
+    "description": "הוסף מאגרים מהספקים המחוברים שלך כדי להתחיל",
+    "title": "לא נמצאו מאגרים"
+  },
+  "providers": {
+    "connected": "(מְחוּבָּר)",
+    "title": "חבר ספק"
+  },
+  "search": {
+    "placeholder": "חיפוש מאגרים..."
+  },
+  "table": {
+    "actions": "פעולות",
+    "provider": "ספק",
+    "prs": "יחסי ציבור פתוחים",
+    "repository": "מאגר",
+    "status": "סטָטוּס"
+  },
+  "title": "מאגרים",
+  "toast": {
+    "addFailed": "נכשלה הוספת המאגר",
+    "added": "מאגר נוסף",
+    "addedDescription": "{{name}} נוסף ללוח המחוונים שלך",
+    "bulkAddFailed": "נכשלה הוספת המאגרים",
+    "bulkAddFailedDescription": "לא ניתן היה להוסיף אף אחד מהמאגרים שנבחרו",
+    "bulkAdded": "מאגרים שנוספו",
+    "bulkAddedDescription": "נוספו בהצלחה {{count}} מאגרים{{failed}}",
+    "bulkAddedFailed": "({{count}} נכשל)",
+    "removeFailed": "הסרת המאגר נכשלה",
+    "removed": "המאגר הוסר",
+    "removedDescription": "{{name}} הוסר מלוח המחוונים שלך"
+  }
+}

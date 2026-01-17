@@ -48,8 +48,10 @@
     "createAccount": "إنشاء حساب",
     "creatingAccount": "جار إنشاء الحساب...",
     "displayName": "اسم العرض",
+    "displayNamePlaceholder": "جون دو",
     "dontHaveAccount": "ليس لديك حساب؟",
     "email": "بريد إلكتروني",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "هل نسيت كلمة السر؟",
     "getStarted": "ابدأ مع Ampel",
     "login": "تسجيل الدخول",
@@ -64,8 +66,7 @@
     "signingIn": "جار تسجيل الدخول...",
     "username": "اسم المستخدم",
     "welcome": "مرحبًا بعودتك!",
-    "welcomeToAmpel": "مرحبا بك في Ampel",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "مرحبا بك في Ampel"
   },
   "language": {
     "current": "اللغة الحالية",

@@ -48,8 +48,10 @@
     "createAccount": "สร้างบัญชี",
     "creatingAccount": "กำลังสร้างบัญชี...",
     "displayName": "ชื่อที่แสดง",
+    "displayNamePlaceholder": "จอห์น โด",
     "dontHaveAccount": "ไม่มีบัญชีผู้ใช้?",
     "email": "อีเมล",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "ลืมรหัสผ่าน?",
     "getStarted": "เริ่มต้นกับ Ampel",
     "login": "เข้าสู่ระบบ",
@@ -64,8 +66,7 @@
     "signingIn": "กำลังเข้าสู่ระบบ...",
     "username": "ชื่อผู้ใช้",
     "welcome": "ยินดีต้อนรับกลับ!",
-    "welcomeToAmpel": "ยินดีต้อนรับสู่ Ampel",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "ยินดีต้อนรับสู่ Ampel"
   },
   "language": {
     "current": "ภาษาปัจจุบัน",

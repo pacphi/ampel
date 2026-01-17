@@ -10,10 +10,14 @@
     "tokenExpired": "Token uwierzytelniający wygasł",
     "unauthorized": "Nieautoryzowany dostęp"
   },
+  "general": {
+    "unknownError": "Wystąpił nieznany błąd"
+  },
   "generic": {
     "goHome": "Przejdź do pulpitu nawigacyjnego",
     "message": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.",
     "retry": "Spróbuj ponownie",
+    "somethingWentWrong": "Coś poszło nie tak. Spróbuj ponownie.",
     "title": "Coś poszło nie tak"
   },
   "network": {

@@ -17,12 +17,14 @@
     "notFound": "Resource not found",
     "server": "Server error. Please try again later",
     "unauthorised": "Unauthorised. Please log in again",
-    "unknown": "An unknown error occurred"
+    "unknown": "An unknown error occurred",
+    "unknownError": "An unknown error occurred"
   },
   "generic": {
     "goHome": "Go to dashboard",
     "message": "An unexpected error occurred. Please try again.",
     "retry": "Try again",
+    "somethingWentWrong": "Something went wrong. Please try again.",
     "title": "Something went wrong"
   },
   "network": {

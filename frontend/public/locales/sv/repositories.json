@@ -1,0 +1,40 @@
+{
+  "addFrom": {
+    "addAll": "Lägg till alla ({{count}})",
+    "close": "Nära",
+    "empty": "Inga nya arkiv hittades att lägga till",
+    "title": "Lägg till från {{provider}}"
+  },
+  "empty": {
+    "description": "Lägg till arkiv från dina anslutna leverantörer för att komma igång",
+    "title": "Inga arkiv hittades"
+  },
+  "providers": {
+    "connected": "(Ansluten)",
+    "title": "Anslut en leverantör"
+  },
+  "search": {
+    "placeholder": "Sök i arkiv..."
+  },
+  "table": {
+    "actions": "Åtgärder",
+    "provider": "Leverantör",
+    "prs": "Öppna PR:er",
+    "repository": "Förvaring",
+    "status": "Status"
+  },
+  "title": "Förvar",
+  "toast": {
+    "addFailed": "Misslyckades med att lägga till arkiv",
+    "added": "Arkiv tillagt",
+    "addedDescription": "{{name}} har lagts till i din instrumentpanel",
+    "bulkAddFailed": "Misslyckades med att lägga till arkiv",
+    "bulkAddFailedDescription": "Kunde inte lägga till något av de valda arkiven",
+    "bulkAdded": "Lagrade arkiv",
+    "bulkAddedDescription": "Lyckades lägga till {{count}} repositories{{failed}}",
+    "bulkAddedFailed": "({{count}} misslyckades)",
+    "removeFailed": "Misslyckades med att ta bort arkivet",
+    "removed": "Arkivet har tagits bort",
+    "removedDescription": "{{name}} har tagits bort från din instrumentpanel"
+  }
+}

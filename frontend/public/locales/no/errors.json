@@ -10,10 +10,14 @@
     "tokenExpired": "Autentiseringstokenet er utløpt",
     "unauthorized": "Uautorisert tilgang"
   },
+  "general": {
+    "unknownError": "Det oppsto en ukjent feil"
+  },
   "generic": {
     "goHome": "Gå til dashbordet",
     "message": "Det oppsto en uventet feil. Prøv på nytt.",
     "retry": "Prøv igjen",
+    "somethingWentWrong": "Noe gikk galt. Prøv igjen.",
     "title": "Noe gikk galt"
   },
   "network": {

@@ -11,7 +11,7 @@ This document describes the production-ready translation API integration impleme
 1. **Translation Providers**
    - `src/translator/deepl.rs` - DeepL API client
    - `src/translator/google.rs` - Google Cloud Translation API client
-   - `src/translator/openai.rs` - OpenAI GPT-4 fallback (existing)
+   - `src/translator/openai.rs` - OpenAI GPT-5-mini fallback (existing)
 
 2. **Intelligent Routing**
    - `src/translator/router.rs` - Smart provider selection based on language

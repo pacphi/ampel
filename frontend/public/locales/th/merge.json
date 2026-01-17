@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "ผสาน PR {{count}}",
+    "merging": "กำลังรวม..."
+  },
+  "blockers": {
+    "awaitingReview": "รอการตรวจสอบ",
+    "changesRequested": "การเปลี่ยนแปลงที่ร้องขอ",
+    "ciFailed": "CI ล้มเหลว",
+    "ciPending": "CI รอดำเนินการ",
+    "conflicts": "มีข้อขัดแย้ง",
+    "draft": "ร่าง",
+    "needsReview": "ต้องได้รับการตรวจสอบ"
+  },
+  "emptyState": {
+    "noPrsReady": "ยังไม่มี Pull Request (PR) ใดพร้อมสำหรับการรวมเข้าด้วยกัน PR เหล่านั้นจำเป็นต้องมีการดำเนินการดังต่อไปนี้:",
+    "requirements": {
+      "ciPassing": "การตรวจสอบ CI ทั้งหมดผ่านแล้ว",
+      "noConflicts": "ไม่มีข้อขัดแย้งในการผสาน",
+      "requiredApprovals": "การอนุมัติที่จำเป็น"
+    }
+  },
+  "options": {
+    "deleteBranch": "ลบสาขาต้นทางหลังจากผสานเสร็จแล้ว",
+    "description": "ตั้งค่าวิธีการรวม Pull Request",
+    "strategies": {
+      "merge": "สร้าง commit ผสาน",
+      "rebase": "ปรับฐานและผสาน",
+      "squash": "บีบอัดและผสาน"
+    },
+    "strategy": "กลยุทธ์การควบรวมกิจการ",
+    "title": "ตัวเลือกการผสาน"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PRs"
+  },
+  "results": {
+    "allSuccess": "การรวม Pull Request ทั้งหมดสำเร็จแล้ว!",
+    "close": "ปิด",
+    "stats": {
+      "failed": "ล้มเหลว",
+      "merged": "ผสานรวม",
+      "skipped": "ข้ามไป",
+      "total": "ทั้งหมด"
+    },
+    "status": {
+      "failed": "ล้มเหลว",
+      "skipped": "ข้ามไป",
+      "success": "ความสำเร็จ"
+    },
+    "summary": "ดำเนินการเสร็จสิ้นโดยผสาน {{success}} แล้ว, {{failed}} ล้มเหลว, {{skipped}} ถูกข้ามไป",
+    "title": "ผลลัพธ์การรวม"
+  },
+  "sections": {
+    "notReadyDescription": "คำขอรวมโค้ดที่มีตัวบล็อกป้องกันการผสาน",
+    "notReadyTitle": "ยังไม่พร้อม",
+    "readyDescription": "คำขอรวมโค้ดที่ตรงตามข้อกำหนดการรวมทั้งหมด",
+    "readyTitle": "พร้อมผสานรวม"
+  },
+  "selection": {
+    "count": "{{selected}} จาก {{total}} ที่เลือก",
+    "deselectAll": "ยกเลิกการเลือกทั้งหมด",
+    "selectAll": "เลือกทั้งหมด"
+  },
+  "subtitle": "เลือกและผสาน Pull Request (PR) หลายรายการพร้อมกัน",
+  "title": "การรวมจำนวนมาก",
+  "toast": {
+    "mergeFailed": "การรวมล้มเหลว",
+    "mergeSuccess": "การรวมข้อมูลสำเร็จ",
+    "mergeSuccessDescription": "รวม pull request {{count}} สำเร็จแล้ว",
+    "someMergesFailed": "การรวมบางส่วนล้มเหลว",
+    "someMergesFailedDescription": "{{success}} รวมแล้ว, {{failed}} ล้มเหลว"
+  }
+}

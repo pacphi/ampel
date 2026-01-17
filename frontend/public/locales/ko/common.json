@@ -48,8 +48,10 @@
     "createAccount": "계정 생성",
     "creatingAccount": "계정 생성 중...",
     "displayName": "표시 이름",
+    "displayNamePlaceholder": "존 도",
     "dontHaveAccount": "계정이 없으신가요?",
     "email": "이메일",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "비밀번호를 잊으셨나요?",
     "getStarted": "Ampel 시작하기",
     "login": "로그인",
@@ -64,8 +66,7 @@
     "signingIn": "로그인 중...",
     "username": "사용자 이름",
     "welcome": "다시 오신 것을 환영합니다!",
-    "welcomeToAmpel": "Ampel에 오신 것을 환영합니다",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "Ampel에 오신 것을 환영합니다"
   },
   "language": {
     "current": "현재 언어",

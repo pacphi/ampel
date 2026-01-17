@@ -2,8 +2,12 @@
   "generic": {
     "title": "Something went wrong",
     "message": "An unexpected error occurred. Please try again.",
+    "somethingWentWrong": "Something went wrong. Please try again.",
     "retry": "Try again",
     "goHome": "Go to dashboard"
+  },
+  "general": {
+    "unknownError": "An unknown error occurred"
   },
   "network": {
     "title": "Network error",

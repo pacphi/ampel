@@ -292,7 +292,7 @@ pub mod dashboard {
    - ✅ Support for Thai and Arabic (DeepL doesn't support)
    - ⚠️ Requires Google Cloud credentials setup
 
-3. **OpenAI GPT-4** (`openai.rs` - 4,648 lines)
+3. **OpenAI GPT-5-mini** (`openai.rs` - 4,648 lines)
    - ✅ Context-aware translation
    - ⚠️ Optional, for high-quality critical strings
 

@@ -48,8 +48,10 @@
     "createAccount": "Bir hesap oluşturun",
     "creatingAccount": "Hesap oluşturuluyor...",
     "displayName": "Ekran adı",
+    "displayNamePlaceholder": "John Doe",
     "dontHaveAccount": "Hesabınız yok mu?",
     "email": "E-posta",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "Parolanızı mı unuttunuz?",
     "getStarted": "Ampel ile başlayın",
     "login": "Giriş yapmak",
@@ -64,8 +66,7 @@
     "signingIn": "Giriş yapılıyor...",
     "username": "Kullanıcı adı",
     "welcome": "Tekrar hoşgeldiniz!",
-    "welcomeToAmpel": "Ampel'e hoş geldiniz",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "Ampel'e hoş geldiniz"
   },
   "language": {
     "current": "Mevcut dil",

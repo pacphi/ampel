@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Health scores are calculated hourly based on PR metrics",
+    "title": "No health data available yet"
+  },
+  "health": {
+    "mergeTime": "Merge Time",
+    "perWeek": "{{count}}/week",
+    "reviewTime": "Review Time",
+    "stalePrs": "Stale PRs",
+    "throughput": "Throughput",
+    "title": "Repository Health Scores"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Avg Merge Time",
+    "avgReviewTime": "Avg Review Time",
+    "botPrs": "Bot PRs",
+    "prsMerged": "PRs Merged ({{days}}d)"
+  },
+  "title": "Analytics"
+}

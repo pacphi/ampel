@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "Hợp nhất các yêu cầu kéo (PR) {{count}}",
+    "merging": "Đang hợp nhất..."
+  },
+  "blockers": {
+    "awaitingReview": "Đang chờ xem xét",
+    "changesRequested": "Các thay đổi được yêu cầu",
+    "ciFailed": "CI Thất bại",
+    "ciPending": "CI đang chờ xử lý",
+    "conflicts": "Có xung đột",
+    "draft": "Bản nháp",
+    "needsReview": "Cần xem xét lại"
+  },
+  "emptyState": {
+    "noPrsReady": "Hiện chưa có PR nào sẵn sàng để hợp nhất. Các PR cần:",
+    "requirements": {
+      "ciPassing": "Tất cả các kiểm tra CI đều đạt.",
+      "noConflicts": "Không có xung đột hợp nhất",
+      "requiredApprovals": "Các phê duyệt cần thiết"
+    }
+  },
+  "options": {
+    "deleteBranch": "Xóa nhánh nguồn sau khi hợp nhất",
+    "description": "Cấu hình cách các yêu cầu kéo (pull request) sẽ được hợp nhất.",
+    "strategies": {
+      "merge": "Tạo một commit hợp nhất",
+      "rebase": "Tái cấu trúc và hợp nhất",
+      "squash": "Ép và hợp nhất"
+    },
+    "strategy": "Chiến lược hợp nhất",
+    "title": "Tùy chọn hợp nhất"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PRs"
+  },
+  "results": {
+    "allSuccess": "Tất cả các yêu cầu kéo (PR) đã được hợp nhất thành công!",
+    "close": "Đóng",
+    "stats": {
+      "failed": "Thất bại",
+      "merged": "Đã hợp nhất",
+      "skipped": "Bỏ qua",
+      "total": "Tổng cộng"
+    },
+    "status": {
+      "failed": "thất bại",
+      "skipped": "bỏ qua",
+      "success": "thành công"
+    },
+    "summary": "Hoàn thành với {{success}} được hợp nhất, {{failed}} thất bại, {{skipped}} bị bỏ qua",
+    "title": "Kết quả hợp nhất"
+  },
+  "sections": {
+    "notReadyDescription": "Các yêu cầu kéo có vấn đề cản trở việc hợp nhất",
+    "notReadyTitle": "Chưa sẵn sàng",
+    "readyDescription": "Các yêu cầu kéo đáp ứng tất cả các yêu cầu hợp nhất",
+    "readyTitle": "Sẵn sàng hợp nhất"
+  },
+  "selection": {
+    "count": "{{selected}} trong số {{total}} đã chọn",
+    "deselectAll": "Bỏ chọn tất cả",
+    "selectAll": "Chọn tất cả"
+  },
+  "subtitle": "Chọn và hợp nhất nhiều yêu cầu kéo (PR) cùng lúc.",
+  "title": "Hợp nhất hàng loạt",
+  "toast": {
+    "mergeFailed": "Hợp nhất thất bại",
+    "mergeSuccess": "Hợp nhất thành công",
+    "mergeSuccessDescription": "Đã hợp nhất thành công các yêu cầu kéo {{count}}",
+    "someMergesFailed": "Một số thao tác hợp nhất đã thất bại.",
+    "someMergesFailedDescription": "{{success}} đã hợp nhất, {{failed}} thất bại"
+  }
+}

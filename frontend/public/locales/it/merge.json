@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "Unisci {{count}} PR",
+    "merging": "Fusione..."
+  },
+  "blockers": {
+    "awaitingReview": "In attesa di revisione",
+    "changesRequested": "Modifiche richieste",
+    "ciFailed": "CI fallito",
+    "ciPending": "CI in sospeso",
+    "conflicts": "Ha conflitti",
+    "draft": "Bozza",
+    "needsReview": "Necessita di revisione"
+  },
+  "emptyState": {
+    "noPrsReady": "Nessun PR è pronto per la fusione. I PR necessitano di:",
+    "requirements": {
+      "ciPassing": "Tutti i controlli CI superati",
+      "noConflicts": "Nessun conflitto di unione",
+      "requiredApprovals": "Approvazioni richieste"
+    }
+  },
+  "options": {
+    "deleteBranch": "Elimina il ramo sorgente dopo l'unione",
+    "description": "Configura come verranno unite le richieste pull",
+    "strategies": {
+      "merge": "Crea un commit di unione",
+      "rebase": "Ribasamento e unione",
+      "squash": "Schiaccia e unisci"
+    },
+    "strategy": "Strategia di unione",
+    "title": "Opzioni di unione"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PR"
+  },
+  "results": {
+    "allSuccess": "Tutti i PR sono stati uniti con successo!",
+    "close": "Vicino",
+    "stats": {
+      "failed": "Fallito",
+      "merged": "Unito",
+      "skipped": "Saltato",
+      "total": "Totale"
+    },
+    "status": {
+      "failed": "fallito",
+      "skipped": "saltato",
+      "success": "successo"
+    },
+    "summary": "Completato con {{success}} unito, {{failed}} fallito, {{skipped}} saltato",
+    "title": "Unisci risultati"
+  },
+  "sections": {
+    "notReadyDescription": "Richieste di pull con blocchi che impediscono l'unione",
+    "notReadyTitle": "Non pronto",
+    "readyDescription": "Richieste pull che soddisfano tutti i requisiti di unione",
+    "readyTitle": "Pronti per la fusione"
+  },
+  "selection": {
+    "count": "{{selected}} di {{total}} selezionati",
+    "deselectAll": "Deseleziona tutto",
+    "selectAll": "Seleziona tutto"
+  },
+  "subtitle": "Seleziona e unisci più PR contemporaneamente",
+  "title": "Unione in blocco",
+  "toast": {
+    "mergeFailed": "Unione non riuscita",
+    "mergeSuccess": "Unione riuscita",
+    "mergeSuccessDescription": "Richieste pull {{count}} unite con successo",
+    "someMergesFailed": "Alcune fusioni non sono riuscite",
+    "someMergesFailedDescription": "{{success}} unito, {{failed}} fallito"
+  }
+}

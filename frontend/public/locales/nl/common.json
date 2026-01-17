@@ -48,8 +48,10 @@
     "createAccount": "Een account aanmaken",
     "creatingAccount": "Een account aanmaken...",
     "displayName": "Weergavenaam",
+    "displayNamePlaceholder": "John Doe",
     "dontHaveAccount": "Nog geen account?",
     "email": "E-mail",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "Wachtwoord vergeten?",
     "getStarted": "Begin met Ampel",
     "login": "Login",
@@ -64,8 +66,7 @@
     "signingIn": "Aanmelden...",
     "username": "Gebruikersnaam",
     "welcome": "Welkom terug!",
-    "welcomeToAmpel": "Welkom bij Ampel",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "Welkom bij Ampel"
   },
   "language": {
     "current": "Huidige taal",

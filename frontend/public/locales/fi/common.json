@@ -48,8 +48,10 @@
     "createAccount": "Luo tili",
     "creatingAccount": "Tiliä luodaan...",
     "displayName": "Näyttönimi",
+    "displayNamePlaceholder": "John Doe",
     "dontHaveAccount": "Eikö sinulla ole tiliä?",
     "email": "Sähköposti",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "Unohditko salasanasi?",
     "getStarted": "Aloita Ampelin käyttö",
     "login": "Kirjaudu sisään",
@@ -64,8 +66,7 @@
     "signingIn": "Kirjautuminen sisään...",
     "username": "Käyttäjätunnus",
     "welcome": "Tervetuloa takaisin!",
-    "welcomeToAmpel": "Tervetuloa Ampeliin",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "Tervetuloa Ampeliin"
   },
   "language": {
     "current": "Nykyinen kieli",

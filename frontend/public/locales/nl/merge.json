@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "Merge {{count}} PR's",
+    "merging": "Samenvoegen..."
+  },
+  "blockers": {
+    "awaitingReview": "In afwachting van beoordeling",
+    "changesRequested": "Gevraagde wijzigingen",
+    "ciFailed": "CI mislukt",
+    "ciPending": "CI in behandeling",
+    "conflicts": "Heeft conflicten",
+    "draft": "Voorlopige versie",
+    "needsReview": "Moet worden beoordeeld"
+  },
+  "emptyState": {
+    "noPrsReady": "Er zijn geen pull requests klaar om te worden samengevoegd. Pull requests hebben het volgende nodig:",
+    "requirements": {
+      "ciPassing": "Alle CI-controles zijn geslaagd.",
+      "noConflicts": "Geen samenvoegingsconflicten",
+      "requiredApprovals": "Vereiste goedkeuringen"
+    }
+  },
+  "options": {
+    "deleteBranch": "Verwijder de bronbranch na de samenvoeging.",
+    "description": "Configureer hoe pull-requests worden samengevoegd.",
+    "strategies": {
+      "merge": "Maak een merge-commit aan",
+      "rebase": "Herbaseer en voeg samen",
+      "squash": "Samenvoegen en comprimeren"
+    },
+    "strategy": "Fusiestrategie",
+    "title": "Samenvoegopties"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PR's"
+  },
+  "results": {
+    "allSuccess": "Alle pull requests zijn succesvol samengevoegd!",
+    "close": "Dichtbij",
+    "stats": {
+      "failed": "Mislukt",
+      "merged": "Samengevoegd",
+      "skipped": "Overgeslagen",
+      "total": "Totaal"
+    },
+    "status": {
+      "failed": "mislukt",
+      "skipped": "overgeslagen",
+      "success": "succes"
+    },
+    "summary": "Voltooid met {{success}} samengevoegd, {{failed}} mislukt, {{skipped}} overgeslagen",
+    "title": "Resultaten samenvoegen"
+  },
+  "sections": {
+    "notReadyDescription": "Pull-verzoeken met blokkades die samenvoeging voorkomen",
+    "notReadyTitle": "Nog niet klaar",
+    "readyDescription": "Pull-requests die aan alle samenvoegingsvereisten voldoen",
+    "readyTitle": "Klaar om te fuseren"
+  },
+  "selection": {
+    "count": "{{selected}} van {{total}} geselecteerd",
+    "deselectAll": "Alles deselecteren",
+    "selectAll": "Alles selecteren"
+  },
+  "subtitle": "Selecteer en voeg meerdere pull requests tegelijk samen.",
+  "title": "Bulk samenvoegen",
+  "toast": {
+    "mergeFailed": "Samenvoeging mislukt",
+    "mergeSuccess": "Samenvoeging succesvol",
+    "mergeSuccessDescription": "Succesvol samengevoegde {{count}} pull requests",
+    "someMergesFailed": "Sommige samenvoegingen zijn mislukt.",
+    "someMergesFailedDescription": "{{success}} samengevoegd, {{failed}} mislukt"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "Fusionner les PR {{count}}",
+    "merging": "Fusion..."
+  },
+  "blockers": {
+    "awaitingReview": "En attente d'évaluation",
+    "changesRequested": "Modifications demandées",
+    "ciFailed": "Échec de l'intégration continue",
+    "ciPending": "CI en attente",
+    "conflicts": "Présente des conflits d'intérêts",
+    "draft": "Brouillon",
+    "needsReview": "Examen des besoins"
+  },
+  "emptyState": {
+    "noPrsReady": "Aucune PR n'est prête à être fusionnée. Les PR ont besoin de :",
+    "requirements": {
+      "ciPassing": "Tous les tests d'intégration continue sont réussis.",
+      "noConflicts": "Aucun conflit de fusion",
+      "requiredApprovals": "Approbations requises"
+    }
+  },
+  "options": {
+    "deleteBranch": "Supprimer la branche source après la fusion",
+    "description": "Configurez la manière dont les demandes d'extraction seront fusionnées.",
+    "strategies": {
+      "merge": "Créer un commit de fusion",
+      "rebase": "Rebaser et fusionner",
+      "squash": "Écraser et fusionner"
+    },
+    "strategy": "Stratégie de fusion",
+    "title": "Options de fusion"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PR"
+  },
+  "results": {
+    "allSuccess": "Toutes les demandes de fusion ont été fusionnées avec succès !",
+    "close": "Fermer",
+    "stats": {
+      "failed": "Échoué",
+      "merged": "Fusionné",
+      "skipped": "Omission",
+      "total": "Total"
+    },
+    "status": {
+      "failed": "échoué",
+      "skipped": "sauté",
+      "success": "succès"
+    },
+    "summary": "Fusion de {{success}} terminée, {{failed}} a échoué, {{skipped}} ignorée",
+    "title": "Fusionner les résultats"
+  },
+  "sections": {
+    "notReadyDescription": "Les demandes d'extraction qui ont des blocages empêchant la fusion",
+    "notReadyTitle": "Pas prêt",
+    "readyDescription": "Les demandes d'extraction qui répondent à toutes les exigences de fusion",
+    "readyTitle": "Prêt à fusionner"
+  },
+  "selection": {
+    "count": "{{selected}} de {{total}} sélectionné",
+    "deselectAll": "Désélectionnez tout",
+    "selectAll": "Tout sélectionner"
+  },
+  "subtitle": "Sélectionnez et fusionnez plusieurs demandes de tirage simultanément.",
+  "title": "Fusion en masse",
+  "toast": {
+    "mergeFailed": "Échec de la fusion",
+    "mergeSuccess": "Fusion réussie",
+    "mergeSuccessDescription": "Fusion réussie des requêtes d'extraction {{count}}",
+    "someMergesFailed": "Certaines fusions ont échoué",
+    "someMergesFailedDescription": "{{success}} fusionné, {{failed}} échec"
+  }
+}

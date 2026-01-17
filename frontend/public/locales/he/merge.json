@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "מיזוג {{count}} יחסי ציבור",
+    "merging": "ממזג..."
+  },
+  "blockers": {
+    "awaitingReview": "ממתין לבדיקה",
+    "changesRequested": "שינויים מבוקשים",
+    "ciFailed": "CI נכשל",
+    "ciPending": "CI בהמתנה",
+    "conflicts": "יש התנגשויות",
+    "draft": "טְיוּטָה",
+    "needsReview": "צריך סקירה"
+  },
+  "emptyState": {
+    "noPrsReady": "אף ארגון יחסי ציבור אינו מוכן להתמזג. ארגון יחסי הציבור זקוק ל:",
+    "requirements": {
+      "ciPassing": "כל בדיקות ה-CI עוברות",
+      "noConflicts": "אין התנגשויות מיזוג",
+      "requiredApprovals": "אישורים נדרשים"
+    }
+  },
+  "options": {
+    "deleteBranch": "מחיקת ענף מקור לאחר מיזוג",
+    "description": "הגדרת אופן מיזוג בקשות משיכה",
+    "strategies": {
+      "merge": "צור commit של מיזוג",
+      "rebase": "בסיס מחדש ומיזוג",
+      "squash": "דחיסה ומיזוג"
+    },
+    "strategy": "אסטרטגיית מיזוג",
+    "title": "אפשרויות מיזוג"
+  },
+  "repository": {
+    "prCount": "יחסי ציבור",
+    "prCount_other": "{{count}} יחסי ציבור"
+  },
+  "results": {
+    "allSuccess": "כל ה-PR אוחדו בהצלחה!",
+    "close": "לִסְגוֹר",
+    "stats": {
+      "failed": "נִכשָׁל",
+      "merged": "ממוזג",
+      "skipped": "דילג",
+      "total": "סַך הַכֹּל"
+    },
+    "status": {
+      "failed": "נִכשָׁל",
+      "skipped": "דילג",
+      "success": "הַצלָחָה"
+    },
+    "summary": "הושלם עם {{success}} ממוזג, {{failed}} נכשל, {{skipped}} דילג",
+    "title": "מיזוג תוצאות"
+  },
+  "sections": {
+    "notReadyDescription": "בקשות משיכה (Pull requests) שיש להן חוסמים המונעים מיזוג",
+    "notReadyTitle": "לא מוכן",
+    "readyDescription": "בקשות משיכה העומדות בכל דרישות המיזוג",
+    "readyTitle": "מוכן למיזוג"
+  },
+  "selection": {
+    "count": "{{selected}} מתוך {{total}} נבחרו",
+    "deselectAll": "בטל את הבחירה של הכל",
+    "selectAll": "בחר הכל"
+  },
+  "subtitle": "בחירה ומיזוג של מספר רב של יחסי ציבור בו זמנית",
+  "title": "מיזוג בכמות גדולה",
+  "toast": {
+    "mergeFailed": "המיזוג נכשל",
+    "mergeSuccess": "המיזוג הצליח",
+    "mergeSuccessDescription": "בקשות משיכה {{count}} מוזגו בהצלחה",
+    "someMergesFailed": "חלק מהמיזוגים נכשלו",
+    "someMergesFailedDescription": "{{success}} האיחוד, {{failed}} נכשל"
+  }
+}

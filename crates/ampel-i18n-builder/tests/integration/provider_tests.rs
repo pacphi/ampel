@@ -3,7 +3,7 @@
 //! Tests provider-specific functionality:
 //! - DeepL API integration
 //! - Google Translate API integration
-//! - OpenAI GPT-4 translation
+//! - OpenAI GPT-5-mini translation
 //! - Provider retry and backoff behavior
 //! - Rate limiting
 //! - Caching

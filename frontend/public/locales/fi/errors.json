@@ -10,10 +10,14 @@
     "tokenExpired": "Todennustunnus on vanhentunut",
     "unauthorized": "Luvaton pääsy"
   },
+  "general": {
+    "unknownError": "Tuntematon virhe tapahtui"
+  },
   "generic": {
     "goHome": "Siirry kojelautaan",
     "message": "Odottamaton virhe tapahtui. Yritä uudelleen.",
     "retry": "Yritä uudelleen",
+    "somethingWentWrong": "Jotain meni pieleen. Yritä uudelleen.",
     "title": "Jokin meni pieleen"
   },
   "network": {

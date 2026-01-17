@@ -86,7 +86,7 @@ impl OpenAITranslator {
         );
 
         let request = OpenAIRequest {
-            model: "gpt-4".to_string(),
+            model: "gpt-5-mini".to_string(),
             messages: vec![
                 Message {
                     role: "system".to_string(),

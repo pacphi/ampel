@@ -48,8 +48,10 @@
     "createAccount": "创建账户",
     "creatingAccount": "正在创建帐户...",
     "displayName": "显示名称",
+    "displayNamePlaceholder": "约翰·多伊",
     "dontHaveAccount": "没有账户？",
     "email": "电子邮件",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "忘记密码？",
     "getStarted": "开始使用Ampel",
     "login": "登录",
@@ -64,8 +66,7 @@
     "signingIn": "正在登录...",
     "username": "用户名",
     "welcome": "欢迎回来！",
-    "welcomeToAmpel": "欢迎来到Ampel",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "欢迎来到Ampel"
   },
   "language": {
     "current": "当前语言",

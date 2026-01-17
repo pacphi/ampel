@@ -1,0 +1,24 @@
+{
+  "empty": {
+    "description": "Sundhedsscorer beregnes time for time baseret på PR-målinger",
+    "title": "Ingen sundhedsdata tilgængelige endnu"
+  },
+  "health": {
+    "mergeTime": "Flettetidspunkt",
+    "perWeek": "{{count}}/uge",
+    "reviewTime": "Gennemgangstid",
+    "stalePrs": "Forældede PR'er",
+    "throughput": "Gennemløb",
+    "title": "Sundhedsscorer for arkivet"
+  },
+  "loading": {
+    "placeholder": "-"
+  },
+  "summary": {
+    "avgMergeTime": "Gennemsnitlig flettetid",
+    "avgReviewTime": "Gennemsnitlig gennemgangstid",
+    "botPrs": "Bot PR'er",
+    "prsMerged": "PR'er fusioneret ({{days}}d)"
+  },
+  "title": "Analyse"
+}

@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "Объединить запросы на слияние (PR)",
+    "merging": "Слияние..."
+  },
+  "blockers": {
+    "awaitingReview": "Ожидается рассмотрение",
+    "changesRequested": "Запрошены изменения",
+    "ciFailed": "CI не удалось",
+    "ciPending": "CI в ожидании",
+    "conflicts": "Имеет конфликты",
+    "draft": "Черновик",
+    "needsReview": "Необходимо провести анализ потребностей"
+  },
+  "emptyState": {
+    "noPrsReady": "Запросы на слияние пока не готовы. Запросам на слияние необходимо:",
+    "requirements": {
+      "ciPassing": "Все проверки CI пройдены успешно.",
+      "noConflicts": "Конфликтов слияния нет.",
+      "requiredApprovals": "Необходимые согласования"
+    }
+  },
+  "options": {
+    "deleteBranch": "Удалите исходную ветку после слияния.",
+    "description": "Настройте способ слияния запросов на слияние (pull requests).",
+    "strategies": {
+      "merge": "Создать коммит слияния",
+      "rebase": "Перебазирование и слияние",
+      "squash": "Сжать и объединить"
+    },
+    "strategy": "Стратегия слияния",
+    "title": "Параметры слияния"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PRs"
+  },
+  "results": {
+    "allSuccess": "Все запросы на слияние успешно объединены!",
+    "close": "Закрывать",
+    "stats": {
+      "failed": "Неуспешный",
+      "merged": "Объединено",
+      "skipped": "Пропущено",
+      "total": "Общий"
+    },
+    "status": {
+      "failed": "неуспешный",
+      "skipped": "пропущено",
+      "success": "успех"
+    },
+    "summary": "Завершено с объединением {{success}}, с ошибкой {{failed}}, пропущено {{skipped}}",
+    "title": "Результаты слияния"
+  },
+  "sections": {
+    "notReadyDescription": "Запросы на слияние, имеющие блокирующие условия, препятствующие объединению",
+    "notReadyTitle": "Не готов",
+    "readyDescription": "Запросы на слияние, отвечающие всем требованиям.",
+    "readyTitle": "Готовы к слиянию"
+  },
+  "selection": {
+    "count": "{{selected}} из {{total}} выбрано",
+    "deselectAll": "Снять выделение со всех элементов",
+    "selectAll": "Выбрать все"
+  },
+  "subtitle": "Выбрать и объединить несколько запросов на слияние одновременно.",
+  "title": "Массовое слияние",
+  "toast": {
+    "mergeFailed": "Слияние не удалось.",
+    "mergeSuccess": "Слияние прошло успешно.",
+    "mergeSuccessDescription": "Успешно объединены запросы на слияние (pull requests).",
+    "someMergesFailed": "Некоторые слияния не удались.",
+    "someMergesFailedDescription": "{{success}} объединено, {{failed}} не удалось"
+  }
+}

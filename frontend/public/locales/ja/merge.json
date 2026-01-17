@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "{{count}} 件の PR をマージ",
+    "merging": "マージ中..."
+  },
+  "blockers": {
+    "awaitingReview": "審査待ち",
+    "changesRequested": "変更要求",
+    "ciFailed": "CI 失敗",
+    "ciPending": "CI保留中",
+    "conflicts": "競合あり",
+    "draft": "下書き",
+    "needsReview": "レビューが必要"
+  },
+  "emptyState": {
+    "noPrsReady": "マージする準備ができている PR がありません。PR には次のものが必要です:",
+    "requirements": {
+      "ciPassing": "すべてのCIチェックに合格",
+      "noConflicts": "マージ競合なし",
+      "requiredApprovals": "必要な承認"
+    }
+  },
+  "options": {
+    "deleteBranch": "マージ後にソースブランチを削除する",
+    "description": "プルリクエストのマージ方法を設定する",
+    "strategies": {
+      "merge": "マージコミットを作成する",
+      "rebase": "リベースとマージ",
+      "squash": "押しつぶして結合する"
+    },
+    "strategy": "マージ戦略",
+    "title": "結合オプション"
+  },
+  "repository": {
+    "prCount": "{{count}} 広報",
+    "prCount_other": "{{count}} 件の PR"
+  },
+  "results": {
+    "allSuccess": "すべての PR が正常にマージされました。",
+    "close": "近い",
+    "stats": {
+      "failed": "失敗した",
+      "merged": "合併",
+      "skipped": "スキップ",
+      "total": "合計"
+    },
+    "status": {
+      "failed": "失敗した",
+      "skipped": "スキップ",
+      "success": "成功"
+    },
+    "summary": "{{success}} がマージされ、{{failed}} が失敗し、{{skipped}} がスキップされました",
+    "title": "結果をマージ"
+  },
+  "sections": {
+    "notReadyDescription": "マージを妨げるブロッカーがあるプルリクエスト",
+    "notReadyTitle": "準備ができていません",
+    "readyDescription": "すべてのマージ要件を満たすプルリクエスト",
+    "readyTitle": "マージ準備完了"
+  },
+  "selection": {
+    "count": "{{selected}} / {{total}} 個が選択されました",
+    "deselectAll": "すべて選択解除",
+    "selectAll": "すべて選択"
+  },
+  "subtitle": "複数のPRを一度に選択してマージする",
+  "title": "一括マージ",
+  "toast": {
+    "mergeFailed": "マージに失敗しました",
+    "mergeSuccess": "マージ成功",
+    "mergeSuccessDescription": "{{count}} 件のプルリクエストを正常にマージしました",
+    "someMergesFailed": "一部のマージが失敗しました",
+    "someMergesFailedDescription": "{{success}} がマージされましたが、{{failed}} が失敗しました"
+  }
+}

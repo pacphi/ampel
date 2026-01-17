@@ -48,8 +48,10 @@
     "createAccount": "創建帳戶",
     "creatingAccount": "正在創建帳戶...",
     "displayName": "顯示名稱",
+    "displayNamePlaceholder": "約翰·多伊",
     "dontHaveAccount": "還沒有帳號？",
     "email": "電子郵件",
+    "emailPlaceholder": "you@example.com",
     "forgotPassword": "忘記密碼？",
     "getStarted": "開始使用 Ampel",
     "login": "登入",
@@ -64,8 +66,7 @@
     "signingIn": "正在登入...",
     "username": "用戶名",
     "welcome": "歡迎回來！",
-    "welcomeToAmpel": "歡迎來到 Ampel",
-    "emailPlaceholder": "you@example.com"
+    "welcomeToAmpel": "歡迎來到 Ampel"
   },
   "language": {
     "current": "當前語言",

@@ -63,9 +63,12 @@ export const supportedLanguages: SupportedLanguage[] = [
 ];
 
 export type TranslationNamespace =
+  | 'analytics'
   | 'common'
   | 'dashboard'
   | 'errors'
+  | 'merge'
+  | 'repositories'
   | 'settings'
   | 'validation';
 
@@ -119,6 +122,7 @@ export interface CommonTranslations {
     createAccount: string;
     creatingAccount: string;
     displayName: string;
+    displayNamePlaceholder: string;
     dontHaveAccount: string;
     email: string;
     emailPlaceholder: string;
@@ -488,10 +492,155 @@ export interface ValidationTranslations {
   url: string;
 }
 
+export interface AnalyticsTranslations {
+  title: string;
+  summary: {
+    prsMerged: string;
+    avgMergeTime: string;
+    avgReviewTime: string;
+    botPrs: string;
+  };
+  health: {
+    title: string;
+    mergeTime: string;
+    throughput: string;
+    perWeek: string;
+    reviewTime: string;
+    stalePrs: string;
+  };
+  empty: {
+    title: string;
+    description: string;
+  };
+  loading: {
+    placeholder: string;
+  };
+}
+
+export interface MergeTranslations {
+  title: string;
+  subtitle: string;
+  options: {
+    title: string;
+    description: string;
+    strategy: string;
+    strategies: {
+      squash: string;
+      merge: string;
+      rebase: string;
+    };
+    deleteBranch: string;
+  };
+  selection: {
+    count: string;
+    selectAll: string;
+    deselectAll: string;
+  };
+  actions: {
+    merge: string;
+    merging: string;
+  };
+  sections: {
+    readyTitle: string;
+    readyDescription: string;
+    notReadyTitle: string;
+    notReadyDescription: string;
+  };
+  blockers: {
+    draft: string;
+    conflicts: string;
+    ciFailed: string;
+    ciPending: string;
+    changesRequested: string;
+    awaitingReview: string;
+    needsReview: string;
+  };
+  emptyState: {
+    noPrsReady: string;
+    requirements: {
+      ciPassing: string;
+      requiredApprovals: string;
+      noConflicts: string;
+    };
+  };
+  repository: {
+    prCount: string;
+    prCount_other: string;
+  };
+  toast: {
+    mergeSuccess: string;
+    mergeSuccessDescription: string;
+    someMergesFailed: string;
+    someMergesFailedDescription: string;
+    mergeFailed: string;
+  };
+  results: {
+    title: string;
+    allSuccess: string;
+    summary: string;
+    stats: {
+      total: string;
+      merged: string;
+      failed: string;
+      skipped: string;
+    };
+    status: {
+      success: string;
+      failed: string;
+      skipped: string;
+    };
+    close: string;
+  };
+}
+
+export interface RepositoriesTranslations {
+  title: string;
+  providers: {
+    title: string;
+    connected: string;
+  };
+  addFrom: {
+    title: string;
+    addAll: string;
+    close: string;
+    empty: string;
+  };
+  search: {
+    placeholder: string;
+  };
+  table: {
+    status: string;
+    repository: string;
+    provider: string;
+    prs: string;
+    actions: string;
+  };
+  empty: {
+    title: string;
+    description: string;
+  };
+  toast: {
+    added: string;
+    addedDescription: string;
+    addFailed: string;
+    removed: string;
+    removedDescription: string;
+    removeFailed: string;
+    bulkAdded: string;
+    bulkAddedDescription: string;
+    bulkAddedFailed: string;
+    bulkAddFailed: string;
+    bulkAddFailedDescription: string;
+  };
+}
+
 export interface Translations {
+  analytics: AnalyticsTranslations;
   common: CommonTranslations;
   dashboard: DashboardTranslations;
   errors: ErrorsTranslations;
+  merge: MergeTranslations;
+  repositories: RepositoriesTranslations;
   settings: SettingsTranslations;
   validation: ValidationTranslations;
 }

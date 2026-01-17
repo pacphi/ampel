@@ -1,0 +1,75 @@
+{
+  "actions": {
+    "merge": "{{count}} PR 병합",
+    "merging": "병합 중..."
+  },
+  "blockers": {
+    "awaitingReview": "검토 대기 중",
+    "changesRequested": "변경 요청 사항",
+    "ciFailed": "CI 실패",
+    "ciPending": "CI 보류 중",
+    "conflicts": "갈등이 있습니다",
+    "draft": "초안",
+    "needsReview": "검토 필요"
+  },
+  "emptyState": {
+    "noPrsReady": "병합할 준비가 된 PR이 없습니다. PR에 필요한 사항은 다음과 같습니다.",
+    "requirements": {
+      "ciPassing": "모든 CI 검사가 통과되었습니다.",
+      "noConflicts": "병합 충돌 없음",
+      "requiredApprovals": "필수 승인 사항"
+    }
+  },
+  "options": {
+    "deleteBranch": "병합 후 소스 브랜치 삭제",
+    "description": "풀 리퀘스트 병합 방식을 구성합니다.",
+    "strategies": {
+      "merge": "병합 커밋을 생성합니다.",
+      "rebase": "리베이스 및 병합",
+      "squash": "스쿼시 앤 병합"
+    },
+    "strategy": "합병 전략",
+    "title": "병합 옵션"
+  },
+  "repository": {
+    "prCount": "{{count}} PR",
+    "prCount_other": "{{count}} PRs"
+  },
+  "results": {
+    "allSuccess": "모든 PR이 성공적으로 병합되었습니다!",
+    "close": "닫다",
+    "stats": {
+      "failed": "실패한",
+      "merged": "병합됨",
+      "skipped": "건너뛰었습니다",
+      "total": "총"
+    },
+    "status": {
+      "failed": "실패한",
+      "skipped": "건너뛰었습니다",
+      "success": "성공"
+    },
+    "summary": "{{success}} 병합 완료, {{failed}} 실패, {{skipped}} 건너뛰기",
+    "title": "결과 병합"
+  },
+  "sections": {
+    "notReadyDescription": "병합을 막는 요소가 있는 풀 리퀘스트",
+    "notReadyTitle": "아직 준비되지 않음",
+    "readyDescription": "모든 병합 요구 사항을 충족하는 풀 리퀘스트",
+    "readyTitle": "병합 준비 완료"
+  },
+  "selection": {
+    "count": "{{selected}} 중 {{total}}이 선택되었습니다.",
+    "deselectAll": "모두 선택 해제",
+    "selectAll": "모두 선택"
+  },
+  "subtitle": "여러 PR을 한 번에 선택하고 병합하세요",
+  "title": "대량 병합",
+  "toast": {
+    "mergeFailed": "병합 실패",
+    "mergeSuccess": "병합 성공",
+    "mergeSuccessDescription": "{{count}} 풀 리퀘스트가 성공적으로 병합되었습니다.",
+    "someMergesFailed": "일부 병합이 실패했습니다.",
+    "someMergesFailedDescription": "{{success}} 병합됨, {{failed}} 실패"
+  }
+}
