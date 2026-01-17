@@ -51,7 +51,7 @@ dotenv = "0.15"
 # Rate limiting and caching
 governor = "0.6"
 nonzero_ext = "0.3"
-lru = "0.12"
+lru = "0.16"
 
 [dev-dependencies]
 tokio-test = "0.4"
