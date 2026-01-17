@@ -185,12 +185,34 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # ============================================
+  # Publish ampel-i18n-builder to crates.io
+  # ============================================
+  publish-crate:
+    name: Publish to crates.io
+    runs-on: ubuntu-latest
+    needs: create-release
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Verify crate can be packaged
+        run: cargo package --package ampel-i18n-builder --allow-dirty
+
+      - name: Publish to crates.io
+        run: cargo publish --package ampel-i18n-builder
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  # ============================================
   # Notify on Release
   # ============================================
   notify:
     name: Notify Release Complete
     runs-on: ubuntu-latest
-    needs: [create-release, docker-release, binary-release]
+    needs: [create-release, docker-release, binary-release, publish-crate]
     if: always()
 
     steps:

@@ -2,6 +2,12 @@
 name = "ampel-i18n-builder"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "CLI tool and library for building i18n translations using AI providers"
+repository = "https://github.com/pacphi/ampel"
+readme = "README.md"
+keywords = ["i18n", "localization", "translation", "cli"]
+categories = ["command-line-utilities", "internationalization"]
 
 [[bin]]
 name = "cargo-i18n"
