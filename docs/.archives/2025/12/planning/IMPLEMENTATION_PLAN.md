@@ -513,7 +513,7 @@ members = [
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
-repository = "https://github.com/yourusername/ampel"
+repository = "https://github.com/pacphi/ampel"
 
 [workspace.dependencies]
 # Async runtime

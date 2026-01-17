@@ -119,9 +119,9 @@ on:
 Each release includes:
 
 - **Docker Images**: Published to GitHub Container Registry
-  - `ghcr.io/yourusername/ampel-api:v0.1.0`
-  - `ghcr.io/yourusername/ampel-worker:v0.1.0`
-  - `ghcr.io/yourusername/ampel-frontend:v0.1.0`
+  - `ghcr.io/pacphi/ampel-api:v0.1.0`
+  - `ghcr.io/pacphi/ampel-worker:v0.1.0`
+  - `ghcr.io/pacphi/ampel-frontend:v0.1.0`
 
 - **Binary Releases** (optional): Pre-compiled binaries for:
   - Linux x86_64
@@ -180,11 +180,11 @@ If a release has critical issues:
 
 ```bash
 # Revert to previous Docker image
-docker pull ghcr.io/yourusername/ampel-api:v0.0.9
+docker pull ghcr.io/pacphi/ampel-api:v0.0.9
 docker compose up -d
 
 # Or on Fly.io
-fly deploy --image ghcr.io/yourusername/ampel-api:v0.0.9
+fly deploy --image ghcr.io/pacphi/ampel-api:v0.0.9
 ```
 
 ### Git Revert
