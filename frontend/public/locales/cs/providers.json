@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Účet: Čtení",
+      "pullRequestsRead": "Žádosti o načtení: Čtení",
+      "pullRequestsWrite": "Žádosti o načtení: Napsat",
+      "repositoriesRead": "Repozitáře: Čtení",
+      "repositoriesWrite": "Repozitáře: Zápis"
+    },
+    "steps": {
+      "step1": "Přejděte do Bitbucketu → Osobní nastavení → Hesla aplikací",
+      "step2": "Klikněte na „Vytvořit heslo aplikace“",
+      "step3": "Zadejte popisek hesla",
+      "step4": "Vyberte požadovaná oprávnění:",
+      "step5": "Klikněte na „Vytvořit“ a zkopírujte heslo."
+    },
+    "title": "Pokyny pro heslo aplikace Bitbucket"
+  },
+  "common": {
+    "expirationWarning": "Pro lepší zabezpečení zvažte nastavení data vypršení platnosti.",
+    "minimalScopes": "Udělte pouze minimální požadovaná oprávnění.",
+    "securityNote": "Uchovávejte svůj token v bezpečí a nikdy jej nesdílejte veřejně."
+  },
+  "github": {
+    "note": "Jemně odstupňované tokeny jsou také podporovány s oprávněními přístupu k repozitáři.",
+    "scopes": {
+      "readOrg": "read:org (Číst organizaci a členství v týmu)",
+      "readUser": "read:user (Čtení dat uživatelského profilu)",
+      "repo": "repozitář (plná kontrola nad soukromými repozitáři)"
+    },
+    "steps": {
+      "step1": "Přejděte do Nastavení GitHubu → Nastavení pro vývojáře → Osobní přístupové tokeny → Tokeny (klasické)",
+      "step2": "Klikněte na „Generovat nový token (klasický)“",
+      "step3": "Dejte svému tokenu popisný název",
+      "step4": "Vyberte požadované rozsahy:",
+      "step5": "Klikněte na „Generovat token“ a ihned jej zkopírujte."
+    },
+    "title": "Pokyny k tokenu GitHubu"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "API (plný přístup k API)",
+      "readApi": "read_api (přístup k API pouze pro čtení)",
+      "readRepository": "read_repository (Přístup pro čtení repozitáře)"
+    },
+    "steps": {
+      "step1": "Přejděte do GitLabu → Nastavení uživatele → Přístupové tokeny",
+      "step2": "Zadejte název tokenu a volitelné datum vypršení platnosti",
+      "step3": "Vyberte požadované rozsahy:",
+      "step4": "Klikněte na „Vytvořit osobní přístupový token“ a zkopírujte jej."
+    },
+    "title": "Pokyny k tokenu GitLab"
+  },
+  "title": "Pokyny pro poskytovatele"
+}

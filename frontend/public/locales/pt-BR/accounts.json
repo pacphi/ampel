@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Voltar para Contas",
+    "form": {
+      "accountLabel": "Rótulo da conta",
+      "accountLabelDescription": "Um nome amigável para identificar esta conta.",
+      "accountLabelPlaceholder": "Por exemplo, GitHub do trabalho, GitLab pessoal",
+      "provider": "Fornecedor",
+      "selectProvider": "Selecione um fornecedor",
+      "token": "Token de Acesso Pessoal",
+      "tokenDescription": "Seu token é criptografado e armazenado com segurança.",
+      "tokenPlaceholder": "Insira seu token de acesso pessoal."
+    },
+    "submit": "Conta de Conexão",
+    "submitting": "Conectando...",
+    "subtitle": "Conecte uma nova conta de provedor Git",
+    "title": "Adicionar conta de provedor"
+  },
+  "addAccount": "Adicionar conta",
+  "addFirstAccount": "Adicione sua primeira conta",
+  "card": {
+    "actions": {
+      "delete": "Excluir conta",
+      "edit": "Editar conta",
+      "setDefault": "Definir como padrão",
+      "validate": "Validar token"
+    },
+    "expires": "Expira",
+    "neverExpires": "Nunca expira",
+    "repositories": "repositórios",
+    "status": {
+      "default": "Padrão",
+      "expired": "Expirado",
+      "invalid": "Inválido",
+      "pending": "Pendente",
+      "valid": "Válido"
+    },
+    "validated": "Validado"
+  },
+  "delete": {
+    "cancel": "Cancelar",
+    "confirm": "Excluir",
+    "deleting": "Excluindo...",
+    "description": "Tem certeza de que deseja excluir a conta \"{{label}}\"? Isso não excluirá os repositórios, mas eles precisarão ser vinculados novamente a outra conta.",
+    "title": "Excluir conta"
+  },
+  "description": "Gerencie suas contas de provedor Git conectadas",
+  "edit": {
+    "accountInfo": "Informações da conta",
+    "backToAccounts": "Voltar para Contas",
+    "form": {
+      "accountLabel": "Rótulo da conta",
+      "accountLabelPlaceholder": "Por exemplo, o GitHub do Work",
+      "currentToken": "Token atual",
+      "token": "Token de Acesso Pessoal",
+      "tokenDescription": "Deixe em branco para manter o token atual.",
+      "tokenPlaceholder": "Insira o novo token para atualizar"
+    },
+    "notFound": "Conta não encontrada",
+    "submit": "Salvar alterações",
+    "submitting": "Salvando...",
+    "subtitle": "Atualizar configurações da conta",
+    "title": "Editar conta"
+  },
+  "noAccountsYet": "Nenhuma conta conectada ainda",
+  "title": "Contas de Fornecedores",
+  "toast": {
+    "connected": "Conta conectada",
+    "connectedDescription": "Conexão com a conta {{provider}} realizada com sucesso",
+    "connectionFailed": "Falha ao adicionar a conta",
+    "defaultUpdateFailed": "Falha ao atualizar o padrão",
+    "defaultUpdated": "Conta padrão atualizada",
+    "defaultUpdatedDescription": "A conta padrão foi alterada.",
+    "deleteFailed": "Falha ao excluir a conta",
+    "deleted": "Conta excluída",
+    "deletedDescription": "A conta foi removida com sucesso.",
+    "tokenInvalid": "Token inválido",
+    "tokenInvalidDescription": "O token é inválido ou expirou.",
+    "tokenValid": "Token válido",
+    "tokenValidDescription": "O token da conta é válido e está ativo.",
+    "updateFailed": "Falha ao atualizar a conta",
+    "updated": "Conta atualizada",
+    "updatedDescription": "As configurações da conta foram salvas.",
+    "validationFailed": "Validação falhou"
+  }
+}

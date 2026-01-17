@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "العودة إلى الحسابات",
+    "form": {
+      "accountLabel": "اسم الحساب",
+      "accountLabelDescription": "اسم ودود لتمييز هذا الحساب",
+      "accountLabelPlaceholder": "على سبيل المثال، GitHub الخاص بالعمل، GitLab الشخصي",
+      "provider": "مزود",
+      "selectProvider": "اختر مزود الخدمة",
+      "token": "رمز الوصول الشخصي",
+      "tokenDescription": "تم تشفير رمزك وتخزينه بشكل آمن.",
+      "tokenPlaceholder": "أدخل رمز الوصول الشخصي الخاص بك"
+    },
+    "submit": "ربط الحساب",
+    "submitting": "جارٍ الاتصال...",
+    "subtitle": "قم بربط حساب موفر Git جديد",
+    "title": "إضافة حساب مزود الخدمة"
+  },
+  "addAccount": "إضافة حساب",
+  "addFirstAccount": "أضف حسابك الأول",
+  "card": {
+    "actions": {
+      "delete": "حذف الحساب",
+      "edit": "تعديل الحساب",
+      "setDefault": "تعيين كافتراضي",
+      "validate": "التحقق من صحة الرمز المميز"
+    },
+    "expires": "تاريخ الانتهاء",
+    "neverExpires": "لا تنتهي صلاحيته أبداً",
+    "repositories": "المستودعات",
+    "status": {
+      "default": "تقصير",
+      "expired": "منتهي الصلاحية",
+      "invalid": "غير صالح",
+      "pending": "قيد الانتظار",
+      "valid": "صالح"
+    },
+    "validated": "تم التحقق منه"
+  },
+  "delete": {
+    "cancel": "يلغي",
+    "confirm": "يمسح",
+    "deleting": "جارٍ الحذف...",
+    "description": "هل أنت متأكد من رغبتك في حذف الحساب \"{{label}}\"؟ لن يؤدي هذا إلى حذف المستودعات، ولكن سيتعين إعادة ربطها بحساب آخر.",
+    "title": "حذف الحساب"
+  },
+  "description": "إدارة حسابات موفر Git المتصلة",
+  "edit": {
+    "accountInfo": "معلومات الحساب",
+    "backToAccounts": "العودة إلى الحسابات",
+    "form": {
+      "accountLabel": "اسم الحساب",
+      "accountLabelPlaceholder": "مثال: جيت هاب للعمل",
+      "currentToken": "الرمز المميز الحالي",
+      "token": "رمز الوصول الشخصي",
+      "tokenDescription": "اتركه فارغًا للاحتفاظ بالرمز المميز الحالي",
+      "tokenPlaceholder": "أدخل الرمز المميز الجديد للتحديث"
+    },
+    "notFound": "لم يتم العثور على الحساب",
+    "submit": "حفظ التغييرات",
+    "submitting": "توفير...",
+    "subtitle": "تحديث إعدادات الحساب",
+    "title": "تعديل الحساب"
+  },
+  "noAccountsYet": "لم يتم ربط أي حسابات حتى الآن",
+  "title": "حسابات مقدمي الخدمات",
+  "toast": {
+    "connected": "تم ربط الحساب",
+    "connectedDescription": "تم ربط الحساب {{provider}} بنجاح",
+    "connectionFailed": "فشل إضافة الحساب",
+    "defaultUpdateFailed": "فشل تحديث الإعدادات الافتراضية",
+    "defaultUpdated": "تم تحديث الحساب الافتراضي",
+    "defaultUpdatedDescription": "تم تغيير الحساب الافتراضي",
+    "deleteFailed": "فشل حذف الحساب",
+    "deleted": "تم حذف الحساب",
+    "deletedDescription": "تمت إزالة الحساب بنجاح",
+    "tokenInvalid": "الرمز المميز غير صالح",
+    "tokenInvalidDescription": "الرمز المميز غير صالح أو منتهي الصلاحية",
+    "tokenValid": "الرمز المميز صالح",
+    "tokenValidDescription": "رمز الحساب صالح ونشط",
+    "updateFailed": "فشل تحديث الحساب",
+    "updated": "تم تحديث الحساب",
+    "updatedDescription": "تم حفظ إعدادات الحساب",
+    "validationFailed": "فشل التحقق"
+  }
+}

@@ -89,7 +89,18 @@
     "showArchived": "Afficher les archives",
     "showArchivedDescription": "Inclure les dépôts archivés",
     "showForks": "Afficher les fourchettes",
-    "showForksDescription": "Inclure les dépôts dupliqués"
+    "showForksDescription": "Inclure les dépôts dupliqués",
+    "visibility": {
+      "archived": "Afficher les dépôts archivés",
+      "archivedDescription": "Afficher les dépôts archivés",
+      "bitbucketNote": "Remarque : la visibilité de Bitbucket peut varier en fonction des paramètres de l’espace de travail",
+      "description": "Choisissez les types de dépôts à afficher",
+      "private": "Afficher les dépôts privés",
+      "privateDescription": "Afficher les dépôts privés",
+      "public": "Afficher les dépôts publics",
+      "publicDescription": "Afficher les dépôts accessibles au public",
+      "title": "Filtres de visibilité du référentiel"
+    }
   },
   "reset": "Réinitialiser les paramètres par défaut",
   "resetConfirm": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres ?",

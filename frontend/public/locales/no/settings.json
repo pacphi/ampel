@@ -89,7 +89,18 @@
     "showArchived": "Vis arkiverte",
     "showArchivedDescription": "Inkluder arkiverte databaser",
     "showForks": "Vis gafler",
-    "showForksDescription": "Inkluder forgrenede repositorier"
+    "showForksDescription": "Inkluder forgrenede repositorier",
+    "visibility": {
+      "archived": "Vis arkiverte databaser",
+      "archivedDescription": "Vis arkiverte databaser",
+      "bitbucketNote": "Merk: Synligheten til Bitbucket kan variere avhengig av arbeidsområdeinnstillingene.",
+      "description": "Velg hvilke typer arkiver som skal vises",
+      "private": "Vis private arkiver",
+      "privateDescription": "Vis private arkiver",
+      "public": "Vis offentlige arkiver",
+      "publicDescription": "Vis arkiver som er offentlig tilgjengelige",
+      "title": "Filtre for synlighet av arkivet"
+    }
   },
   "reset": "Tilbakestill til standardinnstillinger",
   "resetConfirm": "Er du sikker på at du vil tilbakestille alle innstillingene?",

@@ -12,6 +12,23 @@
     "draft": "Entwurf",
     "needsReview": "Bedarfsprüfung"
   },
+  "dialog": {
+    "cancel": "Stornieren",
+    "deleteBranch": "Branch nach Zusammenführung löschen",
+    "merge": "Zusammenführen PR",
+    "merging": "Zusammenführen...",
+    "strategy": {
+      "merge": "Erstelle einen Merge-Commit",
+      "mergeDescription": "Alle Commits erhalten",
+      "rebase": "Rebase und Merge",
+      "rebaseDescription": "Linearer Commit-Verlauf",
+      "squash": "Zusammenpressen und verschmelzen",
+      "squashDescription": "Alle Commits zu einem einzigen zusammenfassen",
+      "title": "Fusionsstrategie"
+    },
+    "subtitle": "Konfigurieren Sie die Zusammenführungsoptionen für diesen Pull Request.",
+    "title": "Merge Pull Request"
+  },
   "emptyState": {
     "noPrsReady": "Es sind noch keine Pull Requests bereit zum Zusammenführen. Folgende Pull Requests werden benötigt:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Mehrere PRs gleichzeitig auswählen und zusammenführen",
   "title": "Massenzusammenführung",
   "toast": {
+    "failed": "Zusammenführung fehlgeschlagen",
+    "failedDescription": "Zusammenführen von #{{number}}: {{error}} fehlgeschlagen",
     "mergeFailed": "Zusammenführung fehlgeschlagen",
     "mergeSuccess": "Zusammenführung erfolgreich",
     "mergeSuccessDescription": "Pull-Anfragen erfolgreich zusammengeführt {{count}}",
     "someMergesFailed": "Einige Zusammenführungen sind fehlgeschlagen.",
-    "someMergesFailedDescription": "{{success}} zusammengeführt, {{failed}} fehlgeschlagen"
+    "someMergesFailedDescription": "{{success}} zusammengeführt, {{failed}} fehlgeschlagen",
+    "success": "PR zusammengeführt",
+    "successDescription": "Die Zusammenführung von #{{number}} und {{title}} verlief erfolgreich."
   }
 }

@@ -20,6 +20,41 @@ import '@testing-library/jest-dom';
 import { server, resetHandlers } from './msw/server';
 
 // ============================================================================
+// react-i18next Mock
+// ============================================================================
+
+/**
+ * Mock react-i18next for components that use useTranslation hook
+ * outside of the custom render wrapper from test-utils.
+ *
+ * This uses a dynamic import to ensure i18n is initialized before use.
+ */
+vi.mock('react-i18next', async () => {
+  const actual = await vi.importActual<typeof import('react-i18next')>('react-i18next');
+  // Dynamic import to ensure testI18n is properly initialized
+  const { default: testI18n } = await import('./i18n-test-config');
+
+  return {
+    ...actual,
+    useTranslation: (ns?: string | string[]) => ({
+      t: (key: string, options?: Record<string, unknown>) => {
+        // If the key already includes the namespace (e.g., 'notifications:slack.title'),
+        // don't pass the ns parameter to avoid conflicts
+        if (key.includes(':')) {
+          return testI18n.t(key, options);
+        }
+        // For keys without namespace, use the provided namespace
+        return testI18n.t(key, { ns, ...options });
+      },
+      i18n: testI18n,
+      ready: true,
+    }),
+    Trans: ({ children }: { children: React.ReactNode }) => children,
+    initReactI18next: actual.initReactI18next,
+  };
+});
+
+// ============================================================================
 // MSW Server Lifecycle
 // ============================================================================
 

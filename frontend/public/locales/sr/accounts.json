@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Назад на налоге",
+    "form": {
+      "accountLabel": "Ознака налога",
+      "accountLabelDescription": "Пријатно име за идентификацију овог налога",
+      "accountLabelPlaceholder": "нпр. Пословни GitHub, Лични GitLab",
+      "provider": "Провајдер",
+      "selectProvider": "Изаберите добављача",
+      "token": "Лични приступни токен",
+      "tokenDescription": "Ваш токен је шифрован и безбедно сачуван",
+      "tokenPlaceholder": "Унесите свој лични приступни токен"
+    },
+    "submit": "Повежи налог",
+    "submitting": "Повезивање...",
+    "subtitle": "Повежите нови налог Git провајдера",
+    "title": "Додај налог добављача"
+  },
+  "addAccount": "Додај налог",
+  "addFirstAccount": "Додајте свој први налог",
+  "card": {
+    "actions": {
+      "delete": "Обриши налог",
+      "edit": "Измени налог",
+      "setDefault": "Постави као подразумевано",
+      "validate": "Валидирај токен"
+    },
+    "expires": "Истиче",
+    "neverExpires": "Никада не истиче",
+    "repositories": "репозиторијуми",
+    "status": {
+      "default": "Подразумевано",
+      "expired": "Истекло",
+      "invalid": "Неважеће",
+      "pending": "На чекању",
+      "valid": "Важи"
+    },
+    "validated": "Потврђено"
+  },
+  "delete": {
+    "cancel": "Откажи",
+    "confirm": "Обриши",
+    "deleting": "Брисање...",
+    "description": "Да ли сте сигурни да желите да обришете налог „{{label}}“? Ово неће обрисати спремишта, али ће их морати поново повезати са другим налогом.",
+    "title": "Обриши налог"
+  },
+  "description": "Управљајте повезаним налозима Git провајдера",
+  "edit": {
+    "accountInfo": "Информације о налогу",
+    "backToAccounts": "Назад на налоге",
+    "form": {
+      "accountLabel": "Ознака налога",
+      "accountLabelPlaceholder": "нпр. Посао на ГитХабу",
+      "currentToken": "Тренутни токен",
+      "token": "Лични приступни токен",
+      "tokenDescription": "Оставите празно да бисте задржали тренутни токен",
+      "tokenPlaceholder": "Унесите нови токен за ажурирање"
+    },
+    "notFound": "Налог није пронађен",
+    "submit": "Сачувај измене",
+    "submitting": "Чување...",
+    "subtitle": "Ажурирајте подешавања налога",
+    "title": "Измени налог"
+  },
+  "noAccountsYet": "Још увек нема повезаних налога",
+  "title": "Налози добављача",
+  "toast": {
+    "connected": "Налог повезан",
+    "connectedDescription": "Успешно повезан {{provider}} налог",
+    "connectionFailed": "Додавање налога није успело",
+    "defaultUpdateFailed": "Ажурирање подразумеваних подешавања није успело",
+    "defaultUpdated": "Подразумевани налог је ажуриран",
+    "defaultUpdatedDescription": "Подразумевани налог је промењен",
+    "deleteFailed": "Брисање налога није успело",
+    "deleted": "Налог је обрисан",
+    "deletedDescription": "Налог је успешно уклоњен",
+    "tokenInvalid": "Токен је неважећи",
+    "tokenInvalidDescription": "Токен је неважећи или је истекао",
+    "tokenValid": "Токен важи",
+    "tokenValidDescription": "Токен налога је важећи и активан",
+    "updateFailed": "Ажурирање налога није успело",
+    "updated": "Налог је ажуриран",
+    "updatedDescription": "Подешавања налога су сачувана",
+    "validationFailed": "Валидација није успела"
+  }
+}

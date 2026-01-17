@@ -12,6 +12,23 @@
     "draft": "Luonnos",
     "needsReview": "Tarpeiden tarkistus"
   },
+  "dialog": {
+    "cancel": "Peruuttaa",
+    "deleteBranch": "Poista haara yhdistämisen jälkeen",
+    "merge": "Yhdistä PR",
+    "merging": "Yhdistetään...",
+    "strategy": {
+      "merge": "Luo yhdistämiskomentti",
+      "mergeDescription": "Kaikki commitit säilytetty",
+      "rebase": "Muuta pohjaa ja yhdistä",
+      "rebaseDescription": "Lineaarinen commit-historia",
+      "squash": "Litistä ja yhdistä",
+      "squashDescription": "Yhdistä kaikki commitit yhdeksi",
+      "title": "Yhdistämisstrategia"
+    },
+    "subtitle": "Määritä yhdistämisasetukset tälle PR:lle",
+    "title": "Yhdistämispyyntö"
+  },
   "emptyState": {
     "noPrsReady": "Yksikään varainhoitaja ei ole valmis fuusioitumaan. Varainhoitajat tarvitsevat:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Valitse ja yhdistä useita PR:iä kerralla",
   "title": "Joukkoyhdistäminen",
   "toast": {
+    "failed": "Yhdistäminen epäonnistui",
+    "failedDescription": "Yhdistäminen epäonnistui #{{number}}: {{error}}",
     "mergeFailed": "Yhdistäminen epäonnistui",
     "mergeSuccess": "Yhdistäminen onnistui",
     "mergeSuccessDescription": "{{count}} pull-pyyntöä yhdistettiin onnistuneesti",
     "someMergesFailed": "Jotkin yhdistämiset epäonnistuivat",
-    "someMergesFailedDescription": "{{success}} yhdistetty, {{failed}} epäonnistui"
+    "someMergesFailedDescription": "{{success}} yhdistetty, {{failed}} epäonnistui",
+    "success": "PR-yhdistys",
+    "successDescription": "Yhdistetty onnistuneesti #{{number}}: {{title}}"
   }
 }

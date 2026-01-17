@@ -312,7 +312,10 @@ export default function Merge() {
 
           <div className="flex items-center justify-between pt-4 border-t">
             <div className="text-sm text-muted-foreground">
-              {t('merge:selection.count', { selected: selectedIds.size, total: mergeablePrs.length })}
+              {t('merge:selection.count', {
+                selected: selectedIds.size,
+                total: mergeablePrs.length,
+              })}
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={selectAll}>

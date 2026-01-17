@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Odotusaika peräkkäisten yhdistämisten välillä",
+    "placeholder": "5",
+    "title": "Yhdistämisviive (sekuntia)"
+  },
+  "options": {
+    "allowNoReviews": "Salli yhdistäminen ilman arvosteluja",
+    "allowNoReviewsDescription": "Salli sellaisten PR-pyyntöjen yhdistäminen, joilla ei ole arvosteluja",
+    "deleteBranch": "Poista haarat yhdistämisen jälkeen",
+    "deleteBranchDescription": "Poista lähdehaarat automaattisesti onnistuneen yhdistämisen jälkeen",
+    "requireApproval": "Vaaditaan hyväksyntä ennen yhdistämistä",
+    "requireApprovalDescription": "Odota manuaalista hyväksyntää ennen yhdistämisen suorittamista"
+  },
+  "strategy": {
+    "description": "Valitse, miten pull-pyynnöt yhdistetään oletusarvoisesti",
+    "merge": "Luo yhdistämiskomentti",
+    "mergeDescription": "Kaikki commitit säilytetty",
+    "rebase": "Muuta pohjaa ja yhdistä",
+    "rebaseDescription": "Lineaarinen commit-historia",
+    "squash": "Litistä ja yhdistä",
+    "squashDescription": "Yhdistä kaikki commitit yhdeksi",
+    "title": "Oletusyhdistämisstrategia"
+  },
+  "title": "Yhdistämiskäyttäytyminen",
+  "toast": {
+    "updateFailed": "Asetusten päivittäminen epäonnistui",
+    "updated": "Asetukset päivitetty",
+    "updatedDescription": "Yhdistämistoimintojen asetukset on tallennettu"
+  }
+}

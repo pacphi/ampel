@@ -10,6 +10,13 @@
     "tokenExpired": "認証トークンの有効期限が切れています",
     "unauthorized": "無許可のアクセス"
   },
+  "boundary": {
+    "description": "予期しないエラーが発生しました。もう一度お試しください。",
+    "details": "エラーの詳細（開発者のみ）",
+    "reload": "ページを再読み込み",
+    "title": "問題が発生しました",
+    "tryAgain": "もう一度やり直してください"
+  },
   "general": {
     "unknownError": "不明なエラーが発生しました"
   },

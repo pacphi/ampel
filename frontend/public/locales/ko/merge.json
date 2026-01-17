@@ -12,6 +12,23 @@
     "draft": "초안",
     "needsReview": "검토 필요"
   },
+  "dialog": {
+    "cancel": "취소",
+    "deleteBranch": "병합 후 분기 삭제",
+    "merge": "Merge PR",
+    "merging": "병합 중...",
+    "strategy": {
+      "merge": "병합 커밋을 생성합니다.",
+      "mergeDescription": "모든 커밋이 보존됩니다.",
+      "rebase": "리베이스 및 병합",
+      "rebaseDescription": "선형 커밋 기록",
+      "squash": "스쿼시 앤 병합",
+      "squashDescription": "모든 커밋을 하나로 합칩니다.",
+      "title": "합병 전략"
+    },
+    "subtitle": "이 PR에 대한 병합 옵션을 구성합니다.",
+    "title": "병합 풀 리퀘스트"
+  },
   "emptyState": {
     "noPrsReady": "병합할 준비가 된 PR이 없습니다. PR에 필요한 사항은 다음과 같습니다.",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "여러 PR을 한 번에 선택하고 병합하세요",
   "title": "대량 병합",
   "toast": {
+    "failed": "병합 실패",
+    "failedDescription": "#{{number}}: {{error}} 병합 실패",
     "mergeFailed": "병합 실패",
     "mergeSuccess": "병합 성공",
     "mergeSuccessDescription": "{{count}} 풀 리퀘스트가 성공적으로 병합되었습니다.",
     "someMergesFailed": "일부 병합이 실패했습니다.",
-    "someMergesFailedDescription": "{{success}} 병합됨, {{failed}} 실패"
+    "someMergesFailedDescription": "{{success}} 병합됨, {{failed}} 실패",
+    "success": "PR 병합됨",
+    "successDescription": "#{{number}}: {{title}}이 성공적으로 병합되었습니다."
   }
 }

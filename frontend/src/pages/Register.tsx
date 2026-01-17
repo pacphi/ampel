@@ -72,14 +72,23 @@ export default function Register() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="displayName">{t('common:auth.displayName')}</Label>
-              <Input id="displayName" placeholder={t('common:auth.displayNamePlaceholder')} {...register('displayName')} />
+              <Input
+                id="displayName"
+                placeholder={t('common:auth.displayNamePlaceholder')}
+                {...register('displayName')}
+              />
               {errors.displayName && (
                 <p className="text-sm text-destructive">{errors.displayName.message}</p>
               )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">{t('common:auth.email')}</Label>
-              <Input id="email" type="email" placeholder={t('common:auth.emailPlaceholder')} {...register('email')} />
+              <Input
+                id="email"
+                type="email"
+                placeholder={t('common:auth.emailPlaceholder')}
+                {...register('email')}
+              />
               {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
             </div>
             <div className="space-y-2">

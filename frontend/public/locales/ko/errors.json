@@ -10,6 +10,13 @@
     "tokenExpired": "인증 토큰이 만료되었습니다",
     "unauthorized": "인증되지 않은 접근"
   },
+  "boundary": {
+    "description": "예기치 않은 오류가 발생했습니다. 다시 시도해 주세요.",
+    "details": "오류 세부 정보 (개발자 전용)",
+    "reload": "페이지 새로고침",
+    "title": "뭔가 잘못됐어요",
+    "tryAgain": "다시 시도하세요"
+  },
   "general": {
     "unknownError": "알 수 없는 오류가 발생했습니다."
   },

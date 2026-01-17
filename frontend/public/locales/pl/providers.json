@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Konto: Odczyt",
+      "pullRequestsRead": "Żądania ściągnięcia: Odczyt",
+      "pullRequestsWrite": "Żądania ściągnięcia: Napisz",
+      "repositoriesRead": "Repozytoria: Odczyt",
+      "repositoriesWrite": "Repozytoria: Napisz"
+    },
+    "steps": {
+      "step1": "Przejdź do Bitbucket → Ustawienia osobiste → Hasła aplikacji",
+      "step2": "Kliknij „Utwórz hasło aplikacji”",
+      "step3": "Wprowadź etykietę dla hasła",
+      "step4": "Wybierz wymagane uprawnienia:",
+      "step5": "Kliknij „Utwórz” i skopiuj hasło"
+    },
+    "title": "Instrukcje dotyczące hasła aplikacji Bitbucket"
+  },
+  "common": {
+    "expirationWarning": "Aby zwiększyć bezpieczeństwo, rozważ ustawienie daty ważności.",
+    "minimalScopes": "Udzielaj tylko minimalnych wymaganych uprawnień.",
+    "securityNote": "Dbaj o bezpieczeństwo swojego tokena i nigdy nie udostępniaj go publicznie."
+  },
+  "github": {
+    "note": "Obsługiwane są również tokeny szczegółowe z uprawnieniami dostępu do repozytorium.",
+    "scopes": {
+      "readOrg": "read:org (Odczyt organizacji i członkostwa w zespole)",
+      "readUser": "read:user (Odczyt danych profilu użytkownika)",
+      "repo": "repo (Pełna kontrola nad prywatnymi repozytoriami)"
+    },
+    "steps": {
+      "step1": "Przejdź do Ustawień GitHub → Ustawienia programisty → Tokeny dostępu osobistego → Tokeny (klasyczne)",
+      "step2": "Kliknij „Wygeneruj nowy token (klasyczny)”",
+      "step3": "Nadaj swojemu tokenowi opisową nazwę",
+      "step4": "Wybierz wymagane zakresy:",
+      "step5": "Kliknij „Wygeneruj token” i natychmiast go skopiuj"
+    },
+    "title": "Instrukcje dotyczące tokena GitHub"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "api (pełny dostęp do API)",
+      "readApi": "read_api (dostęp do API tylko do odczytu)",
+      "readRepository": "read_repository (Odczyt dostępu do repozytorium)"
+    },
+    "steps": {
+      "step1": "Przejdź do GitLab → Ustawienia użytkownika → Tokeny dostępu",
+      "step2": "Wprowadź nazwę tokena i opcjonalną datę wygaśnięcia",
+      "step3": "Wybierz wymagane zakresy:",
+      "step4": "Kliknij „Utwórz osobisty token dostępu” i skopiuj go"
+    },
+    "title": "Instrukcje dotyczące tokena GitLab"
+  },
+  "title": "Instrukcje dla dostawcy"
+}

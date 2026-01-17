@@ -89,7 +89,18 @@
     "showArchived": "Pokaż zarchiwizowane",
     "showArchivedDescription": "Uwzględnij zarchiwizowane repozytoria",
     "showForks": "Pokaż widelce",
-    "showForksDescription": "Uwzględnij rozwidlone repozytoria"
+    "showForksDescription": "Uwzględnij rozwidlone repozytoria",
+    "visibility": {
+      "archived": "Pokaż zarchiwizowane repozytoria",
+      "archivedDescription": "Wyświetl zarchiwizowane repozytoria",
+      "bitbucketNote": "Uwaga: widoczność Bitbucket może się różnić w zależności od ustawień obszaru roboczego",
+      "description": "Wybierz typy repozytoriów do wyświetlenia",
+      "private": "Pokaż prywatne repozytoria",
+      "privateDescription": "Wyświetlaj repozytoria, które są prywatne",
+      "public": "Pokaż publiczne repozytoria",
+      "publicDescription": "Wyświetlaj repozytoria, do których jest publiczny dostęp",
+      "title": "Filtry widoczności repozytorium"
+    }
   },
   "reset": "Przywróć ustawienia domyślne",
   "resetConfirm": "Czy na pewno chcesz zresetować wszystkie ustawienia?",

@@ -53,7 +53,28 @@
     "mergeSuccessDescription": "Successfully merged {{count}} pull requests",
     "someMergesFailed": "Some merges failed",
     "someMergesFailedDescription": "{{success}} merged, {{failed}} failed",
-    "mergeFailed": "Merge Failed"
+    "mergeFailed": "Merge Failed",
+    "success": "PR Merged",
+    "successDescription": "Successfully merged #{{number}}: {{title}}",
+    "failed": "Merge failed",
+    "failedDescription": "Failed to merge #{{number}}: {{error}}"
+  },
+  "dialog": {
+    "title": "Merge Pull Request",
+    "subtitle": "Configure merge options for this PR",
+    "strategy": {
+      "title": "Merge Strategy",
+      "squash": "Squash and merge",
+      "squashDescription": "Combine all commits into one",
+      "merge": "Create a merge commit",
+      "mergeDescription": "All commits preserved",
+      "rebase": "Rebase and merge",
+      "rebaseDescription": "Linear commit history"
+    },
+    "deleteBranch": "Delete branch after merge",
+    "cancel": "Cancel",
+    "merge": "Merge PR",
+    "merging": "Merging..."
   },
   "results": {
     "title": "Merge Results",

@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Hesaplara geri dön",
+    "form": {
+      "accountLabel": "Hesap Etiketi",
+      "accountLabelDescription": "Bu hesabı tanımlamak için kullanılabilecek samimi bir isim.",
+      "accountLabelPlaceholder": "Örneğin, İş GitHub'ı, Kişisel GitLab",
+      "provider": "Sağlayıcı",
+      "selectProvider": "Bir sağlayıcı seçin",
+      "token": "Kişisel Erişim Jetonu",
+      "tokenDescription": "Tokeniniz şifrelenmiş ve güvenli bir şekilde saklanmaktadır.",
+      "tokenPlaceholder": "Kişisel erişim belirtecinizi girin."
+    },
+    "submit": "Hesabı Bağla",
+    "submitting": "Bağlanıyor...",
+    "subtitle": "Yeni bir Git sağlayıcı hesabı bağlayın.",
+    "title": "Sağlayıcı Hesabı Ekle"
+  },
+  "addAccount": "Hesap Ekle",
+  "addFirstAccount": "İlk Hesabınızı Ekleyin",
+  "card": {
+    "actions": {
+      "delete": "Hesabı sil",
+      "edit": "Hesabı düzenle",
+      "setDefault": "Varsayılan olarak ayarla",
+      "validate": "Tokeni doğrula"
+    },
+    "expires": "Süresi doluyor",
+    "neverExpires": "Son kullanma tarihi yok",
+    "repositories": "depolar",
+    "status": {
+      "default": "Varsayılan",
+      "expired": "Günü geçmiş",
+      "invalid": "Geçersiz",
+      "pending": "Askıda olması",
+      "valid": "Geçerli"
+    },
+    "validated": "Doğrulandı"
+  },
+  "delete": {
+    "cancel": "İptal etmek",
+    "confirm": "Silmek",
+    "deleting": "Siliniyor...",
+    "description": "\"{{label}}\" hesabını silmek istediğinizden emin misiniz? Bu işlem depoları silmeyecek, ancak depoların başka bir hesaba yeniden bağlanması gerekecek.",
+    "title": "Hesabı Sil"
+  },
+  "description": "Bağlı Git sağlayıcı hesaplarınızı yönetin.",
+  "edit": {
+    "accountInfo": "Hesap Bilgileri",
+    "backToAccounts": "Hesaplara geri dön",
+    "form": {
+      "accountLabel": "Hesap Etiketi",
+      "accountLabelPlaceholder": "Örneğin, GitHub'daki Çalışmalar",
+      "currentToken": "Mevcut belirteç",
+      "token": "Kişisel Erişim Jetonu",
+      "tokenDescription": "Geçerli belirteci korumak için boş bırakın.",
+      "tokenPlaceholder": "Güncellemek için yeni bir belirteç girin."
+    },
+    "notFound": "Hesap bulunamadı.",
+    "submit": "Değişiklikleri Kaydet",
+    "submitting": "Tasarruf...",
+    "subtitle": "Hesap ayarlarını güncelle",
+    "title": "Hesabı Düzenle"
+  },
+  "noAccountsYet": "Henüz hiçbir hesap bağlı değil.",
+  "title": "Sağlayıcı Hesapları",
+  "toast": {
+    "connected": "Hesap bağlantılı",
+    "connectedDescription": "{{provider}} hesabı başarıyla bağlandı.",
+    "connectionFailed": "Hesap ekleme başarısız oldu.",
+    "defaultUpdateFailed": "Varsayılan ayarları güncelleme başarısız oldu.",
+    "defaultUpdated": "Varsayılan hesap güncellendi",
+    "defaultUpdatedDescription": "Varsayılan hesap değiştirildi.",
+    "deleteFailed": "Hesap silme işlemi başarısız oldu.",
+    "deleted": "Hesap silindi",
+    "deletedDescription": "Hesap başarıyla kaldırıldı.",
+    "tokenInvalid": "Geçersiz belirteç",
+    "tokenInvalidDescription": "Jeton geçersiz veya süresi dolmuş.",
+    "tokenValid": "Token geçerli",
+    "tokenValidDescription": "Hesap belirteci geçerli ve aktif.",
+    "updateFailed": "Hesap güncellemesi başarısız oldu.",
+    "updated": "Hesap güncellendi",
+    "updatedDescription": "Hesap ayarları kaydedildi.",
+    "validationFailed": "Doğrulama başarısız oldu"
+  }
+}

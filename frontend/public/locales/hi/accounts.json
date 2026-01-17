@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "खातों पर वापस जाएँ",
+    "form": {
+      "accountLabel": "खाता लेबल",
+      "accountLabelDescription": "इस खाते की पहचान के लिए एक सरल नाम।",
+      "accountLabelPlaceholder": "उदाहरण के लिए, कार्यस्थल GitHub, व्यक्तिगत GitLab",
+      "provider": "प्रदाता",
+      "selectProvider": "एक प्रदाता का चयन करें",
+      "token": "व्यक्तिगत पहुँच टोकन",
+      "tokenDescription": "आपका टोकन एन्क्रिप्टेड है और सुरक्षित रूप से संग्रहीत है।",
+      "tokenPlaceholder": "अपना व्यक्तिगत एक्सेस टोकन दर्ज करें"
+    },
+    "submit": "खाता कनेक्ट करें",
+    "submitting": "कनेक्ट हो रहा है...",
+    "subtitle": "एक नया Git प्रदाता खाता कनेक्ट करें",
+    "title": "प्रदाता खाता जोड़ें"
+  },
+  "addAccount": "खाता जोड़ें",
+  "addFirstAccount": "अपना पहला खाता जोड़ें",
+  "card": {
+    "actions": {
+      "delete": "खाता हटा दो",
+      "edit": "खाता संपादित करें",
+      "setDefault": "डिफाल्ट के रूप में सेट",
+      "validate": "टोकन को मान्य करें"
+    },
+    "expires": "समय-सीमा समाप्त",
+    "neverExpires": "कभी समाप्त नहीं होता",
+    "repositories": "खजाने",
+    "status": {
+      "default": "गलती करना",
+      "expired": "खत्म हो चुका",
+      "invalid": "अमान्य",
+      "pending": "लंबित",
+      "valid": "वैध"
+    },
+    "validated": "मान्य"
+  },
+  "delete": {
+    "cancel": "रद्द करना",
+    "confirm": "मिटाना",
+    "deleting": "हटा रहा हूँ...",
+    "description": "क्या आप वाकई \"{{label}}\" खाता हटाना चाहते हैं? इससे रिपॉजिटरी नहीं हटेंगी, लेकिन उन्हें किसी दूसरे खाते से दोबारा लिंक करना होगा।",
+    "title": "खाता हटा दो"
+  },
+  "description": "अपने कनेक्टेड गिट प्रदाता खातों को प्रबंधित करें",
+  "edit": {
+    "accountInfo": "खाता संबंधी जानकारी",
+    "backToAccounts": "खातों पर वापस जाएँ",
+    "form": {
+      "accountLabel": "खाता लेबल",
+      "accountLabelPlaceholder": "उदाहरण के लिए, वर्क गिटहब",
+      "currentToken": "वर्तमान टोकन",
+      "token": "व्यक्तिगत पहुँच टोकन",
+      "tokenDescription": "वर्तमान टोकन को बनाए रखने के लिए इसे खाली छोड़ दें",
+      "tokenPlaceholder": "अपडेट करने के लिए नया टोकन दर्ज करें"
+    },
+    "notFound": "खाता नहीं मिला",
+    "submit": "परिवर्तनों को सुरक्षित करें",
+    "submitting": "सहेजा जा रहा है...",
+    "subtitle": "खाता सेटिंग अपडेट करें",
+    "title": "खाता संपादित करें"
+  },
+  "noAccountsYet": "अभी तक कोई खाते कनेक्ट नहीं हुए हैं",
+  "title": "प्रदाता खाते",
+  "toast": {
+    "connected": "खाता कनेक्ट हो गया",
+    "connectedDescription": "{{provider}} खाते से सफलतापूर्वक कनेक्ट हो गया",
+    "connectionFailed": "खाता जोड़ने में विफल",
+    "defaultUpdateFailed": "डिफ़ॉल्ट को अपडेट करने में विफल",
+    "defaultUpdated": "डिफ़ॉल्ट खाता अपडेट किया गया",
+    "defaultUpdatedDescription": "डिफ़ॉल्ट खाता बदल दिया गया है",
+    "deleteFailed": "खाता हटाने में विफल",
+    "deleted": "खाता हटा दिया गया",
+    "deletedDescription": "खाता सफलतापूर्वक हटा दिया गया है।",
+    "tokenInvalid": "टोकन अमान्य है",
+    "tokenInvalidDescription": "टोकन अमान्य है या उसकी समय सीमा समाप्त हो गई है।",
+    "tokenValid": "टोकन मान्य है",
+    "tokenValidDescription": "खाता टोकन वैध और सक्रिय है।",
+    "updateFailed": "खाता अपडेट करने में विफल",
+    "updated": "खाता अपडेट किया गया",
+    "updatedDescription": "खाता सेटिंग्स सहेज ली गई हैं।",
+    "validationFailed": "प्रमाणीकरण विफल रहा"
+  }
+}

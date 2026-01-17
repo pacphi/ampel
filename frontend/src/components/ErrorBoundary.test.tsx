@@ -1,6 +1,23 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '../../tests/setup/test-utils';
 import ErrorBoundary from './ErrorBoundary';
+
+// Mock the i18n module for class component that uses i18n.t() directly
+vi.mock('@/i18n', () => ({
+  i18n: {
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'errors:boundary.title': 'Something went wrong',
+        'errors:boundary.description': 'An unexpected error occurred. Please try again.',
+        'errors:boundary.details': 'Error Details (Dev Only)',
+        'errors:boundary.tryAgain': 'Try Again',
+        'errors:boundary.reload': 'Reload Page',
+      };
+      return translations[key] || key;
+    },
+  },
+}));
 
 // Component that throws an error
 function ThrowError({ shouldThrow }: { shouldThrow: boolean }) {
@@ -61,7 +78,7 @@ describe('ErrorBoundary', () => {
 
       expect(screen.getByText('Something went wrong')).toBeInTheDocument();
       expect(
-        screen.getByText('An unexpected error occurred. Our team has been notified.')
+        screen.getByText('An unexpected error occurred. Please try again.')
       ).toBeInTheDocument();
     });
 
@@ -313,7 +330,7 @@ describe('ErrorBoundary', () => {
 
       // Should have user-friendly description
       expect(
-        screen.getByText('An unexpected error occurred. Our team has been notified.')
+        screen.getByText('An unexpected error occurred. Please try again.')
       ).toBeInTheDocument();
     });
   });

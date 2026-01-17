@@ -89,7 +89,18 @@
     "showArchived": "显示已存档内容",
     "showArchivedDescription": "包括已存档的存储库",
     "showForks": "展示叉",
-    "showForksDescription": "包括派生的仓库"
+    "showForksDescription": "包括派生的仓库",
+    "visibility": {
+      "archived": "显示已存档的存储库",
+      "archivedDescription": "显示已归档的存储库",
+      "bitbucketNote": "注意：Bitbucket 的可见性可能因工作区设置而异",
+      "description": "选择要显示的存储库类型",
+      "private": "显示私有仓库",
+      "privateDescription": "显示私有存储库",
+      "public": "显示公共存储库",
+      "publicDescription": "公开访问的展示库",
+      "title": "存储库可见性筛选器"
+    }
   },
   "reset": "恢复默认设置",
   "resetConfirm": "您确定要重置所有设置吗？",

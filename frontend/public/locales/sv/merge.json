@@ -12,6 +12,23 @@
     "draft": "Förslag",
     "needsReview": "Behöver granskning"
   },
+  "dialog": {
+    "cancel": "Avboka",
+    "deleteBranch": "Ta bort gren efter sammanslagning",
+    "merge": "Sammanfoga PR",
+    "merging": "Sammanfogar...",
+    "strategy": {
+      "merge": "Skapa en merge-commit",
+      "mergeDescription": "Alla commits bevarade",
+      "rebase": "Rebase och merge",
+      "rebaseDescription": "Linjär commit-historik",
+      "squash": "Squash och sammanfoga",
+      "squashDescription": "Kombinera alla commits till ett",
+      "title": "Sammanslagningsstrategi"
+    },
+    "subtitle": "Konfigurera sammanslagningsalternativ för denna PR",
+    "title": "Sammanslagningsbegäran"
+  },
   "emptyState": {
     "noPrsReady": "Inga PR-medlemmar är redo att slås samman. PR-medlemmar behöver:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Markera och sammanfoga flera PR:er samtidigt",
   "title": "Masssammanslagning",
   "toast": {
+    "failed": "Sammanslagningen misslyckades",
+    "failedDescription": "Misslyckades med att sammanfoga #{{number}}: {{error}}",
     "mergeFailed": "Sammanslagningen misslyckades",
     "mergeSuccess": "Sammanslagningen lyckades",
     "mergeSuccessDescription": "Sammanfogade {{count}} pull requests",
     "someMergesFailed": "Vissa sammanslagningar misslyckades",
-    "someMergesFailedDescription": "{{success}} sammanfogad, {{failed}} misslyckades"
+    "someMergesFailedDescription": "{{success}} sammanfogad, {{failed}} misslyckades",
+    "success": "PR sammanslagna",
+    "successDescription": "Sammanfogad #{{number}}: {{title}}"
   }
 }

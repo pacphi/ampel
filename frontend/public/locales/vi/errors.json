@@ -10,6 +10,13 @@
     "tokenExpired": "Mã xác thực đã hết hạn",
     "unauthorized": "Truy cập trái phép"
   },
+  "boundary": {
+    "description": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.",
+    "details": "Chi tiết lỗi (Chỉ dành cho nhà phát triển)",
+    "reload": "Tải lại trang",
+    "title": "Đã xảy ra lỗi",
+    "tryAgain": "Thử lại"
+  },
   "general": {
     "unknownError": "Đã xảy ra lỗi không xác định"
   },

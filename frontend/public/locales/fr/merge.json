@@ -12,6 +12,23 @@
     "draft": "Brouillon",
     "needsReview": "Examen des besoins"
   },
+  "dialog": {
+    "cancel": "Annuler",
+    "deleteBranch": "Supprimer la branche après la fusion",
+    "merge": "Fusionner les PR",
+    "merging": "Fusion...",
+    "strategy": {
+      "merge": "Créer un commit de fusion",
+      "mergeDescription": "Tous les commits sont préservés",
+      "rebase": "Rebaser et fusionner",
+      "rebaseDescription": "Historique linéaire des commits",
+      "squash": "Écraser et fusionner",
+      "squashDescription": "Combiner tous les commits en un seul",
+      "title": "Stratégie de fusion"
+    },
+    "subtitle": "Configurer les options de fusion pour cette PR",
+    "title": "Fusionner la demande d'extraction"
+  },
   "emptyState": {
     "noPrsReady": "Aucune PR n'est prête à être fusionnée. Les PR ont besoin de :",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Sélectionnez et fusionnez plusieurs demandes de tirage simultanément.",
   "title": "Fusion en masse",
   "toast": {
+    "failed": "La fusion a échoué",
+    "failedDescription": "Échec de la fusion #{{number}}: {{error}}",
     "mergeFailed": "Échec de la fusion",
     "mergeSuccess": "Fusion réussie",
     "mergeSuccessDescription": "Fusion réussie des requêtes d'extraction {{count}}",
     "someMergesFailed": "Certaines fusions ont échoué",
-    "someMergesFailedDescription": "{{success}} fusionné, {{failed}} échec"
+    "someMergesFailedDescription": "{{success}} fusionné, {{failed}} échec",
+    "success": "PR fusionnée",
+    "successDescription": "Fusion réussie #{{number}}: {{title}}"
   }
 }

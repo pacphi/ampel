@@ -12,6 +12,23 @@
     "draft": "Черновик",
     "needsReview": "Необходимо провести анализ потребностей"
   },
+  "dialog": {
+    "cancel": "Отмена",
+    "deleteBranch": "Удалить ветку после слияния",
+    "merge": "Merge PR",
+    "merging": "Слияние...",
+    "strategy": {
+      "merge": "Создать коммит слияния",
+      "mergeDescription": "Все коммиты сохранены.",
+      "rebase": "Перебазирование и слияние",
+      "rebaseDescription": "Линейная история коммитов",
+      "squash": "Сжать и объединить",
+      "squashDescription": "Объединить все коммиты в один.",
+      "title": "Стратегия слияния"
+    },
+    "subtitle": "Настройте параметры слияния для этого запроса на слияние.",
+    "title": "Слияние запроса на слияние"
+  },
   "emptyState": {
     "noPrsReady": "Запросы на слияние пока не готовы. Запросам на слияние необходимо:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Выбрать и объединить несколько запросов на слияние одновременно.",
   "title": "Массовое слияние",
   "toast": {
+    "failed": "Слияние не удалось",
+    "failedDescription": "Не удалось выполнить слияние #{{number}}: {{error}}",
     "mergeFailed": "Слияние не удалось.",
     "mergeSuccess": "Слияние прошло успешно.",
     "mergeSuccessDescription": "Успешно объединены запросы на слияние (pull requests).",
     "someMergesFailed": "Некоторые слияния не удались.",
-    "someMergesFailedDescription": "{{success}} объединено, {{failed}} не удалось"
+    "someMergesFailedDescription": "{{success}} объединено, {{failed}} не удалось",
+    "success": "PR Merged",
+    "successDescription": "Успешно объединены #{{number}}: {{title}}"
   }
 }

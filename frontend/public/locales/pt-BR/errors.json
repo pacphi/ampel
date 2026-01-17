@@ -10,6 +10,13 @@
     "tokenExpired": "O token de autenticação expirou.",
     "unauthorized": "Acesso não autorizado"
   },
+  "boundary": {
+    "description": "Ocorreu um erro inesperado. Tente novamente.",
+    "details": "Detalhes do erro (somente para desenvolvedores)",
+    "reload": "Recarregar página",
+    "title": "Algo deu errado",
+    "tryAgain": "Tente novamente"
+  },
   "general": {
     "unknownError": "Ocorreu um erro desconhecido."
   },

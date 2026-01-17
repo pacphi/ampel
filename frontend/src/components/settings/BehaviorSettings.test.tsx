@@ -1,7 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { screen, waitFor } from '@testing-library/react';
+import { render } from '../../../tests/setup/test-utils';
 import { BehaviorSettings } from './BehaviorSettings';
 
 vi.mock('@/api/settings', () => ({
@@ -30,19 +29,7 @@ const defaultBehaviorSettings = {
 };
 
 function renderBehaviorSettings() {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
-
-  return render(
-    <QueryClientProvider client={queryClient}>
-      <BehaviorSettings />
-    </QueryClientProvider>
-  );
+  return render(<BehaviorSettings />, { withSuspense: false });
 }
 
 describe('BehaviorSettings', () => {
@@ -122,14 +109,13 @@ describe('BehaviorSettings', () => {
 
   describe('Settings Updates', () => {
     it('toggles delete branches setting', async () => {
-      const user = userEvent.setup();
       mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
       mockedSettingsApi.updateBehavior.mockResolvedValue({
         ...defaultBehaviorSettings,
         deleteBranchesDefault: true,
       });
 
-      renderBehaviorSettings();
+      const { user } = renderBehaviorSettings();
 
       await waitFor(() => {
         expect(screen.getAllByRole('switch').length).toBe(3);
@@ -147,19 +133,18 @@ describe('BehaviorSettings', () => {
 
       expect(mockToast).toHaveBeenCalledWith({
         title: 'Settings updated',
-        description: 'Your behavior settings have been saved.',
+        description: 'Merge behavior settings have been saved',
       });
     });
 
     it('changes merge strategy', async () => {
-      const user = userEvent.setup();
       mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
       mockedSettingsApi.updateBehavior.mockResolvedValue({
         ...defaultBehaviorSettings,
         defaultMergeStrategy: 'rebase',
       });
 
-      renderBehaviorSettings();
+      const { user } = renderBehaviorSettings();
 
       await waitFor(() => {
         expect(screen.getByText('Squash and merge')).toBeInTheDocument();
@@ -179,14 +164,13 @@ describe('BehaviorSettings', () => {
     });
 
     it('toggles require approval setting', async () => {
-      const user = userEvent.setup();
       mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
       mockedSettingsApi.updateBehavior.mockResolvedValue({
         ...defaultBehaviorSettings,
         requireApproval: true,
       });
 
-      renderBehaviorSettings();
+      const { user } = renderBehaviorSettings();
 
       await waitFor(() => {
         expect(screen.getAllByRole('switch').length).toBe(3);
@@ -204,14 +188,13 @@ describe('BehaviorSettings', () => {
     });
 
     it('toggles skip review requirement setting', async () => {
-      const user = userEvent.setup();
       mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
       mockedSettingsApi.updateBehavior.mockResolvedValue({
         ...defaultBehaviorSettings,
         skipReviewRequirement: true,
       });
 
-      renderBehaviorSettings();
+      const { user } = renderBehaviorSettings();
 
       await waitFor(() => {
         expect(screen.getAllByRole('switch').length).toBe(3);
@@ -229,13 +212,12 @@ describe('BehaviorSettings', () => {
     });
 
     it('shows error toast on update failure', async () => {
-      const user = userEvent.setup();
       mockedSettingsApi.getBehavior.mockResolvedValue(defaultBehaviorSettings);
       mockedSettingsApi.updateBehavior.mockRejectedValue({
         response: { data: { error: 'Update failed' } },
       });
 
-      renderBehaviorSettings();
+      const { user } = renderBehaviorSettings();
 
       await waitFor(() => {
         expect(screen.getAllByRole('switch').length).toBe(3);

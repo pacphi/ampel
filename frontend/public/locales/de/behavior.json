@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Wartezeit zwischen aufeinanderfolgenden Zusammenführungen",
+    "placeholder": "5",
+    "title": "Zusammenführungsverzögerung (Sekunden)"
+  },
+  "options": {
+    "allowNoReviews": "Zusammenführung ohne Überprüfung zulassen",
+    "allowNoReviewsDescription": "Zusammenführung von Pull Requests ohne Reviews zulassen.",
+    "deleteBranch": "Nach dem Zusammenführen die Branches löschen",
+    "deleteBranchDescription": "Automatische Löschung der Quellzweige nach erfolgreichem Zusammenführen",
+    "requireApproval": "Genehmigung vor Zusammenführung erforderlich",
+    "requireApprovalDescription": "Warten Sie auf die manuelle Genehmigung, bevor Sie die Zusammenführung ausführen."
+  },
+  "strategy": {
+    "description": "Wählen Sie aus, wie Pull-Anfragen standardmäßig zusammengeführt werden sollen.",
+    "merge": "Erstelle einen Merge-Commit",
+    "mergeDescription": "Alle Commits erhalten",
+    "rebase": "Rebase und Merge",
+    "rebaseDescription": "Linearer Commit-Verlauf",
+    "squash": "Zusammenpressen und verschmelzen",
+    "squashDescription": "Alle Commits zu einem einzigen zusammenfassen",
+    "title": "Standard-Merge-Strategie"
+  },
+  "title": "Zusammenführungsverhalten",
+  "toast": {
+    "updateFailed": "Einstellungen konnten nicht aktualisiert werden",
+    "updated": "Einstellungen aktualisiert",
+    "updatedDescription": "Die Einstellungen für das Zusammenführungsverhalten wurden gespeichert."
+  }
+}

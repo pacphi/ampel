@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "זמן המתנה בין מיזוגים רצופים",
+    "placeholder": "5",
+    "title": "עיכוב מיזוג (שניות)"
+  },
+  "options": {
+    "allowNoReviews": "אפשר מיזוג ללא ביקורות",
+    "allowNoReviewsDescription": "אפשר מיזוג של יח\"צ שאין להם ביקורות",
+    "deleteBranch": "מחיקת ענפים לאחר מיזוג",
+    "deleteBranchDescription": "מחיקה אוטומטית של ענפי מקור לאחר מיזוג מוצלח",
+    "requireApproval": "נדרש אישור לפני המיזוג",
+    "requireApprovalDescription": "המתן לאישור ידני לפני ביצוע המיזוג"
+  },
+  "strategy": {
+    "description": "בחר כיצד יש למזג בקשות משיכה כברירת מחדל",
+    "merge": "צור commit של מיזוג",
+    "mergeDescription": "כל הקומיטים נשמרו",
+    "rebase": "בסיס מחדש ומיזוג",
+    "rebaseDescription": "היסטוריית התחייבויות ליניארית",
+    "squash": "דחיסה ומיזוג",
+    "squashDescription": "איחוד כל הקומיטים לאחד",
+    "title": "אסטרטגיית מיזוג ברירת מחדל"
+  },
+  "title": "התנהגות מיזוג",
+  "toast": {
+    "updateFailed": "עדכון ההגדרות נכשל",
+    "updated": "ההגדרות עודכנו",
+    "updatedDescription": "הגדרות אופן המיזוג נשמרו"
+  }
+}

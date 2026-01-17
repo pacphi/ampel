@@ -10,10 +10,17 @@ import { initReactI18next } from 'react-i18next';
 
 // Import translation files directly for synchronous loading
 // These paths are relative to the frontend directory
+import accountsEn from '../../public/locales/en/accounts.json';
+import analyticsEn from '../../public/locales/en/analytics.json';
+import behaviorEn from '../../public/locales/en/behavior.json';
 import commonEn from '../../public/locales/en/common.json';
 import dashboardEn from '../../public/locales/en/dashboard.json';
-import settingsEn from '../../public/locales/en/settings.json';
 import errorsEn from '../../public/locales/en/errors.json';
+import mergeEn from '../../public/locales/en/merge.json';
+import notificationsEn from '../../public/locales/en/notifications.json';
+import providersEn from '../../public/locales/en/providers.json';
+import repositoriesEn from '../../public/locales/en/repositories.json';
+import settingsEn from '../../public/locales/en/settings.json';
 import validationEn from '../../public/locales/en/validation.json';
 
 /**
@@ -27,20 +34,43 @@ testI18n.use(initReactI18next).init({
   lng: 'en',
   fallbackLng: 'en',
 
+  // Force synchronous initialization
+  initImmediate: true,
+
   // Load translations synchronously
   resources: {
     en: {
+      accounts: accountsEn,
+      analytics: analyticsEn,
+      behavior: behaviorEn,
       common: commonEn,
       dashboard: dashboardEn,
-      settings: settingsEn,
       errors: errorsEn,
+      merge: mergeEn,
+      notifications: notificationsEn,
+      providers: providersEn,
+      repositories: repositoriesEn,
+      settings: settingsEn,
       validation: validationEn,
     },
   },
 
   // Default namespace
   defaultNS: 'common',
-  ns: ['common', 'dashboard', 'settings', 'errors', 'validation'],
+  ns: [
+    'accounts',
+    'analytics',
+    'behavior',
+    'common',
+    'dashboard',
+    'errors',
+    'merge',
+    'notifications',
+    'providers',
+    'repositories',
+    'settings',
+    'validation',
+  ],
 
   // Interpolation settings
   interpolation: {

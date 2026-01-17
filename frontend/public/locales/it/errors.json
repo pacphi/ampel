@@ -10,6 +10,13 @@
     "tokenExpired": "Il token di autenticazione è scaduto",
     "unauthorized": "Accesso non autorizzato"
   },
+  "boundary": {
+    "description": "Si è verificato un errore imprevisto. Riprova.",
+    "details": "Dettagli errore (solo Dev)",
+    "reload": "Ricarica pagina",
+    "title": "Qualcosa è andato storto",
+    "tryAgain": "Riprova"
+  },
   "general": {
     "unknownError": "Si è verificato un errore sconosciuto"
   },

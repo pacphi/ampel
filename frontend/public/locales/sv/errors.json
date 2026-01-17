@@ -10,6 +10,13 @@
     "tokenExpired": "Autentiseringstoken har löpt ut",
     "unauthorized": "Obehörig åtkomst"
   },
+  "boundary": {
+    "description": "Ett oväntat fel uppstod. Försök igen.",
+    "details": "Felinformation (endast utvecklare)",
+    "reload": "Ladda om sidan",
+    "title": "Något gick fel",
+    "tryAgain": "Försök igen"
+  },
   "general": {
     "unknownError": "Ett okänt fel uppstod"
   },

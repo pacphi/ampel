@@ -89,7 +89,18 @@
     "showArchived": "Näytä arkistoidut",
     "showArchivedDescription": "Sisällytä arkistoidut tietovarastot",
     "showForks": "Näytä haarukat",
-    "showForksDescription": "Sisällytä haarautuneet tietovarastot"
+    "showForksDescription": "Sisällytä haarautuneet tietovarastot",
+    "visibility": {
+      "archived": "Näytä arkistoidut arkistot",
+      "archivedDescription": "Näytä arkistoidut arkistot",
+      "bitbucketNote": "Huomautus: Bitbucketin näkyvyys voi vaihdella työtilan asetusten mukaan.",
+      "description": "Valitse näytettävät tietovarastotyypit",
+      "private": "Näytä yksityiset tietovarastot",
+      "privateDescription": "Näytä yksityiset tietovarastot",
+      "public": "Näytä julkiset tietovarastot",
+      "publicDescription": "Näytä julkisesti saatavilla olevat arkistot",
+      "title": "Tietovaraston näkyvyyssuodattimet"
+    }
   },
   "reset": "Palauta oletusasetukset",
   "resetConfirm": "Haluatko varmasti nollata kaikki asetukset?",

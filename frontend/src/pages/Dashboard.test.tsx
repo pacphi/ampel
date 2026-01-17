@@ -32,6 +32,8 @@ vi.mock('react-i18next', () => ({
     i18n: { language: 'en', changeLanguage: vi.fn() },
     ready: true,
   }),
+  initReactI18next: { type: '3rdParty', init: vi.fn() },
+  Trans: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 // Mock API modules

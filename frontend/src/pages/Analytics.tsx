@@ -42,7 +42,13 @@ function getTrendIcon(trend: string) {
   }
 }
 
-function HealthCard({ health, t }: { health: RepositoryHealth; t: (key: string, options?: Record<string, unknown>) => string }) {
+function HealthCard({
+  health,
+  t,
+}: {
+  health: RepositoryHealth;
+  t: (key: string, options?: Record<string, unknown>) => string;
+}) {
   return (
     <Card>
       <CardHeader className="pb-2">
@@ -69,7 +75,9 @@ function HealthCard({ health, t }: { health: RepositoryHealth; t: (key: string, 
             <GitPullRequest className="h-4 w-4 text-muted-foreground" />
             <div>
               <p className="text-muted-foreground">{t('analytics:health.throughput')}</p>
-              <p className="font-medium">{t('analytics:health.perWeek', { count: health.metrics.prThroughputPerWeek })}</p>
+              <p className="font-medium">
+                {t('analytics:health.perWeek', { count: health.metrics.prThroughputPerWeek })}
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -115,7 +123,9 @@ export default function Analytics() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">{t('analytics:summary.prsMerged', { days: 30 })}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t('analytics:summary.prsMerged', { days: 30 })}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -125,21 +135,29 @@ export default function Analytics() {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">{t('analytics:summary.avgMergeTime')}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t('analytics:summary.avgMergeTime')}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {isLoading ? t('analytics:loading.placeholder') : formatHours(summary?.avgTimeToMergeHours || 0)}
+              {isLoading
+                ? t('analytics:loading.placeholder')
+                : formatHours(summary?.avgTimeToMergeHours || 0)}
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">{t('analytics:summary.avgReviewTime')}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t('analytics:summary.avgReviewTime')}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {isLoading ? t('analytics:loading.placeholder') : formatHours(summary?.avgReviewTimeHours || 0)}
+              {isLoading
+                ? t('analytics:loading.placeholder')
+                : formatHours(summary?.avgReviewTimeHours || 0)}
             </div>
           </CardContent>
         </Card>
@@ -149,7 +167,9 @@ export default function Analytics() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {isLoading ? t('analytics:loading.placeholder') : `${(summary?.botPrPercentage || 0).toFixed(0)}%`}
+              {isLoading
+                ? t('analytics:loading.placeholder')
+                : `${(summary?.botPrPercentage || 0).toFixed(0)}%`}
             </div>
           </CardContent>
         </Card>
@@ -171,9 +191,7 @@ export default function Analytics() {
         ) : (
           <div className="text-center py-12">
             <p className="text-muted-foreground">{t('analytics:empty.title')}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              {t('analytics:empty.description')}
-            </p>
+            <p className="text-sm text-muted-foreground mt-1">{t('analytics:empty.description')}</p>
           </div>
         )}
       </div>

@@ -1,6 +1,5 @@
 import { describe, expect, it, beforeEach, afterEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '../../../tests/setup/test-utils';
 import { RepositoryFilterSettings } from './RepositoryFilterSettings';
 
 describe('RepositoryFilterSettings', () => {
@@ -17,7 +16,7 @@ describe('RepositoryFilterSettings', () => {
       render(<RepositoryFilterSettings />);
 
       expect(screen.getByText('Repository Visibility Filters')).toBeInTheDocument();
-      expect(screen.getByText(/control which repositories are displayed/i)).toBeInTheDocument();
+      expect(screen.getByText(/choose which types of repositories to display/i)).toBeInTheDocument();
     });
 
     it('renders all three switches', () => {
@@ -41,11 +40,11 @@ describe('RepositoryFilterSettings', () => {
       expect(archiveIcon).toBeInTheDocument();
     });
 
-    it('shows Bitbucket note about archive feature', () => {
+    it('shows Bitbucket visibility note', () => {
       render(<RepositoryFilterSettings />);
 
       expect(
-        screen.getByText(/bitbucket does not support the archive feature/i)
+        screen.getByText(/bitbucket visibility may differ based on workspace settings/i)
       ).toBeInTheDocument();
     });
 
@@ -55,7 +54,7 @@ describe('RepositoryFilterSettings', () => {
       expect(
         screen.getByText(/display repositories that are publicly accessible/i)
       ).toBeInTheDocument();
-      expect(screen.getByText(/display repositories with restricted access/i)).toBeInTheDocument();
+      expect(screen.getByText(/display repositories that are private/i)).toBeInTheDocument();
       expect(screen.getByText(/display repositories that have been archived/i)).toBeInTheDocument();
     });
   });
@@ -92,8 +91,7 @@ describe('RepositoryFilterSettings', () => {
 
   describe('Switch Interactions', () => {
     it('toggles public repositories filter when clicked', async () => {
-      const user = userEvent.setup();
-      render(<RepositoryFilterSettings />);
+      const { user } = render(<RepositoryFilterSettings />);
 
       const switches = screen.getAllByRole('switch');
       const publicSwitch = switches[0];
@@ -110,8 +108,7 @@ describe('RepositoryFilterSettings', () => {
     });
 
     it('toggles private repositories filter when clicked', async () => {
-      const user = userEvent.setup();
-      render(<RepositoryFilterSettings />);
+      const { user } = render(<RepositoryFilterSettings />);
 
       const switches = screen.getAllByRole('switch');
       const privateSwitch = switches[1];
@@ -127,8 +124,7 @@ describe('RepositoryFilterSettings', () => {
     });
 
     it('toggles archived repositories filter when clicked', async () => {
-      const user = userEvent.setup();
-      render(<RepositoryFilterSettings />);
+      const { user } = render(<RepositoryFilterSettings />);
 
       const switches = screen.getAllByRole('switch');
       const archivedSwitch = switches[2];
@@ -144,8 +140,7 @@ describe('RepositoryFilterSettings', () => {
     });
 
     it('allows toggling switch back on', async () => {
-      const user = userEvent.setup();
-      render(<RepositoryFilterSettings />);
+      const { user } = render(<RepositoryFilterSettings />);
 
       const switches = screen.getAllByRole('switch');
       const publicSwitch = switches[0];
@@ -163,8 +158,7 @@ describe('RepositoryFilterSettings', () => {
     });
 
     it('updates only the clicked filter, preserving others', async () => {
-      const user = userEvent.setup();
-      render(<RepositoryFilterSettings />);
+      const { user } = render(<RepositoryFilterSettings />);
 
       const switches = screen.getAllByRole('switch');
 
@@ -185,8 +179,7 @@ describe('RepositoryFilterSettings', () => {
     });
 
     it('allows all filters to be disabled', async () => {
-      const user = userEvent.setup();
-      render(<RepositoryFilterSettings />);
+      const { user } = render(<RepositoryFilterSettings />);
 
       const switches = screen.getAllByRole('switch');
 
@@ -214,14 +207,14 @@ describe('RepositoryFilterSettings', () => {
 
       const note = container.querySelector('.bg-muted');
       expect(note).toBeInTheDocument();
-      expect(note?.textContent).toContain('Bitbucket does not support the archive feature');
+      expect(note?.textContent).toContain('Bitbucket visibility may differ based on workspace settings');
     });
 
-    it('emphasizes "Note:" text', () => {
+    it('displays note in a paragraph element', () => {
       render(<RepositoryFilterSettings />);
 
-      const noteLabel = screen.getByText('Note:');
-      expect(noteLabel.tagName).toBe('STRONG');
+      const note = screen.getByText(/bitbucket visibility may differ/i);
+      expect(note.tagName).toBe('P');
     });
   });
 
@@ -250,8 +243,7 @@ describe('RepositoryFilterSettings', () => {
 
   describe('Persistence', () => {
     it('persists filter changes across component remounts', async () => {
-      const user = userEvent.setup();
-      const { unmount } = render(<RepositoryFilterSettings />);
+      const { user, unmount } = render(<RepositoryFilterSettings />);
 
       const switches = screen.getAllByRole('switch');
       await user.click(switches[0]);

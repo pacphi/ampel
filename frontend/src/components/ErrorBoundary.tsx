@@ -2,6 +2,7 @@ import { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { i18n } from '@/i18n';
 
 interface Props {
   children: ReactNode;
@@ -91,16 +92,16 @@ class ErrorBoundary extends Component<Props, State> {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <AlertTriangle className="h-6 w-6 text-red-500" />
-                <CardTitle>Something went wrong</CardTitle>
+                <CardTitle>{i18n.t('errors:boundary.title')}</CardTitle>
               </div>
-              <CardDescription>
-                An unexpected error occurred. Our team has been notified.
-              </CardDescription>
+              <CardDescription>{i18n.t('errors:boundary.description')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {import.meta.env.DEV && this.state.error && (
                 <div className="bg-gray-100 p-4 rounded-md overflow-auto">
-                  <h3 className="font-semibold text-sm mb-2">Error Details (Dev Only)</h3>
+                  <h3 className="font-semibold text-sm mb-2">
+                    {i18n.t('errors:boundary.details')}
+                  </h3>
                   <pre className="text-xs text-red-600">{this.state.error.toString()}</pre>
                   {this.state.errorInfo && (
                     <pre className="text-xs mt-2 text-gray-600">
@@ -111,9 +112,9 @@ class ErrorBoundary extends Component<Props, State> {
               )}
               <div className="flex gap-2">
                 <Button onClick={this.handleReset} variant="outline">
-                  Try Again
+                  {i18n.t('errors:boundary.tryAgain')}
                 </Button>
-                <Button onClick={this.handleReload}>Reload Page</Button>
+                <Button onClick={this.handleReload}>{i18n.t('errors:boundary.reload')}</Button>
               </div>
             </CardContent>
           </Card>

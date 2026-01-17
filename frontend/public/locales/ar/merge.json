@@ -12,6 +12,23 @@
     "draft": "مسودة",
     "needsReview": "يحتاج إلى مراجعة"
   },
+  "dialog": {
+    "cancel": "يلغي",
+    "deleteBranch": "حذف الفرع بعد الدمج",
+    "merge": "دمج العلاقات العامة",
+    "merging": "جارٍ الدمج...",
+    "strategy": {
+      "merge": "أنشئ التزام دمج",
+      "mergeDescription": "تم حفظ جميع التغييرات",
+      "rebase": "إعادة التأسيس والدمج",
+      "rebaseDescription": "سجل الالتزامات الخطي",
+      "squash": "اسحق وادمج",
+      "squashDescription": "دمج جميع الالتزامات في التزام واحد",
+      "title": "استراتيجية الدمج"
+    },
+    "subtitle": "قم بتكوين خيارات الدمج لهذا الطلب.",
+    "title": "طلب دمج السحب"
+  },
   "emptyState": {
     "noPrsReady": "لا توجد طلبات سحب جاهزة للدمج. تحتاج طلبات السحب إلى:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "حدد وادمج طلبات السحب المتعددة في وقت واحد",
   "title": "دمج جماعي",
   "toast": {
+    "failed": "فشل الدمج",
+    "failedDescription": "فشل دمج #{{number}}: {{error}}",
     "mergeFailed": "فشل الدمج",
     "mergeSuccess": "تم الدمج بنجاح",
     "mergeSuccessDescription": "تم دمج طلبات السحب {{count}} بنجاح",
     "someMergesFailed": "فشلت بعض عمليات الدمج",
-    "someMergesFailedDescription": "تم دمج العنصر {{success}}، وفشل العنصر {{failed}}"
+    "someMergesFailedDescription": "تم دمج العنصر {{success}}، وفشل العنصر {{failed}}",
+    "success": "تم دمج العلاقات العامة",
+    "successDescription": "تم الدمج بنجاح #{{number}}: {{title}}"
   }
 }

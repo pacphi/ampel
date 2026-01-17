@@ -10,6 +10,13 @@
     "tokenExpired": "Le jeton d'authentification a expiré.",
     "unauthorized": "Accès non autorisé"
   },
+  "boundary": {
+    "description": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+    "details": "Détails de l'erreur (Développeurs uniquement)",
+    "reload": "Recharger la page",
+    "title": "Quelque chose s'est mal passé",
+    "tryAgain": "Essayer à nouveau"
+  },
   "general": {
     "unknownError": "Une erreur inconnue s'est produite."
   },

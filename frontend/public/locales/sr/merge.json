@@ -12,6 +12,23 @@
     "draft": "Нацрт",
     "needsReview": "Потребан је преглед"
   },
+  "dialog": {
+    "cancel": "Откажи",
+    "deleteBranch": "Обриши грану након спајања",
+    "merge": "Споји односе с јавношћу",
+    "merging": "Спајање...",
+    "strategy": {
+      "merge": "Направите commit за спајање",
+      "mergeDescription": "Све измене су сачуване",
+      "rebase": "Ребазирање и спајање",
+      "rebaseDescription": "Историја линеарних извршења",
+      "squash": "Стисни и споји",
+      "squashDescription": "Споји све комите у један",
+      "title": "Стратегија спајања"
+    },
+    "subtitle": "Конфигуришите опције спајања за овај захтев за захтев за претходни захтев (PR)",
+    "title": "Захтев за спајање"
+  },
   "emptyState": {
     "noPrsReady": "Ниједан пријемник није спреман за спајање. Пријемницима је потребно:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Изаберите и спојите више захтева за претплату одједном",
   "title": "Масовно спајање",
   "toast": {
+    "failed": "Спајање није успело",
+    "failedDescription": "Спајање није успело #{{number}}: {{error}}",
     "mergeFailed": "Спајање није успело",
     "mergeSuccess": "Спајање је успешно",
     "mergeSuccessDescription": "Успешно спојени захтеви за повлачење {{count}}",
     "someMergesFailed": "Нека спајања нису успела",
-    "someMergesFailedDescription": "{{success}} спојено, {{failed}} није успело"
+    "someMergesFailedDescription": "{{success}} спојено, {{failed}} није успело",
+    "success": "PR спојен",
+    "successDescription": "Успешно спојено #{{number}}: {{title}}"
   }
 }

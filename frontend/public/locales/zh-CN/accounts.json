@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "返回账户",
+    "form": {
+      "accountLabel": "账户标签",
+      "accountLabelDescription": "用于识别此帐户的友好名称",
+      "accountLabelPlaceholder": "例如，工作用的 GitHub，个人用的 GitLab",
+      "provider": "提供者",
+      "selectProvider": "选择服务提供商",
+      "token": "个人访问令牌",
+      "tokenDescription": "您的令牌已加密并安全存储。",
+      "tokenPlaceholder": "请输入您的个人访问令牌"
+    },
+    "submit": "连接帐户",
+    "submitting": "正在连接...",
+    "subtitle": "连接新的 Git 提供商帐户",
+    "title": "添加提供商帐户"
+  },
+  "addAccount": "添加帐户",
+  "addFirstAccount": "添加您的第一个帐户",
+  "card": {
+    "actions": {
+      "delete": "删除帐户",
+      "edit": "编辑帐户",
+      "setDefault": "设置为默认值",
+      "validate": "验证令牌"
+    },
+    "expires": "过期",
+    "neverExpires": "永不过期",
+    "repositories": "仓库",
+    "status": {
+      "default": "默认",
+      "expired": "已到期",
+      "invalid": "无效的",
+      "pending": "待办的",
+      "valid": "有效的"
+    },
+    "validated": "已验证"
+  },
+  "delete": {
+    "cancel": "取消",
+    "confirm": "删除",
+    "deleting": "正在删除……",
+    "description": "您确定要删除帐户“{{label}}”吗？此操作不会删除存储库，但需要将它们重新链接到另一个帐户。",
+    "title": "删除帐户"
+  },
+  "description": "管理您已连接的 Git 提供商帐户",
+  "edit": {
+    "accountInfo": "账户信息",
+    "backToAccounts": "返回账户",
+    "form": {
+      "accountLabel": "账户标签",
+      "accountLabelPlaceholder": "例如，GitHub 工作",
+      "currentToken": "当前令牌",
+      "token": "个人访问令牌",
+      "tokenDescription": "留空以保留当前令牌",
+      "tokenPlaceholder": "输入新令牌进行更新"
+    },
+    "notFound": "未找到帐户",
+    "submit": "保存更改",
+    "submitting": "保存...",
+    "subtitle": "更新帐户设置",
+    "title": "编辑帐户"
+  },
+  "noAccountsYet": "尚未连接任何帐户",
+  "title": "供应商账户",
+  "toast": {
+    "connected": "账户已连接",
+    "connectedDescription": "已成功连接 {{provider}} 帐户",
+    "connectionFailed": "添加账户失败",
+    "defaultUpdateFailed": "更新默认值失败",
+    "defaultUpdated": "默认帐户已更新",
+    "defaultUpdatedDescription": "默认帐户已更改",
+    "deleteFailed": "删除帐户失败",
+    "deleted": "账户已删除",
+    "deletedDescription": "账户已成功删除",
+    "tokenInvalid": "令牌无效",
+    "tokenInvalidDescription": "令牌无效或已过期。",
+    "tokenValid": "令牌有效",
+    "tokenValidDescription": "账户令牌有效且处于激活状态",
+    "updateFailed": "账户更新失败",
+    "updated": "账户已更新",
+    "updatedDescription": "帐户设置已保存",
+    "validationFailed": "验证失败"
+  }
+}

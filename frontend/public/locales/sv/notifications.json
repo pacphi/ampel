@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Tillägga",
+    "enable": "Aktivera e-postmeddelanden",
+    "enableDescription": "Skicka aviseringar via e-post (SMTP)",
+    "fromAddress": "Från adress",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTP-värd",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "SMTP-lösenord",
+    "smtpPasswordPlaceholder": "Ange lösenord",
+    "smtpPort": "SMTP-port",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP-användarnamn",
+    "smtpUserPlaceholder": "användare@exampel.com",
+    "testFailed": "Misslyckades med att skicka testmejl",
+    "testMessage": "Skicka testmejl",
+    "testSending": "Sändning...",
+    "testSuccess": "Testmejl skickat",
+    "title": "E-postmeddelanden",
+    "toAddresses": "Till adresser",
+    "toAddressesDescription": "Mottagare av e-postmeddelanden",
+    "toAddressesPlaceholder": "e-post@example.com",
+    "useTls": "Använd TLS"
+  },
+  "merge": {
+    "description": "Välj när du vill ta emot aviseringar för sammanslagningsåtgärder",
+    "notifyOnConflict": "Meddela vid sammanslagningskonflikter",
+    "notifyOnConflictDescription": "Skicka meddelande när sammanslagningskonflikter upptäcks",
+    "notifyOnFailure": "Meddela om misslyckade sammanslagningar",
+    "notifyOnFailureDescription": "Skicka meddelande när sammanslagningsåtgärder misslyckas",
+    "notifyOnSuccess": "Meddela om lyckade sammanslagningar",
+    "notifyOnSuccessDescription": "Skicka meddelande när PR:er har sammanfogats",
+    "title": "Sammanfogningsmeddelanden"
+  },
+  "slack": {
+    "channel": "Kanal (valfritt)",
+    "channelDescription": "Åsidosätt standardkanalen som konfigurerats i webhooken",
+    "channelPlaceholder": "#allmän",
+    "enable": "Aktivera Slack-aviseringar",
+    "enableDescription": "Skicka aviseringar till en Slack-kanal",
+    "testFailed": "Misslyckades med att skicka testmeddelandet",
+    "testMessage": "Skicka testmeddelande",
+    "testSending": "Sändning...",
+    "testSuccess": "Testmeddelande skickat",
+    "title": "Slack-aviseringar",
+    "webhookUrl": "Webhook-URL",
+    "webhookUrlDescription": "Skapa en inkommande webhook i din Slack-arbetsyta",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Aviseringsinställningar",
+  "toast": {
+    "updateFailed": "Misslyckades med att uppdatera inställningarna",
+    "updated": "Inställningar uppdaterade",
+    "updatedDescription": "Aviseringsinställningarna har sparats"
+  }
+}

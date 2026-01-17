@@ -1,7 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { screen, waitFor } from '@testing-library/react';
+import { render } from '../../../tests/setup/test-utils';
 import { NotificationsSettings } from './NotificationsSettings';
 
 vi.mock('@/api/settings', () => ({
@@ -44,19 +43,7 @@ const defaultNotificationPrefs = {
 };
 
 function renderNotificationsSettings() {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
-
-  return render(
-    <QueryClientProvider client={queryClient}>
-      <NotificationsSettings />
-    </QueryClientProvider>
-  );
+  return render(<NotificationsSettings />, { withSuspense: false });
 }
 
 describe('NotificationsSettings', () => {
@@ -136,14 +123,13 @@ describe('NotificationsSettings', () => {
 
   describe('Settings Updates', () => {
     it('toggles slack notifications', async () => {
-      const user = userEvent.setup();
       mockedSettingsApi.getNotifications.mockResolvedValue(defaultNotificationPrefs);
       mockedSettingsApi.updateNotifications.mockResolvedValue({
         ...defaultNotificationPrefs,
         slackEnabled: true,
       });
 
-      renderNotificationsSettings();
+      const { user } = renderNotificationsSettings();
 
       await waitFor(() => {
         expect(screen.getAllByRole('switch').length).toBeGreaterThan(0);
@@ -161,7 +147,7 @@ describe('NotificationsSettings', () => {
 
       expect(mockToast).toHaveBeenCalledWith({
         title: 'Settings updated',
-        description: 'Your notification settings have been saved.',
+        description: 'Notification settings have been saved',
       });
     });
 
@@ -182,13 +168,12 @@ describe('NotificationsSettings', () => {
     });
 
     it('shows error toast on update failure', async () => {
-      const user = userEvent.setup();
       mockedSettingsApi.getNotifications.mockResolvedValue(defaultNotificationPrefs);
       mockedSettingsApi.updateNotifications.mockRejectedValue({
         response: { data: { error: 'Failed to update' } },
       });
 
-      renderNotificationsSettings();
+      const { user } = renderNotificationsSettings();
 
       await waitFor(() => {
         expect(screen.getAllByRole('switch').length).toBeGreaterThan(0);

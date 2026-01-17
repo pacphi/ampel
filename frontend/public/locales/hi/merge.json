@@ -12,6 +12,23 @@
     "draft": "मसौदा",
     "needsReview": "समीक्षा की आवश्यकता है"
   },
+  "dialog": {
+    "cancel": "रद्द करना",
+    "deleteBranch": "मर्ज के बाद ब्रांच डिलीट करें",
+    "merge": "पीआर मर्ज करें",
+    "merging": "विलय हो रहा है...",
+    "strategy": {
+      "merge": "मर्ज कमिट बनाएं",
+      "mergeDescription": "सभी कमिट सुरक्षित हैं",
+      "rebase": "रिबेस और मर्ज",
+      "rebaseDescription": "लीनियर कमिट इतिहास",
+      "squash": "स्क्वैश और मर्ज",
+      "squashDescription": "सभी कमिट्स को एक में संयोजित करें",
+      "title": "विलय रणनीति"
+    },
+    "subtitle": "इस पीआर के लिए मर्ज विकल्प कॉन्फ़िगर करें",
+    "title": "मर्ज पुल अनुरोध"
+  },
   "emptyState": {
     "noPrsReady": "कोई भी पीआर मर्ज करने के लिए तैयार नहीं है। पीआर में निम्नलिखित की आवश्यकता है:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "एक साथ कई पीआर का चयन करें और उन्हें मर्ज करें",
   "title": "बल्क मर्ज",
   "toast": {
+    "failed": "विलय विफल रहा",
+    "failedDescription": "#{{number}} को मर्ज करने में विफल: {{error}}",
     "mergeFailed": "विलय विफल",
     "mergeSuccess": "विलय सफल रहा",
     "mergeSuccessDescription": "{{count}} पुल अनुरोध सफलतापूर्वक मर्ज हो गए",
     "someMergesFailed": "कुछ विलय विफल हो गए",
-    "someMergesFailedDescription": "{{success}} विलय हो गया, {{failed}} विफल रहा"
+    "someMergesFailedDescription": "{{success}} विलय हो गया, {{failed}} विफल रहा",
+    "success": "पीआर का विलय हो गया",
+    "successDescription": "#{{number}}: {{title}} का सफलतापूर्वक विलय हो गया"
   }
 }

@@ -10,6 +10,13 @@
     "tokenExpired": "Autentiseringstokenet er utløpt",
     "unauthorized": "Uautorisert tilgang"
   },
+  "boundary": {
+    "description": "Det oppsto en uventet feil. Prøv på nytt.",
+    "details": "Feildetaljer (kun utvikler)",
+    "reload": "Last inn siden på nytt",
+    "title": "Noe gikk galt",
+    "tryAgain": "Prøv igjen"
+  },
   "general": {
     "unknownError": "Det oppsto en ukjent feil"
   },

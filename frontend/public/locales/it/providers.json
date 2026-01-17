@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Account: Leggi",
+      "pullRequestsRead": "Richieste di pull: Leggi",
+      "pullRequestsWrite": "Richieste di pull: Scrivi",
+      "repositoriesRead": "Repository: Leggi",
+      "repositoriesWrite": "Repository: Scrivi"
+    },
+    "steps": {
+      "step1": "Vai su Bitbucket → Impostazioni personali → Password app",
+      "step2": "Fai clic su \"Crea password app\"",
+      "step3": "Inserisci un'etichetta per la password",
+      "step4": "Selezionare le autorizzazioni richieste:",
+      "step5": "Fai clic su \"Crea\" e copia la password"
+    },
+    "title": "Istruzioni per la password dell'app Bitbucket"
+  },
+  "common": {
+    "expirationWarning": "Per una maggiore sicurezza, si consiglia di impostare una data di scadenza.",
+    "minimalScopes": "Concedi solo le autorizzazioni minime richieste.",
+    "securityNote": "Mantieni il tuo token al sicuro e non condividerlo mai pubblicamente."
+  },
+  "github": {
+    "note": "Sono supportati anche i token a grana fine con autorizzazioni di accesso al repository.",
+    "scopes": {
+      "readOrg": "read:org (Leggi l'organizzazione e l'appartenenza al team)",
+      "readUser": "read:user (Leggi i dati del profilo utente)",
+      "repo": "repo (controllo completo dei repository privati)"
+    },
+    "steps": {
+      "step1": "Vai su Impostazioni GitHub → Impostazioni sviluppatore → Token di accesso personali → Token (classici)",
+      "step2": "Fai clic su \"Genera nuovo token (classico)\"",
+      "step3": "Assegna al tuo token un nome descrittivo",
+      "step4": "Selezionare gli ambiti richiesti:",
+      "step5": "Fai clic su \"Genera token\" e copialo immediatamente"
+    },
+    "title": "Istruzioni per il token GitHub"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "api (accesso API completo)",
+      "readApi": "read_api (accesso API di sola lettura)",
+      "readRepository": "read_repository (Accesso in lettura al repository)"
+    },
+    "steps": {
+      "step1": "Vai su GitLab → Impostazioni utente → Token di accesso",
+      "step2": "Inserisci un nome per il token e una data di scadenza facoltativa",
+      "step3": "Selezionare gli ambiti richiesti:",
+      "step4": "Fai clic su \"Crea token di accesso personale\" e copialo"
+    },
+    "title": "Istruzioni per il token GitLab"
+  },
+  "title": "Istruzioni per il fornitore"
+}

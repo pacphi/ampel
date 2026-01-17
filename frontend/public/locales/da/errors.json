@@ -10,6 +10,13 @@
     "tokenExpired": "Godkendelsestokenet er udløbet",
     "unauthorized": "Uautoriseret adgang"
   },
+  "boundary": {
+    "description": "Der opstod en uventet fejl. Prøv igen.",
+    "details": "Fejloplysninger (kun udviklere)",
+    "reload": "Genindlæs siden",
+    "title": "Noget gik galt",
+    "tryAgain": "Prøv igen"
+  },
   "general": {
     "unknownError": "Der opstod en ukendt fejl"
   },

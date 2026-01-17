@@ -12,6 +12,23 @@
     "draft": "Rascunho",
     "needsReview": "Necessita de revisão"
   },
+  "dialog": {
+    "cancel": "Cancelar",
+    "deleteBranch": "Excluir branch após merge",
+    "merge": "Mesclar PR",
+    "merging": "Fusão...",
+    "strategy": {
+      "merge": "Criar um commit de mesclagem",
+      "mergeDescription": "Todos os commits foram preservados.",
+      "rebase": "Rebase e merge",
+      "rebaseDescription": "Histórico de commits lineares",
+      "squash": "Comprima e funda",
+      "squashDescription": "Combine todos os commits em um só.",
+      "title": "Estratégia de Fusão"
+    },
+    "subtitle": "Configure as opções de mesclagem para este PR.",
+    "title": "Mesclar solicitação de pull request"
+  },
   "emptyState": {
     "noPrsReady": "Nenhuma solicitação de pull request está pronta para ser mesclada. As solicitações de pull request precisam de:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Selecione e mescle várias solicitações de pull simultaneamente.",
   "title": "Fusão em massa",
   "toast": {
+    "failed": "A mesclagem falhou",
+    "failedDescription": "Falha ao mesclar #{{number}}: {{error}}",
     "mergeFailed": "A fusão falhou.",
     "mergeSuccess": "Fusão bem-sucedida",
     "mergeSuccessDescription": "Mescladas com sucesso as solicitações de pull {{count}}",
     "someMergesFailed": "Algumas fusões falharam",
-    "someMergesFailedDescription": "{{success}} mesclado, {{failed}} falhou"
+    "someMergesFailedDescription": "{{success}} mesclado, {{failed}} falhou",
+    "success": "PR mesclado",
+    "successDescription": "Mesclagem bem-sucedida de #{{number}}: {{title}}"
   }
 }

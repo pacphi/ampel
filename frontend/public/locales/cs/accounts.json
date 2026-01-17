@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Zpět k účtům",
+    "form": {
+      "accountLabel": "Štítek účtu",
+      "accountLabelDescription": "Přátelský název pro identifikaci tohoto účtu",
+      "accountLabelPlaceholder": "např. pracovní GitHub, osobní GitLab",
+      "provider": "Poskytovatel",
+      "selectProvider": "Vyberte poskytovatele",
+      "token": "Osobní přístupový token",
+      "tokenDescription": "Váš token je šifrovaný a bezpečně uložen",
+      "tokenPlaceholder": "Zadejte svůj osobní přístupový token"
+    },
+    "submit": "Připojit účet",
+    "submitting": "Spojovací...",
+    "subtitle": "Připojení nového účtu poskytovatele Gitu",
+    "title": "Přidat účet poskytovatele"
+  },
+  "addAccount": "Přidat účet",
+  "addFirstAccount": "Přidejte svůj první účet",
+  "card": {
+    "actions": {
+      "delete": "Smazat účet",
+      "edit": "Upravit účet",
+      "setDefault": "Nastavit jako výchozí",
+      "validate": "Ověřit token"
+    },
+    "expires": "Platnost vyprší",
+    "neverExpires": "Nikdy nevyprší",
+    "repositories": "úložišť",
+    "status": {
+      "default": "Výchozí",
+      "expired": "Platnost vypršela",
+      "invalid": "Neplatný",
+      "pending": "Čeká na vyřízení",
+      "valid": "Platný"
+    },
+    "validated": "Ověřeno"
+  },
+  "delete": {
+    "cancel": "Zrušit",
+    "confirm": "Vymazat",
+    "deleting": "Mazání...",
+    "description": "Jste si jisti, že chcete smazat účet „{{label}}“? Tímto se repozitáře nesmažou, ale bude nutné je znovu propojit s jiným účtem.",
+    "title": "Smazat účet"
+  },
+  "description": "Správa připojených účtů poskytovatelů Gitu",
+  "edit": {
+    "accountInfo": "Informace o účtu",
+    "backToAccounts": "Zpět k účtům",
+    "form": {
+      "accountLabel": "Štítek účtu",
+      "accountLabelPlaceholder": "např. Práce na GitHubu",
+      "currentToken": "Aktuální token",
+      "token": "Osobní přístupový token",
+      "tokenDescription": "Pro zachování aktuálního tokenu ponechte prázdné",
+      "tokenPlaceholder": "Zadejte nový token pro aktualizaci"
+    },
+    "notFound": "Účet nenalezen",
+    "submit": "Uložit změny",
+    "submitting": "Ukládání...",
+    "subtitle": "Aktualizovat nastavení účtu",
+    "title": "Upravit účet"
+  },
+  "noAccountsYet": "Zatím nejsou připojeny žádné účty",
+  "title": "Účty poskytovatelů",
+  "toast": {
+    "connected": "Účet připojen",
+    "connectedDescription": "Úspěšně připojen účet {{provider}}",
+    "connectionFailed": "Přidání účtu se nezdařilo",
+    "defaultUpdateFailed": "Nepodařilo se aktualizovat výchozí nastavení",
+    "defaultUpdated": "Výchozí účet byl aktualizován",
+    "defaultUpdatedDescription": "Výchozí účet byl změněn",
+    "deleteFailed": "Nepodařilo se smazat účet",
+    "deleted": "Účet smazán",
+    "deletedDescription": "Účet byl úspěšně odstraněn.",
+    "tokenInvalid": "Neplatný token",
+    "tokenInvalidDescription": "Token je neplatný nebo vypršel",
+    "tokenValid": "Platný token",
+    "tokenValidDescription": "Token účtu je platný a aktivní.",
+    "updateFailed": "Aktualizace účtu se nezdařilo",
+    "updated": "Účet aktualizován",
+    "updatedDescription": "Nastavení účtu bylo uloženo",
+    "validationFailed": "Ověření se nezdařilo"
+  }
+}

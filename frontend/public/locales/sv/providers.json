@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Konto: Läs",
+      "pullRequestsRead": "Hämtningsförfrågningar: Läs",
+      "pullRequestsWrite": "Pull requests: Skriv",
+      "repositoriesRead": "Arkiv: Läs",
+      "repositoriesWrite": "Arkiv: Skriv"
+    },
+    "steps": {
+      "step1": "Gå till Bitbucket → Personliga inställningar → Applösenord",
+      "step2": "Klicka på \"Skapa applösenord\"",
+      "step3": "Ange en etikett för lösenordet",
+      "step4": "Välj de behörigheter som krävs:",
+      "step5": "Klicka på \"Skapa\" och kopiera lösenordet"
+    },
+    "title": "Instruktioner för lösenord för Bitbucket-appen"
+  },
+  "common": {
+    "expirationWarning": "Överväg att sätta ett utgångsdatum för bättre säkerhet.",
+    "minimalScopes": "Ge endast de lägsta nödvändiga behörigheterna.",
+    "securityNote": "Håll din token säker och dela den aldrig offentligt."
+  },
+  "github": {
+    "note": "Finkorniga tokens stöds också med åtkomstbehörigheter för arkivet.",
+    "scopes": {
+      "readOrg": "read:org (Läs org- och teammedlemskap)",
+      "readUser": "läsa:användare (Läs användarprofildata)",
+      "repo": "repo (Full kontroll över privata arkiv)"
+    },
+    "steps": {
+      "step1": "Gå till GitHub-inställningar → Utvecklarinställningar → Personliga åtkomsttokens → Tokens (klassisk)",
+      "step2": "Klicka på \"Generera ny token (klassisk)\"",
+      "step3": "Ge din token ett beskrivande namn",
+      "step4": "Välj önskade omfattningar:",
+      "step5": "Klicka på \"Generera token\" och kopiera den omedelbart"
+    },
+    "title": "Instruktioner för GitHub-token"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "api (fullständig API-åtkomst)",
+      "readApi": "read_api (skrivskyddad API-åtkomst)",
+      "readRepository": "read_repository (Läsåtkomst till arkivet)"
+    },
+    "steps": {
+      "step1": "Gå till GitLab → Användarinställningar → Åtkomsttokens",
+      "step2": "Ange ett tokennamn och ett valfritt utgångsdatum",
+      "step3": "Välj önskade omfattningar:",
+      "step4": "Klicka på \"Skapa personlig åtkomsttoken\" och kopiera den"
+    },
+    "title": "Instruktioner för GitLab-token"
+  },
+  "title": "Leverantörsinstruktioner"
+}

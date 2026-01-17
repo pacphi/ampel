@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "وقت الانتظار بين عمليات الدمج المتتالية",
+    "placeholder": "5",
+    "title": "تأخير الدمج (بالثواني)"
+  },
+  "options": {
+    "allowNoReviews": "السماح بالدمج بدون مراجعات",
+    "allowNoReviewsDescription": "السماح بدمج طلبات السحب التي لم تخضع لأي مراجعات",
+    "deleteBranch": "حذف الفروع بعد الدمج",
+    "deleteBranchDescription": "حذف فروع المصدر تلقائيًا بعد الدمج الناجح",
+    "requireApproval": "يتطلب الأمر موافقة قبل الدمج",
+    "requireApprovalDescription": "انتظر الموافقة اليدوية قبل تنفيذ عملية الدمج"
+  },
+  "strategy": {
+    "description": "اختر كيفية دمج طلبات السحب افتراضيًا",
+    "merge": "أنشئ التزام دمج",
+    "mergeDescription": "تم حفظ جميع التغييرات",
+    "rebase": "إعادة التأسيس والدمج",
+    "rebaseDescription": "سجل الالتزامات الخطي",
+    "squash": "اسحق وادمج",
+    "squashDescription": "دمج جميع الالتزامات في التزام واحد",
+    "title": "استراتيجية الدمج الافتراضية"
+  },
+  "title": "سلوك الدمج",
+  "toast": {
+    "updateFailed": "فشل تحديث الإعدادات",
+    "updated": "تم تحديث الإعدادات",
+    "updatedDescription": "تم حفظ إعدادات سلوك الدمج"
+  }
+}

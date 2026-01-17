@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Väntetid mellan på varandra följande sammanslagningar",
+    "placeholder": "5",
+    "title": "Sammanslagningsfördröjning (sekunder)"
+  },
+  "options": {
+    "allowNoReviews": "Tillåt sammanslagning utan granskningar",
+    "allowNoReviewsDescription": "Tillåt sammanslagning av PR-er som inte har några recensioner",
+    "deleteBranch": "Ta bort grenar efter sammanslagning",
+    "deleteBranchDescription": "Ta automatiskt bort källgrenar efter lyckad sammanslagning",
+    "requireApproval": "Kräv godkännande före sammanslagning",
+    "requireApprovalDescription": "Vänta på manuellt godkännande innan sammanslagningen utförs"
+  },
+  "strategy": {
+    "description": "Välj hur pull requests ska sammanfogas som standard",
+    "merge": "Skapa en merge-commit",
+    "mergeDescription": "Alla commits bevarade",
+    "rebase": "Rebase och merge",
+    "rebaseDescription": "Linjär commit-historik",
+    "squash": "Squash och sammanfoga",
+    "squashDescription": "Kombinera alla commits till ett",
+    "title": "Standardstrategi för sammanslagning"
+  },
+  "title": "Sammanfogningsbeteende",
+  "toast": {
+    "updateFailed": "Misslyckades med att uppdatera inställningarna",
+    "updated": "Inställningar uppdaterade",
+    "updatedDescription": "Inställningarna för sammanslagningsbeteendet har sparats"
+  }
+}

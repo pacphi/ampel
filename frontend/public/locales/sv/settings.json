@@ -89,7 +89,18 @@
     "showArchived": "Visa arkiverade",
     "showArchivedDescription": "Inkludera arkiverade databaser",
     "showForks": "Visa gafflar",
-    "showForksDescription": "Inkludera förgrenade arkiv"
+    "showForksDescription": "Inkludera förgrenade arkiv",
+    "visibility": {
+      "archived": "Visa arkiverade databaser",
+      "archivedDescription": "Visa arkiverade databaser",
+      "bitbucketNote": "Obs! Bitbucket-synligheten kan variera beroende på arbetsytans inställningar",
+      "description": "Välj vilka typer av arkiv som ska visas",
+      "private": "Visa privata arkiv",
+      "privateDescription": "Visa privata arkiv",
+      "public": "Visa offentliga arkiv",
+      "publicDescription": "Visa arkiv som är offentligt tillgängliga",
+      "title": "Filter för arkivets synlighet"
+    }
   },
   "reset": "Återställ till standardinställningarna",
   "resetConfirm": "Är du säker på att du vill återställa alla inställningar?",

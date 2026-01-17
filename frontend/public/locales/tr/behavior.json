@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Ardışık birleştirmeler arasındaki bekleme süresi",
+    "placeholder": "5",
+    "title": "Birleştirme Gecikmesi (saniye)"
+  },
+  "options": {
+    "allowNoReviews": "İncelemeler olmadan birleştirmeye izin ver",
+    "allowNoReviewsDescription": "Henüz incelemesi olmayan çekme isteklerinin birleştirilmesine izin ver.",
+    "deleteBranch": "Birleştirmeden sonra dalları sil",
+    "deleteBranchDescription": "Başarılı birleştirme işleminden sonra kaynak dalları otomatik olarak sil.",
+    "requireApproval": "Birleştirmeden önce onay alınması gerekmektedir.",
+    "requireApprovalDescription": "Birleştirme işlemini gerçekleştirmeden önce manuel onayı bekleyin."
+  },
+  "strategy": {
+    "description": "Varsayılan olarak çekme isteklerinin nasıl birleştirileceğini seçin.",
+    "merge": "Bir birleştirme taahhüdü oluşturun",
+    "mergeDescription": "Tüm commit'ler korunmuştur.",
+    "rebase": "Yeniden temel al ve birleştir",
+    "rebaseDescription": "Doğrusal taahhüt geçmişi",
+    "squash": "Sıkıştırma ve birleştirme",
+    "squashDescription": "Tüm commit'leri tek bir commit'te birleştirin.",
+    "title": "Varsayılan Birleştirme Stratejisi"
+  },
+  "title": "Birleştirme Davranışı",
+  "toast": {
+    "updateFailed": "Ayarlar güncellenemedi.",
+    "updated": "Ayarlar güncellendi",
+    "updatedDescription": "Birleştirme davranışı ayarları kaydedildi."
+  }
+}

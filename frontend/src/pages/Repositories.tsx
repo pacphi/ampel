@@ -100,7 +100,8 @@ export default function Repositories() {
         title: t('repositories:toast.bulkAdded'),
         description: t('repositories:toast.bulkAddedDescription', {
           count: successCount,
-          failed: failCount > 0 ? t('repositories:toast.bulkAddedFailed', { count: failCount }) : '',
+          failed:
+            failCount > 0 ? t('repositories:toast.bulkAddedFailed', { count: failCount }) : '',
         }),
       });
     } else {

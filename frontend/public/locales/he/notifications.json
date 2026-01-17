@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "לְהוֹסִיף",
+    "enable": "הפעל התראות דוא\"ל",
+    "enableDescription": "שליחת התראות באמצעות דוא\"ל (SMTP)",
+    "fromAddress": "מכתובת",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "מארח SMTP",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "סיסמת SMTP",
+    "smtpPasswordPlaceholder": "הזן סיסמה",
+    "smtpPort": "פורט SMTP",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "שם משתמש של SMTP",
+    "smtpUserPlaceholder": "משתמש@example.com",
+    "testFailed": "שליחת דוא\"ל ניסיון נכשלה",
+    "testMessage": "שלח אימייל ניסיון",
+    "testSending": "שְׁלִיחָה...",
+    "testSuccess": "נשלח אימייל ניסיון",
+    "title": "התראות דוא\"ל",
+    "toAddresses": "כתובות אל",
+    "toAddressesDescription": "נמעני הודעות דוא\"ל",
+    "toAddressesPlaceholder": "דוא\"ל@example.com",
+    "useTls": "השתמש ב-TLS"
+  },
+  "merge": {
+    "description": "בחר מתי לקבל התראות עבור פעולות מיזוג",
+    "notifyOnConflict": "הודעה על התנגשויות מיזוג",
+    "notifyOnConflictDescription": "שלח הודעה כאשר מזוהים התנגשויות מיזוג",
+    "notifyOnFailure": "הודעה על מיזוגים שנכשלו",
+    "notifyOnFailureDescription": "שלח הודעה כאשר פעולות מיזוג נכשלות",
+    "notifyOnSuccess": "הודעה על מיזוגים מוצלחים",
+    "notifyOnSuccessDescription": "שלח הודעה כאשר יחסי ציבור ממוזגים בהצלחה",
+    "title": "התראות מיזוג"
+  },
+  "slack": {
+    "channel": "ערוץ (אופציונלי)",
+    "channelDescription": "עקיפת ערוץ ברירת המחדל שתצורתו נקבעה ב-webhook",
+    "channelPlaceholder": "#כְּלָלִי",
+    "enable": "הפעלת התראות Slack",
+    "enableDescription": "שליחת התראות לערוץ Slack",
+    "testFailed": "שליחת הודעת ניסיון נכשלה",
+    "testMessage": "שלח הודעת ניסיון",
+    "testSending": "שְׁלִיחָה...",
+    "testSuccess": "הודעת בדיקה נשלחה",
+    "title": "התראות סלאק",
+    "webhookUrl": "כתובת אתר של Webhook",
+    "webhookUrlDescription": "צור webhook נכנס בסביבת העבודה של Slack שלך",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "הגדרות התראות",
+  "toast": {
+    "updateFailed": "עדכון ההגדרות נכשל",
+    "updated": "ההגדרות עודכנו",
+    "updatedDescription": "הגדרות ההתראות נשמרו"
+  }
+}

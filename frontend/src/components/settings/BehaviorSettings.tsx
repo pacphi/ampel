@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { settingsApi, type UpdateUserSettingsRequest } from '@/api/settings';
 import { useToast } from '@/components/ui/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +15,7 @@ import {
 } from '@/components/ui/select';
 
 export function BehaviorSettings() {
+  const { t } = useTranslation(['behavior']);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -27,8 +29,8 @@ export function BehaviorSettings() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-settings', 'behavior'] });
       toast({
-        title: 'Settings updated',
-        description: 'Your behavior settings have been saved.',
+        title: t('behavior:toast.updated'),
+        description: t('behavior:toast.updatedDescription'),
       });
     },
     onError: (error: unknown) => {
@@ -59,15 +61,15 @@ export function BehaviorSettings() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Merge Behavior</CardTitle>
-          <CardDescription>Configure default settings for merging pull requests</CardDescription>
+          <CardTitle>{t('behavior:title')}</CardTitle>
+          <CardDescription>{t('behavior:strategy.description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Default Merge Strategy */}
           <div className="space-y-2">
-            <Label>Default Merge Strategy</Label>
+            <Label>{t('behavior:strategy.title')}</Label>
             <p className="text-sm text-muted-foreground mb-2">
-              The default strategy used when merging PRs
+              {t('behavior:strategy.squashDescription')}
             </p>
             <Select
               value={settings?.defaultMergeStrategy || 'squash'}
@@ -77,19 +79,17 @@ export function BehaviorSettings() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="squash">Squash and merge</SelectItem>
-                <SelectItem value="merge">Create a merge commit</SelectItem>
-                <SelectItem value="rebase">Rebase and merge</SelectItem>
+                <SelectItem value="squash">{t('behavior:strategy.squash')}</SelectItem>
+                <SelectItem value="merge">{t('behavior:strategy.merge')}</SelectItem>
+                <SelectItem value="rebase">{t('behavior:strategy.rebase')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {/* Merge Delay */}
           <div className="space-y-2">
-            <Label>Merge Delay (seconds)</Label>
-            <p className="text-sm text-muted-foreground mb-2">
-              Delay between consecutive merges in the same repository to avoid conflicts
-            </p>
+            <Label>{t('behavior:delay.title')}</Label>
+            <p className="text-sm text-muted-foreground mb-2">{t('behavior:delay.description')}</p>
             <div className="flex items-center gap-4">
               <Slider
                 value={[settings?.mergeDelaySeconds || 5]}
@@ -108,9 +108,9 @@ export function BehaviorSettings() {
           {/* Delete Branches */}
           <div className="flex items-center justify-between">
             <div>
-              <Label>Delete branches after merge</Label>
+              <Label>{t('behavior:options.deleteBranch')}</Label>
               <p className="text-sm text-muted-foreground">
-                Automatically delete source branches after successful merge
+                {t('behavior:options.deleteBranchDescription')}
               </p>
             </div>
             <Switch
@@ -122,9 +122,9 @@ export function BehaviorSettings() {
           {/* Require Approval */}
           <div className="flex items-center justify-between">
             <div>
-              <Label>Require approval before merge</Label>
+              <Label>{t('behavior:options.requireApproval')}</Label>
               <p className="text-sm text-muted-foreground">
-                Show confirmation dialog before executing bulk merges
+                {t('behavior:options.requireApprovalDescription')}
               </p>
             </div>
             <Switch
@@ -136,9 +136,9 @@ export function BehaviorSettings() {
           {/* Skip Review Requirement */}
           <div className="flex items-center justify-between">
             <div>
-              <Label>Allow merge without reviews</Label>
+              <Label>{t('behavior:options.allowNoReviews')}</Label>
               <p className="text-sm text-muted-foreground">
-                Skip the review requirement and allow merging PRs without approvals
+                {t('behavior:options.allowNoReviewsDescription')}
               </p>
             </div>
             <Switch

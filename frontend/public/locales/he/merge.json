@@ -12,6 +12,23 @@
     "draft": "טְיוּטָה",
     "needsReview": "צריך סקירה"
   },
+  "dialog": {
+    "cancel": "לְבַטֵל",
+    "deleteBranch": "מחיקת ענף לאחר מיזוג",
+    "merge": "מיזוג יחסי ציבור",
+    "merging": "ממזג...",
+    "strategy": {
+      "merge": "צור commit של מיזוג",
+      "mergeDescription": "כל הקומיטים נשמרו",
+      "rebase": "בסיס מחדש ומיזוג",
+      "rebaseDescription": "היסטוריית התחייבויות ליניארית",
+      "squash": "דחיסה ומיזוג",
+      "squashDescription": "איחוד כל הקומיטים לאחד",
+      "title": "אסטרטגיית מיזוג"
+    },
+    "subtitle": "הגדר אפשרויות מיזוג עבור PR זה",
+    "title": "בקשת משיכה למיזוג"
+  },
   "emptyState": {
     "noPrsReady": "אף ארגון יחסי ציבור אינו מוכן להתמזג. ארגון יחסי הציבור זקוק ל:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "בחירה ומיזוג של מספר רב של יחסי ציבור בו זמנית",
   "title": "מיזוג בכמות גדולה",
   "toast": {
+    "failed": "המיזוג נכשל",
+    "failedDescription": "נכשל המיזוג #{{number}}: {{error}}",
     "mergeFailed": "המיזוג נכשל",
     "mergeSuccess": "המיזוג הצליח",
     "mergeSuccessDescription": "בקשות משיכה {{count}} מוזגו בהצלחה",
     "someMergesFailed": "חלק מהמיזוגים נכשלו",
-    "someMergesFailedDescription": "{{success}} האיחוד, {{failed}} נכשל"
+    "someMergesFailedDescription": "{{success}} האיחוד, {{failed}} נכשל",
+    "success": "יחסי ציבור ממוזגים",
+    "successDescription": "מיזוג #{{number}}: {{title}}"
   }
 }

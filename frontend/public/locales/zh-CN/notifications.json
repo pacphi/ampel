@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "添加",
+    "enable": "启用电子邮件通知",
+    "enableDescription": "通过电子邮件（SMTP）发送通知",
+    "fromAddress": "来自地址",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTP主机",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "SMTP密码",
+    "smtpPasswordPlaceholder": "输入密码",
+    "smtpPort": "SMTP端口",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP 用户名",
+    "smtpUserPlaceholder": "user@example.com",
+    "testFailed": "测试邮件发送失败",
+    "testMessage": "发送测试邮件",
+    "testSending": "正在发送...",
+    "testSuccess": "已发送测试邮件",
+    "title": "电子邮件通知",
+    "toAddresses": "收件人地址",
+    "toAddressesDescription": "通知邮件的收件人",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "使用TLS"
+  },
+  "merge": {
+    "description": "选择何时接收合并操作通知",
+    "notifyOnConflict": "合并冲突通知",
+    "notifyOnConflictDescription": "检测到合并冲突时发送通知",
+    "notifyOnFailure": "合并失败时发出通知",
+    "notifyOnFailureDescription": "合并操作失败时发送通知",
+    "notifyOnSuccess": "合并成功后发出通知",
+    "notifyOnSuccessDescription": "PR 合并成功后发送通知",
+    "title": "合并通知"
+  },
+  "slack": {
+    "channel": "通道（可选）",
+    "channelDescription": "覆盖 webhook 中配置的默认通道",
+    "channelPlaceholder": "＃一般的",
+    "enable": "启用 Slack 通知",
+    "enableDescription": "向 Slack 频道发送通知",
+    "testFailed": "发送测试消息失败",
+    "testMessage": "发送测试消息",
+    "testSending": "正在发送...",
+    "testSuccess": "已发送测试消息",
+    "title": "Slack 通知",
+    "webhookUrl": "Webhook URL",
+    "webhookUrlDescription": "在你的 Slack 工作区中创建一个传入 Webhook。",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "通知设置",
+  "toast": {
+    "updateFailed": "设置更新失败",
+    "updated": "设置已更新",
+    "updatedDescription": "通知设置已保存"
+  }
+}

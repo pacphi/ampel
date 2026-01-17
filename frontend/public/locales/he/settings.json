@@ -89,7 +89,18 @@
     "showArchived": "הצג מהארכיון",
     "showArchivedDescription": "כלול מאגרים מאוחסנים",
     "showForks": "הצג מזלגות",
-    "showForksDescription": "כלול מאגרים מחולקים"
+    "showForksDescription": "כלול מאגרים מחולקים",
+    "visibility": {
+      "archived": "הצג מאגרים מאוחסנים",
+      "archivedDescription": "הצגת מאגרים שהועברו לארכיון",
+      "bitbucketNote": "הערה: נראות Bitbucket עשויה להשתנות בהתאם להגדרות סביבת העבודה",
+      "description": "בחר אילו סוגי מאגרים להציג",
+      "private": "הצג מאגרים פרטיים",
+      "privateDescription": "הצגת מאגרים פרטיים",
+      "public": "הצג מאגרים ציבוריים",
+      "publicDescription": "מאגרים להצגה הנגישים לציבור",
+      "title": "מסנני נראות מאגר"
+    }
   },
   "reset": "איפוס להגדרות ברירת מחדל",
   "resetConfirm": "האם אתה בטוח שברצונך לאפס את כל ההגדרות?",

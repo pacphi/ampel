@@ -12,6 +12,23 @@
     "draft": "下書き",
     "needsReview": "レビューが必要"
   },
+  "dialog": {
+    "cancel": "キャンセル",
+    "deleteBranch": "マージ後にブランチを削除する",
+    "merge": "マージPR",
+    "merging": "マージ中...",
+    "strategy": {
+      "merge": "マージコミットを作成する",
+      "mergeDescription": "すべてのコミットは保存されます",
+      "rebase": "リベースとマージ",
+      "rebaseDescription": "線形コミット履歴",
+      "squash": "押しつぶして結合する",
+      "squashDescription": "すべてのコミットを1つにまとめる",
+      "title": "マージ戦略"
+    },
+    "subtitle": "このPRのマージオプションを設定する",
+    "title": "プルリクエストのマージ"
+  },
   "emptyState": {
     "noPrsReady": "マージする準備ができている PR がありません。PR には次のものが必要です:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "複数のPRを一度に選択してマージする",
   "title": "一括マージ",
   "toast": {
+    "failed": "マージに失敗しました",
+    "failedDescription": "#{{number}} のマージに失敗しました: {{error}}",
     "mergeFailed": "マージに失敗しました",
     "mergeSuccess": "マージ成功",
     "mergeSuccessDescription": "{{count}} 件のプルリクエストを正常にマージしました",
     "someMergesFailed": "一部のマージが失敗しました",
-    "someMergesFailedDescription": "{{success}} がマージされましたが、{{failed}} が失敗しました"
+    "someMergesFailedDescription": "{{success}} がマージされましたが、{{failed}} が失敗しました",
+    "success": "PRが統合されました",
+    "successDescription": "#{{number}} を正常にマージしました: {{title}}"
   }
 }

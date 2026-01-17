@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "账户：阅读",
+      "pullRequestsRead": "拉取请求：读取",
+      "pullRequestsWrite": "拉取请求：编写",
+      "repositoriesRead": "存储库：读取",
+      "repositoriesWrite": "存储库：写入"
+    },
+    "steps": {
+      "step1": "前往 Bitbucket → 个人设置 → 应用密码",
+      "step2": "点击“创建应用密码”",
+      "step3": "请输入密码标签",
+      "step4": "请选择所需的权限：",
+      "step5": "点击“创建”并复制密码"
+    },
+    "title": "Bitbucket 应用密码说明"
+  },
+  "common": {
+    "expirationWarning": "为了提高安全性，建议设置有效期。",
+    "minimalScopes": "仅授予所需的最低权限。",
+    "securityNote": "妥善保管您的令牌，切勿公开分享。"
+  },
+  "github": {
+    "note": "存储库访问权限也支持细粒度令牌。",
+    "scopes": {
+      "readOrg": "read:org（读取组织和团队成员信息）",
+      "readUser": "读取:用户（读取用户个人资料数据）",
+      "repo": "仓库（对私有仓库的完全控制权）"
+    },
+    "steps": {
+      "step1": "前往 GitHub 设置 → 开发者设置 → 个人访问令牌 → 令牌（经典）",
+      "step2": "点击“生成新令牌（经典）”",
+      "step3": "给你的代币起一个描述性的名字",
+      "step4": "选择所需的范围：",
+      "step5": "点击“生成令牌”并立即复制。"
+    },
+    "title": "GitHub Token 使用说明"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "API（完整 API 访问权限）",
+      "readApi": "read_api（只读 API 访问）",
+      "readRepository": "read_repository（读取存储库访问权限）"
+    },
+    "steps": {
+      "step1": "前往 GitLab → 用户设置 → 访问令牌",
+      "step2": "输入令牌名称和可选的过期日期",
+      "step3": "选择所需的范围：",
+      "step4": "点击“创建个人访问令牌”并复制它"
+    },
+    "title": "GitLab Token 使用说明"
+  },
+  "title": "提供者说明"
+}

@@ -12,6 +12,23 @@
     "draft": "草稿",
     "needsReview": "需要審查"
   },
+  "dialog": {
+    "cancel": "取消",
+    "deleteBranch": "合併後刪除分支",
+    "merge": "合併 PR",
+    "merging": "合併中…",
+    "strategy": {
+      "merge": "建立合併提交",
+      "mergeDescription": "所有提交記錄均已保留",
+      "rebase": "重新定基並合併",
+      "rebaseDescription": "線性提交歷史",
+      "squash": "擠壓和合併",
+      "squashDescription": "將所有提交合併為一個提交",
+      "title": "合併策略"
+    },
+    "subtitle": "為該 PR 配置合併選項",
+    "title": "合併拉取請求"
+  },
   "emptyState": {
     "noPrsReady": "目前沒有可以合併的 PR。 PR 需要：",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "一次性選擇並合併多個 PR",
   "title": "批量合併",
   "toast": {
+    "failed": "合併失敗",
+    "failedDescription": "合併失敗 #{{number}}: {{error}}",
     "mergeFailed": "合併失敗",
     "mergeSuccess": "合併成功",
     "mergeSuccessDescription": "已成功合併 {{count}} 個拉取請求",
     "someMergesFailed": "部分合併失敗",
-    "someMergesFailedDescription": "{{success}} 已合併，{{failed}} 失敗"
+    "someMergesFailedDescription": "{{success}} 已合併，{{failed}} 失敗",
+    "success": "PR合併",
+    "successDescription": "已成功合併 #{{number}}: {{title}}"
   }
 }

@@ -10,6 +10,13 @@
     "tokenExpired": "Platnost ověřovacího tokenu vypršela",
     "unauthorized": "Neoprávněný přístup"
   },
+  "boundary": {
+    "description": "Došlo k neočekávané chybě. Zkuste to prosím znovu.",
+    "details": "Podrobnosti o chybě (pouze pro vývojáře)",
+    "reload": "Znovu načíst stránku",
+    "title": "Něco se pokazilo",
+    "tryAgain": "Zkuste to znovu"
+  },
   "general": {
     "unknownError": "Došlo k neznámé chybě"
   },

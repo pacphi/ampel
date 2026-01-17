@@ -12,6 +12,23 @@
     "draft": "Udkast",
     "needsReview": "Behov for gennemgang"
   },
+  "dialog": {
+    "cancel": "Ophæve",
+    "deleteBranch": "Slet gren efter sammenlægning",
+    "merge": "Merge PR",
+    "merging": "Sammenfletter...",
+    "strategy": {
+      "merge": "Opret en merge-commit",
+      "mergeDescription": "Alle commits bevaret",
+      "rebase": "Genbaser og flet",
+      "rebaseDescription": "Lineær commit-historik",
+      "squash": "Squash og flet",
+      "squashDescription": "Kombinér alle commits til én",
+      "title": "Fletningsstrategi"
+    },
+    "subtitle": "Konfigurer fletteindstillinger for denne PR",
+    "title": "Anmodning om sammenlægning"
+  },
   "emptyState": {
     "noPrsReady": "Ingen PR'er er klar til at fusionere. PR'er har brug for:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Vælg og flet flere PR'er på én gang",
   "title": "Massefletning",
   "toast": {
+    "failed": "Fletning mislykkedes",
+    "failedDescription": "Kunne ikke flette #{{number}}: {{error}}",
     "mergeFailed": "Fletning mislykkedes",
     "mergeSuccess": "Fletningen lykkedes",
     "mergeSuccessDescription": "{{count}} pull requests er blevet flettet sammen",
     "someMergesFailed": "Nogle fusioner mislykkedes",
-    "someMergesFailedDescription": "{{success}} sammenflettet, {{failed}} mislykkedes"
+    "someMergesFailedDescription": "{{success}} sammenflettet, {{failed}} mislykkedes",
+    "success": "PR-fusion",
+    "successDescription": "Sammenflettet #{{number}}: {{title}}"
   }
 }

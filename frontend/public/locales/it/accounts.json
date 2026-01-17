@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Torna a Account",
+    "form": {
+      "accountLabel": "Etichetta dell'account",
+      "accountLabelDescription": "Un nome descrittivo per identificare questo account",
+      "accountLabelPlaceholder": "ad esempio, GitHub di lavoro, GitLab personale",
+      "provider": "Fornitore",
+      "selectProvider": "Seleziona un fornitore",
+      "token": "Token di accesso personale",
+      "tokenDescription": "Il tuo token è crittografato e archiviato in modo sicuro",
+      "tokenPlaceholder": "Inserisci il tuo token di accesso personale"
+    },
+    "submit": "Connetti account",
+    "submitting": "Connessione in corso...",
+    "subtitle": "Collega un nuovo account provider Git",
+    "title": "Aggiungi account fornitore"
+  },
+  "addAccount": "Aggiungi account",
+  "addFirstAccount": "Aggiungi il tuo primo account",
+  "card": {
+    "actions": {
+      "delete": "Elimina account",
+      "edit": "Modifica account",
+      "setDefault": "Imposta come predefinito",
+      "validate": "Convalida il token"
+    },
+    "expires": "Scade",
+    "neverExpires": "Non scade mai",
+    "repositories": "repository",
+    "status": {
+      "default": "Predefinito",
+      "expired": "Scaduto",
+      "invalid": "Non valido",
+      "pending": "In attesa di",
+      "valid": "Valido"
+    },
+    "validated": "convalidato"
+  },
+  "delete": {
+    "cancel": "Cancellare",
+    "confirm": "Eliminare",
+    "deleting": "Eliminazione in corso...",
+    "description": "Vuoi davvero eliminare l'account \"{{label}}\"? Questa operazione non eliminerà i repository, ma sarà necessario ricollegarli a un altro account.",
+    "title": "Elimina account"
+  },
+  "description": "Gestisci i tuoi account provider Git connessi",
+  "edit": {
+    "accountInfo": "Informazioni sull'account",
+    "backToAccounts": "Torna a Account",
+    "form": {
+      "accountLabel": "Etichetta dell'account",
+      "accountLabelPlaceholder": "ad esempio, Work GitHub",
+      "currentToken": "Token corrente",
+      "token": "Token di accesso personale",
+      "tokenDescription": "Lascia vuoto per mantenere il token corrente",
+      "tokenPlaceholder": "Inserisci un nuovo token per aggiornare"
+    },
+    "notFound": "Account non trovato",
+    "submit": "Salva modifiche",
+    "submitting": "Risparmio...",
+    "subtitle": "Aggiorna le impostazioni dell'account",
+    "title": "Modifica account"
+  },
+  "noAccountsYet": "Nessun account ancora connesso",
+  "title": "Account del fornitore",
+  "toast": {
+    "connected": "Account connesso",
+    "connectedDescription": "Connessione riuscita all'account {{provider}}",
+    "connectionFailed": "Impossibile aggiungere l'account",
+    "defaultUpdateFailed": "Impossibile aggiornare l'impostazione predefinita",
+    "defaultUpdated": "Account predefinito aggiornato",
+    "defaultUpdatedDescription": "L'account predefinito è stato modificato",
+    "deleteFailed": "Impossibile eliminare l'account",
+    "deleted": "Account eliminato",
+    "deletedDescription": "L'account è stato rimosso con successo",
+    "tokenInvalid": "Token non valido",
+    "tokenInvalidDescription": "Il token non è valido o è scaduto",
+    "tokenValid": "Token valido",
+    "tokenValidDescription": "Il token dell'account è valido e attivo",
+    "updateFailed": "Impossibile aggiornare l'account",
+    "updated": "Account aggiornato",
+    "updatedDescription": "Le impostazioni dell'account sono state salvate",
+    "validationFailed": "Convalida fallita"
+  }
+}

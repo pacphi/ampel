@@ -10,6 +10,13 @@
     "tokenExpired": "身份驗證令牌已過期",
     "unauthorized": "未經授權的訪問"
   },
+  "boundary": {
+    "description": "發生意外錯誤，請重試。",
+    "details": "錯誤詳情（僅限開發人員）",
+    "reload": "重新載入頁面",
+    "title": "出問題了",
+    "tryAgain": "重試"
+  },
   "general": {
     "unknownError": "發生未知錯誤"
   },

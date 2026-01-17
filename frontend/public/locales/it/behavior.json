@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Tempo di attesa tra unioni consecutive",
+    "placeholder": "5",
+    "title": "Ritardo di unione (secondi)"
+  },
+  "options": {
+    "allowNoReviews": "Consenti unione senza revisioni",
+    "allowNoReviewsDescription": "Consenti l'unione delle PR che non hanno recensioni",
+    "deleteBranch": "Elimina i rami dopo l'unione",
+    "deleteBranchDescription": "Elimina automaticamente i rami di origine dopo l'unione riuscita",
+    "requireApproval": "Richiedi approvazione prima dell'unione",
+    "requireApprovalDescription": "Attendi l'approvazione manuale prima di eseguire l'unione"
+  },
+  "strategy": {
+    "description": "Scegli come le richieste pull devono essere unite per impostazione predefinita",
+    "merge": "Crea un commit di unione",
+    "mergeDescription": "Tutti i commit sono stati preservati",
+    "rebase": "Ribasamento e unione",
+    "rebaseDescription": "Cronologia degli impegni lineari",
+    "squash": "Schiaccia e unisci",
+    "squashDescription": "Combina tutti i commit in uno",
+    "title": "Strategia di unione predefinita"
+  },
+  "title": "Comportamento di unione",
+  "toast": {
+    "updateFailed": "Impossibile aggiornare le impostazioni",
+    "updated": "Impostazioni aggiornate",
+    "updatedDescription": "Le impostazioni del comportamento di unione sono state salvate"
+  }
+}

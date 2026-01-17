@@ -89,7 +89,18 @@
     "showArchived": "Gearchiveerde weergave",
     "showArchivedDescription": "Inclusief gearchiveerde repositories",
     "showForks": "Toon vorken",
-    "showForksDescription": "Inclusief afgesplitste repositories"
+    "showForksDescription": "Inclusief afgesplitste repositories",
+    "visibility": {
+      "archived": "Toon gearchiveerde repositories",
+      "archivedDescription": "Toon gearchiveerde repositories",
+      "bitbucketNote": "Opmerking: De zichtbaarheid van Bitbucket kan variëren afhankelijk van de werkruimte-instellingen.",
+      "description": "Kies welke typen repositories u wilt weergeven.",
+      "private": "Privé-repositories weergeven",
+      "privateDescription": "Toon repositories die privé zijn",
+      "public": "Toon openbare repositories",
+      "publicDescription": "Toon repositories die openbaar toegankelijk zijn.",
+      "title": "Filters voor zichtbaarheid van repositories"
+    }
   },
   "reset": "Terugzetten naar standaardinstellingen",
   "resetConfirm": "Weet je zeker dat je alle instellingen wilt resetten?",

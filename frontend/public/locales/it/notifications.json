@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Aggiungere",
+    "enable": "Abilita le notifiche e-mail",
+    "enableDescription": "Invia notifiche via e-mail (SMTP)",
+    "fromAddress": "Da Indirizzo",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "Host SMTP",
+    "smtpHostPlaceholder": "smtp.esempio.com",
+    "smtpPassword": "Password SMTP",
+    "smtpPasswordPlaceholder": "Inserisci la password",
+    "smtpPort": "Porta SMTP",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "Nome utente SMTP",
+    "smtpUserPlaceholder": "utente@esempio.com",
+    "testFailed": "Impossibile inviare l'e-mail di prova",
+    "testMessage": "Invia email di prova",
+    "testSending": "Invio in corso...",
+    "testSuccess": "Email di prova inviata",
+    "title": "Notifiche e-mail",
+    "toAddresses": "Agli indirizzi",
+    "toAddressesDescription": "Destinatari delle email di notifica",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "Utilizzare TLS"
+  },
+  "merge": {
+    "description": "Scegli quando ricevere le notifiche per le operazioni di unione",
+    "notifyOnConflict": "Notifica sui conflitti di unione",
+    "notifyOnConflictDescription": "Invia notifica quando vengono rilevati conflitti di unione",
+    "notifyOnFailure": "Notifica le unioni non riuscite",
+    "notifyOnFailureDescription": "Invia notifica quando le operazioni di unione falliscono",
+    "notifyOnSuccess": "Notifica le unioni riuscite",
+    "notifyOnSuccessDescription": "Invia una notifica quando le PR vengono unite correttamente",
+    "title": "Unisci notifiche"
+  },
+  "slack": {
+    "channel": "Canale (facoltativo)",
+    "channelDescription": "Sostituisci il canale predefinito configurato nel webhook",
+    "channelPlaceholder": "#generale",
+    "enable": "Abilita le notifiche Slack",
+    "enableDescription": "Invia notifiche a un canale Slack",
+    "testFailed": "Impossibile inviare il messaggio di prova",
+    "testMessage": "Invia messaggio di prova",
+    "testSending": "Invio in corso...",
+    "testSuccess": "Messaggio di prova inviato",
+    "title": "Notifiche Slack",
+    "webhookUrl": "URL del webhook",
+    "webhookUrlDescription": "Crea un webhook in arrivo nel tuo spazio di lavoro Slack",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Impostazioni di notifica",
+  "toast": {
+    "updateFailed": "Impossibile aggiornare le impostazioni",
+    "updated": "Impostazioni aggiornate",
+    "updatedDescription": "Le impostazioni di notifica sono state salvate"
+  }
+}

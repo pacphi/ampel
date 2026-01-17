@@ -12,6 +12,23 @@
     "draft": "Draft",
     "needsReview": "Needs Review"
   },
+  "dialog": {
+    "cancel": "Cancel",
+    "deleteBranch": "Delete branch after merge",
+    "merge": "Merge PR",
+    "merging": "Merging...",
+    "strategy": {
+      "merge": "Create a merge commit",
+      "mergeDescription": "All commits preserved",
+      "rebase": "Rebase and merge",
+      "rebaseDescription": "Linear commit history",
+      "squash": "Squash and merge",
+      "squashDescription": "Combine all commits into one",
+      "title": "Merge Strategy"
+    },
+    "subtitle": "Configure merge options for this PR",
+    "title": "Merge Pull Request"
+  },
   "emptyState": {
     "noPrsReady": "No PRs are ready to merge. PRs need:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Select and merge multiple PRs at once",
   "title": "Bulk Merge",
   "toast": {
+    "failed": "Merge failed",
+    "failedDescription": "Failed to merge #{{number}}: {{error}}",
     "mergeFailed": "Merge Failed",
     "mergeSuccess": "Merge Successful",
     "mergeSuccessDescription": "Successfully merged {{count}} pull requests",
     "someMergesFailed": "Some merges failed",
-    "someMergesFailedDescription": "{{success}} merged, {{failed}} failed"
+    "someMergesFailedDescription": "{{success}} merged, {{failed}} failed",
+    "success": "PR Merged",
+    "successDescription": "Successfully merged #{{number}}: {{title}}"
   }
 }

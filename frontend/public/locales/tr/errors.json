@@ -10,6 +10,13 @@
     "tokenExpired": "Kimlik doğrulama belirtecinin süresi doldu.",
     "unauthorized": "Yetkisiz erişim"
   },
+  "boundary": {
+    "description": "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
+    "details": "Hata Ayrıntıları (Sadece Geliştiriciler İçin)",
+    "reload": "Sayfayı Yeniden Yükle",
+    "title": "Bir şeyler ters gitti.",
+    "tryAgain": "Tekrar deneyin"
+  },
   "general": {
     "unknownError": "Bilinmeyen bir hata oluştu."
   },

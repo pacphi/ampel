@@ -89,7 +89,18 @@
     "showArchived": "Arşivlenmiş olanları göster",
     "showArchivedDescription": "Arşivlenmiş depoları dahil et",
     "showForks": "Çatalları göster",
-    "showForksDescription": "Çatallanmış depoları dahil et"
+    "showForksDescription": "Çatallanmış depoları dahil et",
+    "visibility": {
+      "archived": "Arşivlenmiş depoları göster",
+      "archivedDescription": "Arşivlenmiş depoları görüntüle",
+      "bitbucketNote": "Not: Bitbucket görünürlüğü, çalışma alanı ayarlarına bağlı olarak farklılık gösterebilir.",
+      "description": "Görüntülenecek depo türlerini seçin.",
+      "private": "Özel depoları göster",
+      "privateDescription": "Özel olan depoları görüntüle",
+      "public": "Herkese açık depoları göster",
+      "publicDescription": "Herkese açık erişime açık depoları görüntüle",
+      "title": "Depo Görünürlük Filtreleri"
+    }
   },
   "reset": "Varsayılan ayarlara sıfırla",
   "resetConfirm": "Tüm ayarları sıfırlamak istediğinizden emin misiniz?",

@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Thời gian chờ giữa các lần hợp nhất liên tiếp",
+    "placeholder": "5",
+    "title": "Thời gian trễ khi hợp nhất (giây)"
+  },
+  "options": {
+    "allowNoReviews": "Cho phép hợp nhất mà không cần xem xét",
+    "allowNoReviewsDescription": "Cho phép hợp nhất các yêu cầu kéo (PR) chưa có đánh giá.",
+    "deleteBranch": "Xóa các nhánh sau khi hợp nhất",
+    "deleteBranchDescription": "Tự động xóa các nhánh nguồn sau khi hợp nhất thành công.",
+    "requireApproval": "Cần có sự phê duyệt trước khi sáp nhập",
+    "requireApprovalDescription": "Chờ phê duyệt thủ công trước khi thực hiện hợp nhất."
+  },
+  "strategy": {
+    "description": "Chọn cách các yêu cầu kéo (pull request) nên được hợp nhất theo mặc định.",
+    "merge": "Tạo một commit hợp nhất",
+    "mergeDescription": "Tất cả các cam kết đều được giữ nguyên.",
+    "rebase": "Tái cấu trúc và hợp nhất",
+    "rebaseDescription": "Lịch sử cam kết tuyến tính",
+    "squash": "Ép và hợp nhất",
+    "squashDescription": "Kết hợp tất cả các commit thành một.",
+    "title": "Chiến lược hợp nhất mặc định"
+  },
+  "title": "Hành vi hợp nhất",
+  "toast": {
+    "updateFailed": "Không thể cập nhật cài đặt",
+    "updated": "Cài đặt đã được cập nhật",
+    "updatedDescription": "Các thiết lập hành vi hợp nhất đã được lưu."
+  }
+}

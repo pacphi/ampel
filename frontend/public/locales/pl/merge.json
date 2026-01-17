@@ -12,6 +12,23 @@
     "draft": "Projekt",
     "needsReview": "Potrzebny przegląd"
   },
+  "dialog": {
+    "cancel": "Anulować",
+    "deleteBranch": "Usuń gałąź po scaleniu",
+    "merge": "Scal PR",
+    "merging": "Łączenie...",
+    "strategy": {
+      "merge": "Utwórz zatwierdzenie scalenia",
+      "mergeDescription": "Wszystkie zatwierdzenia zachowane",
+      "rebase": "Zmiana bazy i scalenie",
+      "rebaseDescription": "Liniowa historia zatwierdzania",
+      "squash": "Zgniatanie i łączenie",
+      "squashDescription": "Połącz wszystkie zatwierdzenia w jedno",
+      "title": "Strategia scalania"
+    },
+    "subtitle": "Skonfiguruj opcje scalania dla tego PR",
+    "title": "Scalenie żądania ściągnięcia"
+  },
   "emptyState": {
     "noPrsReady": "Żadne PR nie jest gotowe do scalenia. PR-y potrzebują:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Wybierz i scal wiele żądań dostępu jednocześnie",
   "title": "Scalanie zbiorcze",
   "toast": {
+    "failed": "Scalenie nie powiodło się",
+    "failedDescription": "Nie udało się scalić #{{number}}: {{error}}",
     "mergeFailed": "Scalenie nie powiodło się",
     "mergeSuccess": "Połączenie pomyślne",
     "mergeSuccessDescription": "Pomyślnie scalono {{count}} żądań ściągnięcia",
     "someMergesFailed": "Niektóre połączenia nie powiodły się",
-    "someMergesFailedDescription": "{{success}} scalono, {{failed}} nie powiodło się"
+    "someMergesFailedDescription": "{{success}} scalono, {{failed}} nie powiodło się",
+    "success": "PR Połączone",
+    "successDescription": "Pomyślnie scalono #{{number}}: {{title}}"
   }
 }

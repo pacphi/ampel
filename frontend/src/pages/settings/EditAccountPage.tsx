@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { accountsApi } from '@/api/accounts';
 import type { UpdateAccountRequest } from '@/types/account';
@@ -12,6 +13,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 export function EditAccountPage() {
+  const { t } = useTranslation(['accounts', 'errors']);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -49,8 +51,8 @@ export function EditAccountPage() {
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
       queryClient.invalidateQueries({ queryKey: ['accounts', id] });
       toast({
-        title: 'Account updated',
-        description: 'Your account has been updated successfully.',
+        title: t('accounts:toast.updated'),
+        description: t('accounts:toast.updatedDescription'),
       });
       navigate('/settings/accounts');
     },
@@ -58,8 +60,8 @@ export function EditAccountPage() {
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Failed to update account',
-        description: axiosError.response?.data?.error || 'An error occurred',
+        title: t('accounts:toast.updateFailed'),
+        description: axiosError.response?.data?.error || t('errors:generic'),
       });
     },
   });
@@ -91,7 +93,7 @@ export function EditAccountPage() {
     return (
       <Card>
         <CardContent className="py-8 text-center text-muted-foreground">
-          Account not found
+          {t('accounts:edit.notFound')}
         </CardContent>
       </Card>
     );
@@ -101,43 +103,41 @@ export function EditAccountPage() {
     <div className="space-y-4">
       <Button variant="ghost" onClick={() => navigate('/settings/accounts')} className="mb-2">
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to Accounts
+        {t('accounts:edit.backToAccounts')}
       </Button>
 
       <Card>
         <CardHeader>
-          <CardTitle>Edit Account</CardTitle>
-          <CardDescription>
-            Update your {account.provider} account "{account.accountLabel}"
-          </CardDescription>
+          <CardTitle>{t('accounts:edit.title')}</CardTitle>
+          <CardDescription>{t('accounts:edit.subtitle')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Account Label */}
             <div className="space-y-2">
               <Label htmlFor="accountLabel">
-                Account Label <span className="text-destructive">*</span>
+                {t('accounts:edit.form.accountLabel')} <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="accountLabel"
-                placeholder="e.g., Work GitHub, Personal GitLab"
+                placeholder={t('accounts:edit.form.accountLabelPlaceholder')}
                 value={formData.accountLabel}
                 onChange={(e) => setFormData({ ...formData, accountLabel: e.target.value })}
                 required
               />
               <p className="text-xs text-muted-foreground">
-                A friendly name to identify this account
+                {t('accounts:edit.form.accountLabelDescription')}
               </p>
             </div>
 
             {/* Update Token */}
             <div className="space-y-2">
-              <Label htmlFor="newToken">Update Access Token (optional)</Label>
+              <Label htmlFor="newToken">{t('accounts:edit.form.token')}</Label>
               <div className="relative">
                 <Input
                   id="newToken"
                   type={showToken ? 'text' : 'password'}
-                  placeholder="Leave empty to keep current token"
+                  placeholder={t('accounts:edit.form.tokenPlaceholder')}
                   value={formData.newToken || ''}
                   onChange={(e) => setFormData({ ...formData, newToken: e.target.value })}
                   className="pr-10"
@@ -148,13 +148,17 @@ export function EditAccountPage() {
                   size="icon"
                   className="absolute right-0 top-0 h-full"
                   onClick={() => setShowToken(!showToken)}
-                  title={showToken ? 'Hide token' : 'Show token'}
+                  title={
+                    showToken
+                      ? t('accounts:edit.form.hideToken')
+                      : t('accounts:edit.form.showToken')
+                  }
                 >
                   {showToken ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Only provide a new token if you want to update it
+                {t('accounts:edit.form.tokenDescription')}
               </p>
             </div>
 
@@ -162,10 +166,10 @@ export function EditAccountPage() {
             <div className="flex items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
                 <Label htmlFor="isActive" className="text-base">
-                  Active
+                  {t('accounts:edit.form.active')}
                 </Label>
                 <p className="text-sm text-muted-foreground">
-                  Inactive accounts won't be used for repository operations
+                  {t('accounts:edit.form.activeDescription')}
                 </p>
               </div>
               <Switch
@@ -177,28 +181,35 @@ export function EditAccountPage() {
 
             {/* Account Info */}
             <div className="rounded-lg bg-muted p-4 space-y-2">
-              <h4 className="font-medium text-sm">Account Information</h4>
+              <h4 className="font-medium text-sm">{t('accounts:edit.accountInfo')}</h4>
               <div className="text-sm space-y-1">
                 <p>
-                  <span className="text-muted-foreground">Username:</span> @
-                  {account.providerUsername}
+                  <span className="text-muted-foreground">{t('accounts:edit.info.username')}:</span>{' '}
+                  @{account.providerUsername}
                 </p>
                 {account.providerEmail && (
                   <p>
-                    <span className="text-muted-foreground">Email:</span> {account.providerEmail}
+                    <span className="text-muted-foreground">{t('accounts:edit.info.email')}:</span>{' '}
+                    {account.providerEmail}
                   </p>
                 )}
                 {account.instanceUrl && (
                   <p>
-                    <span className="text-muted-foreground">Instance:</span> {account.instanceUrl}
+                    <span className="text-muted-foreground">
+                      {t('accounts:edit.info.instance')}:
+                    </span>{' '}
+                    {account.instanceUrl}
                   </p>
                 )}
                 <p>
-                  <span className="text-muted-foreground">Repositories:</span>{' '}
+                  <span className="text-muted-foreground">
+                    {t('accounts:edit.info.repositories')}:
+                  </span>{' '}
                   {account.repositoryCount}
                 </p>
                 <p>
-                  <span className="text-muted-foreground">Status:</span> {account.validationStatus}
+                  <span className="text-muted-foreground">{t('accounts:edit.info.status')}:</span>{' '}
+                  {account.validationStatus}
                 </p>
               </div>
             </div>
@@ -211,10 +222,12 @@ export function EditAccountPage() {
                 onClick={() => navigate('/settings/accounts')}
                 disabled={updateAccountMutation.isPending}
               >
-                Cancel
+                {t('accounts:edit.cancel')}
               </Button>
               <Button type="submit" disabled={updateAccountMutation.isPending}>
-                {updateAccountMutation.isPending ? 'Saving...' : 'Save Changes'}
+                {updateAccountMutation.isPending
+                  ? t('accounts:edit.submitting')
+                  : t('accounts:edit.submit')}
               </Button>
             </div>
           </form>

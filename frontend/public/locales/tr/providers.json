@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Hesap: Okuyun",
+      "pullRequestsRead": "Çekme istekleri: Okuyun",
+      "pullRequestsWrite": "Çekme istekleri: Yaz",
+      "repositoriesRead": "Depolar: Okuyun",
+      "repositoriesWrite": "Depolar: Yaz"
+    },
+    "steps": {
+      "step1": "Bitbucket'a gidin → Kişisel ayarlar → Uygulama şifreleri",
+      "step2": "\"Uygulama şifresi oluştur\" seçeneğine tıklayın.",
+      "step3": "Parola için bir etiket girin.",
+      "step4": "Gerekli izinleri seçin:",
+      "step5": "\"Oluştur\"a tıklayın ve şifreyi kopyalayın."
+    },
+    "title": "Bitbucket Uygulama Şifresi Talimatları"
+  },
+  "common": {
+    "expirationWarning": "Daha iyi güvenlik için bir son kullanma tarihi belirlemeyi düşünün.",
+    "minimalScopes": "Yalnızca gerekli olan minimum izinleri verin.",
+    "securityNote": "Tokeninizi güvende tutun ve asla herkesle paylaşmayın."
+  },
+  "github": {
+    "note": "Depo erişim izinleriyle birlikte ayrıntılı belirteçler de desteklenmektedir.",
+    "scopes": {
+      "readOrg": "read:org (Read org ve ekip üyeliği)",
+      "readUser": "read:user (Kullanıcı profili verilerini oku)",
+      "repo": "repo (Özel depoların tam kontrolü)"
+    },
+    "steps": {
+      "step1": "GitHub Ayarları → Geliştirici ayarları → Kişisel erişim belirteçleri → Belirteçler (klasik) bölümüne gidin.",
+      "step2": "\"Yeni belirteç oluştur (klasik)\" seçeneğine tıklayın.",
+      "step3": "Jetonunuza açıklayıcı bir ad verin.",
+      "step4": "Gerekli kapsamları seçin:",
+      "step5": "\"Token oluştur\" seçeneğine tıklayın ve hemen kopyalayın."
+    },
+    "title": "GitHub Token Talimatları"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "API (Tam API erişimi)",
+      "readApi": "read_api (Salt okunur API erişimi)",
+      "readRepository": "read_repository (Depoya erişim okuma)"
+    },
+    "steps": {
+      "step1": "GitLab → Kullanıcı Ayarları → Erişim Token'larına gidin.",
+      "step2": "Bir belirteç adı ve isteğe bağlı son kullanma tarihi girin.",
+      "step3": "Gerekli kapsamları seçin:",
+      "step4": "\"Kişisel erişim belirteci oluştur\" seçeneğine tıklayın ve kopyalayın."
+    },
+    "title": "GitLab Token Talimatları"
+  },
+  "title": "Sağlayıcı Talimatları"
+}

@@ -21,14 +21,14 @@ This document chronicles the complete internationalization (i18n) implementation
 
 ### Key Achievements
 
-| Metric | Value |
-|--------|-------|
-| Languages Supported | 27 (including 2 RTL languages) |
-| Translation Namespaces | 8 |
-| Total Translation Keys | ~560 |
-| Components Localized | 21+ |
-| Custom Translation Tool | Rust-based CLI with 4-tier provider fallback |
-| Type Safety | Full TypeScript coverage with auto-generated types |
+| Metric                  | Value                                              |
+| ----------------------- | -------------------------------------------------- |
+| Languages Supported     | 27 (including 2 RTL languages)                     |
+| Translation Namespaces  | 8                                                  |
+| Total Translation Keys  | ~560                                               |
+| Components Localized    | 21+                                                |
+| Custom Translation Tool | Rust-based CLI with 4-tier provider fallback       |
+| Type Safety             | Full TypeScript coverage with auto-generated types |
 
 ---
 
@@ -60,6 +60,7 @@ This built upon an existing foundation that had partial i18n support for common 
 **Decision**: Use `react-i18next` with lazy loading via `i18next-http-backend`.
 
 **Rationale**:
+
 - Industry standard for React i18n
 - Supports namespace-based code splitting
 - Built-in pluralization rules
@@ -68,9 +69,9 @@ This built upon an existing foundation that had partial i18n support for common 
 ```typescript
 // frontend/src/i18n/config.ts
 i18n
-  .use(HttpBackend)        // Load translations via HTTP (lazy)
-  .use(LanguageDetector)   // Auto-detect user language
-  .use(initReactI18next)   // React bindings
+  .use(HttpBackend) // Load translations via HTTP (lazy)
+  .use(LanguageDetector) // Auto-detect user language
+  .use(initReactI18next) // React bindings
   .init({
     fallbackLng: 'en',
     defaultNS: 'common',
@@ -79,9 +80,9 @@ i18n
       loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
     react: {
-      useSuspense: true,   // Loading states via Suspense
+      useSuspense: true, // Loading states via Suspense
     },
-    load: 'currentOnly',   // Don't preload all namespaces
+    load: 'currentOnly', // Don't preload all namespaces
   });
 ```
 
@@ -111,9 +112,9 @@ frontend/public/locales/
 
 **Decision**: Hybrid approach with 19 simple codes + 8 regional variants.
 
-| Type | Examples | Rationale |
-|------|----------|-----------|
-| Simple codes | `en`, `de`, `fr`, `ja` | Most languages need only one variant |
+| Type              | Examples                                             | Rationale                                   |
+| ----------------- | ---------------------------------------------------- | ------------------------------------------- |
+| Simple codes      | `en`, `de`, `fr`, `ja`                               | Most languages need only one variant        |
 | Regional variants | `en-GB`, `pt-BR`, `zh-CN`, `zh-TW`, `es-ES`, `es-MX` | Significant spelling/vocabulary differences |
 
 ### 4. RTL Support
@@ -166,18 +167,18 @@ export interface CommonTranslations {
 
 ### Phase 2: Page Localization (This Session)
 
-| Milestone | Description | Agents Involved |
-|-----------|-------------|-----------------|
-| 1. Research | Analyzed existing patterns and codebase structure | Researcher |
-| 2. English Source Files | Created `analytics.json`, `merge.json`, `repositories.json` | Coder agents (3 parallel) |
-| 3. Component Updates | Updated Analytics.tsx, Merge.tsx, MergeResultsDialog.tsx, Repositories.tsx | Coder agents (4 parallel) |
-| 4. Translation Generation | Translated to all 26 non-English languages | Translation worker (background) |
-| 5. Type Regeneration | Updated TypeScript types | Coder agent |
+| Milestone                 | Description                                                                | Agents Involved                 |
+| ------------------------- | -------------------------------------------------------------------------- | ------------------------------- |
+| 1. Research               | Analyzed existing patterns and codebase structure                          | Researcher                      |
+| 2. English Source Files   | Created `analytics.json`, `merge.json`, `repositories.json`                | Coder agents (3 parallel)       |
+| 3. Component Updates      | Updated Analytics.tsx, Merge.tsx, MergeResultsDialog.tsx, Repositories.tsx | Coder agents (4 parallel)       |
+| 4. Translation Generation | Translated to all 26 non-English languages                                 | Translation worker (background) |
+| 5. Type Regeneration      | Updated TypeScript types                                                   | Coder agent                     |
 
 ### Phase 3: Bug Fix (This Session)
 
-| Issue | Root Cause | Fix |
-|-------|------------|-----|
+| Issue                           | Root Cause                                                 | Fix                                 |
+| ------------------------------- | ---------------------------------------------------------- | ----------------------------------- |
 | Disabled providers still called | `Config::load()` used relative path, fell back to defaults | Search up directory tree for config |
 
 ---
@@ -277,16 +278,16 @@ crates/ampel-i18n-builder/
 translation:
   providers:
     systran:
-      enabled: false    # Disabled - no API key
+      enabled: false # Disabled - no API key
       priority: 4
     deepl:
-      enabled: false    # Disabled - no API key
+      enabled: false # Disabled - no API key
       priority: 3
     google:
-      enabled: true     # Primary provider
+      enabled: true # Primary provider
       priority: 1
     openai:
-      enabled: true     # Fallback
+      enabled: true # Fallback
       priority: 2
 
   fallback:
@@ -301,37 +302,37 @@ translation:
 
 ### Translation Coverage
 
-| Namespace | Keys | Lines per Locale |
-|-----------|------|------------------|
-| analytics.json | 15 | 24 |
-| common.json | 80 | 121 |
-| dashboard.json | 65 | 98 |
-| errors.json | 40 | 58 |
-| merge.json | 55 | 75 |
-| repositories.json | 30 | 40 |
-| settings.json | 90 | 135 |
-| validation.json | 35 | 50 |
-| **Total** | **~410** | **~600** |
+| Namespace         | Keys     | Lines per Locale |
+| ----------------- | -------- | ---------------- |
+| analytics.json    | 15       | 24               |
+| common.json       | 80       | 121              |
+| dashboard.json    | 65       | 98               |
+| errors.json       | 40       | 58               |
+| merge.json        | 55       | 75               |
+| repositories.json | 30       | 40               |
+| settings.json     | 90       | 135              |
+| validation.json   | 35       | 50               |
+| **Total**         | **~410** | **~600**         |
 
 ### Language Support
 
-| Category | Languages | Count |
-|----------|-----------|-------|
-| European | en, en-GB, de, fr, it, nl, pl, cs, da, fi, sv, no, sr | 13 |
-| Asian | ja, ko, zh-CN, zh-TW, th, vi, hi | 7 |
-| Middle Eastern | ar, he, tr | 3 |
-| Americas | pt-BR, es-ES, es-MX | 3 |
-| Slavic | ru | 1 |
-| **Total** | | **27** |
+| Category       | Languages                                             | Count  |
+| -------------- | ----------------------------------------------------- | ------ |
+| European       | en, en-GB, de, fr, it, nl, pl, cs, da, fi, sv, no, sr | 13     |
+| Asian          | ja, ko, zh-CN, zh-TW, th, vi, hi                      | 7      |
+| Middle Eastern | ar, he, tr                                            | 3      |
+| Americas       | pt-BR, es-ES, es-MX                                   | 3      |
+| Slavic         | ru                                                    | 1      |
+| **Total**      |                                                       | **27** |
 
 ### Build & Runtime Metrics
 
-| Metric | Value |
-|--------|-------|
+| Metric                           | Value                         |
+| -------------------------------- | ----------------------------- |
 | Translation file size (minified) | ~3KB per namespace per locale |
-| Lazy load latency | <50ms per namespace |
-| Type generation time | <1s |
-| Full translation run (26 langs) | ~5-10 minutes |
+| Lazy load latency                | <50ms per namespace           |
+| Type generation time             | <1s                           |
+| Full translation run (26 langs)  | ~5-10 minutes                 |
 
 ---
 
@@ -398,7 +399,7 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    supportedLngs: SUPPORTED_LANGUAGES.map(l => l.code),
+    supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
     defaultNS: 'common',
     ns: NAMESPACES,
     backend: {
@@ -482,10 +483,7 @@ export function LanguageSelector() {
   const { i18n } = useTranslation();
 
   return (
-    <select
-      value={i18n.language}
-      onChange={(e) => i18n.changeLanguage(e.target.value)}
-    >
+    <select value={i18n.language} onChange={(e) => i18n.changeLanguage(e.target.value)}>
       {SUPPORTED_LANGUAGES.map((lang) => (
         <option key={lang.code} value={lang.code}>
           {lang.nativeName}
@@ -507,11 +505,13 @@ cargo run -p ampel-i18n-builder -- translate --source en --targets de,fr,ja
 ```
 
 Option B: **Use commercial tools**
+
 - Lokalise
 - Crowdin
 - Phrase
 
 Option C: **Use AI translation APIs directly**
+
 - Google Cloud Translation
 - DeepL API
 - OpenAI GPT-4
@@ -522,9 +522,7 @@ Option C: **Use AI translation APIs directly**
 // scripts/generate-i18n-types.ts
 import fs from 'fs';
 
-const enTranslations = JSON.parse(
-  fs.readFileSync('public/locales/en/common.json', 'utf-8')
-);
+const enTranslations = JSON.parse(fs.readFileSync('public/locales/en/common.json', 'utf-8'));
 
 function generateTypes(obj: any, prefix = ''): string {
   let result = '{\n';
@@ -580,35 +578,35 @@ jobs:
 
 ### A. Complete Language List
 
-| Code | Language | Native Name | Direction |
-|------|----------|-------------|-----------|
-| en | English (US) | English (US) | LTR |
-| en-GB | English (UK) | English (UK) | LTR |
-| ar | Arabic | العربية | RTL |
-| cs | Czech | Čeština | LTR |
-| da | Danish | Dansk | LTR |
-| de | German | Deutsch | LTR |
-| es-ES | Spanish (Spain) | Español (España) | LTR |
-| es-MX | Spanish (Mexico) | Español (México) | LTR |
-| fi | Finnish | Suomi | LTR |
-| fr | French | Français | LTR |
-| he | Hebrew | עברית | RTL |
-| hi | Hindi | हिन्दी | LTR |
-| it | Italian | Italiano | LTR |
-| ja | Japanese | 日本語 | LTR |
-| ko | Korean | 한국어 | LTR |
-| nl | Dutch | Nederlands | LTR |
-| no | Norwegian | Norsk | LTR |
-| pl | Polish | Polski | LTR |
-| pt-BR | Portuguese (Brazil) | Português (Brasil) | LTR |
-| ru | Russian | Русский | LTR |
-| sr | Serbian | Српски | LTR |
-| sv | Swedish | Svenska | LTR |
-| th | Thai | ไทย | LTR |
-| tr | Turkish | Türkçe | LTR |
-| vi | Vietnamese | Tiếng Việt | LTR |
-| zh-CN | Chinese (Simplified) | 简体中文 | LTR |
-| zh-TW | Chinese (Traditional) | 繁體中文 | LTR |
+| Code  | Language              | Native Name        | Direction |
+| ----- | --------------------- | ------------------ | --------- |
+| en    | English (US)          | English (US)       | LTR       |
+| en-GB | English (UK)          | English (UK)       | LTR       |
+| ar    | Arabic                | العربية            | RTL       |
+| cs    | Czech                 | Čeština            | LTR       |
+| da    | Danish                | Dansk              | LTR       |
+| de    | German                | Deutsch            | LTR       |
+| es-ES | Spanish (Spain)       | Español (España)   | LTR       |
+| es-MX | Spanish (Mexico)      | Español (México)   | LTR       |
+| fi    | Finnish               | Suomi              | LTR       |
+| fr    | French                | Français           | LTR       |
+| he    | Hebrew                | עברית              | RTL       |
+| hi    | Hindi                 | हिन्दी             | LTR       |
+| it    | Italian               | Italiano           | LTR       |
+| ja    | Japanese              | 日本語             | LTR       |
+| ko    | Korean                | 한국어             | LTR       |
+| nl    | Dutch                 | Nederlands         | LTR       |
+| no    | Norwegian             | Norsk              | LTR       |
+| pl    | Polish                | Polski             | LTR       |
+| pt-BR | Portuguese (Brazil)   | Português (Brasil) | LTR       |
+| ru    | Russian               | Русский            | LTR       |
+| sr    | Serbian               | Српски             | LTR       |
+| sv    | Swedish               | Svenska            | LTR       |
+| th    | Thai                  | ไทย                | LTR       |
+| tr    | Turkish               | Türkçe             | LTR       |
+| vi    | Vietnamese            | Tiếng Việt         | LTR       |
+| zh-CN | Chinese (Simplified)  | 简体中文           | LTR       |
+| zh-TW | Chinese (Traditional) | 繁體中文           | LTR       |
 
 ### B. File Structure Reference
 
@@ -666,6 +664,6 @@ npx i18next-parser --config i18next-parser.config.js
 
 ---
 
-*Document generated: January 2026*
-*Ampel Version: 1.0.0*
-*i18n Framework: react-i18next v14*
+_Document generated: January 2026_
+_Ampel Version: 1.0.0_
+_i18n Framework: react-i18next v14_

@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Tempo de espera entre fusões consecutivas",
+    "placeholder": "5",
+    "title": "Atraso de fusão (segundos)"
+  },
+  "options": {
+    "allowNoReviews": "Permitir fusão sem revisões",
+    "allowNoReviewsDescription": "Permitir a fusão de PRs que não tenham revisões.",
+    "deleteBranch": "Excluir ramificações após a mesclagem",
+    "deleteBranchDescription": "Excluir automaticamente os branches de origem após uma fusão bem-sucedida.",
+    "requireApproval": "Exigir aprovação antes da fusão",
+    "requireApprovalDescription": "Aguarde a aprovação manual antes de executar a mesclagem."
+  },
+  "strategy": {
+    "description": "Escolha como as solicitações de pull devem ser mescladas por padrão.",
+    "merge": "Criar um commit de mesclagem",
+    "mergeDescription": "Todos os commits foram preservados.",
+    "rebase": "Rebase e merge",
+    "rebaseDescription": "Histórico de commits lineares",
+    "squash": "Comprima e funda",
+    "squashDescription": "Combine todos os commits em um só.",
+    "title": "Estratégia de mesclagem padrão"
+  },
+  "title": "Comportamento de Fusão",
+  "toast": {
+    "updateFailed": "Falha ao atualizar as configurações",
+    "updated": "Configurações atualizadas",
+    "updatedDescription": "As configurações de comportamento de mesclagem foram salvas."
+  }
+}

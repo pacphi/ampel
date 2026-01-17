@@ -10,6 +10,13 @@
     "tokenExpired": "Token uwierzytelniający wygasł",
     "unauthorized": "Nieautoryzowany dostęp"
   },
+  "boundary": {
+    "description": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.",
+    "details": "Szczegóły błędu (tylko w wersji deweloperskiej)",
+    "reload": "Odśwież stronę",
+    "title": "Coś poszło nie tak",
+    "tryAgain": "Spróbuj ponownie"
+  },
   "general": {
     "unknownError": "Wystąpił nieznany błąd"
   },

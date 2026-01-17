@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Ventetid mellem på hinanden følgende fusioner",
+    "placeholder": "5",
+    "title": "Forsinkelse ved sammenlægning (sekunder)"
+  },
+  "options": {
+    "allowNoReviews": "Tillad fletning uden gennemgang",
+    "allowNoReviewsDescription": "Tillad sammenlægning af PR'er, der ikke har nogen anmeldelser",
+    "deleteBranch": "Slet grene efter sammenlægning",
+    "deleteBranchDescription": "Slet automatisk kildegrene efter vellykket sammenfletning",
+    "requireApproval": "Kræv godkendelse før sammenlægning",
+    "requireApprovalDescription": "Vent på manuel godkendelse, før du udfører fletningen"
+  },
+  "strategy": {
+    "description": "Vælg hvordan pull requests skal flettes som standard",
+    "merge": "Opret en merge-commit",
+    "mergeDescription": "Alle commits bevaret",
+    "rebase": "Genbaser og flet",
+    "rebaseDescription": "Lineær commit-historik",
+    "squash": "Squash og flet",
+    "squashDescription": "Kombinér alle commits til én",
+    "title": "Standardfletningsstrategi"
+  },
+  "title": "Fletningsadfærd",
+  "toast": {
+    "updateFailed": "Indstillingerne kunne ikke opdateres",
+    "updated": "Indstillinger opdateret",
+    "updatedDescription": "Indstillinger for sammenflettet adfærd er gemt"
+  }
+}

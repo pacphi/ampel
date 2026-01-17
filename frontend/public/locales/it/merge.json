@@ -12,6 +12,23 @@
     "draft": "Bozza",
     "needsReview": "Necessita di revisione"
   },
+  "dialog": {
+    "cancel": "Cancellare",
+    "deleteBranch": "Elimina il ramo dopo l'unione",
+    "merge": "Unisci PR",
+    "merging": "Fusione...",
+    "strategy": {
+      "merge": "Crea un commit di unione",
+      "mergeDescription": "Tutti i commit sono stati preservati",
+      "rebase": "Ribasamento e unione",
+      "rebaseDescription": "Cronologia degli impegni lineari",
+      "squash": "Schiaccia e unisci",
+      "squashDescription": "Combina tutti i commit in uno",
+      "title": "Strategia di unione"
+    },
+    "subtitle": "Configura le opzioni di unione per questa PR",
+    "title": "Unisci richiesta pull"
+  },
   "emptyState": {
     "noPrsReady": "Nessun PR è pronto per la fusione. I PR necessitano di:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Seleziona e unisci più PR contemporaneamente",
   "title": "Unione in blocco",
   "toast": {
+    "failed": "Unione fallita",
+    "failedDescription": "Impossibile unire #{{number}}: {{error}}",
     "mergeFailed": "Unione non riuscita",
     "mergeSuccess": "Unione riuscita",
     "mergeSuccessDescription": "Richieste pull {{count}} unite con successo",
     "someMergesFailed": "Alcune fusioni non sono riuscite",
-    "someMergesFailedDescription": "{{success}} unito, {{failed}} fallito"
+    "someMergesFailedDescription": "{{success}} unito, {{failed}} fallito",
+    "success": "PR unito",
+    "successDescription": "#{{number}} unito correttamente: {{title}}"
   }
 }

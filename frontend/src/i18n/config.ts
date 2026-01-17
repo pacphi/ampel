@@ -88,7 +88,20 @@ export const SUPPORTED_LANGUAGES: LanguageInfo[] = [
 /**
  * Translation namespaces for code splitting
  */
-export const NAMESPACES = ['analytics', 'common', 'dashboard', 'errors', 'merge', 'repositories', 'settings', 'validation'] as const;
+export const NAMESPACES = [
+  'accounts',
+  'analytics',
+  'behavior',
+  'common',
+  'dashboard',
+  'errors',
+  'merge',
+  'notifications',
+  'providers',
+  'repositories',
+  'settings',
+  'validation',
+] as const;
 export type Namespace = (typeof NAMESPACES)[number];
 
 /**

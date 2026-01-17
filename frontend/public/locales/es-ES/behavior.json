@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Tiempo de espera entre fusiones consecutivas",
+    "placeholder": "5",
+    "title": "Retraso de fusión (segundos)"
+  },
+  "options": {
+    "allowNoReviews": "Permitir fusión sin revisiones",
+    "allowNoReviewsDescription": "Permitir la fusión de PR que no tienen revisiones",
+    "deleteBranch": "Eliminar ramas después de la fusión",
+    "deleteBranchDescription": "Eliminar automáticamente las ramas de origen después de una fusión exitosa",
+    "requireApproval": "Requerir aprobación antes de la fusión",
+    "requireApprovalDescription": "Espere la aprobación manual antes de ejecutar la fusión"
+  },
+  "strategy": {
+    "description": "Elija cómo se deben fusionar las solicitudes de extracción de forma predeterminada",
+    "merge": "Crear una confirmación de fusión",
+    "mergeDescription": "Se conservan todas las confirmaciones",
+    "rebase": "Rebase y fusión",
+    "rebaseDescription": "Historial de confirmaciones lineal",
+    "squash": "Aplastar y fusionar",
+    "squashDescription": "Combine todas las confirmaciones en una sola",
+    "title": "Estrategia de fusión predeterminada"
+  },
+  "title": "Comportamiento de fusión",
+  "toast": {
+    "updateFailed": "No se pudo actualizar la configuración",
+    "updated": "Configuración actualizada",
+    "updatedDescription": "Se han guardado las configuraciones de comportamiento de fusión"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Thêm vào",
+    "enable": "Bật thông báo qua email",
+    "enableDescription": "Gửi thông báo qua email (SMTP)",
+    "fromAddress": "Từ địa chỉ",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "Máy chủ SMTP",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "Mật khẩu SMTP",
+    "smtpPasswordPlaceholder": "Nhập mật khẩu",
+    "smtpPort": "Cổng SMTP",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "Tên người dùng SMTP",
+    "smtpUserPlaceholder": "user@example.com",
+    "testFailed": "Gửi email thử nghiệm không thành công.",
+    "testMessage": "Gửi email thử nghiệm",
+    "testSending": "Đang gửi...",
+    "testSuccess": "Đã gửi email thử nghiệm.",
+    "title": "Thông báo qua email",
+    "toAddresses": "Gửi đến địa chỉ",
+    "toAddressesDescription": "Người nhận email thông báo",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "Sử dụng TLS"
+  },
+  "merge": {
+    "description": "Chọn thời điểm nhận thông báo cho các thao tác hợp nhất",
+    "notifyOnConflict": "Thông báo về xung đột hợp nhất",
+    "notifyOnConflictDescription": "Gửi thông báo khi phát hiện xung đột hợp nhất.",
+    "notifyOnFailure": "Thông báo khi hợp nhất thất bại",
+    "notifyOnFailureDescription": "Gửi thông báo khi các thao tác hợp nhất thất bại",
+    "notifyOnSuccess": "Thông báo khi hợp nhất thành công.",
+    "notifyOnSuccessDescription": "Gửi thông báo khi các yêu cầu kéo (PR) được hợp nhất thành công.",
+    "title": "Thông báo hợp nhất"
+  },
+  "slack": {
+    "channel": "Kênh (tùy chọn)",
+    "channelDescription": "Ghi đè kênh mặc định đã được cấu hình trong webhook.",
+    "channelPlaceholder": "#tổng quan",
+    "enable": "Bật thông báo Slack",
+    "enableDescription": "Gửi thông báo đến kênh Slack",
+    "testFailed": "Không thể gửi tin nhắn thử nghiệm.",
+    "testMessage": "Gửi tin nhắn thử nghiệm",
+    "testSending": "Đang gửi...",
+    "testSuccess": "Tin nhắn thử nghiệm đã được gửi",
+    "title": "Thông báo Slack",
+    "webhookUrl": "URL Webhook",
+    "webhookUrlDescription": "Tạo webhook đến trong không gian làm việc Slack của bạn",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Cài đặt thông báo",
+  "toast": {
+    "updateFailed": "Không thể cập nhật cài đặt",
+    "updated": "Cài đặt đã được cập nhật",
+    "updatedDescription": "Cài đặt thông báo đã được lưu."
+  }
+}

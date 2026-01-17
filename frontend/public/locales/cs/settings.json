@@ -89,7 +89,18 @@
     "showArchived": "Zobrazit archivované",
     "showArchivedDescription": "Zahrnout archivované repozitáře",
     "showForks": "Zobrazit vidličky",
-    "showForksDescription": "Zahrnout rozvětvené repozitáře"
+    "showForksDescription": "Zahrnout rozvětvené repozitáře",
+    "visibility": {
+      "archived": "Zobrazit archivované repozitáře",
+      "archivedDescription": "Zobrazit archivované repozitáře",
+      "bitbucketNote": "Poznámka: Viditelnost Bitbucketu se může lišit v závislosti na nastavení pracovního prostoru.",
+      "description": "Vyberte, které typy repozitářů chcete zobrazit",
+      "private": "Zobrazit soukromé repozitáře",
+      "privateDescription": "Zobrazit soukromé repozitáře",
+      "public": "Zobrazit veřejné repozitáře",
+      "publicDescription": "Zobrazit veřejně přístupné repozitáře",
+      "title": "Filtry viditelnosti repozitáře"
+    }
   },
   "reset": "Obnovit na výchozí nastavení",
   "resetConfirm": "Opravdu chcete resetovat všechna nastavení?",

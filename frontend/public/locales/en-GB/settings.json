@@ -112,7 +112,18 @@
     "showArchived": "Show archived",
     "showArchivedDescription": "Include archived repositories",
     "showForks": "Show forks",
-    "showForksDescription": "Include forked repositories"
+    "showForksDescription": "Include forked repositories",
+    "visibility": {
+      "archived": "Show archived repositories",
+      "archivedDescription": "Display repositories that have been archived",
+      "bitbucketNote": "Note: Bitbucket visibility may differ based on workspace settings",
+      "description": "Choose which types of repositories to display",
+      "private": "Show private repositories",
+      "privateDescription": "Display repositories that are private",
+      "public": "Show public repositories",
+      "publicDescription": "Display repositories that are publicly accessible",
+      "title": "Repository Visibility Filters"
+    }
   },
   "reset": "Reset to defaults",
   "resetConfirm": "Are you sure you want to reset all settings?",

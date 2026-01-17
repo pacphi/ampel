@@ -89,7 +89,18 @@
     "showArchived": "Vis arkiverede",
     "showArchivedDescription": "Inkluder arkiverede lagre",
     "showForks": "Vis gafler",
-    "showForksDescription": "Inkluder forgrenede lagre"
+    "showForksDescription": "Inkluder forgrenede lagre",
+    "visibility": {
+      "archived": "Vis arkiverede lagre",
+      "archivedDescription": "Vis arkiverede lagre",
+      "bitbucketNote": "Bemærk: Bitbucket-synligheden kan variere afhængigt af arbejdsområdets indstillinger",
+      "description": "Vælg hvilke typer lagre der skal vises",
+      "private": "Vis private arkiver",
+      "privateDescription": "Vis private arkiver",
+      "public": "Vis offentlige arkiver",
+      "publicDescription": "Vis arkiver, der er offentligt tilgængelige",
+      "title": "Filtre for synlighed af arkivet"
+    }
   },
   "reset": "Nulstil til standardindstillinger",
   "resetConfirm": "Er du sikker på, at du vil nulstille alle indstillinger?",

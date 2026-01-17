@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Takaisin tileihin",
+    "form": {
+      "accountLabel": "Tilin otsikko",
+      "accountLabelDescription": "Ystävällinen nimi tämän tilin tunnistamiseksi",
+      "accountLabelPlaceholder": "esim. työpaikan GitHub, henkilökohtainen GitLab",
+      "provider": "Palveluntarjoaja",
+      "selectProvider": "Valitse palveluntarjoaja",
+      "token": "Henkilökohtainen käyttöoikeustunnus",
+      "tokenDescription": "Tunnuksesi on salattu ja tallennettu turvallisesti",
+      "tokenPlaceholder": "Syötä henkilökohtainen käyttöoikeustunnuksesi"
+    },
+    "submit": "Yhdistä tili",
+    "submitting": "Yhdistetään...",
+    "subtitle": "Yhdistä uusi Git-palveluntarjoajan tili",
+    "title": "Lisää palveluntarjoajan tili"
+  },
+  "addAccount": "Lisää tili",
+  "addFirstAccount": "Lisää ensimmäinen tilisi",
+  "card": {
+    "actions": {
+      "delete": "Poista tili",
+      "edit": "Muokkaa tiliä",
+      "setDefault": "Aseta oletukseksi",
+      "validate": "Vahvista tunnus"
+    },
+    "expires": "Vanhenee",
+    "neverExpires": "Ei koskaan vanhene",
+    "repositories": "arkistot",
+    "status": {
+      "default": "Oletus",
+      "expired": "Vanhentunut",
+      "invalid": "Virheellinen",
+      "pending": "Odottaa",
+      "valid": "Voimassa"
+    },
+    "validated": "Vahvistettu"
+  },
+  "delete": {
+    "cancel": "Peruuttaa",
+    "confirm": "Poistaa",
+    "deleting": "Poistetaan...",
+    "description": "Haluatko varmasti poistaa tilin \"{{label}}\"? Tämä ei poista tietovarastoja, mutta ne on linkitettävä uudelleen toiseen tiliin.",
+    "title": "Poista tili"
+  },
+  "description": "Hallinnoi yhdistettyjä Git-palveluntarjoajatilejäsi",
+  "edit": {
+    "accountInfo": "Tilitiedot",
+    "backToAccounts": "Takaisin tileihin",
+    "form": {
+      "accountLabel": "Tilin otsikko",
+      "accountLabelPlaceholder": "esim. Work GitHub",
+      "currentToken": "Nykyinen token",
+      "token": "Henkilökohtainen käyttöoikeustunnus",
+      "tokenDescription": "Jätä tyhjäksi säilyttääksesi nykyisen tunnuksen",
+      "tokenPlaceholder": "Syötä uusi päivitettävä tunnus"
+    },
+    "notFound": "Tiliä ei löytynyt",
+    "submit": "Tallenna muutokset",
+    "submitting": "Tallennetaan...",
+    "subtitle": "Päivitä tilin asetukset",
+    "title": "Muokkaa tiliä"
+  },
+  "noAccountsYet": "Ei vielä yhdistettyjä tilejä",
+  "title": "Palveluntarjoajatilit",
+  "toast": {
+    "connected": "Tili yhdistetty",
+    "connectedDescription": "Tili {{provider}} yhdistetty onnistuneesti",
+    "connectionFailed": "Tilin lisääminen epäonnistui",
+    "defaultUpdateFailed": "Oletusarvon päivittäminen epäonnistui",
+    "defaultUpdated": "Oletustili päivitetty",
+    "defaultUpdatedDescription": "Oletustili on muutettu",
+    "deleteFailed": "Tilin poistaminen epäonnistui",
+    "deleted": "Tili poistettu",
+    "deletedDescription": "Tili on poistettu onnistuneesti",
+    "tokenInvalid": "Tunnus virheellinen",
+    "tokenInvalidDescription": "Tunnus on virheellinen tai vanhentunut",
+    "tokenValid": "Tunnus voimassa",
+    "tokenValidDescription": "Tilitunnus on voimassa ja aktiivinen",
+    "updateFailed": "Tilin päivittäminen epäonnistui",
+    "updated": "Tili päivitetty",
+    "updatedDescription": "Tilin asetukset on tallennettu",
+    "validationFailed": "Vahvistus epäonnistui"
+  }
+}

@@ -10,6 +10,13 @@
     "tokenExpired": "Das Authentifizierungstoken ist abgelaufen.",
     "unauthorized": "Unbefugter Zugriff"
   },
+  "boundary": {
+    "description": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "details": "Fehlerdetails (nur für Entwickler)",
+    "reload": "Seite neu laden",
+    "title": "Etwas ist schiefgelaufen.",
+    "tryAgain": "Versuchen Sie es erneut"
+  },
   "general": {
     "unknownError": "Es ist ein unbekannter Fehler aufgetreten."
   },

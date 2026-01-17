@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "连续合并之间的等待时间",
+    "placeholder": "5",
+    "title": "合并延迟（秒）"
+  },
+  "options": {
+    "allowNoReviews": "允许合并而无需审核",
+    "allowNoReviewsDescription": "允许合并没有审核的 PR",
+    "deleteBranch": "合并后删除分支",
+    "deleteBranchDescription": "合并成功后自动删除源分支",
+    "requireApproval": "合并前需获得批准",
+    "requireApprovalDescription": "请等待人工批准后再执行合并操作。"
+  },
+  "strategy": {
+    "description": "选择默认情况下拉取请求的合并方式。",
+    "merge": "创建合并提交",
+    "mergeDescription": "所有提交记录均已保留",
+    "rebase": "重新定基并合并",
+    "rebaseDescription": "线性提交历史",
+    "squash": "挤压和合并",
+    "squashDescription": "将所有提交合并为一个提交",
+    "title": "默认合并策略"
+  },
+  "title": "合并行为",
+  "toast": {
+    "updateFailed": "设置更新失败",
+    "updated": "设置已更新",
+    "updatedDescription": "合并行为设置已保存"
+  }
+}

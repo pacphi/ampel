@@ -11,6 +11,13 @@
     "tokenExpired": "Authentication token has expired",
     "unauthorized": "Unauthorized access"
   },
+  "boundary": {
+    "description": "An unexpected error occurred. Please try again.",
+    "details": "Error Details (Dev Only)",
+    "reload": "Reload Page",
+    "title": "Something went wrong",
+    "tryAgain": "Try Again"
+  },
   "general": {
     "forbidden": "You don't have permission to access this resource",
     "network": "Network error. Please check your connection",

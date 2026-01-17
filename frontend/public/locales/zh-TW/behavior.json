@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "連續合併之間的等待時間",
+    "placeholder": "5",
+    "title": "合併延遲（秒）"
+  },
+  "options": {
+    "allowNoReviews": "允許合併而無需審核",
+    "allowNoReviewsDescription": "允許合併沒有審核的 PR",
+    "deleteBranch": "合併後刪除分支",
+    "deleteBranchDescription": "合併成功後自動刪除來源分支",
+    "requireApproval": "合併前需獲得批准",
+    "requireApprovalDescription": "請等待人工批准後再執行合併操作。"
+  },
+  "strategy": {
+    "description": "選擇預設情況下拉取請求的合併方式。",
+    "merge": "建立合併提交",
+    "mergeDescription": "所有提交記錄均已保留",
+    "rebase": "重新定基並合併",
+    "rebaseDescription": "線性提交歷史",
+    "squash": "擠壓和合併",
+    "squashDescription": "將所有提交合併為一個提交",
+    "title": "預設合併策略"
+  },
+  "title": "合併行為",
+  "toast": {
+    "updateFailed": "設定更新失敗",
+    "updated": "設定已更新",
+    "updatedDescription": "合併行為設定已儲存"
+  }
+}

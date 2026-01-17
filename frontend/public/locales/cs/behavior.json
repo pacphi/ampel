@@ -1,0 +1,31 @@
+{
+  "delay": {
+    "description": "Doba čekání mezi po sobě jdoucími sloučeními",
+    "placeholder": "5",
+    "title": "Zpoždění sloučení (sekundy)"
+  },
+  "options": {
+    "allowNoReviews": "Povolit sloučení bez kontrol",
+    "allowNoReviewsDescription": "Povolit slučování žádostí o zadání, které nemají žádné recenze",
+    "deleteBranch": "Smazat větve po sloučení",
+    "deleteBranchDescription": "Automatické smazání zdrojových větví po úspěšném sloučení",
+    "requireApproval": "Vyžadovat schválení před sloučením",
+    "requireApprovalDescription": "Před provedením sloučení počkejte na ruční schválení."
+  },
+  "strategy": {
+    "description": "Vyberte, jak se mají pull requesty ve výchozím nastavení slučovat",
+    "merge": "Vytvořte sloučený commit",
+    "mergeDescription": "Všechny commity zachovány",
+    "rebase": "Znovu vyjádřit a sloučit",
+    "rebaseDescription": "Lineární historie commitů",
+    "squash": "Stlačit a sloučit",
+    "squashDescription": "Sloučit všechny commity do jednoho",
+    "title": "Výchozí strategie sloučení"
+  },
+  "title": "Chování sloučení",
+  "toast": {
+    "updateFailed": "Nastavení se nepodařilo aktualizovat",
+    "updated": "Nastavení aktualizováno",
+    "updatedDescription": "Nastavení chování sloučení bylo uloženo"
+  }
+}

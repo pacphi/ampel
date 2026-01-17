@@ -12,6 +12,23 @@
     "draft": "Utkast",
     "needsReview": "Trenger gjennomgang"
   },
+  "dialog": {
+    "cancel": "Kansellere",
+    "deleteBranch": "Slett gren etter sammenslåing",
+    "merge": "Slå sammen PR",
+    "merging": "Slår sammen...",
+    "strategy": {
+      "merge": "Opprett en fletteforpliktelse",
+      "mergeDescription": "Alle commits er bevart",
+      "rebase": "Rebase og fusjoner",
+      "rebaseDescription": "Lineær commit-historikk",
+      "squash": "Squash og fusjoner",
+      "squashDescription": "Kombiner alle commits til én",
+      "title": "Sammenslåingsstrategi"
+    },
+    "subtitle": "Konfigurer sammenslåingsalternativer for denne PR-en",
+    "title": "Forespørsel om sammenslåing"
+  },
   "emptyState": {
     "noPrsReady": "Ingen PR-er er klare til å slå seg sammen. PR-er trenger:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Velg og slå sammen flere PR-er samtidig",
   "title": "Massesammenslåing",
   "toast": {
+    "failed": "Sammenslåingen mislyktes",
+    "failedDescription": "Kunne ikke slå sammen #{{number}}: {{error}}",
     "mergeFailed": "Sammenslåingen mislyktes",
     "mergeSuccess": "Sammenslåingen var vellykket",
     "mergeSuccessDescription": "Vellykket sammenslåing av {{count}} pull-forespørsler",
     "someMergesFailed": "Noen sammenslåinger mislyktes",
-    "someMergesFailedDescription": "{{success}} sammenslått, {{failed}} mislyktes"
+    "someMergesFailedDescription": "{{success}} sammenslått, {{failed}} mislyktes",
+    "success": "PR-sammenslått",
+    "successDescription": "Vellykket sammenslått #{{number}}: {{title}}"
   }
 }

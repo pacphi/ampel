@@ -89,7 +89,18 @@
     "showArchived": "Mostra archiviato",
     "showArchivedDescription": "Includi repository archiviati",
     "showForks": "Mostra forchette",
-    "showForksDescription": "Includi repository forkati"
+    "showForksDescription": "Includi repository forkati",
+    "visibility": {
+      "archived": "Mostra repository archiviati",
+      "archivedDescription": "Visualizza i repository che sono stati archiviati",
+      "bitbucketNote": "Nota: la visibilità di Bitbucket potrebbe variare in base alle impostazioni dell'area di lavoro",
+      "description": "Scegli quali tipi di repository visualizzare",
+      "private": "Mostra repository privati",
+      "privateDescription": "Visualizza i repository privati",
+      "public": "Mostra repository pubblici",
+      "publicDescription": "Visualizza i repository accessibili al pubblico",
+      "title": "Filtri di visibilità del repository"
+    }
   },
   "reset": "Ripristina i valori predefiniti",
   "resetConfirm": "Sei sicuro di voler ripristinare tutte le impostazioni?",

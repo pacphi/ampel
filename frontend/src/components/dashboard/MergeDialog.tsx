@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { pullRequestsApi, type MergeRequest } from '@/api/pullRequests';
 import { Button } from '@/components/ui/button';
@@ -24,6 +25,7 @@ interface MergeDialogProps {
 type MergeStrategy = 'merge' | 'squash' | 'rebase';
 
 export default function MergeDialog({ pr, open, onOpenChange }: MergeDialogProps) {
+  const { t } = useTranslation(['merge', 'common']);
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [strategy, setStrategy] = useState<MergeStrategy>('squash');
@@ -34,8 +36,8 @@ export default function MergeDialog({ pr, open, onOpenChange }: MergeDialogProps
     onSuccess: (result) => {
       if (result.merged) {
         toast({
-          title: 'PR Merged',
-          description: `Successfully merged #${pr.number}: ${pr.title}`,
+          title: t('merge:toast.success'),
+          description: t('merge:toast.successDescription', { number: pr.number, title: pr.title }),
         });
         queryClient.invalidateQueries({ queryKey: ['dashboard'] });
         queryClient.invalidateQueries({ queryKey: ['pull-requests'] });
@@ -43,8 +45,11 @@ export default function MergeDialog({ pr, open, onOpenChange }: MergeDialogProps
       } else {
         toast({
           variant: 'destructive',
-          title: 'Merge failed',
-          description: result.message,
+          title: t('merge:toast.failed'),
+          description: t('merge:toast.failedDescription', {
+            number: pr.number,
+            error: result.message,
+          }),
         });
       }
     },
@@ -52,8 +57,11 @@ export default function MergeDialog({ pr, open, onOpenChange }: MergeDialogProps
       const axiosError = error as { response?: { data?: { error?: string } } };
       toast({
         variant: 'destructive',
-        title: 'Merge failed',
-        description: axiosError.response?.data?.error || 'An error occurred',
+        title: t('merge:toast.failed'),
+        description: t('merge:toast.failedDescription', {
+          number: pr.number,
+          error: axiosError.response?.data?.error || 'An error occurred',
+        }),
       });
     },
   });
@@ -66,9 +74,21 @@ export default function MergeDialog({ pr, open, onOpenChange }: MergeDialogProps
   };
 
   const strategies: { value: MergeStrategy; label: string; description: string }[] = [
-    { value: 'squash', label: 'Squash and merge', description: 'Combine all commits into one' },
-    { value: 'merge', label: 'Create a merge commit', description: 'All commits preserved' },
-    { value: 'rebase', label: 'Rebase and merge', description: 'Linear commit history' },
+    {
+      value: 'squash',
+      label: t('merge:dialog.strategy.squash'),
+      description: t('merge:dialog.strategy.squashDescription'),
+    },
+    {
+      value: 'merge',
+      label: t('merge:dialog.strategy.merge'),
+      description: t('merge:dialog.strategy.mergeDescription'),
+    },
+    {
+      value: 'rebase',
+      label: t('merge:dialog.strategy.rebase'),
+      description: t('merge:dialog.strategy.rebaseDescription'),
+    },
   ];
 
   return (
@@ -77,7 +97,7 @@ export default function MergeDialog({ pr, open, onOpenChange }: MergeDialogProps
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <GitMerge className="h-5 w-5" />
-            Merge Pull Request
+            {t('merge:dialog.title')}
           </DialogTitle>
           <DialogDescription>
             #{pr.number}: {pr.title}
@@ -86,7 +106,7 @@ export default function MergeDialog({ pr, open, onOpenChange }: MergeDialogProps
 
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label>Merge strategy</Label>
+            <Label>{t('merge:dialog.strategy.title')}</Label>
             <div className="space-y-2">
               {strategies.map((s) => (
                 <label
@@ -123,14 +143,14 @@ export default function MergeDialog({ pr, open, onOpenChange }: MergeDialogProps
               className="h-4 w-4"
             />
             <Label htmlFor="deleteBranch" className="cursor-pointer">
-              Delete branch after merge
+              {t('merge:dialog.deleteBranch')}
             </Label>
           </div>
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('merge:dialog.cancel')}
           </Button>
           <Button
             onClick={handleMerge}
@@ -140,12 +160,12 @@ export default function MergeDialog({ pr, open, onOpenChange }: MergeDialogProps
             {mergeMutation.isPending ? (
               <>
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Merging...
+                {t('merge:dialog.merging')}
               </>
             ) : (
               <>
                 <GitMerge className="h-4 w-4 mr-2" />
-                Merge PR
+                {t('merge:dialog.merge')}
               </>
             )}
           </Button>

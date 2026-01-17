@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Volver a Cuentas",
+    "form": {
+      "accountLabel": "Etiqueta de cuenta",
+      "accountLabelDescription": "Un nombre amigable para identificar esta cuenta",
+      "accountLabelPlaceholder": "p. ej., GitHub de trabajo, GitLab personal",
+      "provider": "Proveedor",
+      "selectProvider": "Seleccione un proveedor",
+      "token": "Token de acceso personal",
+      "tokenDescription": "Su token está encriptado y almacenado de forma segura",
+      "tokenPlaceholder": "Ingrese su token de acceso personal"
+    },
+    "submit": "Conectar cuenta",
+    "submitting": "Conectando...",
+    "subtitle": "Conectar una nueva cuenta de proveedor de Git",
+    "title": "Agregar cuenta de proveedor"
+  },
+  "addAccount": "Agregar cuenta",
+  "addFirstAccount": "Agregue su primera cuenta",
+  "card": {
+    "actions": {
+      "delete": "Eliminar cuenta",
+      "edit": "Editar cuenta",
+      "setDefault": "Establecer como predeterminado",
+      "validate": "Validar token"
+    },
+    "expires": "Caduca",
+    "neverExpires": "Nunca caduca",
+    "repositories": "repositorios",
+    "status": {
+      "default": "Por defecto",
+      "expired": "Venció",
+      "invalid": "Inválido",
+      "pending": "Pendiente",
+      "valid": "Válido"
+    },
+    "validated": "Validado"
+  },
+  "delete": {
+    "cancel": "Cancelar",
+    "confirm": "Borrar",
+    "deleting": "Borrando...",
+    "description": "¿Seguro que desea eliminar la cuenta \"{{label}}\"? Esto no eliminará los repositorios, pero será necesario volver a vincularlos a otra cuenta.",
+    "title": "Eliminar cuenta"
+  },
+  "description": "Administra tus cuentas de proveedor de Git conectadas",
+  "edit": {
+    "accountInfo": "Información de la cuenta",
+    "backToAccounts": "Volver a Cuentas",
+    "form": {
+      "accountLabel": "Etiqueta de cuenta",
+      "accountLabelPlaceholder": "p. ej., Work GitHub",
+      "currentToken": "Token actual",
+      "token": "Token de acceso personal",
+      "tokenDescription": "Déjelo vacío para mantener el token actual",
+      "tokenPlaceholder": "Introduzca un nuevo token para actualizar"
+    },
+    "notFound": "Cuenta no encontrada",
+    "submit": "Guardar cambios",
+    "submitting": "Ahorro...",
+    "subtitle": "Actualizar la configuración de la cuenta",
+    "title": "Editar cuenta"
+  },
+  "noAccountsYet": "Aún no hay cuentas conectadas",
+  "title": "Cuentas de proveedores",
+  "toast": {
+    "connected": "Cuenta conectada",
+    "connectedDescription": "Cuenta {{provider}} conectada exitosamente",
+    "connectionFailed": "No se pudo agregar la cuenta",
+    "defaultUpdateFailed": "No se pudo actualizar el valor predeterminado",
+    "defaultUpdated": "Cuenta predeterminada actualizada",
+    "defaultUpdatedDescription": "Se ha cambiado la cuenta predeterminada",
+    "deleteFailed": "No se pudo eliminar la cuenta",
+    "deleted": "Cuenta eliminada",
+    "deletedDescription": "La cuenta ha sido eliminada exitosamente",
+    "tokenInvalid": "Token inválido",
+    "tokenInvalidDescription": "El token no es válido o ha expirado.",
+    "tokenValid": "Token válido",
+    "tokenValidDescription": "El token de la cuenta es válido y activo.",
+    "updateFailed": "No se pudo actualizar la cuenta",
+    "updated": "Cuenta actualizada",
+    "updatedDescription": "Se han guardado las configuraciones de la cuenta",
+    "validationFailed": "La validación falló"
+  }
+}

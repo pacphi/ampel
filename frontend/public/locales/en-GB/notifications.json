@@ -1,0 +1,57 @@
+{
+  "email": {
+    "add": "Add",
+    "enable": "Enable email notifications",
+    "enableDescription": "Send notifications via email (SMTP)",
+    "fromAddress": "From Address",
+    "fromAddressPlaceholder": "noreply@example.com",
+    "smtpHost": "SMTP Host",
+    "smtpHostPlaceholder": "smtp.example.com",
+    "smtpPassword": "SMTP Password",
+    "smtpPasswordPlaceholder": "Enter password",
+    "smtpPort": "SMTP Port",
+    "smtpPortPlaceholder": "587",
+    "smtpUser": "SMTP Username",
+    "smtpUserPlaceholder": "user@example.com",
+    "testFailed": "Failed to send test email",
+    "testMessage": "Send Test Email",
+    "testSending": "Sending...",
+    "testSuccess": "Test email sent",
+    "title": "Email Notifications",
+    "toAddresses": "To Addresses",
+    "toAddressesDescription": "Recipients for notification emails",
+    "toAddressesPlaceholder": "email@example.com",
+    "useTls": "Use TLS"
+  },
+  "merge": {
+    "description": "Choose when to receive notifications for merge operations",
+    "notifyOnConflict": "Notify on merge conflicts",
+    "notifyOnConflictDescription": "Send notification when merge conflicts are detected",
+    "notifyOnFailure": "Notify on failed merges",
+    "notifyOnFailureDescription": "Send notification when merge operations fail",
+    "notifyOnSuccess": "Notify on successful merges",
+    "notifyOnSuccessDescription": "Send notification when PRs are successfully merged",
+    "title": "Merge Notifications"
+  },
+  "slack": {
+    "channel": "Channel (optional)",
+    "channelDescription": "Override the default channel configured in the webhook",
+    "channelPlaceholder": "#general",
+    "enable": "Enable Slack notifications",
+    "enableDescription": "Send notifications to a Slack channel",
+    "testFailed": "Failed to send test message",
+    "testMessage": "Send Test Message",
+    "testSending": "Sending...",
+    "testSuccess": "Test message sent",
+    "title": "Slack Notifications",
+    "webhookUrl": "Webhook URL",
+    "webhookUrlDescription": "Create an incoming webhook in your Slack workspace",
+    "webhookUrlPlaceholder": "https://hooks.slack.com/services/..."
+  },
+  "title": "Notification Settings",
+  "toast": {
+    "updateFailed": "Failed to update settings",
+    "updated": "Settings updated",
+    "updatedDescription": "Notification settings have been saved"
+  }
+}

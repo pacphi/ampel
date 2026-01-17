@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "Tilbake til kontoer",
+    "form": {
+      "accountLabel": "Kontoetikett",
+      "accountLabelDescription": "Et brukervennlig navn for å identifisere denne kontoen",
+      "accountLabelPlaceholder": "f.eks. Arbeids-GitHub, Personlig GitLab",
+      "provider": "Leverandør",
+      "selectProvider": "Velg en leverandør",
+      "token": "Personlig tilgangstoken",
+      "tokenDescription": "Tokenet ditt er kryptert og lagret sikkert",
+      "tokenPlaceholder": "Skriv inn din personlige tilgangstoken"
+    },
+    "submit": "Koble til konto",
+    "submitting": "Kobler til...",
+    "subtitle": "Koble til en ny Git-leverandørkonto",
+    "title": "Legg til leverandørkonto"
+  },
+  "addAccount": "Legg til konto",
+  "addFirstAccount": "Legg til din første konto",
+  "card": {
+    "actions": {
+      "delete": "Slett konto",
+      "edit": "Rediger konto",
+      "setDefault": "Angi som standard",
+      "validate": "Valider token"
+    },
+    "expires": "Utløper",
+    "neverExpires": "Utløper aldri",
+    "repositories": "arkiver",
+    "status": {
+      "default": "Misligholde",
+      "expired": "Utløpt",
+      "invalid": "Ugyldig",
+      "pending": "I påvente av",
+      "valid": "Gyldig"
+    },
+    "validated": "Validert"
+  },
+  "delete": {
+    "cancel": "Kansellere",
+    "confirm": "Slett",
+    "deleting": "Sletter...",
+    "description": "Er du sikker på at du vil slette kontoen «{{label}}»? Dette vil ikke slette arkiver, men de må kobles til en annen konto på nytt.",
+    "title": "Slett konto"
+  },
+  "description": "Administrer dine tilkoblede Git-leverandørkontoer",
+  "edit": {
+    "accountInfo": "Kontoinformasjon",
+    "backToAccounts": "Tilbake til kontoer",
+    "form": {
+      "accountLabel": "Kontoetikett",
+      "accountLabelPlaceholder": "f.eks. Arbeid GitHub",
+      "currentToken": "Gjeldende token",
+      "token": "Personlig tilgangstoken",
+      "tokenDescription": "La stå tomt for å beholde gjeldende token",
+      "tokenPlaceholder": "Skriv inn nytt token for å oppdatere"
+    },
+    "notFound": "Kontoen ble ikke funnet",
+    "submit": "Lagre endringer",
+    "submitting": "Lagrer...",
+    "subtitle": "Oppdater kontoinnstillinger",
+    "title": "Rediger konto"
+  },
+  "noAccountsYet": "Ingen kontoer tilkoblet ennå",
+  "title": "Leverandørkontoer",
+  "toast": {
+    "connected": "Konto tilkoblet",
+    "connectedDescription": "Tilkoblet {{provider}}-konto",
+    "connectionFailed": "Kunne ikke legge til konto",
+    "defaultUpdateFailed": "Kunne ikke oppdatere standardinnstillingen",
+    "defaultUpdated": "Standardkonto oppdatert",
+    "defaultUpdatedDescription": "Standardkontoen er endret",
+    "deleteFailed": "Kunne ikke slette kontoen",
+    "deleted": "Konto slettet",
+    "deletedDescription": "Kontoen er fjernet",
+    "tokenInvalid": "Ugyldig token",
+    "tokenInvalidDescription": "Tokenet er ugyldig eller utløpt",
+    "tokenValid": "Gyldig token",
+    "tokenValidDescription": "Kontotokenet er gyldig og aktivt",
+    "updateFailed": "Kunne ikke oppdatere kontoen",
+    "updated": "Kontoen er oppdatert",
+    "updatedDescription": "Kontoinnstillingene er lagret",
+    "validationFailed": "Valideringen mislyktes"
+  }
+}

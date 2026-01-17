@@ -12,6 +12,23 @@
     "draft": "ร่าง",
     "needsReview": "ต้องได้รับการตรวจสอบ"
   },
+  "dialog": {
+    "cancel": "ยกเลิก",
+    "deleteBranch": "ลบสาขาหลังจากผสานแล้ว",
+    "merge": "ผสาน PR",
+    "merging": "กำลังรวม...",
+    "strategy": {
+      "merge": "สร้าง commit ผสาน",
+      "mergeDescription": "การเปลี่ยนแปลงทั้งหมดถูกเก็บรักษาไว้",
+      "rebase": "ปรับฐานและผสาน",
+      "rebaseDescription": "ประวัติการคอมมิตเชิงเส้น",
+      "squash": "บีบอัดและผสาน",
+      "squashDescription": "รวม commit ทั้งหมดเข้าเป็น commit เดียว",
+      "title": "กลยุทธ์การควบรวมกิจการ"
+    },
+    "subtitle": "กำหนดค่าตัวเลือกการผสานสำหรับ PR นี้",
+    "title": "คำขอรวมพูล"
+  },
   "emptyState": {
     "noPrsReady": "ยังไม่มี Pull Request (PR) ใดพร้อมสำหรับการรวมเข้าด้วยกัน PR เหล่านั้นจำเป็นต้องมีการดำเนินการดังต่อไปนี้:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "เลือกและผสาน Pull Request (PR) หลายรายการพร้อมกัน",
   "title": "การรวมจำนวนมาก",
   "toast": {
+    "failed": "การรวมล้มเหลว",
+    "failedDescription": "ไม่สามารถผสาน #{{number}}: {{error}} ได้",
     "mergeFailed": "การรวมล้มเหลว",
     "mergeSuccess": "การรวมข้อมูลสำเร็จ",
     "mergeSuccessDescription": "รวม pull request {{count}} สำเร็จแล้ว",
     "someMergesFailed": "การรวมบางส่วนล้มเหลว",
-    "someMergesFailedDescription": "{{success}} รวมแล้ว, {{failed}} ล้มเหลว"
+    "someMergesFailedDescription": "{{success}} รวมแล้ว, {{failed}} ล้มเหลว",
+    "success": "พีอาร์ เมอร์จิด",
+    "successDescription": "รวมสำเร็จแล้ว #{{number}}: {{title}}"
   }
 }

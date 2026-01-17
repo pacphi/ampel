@@ -89,7 +89,18 @@
     "showArchived": "Hiển thị các nội dung đã lưu trữ",
     "showArchivedDescription": "Bao gồm các kho lưu trữ",
     "showForks": "Hiển thị nĩa",
-    "showForksDescription": "Bao gồm các kho lưu trữ đã được phân nhánh"
+    "showForksDescription": "Bao gồm các kho lưu trữ đã được phân nhánh",
+    "visibility": {
+      "archived": "Hiển thị các kho lưu trữ đã được lưu trữ",
+      "archivedDescription": "Hiển thị các kho lưu trữ đã được lưu trữ lại.",
+      "bitbucketNote": "Lưu ý: Khả năng hiển thị trên Bitbucket có thể khác nhau tùy thuộc vào cài đặt không gian làm việc.",
+      "description": "Chọn loại kho lưu trữ bạn muốn hiển thị",
+      "private": "Hiển thị kho lưu trữ riêng tư",
+      "privateDescription": "Hiển thị các kho lưu trữ riêng tư",
+      "public": "Hiển thị các kho lưu trữ công khai",
+      "publicDescription": "Hiển thị các kho lưu trữ có thể truy cập công khai",
+      "title": "Bộ lọc hiển thị kho lưu trữ"
+    }
   },
   "reset": "Khôi phục về cài đặt mặc định",
   "resetConfirm": "Bạn có chắc chắn muốn đặt lại tất cả cài đặt không?",

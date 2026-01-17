@@ -1,0 +1,86 @@
+{
+  "add": {
+    "backToAccounts": "アカウントに戻る",
+    "form": {
+      "accountLabel": "アカウントラベル",
+      "accountLabelDescription": "このアカウントを識別するためのわかりやすい名前",
+      "accountLabelPlaceholder": "例：仕事用GitHub、個人用GitLab",
+      "provider": "プロバイダー",
+      "selectProvider": "プロバイダーを選択",
+      "token": "個人アクセストークン",
+      "tokenDescription": "トークンは暗号化され、安全に保管されます",
+      "tokenPlaceholder": "個人アクセストークンを入力してください"
+    },
+    "submit": "アカウントを接続",
+    "submitting": "接続中...",
+    "subtitle": "新しいGitプロバイダーアカウントを接続する",
+    "title": "プロバイダーアカウントの追加"
+  },
+  "addAccount": "アカウントを追加",
+  "addFirstAccount": "最初のアカウントを追加する",
+  "card": {
+    "actions": {
+      "delete": "アカウントを削除",
+      "edit": "アカウントを編集",
+      "setDefault": "デフォルトとして設定",
+      "validate": "トークンを検証する"
+    },
+    "expires": "有効期限",
+    "neverExpires": "期限切れなし",
+    "repositories": "リポジトリ",
+    "status": {
+      "default": "デフォルト",
+      "expired": "期限切れ",
+      "invalid": "無効",
+      "pending": "保留中",
+      "valid": "有効"
+    },
+    "validated": "検証済み"
+  },
+  "delete": {
+    "cancel": "キャンセル",
+    "confirm": "消去",
+    "deleting": "削除しています...",
+    "description": "アカウント「{{label}}」を削除してもよろしいですか? リポジトリは削除されませんが、別のアカウントに再度リンクする必要があります。",
+    "title": "アカウントを削除"
+  },
+  "description": "接続された Git プロバイダー アカウントを管理する",
+  "edit": {
+    "accountInfo": "アカウント情報",
+    "backToAccounts": "アカウントに戻る",
+    "form": {
+      "accountLabel": "アカウントラベル",
+      "accountLabelPlaceholder": "例：GitHubで仕事",
+      "currentToken": "現在のトークン",
+      "token": "個人アクセストークン",
+      "tokenDescription": "現在のトークンを保持するには空白のままにしておきます",
+      "tokenPlaceholder": "更新するには新しいトークンを入力してください"
+    },
+    "notFound": "アカウントが見つかりません",
+    "submit": "変更を保存",
+    "submitting": "保存中...",
+    "subtitle": "アカウント設定を更新する",
+    "title": "アカウントを編集"
+  },
+  "noAccountsYet": "まだアカウントが接続されていません",
+  "title": "プロバイダーアカウント",
+  "toast": {
+    "connected": "アカウントが接続されました",
+    "connectedDescription": "{{provider}} アカウントが正常に接続されました",
+    "connectionFailed": "アカウントの追加に失敗しました",
+    "defaultUpdateFailed": "デフォルトの更新に失敗しました",
+    "defaultUpdated": "デフォルトアカウントが更新されました",
+    "defaultUpdatedDescription": "デフォルトアカウントが変更されました",
+    "deleteFailed": "アカウントの削除に失敗しました",
+    "deleted": "アカウントを削除しました",
+    "deletedDescription": "アカウントは正常に削除されました",
+    "tokenInvalid": "トークンが無効です",
+    "tokenInvalidDescription": "トークンが無効または期限切れです",
+    "tokenValid": "トークン有効",
+    "tokenValidDescription": "アカウントトークンは有効でアクティブです",
+    "updateFailed": "アカウントの更新に失敗しました",
+    "updated": "アカウントを更新しました",
+    "updatedDescription": "アカウント設定が保存されました",
+    "validationFailed": "検証に失敗しました"
+  }
+}

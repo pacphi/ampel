@@ -89,7 +89,18 @@
     "showArchived": "アーカイブを表示",
     "showArchivedDescription": "アーカイブされたリポジトリを含む",
     "showForks": "フォークを表示",
-    "showForksDescription": "フォークしたリポジトリを含める"
+    "showForksDescription": "フォークしたリポジトリを含める",
+    "visibility": {
+      "archived": "アーカイブされたリポジトリを表示",
+      "archivedDescription": "アーカイブされたリポジトリを表示する",
+      "bitbucketNote": "注: Bitbucket の表示はワークスペースの設定によって異なる場合があります。",
+      "description": "表示するリポジトリの種類を選択する",
+      "private": "プライベートリポジトリを表示",
+      "privateDescription": "非公開のリポジトリを表示する",
+      "public": "公開リポジトリを表示",
+      "publicDescription": "公開アクセス可能なリポジトリを表示する",
+      "title": "リポジトリの可視性フィルター"
+    }
   },
   "reset": "デフォルトにリセット",
   "resetConfirm": "すべての設定をリセットしてもよろしいですか？",

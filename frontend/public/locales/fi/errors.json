@@ -10,6 +10,13 @@
     "tokenExpired": "Todennustunnus on vanhentunut",
     "unauthorized": "Luvaton pääsy"
   },
+  "boundary": {
+    "description": "Odottamaton virhe tapahtui. Yritä uudelleen.",
+    "details": "Virheen tiedot (vain kehittäjille)",
+    "reload": "Lataa sivu uudelleen",
+    "title": "Jokin meni pieleen",
+    "tryAgain": "Yritä uudelleen"
+  },
   "general": {
     "unknownError": "Tuntematon virhe tapahtui"
   },

@@ -12,6 +12,23 @@
     "draft": "Návrh",
     "needsReview": "Potřebuje kontrolu"
   },
+  "dialog": {
+    "cancel": "Zrušit",
+    "deleteBranch": "Smazat větev po sloučení",
+    "merge": "Sloučit PR",
+    "merging": "Sloučení...",
+    "strategy": {
+      "merge": "Vytvořte sloučený commit",
+      "mergeDescription": "Všechny commity zachovány",
+      "rebase": "Znovu vyjádřit a sloučit",
+      "rebaseDescription": "Lineární historie commitů",
+      "squash": "Stlačit a sloučit",
+      "squashDescription": "Sloučit všechny commity do jednoho",
+      "title": "Strategie sloučení"
+    },
+    "subtitle": "Nakonfigurujte možnosti sloučení pro tento požadavek na žádost o přijetí žádosti (PR)",
+    "title": "Request na sloučení"
+  },
   "emptyState": {
     "noPrsReady": "Žádní PR nejsou připraveni ke sloučení. PR potřebují:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Výběr a sloučení více žádostí o příspěvek najednou",
   "title": "Hromadné sloučení",
   "toast": {
+    "failed": "Sloučení se nezdařilo",
+    "failedDescription": "Nepodařilo se sloučit #{{number}}: {{error}}",
     "mergeFailed": "Sloučení se nezdařilo",
     "mergeSuccess": "Sloučení úspěšné",
     "mergeSuccessDescription": "Úspěšně sloučeny {{count}} žádosti o změnu obsahu (pull requesty)",
     "someMergesFailed": "Některá sloučení se nezdařilo",
-    "someMergesFailedDescription": "{{success}} sloučeno, {{failed}} selhalo"
+    "someMergesFailedDescription": "{{success}} sloučeno, {{failed}} selhalo",
+    "success": "Sloučení PR",
+    "successDescription": "Úspěšně sloučeno #{{number}}: {{title}}"
   }
 }

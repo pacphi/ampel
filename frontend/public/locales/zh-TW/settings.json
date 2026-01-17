@@ -89,7 +89,18 @@
     "showArchived": "顯示已存檔",
     "showArchivedDescription": "包括已存檔的存儲庫",
     "showForks": "顯示分支",
-    "showForksDescription": "包含分支的存儲庫"
+    "showForksDescription": "包含分支的存儲庫",
+    "visibility": {
+      "archived": "顯示已存檔的儲存庫",
+      "archivedDescription": "顯示已歸檔的儲存庫",
+      "bitbucketNote": "注意：Bitbucket 的可見性可能會因工作區設定而異",
+      "description": "選擇要顯示的儲存庫類型",
+      "private": "顯示私有倉庫",
+      "privateDescription": "顯示私有儲存庫",
+      "public": "顯示公共儲存庫",
+      "publicDescription": "公開訪問的展示庫",
+      "title": "儲存庫可見性篩選器"
+    }
   },
   "reset": "重設為預設值",
   "resetConfirm": "您確定要重設所有設定嗎？",

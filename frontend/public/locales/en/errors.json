@@ -25,6 +25,13 @@
     "registrationFailed": "Registration failed",
     "failedToCreateAccount": "Failed to create account"
   },
+  "boundary": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "details": "Error Details (Dev Only)",
+    "tryAgain": "Try Again",
+    "reload": "Reload Page"
+  },
   "validation": {
     "required": "This field is required",
     "invalidEmail": "Please enter a valid email address",

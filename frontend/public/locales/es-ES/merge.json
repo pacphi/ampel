@@ -12,6 +12,23 @@
     "draft": "Borrador",
     "needsReview": "Necesita revisión"
   },
+  "dialog": {
+    "cancel": "Cancelar",
+    "deleteBranch": "Eliminar rama después de la fusión",
+    "merge": "Fusionar relaciones públicas",
+    "merging": "Fusionando...",
+    "strategy": {
+      "merge": "Crear una confirmación de fusión",
+      "mergeDescription": "Se conservan todas las confirmaciones",
+      "rebase": "Rebase y fusión",
+      "rebaseDescription": "Historial de confirmaciones lineal",
+      "squash": "Aplastar y fusionar",
+      "squashDescription": "Combine todas las confirmaciones en una sola",
+      "title": "Estrategia de fusión"
+    },
+    "subtitle": "Configurar opciones de fusión para esta PR",
+    "title": "Solicitud de extracción de fusión"
+  },
   "emptyState": {
     "noPrsReady": "Ningún PR está listo para fusionarse. Los PR necesitan:",
     "requirements": {
@@ -66,10 +83,14 @@
   "subtitle": "Seleccionar y fusionar varios PR a la vez",
   "title": "Fusión masiva",
   "toast": {
+    "failed": "La fusión falló",
+    "failedDescription": "No se pudo fusionar #{{number}}: {{error}}",
     "mergeFailed": "Fusión fallida",
     "mergeSuccess": "Fusión exitosa",
     "mergeSuccessDescription": "Solicitudes de extracción {{count}} fusionadas exitosamente",
     "someMergesFailed": "Algunas fusiones fallaron",
-    "someMergesFailedDescription": "{{success}} fusionado, {{failed}} falló"
+    "someMergesFailedDescription": "{{success}} fusionado, {{failed}} falló",
+    "success": "Relaciones públicas fusionadas",
+    "successDescription": "Fusionado exitosamente #{{number}}: {{title}}"
   }
 }

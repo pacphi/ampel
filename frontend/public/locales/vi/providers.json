@@ -1,0 +1,55 @@
+{
+  "bitbucket": {
+    "permissions": {
+      "accountRead": "Tài khoản: Đã đọc",
+      "pullRequestsRead": "Yêu cầu kéo (Pull requests): Đọc",
+      "pullRequestsWrite": "Yêu cầu kéo (Pull requests): Viết",
+      "repositoriesRead": "Kho lưu trữ: Đọc",
+      "repositoriesWrite": "Kho lưu trữ: Viết"
+    },
+    "steps": {
+      "step1": "Vào Bitbucket → Cài đặt cá nhân → Mật khẩu ứng dụng",
+      "step2": "Nhấp vào \"Tạo mật khẩu ứng dụng\"",
+      "step3": "Nhập nhãn cho mật khẩu",
+      "step4": "Chọn các quyền cần thiết:",
+      "step5": "Nhấp vào \"Tạo\" và sao chép mật khẩu."
+    },
+    "title": "Hướng dẫn mật khẩu ứng dụng Bitbucket"
+  },
+  "common": {
+    "expirationWarning": "Hãy cân nhắc đặt ngày hết hạn để tăng cường bảo mật.",
+    "minimalScopes": "Chỉ cấp các quyền tối thiểu cần thiết.",
+    "securityNote": "Hãy giữ mã thông báo của bạn an toàn và đừng bao giờ chia sẻ nó công khai."
+  },
+  "github": {
+    "note": "Các token có mức độ chi tiết cao cũng được hỗ trợ cùng với quyền truy cập kho lưu trữ.",
+    "scopes": {
+      "readOrg": "read:org (Thành viên của Read org và nhóm)",
+      "readUser": "read:user (Đọc dữ liệu hồ sơ người dùng)",
+      "repo": "repo (Quyền kiểm soát hoàn toàn các kho lưu trữ riêng tư)"
+    },
+    "steps": {
+      "step1": "Vào Cài đặt GitHub → Cài đặt nhà phát triển → Mã truy cập cá nhân → Mã (cổ điển)",
+      "step2": "Nhấp vào \"Tạo mã thông báo mới (cổ điển)\"",
+      "step3": "Hãy đặt cho token của bạn một cái tên mang tính mô tả.",
+      "step4": "Chọn phạm vi cần thiết:",
+      "step5": "Nhấp vào \"Tạo mã thông báo\" và sao chép ngay lập tức."
+    },
+    "title": "Hướng dẫn sử dụng mã thông báo GitHub"
+  },
+  "gitlab": {
+    "scopes": {
+      "api": "API (Truy cập API đầy đủ)",
+      "readApi": "read_api (Truy cập API chỉ đọc)",
+      "readRepository": "read_repository (Truy cập kho lưu trữ đọc)"
+    },
+    "steps": {
+      "step1": "Vào GitLab → Cài đặt người dùng → Mã truy cập",
+      "step2": "Nhập tên mã thông báo và ngày hết hạn (nếu có).",
+      "step3": "Chọn phạm vi cần thiết:",
+      "step4": "Nhấp vào \"Tạo mã truy cập cá nhân\" và sao chép mã đó."
+    },
+    "title": "Hướng dẫn sử dụng mã thông báo GitLab"
+  },
+  "title": "Hướng dẫn dành cho nhà cung cấp"
+}

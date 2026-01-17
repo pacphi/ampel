@@ -68,7 +68,11 @@ export function MergeResultsDialog({ open, onOpenChange, results }: MergeResults
           <DialogDescription>
             {results.status === 'completed' && results.failed === 0
               ? t('merge:results.allSuccess')
-              : t('merge:results.summary', { success: results.success, failed: results.failed, skipped: results.skipped })}
+              : t('merge:results.summary', {
+                  success: results.success,
+                  failed: results.failed,
+                  skipped: results.skipped,
+                })}
           </DialogDescription>
         </DialogHeader>
 
