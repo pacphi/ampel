@@ -16,7 +16,9 @@ describe('RepositoryFilterSettings', () => {
       render(<RepositoryFilterSettings />);
 
       expect(screen.getByText('Repository Visibility Filters')).toBeInTheDocument();
-      expect(screen.getByText(/choose which types of repositories to display/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/choose which types of repositories to display/i)
+      ).toBeInTheDocument();
     });
 
     it('renders all three switches', () => {
@@ -207,7 +209,9 @@ describe('RepositoryFilterSettings', () => {
 
       const note = container.querySelector('.bg-muted');
       expect(note).toBeInTheDocument();
-      expect(note?.textContent).toContain('Bitbucket visibility may differ based on workspace settings');
+      expect(note?.textContent).toContain(
+        'Bitbucket visibility may differ based on workspace settings'
+      );
     });
 
     it('displays note in a paragraph element', () => {
