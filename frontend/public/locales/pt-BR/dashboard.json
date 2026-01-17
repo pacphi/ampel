@@ -33,6 +33,12 @@
     "merged": "Fundido",
     "onlyWithPrs": "Exibir repositórios com PRs abertos",
     "open": "Abrir",
+    "prStatus": {
+      "all": "Todos os RPs",
+      "blocked": "Bloqueado",
+      "pending": "Pendente",
+      "ready": "Preparar"
+    },
     "provider": "Fornecedor",
     "repository": "Repositório"
   },
@@ -76,6 +82,16 @@
     "yellow": "Em andamento"
   },
   "subtitle": "Gerencie suas solicitações de pull em todos os provedores.",
+  "table": {
+    "columns": {
+      "lastUpdated": "Última atualização",
+      "provider": "Fornecedor",
+      "prs": "Relações Públicas",
+      "repository": "Repositório",
+      "status": "Status",
+      "visibility": "Visibilidade"
+    }
+  },
   "title": "Painel",
   "views": {
     "grid": "Visualização em grade",

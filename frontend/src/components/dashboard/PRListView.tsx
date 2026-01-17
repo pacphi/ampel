@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { mergeApi, type BulkMergeRequest } from '@/api/merge';
 import { settingsApi } from '@/api/settings';
@@ -16,6 +17,7 @@ interface PRListViewProps {
 }
 
 export default function PRListView({ filterStatus }: PRListViewProps) {
+  const { t } = useTranslation('dashboard');
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [selectedPrs, setSelectedPrs] = useState<Set<string>>(new Set());
@@ -133,12 +135,18 @@ export default function PRListView({ filterStatus }: PRListViewProps) {
             onChange={(e) => setStatusFilter(e.target.value as AmpelStatus | 'all')}
             className="text-sm border rounded-md px-2 py-1 bg-background"
           >
-            <option value="all">All PRs ({totalPrs})</option>
-            <option value="green">Ready ({prs.filter((p) => p.status === 'green').length})</option>
-            <option value="yellow">
-              Pending ({prs.filter((p) => p.status === 'yellow').length})
+            <option value="all">
+              {t('filters.prStatus.all')} ({totalPrs})
             </option>
-            <option value="red">Blocked ({prs.filter((p) => p.status === 'red').length})</option>
+            <option value="green">
+              {t('filters.prStatus.ready')} ({prs.filter((p) => p.status === 'green').length})
+            </option>
+            <option value="yellow">
+              {t('filters.prStatus.pending')} ({prs.filter((p) => p.status === 'yellow').length})
+            </option>
+            <option value="red">
+              {t('filters.prStatus.blocked')} ({prs.filter((p) => p.status === 'red').length})
+            </option>
           </select>
         </div>
 

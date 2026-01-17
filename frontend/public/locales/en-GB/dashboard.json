@@ -33,6 +33,12 @@
     "merged": "Merged",
     "onlyWithPrs": "Show repositories with Open PRs",
     "open": "Open",
+    "prStatus": {
+      "all": "All PRs",
+      "blocked": "Blocked",
+      "pending": "Pending",
+      "ready": "Ready"
+    },
     "provider": "Provider",
     "repository": "Repository"
   },
@@ -89,6 +95,16 @@
     "yellow": "In progress"
   },
   "subtitle": "Manage your pull requests across all providers",
+  "table": {
+    "columns": {
+      "lastUpdated": "Last Updated",
+      "provider": "Provider",
+      "prs": "PRs",
+      "repository": "Repository",
+      "status": "Status",
+      "visibility": "Visibility"
+    }
+  },
   "title": "Dashboard",
   "views": {
     "grid": "Grid view",

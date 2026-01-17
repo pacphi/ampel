@@ -33,6 +33,12 @@
     "merged": "Sammenslått",
     "onlyWithPrs": "Vis arkiver med åpne PR-er",
     "open": "Åpne",
+    "prStatus": {
+      "all": "Alle PR-er",
+      "blocked": "Blokkert",
+      "pending": "I påvente av",
+      "ready": "Ferdig"
+    },
     "provider": "Leverandør",
     "repository": "Repository"
   },
@@ -76,6 +82,16 @@
     "yellow": "Pågår"
   },
   "subtitle": "Administrer pull-forespørslene dine på tvers av alle leverandører",
+  "table": {
+    "columns": {
+      "lastUpdated": "Sist oppdatert",
+      "provider": "Leverandør",
+      "prs": "PR-er",
+      "repository": "Repository",
+      "status": "Status",
+      "visibility": "Synlighet"
+    }
+  },
   "title": "Dashbord",
   "views": {
     "grid": "Rutenettvisning",

@@ -63,14 +63,105 @@ export const supportedLanguages: SupportedLanguage[] = [
 ];
 
 export type TranslationNamespace =
+  | 'accounts'
   | 'analytics'
+  | 'behavior'
   | 'common'
   | 'dashboard'
   | 'errors'
   | 'merge'
+  | 'notifications'
+  | 'providers'
   | 'repositories'
   | 'settings'
   | 'validation';
+
+export interface AccountsTranslations {
+  add: {
+    backToAccounts: string;
+    form: {
+      accountLabel: string;
+      accountLabelDescription: string;
+      accountLabelPlaceholder: string;
+      provider: string;
+      selectProvider: string;
+      token: string;
+      tokenDescription: string;
+      tokenPlaceholder: string;
+    };
+    submit: string;
+    submitting: string;
+    subtitle: string;
+    title: string;
+  };
+  addAccount: string;
+  addFirstAccount: string;
+  card: {
+    actions: {
+      delete: string;
+      edit: string;
+      setDefault: string;
+      validate: string;
+    };
+    expires: string;
+    neverExpires: string;
+    repositories: string;
+    status: {
+      default: string;
+      expired: string;
+      invalid: string;
+      pending: string;
+      valid: string;
+    };
+    validated: string;
+  };
+  delete: {
+    cancel: string;
+    confirm: string;
+    deleting: string;
+    description: string;
+    title: string;
+  };
+  description: string;
+  edit: {
+    accountInfo: string;
+    backToAccounts: string;
+    form: {
+      accountLabel: string;
+      accountLabelPlaceholder: string;
+      currentToken: string;
+      token: string;
+      tokenDescription: string;
+      tokenPlaceholder: string;
+    };
+    notFound: string;
+    submit: string;
+    submitting: string;
+    subtitle: string;
+    title: string;
+  };
+  noAccountsYet: string;
+  title: string;
+  toast: {
+    connected: string;
+    connectedDescription: string;
+    connectionFailed: string;
+    defaultUpdateFailed: string;
+    defaultUpdated: string;
+    defaultUpdatedDescription: string;
+    deleteFailed: string;
+    deleted: string;
+    deletedDescription: string;
+    tokenInvalid: string;
+    tokenInvalidDescription: string;
+    tokenValid: string;
+    tokenValidDescription: string;
+    updateFailed: string;
+    updated: string;
+    updatedDescription: string;
+    validationFailed: string;
+  };
+}
 
 export interface AnalyticsTranslations {
   empty: {
@@ -95,6 +186,38 @@ export interface AnalyticsTranslations {
     prsMerged: string;
   };
   title: string;
+}
+
+export interface BehaviorTranslations {
+  delay: {
+    description: string;
+    placeholder: string;
+    title: string;
+  };
+  options: {
+    allowNoReviews: string;
+    allowNoReviewsDescription: string;
+    deleteBranch: string;
+    deleteBranchDescription: string;
+    requireApproval: string;
+    requireApprovalDescription: string;
+  };
+  strategy: {
+    description: string;
+    merge: string;
+    mergeDescription: string;
+    rebase: string;
+    rebaseDescription: string;
+    squash: string;
+    squashDescription: string;
+    title: string;
+  };
+  title: string;
+  toast: {
+    updateFailed: string;
+    updated: string;
+    updatedDescription: string;
+  };
 }
 
 export interface CommonTranslations {
@@ -255,6 +378,12 @@ export interface DashboardTranslations {
     merged: string;
     onlyWithPrs: string;
     open: string;
+    prStatus: {
+      all: string;
+      blocked: string;
+      pending: string;
+      ready: string;
+    };
     provider: string;
     repository: string;
   };
@@ -298,6 +427,16 @@ export interface DashboardTranslations {
     yellow: string;
   };
   subtitle: string;
+  table: {
+    columns: {
+      lastUpdated: string;
+      provider: string;
+      prs: string;
+      repository: string;
+      status: string;
+      visibility: string;
+    };
+  };
   title: string;
   views: {
     grid: string;
@@ -321,6 +460,13 @@ export interface ErrorsTranslations {
     sessionExpired: string;
     tokenExpired: string;
     unauthorized: string;
+  };
+  boundary: {
+    description: string;
+    details: string;
+    reload: string;
+    title: string;
+    tryAgain: string;
   };
   general: {
     unknownError: string;
@@ -383,6 +529,23 @@ export interface MergeTranslations {
     draft: string;
     needsReview: string;
   };
+  dialog: {
+    cancel: string;
+    deleteBranch: string;
+    merge: string;
+    merging: string;
+    strategy: {
+      merge: string;
+      mergeDescription: string;
+      rebase: string;
+      rebaseDescription: string;
+      squash: string;
+      squashDescription: string;
+      title: string;
+    };
+    subtitle: string;
+    title: string;
+  };
   emptyState: {
     noPrsReady: string;
     requirements: {
@@ -437,12 +600,130 @@ export interface MergeTranslations {
   subtitle: string;
   title: string;
   toast: {
+    failed: string;
+    failedDescription: string;
     mergeFailed: string;
     mergeSuccess: string;
     mergeSuccessDescription: string;
     someMergesFailed: string;
     someMergesFailedDescription: string;
+    success: string;
+    successDescription: string;
   };
+}
+
+export interface NotificationsTranslations {
+  email: {
+    add: string;
+    enable: string;
+    enableDescription: string;
+    fromAddress: string;
+    fromAddressPlaceholder: string;
+    smtpHost: string;
+    smtpHostPlaceholder: string;
+    smtpPassword: string;
+    smtpPasswordPlaceholder: string;
+    smtpPort: string;
+    smtpPortPlaceholder: string;
+    smtpUser: string;
+    smtpUserPlaceholder: string;
+    testFailed: string;
+    testMessage: string;
+    testSending: string;
+    testSuccess: string;
+    title: string;
+    toAddresses: string;
+    toAddressesDescription: string;
+    toAddressesPlaceholder: string;
+    useTls: string;
+  };
+  merge: {
+    description: string;
+    notifyOnConflict: string;
+    notifyOnConflictDescription: string;
+    notifyOnFailure: string;
+    notifyOnFailureDescription: string;
+    notifyOnSuccess: string;
+    notifyOnSuccessDescription: string;
+    title: string;
+  };
+  slack: {
+    channel: string;
+    channelDescription: string;
+    channelPlaceholder: string;
+    enable: string;
+    enableDescription: string;
+    testFailed: string;
+    testMessage: string;
+    testSending: string;
+    testSuccess: string;
+    title: string;
+    webhookUrl: string;
+    webhookUrlDescription: string;
+    webhookUrlPlaceholder: string;
+  };
+  title: string;
+  toast: {
+    updateFailed: string;
+    updated: string;
+    updatedDescription: string;
+  };
+}
+
+export interface ProvidersTranslations {
+  bitbucket: {
+    permissions: {
+      accountRead: string;
+      pullRequestsRead: string;
+      pullRequestsWrite: string;
+      repositoriesRead: string;
+      repositoriesWrite: string;
+    };
+    steps: {
+      step1: string;
+      step2: string;
+      step3: string;
+      step4: string;
+      step5: string;
+    };
+    title: string;
+  };
+  common: {
+    expirationWarning: string;
+    minimalScopes: string;
+    securityNote: string;
+  };
+  github: {
+    note: string;
+    scopes: {
+      readOrg: string;
+      readUser: string;
+      repo: string;
+    };
+    steps: {
+      step1: string;
+      step2: string;
+      step3: string;
+      step4: string;
+      step5: string;
+    };
+    title: string;
+  };
+  gitlab: {
+    scopes: {
+      api: string;
+      readApi: string;
+      readRepository: string;
+    };
+    steps: {
+      step1: string;
+      step2: string;
+      step3: string;
+      step4: string;
+    };
+    title: string;
+  };
+  title: string;
 }
 
 export interface RepositoriesTranslations {
@@ -578,6 +859,17 @@ export interface SettingsTranslations {
     showArchivedDescription: string;
     showForks: string;
     showForksDescription: string;
+    visibility: {
+      archived: string;
+      archivedDescription: string;
+      bitbucketNote: string;
+      description: string;
+      private: string;
+      privateDescription: string;
+      public: string;
+      publicDescription: string;
+      title: string;
+    };
   };
   reset: string;
   resetConfirm: string;
@@ -639,11 +931,15 @@ export interface ValidationTranslations {
 }
 
 export interface Translations {
+  accounts: AccountsTranslations;
   analytics: AnalyticsTranslations;
+  behavior: BehaviorTranslations;
   common: CommonTranslations;
   dashboard: DashboardTranslations;
   errors: ErrorsTranslations;
   merge: MergeTranslations;
+  notifications: NotificationsTranslations;
+  providers: ProvidersTranslations;
   repositories: RepositoriesTranslations;
   settings: SettingsTranslations;
   validation: ValidationTranslations;

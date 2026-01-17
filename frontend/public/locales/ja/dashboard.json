@@ -33,6 +33,12 @@
     "merged": "マージ済み",
     "onlyWithPrs": "オープンなPRがあるリポジトリを表示する",
     "open": "オープン",
+    "prStatus": {
+      "all": "すべてのPR",
+      "blocked": "ブロックされました",
+      "pending": "保留中",
+      "ready": "準備ができて"
+    },
     "provider": "プロバイダー",
     "repository": "リポジトリ"
   },
@@ -76,6 +82,16 @@
     "yellow": "進行中"
   },
   "subtitle": "すべてのプロバイダーでプルリクエストを管理する",
+  "table": {
+    "columns": {
+      "lastUpdated": "最終更新日",
+      "provider": "プロバイダー",
+      "prs": "PR",
+      "repository": "リポジトリ",
+      "status": "状態",
+      "visibility": "可視性"
+    }
+  },
   "title": "ダッシュボード",
   "views": {
     "grid": "グリッドビュー",

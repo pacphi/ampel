@@ -33,6 +33,12 @@
     "merged": "병합됨",
     "onlyWithPrs": "열린 PR이 있는 저장소 보기",
     "open": "열림",
+    "prStatus": {
+      "all": "모든 PR",
+      "blocked": "막힌",
+      "pending": "보류 중",
+      "ready": "준비가 된"
+    },
     "provider": "제공자",
     "repository": "저장소"
   },
@@ -76,6 +82,16 @@
     "yellow": "진행 중"
   },
   "subtitle": "모든 제공자에 걸친 풀 리퀘스트 관리",
+  "table": {
+    "columns": {
+      "lastUpdated": "최종 업데이트",
+      "provider": "공급자",
+      "prs": "홍보 담당자",
+      "repository": "저장소",
+      "status": "상태",
+      "visibility": "시계"
+    }
+  },
   "title": "대시보드",
   "views": {
     "grid": "그리드 뷰",

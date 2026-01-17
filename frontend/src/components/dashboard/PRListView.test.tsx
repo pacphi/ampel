@@ -6,6 +6,34 @@ import PRListView from './PRListView';
 import type { PaginatedResponse, PullRequestWithDetails } from '@/types';
 import type { UseInfiniteQueryResult } from '@tanstack/react-query';
 
+// Mock react-i18next with translation key mappings for PRListView
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'filters.prStatus.all': 'All PRs',
+        'filters.prStatus.ready': 'Ready',
+        'filters.prStatus.pending': 'Pending',
+        'filters.prStatus.blocked': 'Blocked',
+        'dashboard:actions.merge': 'Merge',
+        'dashboard:blockers.draft': 'Draft',
+        'dashboard:blockers.conflicts': 'Conflicts',
+        'dashboard:blockers.ciFailed': 'CI failed',
+        'dashboard:blockers.ciPending': 'CI pending',
+        'dashboard:blockers.changesRequested': 'Changes requested',
+        'dashboard:blockers.awaitingReview': 'Awaiting review',
+        'dashboard:blockers.needsReview': 'Needs review',
+      };
+      return translations[key] || key;
+    },
+    i18n: {
+      language: 'en',
+      changeLanguage: vi.fn(),
+    },
+    ready: true,
+  }),
+}));
+
 vi.mock('@/api/merge', () => ({
   mergeApi: {
     bulkMerge: vi.fn(),

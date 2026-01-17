@@ -33,6 +33,12 @@
     "merged": "Połączone",
     "onlyWithPrs": "Pokaż repozytoria z otwartymi żądaniami dostępu",
     "open": "Otwarte",
+    "prStatus": {
+      "all": "Wszystkie PR-y",
+      "blocked": "Zablokowany",
+      "pending": "Aż do",
+      "ready": "Gotowy"
+    },
     "provider": "Dostawca",
     "repository": "Magazyn"
   },
@@ -76,6 +82,16 @@
     "yellow": "W toku"
   },
   "subtitle": "Zarządzaj swoimi żądaniami ściągnięcia u wszystkich dostawców",
+  "table": {
+    "columns": {
+      "lastUpdated": "Ostatnia aktualizacja",
+      "provider": "Dostawca",
+      "prs": "PR-y",
+      "repository": "Magazyn",
+      "status": "Status",
+      "visibility": "Widoczność"
+    }
+  },
   "title": "Panel",
   "views": {
     "grid": "Widok siatki",

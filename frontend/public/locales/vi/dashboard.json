@@ -33,6 +33,12 @@
     "merged": "Đã hợp nhất",
     "onlyWithPrs": "Hiển thị các kho lưu trữ có yêu cầu kéo đang mở (Open PRs)",
     "open": "Mở",
+    "prStatus": {
+      "all": "Tất cả các yêu cầu mua hàng",
+      "blocked": "Bị chặn",
+      "pending": "Chưa giải quyết",
+      "ready": "Sẵn sàng"
+    },
     "provider": "Nhà cung cấp",
     "repository": "Kho lưu trữ"
   },
@@ -76,6 +82,16 @@
     "yellow": "Đang tiến hành"
   },
   "subtitle": "Quản lý các yêu cầu kéo (pull request) của bạn trên tất cả các nhà cung cấp.",
+  "table": {
+    "columns": {
+      "lastUpdated": "Cập nhật lần cuối",
+      "provider": "Nhà cung cấp",
+      "prs": "PRs",
+      "repository": "Kho lưu trữ",
+      "status": "Trạng thái",
+      "visibility": "Khả năng hiển thị"
+    }
+  },
   "title": "Bảng điều khiển",
   "views": {
     "grid": "Chế độ xem dạng lưới",

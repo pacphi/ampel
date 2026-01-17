@@ -3,10 +3,20 @@ import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { RepositoryWithStatus } from '@/types';
 
-// Mock react-i18next - ListView doesn't use translations but imports components that do
+// Mock react-i18next with translation key mappings for ListView
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => key,
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'table.columns.status': 'Status',
+        'table.columns.repository': 'Repository',
+        'table.columns.visibility': 'Visibility',
+        'table.columns.provider': 'Provider',
+        'table.columns.prs': 'PRs',
+        'table.columns.lastUpdated': 'Last Updated',
+      };
+      return translations[key] || key;
+    },
     i18n: {
       language: 'en',
       changeLanguage: vi.fn(),

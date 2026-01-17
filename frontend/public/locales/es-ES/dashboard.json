@@ -33,6 +33,12 @@
     "merged": "Fusionado",
     "onlyWithPrs": "Mostrar repositorios con Open PR",
     "open": "Abierto",
+    "prStatus": {
+      "all": "Todos los PR",
+      "blocked": "Obstruido",
+      "pending": "Pendiente",
+      "ready": "Listo"
+    },
     "provider": "Proveedor",
     "repository": "Repositorio"
   },
@@ -76,6 +82,16 @@
     "yellow": "En curso"
   },
   "subtitle": "Gestione sus solicitudes de extracción en todos los proveedores",
+  "table": {
+    "columns": {
+      "lastUpdated": "Última actualización",
+      "provider": "Proveedor",
+      "prs": "Relaciones públicas",
+      "repository": "Repositorio",
+      "status": "Estado",
+      "visibility": "Visibilidad"
+    }
+  },
   "title": "Panel",
   "views": {
     "grid": "Vista de cuadrícula",

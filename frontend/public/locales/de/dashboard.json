@@ -33,6 +33,12 @@
     "merged": "Zusammengeführt",
     "onlyWithPrs": "Repositories mit offenen Pull Requests anzeigen",
     "open": "Offen",
+    "prStatus": {
+      "all": "Alle PRs",
+      "blocked": "Blockiert",
+      "pending": "Ausstehend",
+      "ready": "Bereit"
+    },
     "provider": "Anbieter",
     "repository": "Repository"
   },
@@ -76,6 +82,16 @@
     "yellow": "Im Gange"
   },
   "subtitle": "Verwalten Sie Ihre Pull Requests über alle Provider hinweg.",
+  "table": {
+    "columns": {
+      "lastUpdated": "Letzte Aktualisierung",
+      "provider": "Anbieter",
+      "prs": "PRs",
+      "repository": "Repository",
+      "status": "Status",
+      "visibility": "Sichtweite"
+    }
+  },
   "title": "Armaturenbrett",
   "views": {
     "grid": "Rasteransicht",

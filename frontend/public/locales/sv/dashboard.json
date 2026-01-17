@@ -33,6 +33,12 @@
     "merged": "Sammanfogad",
     "onlyWithPrs": "Visa arkiv med öppna PR:er",
     "open": "Öppna",
+    "prStatus": {
+      "all": "Alla PR:er",
+      "blocked": "Blockerad",
+      "pending": "I avvaktan på",
+      "ready": "Redo"
+    },
     "provider": "Leverantör",
     "repository": "Förvaring"
   },
@@ -76,6 +82,16 @@
     "yellow": "Pågår"
   },
   "subtitle": "Hantera dina pull requests över alla leverantörer",
+  "table": {
+    "columns": {
+      "lastUpdated": "Senast uppdaterad",
+      "provider": "Leverantör",
+      "prs": "PR:er",
+      "repository": "Förvaring",
+      "status": "Status",
+      "visibility": "Synlighet"
+    }
+  },
   "title": "Instrumentpanel",
   "views": {
     "grid": "Rutnätsvy",

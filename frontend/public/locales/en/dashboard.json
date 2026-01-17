@@ -18,7 +18,13 @@
     "author": "Author",
     "assignee": "Assignee",
     "label": "Label",
-    "onlyWithPrs": "Show repositories with Open PRs"
+    "onlyWithPrs": "Show repositories with Open PRs",
+    "prStatus": {
+      "all": "All PRs",
+      "ready": "Ready",
+      "pending": "Pending",
+      "blocked": "Blocked"
+    }
   },
   "status": {
     "green": "Ready to merge",
@@ -85,5 +91,15 @@
     "changesRequested": "Changes requested",
     "awaitingReview": "Awaiting review",
     "needsReview": "Needs review"
+  },
+  "table": {
+    "columns": {
+      "status": "Status",
+      "repository": "Repository",
+      "visibility": "Visibility",
+      "provider": "Provider",
+      "prs": "PRs",
+      "lastUpdated": "Last Updated"
+    }
   }
 }

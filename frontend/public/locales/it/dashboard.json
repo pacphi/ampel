@@ -33,6 +33,12 @@
     "merged": "Unito",
     "onlyWithPrs": "Mostra repository con Open PR",
     "open": "Aprire",
+    "prStatus": {
+      "all": "Tutti i PR",
+      "blocked": "Bloccato",
+      "pending": "In attesa di",
+      "ready": "Pronto"
+    },
     "provider": "Fornitore",
     "repository": "Deposito"
   },
@@ -76,6 +82,16 @@
     "yellow": "In corso"
   },
   "subtitle": "Gestisci le tue richieste pull su tutti i provider",
+  "table": {
+    "columns": {
+      "lastUpdated": "Ultimo aggiornamento",
+      "provider": "Fornitore",
+      "prs": "PR",
+      "repository": "Deposito",
+      "status": "Stato",
+      "visibility": "Visibilità"
+    }
+  },
   "title": "Pannello di controllo",
   "views": {
     "grid": "Visualizzazione griglia",

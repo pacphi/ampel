@@ -33,6 +33,12 @@
     "merged": "Fusionné",
     "onlyWithPrs": "Afficher les dépôts avec des demandes de tirage ouvertes",
     "open": "Ouvrir",
+    "prStatus": {
+      "all": "Tous les PR",
+      "blocked": "Bloqué",
+      "pending": "En attente",
+      "ready": "Prêt"
+    },
     "provider": "Fournisseur",
     "repository": "Dépôt"
   },
@@ -76,6 +82,16 @@
     "yellow": "En cours"
   },
   "subtitle": "Gérez vos demandes d'extraction sur tous les fournisseurs",
+  "table": {
+    "columns": {
+      "lastUpdated": "Dernière mise à jour",
+      "provider": "Fournisseur",
+      "prs": "RP",
+      "repository": "Dépôt",
+      "status": "Statut",
+      "visibility": "Visibilité"
+    }
+  },
   "title": "Tableau de bord",
   "views": {
     "grid": "Vue en grille",

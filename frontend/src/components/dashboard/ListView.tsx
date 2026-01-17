@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import StatusBadge from './StatusBadge';
 import RepositoryStatusIcons from './RepositoryStatusIcons';
 import { formatRelativeTime } from '@/lib/utils';
@@ -40,6 +41,7 @@ function SortIcon({
 }
 
 export default function ListView({ repositories }: ListViewProps) {
+  const { t } = useTranslation('dashboard');
   const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
@@ -113,19 +115,19 @@ export default function ListView({ repositories }: ListViewProps) {
           <tr className="border-b bg-muted/50">
             <th className={headerClass} onClick={() => handleSort('status')}>
               <div className="flex items-center">
-                Status
+                {t('table.columns.status')}
                 <SortIcon column="status" sortColumn={sortColumn} sortDirection={sortDirection} />
               </div>
             </th>
             <th className={headerClass} onClick={() => handleSort('name')}>
               <div className="flex items-center">
-                Repository
+                {t('table.columns.repository')}
                 <SortIcon column="name" sortColumn={sortColumn} sortDirection={sortDirection} />
               </div>
             </th>
             <th className={headerClass} onClick={() => handleSort('visibility')}>
               <div className="flex items-center">
-                Visibility
+                {t('table.columns.visibility')}
                 <SortIcon
                   column="visibility"
                   sortColumn={sortColumn}
@@ -135,19 +137,19 @@ export default function ListView({ repositories }: ListViewProps) {
             </th>
             <th className={headerClass} onClick={() => handleSort('provider')}>
               <div className="flex items-center">
-                Provider
+                {t('table.columns.provider')}
                 <SortIcon column="provider" sortColumn={sortColumn} sortDirection={sortDirection} />
               </div>
             </th>
             <th className={headerClass} onClick={() => handleSort('prs')}>
               <div className="flex items-center">
-                PRs
+                {t('table.columns.prs')}
                 <SortIcon column="prs" sortColumn={sortColumn} sortDirection={sortDirection} />
               </div>
             </th>
             <th className={headerClass} onClick={() => handleSort('lastUpdated')}>
               <div className="flex items-center">
-                Last Updated
+                {t('table.columns.lastUpdated')}
                 <SortIcon
                   column="lastUpdated"
                   sortColumn={sortColumn}

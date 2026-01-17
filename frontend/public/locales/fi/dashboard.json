@@ -33,6 +33,12 @@
     "merged": "Yhdistetty",
     "onlyWithPrs": "Näytä avoimet PR:t sisältävät tietovarastot",
     "open": "Avata",
+    "prStatus": {
+      "all": "Kaikki PR:t",
+      "blocked": "Estetty",
+      "pending": "Odottaa",
+      "ready": "Valmis"
+    },
     "provider": "Palveluntarjoaja",
     "repository": "Arkisto"
   },
@@ -76,6 +82,16 @@
     "yellow": "Käynnissä"
   },
   "subtitle": "Hallitse pull-pyyntöjäsi kaikissa palveluntarjoajissa",
+  "table": {
+    "columns": {
+      "lastUpdated": "Viimeksi päivitetty",
+      "provider": "Palveluntarjoaja",
+      "prs": "PR:t",
+      "repository": "Arkisto",
+      "status": "Status",
+      "visibility": "Näkyvyys"
+    }
+  },
   "title": "Kojelauta",
   "views": {
     "grid": "Ruudukkonäkymä",

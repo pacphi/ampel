@@ -33,6 +33,12 @@
     "merged": "Samengevoegd",
     "onlyWithPrs": "Toon repositories met open pull requests.",
     "open": "Open",
+    "prStatus": {
+      "all": "Alle PR's",
+      "blocked": "Geblokkeerd",
+      "pending": "In behandeling",
+      "ready": "Klaar"
+    },
     "provider": "Aanbieder",
     "repository": "Opslagplaats"
   },
@@ -76,6 +82,16 @@
     "yellow": "In behandeling"
   },
   "subtitle": "Beheer uw pull-aanvragen voor alle providers.",
+  "table": {
+    "columns": {
+      "lastUpdated": "Laatst bijgewerkt",
+      "provider": "Aanbieder",
+      "prs": "PR's",
+      "repository": "Opslagplaats",
+      "status": "Status",
+      "visibility": "Zichtbaarheid"
+    }
+  },
   "title": "Dashboard",
   "views": {
     "grid": "Rasterweergave",

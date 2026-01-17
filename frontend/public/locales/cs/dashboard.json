@@ -33,6 +33,12 @@
     "merged": "Sloučeno",
     "onlyWithPrs": "Zobrazit repozitáře s otevřenými PR",
     "open": "OTEVŘENO",
+    "prStatus": {
+      "all": "Všechny žádosti o zaměstnání",
+      "blocked": "Zablokováno",
+      "pending": "Čeká na vyřízení",
+      "ready": "Připraveno"
+    },
     "provider": "Poskytovatel",
     "repository": "Úložiště"
   },
@@ -76,6 +82,16 @@
     "yellow": "Probíhá"
   },
   "subtitle": "Spravujte své pull requesty napříč všemi poskytovateli",
+  "table": {
+    "columns": {
+      "lastUpdated": "Naposledy aktualizováno",
+      "provider": "Poskytovatel",
+      "prs": "PR",
+      "repository": "Úložiště",
+      "status": "Postavení",
+      "visibility": "Viditelnost"
+    }
+  },
   "title": "Dashboard",
   "views": {
     "grid": "Zobrazení mřížky",

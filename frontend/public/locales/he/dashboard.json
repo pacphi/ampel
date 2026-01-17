@@ -33,6 +33,12 @@
     "merged": "ממוזג",
     "onlyWithPrs": "הצג מאגרים עם PRs פתוחים",
     "open": "לִפְתוֹחַ",
+    "prStatus": {
+      "all": "כל יחסי הציבור",
+      "blocked": "חָסוּם",
+      "pending": "תָלוּי וְעוֹמֵד",
+      "ready": "מוּכָן"
+    },
     "provider": "ספק",
     "repository": "מאגר"
   },
@@ -76,6 +82,16 @@
     "yellow": "בתהליך"
   },
   "subtitle": "נהל את בקשות המשיכה שלך בכל הספקים",
+  "table": {
+    "columns": {
+      "lastUpdated": "עדכון אחרון",
+      "provider": "ספק",
+      "prs": "יחסי ציבור",
+      "repository": "מאגר",
+      "status": "סטָטוּס",
+      "visibility": "רְאוּת"
+    }
+  },
   "title": "PR Dashboard",
   "views": {
     "grid": "תצוגת רשת",

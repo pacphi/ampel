@@ -33,6 +33,12 @@
     "merged": "Birleştirildi",
     "onlyWithPrs": "Açık PR'ları olan depoları göster",
     "open": "Açık",
+    "prStatus": {
+      "all": "Tüm PR'lar",
+      "blocked": "Engellendi",
+      "pending": "Askıda olması",
+      "ready": "Hazır"
+    },
     "provider": "Sağlayıcı",
     "repository": "Depo"
   },
@@ -76,6 +82,16 @@
     "yellow": "Devam etmekte"
   },
   "subtitle": "Tüm sağlayıcılardaki çekme isteklerinizi yönetin.",
+  "table": {
+    "columns": {
+      "lastUpdated": "Son Güncelleme",
+      "provider": "Sağlayıcı",
+      "prs": "PR'lar",
+      "repository": "Depo",
+      "status": "Durum",
+      "visibility": "Görünürlük"
+    }
+  },
   "title": "Kontrol Paneli",
   "views": {
     "grid": "Izgara görünümü",

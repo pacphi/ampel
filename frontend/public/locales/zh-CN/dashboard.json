@@ -33,6 +33,12 @@
     "merged": "合并",
     "onlyWithPrs": "只显示有开放PR的仓库",
     "open": "打开",
+    "prStatus": {
+      "all": "所有公关稿",
+      "blocked": "已屏蔽",
+      "pending": "待办的",
+      "ready": "准备好"
+    },
     "provider": "提供者",
     "repository": "存储库"
   },
@@ -76,6 +82,16 @@
     "yellow": "进行中"
   },
   "subtitle": "管理您在所有提供商中的拉取请求",
+  "table": {
+    "columns": {
+      "lastUpdated": "最后更新时间",
+      "provider": "提供者",
+      "prs": "公关人员",
+      "repository": "存储库",
+      "status": "地位",
+      "visibility": "能见度"
+    }
+  },
   "title": "PR Dashboard",
   "views": {
     "grid": "网格视图",
