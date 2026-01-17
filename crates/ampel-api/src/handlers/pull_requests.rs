@@ -1,332 +1,543 @@
+//! Pull request handlers for listing, viewing, merging, and refreshing PRs.
+
 use axum::{
     extract::{Path, Query, State},
     Json,
 };
-use sea_orm::EntityTrait;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use ampel_core::models::{
-    AmpelStatus, CICheck, GitProvider, MergeRequest, PaginatedResponse, PullRequest,
-    PullRequestFilter, PullRequestWithDetails, Review,
-};
+use ampel_core::models::{AmpelStatus, GitProvider, MergeRequest, MergeStrategy};
 use ampel_db::entities::provider_account;
 use ampel_db::queries::{CICheckQueries, PrQueries, RepoQueries, ReviewQueries};
+use sea_orm::EntityTrait;
 
 use crate::extractors::AuthUser;
 use crate::handlers::{ApiError, ApiResponse};
 use crate::AppState;
 
-/// List all open PRs for the user
+/// Query parameters for listing pull requests
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ListPrsQuery {
+    pub page: Option<u64>,
+    pub per_page: Option<u64>,
+    pub status: Option<String>,
+}
+
+/// Pull request response with computed status
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PullRequestResponse {
+    pub id: Uuid,
+    pub repository_id: Uuid,
+    pub provider: String,
+    pub number: i32,
+    pub title: String,
+    pub description: Option<String>,
+    pub url: String,
+    pub state: String,
+    pub source_branch: String,
+    pub target_branch: String,
+    pub author: String,
+    pub author_avatar_url: Option<String>,
+    pub is_draft: bool,
+    pub is_mergeable: Option<bool>,
+    pub has_conflicts: bool,
+    pub additions: i32,
+    pub deletions: i32,
+    pub changed_files: i32,
+    pub commits_count: i32,
+    pub comments_count: i32,
+    pub ampel_status: AmpelStatus,
+    pub created_at: chrono::DateTime<chrono::Utc>,
+    pub updated_at: chrono::DateTime<chrono::Utc>,
+}
+
+/// Paginated PR list response
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PaginatedPrsResponse {
+    pub items: Vec<PullRequestResponse>,
+    pub total: u64,
+    pub page: u64,
+    pub per_page: u64,
+}
+
+/// Merge request body
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct MergePrRequest {
+    pub strategy: Option<String>,
+    pub delete_branch: Option<bool>,
+}
+
+/// Merge response
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct MergeResponse {
+    pub merged: bool,
+    pub message: String,
+    pub sha: Option<String>,
+}
+
+/// List all open pull requests for the authenticated user
+#[tracing::instrument(skip(state), fields(user_id = %auth.user_id))]
 pub async fn list_pull_requests(
     State(state): State<AppState>,
     auth: AuthUser,
-    Query(filter): Query<PullRequestFilter>,
-) -> Result<Json<ApiResponse<PaginatedResponse<PullRequestWithDetails>>>, ApiError> {
-    let page = filter.page.unwrap_or(1);
-    let per_page = filter.per_page.unwrap_or(20);
+    Query(params): Query<ListPrsQuery>,
+) -> Result<Json<ApiResponse<PaginatedPrsResponse>>, ApiError> {
+    let page = params.page.unwrap_or(1).max(1);
+    let per_page = params.per_page.unwrap_or(20).min(100);
 
+    // Get PRs with pagination
     let (prs, total) =
-        PrQueries::find_open_by_user(&state.db, auth.user_id, page as u64, per_page as u64).await?;
+        PrQueries::find_open_by_user(&state.db, auth.user_id, page, per_page).await?;
 
-    let mut result = Vec::with_capacity(prs.len());
+    if prs.is_empty() {
+        return Ok(Json(ApiResponse::success(PaginatedPrsResponse {
+            items: Vec::new(),
+            total: 0,
+            page,
+            per_page,
+        })));
+    }
 
-    for pr in prs {
-        let repo = RepoQueries::find_by_id(&state.db, pr.repository_id)
-            .await?
-            .ok_or_else(|| ApiError::internal("Repository not found for PR"))?;
+    // Batch load CI checks and reviews for all PRs
+    let pr_ids: Vec<_> = prs.iter().map(|pr| pr.id).collect();
+    let all_ci_checks = CICheckQueries::find_for_pull_requests(&state.db, &pr_ids).await?;
+    let all_reviews = ReviewQueries::find_for_pull_requests(&state.db, &pr_ids).await?;
 
-        let checks: Vec<CICheck> = CICheckQueries::find_by_pull_request(&state.db, pr.id)
-            .await?
-            .into_iter()
-            .map(|c| c.into())
-            .collect();
+    // Build lookup maps
+    let mut ci_checks_by_pr: std::collections::HashMap<Uuid, Vec<_>> =
+        std::collections::HashMap::new();
+    for ci_check in all_ci_checks {
+        ci_checks_by_pr
+            .entry(ci_check.pull_request_id)
+            .or_default()
+            .push(ci_check);
+    }
 
-        let reviews: Vec<Review> = ReviewQueries::find_latest_by_pull_request(&state.db, pr.id)
-            .await?
-            .into_iter()
-            .map(|r| r.into())
-            .collect();
+    let mut reviews_by_pr: std::collections::HashMap<Uuid, Vec<_>> =
+        std::collections::HashMap::new();
+    for review in all_reviews {
+        reviews_by_pr
+            .entry(review.pull_request_id)
+            .or_default()
+            .push(review);
+    }
 
-        let pr_model: PullRequest = pr.into();
-        let status = AmpelStatus::for_pull_request(&pr_model, &checks, &reviews);
+    // Convert to response format with computed status
+    let mut items = Vec::with_capacity(prs.len());
+    for pr_model in prs {
+        let ci_checks = ci_checks_by_pr
+            .get(&pr_model.id)
+            .cloned()
+            .unwrap_or_default();
+        let reviews = reviews_by_pr.get(&pr_model.id).cloned().unwrap_or_default();
 
-        result.push(PullRequestWithDetails {
-            pull_request: pr_model,
-            status,
-            ci_checks: checks,
-            reviews,
-            repository_name: repo.name,
-            repository_owner: repo.owner,
+        // Convert to core models for status calculation
+        let pr: ampel_core::models::PullRequest = pr_model.clone().into();
+        let ci_checks: Vec<ampel_core::models::CICheck> =
+            ci_checks.into_iter().map(|c| c.into()).collect();
+        let reviews: Vec<ampel_core::models::Review> =
+            reviews.into_iter().map(|r| r.into()).collect();
+
+        let ampel_status = AmpelStatus::for_pull_request(&pr, &ci_checks, &reviews);
+
+        // Filter by status if requested
+        if let Some(ref status_filter) = params.status {
+            let matches = match status_filter.to_lowercase().as_str() {
+                "green" => ampel_status == AmpelStatus::Green,
+                "yellow" => ampel_status == AmpelStatus::Yellow,
+                "red" => ampel_status == AmpelStatus::Red,
+                _ => true,
+            };
+            if !matches {
+                continue;
+            }
+        }
+
+        items.push(PullRequestResponse {
+            id: pr_model.id,
+            repository_id: pr_model.repository_id,
+            provider: pr_model.provider,
+            number: pr_model.number,
+            title: pr_model.title,
+            description: pr_model.description,
+            url: pr_model.url,
+            state: pr_model.state,
+            source_branch: pr_model.source_branch,
+            target_branch: pr_model.target_branch,
+            author: pr_model.author,
+            author_avatar_url: pr_model.author_avatar_url,
+            is_draft: pr_model.is_draft,
+            is_mergeable: pr_model.is_mergeable,
+            has_conflicts: pr_model.has_conflicts,
+            additions: pr_model.additions,
+            deletions: pr_model.deletions,
+            changed_files: pr_model.changed_files,
+            commits_count: pr_model.commits_count,
+            comments_count: pr_model.comments_count,
+            ampel_status,
+            created_at: pr_model.created_at,
+            updated_at: pr_model.updated_at,
         });
     }
 
-    Ok(Json(ApiResponse::success(PaginatedResponse::new(
-        result,
-        total as i64,
+    Ok(Json(ApiResponse::success(PaginatedPrsResponse {
+        items,
+        total,
         page,
         per_page,
-    ))))
+    })))
 }
 
-/// Get PRs for a specific repository
+/// List pull requests for a specific repository
+#[tracing::instrument(skip(state), fields(user_id = %auth.user_id, repo_id = %repo_id))]
 pub async fn list_repository_prs(
     State(state): State<AppState>,
     auth: AuthUser,
     Path(repo_id): Path<Uuid>,
-) -> Result<Json<ApiResponse<Vec<PullRequestWithDetails>>>, ApiError> {
+) -> Result<Json<ApiResponse<Vec<PullRequestResponse>>>, ApiError> {
+    // Verify repository ownership
     let repo = RepoQueries::find_by_id(&state.db, repo_id)
         .await?
         .ok_or_else(|| ApiError::not_found("Repository not found"))?;
 
-    // Verify ownership
     if repo.user_id != auth.user_id {
         return Err(ApiError::not_found("Repository not found"));
     }
 
+    // Get open PRs for repository
     let prs = PrQueries::find_open_by_repository(&state.db, repo_id).await?;
 
-    let mut result = Vec::with_capacity(prs.len());
+    if prs.is_empty() {
+        return Ok(Json(ApiResponse::success(Vec::new())));
+    }
 
-    for pr in prs {
-        let checks: Vec<CICheck> = CICheckQueries::find_by_pull_request(&state.db, pr.id)
-            .await?
-            .into_iter()
-            .map(|c| c.into())
-            .collect();
+    // Batch load CI checks and reviews
+    let pr_ids: Vec<_> = prs.iter().map(|pr| pr.id).collect();
+    let all_ci_checks = CICheckQueries::find_for_pull_requests(&state.db, &pr_ids).await?;
+    let all_reviews = ReviewQueries::find_for_pull_requests(&state.db, &pr_ids).await?;
 
-        let reviews: Vec<Review> = ReviewQueries::find_latest_by_pull_request(&state.db, pr.id)
-            .await?
-            .into_iter()
-            .map(|r| r.into())
-            .collect();
+    // Build lookup maps
+    let mut ci_checks_by_pr: std::collections::HashMap<Uuid, Vec<_>> =
+        std::collections::HashMap::new();
+    for ci_check in all_ci_checks {
+        ci_checks_by_pr
+            .entry(ci_check.pull_request_id)
+            .or_default()
+            .push(ci_check);
+    }
 
-        let pr_model: PullRequest = pr.into();
-        let status = AmpelStatus::for_pull_request(&pr_model, &checks, &reviews);
+    let mut reviews_by_pr: std::collections::HashMap<Uuid, Vec<_>> =
+        std::collections::HashMap::new();
+    for review in all_reviews {
+        reviews_by_pr
+            .entry(review.pull_request_id)
+            .or_default()
+            .push(review);
+    }
 
-        result.push(PullRequestWithDetails {
-            pull_request: pr_model,
-            status,
-            ci_checks: checks,
-            reviews,
-            repository_name: repo.name.clone(),
-            repository_owner: repo.owner.clone(),
+    // Convert to response format
+    let mut items = Vec::with_capacity(prs.len());
+    for pr_model in prs {
+        let ci_checks = ci_checks_by_pr
+            .get(&pr_model.id)
+            .cloned()
+            .unwrap_or_default();
+        let reviews = reviews_by_pr.get(&pr_model.id).cloned().unwrap_or_default();
+
+        let pr: ampel_core::models::PullRequest = pr_model.clone().into();
+        let ci_checks: Vec<ampel_core::models::CICheck> =
+            ci_checks.into_iter().map(|c| c.into()).collect();
+        let reviews: Vec<ampel_core::models::Review> =
+            reviews.into_iter().map(|r| r.into()).collect();
+
+        let ampel_status = AmpelStatus::for_pull_request(&pr, &ci_checks, &reviews);
+
+        items.push(PullRequestResponse {
+            id: pr_model.id,
+            repository_id: pr_model.repository_id,
+            provider: pr_model.provider,
+            number: pr_model.number,
+            title: pr_model.title,
+            description: pr_model.description,
+            url: pr_model.url,
+            state: pr_model.state,
+            source_branch: pr_model.source_branch,
+            target_branch: pr_model.target_branch,
+            author: pr_model.author,
+            author_avatar_url: pr_model.author_avatar_url,
+            is_draft: pr_model.is_draft,
+            is_mergeable: pr_model.is_mergeable,
+            has_conflicts: pr_model.has_conflicts,
+            additions: pr_model.additions,
+            deletions: pr_model.deletions,
+            changed_files: pr_model.changed_files,
+            commits_count: pr_model.commits_count,
+            comments_count: pr_model.comments_count,
+            ampel_status,
+            created_at: pr_model.created_at,
+            updated_at: pr_model.updated_at,
         });
     }
 
-    Ok(Json(ApiResponse::success(result)))
+    Ok(Json(ApiResponse::success(items)))
 }
 
-/// Get a single PR with full details
+/// Get a single pull request
+#[tracing::instrument(skip(state), fields(user_id = %auth.user_id))]
 pub async fn get_pull_request(
     State(state): State<AppState>,
     auth: AuthUser,
     Path((repo_id, pr_id)): Path<(Uuid, Uuid)>,
-) -> Result<Json<ApiResponse<PullRequestWithDetails>>, ApiError> {
+) -> Result<Json<ApiResponse<PullRequestResponse>>, ApiError> {
+    // Verify repository ownership
     let repo = RepoQueries::find_by_id(&state.db, repo_id)
         .await?
         .ok_or_else(|| ApiError::not_found("Repository not found"))?;
 
-    // Verify ownership
     if repo.user_id != auth.user_id {
         return Err(ApiError::not_found("Repository not found"));
     }
 
-    let pr = PrQueries::find_by_id(&state.db, pr_id)
+    // Get PR
+    let pr_model = PrQueries::find_by_id(&state.db, pr_id)
         .await?
         .ok_or_else(|| ApiError::not_found("Pull request not found"))?;
 
-    // Verify PR belongs to repo
-    if pr.repository_id != repo_id {
+    // Verify PR belongs to repository
+    if pr_model.repository_id != repo_id {
         return Err(ApiError::not_found("Pull request not found"));
     }
 
-    let checks: Vec<CICheck> = CICheckQueries::find_by_pull_request(&state.db, pr.id)
-        .await?
-        .into_iter()
-        .map(|c| c.into())
-        .collect();
+    // Get CI checks and reviews
+    let ci_checks = CICheckQueries::find_for_pull_requests(&state.db, &[pr_id]).await?;
+    let reviews = ReviewQueries::find_for_pull_requests(&state.db, &[pr_id]).await?;
 
-    let reviews: Vec<Review> = ReviewQueries::find_latest_by_pull_request(&state.db, pr.id)
-        .await?
-        .into_iter()
-        .map(|r| r.into())
-        .collect();
+    let pr: ampel_core::models::PullRequest = pr_model.clone().into();
+    let ci_checks: Vec<ampel_core::models::CICheck> =
+        ci_checks.into_iter().map(|c| c.into()).collect();
+    let reviews: Vec<ampel_core::models::Review> = reviews.into_iter().map(|r| r.into()).collect();
 
-    let pr_model: PullRequest = pr.into();
-    let status = AmpelStatus::for_pull_request(&pr_model, &checks, &reviews);
+    let ampel_status = AmpelStatus::for_pull_request(&pr, &ci_checks, &reviews);
 
-    Ok(Json(ApiResponse::success(PullRequestWithDetails {
-        pull_request: pr_model,
-        status,
-        ci_checks: checks,
-        reviews,
-        repository_name: repo.name,
-        repository_owner: repo.owner,
+    Ok(Json(ApiResponse::success(PullRequestResponse {
+        id: pr_model.id,
+        repository_id: pr_model.repository_id,
+        provider: pr_model.provider,
+        number: pr_model.number,
+        title: pr_model.title,
+        description: pr_model.description,
+        url: pr_model.url,
+        state: pr_model.state,
+        source_branch: pr_model.source_branch,
+        target_branch: pr_model.target_branch,
+        author: pr_model.author,
+        author_avatar_url: pr_model.author_avatar_url,
+        is_draft: pr_model.is_draft,
+        is_mergeable: pr_model.is_mergeable,
+        has_conflicts: pr_model.has_conflicts,
+        additions: pr_model.additions,
+        deletions: pr_model.deletions,
+        changed_files: pr_model.changed_files,
+        commits_count: pr_model.commits_count,
+        comments_count: pr_model.comments_count,
+        ampel_status,
+        created_at: pr_model.created_at,
+        updated_at: pr_model.updated_at,
     })))
 }
 
 /// Merge a pull request
+#[tracing::instrument(skip(state), fields(user_id = %auth.user_id))]
 pub async fn merge_pull_request(
     State(state): State<AppState>,
     auth: AuthUser,
     Path((repo_id, pr_id)): Path<(Uuid, Uuid)>,
-    Json(merge_req): Json<MergeRequest>,
-) -> Result<Json<ApiResponse<MergeResultResponse>>, ApiError> {
+    Json(req): Json<MergePrRequest>,
+) -> Result<Json<ApiResponse<MergeResponse>>, ApiError> {
+    // Verify repository ownership
     let repo = RepoQueries::find_by_id(&state.db, repo_id)
         .await?
         .ok_or_else(|| ApiError::not_found("Repository not found"))?;
 
-    // Verify ownership
     if repo.user_id != auth.user_id {
         return Err(ApiError::not_found("Repository not found"));
     }
 
+    // Get PR
     let pr = PrQueries::find_by_id(&state.db, pr_id)
         .await?
         .ok_or_else(|| ApiError::not_found("Pull request not found"))?;
 
-    // Verify PR belongs to repo
     if pr.repository_id != repo_id {
         return Err(ApiError::not_found("Pull request not found"));
     }
 
-    let provider_type: GitProvider = repo
-        .provider
-        .parse()
-        .map_err(|_| ApiError::internal("Invalid provider"))?;
+    if pr.state != "open" {
+        return Err(ApiError::bad_request("Pull request is not open"));
+    }
 
     // Get provider account
-    let account = provider_account::Entity::find_by_id(
-        repo.provider_account_id
-            .ok_or(ApiError::bad_request("Repository not linked to account"))?,
-    )
-    .one(&state.db)
-    .await?
-    .ok_or(ApiError::not_found("Provider account not found"))?;
+    let account = match repo.provider_account_id {
+        Some(account_id) => provider_account::Entity::find_by_id(account_id)
+            .one(&state.db)
+            .await?
+            .ok_or_else(|| ApiError::not_found("Provider account not found"))?,
+        None => return Err(ApiError::bad_request("Repository not linked to account")),
+    };
 
-    // Decrypt access token
+    // Decrypt token
     let access_token = state
         .encryption_service
         .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(format!("Failed to decrypt token: {}", e)))?;
+        .map_err(|e| ApiError::internal(format!("Token error: {}", e)))?;
 
-    // Create credentials
     let credentials = ampel_providers::traits::ProviderCredentials::Pat {
         token: access_token,
         username: account.auth_username.clone(),
     };
 
+    let provider_type: GitProvider = repo
+        .provider
+        .parse()
+        .map_err(|_| ApiError::internal("Invalid provider"))?;
+
     let provider = state
         .provider_factory
         .create(provider_type, account.instance_url.clone());
 
-    let result = provider
-        .merge_pull_request(&credentials, &repo.owner, &repo.name, pr.number, &merge_req)
-        .await
-        .map_err(|e| ApiError::bad_request(format!("Merge failed: {}", e)))?;
+    // Parse merge strategy
+    let strategy = req
+        .strategy
+        .as_ref()
+        .and_then(|s| match s.as_str() {
+            "merge" => Some(MergeStrategy::Merge),
+            "squash" => Some(MergeStrategy::Squash),
+            "rebase" => Some(MergeStrategy::Rebase),
+            _ => None,
+        })
+        .unwrap_or(MergeStrategy::Squash);
 
-    // Update PR state in database
-    if result.merged {
-        PrQueries::update_state(
-            &state.db,
-            pr_id,
-            "merged".to_string(),
-            Some(chrono::Utc::now()),
-            Some(chrono::Utc::now()),
+    let merge_request = MergeRequest {
+        strategy,
+        commit_title: None,
+        commit_message: None,
+        delete_branch: req.delete_branch.unwrap_or(false),
+    };
+
+    match provider
+        .merge_pull_request(
+            &credentials,
+            &repo.owner,
+            &repo.name,
+            pr.number,
+            &merge_request,
         )
-        .await?;
+        .await
+    {
+        Ok(result) => {
+            if result.merged {
+                // Update PR state
+                PrQueries::update_state(
+                    &state.db,
+                    pr.id,
+                    "merged".to_string(),
+                    Some(chrono::Utc::now()),
+                    Some(chrono::Utc::now()),
+                )
+                .await?;
+            }
+
+            Ok(Json(ApiResponse::success(MergeResponse {
+                merged: result.merged,
+                message: result.message,
+                sha: result.sha,
+            })))
+        }
+        Err(e) => Err(ApiError::bad_request(e.to_string())),
     }
-
-    Ok(Json(ApiResponse::success(MergeResultResponse {
-        merged: result.merged,
-        sha: result.sha,
-        message: result.message,
-    })))
 }
 
-#[derive(Debug, serde::Serialize)]
-pub struct MergeResultResponse {
-    pub merged: bool,
-    pub sha: Option<String>,
-    pub message: String,
-}
-
-/// Refresh PR data from provider
+/// Refresh pull request data from provider
+#[tracing::instrument(skip(state), fields(user_id = %auth.user_id))]
 pub async fn refresh_pull_request(
     State(state): State<AppState>,
     auth: AuthUser,
     Path((repo_id, pr_id)): Path<(Uuid, Uuid)>,
-) -> Result<Json<ApiResponse<PullRequestWithDetails>>, ApiError> {
+) -> Result<Json<ApiResponse<PullRequestResponse>>, ApiError> {
+    // Verify repository ownership
     let repo = RepoQueries::find_by_id(&state.db, repo_id)
         .await?
         .ok_or_else(|| ApiError::not_found("Repository not found"))?;
 
-    // Verify ownership
     if repo.user_id != auth.user_id {
         return Err(ApiError::not_found("Repository not found"));
     }
 
+    // Get existing PR
     let pr = PrQueries::find_by_id(&state.db, pr_id)
         .await?
         .ok_or_else(|| ApiError::not_found("Pull request not found"))?;
 
-    // Verify PR belongs to repo
     if pr.repository_id != repo_id {
         return Err(ApiError::not_found("Pull request not found"));
     }
+
+    // Get provider account
+    let account = match repo.provider_account_id {
+        Some(account_id) => provider_account::Entity::find_by_id(account_id)
+            .one(&state.db)
+            .await?
+            .ok_or_else(|| ApiError::not_found("Provider account not found"))?,
+        None => return Err(ApiError::bad_request("Repository not linked to account")),
+    };
+
+    // Decrypt token
+    let access_token = state
+        .encryption_service
+        .decrypt(&account.access_token_encrypted)
+        .map_err(|e| ApiError::internal(format!("Token error: {}", e)))?;
+
+    let credentials = ampel_providers::traits::ProviderCredentials::Pat {
+        token: access_token,
+        username: account.auth_username.clone(),
+    };
 
     let provider_type: GitProvider = repo
         .provider
         .parse()
         .map_err(|_| ApiError::internal("Invalid provider"))?;
 
-    // Get provider account
-    let account = provider_account::Entity::find_by_id(
-        repo.provider_account_id
-            .ok_or(ApiError::bad_request("Repository not linked to account"))?,
-    )
-    .one(&state.db)
-    .await?
-    .ok_or(ApiError::not_found("Provider account not found"))?;
-
-    // Decrypt access token
-    let access_token = state
-        .encryption_service
-        .decrypt(&account.access_token_encrypted)
-        .map_err(|e| ApiError::internal(format!("Failed to decrypt token: {}", e)))?;
-
-    // Create credentials
-    let credentials = ampel_providers::traits::ProviderCredentials::Pat {
-        token: access_token.clone(),
-        username: account.auth_username.clone(),
-    };
-
     let provider = state
         .provider_factory
         .create(provider_type, account.instance_url.clone());
 
-    // Fetch fresh PR data
+    // Fetch fresh PR data from provider
     let fresh_pr = provider
         .get_pull_request(&credentials, &repo.owner, &repo.name, pr.number)
         .await
-        .map_err(|e| ApiError::internal(format!("Provider error: {}", e)))?;
+        .map_err(|e| ApiError::bad_request(format!("Failed to refresh: {}", e)))?;
 
     // Update PR in database
-    let state_str = fresh_pr.state.clone();
     let updated_pr = PrQueries::upsert(
         &state.db,
         repo_id,
-        provider_type.to_string(),
-        fresh_pr.provider_id,
+        repo.provider.clone(),
+        fresh_pr.provider_id.clone(),
         fresh_pr.number,
-        fresh_pr.title,
-        fresh_pr.description,
-        fresh_pr.url,
-        state_str,
-        fresh_pr.source_branch,
-        fresh_pr.target_branch,
-        fresh_pr.author,
-        fresh_pr.author_avatar_url,
+        fresh_pr.title.clone(),
+        fresh_pr.description.clone(),
+        fresh_pr.url.clone(),
+        fresh_pr.state.clone(),
+        fresh_pr.source_branch.clone(),
+        fresh_pr.target_branch.clone(),
+        fresh_pr.author.clone(),
+        fresh_pr.author_avatar_url.clone(),
         fresh_pr.is_draft,
         fresh_pr.is_mergeable,
         fresh_pr.has_conflicts,
@@ -342,73 +553,40 @@ pub async fn refresh_pull_request(
     )
     .await?;
 
-    // Fetch and update CI checks
-    CICheckQueries::delete_by_pull_request(&state.db, pr_id).await?;
-    let fresh_checks = provider
-        .get_ci_checks(&credentials, &repo.owner, &repo.name, pr.number)
-        .await
-        .unwrap_or_default();
+    // Get CI checks and reviews for status calculation
+    let ci_checks = CICheckQueries::find_for_pull_requests(&state.db, &[updated_pr.id]).await?;
+    let reviews = ReviewQueries::find_for_pull_requests(&state.db, &[updated_pr.id]).await?;
 
-    for check in &fresh_checks {
-        CICheckQueries::upsert(
-            &state.db,
-            pr_id,
-            check.name.clone(),
-            check.status.clone(),
-            check.conclusion.clone(),
-            check.url.clone(),
-            check.started_at,
-            check.completed_at,
-            check
-                .completed_at
-                .and_then(|c| check.started_at.map(|s| (c - s).num_seconds() as i32)),
-        )
-        .await?;
-    }
+    let pr_core: ampel_core::models::PullRequest = updated_pr.clone().into();
+    let ci_checks: Vec<ampel_core::models::CICheck> =
+        ci_checks.into_iter().map(|c| c.into()).collect();
+    let reviews: Vec<ampel_core::models::Review> = reviews.into_iter().map(|r| r.into()).collect();
 
-    // Fetch and update reviews
-    ReviewQueries::delete_by_pull_request(&state.db, pr_id).await?;
-    let fresh_reviews = provider
-        .get_reviews(&credentials, &repo.owner, &repo.name, pr.number)
-        .await
-        .unwrap_or_default();
+    let ampel_status = AmpelStatus::for_pull_request(&pr_core, &ci_checks, &reviews);
 
-    for review in &fresh_reviews {
-        ReviewQueries::upsert(
-            &state.db,
-            Uuid::new_v4(), // Generate new ID for review
-            pr_id,
-            review.reviewer.clone(),
-            review.reviewer_avatar_url.clone(),
-            review.state.clone(),
-            review.body.clone(),
-            review.submitted_at,
-        )
-        .await?;
-    }
-
-    // Return updated PR with details
-    let checks: Vec<CICheck> = CICheckQueries::find_by_pull_request(&state.db, pr_id)
-        .await?
-        .into_iter()
-        .map(|c| c.into())
-        .collect();
-
-    let reviews: Vec<Review> = ReviewQueries::find_latest_by_pull_request(&state.db, pr_id)
-        .await?
-        .into_iter()
-        .map(|r| r.into())
-        .collect();
-
-    let pr_model: PullRequest = updated_pr.into();
-    let status = AmpelStatus::for_pull_request(&pr_model, &checks, &reviews);
-
-    Ok(Json(ApiResponse::success(PullRequestWithDetails {
-        pull_request: pr_model,
-        status,
-        ci_checks: checks,
-        reviews,
-        repository_name: repo.name,
-        repository_owner: repo.owner,
+    Ok(Json(ApiResponse::success(PullRequestResponse {
+        id: updated_pr.id,
+        repository_id: updated_pr.repository_id,
+        provider: updated_pr.provider,
+        number: updated_pr.number,
+        title: updated_pr.title,
+        description: updated_pr.description,
+        url: updated_pr.url,
+        state: updated_pr.state,
+        source_branch: updated_pr.source_branch,
+        target_branch: updated_pr.target_branch,
+        author: updated_pr.author,
+        author_avatar_url: updated_pr.author_avatar_url,
+        is_draft: updated_pr.is_draft,
+        is_mergeable: updated_pr.is_mergeable,
+        has_conflicts: updated_pr.has_conflicts,
+        additions: updated_pr.additions,
+        deletions: updated_pr.deletions,
+        changed_files: updated_pr.changed_files,
+        commits_count: updated_pr.commits_count,
+        comments_count: updated_pr.comments_count,
+        ampel_status,
+        created_at: updated_pr.created_at,
+        updated_at: updated_pr.updated_at,
     })))
 }

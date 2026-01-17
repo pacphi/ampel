@@ -4,6 +4,7 @@ pub mod factory;
 pub mod github;
 pub mod gitlab;
 pub mod traits;
+pub mod utils;
 
 #[cfg(any(test, feature = "test-utils"))]
 pub mod mock;

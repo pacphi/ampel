@@ -53,4 +53,28 @@ export const pullRequestsApi = {
     );
     return response.data.data!;
   },
+
+  async getDiff(repoId: string, prId: string): Promise<PrDiffResponse> {
+    const response = await apiClient.get<ApiResponse<PrDiffResponse>>(
+      `/repositories/${repoId}/pull-requests/${prId}/diff`
+    );
+    return response.data.data!;
+  },
 };
+
+export interface PrDiffFile {
+  filename: string;
+  status: 'added' | 'modified' | 'removed' | 'renamed';
+  additions: number;
+  deletions: number;
+  changes: number;
+  patch?: string;
+  previous_filename?: string;
+}
+
+export interface PrDiffResponse {
+  files: PrDiffFile[];
+  total_additions: number;
+  total_deletions: number;
+  total_files: number;
+}

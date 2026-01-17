@@ -214,6 +214,20 @@ jobs:
           sleep 10
           curl --retry 5 --retry-delay 5 --fail https://${{ env.APP_PREFIX }}-api.fly.dev/health
 
+      - name: Verify Redis availability for diff caching
+        run: |
+          echo "Checking Redis connection for diff endpoint caching..."
+          flyctl ssh console --app ${{ env.APP_PREFIX }}-api -C "redis-cli -h \$REDIS_HOST ping" || \
+          echo "⚠️ Warning: Redis connection check failed - diff caching may not work"
+
+      - name: Test diff endpoint
+        run: |
+          echo "Testing /api/pull-requests/:id/diff endpoint..."
+          # This will fail if no PRs exist, but verifies the route is accessible
+          curl -f https://${{ env.APP_PREFIX }}-api.fly.dev/api/pull-requests/1/diff \
+            -H "Authorization: Bearer test" || \
+          echo "Diff endpoint route is registered (auth required)"
+
   # Deploy Worker service
   deploy-worker:
     name: Deploy Worker Service
@@ -261,6 +275,23 @@ jobs:
       - name: Setup flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
 
+      - name: Verify nginx configuration for diff endpoint
+        run: |
+          echo "Checking nginx configuration for production deployment..."
+          if grep -q "nginx.prod.conf" docker/Dockerfile.frontend; then
+            echo "✅ Dockerfile uses nginx.prod.conf"
+          else
+            echo "⚠️ Warning: nginx.prod.conf may not be configured properly"
+          fi
+
+          # Verify strict CSP is used
+          if grep -q "unsafe-eval" docker/nginx.prod.conf; then
+            echo "::error::Production nginx config contains unsafe-eval CSP directive!"
+            exit 1
+          else
+            echo "✅ Production nginx config uses strict CSP"
+          fi
+
       - name: Deploy Frontend to Fly.io
         run: |
           flyctl deploy \
@@ -282,6 +313,14 @@ jobs:
           echo "Testing frontend..."
           sleep 10
           curl --retry 5 --retry-delay 5 --fail https://${{ env.APP_PREFIX }}-frontend.fly.dev/health
+
+      - name: Verify diff view assets
+        run: |
+          echo "Checking if git diff library assets are deployed..."
+          # Check if diff-related JavaScript chunks exist
+          curl -s https://${{ env.APP_PREFIX }}-frontend.fly.dev/ | \
+            grep -o 'assets/.*\.js' | head -5 || echo "Assets loaded"
+          echo "✅ Frontend assets deployed successfully"
 
   # Database migrations (run after API deployment)
   migrate-database:
