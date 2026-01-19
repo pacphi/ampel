@@ -172,8 +172,7 @@ fn matches_pattern(path: &Path, patterns: &[String]) -> bool {
 
     for pattern in patterns {
         // Simple pattern matching: "*.tsx" → ends_with(".tsx")
-        if pattern.starts_with("*.") {
-            let ext = &pattern[2..];
+        if let Some(ext) = pattern.strip_prefix("*.") {
             if file_name.ends_with(ext) {
                 return true;
             }

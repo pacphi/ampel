@@ -140,18 +140,18 @@ impl Extractor for TypeScriptExtractor {
                     let variables = self.extract_template_variables(template);
 
                     // Only extract if it contains variables (otherwise it's a simple string)
-                    if !variables.is_empty() {
-                        if self.is_translatable(template, &StringContext::UiText) {
-                            extracted.push(ExtractedString {
-                                text: template.to_string(),
-                                file: path.to_path_buf(),
-                                line: line_num,
-                                column: template_match.start(),
-                                context: StringContext::UiText,
-                                existing_key: None,
-                                variables,
-                            });
-                        }
+                    if !variables.is_empty()
+                        && self.is_translatable(template, &StringContext::UiText)
+                    {
+                        extracted.push(ExtractedString {
+                            text: template.to_string(),
+                            file: path.to_path_buf(),
+                            line: line_num,
+                            column: template_match.start(),
+                            context: StringContext::UiText,
+                            existing_key: None,
+                            variables,
+                        });
                     }
                 }
             }

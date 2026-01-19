@@ -3,7 +3,6 @@
 //! Uses Syn for AST parsing and Prettyplease for formatting
 
 use super::{BackupManager, RefactorError, RefactorOptions, RefactorResult};
-use std::collections::HashSet;
 use std::fs;
 use std::path::Path;
 

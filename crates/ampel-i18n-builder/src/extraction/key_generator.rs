@@ -76,7 +76,7 @@ impl SemanticKeyGenerator {
         }
 
         // Ensure it starts with a letter
-        if !result.chars().next().map_or(false, |c| c.is_alphabetic()) {
+        if !result.chars().next().is_some_and(|c| c.is_alphabetic()) {
             result.insert(0, 'x');
         }
 

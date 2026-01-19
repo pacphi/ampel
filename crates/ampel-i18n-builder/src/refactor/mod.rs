@@ -144,8 +144,7 @@ fn matches_pattern(path: &Path, patterns: &[String]) -> bool {
     let file_name = path.file_name().and_then(|n| n.to_str()).unwrap_or("");
 
     for pattern in patterns {
-        if pattern.starts_with("*.") {
-            let ext = &pattern[2..];
+        if let Some(ext) = pattern.strip_prefix("*.") {
             if file_name.ends_with(ext) {
                 return true;
             }

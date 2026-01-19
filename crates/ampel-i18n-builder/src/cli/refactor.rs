@@ -146,8 +146,6 @@ fn flatten_for_mapping(
 mod tests {
     use super::*;
     use std::collections::BTreeMap;
-    use std::io::Write;
-    use tempfile::NamedTempFile;
 
     #[test]
     fn test_flatten_for_mapping() {

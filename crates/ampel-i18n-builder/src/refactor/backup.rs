@@ -198,7 +198,7 @@ mod tests {
 
         // List should return both
         let backups = manager.list_backups(test_file.path()).unwrap();
-        assert!(backups.len() >= 1, "Should have at least one backup");
+        assert!(!backups.is_empty(), "Should have at least one backup");
         // Note: Sorting by filename may not guarantee order due to timestamp precision
     }
 
