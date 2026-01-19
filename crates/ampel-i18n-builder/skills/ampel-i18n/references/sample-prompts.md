@@ -90,6 +90,64 @@ Find strings in anyhow!, bail!, and #[error(...)] macros.
 
 ---
 
+## 🔧 Refactor Code to Use i18n (NEW!)
+
+**After extracting strings, automatically refactor your code:**
+
+```
+/ampel-i18n:localize
+
+I've extracted strings to frontend/public/locales/en/extracted.json.
+
+Now refactor my React components to replace hardcoded strings with t() calls.
+
+Target directory: frontend/src
+Namespace: common
+Create backups before modifying files.
+```
+
+**Refactor specific components:**
+
+```
+/ampel-i18n:localize
+
+Refactor these files to use i18n:
+- frontend/src/pages/Dashboard.tsx
+- frontend/src/components/Sidebar.tsx
+
+Use the mapping from frontend/public/locales/en/dashboard.json
+Namespace: dashboard
+```
+
+**Preview changes before applying:**
+
+```
+/ampel-i18n:localize
+
+Show me what changes would be made if I refactor my code to use i18n.
+
+Target: frontend/src/components/Button.tsx
+Mapping: frontend/public/locales/en/common.json
+
+Run in dry-run mode so I can review before applying.
+```
+
+**Refactor Rust backend code:**
+
+```
+/ampel-i18n:localize
+
+Refactor my Rust error messages to use the t! macro.
+
+Target: crates/ampel-api/src
+Mapping: crates/ampel-api/locales/en/errors.yaml
+Patterns: *.rs
+
+Replace anyhow! and #[error] strings with t! macro calls.
+```
+
+---
+
 ## 🔄 Sync Translations Prompt
 
 For ongoing translation updates:
@@ -195,6 +253,25 @@ Report what you find and suggest translation keys for each.
 
 ---
 
+## 🎯 Complete Workflow (Extract → Refactor → Translate)
+
+**For projects migrating to i18n from scratch:**
+
+```
+/ampel-i18n:localize
+
+I want to internationalize my React app from scratch.
+
+Step 1: Extract all hardcoded strings from frontend/src
+Step 2: Refactor my code to replace strings with t() calls
+Step 3: Translate everything to Spanish, French, and German
+Step 4: Show me a coverage report
+
+Use semantic keys like "button.save" and "error.invalidInput".
+```
+
+---
+
 ## 💡 Tips
 
 - **Start small**: Begin with 3-5 languages, then expand
@@ -202,3 +279,5 @@ Report what you find and suggest translation keys for each.
 - **Run coverage often**: Catch missing translations early
 - **Generate types**: Prevent typos in translation keys
 - **One provider is enough**: OpenAI works great if you already have an API key
+- **Always preview refactoring**: Use `--dry-run` to see changes before applying
+- **Backups are automatic**: Refactored files are backed up to `.ampel-i18n-backups/`

@@ -65,7 +65,36 @@ OPENAI_API_KEY=sk-your-key-here
 
 ---
 
-## Step 3: Run It!
+## Step 3: Extract Strings (For Projects with Hardcoded Text)
+
+If your project has hardcoded strings, extract them first:
+
+```bash
+# Extract from React/TypeScript
+ampel-i18n extract \
+  --source src \
+  --patterns "*.tsx" "*.ts" \
+  --output src/locales/en/extracted.json \
+  --merge
+
+# Then refactor your code to use i18n
+ampel-i18n refactor \
+  --target src \
+  --mapping src/locales/en/extracted.json \
+  --namespace common
+```
+
+This will:
+
+1. ✅ Find all hardcoded strings in your code
+2. ✅ Generate semantic translation keys (e.g., "button.save")
+3. ✅ Replace hardcoded strings with `t('key')` calls
+4. ✅ Auto-inject import statements
+5. ✅ Create backups before modifying files
+
+> **Skip this step** if you already have translation files set up.
+
+## Step 4: Run Translation!
 
 ```bash
 ampel-i18n sync
@@ -77,8 +106,8 @@ ampel-i18n sync
 
 That's it! The tool will:
 
-1. ✅ Scan your project for translatable text
-2. ✅ Create translation files for each language
+1. ✅ Read your source language translation files
+2. ✅ Create translation files for each target language
 3. ✅ Translate everything automatically
 4. ✅ Preserve any placeholders like `{userName}`
 

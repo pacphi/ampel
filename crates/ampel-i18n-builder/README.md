@@ -233,7 +233,67 @@ cargo i18n extract \
 - Technical strings: URLs, file paths, SQL queries
 - Log messages: `println!()`, `console.log()`
 
-### 3. Run Translation
+### 3. Refactor Code to Use i18n
+
+After extracting strings, automatically replace hardcoded text with i18n calls:
+
+```bash
+# Refactor a single file
+cargo i18n refactor \
+  --target frontend/src/components/Button.tsx \
+  --mapping frontend/public/locales/en/extracted.json \
+  --namespace common
+
+# Refactor entire directory
+cargo i18n refactor \
+  --target frontend/src \
+  --mapping frontend/public/locales/en/dashboard.json \
+  --namespace dashboard \
+  --patterns "*.tsx" "*.ts"
+
+# Preview changes without modifying files
+cargo i18n refactor \
+  --target frontend/src \
+  --mapping frontend/public/locales/en/common.json \
+  --dry-run
+
+# Refactor without creating backups
+cargo i18n refactor \
+  --target crates/ampel-api/src \
+  --mapping crates/ampel-api/locales/en/errors.yaml \
+  --patterns "*.rs" \
+  --no-backup
+```
+
+**Options:**
+
+- `--target`: File or directory to refactor (required)
+- `--mapping`: Translation mapping file from extract command (required)
+- `--namespace`: Namespace for generated keys (default: "common")
+- `--patterns`: File patterns to match (default: `*.tsx`, `*.ts`, `*.rs`)
+- `--dry-run`: Preview changes without modifying files
+- `--no-backup`: Skip creating backups (backups saved to `.ampel-i18n-backups/`)
+
+**What it does:**
+
+- Replaces hardcoded strings with `t('key')` calls (TypeScript/React)
+- Replaces hardcoded strings with `t!("key")` macro calls (Rust)
+- Auto-injects import statements (`import { useTranslation }` or `use_t!`)
+- Creates automatic backups before modifying files
+- Preserves code formatting and structure
+
+**Example transformation:**
+
+```tsx
+// Before
+<Button>Save Changes</Button>;
+
+// After (using mapping: "Save Changes" → "button.saveChanges")
+const { t } = useTranslation('common');
+<Button>{t('button.saveChanges')}</Button>;
+```
+
+### 4. Run Translation
 
 **Automatic Mode (Recommended)** - Uses all available providers with fallback:
 
@@ -271,7 +331,7 @@ cargo i18n translate --lang fi --max-retries 5
 cargo i18n translate --lang fi --disable-provider openai
 ```
 
-### 4. Validate Translations
+### 5. Validate Translations
 
 ```bash
 # Check coverage (requires ≥95%)
@@ -290,7 +350,7 @@ cargo i18n validate \
   --check variables
 ```
 
-### 5. Generate Type Definitions
+### 6. Generate Type Definitions
 
 ```bash
 # Generate TypeScript types (CLI command)

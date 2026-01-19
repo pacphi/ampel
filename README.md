@@ -81,6 +81,15 @@ Open [http://localhost:3000](http://localhost:3000) and connect your first repos
 - Automatic locale detection from browser settings
 - Language switcher in user settings
 
+**Developer Tools:**
+
+- **[ampel-i18n-builder](crates/ampel-i18n-builder/)** - Translation management CLI
+  - Extract translatable strings from TypeScript/React and Rust code
+  - **Refactor code** to automatically replace hardcoded strings with i18n calls
+  - Translate with 4-tier provider architecture (Systran → DeepL → Google → OpenAI)
+  - Generate TypeScript/Rust type definitions from translations
+  - Validate translation coverage and consistency
+
 <!-- Documentation links - Coming soon:
 - User Guide - Change language, supported languages, RTL support, troubleshooting
 - Developer Guide - Add translatable strings, use i18n hooks/macros, test translations
