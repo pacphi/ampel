@@ -36,7 +36,7 @@ ampel-core.workspace = true
 tokio = { workspace = true, features = ["test-util", "macros"] }
 
 # Test isolation and fixtures
-tempfile = "3.13"
+tempfile = "3.24"
 
 [[test]]
 name = "integration"

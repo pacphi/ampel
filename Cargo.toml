@@ -27,8 +27,8 @@ tower = "0.4"
 tower-http = { version = "0.6", features = ["cors", "trace", "compression-gzip"] }
 
 # Database - SQLite support added for testing
-sea-orm = { version = "1.0", features = ["sqlx-postgres", "sqlx-sqlite", "runtime-tokio-rustls", "macros"] }
-sea-orm-migration = "1.0"
+sea-orm = { version = "1.1", features = ["sqlx-postgres", "sqlx-sqlite", "runtime-tokio-rustls", "macros"] }
+sea-orm-migration = "1.1"
 
 # Background jobs
 apalis = "0.6"

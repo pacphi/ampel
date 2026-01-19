@@ -38,7 +38,7 @@ config.workspace = true
 dotenvy.workspace = true
 
 # Internationalization
-rust-i18n = "3.0"
+rust-i18n = "3.1"
 
 # Internal
 ampel-core.workspace = true

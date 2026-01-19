@@ -19,7 +19,7 @@ path = "src/lib.rs"
 
 [dependencies]
 # Async runtime
-tokio = { version = "1.43", features = ["full"] }
+tokio = { version = "1.49", features = ["full"] }
 async-trait = "0.1"
 
 # HTTP client
@@ -46,8 +46,8 @@ anyhow = "1.0"
 
 # Utilities
 chrono = "0.4"
-regex = "1.11"
-colored = "2.1"
+regex = "1.12"
+colored = "2.2"
 indicatif = "0.17"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
@@ -79,8 +79,8 @@ lru = "0.16"
 
 [dev-dependencies]
 tokio-test = "0.4"
-mockito = "1.6"
-tempfile = "3.14"
+mockito = "1.7"
+tempfile = "3.24"
 
 [features]
 default = []
