@@ -93,7 +93,7 @@ For detailed installation help, see: [skills/ampel-i18n/references/install-guide
 - **Health Checks**: `ampel-i18n doctor` - Diagnose issues automatically
 - **Translation API Integration**: Systran, DeepL, Google Cloud Translation, and OpenAI support
 - **Intelligent Fallback**: Automatic provider selection with graceful degradation on failures
-- **Code Generation**: Generate TypeScript and Rust type definitions from translations
+- **Code Generation**: Generate TypeScript type definitions from translations
 - **Validation Suite**: Coverage analysis, missing keys, duplicate detection, variable consistency
 - **Type-Safe**: Compile-time translation key validation with generated types
 - **Pluralization**: Support for CLDR plural forms (zero, one, two, few, many, other)
@@ -290,11 +290,13 @@ cargo i18n validate \
 ### 5. Generate Type Definitions
 
 ```bash
-# Generate TypeScript types
-cargo i18n codegen \
-  --input frontend/public/locales/en/dashboard.json \
+# Generate TypeScript types (CLI command)
+cargo i18n generate-types \
   --output frontend/src/types/i18n.generated.ts \
-  --language typescript
+  --translation-dir frontend/public/locales
+
+# Note: CLI only supports TypeScript generation
+# For Rust types, use the library API (see "Usage as a Library" section)
 ```
 
 ## Configuration
@@ -447,12 +449,13 @@ async fn main() -> anyhow::Result<()> {
 ### Generate Type Definitions
 
 ```rust
-use ampel_i18n_builder::codegen::{typescript::TypeScriptGenerator, CodeGenerator, GeneratorOptions};
+use ampel_i18n_builder::codegen::{typescript::TypeScriptGenerator, rust::RustGenerator, CodeGenerator, GeneratorOptions};
 use std::path::PathBuf;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let generator = TypeScriptGenerator::new();
+    // Generate TypeScript types
+    let ts_generator = TypeScriptGenerator::new();
     let options = GeneratorOptions {
         pretty_print: true,
         include_metadata: true,
@@ -460,14 +463,25 @@ async fn main() -> anyhow::Result<()> {
         create_index: true,
     };
 
-    let result = generator.generate(
+    let result = ts_generator.generate(
         &translations,
         "en",
         &PathBuf::from("frontend/src/types"),
+        options.clone()
+    ).await?;
+
+    println!("Generated {} TypeScript files", result.files_created.len());
+
+    // Generate Rust types
+    let rust_generator = RustGenerator::new();
+    let result = rust_generator.generate(
+        &translations,
+        "en",
+        &PathBuf::from("src/i18n"),
         options
     ).await?;
 
-    println!("Generated {} files", result.files_created.len());
+    println!("Generated {} Rust files", result.files_created.len());
     Ok(())
 }
 ```
@@ -500,11 +514,25 @@ ampel-i18n-builder/
 │   │   ├── typescript.rs    # TypeScript type definitions
 │   │   └── rust.rs          # Rust type definitions
 │   │
+│   ├── extraction/          # String extraction
+│   │   ├── extractor.rs     # Extraction engine
+│   │   ├── typescript.rs    # TypeScript/React extractor
+│   │   ├── rust.rs          # Rust extractor
+│   │   ├── key_generator.rs # Key generation strategies
+│   │   └── merger.rs        # Translation merging
+│   │
+│   ├── refactor/            # Code refactoring
+│   │   ├── typescript_oxc.rs # TypeScript refactoring
+│   │   ├── rust_syn.rs      # Rust refactoring
+│   │   └── backup.rs        # Backup management
+│   │
 │   ├── config.rs            # Configuration management
 │   └── cli/                 # CLI interface
 │       ├── translate.rs     # Translation command
 │       ├── validate.rs      # Validation command
-│       └── codegen.rs       # Code generation command
+│       ├── generate_types.rs # Type generation command
+│       ├── extract.rs       # Extraction command
+│       └── refactor.rs      # Refactoring command
 │
 └── tests/
     ├── integration/         # Integration tests
