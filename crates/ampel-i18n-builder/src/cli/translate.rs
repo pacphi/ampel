@@ -3,7 +3,7 @@
 use crate::cli::TranslateArgs;
 use crate::config::Config;
 use crate::error::Result;
-use crate::formats::{JsonFormat, TranslationFormat, TranslationMap, TranslationValue, YamlFormat};
+use crate::formats::{JsonFormat, PropertiesFormat, TranslationFormat, TranslationMap, TranslationValue, YamlFormat};
 use crate::translator::fallback::FallbackTranslationRouter;
 use crate::translator::{TranslationService, Translator};
 use colored::Colorize;
@@ -188,11 +188,16 @@ async fn process_namespace(
                 source_dir.join(format!("{}.yaml", namespace)),
                 Box::new(YamlFormat),
             )
+        } else if source_dir.join(format!("{}.properties", namespace)).exists() {
+            (
+                source_dir.join(format!("{}.properties", namespace)),
+                Box::new(PropertiesFormat::new()),
+            )
         } else {
             return Err(crate::error::Error::Io(std::io::Error::new(
                 std::io::ErrorKind::NotFound,
                 format!(
-                    "Source file not found for namespace '{}' (.json, .yml, or .yaml)",
+                    "Source file not found for namespace '{}' (.json, .yml, .yaml, or .properties)",
                     namespace
                 ),
             )));

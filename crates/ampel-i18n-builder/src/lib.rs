@@ -34,16 +34,21 @@ pub mod cli;
 pub mod codegen;
 pub mod config;
 pub mod error;
+pub mod extraction;
 pub mod formats;
+pub mod refactor;
 pub mod translator;
 pub mod validation;
 
 pub use codegen::{CodeGenerator, GeneratorError, GeneratorOptions, GeneratorResult};
 pub use config::Config;
 pub use error::{Error, Result};
+pub use extraction::{
+    ExtractedString, Extractor, KeyGenerator, KeyStrategy, MergeReport, Merger, StringContext,
+};
 pub use formats::{
-    FormatError, JsonFormat, PluralForms, TranslationFormat, TranslationMap, TranslationValue,
-    YamlFormat,
+    FormatError, JsonFormat, PluralForms, PropertiesFormat, TranslationFormat, TranslationMap,
+    TranslationValue, YamlFormat,
 };
 pub use translator::{TranslationService, Translator};
 pub use validation::{

@@ -43,6 +43,53 @@ I want to support: English, Spanish, French, German, Japanese, and Chinese.
 
 ---
 
+## 🔍 Extract Strings from Code (NEW!)
+
+**For projects with hardcoded strings:**
+
+```
+/ampel-i18n:localize
+
+Extract all translatable strings from my React app.
+
+Source directory: frontend/src
+File patterns: *.tsx, *.ts
+Output: frontend/public/locales/en/extracted.json
+Merge with existing translations: yes
+
+Generate semantic keys like "button.save" and "error.invalidEmail".
+```
+
+**Extract from specific components:**
+
+```
+/ampel-i18n:localize
+
+I just built a new user profile page with hardcoded strings.
+
+Extract translatable text from:
+- frontend/src/pages/Profile.tsx
+- frontend/src/components/ProfileCard.tsx
+
+Merge into frontend/public/locales/en/profile.json with semantic keys.
+```
+
+**Extract from Rust backend:**
+
+```
+/ampel-i18n:localize
+
+Extract error messages from my Rust API:
+- Source: crates/ampel-api/src
+- Patterns: *.rs
+- Format: yaml
+- Output: crates/ampel-api/locales/en/errors.yaml
+
+Find strings in anyhow!, bail!, and #[error(...)] macros.
+```
+
+---
+
 ## 🔄 Sync Translations Prompt
 
 For ongoing translation updates:

@@ -62,6 +62,12 @@ async fn main() -> Result<()> {
         Commands::GenerateTypes(args) => {
             ampel_i18n_builder::cli::generate_types::execute(args).await?;
         }
+        Commands::Extract(args) => {
+            ampel_i18n_builder::cli::extract::execute(args).await?;
+        }
+        Commands::Refactor(args) => {
+            ampel_i18n_builder::cli::refactor::execute(args).await?;
+        }
     }
 
     Ok(())

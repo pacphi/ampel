@@ -24,6 +24,9 @@ ampel-i18n --version
 ## 📋 Daily Commands
 
 ```bash
+# Extract strings from code (NEW!)
+ampel-i18n extract --source src --patterns "*.tsx,*.ts" --merge
+
 # Translate everything
 ampel-i18n sync
 
@@ -88,6 +91,17 @@ SYSTRAN_API_KEY=...
 ---
 
 ## 🤖 Claude Code Prompts
+
+### Extract Hardcoded Strings (NEW!)
+
+```
+/ampel-i18n:localize
+
+Extract all hardcoded strings from my React components and generate translation keys.
+Source: frontend/src
+Format: JSON
+Merge with existing translations.
+```
 
 ### First Time Setup
 

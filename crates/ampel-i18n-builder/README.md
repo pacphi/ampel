@@ -84,10 +84,13 @@ For detailed installation help, see: [skills/ampel-i18n/references/install-guide
 
 ## Features
 
+- **String Extraction**: Automatically extract translatable strings from TypeScript/React and Rust codebases
+- **Semantic Key Generation**: Context-aware translation keys (e.g., `button.saveChanges`, `error.invalidEmail`)
+- **Intelligent Merging**: Merge extracted strings with existing translations without data loss
 - **4-Tier Translation Architecture**: Systran (Tier 1) → DeepL (Tier 2) → Google (Tier 3) → OpenAI (Tier 4) with automatic fallback
+- **Multi-Format Support**: JSON (React/Vue/Angular), YAML (Rust), and Java .properties (Spring)
 - **Interactive Setup Wizard**: `ampel-i18n init` - No manual config needed
 - **Health Checks**: `ampel-i18n doctor` - Diagnose issues automatically
-- **Format Parsing**: Parse and validate YAML (backend) and JSON (frontend) translation files
 - **Translation API Integration**: Systran, DeepL, Google Cloud Translation, and OpenAI support
 - **Intelligent Fallback**: Automatic provider selection with graceful degradation on failures
 - **Code Generation**: Generate TypeScript and Rust type definitions from translations
@@ -169,7 +172,65 @@ export GOOGLE_API_KEY="your-google-api-key"
 4. `.ampel-i18n.yaml` configuration file
 5. Default values (lowest priority)
 
-### 2. Run Translation
+### 2. Extract Translatable Strings (New!)
+
+**Extract from React/TypeScript:**
+
+```bash
+# Extract strings from frontend code
+cargo i18n extract \
+  --source frontend/src \
+  --patterns "*.tsx" "*.ts" \
+  --format json \
+  --output frontend/public/locales/en/extracted.json \
+  --merge
+
+# Extract with semantic key generation
+cargo i18n extract \
+  --source frontend/src/pages \
+  --patterns "*.tsx" \
+  --key-strategy semantic \
+  --namespace dashboard \
+  --output frontend/public/locales/en/dashboard.json
+```
+
+**Extract from Rust:**
+
+```bash
+# Extract error messages and UI strings from Rust
+cargo i18n extract \
+  --source crates/ampel-api/src \
+  --patterns "*.rs" \
+  --format yaml \
+  --output crates/ampel-api/locales/en/errors.yaml \
+  --merge
+```
+
+**Note:** Currently supports React/TypeScript and Rust extraction. Java source code extraction is planned for a future release, but you can manually create .properties files and use the translation features.
+
+**Options:**
+- `--source`: Source directories to scan (can specify multiple)
+- `--patterns`: File patterns like `*.tsx`, `*.rs`, `*.java`
+- `--format`: Output format (`json`, `yaml`, or `properties`)
+- `--key-strategy`: Key generation strategy (`semantic`, `hash`, or `incremental`)
+- `--merge`: Merge with existing translations (preserves existing keys)
+- `--dry-run`: Preview extraction without writing files
+- `--namespace`: Organize extracted keys under a namespace
+
+**What gets extracted:**
+- JSX text content: `<Button>Click me</Button>`
+- JSX attributes: `<Input placeholder="Enter name" />`, `aria-label`, `title`
+- Template strings: `` `Welcome, ${userName}!` `` (with variable detection)
+- Error messages: `anyhow!("Auth failed")`, `#[error("Not found")]`
+- String literals in context: `const error = "Invalid email";`
+
+**What gets skipped:**
+- Strings already using i18n: `t('key')`, `t!("key")`
+- Very short strings (< 3 characters)
+- Technical strings: URLs, file paths, SQL queries
+- Log messages: `println!()`, `console.log()`
+
+### 3. Run Translation
 
 **Automatic Mode (Recommended)** - Uses all available providers with fallback:
 
@@ -207,7 +268,7 @@ cargo i18n translate --lang fi --max-retries 5
 cargo i18n translate --lang fi --disable-provider openai
 ```
 
-### 3. Validate Translations
+### 4. Validate Translations
 
 ```bash
 # Check coverage (requires ≥95%)
@@ -226,7 +287,7 @@ cargo i18n validate \
   --check variables
 ```
 
-### 4. Generate Type Definitions
+### 5. Generate Type Definitions
 
 ```bash
 # Generate TypeScript types

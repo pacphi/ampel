@@ -4,9 +4,11 @@ use thiserror::Error;
 
 pub mod json;
 pub mod yaml;
+pub mod properties;
 
 pub use json::JsonFormat;
 pub use yaml::YamlFormat;
+pub use properties::PropertiesFormat;
 
 #[derive(Error, Debug)]
 pub enum FormatError {

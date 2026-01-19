@@ -792,7 +792,11 @@ translation:
 
         let result = Config::find_config_file();
         assert!(result.is_some());
-        assert_eq!(result.unwrap(), config_path);
+
+        // Canonicalize paths to handle symlinks (e.g., /var -> /private/var on macOS)
+        let result_canonical = result.unwrap().canonicalize().unwrap();
+        let expected_canonical = config_path.canonicalize().unwrap();
+        assert_eq!(result_canonical, expected_canonical);
 
         // Cleanup
         std::env::set_current_dir(original_dir).unwrap();

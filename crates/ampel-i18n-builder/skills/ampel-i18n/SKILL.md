@@ -1,6 +1,6 @@
 ---
 name: ampel-i18n
-description: Internationalize and localize applications using ampel-i18n-builder. Use when the user wants to (1) add multi-language support to a project, (2) translate an app into multiple languages, (3) generate i18n translation files, (4) check translation coverage or find missing translations, (5) sync translations across locales, or when user types /ampel-i18n:localize. Works with any tech stack using JSON or YAML translation files.
+description: Internationalize and localize applications using ampel-i18n-builder. Use when the user wants to (1) extract translatable strings from source code, (2) add multi-language support to a project, (3) translate an app into multiple languages, (4) generate i18n translation files, (5) check translation coverage or find missing translations, (6) sync translations across locales, or when user types /ampel-i18n:localize. Supports React/TypeScript (JSON), Rust (YAML), and Java/Spring (.properties).
 ---
 
 # ampel-i18n
@@ -55,27 +55,40 @@ ampel-i18n --version
 
 ## Commands
 
-| Command                     | Purpose                                                            |
-| --------------------------- | ------------------------------------------------------------------ |
-| `ampel-i18n init`           | **NEW:** Interactive setup wizard for first-time users             |
-| `ampel-i18n doctor`         | **NEW:** Health check - validate configuration and diagnose issues |
-| `ampel-i18n sync`           | Generate/update translations for all configured languages          |
-| `ampel-i18n coverage`       | Show translation completion percentages per language               |
-| `ampel-i18n missing`        | List all untranslated keys                                         |
-| `ampel-i18n report`         | Generate comprehensive translation status report                   |
-| `ampel-i18n generate-types` | Create TypeScript/Rust types from translation files                |
+| Command                     | Purpose                                                                   |
+| --------------------------- | ------------------------------------------------------------------------- |
+| `ampel-i18n init`           | Interactive setup wizard for first-time users                             |
+| `ampel-i18n doctor`         | Health check - validate configuration and diagnose issues                 |
+| `ampel-i18n extract`        | **NEW:** Extract translatable strings from source code                    |
+| `ampel-i18n sync`           | Generate/update translations for all configured languages                 |
+| `ampel-i18n coverage`       | Show translation completion percentages per language                      |
+| `ampel-i18n missing`        | List all untranslated keys                                                |
+| `ampel-i18n report`         | Generate comprehensive translation status report                          |
+| `ampel-i18n generate-types` | Create TypeScript/Rust types from translation files                       |
 
 ## Workflow
 
-### For New Projects
+### For New Projects (With String Extraction)
 
-**Recommended:** Use the interactive wizard:
+**Recommended automated workflow:**
 
 ```bash
+# 1. Initialize configuration
 ampel-i18n init
+
+# 2. Extract translatable strings from your code
+ampel-i18n extract \
+  --source frontend/src \
+  --patterns "*.tsx" "*.ts" \
+  --format json \
+  --output frontend/public/locales/en/extracted.json \
+  --merge
+
+# 3. Translate to all languages
+ampel-i18n sync
 ```
 
-Or manual setup:
+Or manual setup (without extraction):
 
 1. Identify the i18n framework in use (i18next, react-intl, rust-i18n, etc.)
 2. Locate existing translation files or create initial structure

@@ -22,6 +22,15 @@ pub enum Error {
     #[error("Validation error: {0}")]
     ValidationError(#[from] crate::validation::ValidationError),
 
+    #[error("Extraction error: {0}")]
+    Extraction(#[from] crate::extraction::extractor::ExtractionError),
+
+    #[error("Merge error: {0}")]
+    Merge(#[from] crate::extraction::merger::MergeError),
+
+    #[error("Refactor error: {0}")]
+    Refactor(#[from] crate::refactor::RefactorError),
+
     #[error("Translation error: {0}")]
     Translation(String),
 
