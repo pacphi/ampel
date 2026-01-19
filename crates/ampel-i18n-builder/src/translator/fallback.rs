@@ -153,7 +153,8 @@ impl FallbackTranslationRouter {
             .or_else(|| std::env::var("OPENAI_API_KEY").ok())
         {
             let timeout = Duration::from_secs(config.translation.providers.openai.timeout_secs);
-            match OpenAITranslator::new(api_key, timeout) {
+            let model = config.translation.providers.openai.model.clone();
+            match OpenAITranslator::new(api_key, timeout, model) {
                 Ok(translator) => {
                     info!("✓ OpenAI translator initialized (Tier 4)");
                     providers.push(Box::new(translator));

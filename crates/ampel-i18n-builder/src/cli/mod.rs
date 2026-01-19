@@ -4,9 +4,11 @@ use clap::{Parser, Subcommand, ValueEnum};
 use std::path::PathBuf;
 
 pub mod coverage;
+pub mod doctor;
 pub mod export;
 pub mod generate_types;
 pub mod import;
+pub mod init;
 pub mod missing;
 pub mod report;
 pub mod sync;
@@ -14,7 +16,7 @@ pub mod translate;
 pub mod validate;
 
 #[derive(Parser)]
-#[command(name = "cargo-i18n")]
+#[command(name = "ampel-i18n")]
 #[command(bin_name = "cargo i18n")]
 #[command(about = "Translation automation for Ampel", long_about = None)]
 #[command(version)]
@@ -25,6 +27,12 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
+    /// Interactive setup wizard for first-time users
+    Init(InitArgs),
+
+    /// Run health checks and validate configuration
+    Doctor(DoctorArgs),
+
     /// Translate missing keys using AI translation service
     Translate(TranslateArgs),
 
@@ -260,4 +268,38 @@ pub struct GenerateTypesArgs {
     /// Path to translation directory
     #[arg(long, default_value = "frontend/public/locales")]
     pub translation_dir: PathBuf,
+}
+
+#[derive(Parser)]
+pub struct InitArgs {
+    /// Skip interactive prompts and use defaults
+    #[arg(long)]
+    pub non_interactive: bool,
+
+    /// Project framework (react, vue, rust, etc.)
+    #[arg(long)]
+    pub framework: Option<String>,
+
+    /// Target languages (comma-separated, e.g., "fr,de,es")
+    #[arg(long)]
+    pub languages: Option<String>,
+
+    /// Translation provider (openai, deepl, google, systran)
+    #[arg(long)]
+    pub provider: Option<String>,
+
+    /// Translation directory path
+    #[arg(long)]
+    pub translation_dir: Option<PathBuf>,
+}
+
+#[derive(Parser)]
+pub struct DoctorArgs {
+    /// Show detailed diagnostic information
+    #[arg(long)]
+    pub verbose: bool,
+
+    /// Attempt to fix common issues automatically
+    #[arg(long)]
+    pub fix: bool,
 }

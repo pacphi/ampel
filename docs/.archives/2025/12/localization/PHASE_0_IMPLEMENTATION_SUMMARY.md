@@ -46,7 +46,7 @@ Phase 0 of the Ampel localization system is **100% complete**. The `ampel-i18n-b
 ```bash
 ✅ Crate builds successfully (0 errors, 0 warnings)
 ✅ All 20 unit tests pass
-✅ Binary compiles: cargo-i18n
+✅ Binary compiles: ampel-i18n
 ✅ Library compiles: ampel_i18n_builder
 ```
 
@@ -316,7 +316,7 @@ pub mod dashboard {
 
 **Location:** `src/cli/` and `src/main.rs`
 **Status:** Complete
-**Binary:** `cargo-i18n`
+**Binary:** `ampel-i18n`
 
 **Commands Implemented:**
 
@@ -617,7 +617,7 @@ cargo install --path crates/ampel-i18n-builder
 # Or build manually
 cd crates/ampel-i18n-builder
 cargo build --release
-# Binary at: target/release/cargo-i18n
+# Binary at: target/release/ampel-i18n
 ```
 
 ### Library Usage

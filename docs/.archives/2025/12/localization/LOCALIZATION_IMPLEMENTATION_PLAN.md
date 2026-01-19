@@ -138,12 +138,12 @@ emails = { $count ->
 
 #### 3. **i18n-embed**
 
-**GitHub:** [kellpossible/cargo-i18n](https://github.com/kellpossible/cargo-i18n)
+**GitHub:** [kellpossible/ampel-i18n](https://github.com/kellpossible/ampel-i18n)
 **Features:**
 
 - Embeds localization assets into binary
 - Supports both Fluent and gettext systems
-- Works with `cargo-i18n` tooling
+- Works with `ampel-i18n` tooling
 
 **Pros:**
 
@@ -256,7 +256,7 @@ function MyComponent() {
 | **Pluralization**   | ⭐⭐ YAML-based  | ⭐⭐⭐ CLDR          | ⭐⭐ Depends   |
 | **File Formats**    | YAML, JSON, TOML | FTL                  | Multiple       |
 | **Compile-time**    | ✅ Yes           | ❌ No                | ✅ Yes         |
-| **CLI Tools**       | ✅ cargo i18n    | ⚠️ Limited           | ✅ cargo-i18n  |
+| **CLI Tools**       | ✅ cargo i18n    | ⚠️ Limited           | ✅ ampel-i18n  |
 | **Fallback Chain**  | ✅ Automatic     | ✅ Manual            | ✅ Yes         |
 | **Learning Curve**  | 🟢 Easy          | 🔴 Steep             | 🟡 Moderate    |
 | **Best For**        | Web APIs         | Natural text         | Flexible needs |
@@ -1695,8 +1695,8 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Install cargo-i18n
-        run: cargo install cargo-i18n
+      - name: Install ampel-i18n
+        run: cargo install ampel-i18n
 
       - name: Check for missing translations
         run: |

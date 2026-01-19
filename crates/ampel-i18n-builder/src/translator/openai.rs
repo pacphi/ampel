@@ -13,6 +13,7 @@ const MIN_CHUNK_SIZE: usize = 5;
 pub struct OpenAITranslator {
     client: reqwest::Client,
     api_key: String,
+    model: String,
     chunk_size: usize,
     max_retries: u32,
 }
@@ -46,15 +47,19 @@ struct ResponseMessage {
 }
 
 impl OpenAITranslator {
-    pub fn new(api_key: String, timeout: Duration) -> Result<Self> {
+    pub fn new(api_key: String, timeout: Duration, model: Option<String>) -> Result<Self> {
         let client = reqwest::Client::builder()
             .timeout(timeout)
             .build()
             .map_err(|e| Error::Config(format!("Failed to build HTTP client: {}", e)))?;
 
+        // Use provided model or default to gpt-5-mini
+        let model = model.unwrap_or_else(|| "gpt-5-mini".to_string());
+
         Ok(Self {
             client,
             api_key,
+            model,
             chunk_size: DEFAULT_CHUNK_SIZE,
             max_retries: 3,
         })
@@ -86,7 +91,7 @@ impl OpenAITranslator {
         );
 
         let request = OpenAIRequest {
-            model: "gpt-5-mini".to_string(),
+            model: self.model.clone(),
             messages: vec![
                 Message {
                     role: "system".to_string(),

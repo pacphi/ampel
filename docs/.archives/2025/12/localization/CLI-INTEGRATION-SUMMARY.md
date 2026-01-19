@@ -78,21 +78,21 @@ test result: ok. 5 passed; 0 failed; 0 ignored
 **Before:**
 
 ```bash
-cargo-i18n translate --lang fi --provider deepl
+ampel-i18n translate --lang fi --provider deepl
 # Required provider, failed if unavailable
 ```
 
 **After:**
 
 ```bash
-cargo-i18n translate --lang fi
+ampel-i18n translate --lang fi
 # Uses all available providers with automatic fallback
 ```
 
 ### Backward Compatibility
 
 ```bash
-cargo-i18n translate --lang fi --provider deepl --no-fallback
+ampel-i18n translate --lang fi --provider deepl --no-fallback
 # Maintains exact old behavior
 ```
 

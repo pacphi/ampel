@@ -574,7 +574,7 @@ cargo i18n generate-consts --output crates/ampel-api/src/i18n/keys.rs
 
 #### 5. CLI Tool
 
-**Binary:** `cargo-i18n`
+**Binary:** `ampel-i18n`
 **Commands:** 7
 
 **1. translate** - Translate missing keys

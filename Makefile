@@ -76,12 +76,12 @@ help:
 	@echo "  gh-status        - View CI workflow status"
 	@echo ""
 	@echo "Internationalization (i18n):"
-	@echo "  build-i18n       - Build cargo-i18n CLI tool (debug)"
-	@echo "  build-i18n-release - Build cargo-i18n (release)"
+	@echo "  build-i18n       - Build ampel-i18n CLI tool (debug)"
+	@echo "  build-i18n-release - Build ampel-i18n (release)"
 	@echo "  test-i18n        - Run tests for i18n-builder crate"
-	@echo "  install-i18n     - Install cargo-i18n CLI tool locally"
+	@echo "  install-i18n     - Install ampel-i18n CLI tool locally"
 	@echo "  clean-i18n       - Clean i18n-builder build artifacts"
-	@echo "  i18n ARGS='...'  - Run cargo-i18n tool (e.g., make i18n ARGS='--help')"
+	@echo "  i18n ARGS='...'  - Run ampel-i18n tool (e.g., make i18n ARGS='--help')"
 
 # =============================================================================
 # Setup & Dependencies
@@ -465,15 +465,15 @@ gh-status: _check-gh
 # Internationalization (i18n)
 # =============================================================================
 
-# Build the cargo-i18n CLI tool (debug mode)
+# Build the ampel-i18n CLI tool (debug mode)
 build-i18n:
-	@echo "==> Building cargo-i18n CLI tool..."
-	cargo build --package ampel-i18n-builder --bin cargo-i18n
+	@echo "==> Building ampel-i18n CLI tool..."
+	cargo build --package ampel-i18n-builder --bin ampel-i18n
 
-# Build the cargo-i18n CLI tool (release mode)
+# Build the ampel-i18n CLI tool (release mode)
 build-i18n-release:
-	@echo "==> Building cargo-i18n CLI tool (release)..."
-	cargo build --package ampel-i18n-builder --bin cargo-i18n --release
+	@echo "==> Building ampel-i18n CLI tool (release)..."
+	cargo build --package ampel-i18n-builder --bin ampel-i18n --release
 
 # Run tests for the i18n-builder crate only
 test-i18n:
@@ -497,12 +497,12 @@ test-i18n-coverage:
 	@echo ""
 	@echo "==> I18n coverage report: coverage/i18n/index.html"
 
-# Install the cargo-i18n tool to ~/.cargo/bin
+# Install the ampel-i18n tool to ~/.cargo/bin
 install-i18n:
-	@echo "==> Installing cargo-i18n CLI tool..."
-	cargo install --path crates/ampel-i18n-builder --bin cargo-i18n --force
+	@echo "==> Installing ampel-i18n CLI tool..."
+	cargo install --path crates/ampel-i18n-builder --bin ampel-i18n --force
 	@echo ""
-	@echo "cargo-i18n installed to ~/.cargo/bin/cargo-i18n"
+	@echo "ampel-i18n installed to ~/.cargo/bin/ampel-i18n"
 	@echo "Run 'cargo i18n --help' to get started"
 
 # Clean i18n-builder build artifacts
@@ -510,12 +510,12 @@ clean-i18n:
 	@echo "==> Cleaning i18n-builder artifacts..."
 	cargo clean --package ampel-i18n-builder
 
-# Run the cargo-i18n tool with custom arguments
+# Run the ampel-i18n tool with custom arguments
 # Usage: make i18n ARGS='--help'
 # Usage: make i18n ARGS='generate --lang es'
 i18n:
-	@echo "==> Running cargo-i18n..."
-	cargo run --package ampel-i18n-builder --bin cargo-i18n -- $(ARGS)
+	@echo "==> Running ampel-i18n..."
+	cargo run --package ampel-i18n-builder --bin ampel-i18n -- $(ARGS)
 
 # Monitoring targets
 include Makefile.monitoring

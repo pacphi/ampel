@@ -114,14 +114,14 @@ test result: ok. 10 passed; 0 failed
 ### Before (27% coverage):
 
 ```bash
-cargo run --bin cargo-i18n -- translate --lang pt-BR --provider open-ai
+cargo run --bin ampel-i18n -- translate --lang pt-BR --provider open-ai
 # Only translated 88 / 325 keys (simple strings only)
 ```
 
 ### After (100% coverage):
 
 ```bash
-cargo run --bin cargo-i18n -- translate --lang pt-BR --provider open-ai
+cargo run --bin ampel-i18n -- translate --lang pt-BR --provider open-ai
 # Translates all 325 keys (nested, plural forms, everything)
 ```
 

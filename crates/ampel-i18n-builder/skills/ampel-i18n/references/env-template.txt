@@ -1,0 +1,39 @@
+# ampel-i18n-builder Translation Provider Credentials
+# Copy this to .env in your project root
+# Only configure the providers you have access to
+
+# =============================================================================
+# TIER 1: SYSTRAN (Enterprise Neural MT)
+# High quality, enterprise features
+# Get API key: https://platform.systran.net/
+# =============================================================================
+# SYSTRAN_API_KEY=your_systran_api_key
+
+# =============================================================================
+# TIER 2: DEEPL (European Language Specialist)
+# Excellent quality for EU languages
+# Get API key: https://www.deepl.com/pro-api
+# =============================================================================
+# DEEPL_API_KEY=your_deepl_api_key
+
+# =============================================================================
+# TIER 3: GOOGLE TRANSLATE (Broad Coverage)
+# Widest language support
+# Get API key: https://cloud.google.com/translate
+# =============================================================================
+# GOOGLE_TRANSLATE_API_KEY=your_google_api_key
+
+# =============================================================================
+# TIER 4: OPENAI (Complex Content Fallback)
+# Best for nuanced, context-dependent content
+# Get API key: https://platform.openai.com/api-keys
+# =============================================================================
+# OPENAI_API_KEY=your_openai_api_key
+
+# =============================================================================
+# NOTES
+# =============================================================================
+# - Uncomment and fill in at least ONE provider
+# - The tool uses a fallback system: if Tier 1 fails, it tries Tier 2, etc.
+# - You don't need all providers — one is enough to get started
+# - OpenAI is a good starting point if you already have an API key

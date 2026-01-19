@@ -1,0 +1,495 @@
+# ampel-i18n-builder Complete Reference
+# This file documents BOTH configuration file options AND CLI arguments
+
+################################################################################
+# PART 1: CONFIGURATION FILE (.ampel-i18n.yaml)
+################################################################################
+# The .ampel-i18n.yaml file configures translation API providers, timeouts,
+# retry logic, and fallback behavior. Save this in your project root.
+################################################################################
+
+# =============================================================================
+# PROJECT SETTINGS
+# =============================================================================
+
+# Directory containing translation files (relative to project root)
+# Default: "frontend/public/locales"
+# Can be overridden with --translation-dir CLI flag
+translation_dir: frontend/public/locales
+
+# =============================================================================
+# TRANSLATION API CONFIGURATION
+# =============================================================================
+
+translation:
+  # ---------------------------------------------------------------------------
+  # API Keys (Required)
+  # ---------------------------------------------------------------------------
+  # Provider API keys can be set here or via environment variables.
+  # Environment variables take precedence over values in this file.
+  #
+  # Environment variables:
+  #   SYSTRAN_API_KEY="your-key-here"
+  #   DEEPL_API_KEY="your-key-here"
+  #   GOOGLE_API_KEY="your-key-here"
+  #   OPENAI_API_KEY="your-key-here"
+  #
+  # YAML shell variable syntax:
+  systran_api_key: "${SYSTRAN_API_KEY}"
+  deepl_api_key: "${DEEPL_API_KEY}"
+  google_api_key: "${GOOGLE_API_KEY}"
+  openai_api_key: "${OPENAI_API_KEY}"
+
+  # ---------------------------------------------------------------------------
+  # Global Defaults (Optional)
+  # ---------------------------------------------------------------------------
+  # These values are used as defaults for all providers unless overridden
+  # in the per-provider configuration below.
+
+  # Default request timeout in seconds (default: 30)
+  default_timeout_secs: 30
+
+  # Default batch size for translation requests (default: 50)
+  default_batch_size: 50
+
+  # Default maximum retry attempts on failure (default: 3)
+  default_max_retries: 3
+
+  # ---------------------------------------------------------------------------
+  # Per-Provider Configuration
+  # ---------------------------------------------------------------------------
+  # Configure each translation provider with specific settings.
+  # Providers are tried in priority order (1 = highest, 4 = lowest).
+
+  providers:
+    # Systran Translation API (Tier 1 - Primary Enterprise Translation)
+    # Best for: High-accuracy neural MT, domain-specific models
+    # Rate limit: 100 requests/sec
+    # Batch size: 50 texts per request
+    systran:
+      enabled: true                  # Enable or disable this provider
+      priority: 1                    # Provider priority (1 = highest)
+      timeout_secs: 45               # Request timeout in seconds
+      max_retries: 3                 # Maximum retry attempts on failure
+      batch_size: 50                 # Batch size for translation requests
+      rate_limit_per_sec: 100        # Rate limit (requests per second)
+      retry_delay_ms: 1000           # Initial retry delay in milliseconds
+      max_delay_ms: 30000            # Maximum retry delay in milliseconds
+      backoff_multiplier: 2.0        # Exponential backoff multiplier
+      preferred_languages: []        # Languages where provider excels (optional)
+                                     # Example: ["de", "fr", "fi", "sv", "pl", "cs"]
+
+    # DeepL API (Tier 2 - High-Quality European Languages)
+    # Best for: EU languages (28 languages supported)
+    # Rate limit: 10 requests/sec
+    # Batch size: 50 texts per request
+    deepl:
+      enabled: true
+      priority: 2
+      timeout_secs: 30
+      max_retries: 3
+      batch_size: 50
+      rate_limit_per_sec: 10
+      retry_delay_ms: 1000
+      max_delay_ms: 30000
+      backoff_multiplier: 2.0
+      # preferred_languages: ["bg", "cs", "da", "de", "el", "es", "et", "fi", "fr", "hu", "id", "it", "ja", "ko", "lt", "lv", "nb", "nl", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "tr", "uk", "zh"]
+
+    # Google Translate API (Tier 3 - Broad Language Coverage)
+    # Best for: Asian/Middle Eastern languages (133+ languages)
+    # Rate limit: 100 requests/sec
+    # Batch size: 100 texts per request
+    google:
+      enabled: true
+      priority: 3
+      timeout_secs: 30
+      max_retries: 3
+      batch_size: 100
+      rate_limit_per_sec: 100
+      retry_delay_ms: 1000
+      max_delay_ms: 30000
+      backoff_multiplier: 2.0
+      # preferred_languages: ["ar", "th", "vi", "hi", "zh", "ja", "ko", "id", "tr", "uk"]
+
+    # OpenAI GPT API (Tier 4 - Fallback for Edge Cases)
+    # Best for: Technical content, complex placeholders, context-aware translation
+    # Default model: gpt-5-mini
+    #   - Context: 400,000 tokens (400k context window)
+    #   - Max output: 128,000 tokens
+    #   - Pricing: $0.25/1M input, $0.025/1M cached input, $2.00/1M output
+    #   - Knowledge cutoff: May 31, 2024
+    #   - Rate limits (Tier 1): 500 RPM, 500,000 TPM, 5M batch queue
+    # Other models: gpt-5-mini-2025-08-07, gpt-4o, gpt-4o-mini, gpt-4-turbo
+    openai:
+      enabled: true
+      priority: 4
+      timeout_secs: 60              # Higher timeout for LLM processing
+      max_retries: 2                # Fewer retries due to high cost
+      batch_size: 0                 # Unlimited (context window limited)
+      rate_limit_per_sec: 0         # No rate limiting
+      retry_delay_ms: 2000
+      max_delay_ms: 60000
+      backoff_multiplier: 2.0
+      model: gpt-5-mini             # OpenAI model (optional, default: gpt-5-mini)
+                                     # Valid: gpt-5-mini, gpt-5-mini-2025-08-07,
+                                     #        gpt-4o, gpt-4o-mini, gpt-4-turbo
+                                     # See: https://platform.openai.com/docs/models
+      # preferred_languages: []      # Universal fallback (all languages)
+
+  # ---------------------------------------------------------------------------
+  # Fallback Strategy Configuration
+  # ---------------------------------------------------------------------------
+  # Control how the system behaves when providers fail or are unavailable
+
+  fallback:
+    # Skip providers without API keys instead of failing
+    # If true: Providers without configured API keys are silently skipped
+    # If false: Missing API key causes an error
+    # (default: true)
+    skip_on_missing_key: true
+
+    # Stop trying providers after first success
+    # If true: Once a provider succeeds, don't try additional providers
+    # If false: Try all providers even after success (not recommended)
+    # (default: true)
+    stop_on_first_success: true
+
+    # Log fallback events (provider failures and fallback attempts)
+    # If true: Log when falling back to next tier provider
+    # If false: Silent fallback (only log final success/failure)
+    # (default: true)
+    log_fallback_events: true
+
+# =============================================================================
+# CONFIGURATION EXAMPLES BY USE CASE
+# =============================================================================
+
+# --- Production Configuration (High Reliability) ---
+# translation:
+#   providers:
+#     systran:
+#       enabled: true
+#       priority: 1
+#     deepl:
+#       enabled: true
+#       priority: 2
+#     google:
+#       enabled: true
+#       priority: 3
+#     openai:
+#       enabled: false  # Disabled to save costs
+
+# --- Development Configuration (All Providers) ---
+# translation:
+#   default_timeout_secs: 60
+#   default_batch_size: 10
+#   providers:
+#     systran:
+#       enabled: true
+#       max_retries: 1  # Fast fail for development
+#     deepl:
+#       enabled: true
+#     google:
+#       enabled: true
+#     openai:
+#       enabled: true
+
+# --- Cost-Optimized Configuration (Free Tier Only) ---
+# translation:
+#   providers:
+#     systran:
+#       enabled: false
+#     deepl:
+#       enabled: true
+#       priority: 1  # Make DeepL primary
+#     google:
+#       enabled: false
+#     openai:
+#       enabled: false
+
+# --- Language-Specific Optimization ---
+# translation:
+#   providers:
+#     systran:
+#       enabled: true
+#       priority: 1
+#     deepl:
+#       enabled: true
+#       priority: 2
+#       preferred_languages: ["de", "fr", "es", "it", "pl"]
+#     google:
+#       enabled: true
+#       priority: 3
+#       preferred_languages: ["ar", "th", "vi", "hi", "zh", "ja", "ko"]
+#     openai:
+#       enabled: false
+
+
+################################################################################
+# PART 2: CLI ARGUMENTS REFERENCE
+################################################################################
+# The CLI commands accept arguments that control runtime behavior.
+# These are NOT configuration file options - they're command-line flags.
+################################################################################
+
+# =============================================================================
+# COMMON CLI ARGUMENTS (All Commands)
+# =============================================================================
+
+# --translation-dir <PATH>
+#   Override the translation directory path
+#   Default: "frontend/public/locales"
+#   Example: ampel-i18n sync --translation-dir src/locales
+
+# =============================================================================
+# TRANSLATE COMMAND
+# =============================================================================
+# Usage: ampel-i18n translate --lang <LANG> [OPTIONS]
+#
+# Required:
+#   --lang <LANG>              Target language code (e.g., "fi", "sv", "es")
+#
+# Optional:
+#   --provider <PROVIDER>      (Deprecated) Use specific provider
+#   --namespace <NS>           Only translate specific namespace
+#   --dry-run                  Preview changes without writing files
+#   --translation-dir <PATH>   Path to translation directory
+#   --timeout <SECS>           Override global timeout
+#   --batch-size <SIZE>        Override batch size
+#   --max-retries <N>          Override max retry attempts
+#   --disable-provider <NAME>  Disable specific providers (can repeat)
+#   --no-fallback              Disable fallback (use only primary provider)
+#   --force                    Force retranslation of all keys
+#   --detect-untranslated      Detect and retranslate English/source values
+
+# Examples:
+#   ampel-i18n translate --lang fi
+#   ampel-i18n translate --lang es --namespace dashboard
+#   ampel-i18n translate --lang de --force --dry-run
+#   ampel-i18n translate --lang fr --disable-provider systran --disable-provider deepl
+
+# =============================================================================
+# SYNC COMMAND
+# =============================================================================
+# Usage: ampel-i18n sync [OPTIONS]
+#
+# Optional:
+#   --source <LANG>            Source language code (default: "en")
+#   --provider <PROVIDER>      Translation provider to use
+#   --translation-dir <PATH>   Path to translation directory
+#   --dry-run                  Preview changes without writing files
+
+# Examples:
+#   ampel-i18n sync
+#   ampel-i18n sync --source en --provider deepl
+#   ampel-i18n sync --dry-run
+
+# =============================================================================
+# COVERAGE COMMAND
+# =============================================================================
+# Usage: ampel-i18n coverage [OPTIONS]
+#
+# Optional:
+#   --lang <LANG>              Check specific language only
+#   --min-coverage <PCT>       Minimum coverage threshold (e.g., 95 or 0.95)
+#   --translation-dir <PATH>   Path to translation directory
+
+# Examples:
+#   ampel-i18n coverage
+#   ampel-i18n coverage --lang fi
+#   ampel-i18n coverage --min-coverage 95
+
+# =============================================================================
+# VALIDATE COMMAND
+# =============================================================================
+# Usage: ampel-i18n validate [OPTIONS]
+#
+# Optional:
+#   --all                      Validate all languages
+#   --lang <LANG>              Validate specific language only
+#   --translation-dir <PATH>   Path to translation directory
+
+# Examples:
+#   ampel-i18n validate --all
+#   ampel-i18n validate --lang fi
+
+# =============================================================================
+# MISSING COMMAND
+# =============================================================================
+# Usage: ampel-i18n missing [OPTIONS]
+#
+# Optional:
+#   --lang <LANG>              List missing keys for specific language only
+#   --translation-dir <PATH>   Path to translation directory
+
+# Examples:
+#   ampel-i18n missing
+#   ampel-i18n missing --lang fi
+
+# =============================================================================
+# REPORT COMMAND
+# =============================================================================
+# Usage: ampel-i18n report [OPTIONS]
+#
+# Optional:
+#   --format <FORMAT>          Output format (text, json, html)
+#   --output <PATH>            Output file path
+#   --translation-dir <PATH>   Path to translation directory
+
+# Examples:
+#   ampel-i18n report
+#   ampel-i18n report --format json --output report.json
+
+# =============================================================================
+# GENERATE-TYPES COMMAND
+# =============================================================================
+# Usage: ampel-i18n generate-types [OPTIONS]
+#
+# Optional:
+#   --lang <LANG>              Language to generate types for (default: all)
+#   --output <PATH>            Output file path
+#   --format <FORMAT>          Output format (typescript, rust)
+#   --translation-dir <PATH>   Path to translation directory
+
+# Examples:
+#   ampel-i18n generate-types --format typescript --output src/types/i18n.d.ts
+#   ampel-i18n generate-types --format rust --output src/i18n_types.rs
+
+# =============================================================================
+# EXPORT COMMAND
+# =============================================================================
+# Usage: ampel-i18n export --lang <LANG> --format <FORMAT> --output <PATH>
+#
+# Required:
+#   --lang <LANG>              Target language code
+#   --format <FORMAT>          Export format (json, yaml, xliff, csv)
+#   --output <PATH>            Output file path
+#
+# Optional:
+#   --translation-dir <PATH>   Path to translation directory
+
+# Examples:
+#   ampel-i18n export --lang fi --format xliff --output translations.xliff
+#   ampel-i18n export --lang es --format csv --output es.csv
+
+# =============================================================================
+# IMPORT COMMAND
+# =============================================================================
+# Usage: ampel-i18n import --lang <LANG> --format <FORMAT> --input <PATH>
+#
+# Required:
+#   --lang <LANG>              Target language code
+#   --format <FORMAT>          Import format (json, yaml, xliff, csv)
+#   --input <PATH>             Input file path
+#
+# Optional:
+#   --translation-dir <PATH>   Path to translation directory
+#   --dry-run                  Preview changes without writing files
+
+# Examples:
+#   ampel-i18n import --lang fi --format xliff --input translations.xliff
+#   ampel-i18n import --lang es --format csv --input es.csv --dry-run
+
+
+################################################################################
+# PART 3: SUPPORTED LANGUAGES
+################################################################################
+
+# Simple language codes (21 supported):
+#   en, fr, de, it, ru, ja, ko, ar, he, hi, nl, pl, sr, th, tr, sv, da, fi, vi, no, cs
+#
+# Regional variants (6 supported):
+#   en-GB   # British English
+#   pt-BR   # Brazilian Portuguese
+#   zh-CN   # Simplified Chinese
+#   zh-TW   # Traditional Chinese
+#   es-ES   # European Spanish
+#   es-MX   # Mexican Spanish
+#
+# RTL languages (automatically handled):
+#   ar      # Arabic
+#   he      # Hebrew
+
+
+################################################################################
+# PART 4: INTEGRATION WITH i18n FRAMEWORKS
+################################################################################
+
+# This builder works with any framework that uses JSON/YAML translation files.
+# Common patterns:
+
+# --- React + i18next ---
+# File structure:
+#   src/locales/en/common.json
+#   src/locales/en/auth.json
+#   src/locales/fi/common.json
+#
+# CLI usage:
+#   ampel-i18n translate --lang fi --translation-dir src/locales
+
+# --- Vue + vue-i18n ---
+# File structure:
+#   src/i18n/locales/en.json
+#   src/i18n/locales/fi.json
+#
+# CLI usage:
+#   ampel-i18n translate --lang fi --translation-dir src/i18n/locales
+
+# --- Rust + rust-i18n ---
+# File structure:
+#   locales/en.yaml
+#   locales/fi.yaml
+#
+# CLI usage:
+#   ampel-i18n translate --lang fi --translation-dir locales
+
+
+################################################################################
+# PART 5: TROUBLESHOOTING
+################################################################################
+
+# Q: Provider returns 401/403 errors
+# A: Check that your API key is correctly set in .ampel-i18n.yaml or environment variables
+
+# Q: Translations are slow
+# A: Increase batch_size or reduce timeout_secs in provider configuration
+
+# Q: Provider keeps failing
+# A: Check provider status page, increase max_retries, or disable problematic provider
+
+# Q: Missing translations not detected
+# A: Use --detect-untranslated flag to find keys with English/source values
+
+# Q: Want to use specific provider only
+# A: Use --no-fallback flag or disable other providers in configuration
+
+# Q: Need to override configuration temporarily
+# A: Use CLI flags like --timeout, --batch-size, --disable-provider
+
+
+################################################################################
+# PART 6: BEST PRACTICES
+################################################################################
+
+# 1. Use environment variables for API keys (not config file)
+#    - Keeps secrets out of version control
+#    - Easier to rotate keys
+#
+# 2. Start with all providers enabled for redundancy
+#    - Disable only if cost or speed is a concern
+#
+# 3. Use language-specific routing for optimal quality
+#    - Configure preferred_languages for each provider
+#
+# 4. Set appropriate timeouts and retries
+#    - Higher timeouts for OpenAI (LLM processing)
+#    - Lower retries for expensive providers
+#
+# 5. Monitor costs with logging
+#    - Enable log_fallback_events to track provider usage
+#
+# 6. Test with --dry-run first
+#    - Preview changes before committing
+#
+# 7. Use --detect-untranslated periodically
+#    - Find and fix keys that fell through the cracks

@@ -56,8 +56,8 @@ make install build-release
 | `make test-integration` | Run integration tests with PostgreSQL | Mimicking CI locally                         |
 | `make lint-fix`         | Auto-fix code issues                  | Before committing, during development        |
 | `make docker-up`        | Start all services with Docker        | Full-stack development, testing integrations |
-| `make build-i18n`       | Build cargo-i18n CLI tool             | Developing i18n features                     |
-| `make i18n ARGS='...'`  | Run cargo-i18n with custom arguments  | Managing translations                        |
+| `make build-i18n`       | Build ampel-i18n CLI tool             | Developing i18n features                     |
+| `make i18n ARGS='...'`  | Run ampel-i18n with custom arguments  | Managing translations                        |
 
 ### Common Workflows
 
@@ -1391,15 +1391,15 @@ STATUS  TITLE  WORKFLOW  BRANCH      EVENT  ID
 
 ## Internationalization (i18n) Commands
 
-These commands help build, test, and use the `cargo-i18n` CLI tool for managing translations in the Ampel project.
+These commands help build, test, and use the `ampel-i18n` CLI tool for managing translations in the Ampel project.
 
 ### `make build-i18n`
 
-Builds the **cargo-i18n CLI tool** in debug mode.
+Builds the **ampel-i18n CLI tool** in debug mode.
 
 **What it does:**
 
-- Runs `cargo build --package ampel-i18n-builder --bin cargo-i18n`
+- Runs `cargo build --package ampel-i18n-builder --bin ampel-i18n`
 - Compiles the translation automation tool
 
 **When to use:**
@@ -1412,21 +1412,21 @@ Builds the **cargo-i18n CLI tool** in debug mode.
 
 ```bash
 $ make build-i18n
-==> Building cargo-i18n CLI tool...
+==> Building ampel-i18n CLI tool...
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.34s
 ```
 
-**Output:** `target/debug/cargo-i18n`
+**Output:** `target/debug/ampel-i18n`
 
 ---
 
 ### `make build-i18n-release`
 
-Builds the **cargo-i18n CLI tool** in release mode with optimizations.
+Builds the **ampel-i18n CLI tool** in release mode with optimizations.
 
 **What it does:**
 
-- Runs `cargo build --package ampel-i18n-builder --bin cargo-i18n --release`
+- Runs `cargo build --package ampel-i18n-builder --bin ampel-i18n --release`
 - Creates optimized binary for production use
 
 **When to use:**
@@ -1439,11 +1439,11 @@ Builds the **cargo-i18n CLI tool** in release mode with optimizations.
 
 ```bash
 $ make build-i18n-release
-==> Building cargo-i18n CLI tool (release)...
+==> Building ampel-i18n CLI tool (release)...
     Finished `release` profile [optimized] target(s) in 4.56s
 ```
 
-**Output:** `target/release/cargo-i18n`
+**Output:** `target/release/ampel-i18n`
 
 ---
 
@@ -1523,11 +1523,11 @@ open coverage/i18n/index.html
 
 ### `make install-i18n`
 
-Installs the **cargo-i18n tool** to `~/.cargo/bin` for system-wide use.
+Installs the **ampel-i18n tool** to `~/.cargo/bin` for system-wide use.
 
 **What it does:**
 
-- Runs `cargo install --path crates/ampel-i18n-builder --bin cargo-i18n --force`
+- Runs `cargo install --path crates/ampel-i18n-builder --bin ampel-i18n --force`
 - Installs tool to Cargo's bin directory
 - Makes `cargo i18n` available globally
 
@@ -1541,12 +1541,12 @@ Installs the **cargo-i18n tool** to `~/.cargo/bin` for system-wide use.
 
 ```bash
 $ make install-i18n
-==> Installing cargo-i18n CLI tool...
-  Installing cargo-i18n v0.1.0
+==> Installing ampel-i18n CLI tool...
+  Installing ampel-i18n v0.1.0
     Finished `release` profile [optimized] target(s) in 5.23s
-  Installing ~/.cargo/bin/cargo-i18n
+  Installing ~/.cargo/bin/ampel-i18n
 
-cargo-i18n installed to ~/.cargo/bin/cargo-i18n
+ampel-i18n installed to ~/.cargo/bin/ampel-i18n
 Run 'cargo i18n --help' to get started
 ```
 
@@ -1599,11 +1599,11 @@ $ make clean-i18n
 
 ### `make i18n ARGS='...'`
 
-Runs the **cargo-i18n tool** with custom arguments (without installing).
+Runs the **ampel-i18n tool** with custom arguments (without installing).
 
 **What it does:**
 
-- Runs `cargo run --package ampel-i18n-builder --bin cargo-i18n -- <ARGS>`
+- Runs `cargo run --package ampel-i18n-builder --bin ampel-i18n -- <ARGS>`
 - Executes i18n commands directly from source
 
 **When to use:**
@@ -1641,9 +1641,9 @@ make i18n ARGS='import --lang fr --file translations.xliff'
 
 ```bash
 $ make i18n ARGS='coverage'
-==> Running cargo-i18n...
+==> Running ampel-i18n...
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.24s
-     Running `target/debug/cargo-i18n coverage`
+     Running `target/debug/ampel-i18n coverage`
 
 Translation Coverage Report:
 ╭──────────┬────────────┬──────────┬──────────╮

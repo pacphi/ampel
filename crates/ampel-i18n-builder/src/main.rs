@@ -29,6 +29,12 @@ async fn main() -> Result<()> {
     let cli = Cli::parse();
 
     match cli.command {
+        Commands::Init(args) => {
+            ampel_i18n_builder::cli::init::execute(args).await?;
+        }
+        Commands::Doctor(args) => {
+            ampel_i18n_builder::cli::doctor::execute(args).await?;
+        }
         Commands::Translate(args) => {
             ampel_i18n_builder::cli::translate::execute(args).await?;
         }

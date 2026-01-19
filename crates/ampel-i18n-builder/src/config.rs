@@ -115,6 +115,13 @@ pub struct ProviderConfig {
     /// If empty or None, provider is used based on priority alone
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub preferred_languages: Option<Vec<String>>,
+
+    /// OpenAI model to use (OpenAI provider only)
+    /// Valid models: gpt-5-mini, gpt-5-mini-2025-08-07, gpt-4o, gpt-4o-mini, gpt-4-turbo, etc.
+    /// Default: gpt-5-mini
+    /// See: https://platform.openai.com/docs/models
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub model: Option<String>,
 }
 
 /// Fallback behavior configuration
@@ -188,6 +195,7 @@ impl Default for ProviderConfig {
             max_delay_ms: default_max_delay(),
             backoff_multiplier: default_backoff_multiplier(),
             preferred_languages: None,
+            model: None, // No default model for other providers
         }
     }
 }
@@ -207,6 +215,7 @@ impl ProviderConfig {
             max_delay_ms: 30000,
             backoff_multiplier: 2.0,
             preferred_languages: None,
+            model: None, // Not applicable
         }
     }
 
@@ -223,6 +232,7 @@ impl ProviderConfig {
             max_delay_ms: 30000,
             backoff_multiplier: 2.0,
             preferred_languages: None,
+            model: None, // Not applicable
         }
     }
 
@@ -239,6 +249,7 @@ impl ProviderConfig {
             max_delay_ms: 30000,
             backoff_multiplier: 2.0,
             preferred_languages: None,
+            model: None, // Not applicable
         }
     }
 
@@ -255,6 +266,7 @@ impl ProviderConfig {
             max_delay_ms: 60000,
             backoff_multiplier: 2.0,
             preferred_languages: None,
+            model: Some("gpt-5-mini".to_string()), // Default to gpt-5-mini
         }
     }
 

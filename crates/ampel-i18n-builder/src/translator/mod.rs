@@ -150,7 +150,7 @@ impl Translator {
                     .translation
                     .openai_api_key
                     .clone()
-                    .or_else(|| std::env::var("GOOGLE_API_KEY").ok())
+                    .or_else(|| std::env::var("OPENAI_API_KEY").ok())
                     .ok_or_else(|| {
                         Error::Config(
                             "OpenAI API key not found. Set OPENAI_API_KEY env var or config"
@@ -158,9 +158,12 @@ impl Translator {
                         )
                     })?;
 
+                let model = config.translation.providers.openai.model.clone();
+
                 Box::new(openai::OpenAITranslator::new(
                     api_key,
                     Duration::from_secs(config.translation.timeout_secs),
+                    model,
                 )?)
             }
         };

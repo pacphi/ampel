@@ -2,9 +2,76 @@
 
 Translation file parser, validator, and code generator for Ampel internationalization system with enterprise-grade 4-tier translation provider architecture.
 
+## 🚀 Quick Start for Non-Technical Users
+
+Never installed a Rust tool before? **No problem!** This tool is designed to be beginner-friendly.
+
+### Option 1: Use Claude Code (Easiest) 🤖
+
+If you have Claude Code CLI, just say:
+
+```
+/ampel-i18n:localize
+
+Help me install and set up ampel-i18n-builder. I want to translate my [React/Vue/Rust] app using [OpenAI/DeepL/Google].
+```
+
+Claude will:
+
+1. Check if you have Rust installed (and guide you to install it if needed)
+2. Install ampel-i18n-builder for you
+3. Set up your configuration files
+4. Help you get your first translations
+
+**That's it!** Claude handles everything step-by-step.
+
+### Option 2: Manual Installation (5 minutes) 📖
+
+**Step 1: Install Rust** (one-time setup)
+
+```bash
+# macOS/Linux
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Windows: Download installer from https://rustup.rs/
+```
+
+**Step 2: Install ampel-i18n-builder**
+
+```bash
+cargo install ampel-i18n-builder
+```
+
+**Step 3: Interactive Setup**
+
+```bash
+ampel-i18n init
+```
+
+This wizard will:
+
+- Ask you a few questions (framework, languages, provider)
+- Generate configuration files for you
+- Create sample translation files
+- Get you ready to translate!
+
+**Step 4: Run Your First Translation**
+
+```bash
+ampel-i18n sync
+```
+
+Done! Your app is now multi-lingual. 🌍
+
+For detailed installation help, see: [skills/ampel-i18n/references/install-guide.md](skills/ampel-i18n/references/install-guide.md)
+
+---
+
 ## Features
 
 - **4-Tier Translation Architecture**: Systran (Tier 1) → DeepL (Tier 2) → Google (Tier 3) → OpenAI (Tier 4) with automatic fallback
+- **Interactive Setup Wizard**: `ampel-i18n init` - No manual config needed
+- **Health Checks**: `ampel-i18n doctor` - Diagnose issues automatically
 - **Format Parsing**: Parse and validate YAML (backend) and JSON (frontend) translation files
 - **Translation API Integration**: Systran, DeepL, Google Cloud Translation, and OpenAI support
 - **Intelligent Fallback**: Automatic provider selection with graceful degradation on failures
@@ -13,16 +80,6 @@ Translation file parser, validator, and code generator for Ampel internationaliz
 - **Type-Safe**: Compile-time translation key validation with generated types
 - **Pluralization**: Support for CLDR plural forms (zero, one, two, few, many, other)
 - **Configurable Providers**: Per-provider timeout, retry, and batch size configuration
-
-## Installation
-
-```bash
-# Build the CLI tool
-cargo build --release --bin i18n-builder
-
-# Or use via cargo run
-cargo run --bin i18n-builder -- --help
-```
 
 ## Architecture
 

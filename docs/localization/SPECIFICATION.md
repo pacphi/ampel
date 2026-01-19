@@ -647,7 +647,7 @@ cargo i18n import --lang fi --format xliff --input translations.xliff
 
 ```rust
 #[derive(Parser)]
-#[command(name = "cargo-i18n")]
+#[command(name = "ampel-i18n")]
 #[command(about = "Translation automation for Ampel")]
 struct Cli {
     #[command(subcommand)]
