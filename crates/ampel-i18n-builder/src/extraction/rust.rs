@@ -2,7 +2,7 @@
 //!
 //! Extracts translatable strings from Rust source files using regex patterns.
 
-use crate::extraction::extractor::{ExtractedString, Extractor, ExtractionError, StringContext};
+use crate::extraction::extractor::{ExtractedString, ExtractionError, Extractor, StringContext};
 use async_trait::async_trait;
 use regex::Regex;
 use std::fs;
@@ -24,7 +24,10 @@ impl RustExtractor {
             error_macro: Regex::new(r#"(?:anyhow|bail)!\s*\(\s*["']([^"']+)["']"#).unwrap(),
 
             // Format macro: format!("template {}", var) or println!("text")
-            format_macro: Regex::new(r#"(?:format|println|eprintln|print|eprint)!\s*\(\s*["']([^"']+)["']"#).unwrap(),
+            format_macro: Regex::new(
+                r#"(?:format|println|eprintln|print|eprint)!\s*\(\s*["']([^"']+)["']"#,
+            )
+            .unwrap(),
 
             // String literals: "text" or String::from("text")
             string_literal: Regex::new(r#"["']([^"'\n]+)["']"#).unwrap(),
@@ -136,8 +139,10 @@ impl Extractor for RustExtractor {
                     let variables = self.extract_format_placeholders(text);
 
                     // Determine context - skip log macros (println, eprintln)
-                    let is_log_macro = line.contains("println!") || line.contains("eprintln!") ||
-                                       line.contains("print!") || line.contains("eprint!");
+                    let is_log_macro = line.contains("println!")
+                        || line.contains("eprintln!")
+                        || line.contains("print!")
+                        || line.contains("eprint!");
 
                     if !is_log_macro && self.is_translatable(text, &StringContext::UiText) {
                         extracted.push(ExtractedString {
@@ -157,8 +162,13 @@ impl Extractor for RustExtractor {
             // Only extract from variable assignments, not function calls
             let line_lower = line.to_lowercase();
             let is_assignment = line.contains("let") || line.contains("const");
-            let is_error_context = line_lower.contains("error") && !line.contains("Error::") && !line.contains("error!");
-            let is_not_log_macro = !line.contains("println!") && !line.contains("eprintln!") && !line.contains("print!") && !line.contains("eprint!");
+            let is_error_context = line_lower.contains("error")
+                && !line.contains("Error::")
+                && !line.contains("error!");
+            let is_not_log_macro = !line.contains("println!")
+                && !line.contains("eprintln!")
+                && !line.contains("print!")
+                && !line.contains("eprint!");
 
             if is_assignment && is_error_context && is_not_log_macro {
                 for cap in self.string_literal.captures_iter(line) {
@@ -214,7 +224,9 @@ mod tests {
 
         let extracted = extract_from_content(content).await;
         assert!(extracted.iter().any(|e| e.text == "User not found"));
-        assert!(extracted.iter().any(|e| e.text == "Invalid credentials: {0}"));
+        assert!(extracted
+            .iter()
+            .any(|e| e.text == "Invalid credentials: {0}"));
     }
 
     #[tokio::test]
@@ -263,7 +275,10 @@ mod tests {
 
         let extracted = extract_from_content(content).await;
 
-        let error_msg = extracted.iter().find(|e| e.text == "Invalid email address").unwrap();
+        let error_msg = extracted
+            .iter()
+            .find(|e| e.text == "Invalid email address")
+            .unwrap();
         assert_eq!(error_msg.context, StringContext::ErrorMessage);
     }
 

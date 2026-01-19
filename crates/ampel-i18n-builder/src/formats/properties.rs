@@ -225,24 +225,50 @@ impl PropertiesFormat {
 
                     if has_plural_keys {
                         // Extract plural forms
-                        let one = nested_map
-                            .remove("one")
-                            .and_then(|v| if let TranslationValue::String(s) = v { Some(s) } else { None });
-                        let zero = nested_map
-                            .remove("zero")
-                            .and_then(|v| if let TranslationValue::String(s) = v { Some(s) } else { None });
-                        let two = nested_map
-                            .remove("two")
-                            .and_then(|v| if let TranslationValue::String(s) = v { Some(s) } else { None });
-                        let few = nested_map
-                            .remove("few")
-                            .and_then(|v| if let TranslationValue::String(s) = v { Some(s) } else { None });
-                        let many = nested_map
-                            .remove("many")
-                            .and_then(|v| if let TranslationValue::String(s) = v { Some(s) } else { None });
+                        let one = nested_map.remove("one").and_then(|v| {
+                            if let TranslationValue::String(s) = v {
+                                Some(s)
+                            } else {
+                                None
+                            }
+                        });
+                        let zero = nested_map.remove("zero").and_then(|v| {
+                            if let TranslationValue::String(s) = v {
+                                Some(s)
+                            } else {
+                                None
+                            }
+                        });
+                        let two = nested_map.remove("two").and_then(|v| {
+                            if let TranslationValue::String(s) = v {
+                                Some(s)
+                            } else {
+                                None
+                            }
+                        });
+                        let few = nested_map.remove("few").and_then(|v| {
+                            if let TranslationValue::String(s) = v {
+                                Some(s)
+                            } else {
+                                None
+                            }
+                        });
+                        let many = nested_map.remove("many").and_then(|v| {
+                            if let TranslationValue::String(s) = v {
+                                Some(s)
+                            } else {
+                                None
+                            }
+                        });
                         let other = nested_map
                             .remove("other")
-                            .and_then(|v| if let TranslationValue::String(s) = v { Some(s) } else { None })
+                            .and_then(|v| {
+                                if let TranslationValue::String(s) = v {
+                                    Some(s)
+                                } else {
+                                    None
+                                }
+                            })
                             .expect("other key should exist");
 
                         // If nested_map is now empty, replace the whole nested value with PluralForms
@@ -277,7 +303,11 @@ impl PropertiesFormat {
     }
 
     /// Helper function for recursive flattening
-    fn flatten_recursive(map: &TranslationMap, prefix: &str, result: &mut BTreeMap<String, String>) {
+    fn flatten_recursive(
+        map: &TranslationMap,
+        prefix: &str,
+        result: &mut BTreeMap<String, String>,
+    ) {
         for (key, value) in map {
             let full_key = if prefix.is_empty() {
                 key.clone()
@@ -397,10 +427,19 @@ mod tests {
 
     #[test]
     fn test_unescape() {
-        assert_eq!(PropertiesFormat::unescape_value("Hello\\nWorld"), "Hello\nWorld");
+        assert_eq!(
+            PropertiesFormat::unescape_value("Hello\\nWorld"),
+            "Hello\nWorld"
+        );
         assert_eq!(PropertiesFormat::unescape_value("Tab\\there"), "Tab\there");
-        assert_eq!(PropertiesFormat::unescape_value("Back\\\\slash"), "Back\\slash");
-        assert_eq!(PropertiesFormat::unescape_value("Equal\\=sign"), "Equal=sign");
+        assert_eq!(
+            PropertiesFormat::unescape_value("Back\\\\slash"),
+            "Back\\slash"
+        );
+        assert_eq!(
+            PropertiesFormat::unescape_value("Equal\\=sign"),
+            "Equal=sign"
+        );
     }
 
     #[test]

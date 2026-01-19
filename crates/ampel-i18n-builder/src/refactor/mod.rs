@@ -162,9 +162,15 @@ mod tests {
 
     #[test]
     fn test_matches_pattern() {
-        assert!(matches_pattern(Path::new("test.tsx"), &["*.tsx".to_string()]));
+        assert!(matches_pattern(
+            Path::new("test.tsx"),
+            &["*.tsx".to_string()]
+        ));
         assert!(matches_pattern(Path::new("test.rs"), &["*.rs".to_string()]));
-        assert!(!matches_pattern(Path::new("test.txt"), &["*.tsx".to_string()]));
+        assert!(!matches_pattern(
+            Path::new("test.txt"),
+            &["*.tsx".to_string()]
+        ));
     }
 
     #[test]

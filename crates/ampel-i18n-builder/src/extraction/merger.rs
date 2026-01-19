@@ -1,7 +1,7 @@
 //! Merge extracted strings with existing translations
 
 use crate::extraction::extractor::ExtractedString;
-use crate::extraction::key_generator::{KeyStrategy, create_generator};
+use crate::extraction::key_generator::{create_generator, KeyStrategy};
 use crate::formats::{TranslationMap, TranslationValue};
 use std::collections::{HashMap, HashSet};
 use thiserror::Error;
@@ -91,7 +91,12 @@ impl Merger {
         keys
     }
 
-    fn collect_keys_recursive(&self, map: &TranslationMap, prefix: &str, keys: &mut HashSet<String>) {
+    fn collect_keys_recursive(
+        &self,
+        map: &TranslationMap,
+        prefix: &str,
+        keys: &mut HashSet<String>,
+    ) {
         for (key, value) in map {
             let full_key = if prefix.is_empty() {
                 key.clone()
@@ -143,7 +148,12 @@ impl Merger {
     /// Insert a key with dot-notation into the map
     ///
     /// Example: "button.clickMe" → map["button"]["clickMe"]
-    fn insert_key(&self, map: &mut TranslationMap, key: &str, value: &str) -> Result<(), MergeError> {
+    fn insert_key(
+        &self,
+        map: &mut TranslationMap,
+        key: &str,
+        value: &str,
+    ) -> Result<(), MergeError> {
         let parts: Vec<&str> = key.split('.').collect();
         if parts.is_empty() {
             return Err(MergeError::InvalidKey(key.to_string()));
@@ -155,7 +165,10 @@ impl Merger {
         for (idx, &part) in parts.iter().enumerate() {
             if idx == last_idx {
                 // Last part - insert the value
-                current.insert(part.to_string(), TranslationValue::String(value.to_string()));
+                current.insert(
+                    part.to_string(),
+                    TranslationValue::String(value.to_string()),
+                );
             } else {
                 // Intermediate part - ensure nested map exists
                 current = match current
@@ -216,7 +229,10 @@ mod tests {
             "button".to_string(),
             TranslationValue::Nested({
                 let mut nested = std::collections::BTreeMap::new();
-                nested.insert("clickMe".to_string(), TranslationValue::String("Click me".to_string()));
+                nested.insert(
+                    "clickMe".to_string(),
+                    TranslationValue::String("Click me".to_string()),
+                );
                 nested
             }),
         );
@@ -251,7 +267,9 @@ mod tests {
         let merger = Merger::new(KeyStrategy::Semantic);
         let mut map = TranslationMap::new();
 
-        merger.insert_key(&mut map, "button.clickMe", "Click me").unwrap();
+        merger
+            .insert_key(&mut map, "button.clickMe", "Click me")
+            .unwrap();
 
         assert!(map.contains_key("button"));
         if let Some(TranslationValue::Nested(nested)) = map.get("button") {
@@ -265,10 +283,16 @@ mod tests {
     fn test_collect_keys() {
         let merger = Merger::new(KeyStrategy::Semantic);
         let mut map = TranslationMap::new();
-        map.insert("simple".to_string(), TranslationValue::String("value".to_string()));
+        map.insert(
+            "simple".to_string(),
+            TranslationValue::String("value".to_string()),
+        );
 
         let mut nested = std::collections::BTreeMap::new();
-        nested.insert("inner".to_string(), TranslationValue::String("nested value".to_string()));
+        nested.insert(
+            "inner".to_string(),
+            TranslationValue::String("nested value".to_string()),
+        );
         map.insert("outer".to_string(), TranslationValue::Nested(nested));
 
         let keys = merger.collect_keys(&map);

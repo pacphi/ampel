@@ -9,10 +9,7 @@ use std::collections::HashMap;
 use std::fs;
 
 pub async fn execute(args: RefactorArgs) -> Result<()> {
-    println!(
-        "{} Starting code refactoring...",
-        "→".cyan().bold()
-    );
+    println!("{} Starting code refactoring...", "→".cyan().bold());
 
     // Load translation mapping from file
     let mapping = load_mapping(&args.mapping)?;
@@ -53,10 +50,7 @@ pub async fn execute(args: RefactorArgs) -> Result<()> {
             println!("  Imports added: {}", result.imports_added);
 
             if let Some(backup) = result.backup_path {
-                println!(
-                    "  Backup created: {}",
-                    backup.display().to_string().cyan()
-                );
+                println!("  Backup created: {}", backup.display().to_string().cyan());
             }
         }
     } else if args.target.is_dir() {
@@ -77,10 +71,7 @@ pub async fn execute(args: RefactorArgs) -> Result<()> {
         println!("  Imports added: {}", total_imports);
 
         if !args.no_backup {
-            println!(
-                "  Backups in: {}",
-                ".ampel-i18n-backups/".cyan()
-            );
+            println!("  Backups in: {}", ".ampel-i18n-backups/".cyan());
         }
     } else {
         return Err(crate::error::Error::Io(std::io::Error::new(
@@ -90,7 +81,10 @@ pub async fn execute(args: RefactorArgs) -> Result<()> {
     }
 
     if args.dry_run {
-        println!("\n{} Dry-run mode: no files were modified", "!".yellow().bold());
+        println!(
+            "\n{} Dry-run mode: no files were modified",
+            "!".yellow().bold()
+        );
     }
 
     Ok(())
@@ -183,11 +177,7 @@ mod tests {
 
         // Create mapping file
         let mapping_file = temp_dir.path().join("mapping.json");
-        fs::write(
-            &mapping_file,
-            r#"{"button": {"save": "Save"}}"#
-        )
-        .unwrap();
+        fs::write(&mapping_file, r#"{"button": {"save": "Save"}}"#).unwrap();
 
         let args = RefactorArgs {
             target: test_file.clone(),

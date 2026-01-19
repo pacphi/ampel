@@ -224,8 +224,14 @@ mod tests {
     #[test]
     fn test_semantic_sanitize() {
         assert_eq!(SemanticKeyGenerator::sanitize_text("Click me!"), "clickMe");
-        assert_eq!(SemanticKeyGenerator::sanitize_text("Save Changes"), "saveChanges");
-        assert_eq!(SemanticKeyGenerator::sanitize_text("Enter your name"), "enterYourName");
+        assert_eq!(
+            SemanticKeyGenerator::sanitize_text("Save Changes"),
+            "saveChanges"
+        );
+        assert_eq!(
+            SemanticKeyGenerator::sanitize_text("Enter your name"),
+            "enterYourName"
+        );
     }
 
     #[test]

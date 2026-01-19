@@ -209,6 +209,7 @@ cargo i18n extract \
 **Note:** Currently supports React/TypeScript and Rust extraction. Java source code extraction is planned for a future release, but you can manually create .properties files and use the translation features.
 
 **Options:**
+
 - `--source`: Source directories to scan (can specify multiple)
 - `--patterns`: File patterns like `*.tsx`, `*.rs`, `*.java`
 - `--format`: Output format (`json`, `yaml`, or `properties`)
@@ -218,6 +219,7 @@ cargo i18n extract \
 - `--namespace`: Organize extracted keys under a namespace
 
 **What gets extracted:**
+
 - JSX text content: `<Button>Click me</Button>`
 - JSX attributes: `<Input placeholder="Enter name" />`, `aria-label`, `title`
 - Template strings: `` `Welcome, ${userName}!` `` (with variable detection)
@@ -225,6 +227,7 @@ cargo i18n extract \
 - String literals in context: `const error = "Invalid email";`
 
 **What gets skipped:**
+
 - Strings already using i18n: `t('key')`, `t!("key")`
 - Very short strings (< 3 characters)
 - Technical strings: URLs, file paths, SQL queries

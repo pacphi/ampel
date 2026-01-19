@@ -55,16 +55,16 @@ ampel-i18n --version
 
 ## Commands
 
-| Command                     | Purpose                                                                   |
-| --------------------------- | ------------------------------------------------------------------------- |
-| `ampel-i18n init`           | Interactive setup wizard for first-time users                             |
-| `ampel-i18n doctor`         | Health check - validate configuration and diagnose issues                 |
-| `ampel-i18n extract`        | **NEW:** Extract translatable strings from source code                    |
-| `ampel-i18n sync`           | Generate/update translations for all configured languages                 |
-| `ampel-i18n coverage`       | Show translation completion percentages per language                      |
-| `ampel-i18n missing`        | List all untranslated keys                                                |
-| `ampel-i18n report`         | Generate comprehensive translation status report                          |
-| `ampel-i18n generate-types` | Create TypeScript/Rust types from translation files                       |
+| Command                     | Purpose                                                   |
+| --------------------------- | --------------------------------------------------------- |
+| `ampel-i18n init`           | Interactive setup wizard for first-time users             |
+| `ampel-i18n doctor`         | Health check - validate configuration and diagnose issues |
+| `ampel-i18n extract`        | **NEW:** Extract translatable strings from source code    |
+| `ampel-i18n sync`           | Generate/update translations for all configured languages |
+| `ampel-i18n coverage`       | Show translation completion percentages per language      |
+| `ampel-i18n missing`        | List all untranslated keys                                |
+| `ampel-i18n report`         | Generate comprehensive translation status report          |
+| `ampel-i18n generate-types` | Create TypeScript/Rust types from translation files       |
 
 ## Workflow
 

@@ -138,7 +138,8 @@ pub trait Extractor: Send + Sync {
         if text.to_uppercase().starts_with("SELECT ")
             || text.to_uppercase().starts_with("INSERT ")
             || text.to_uppercase().starts_with("UPDATE ")
-            || text.to_uppercase().starts_with("DELETE ") {
+            || text.to_uppercase().starts_with("DELETE ")
+        {
             return false;
         }
 
@@ -159,7 +160,10 @@ mod tests {
 
     #[async_trait]
     impl Extractor for MockExtractor {
-        async fn extract_file(&self, _path: &Path) -> Result<Vec<ExtractedString>, ExtractionError> {
+        async fn extract_file(
+            &self,
+            _path: &Path,
+        ) -> Result<Vec<ExtractedString>, ExtractionError> {
             Ok(vec![])
         }
 

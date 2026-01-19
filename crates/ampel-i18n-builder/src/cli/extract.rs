@@ -10,10 +10,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 pub async fn execute(args: crate::cli::ExtractArgs) -> Result<()> {
-    println!(
-        "{} Starting string extraction...",
-        "→".cyan().bold()
-    );
+    println!("{} Starting string extraction...", "→".cyan().bold());
 
     // Collect source files
     let files = collect_source_files(&args.source, &args.patterns)?;
@@ -23,11 +20,7 @@ pub async fn execute(args: crate::cli::ExtractArgs) -> Result<()> {
         return Ok(());
     }
 
-    println!(
-        "{} Found {} files to scan",
-        "✓".green().bold(),
-        files.len()
-    );
+    println!("{} Found {} files to scan", "✓".green().bold(), files.len());
 
     // Extract strings from all files
     let progress = ProgressBar::new(files.len() as u64);
@@ -90,7 +83,10 @@ pub async fn execute(args: crate::cli::ExtractArgs) -> Result<()> {
     // Display merge report
     println!("\n{} Merge report:", "→".cyan().bold());
     println!("  Added: {}", report.added.to_string().green());
-    println!("  Skipped (existing): {}", report.skipped.to_string().yellow());
+    println!(
+        "  Skipped (existing): {}",
+        report.skipped.to_string().yellow()
+    );
 
     if !report.conflicts.is_empty() {
         println!("  Conflicts: {}", report.conflicts.len().to_string().red());
@@ -129,10 +125,7 @@ pub async fn execute(args: crate::cli::ExtractArgs) -> Result<()> {
 }
 
 /// Collect source files matching patterns
-fn collect_source_files(
-    source_dirs: &[PathBuf],
-    patterns: &[String],
-) -> Result<Vec<PathBuf>> {
+fn collect_source_files(source_dirs: &[PathBuf], patterns: &[String]) -> Result<Vec<PathBuf>> {
     let mut files = Vec::new();
 
     for dir in source_dirs {
@@ -185,21 +178,14 @@ fn matches_pattern(path: &Path, patterns: &[String]) -> bool {
 }
 
 /// Create appropriate extractor based on file extension
-fn create_extractor(
-    file: &Path,
-) -> Result<Option<Box<dyn crate::extraction::Extractor>>> {
-    let extension = file
-        .extension()
-        .and_then(|e| e.to_str())
-        .unwrap_or("");
+fn create_extractor(file: &Path) -> Result<Option<Box<dyn crate::extraction::Extractor>>> {
+    let extension = file.extension().and_then(|e| e.to_str()).unwrap_or("");
 
     match extension {
-        "ts" | "tsx" | "js" | "jsx" => {
-            Ok(Some(Box::new(crate::extraction::TypeScriptExtractor::new())))
-        }
-        "rs" => {
-            Ok(Some(Box::new(crate::extraction::RustExtractor::new())))
-        }
+        "ts" | "tsx" | "js" | "jsx" => Ok(Some(Box::new(
+            crate::extraction::TypeScriptExtractor::new(),
+        ))),
+        "rs" => Ok(Some(Box::new(crate::extraction::RustExtractor::new()))),
         _ => Ok(None),
     }
 }
@@ -221,10 +207,7 @@ fn deduplicate_strings(mut extracted: Vec<ExtractedString>) -> Vec<ExtractedStri
 }
 
 /// Load existing translations from file
-fn load_existing_translations(
-    output: &Path,
-    format: &ExtractionFormat,
-) -> Result<TranslationMap> {
+fn load_existing_translations(output: &Path, format: &ExtractionFormat) -> Result<TranslationMap> {
     if !output.exists() {
         return Ok(TranslationMap::new());
     }

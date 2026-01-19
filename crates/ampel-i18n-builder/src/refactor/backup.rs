@@ -121,7 +121,11 @@ impl BackupManager {
     }
 
     /// Clean up old backups, keeping only the most recent N
-    pub fn cleanup_old_backups(&self, file: &Path, keep_count: usize) -> Result<usize, BackupError> {
+    pub fn cleanup_old_backups(
+        &self,
+        file: &Path,
+        keep_count: usize,
+    ) -> Result<usize, BackupError> {
         let backups = self.list_backups(file)?;
 
         if backups.len() <= keep_count {

@@ -343,7 +343,11 @@ pub struct ExtractArgs {
     pub dry_run: bool,
 
     /// Output file path
-    #[arg(short, long, default_value = "frontend/public/locales/en/extracted.json")]
+    #[arg(
+        short,
+        long,
+        default_value = "frontend/public/locales/en/extracted.json"
+    )]
     pub output: PathBuf,
 }
 

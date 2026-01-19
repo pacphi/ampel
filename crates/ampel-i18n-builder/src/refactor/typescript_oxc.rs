@@ -22,9 +22,7 @@ pub fn refactor_typescript_file(
     let source_type = SourceType::from_path(file).unwrap_or(SourceType::tsx());
 
     let ParserReturn {
-        program: _,
-        errors,
-        ..
+        program: _, errors, ..
     } = Parser::new(&allocator, &source, source_type).parse();
 
     if !errors.is_empty() {
@@ -86,7 +84,8 @@ fn apply_regex_transformations(
 
     for (text, key) in sorted_mapping {
         // Skip if already translated
-        if output.contains(&format!("t('{}')", key)) || output.contains(&format!("t(\"{}\") ", key)) {
+        if output.contains(&format!("t('{}')", key)) || output.contains(&format!("t(\"{}\") ", key))
+        {
             continue;
         }
 
@@ -195,7 +194,10 @@ mod tests {
     fn test_regex_transform_jsx_attribute() {
         let source = r#"<Input placeholder="Enter name" />"#;
         let mut mapping = HashMap::new();
-        mapping.insert("Enter name".to_string(), "placeholder.enterName".to_string());
+        mapping.insert(
+            "Enter name".to_string(),
+            "placeholder.enterName".to_string(),
+        );
 
         let (output, stats) = apply_regex_transformations(source, &mapping).unwrap();
 

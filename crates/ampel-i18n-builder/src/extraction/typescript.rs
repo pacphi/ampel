@@ -2,7 +2,7 @@
 //!
 //! Extracts translatable strings from TypeScript and React (JSX/TSX) files using regex patterns.
 
-use crate::extraction::extractor::{ExtractedString, Extractor, ExtractionError, StringContext};
+use crate::extraction::extractor::{ExtractedString, ExtractionError, Extractor, StringContext};
 use async_trait::async_trait;
 use regex::Regex;
 use std::fs;
@@ -64,8 +64,10 @@ impl TypeScriptExtractor {
 
     /// Check if line contains i18n function call (already translated)
     fn is_already_translated(&self, line: &str) -> bool {
-        line.contains("t(") || line.contains("t(\"") || line.contains("t('") ||
-        line.contains("useTranslation(")
+        line.contains("t(")
+            || line.contains("t(\"")
+            || line.contains("t('")
+            || line.contains("useTranslation(")
     }
 }
 
@@ -90,7 +92,10 @@ impl Extractor for TypeScriptExtractor {
             }
 
             // Skip comments
-            if line.trim().starts_with("//") || line.trim().starts_with("/*") || line.trim().starts_with('*') {
+            if line.trim().starts_with("//")
+                || line.trim().starts_with("/*")
+                || line.trim().starts_with('*')
+            {
                 continue;
             }
 
@@ -159,8 +164,11 @@ impl Extractor for TypeScriptExtractor {
             // Extract string literals (only in specific contexts to avoid false positives)
             // Look for patterns like: const error = "Message"
             let line_lower = line.to_lowercase();
-            if line_lower.contains("error") || line_lower.contains("message") ||
-               line_lower.contains("label") || line_lower.contains("validation") {
+            if line_lower.contains("error")
+                || line_lower.contains("message")
+                || line_lower.contains("label")
+                || line_lower.contains("validation")
+            {
                 for cap in self.string_literal.captures_iter(line) {
                     if let Some(text_match) = cap.get(1) {
                         let text = text_match.as_str().trim();
@@ -233,7 +241,10 @@ mod tests {
 
         let extracted = extract_from_content(content).await;
 
-        let placeholder = extracted.iter().find(|e| e.text == "Enter your name").unwrap();
+        let placeholder = extracted
+            .iter()
+            .find(|e| e.text == "Enter your name")
+            .unwrap();
         assert_eq!(placeholder.context, StringContext::Placeholder);
 
         let aria = extracted.iter().find(|e| e.text == "Close dialog").unwrap();
@@ -248,7 +259,10 @@ mod tests {
 
         let extracted = extract_from_content(content).await;
 
-        let template = extracted.iter().find(|e| e.text.contains("Welcome")).unwrap();
+        let template = extracted
+            .iter()
+            .find(|e| e.text.contains("Welcome"))
+            .unwrap();
         assert!(template.variables.contains(&"userName".to_string()));
     }
 
@@ -272,10 +286,16 @@ mod tests {
 
         let extracted = extract_from_content(content).await;
 
-        let error_msg = extracted.iter().find(|e| e.text == "Invalid email address").unwrap();
+        let error_msg = extracted
+            .iter()
+            .find(|e| e.text == "Invalid email address")
+            .unwrap();
         assert_eq!(error_msg.context, StringContext::ErrorMessage);
 
-        let validation_msg = extracted.iter().find(|e| e.text == "Password too short").unwrap();
+        let validation_msg = extracted
+            .iter()
+            .find(|e| e.text == "Password too short")
+            .unwrap();
         assert_eq!(validation_msg.context, StringContext::ValidationMessage);
     }
 
@@ -297,7 +317,8 @@ mod tests {
     #[test]
     fn test_template_variable_extraction() {
         let extractor = TypeScriptExtractor::new();
-        let vars = extractor.extract_template_variables("Welcome, ${userName}! You have ${count} messages.");
+        let vars = extractor
+            .extract_template_variables("Welcome, ${userName}! You have ${count} messages.");
 
         assert_eq!(vars.len(), 2);
         assert!(vars.contains(&"userName".to_string()));
