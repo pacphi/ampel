@@ -7,7 +7,7 @@ for your pull requests across GitHub, GitLab, and Bitbucket.
 
 ### Prerequisites
 
-- [Rust](https://rustup.rs/) 1.91+ (for backend development)
+- [Rust](https://rustup.rs/) 1.92+ (for backend development)
 - [Node.js](https://nodejs.org/) 20+ with [pnpm](https://pnpm.io/) (for frontend development)
 - [Docker](https://www.docker.com/) and Docker Compose (for containerized deployment)
 - PostgreSQL 16+ (or use Docker)

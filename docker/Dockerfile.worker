@@ -7,7 +7,7 @@
 # Stage 1: Chef - Prepare recipe for dependency caching
 # Uses cargo-chef to create a dependency-only build layer
 # =============================================================================
-FROM rust:1.91-bookworm AS chef
+FROM rust:1.92-bookworm AS chef
 RUN cargo install cargo-chef --locked
 WORKDIR /app
 

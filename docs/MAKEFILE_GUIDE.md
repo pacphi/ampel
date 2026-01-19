@@ -111,8 +111,8 @@ $ make install
 ==> Checking Rust toolchain...
 active toolchain
 ----------------
-1.91.1-x86_64-unknown-linux-gnu (default)
-rustc 1.91.1 (c4616da40 2024-10-17)
+1.92.0-x86_64-unknown-linux-gnu (default)
+rustc 1.92.0 (ded5c06cf 2025-12-08)
 
 ==> Installing frontend dependencies...
 Packages: +243

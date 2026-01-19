@@ -215,7 +215,7 @@ retries = 0
 CARGO_TERM_COLOR: always
 RUST_BACKTRACE: 1
 RUSTFLAGS: '-D warnings'
-RUST_VERSION: '1.91.1'
+RUST_VERSION: '1.92.0'
 
 # Test configuration
 DATABASE_URL: postgres://ampel:ampel@localhost:5432/ampel_test

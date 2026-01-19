@@ -60,7 +60,7 @@ Ampel is a unified pull request management dashboard that consolidates PRs from 
 
 | Component            | Technology   | Version | Purpose                       |
 | -------------------- | ------------ | ------- | ----------------------------- |
-| **Language**         | Rust         | 1.91.1  | Type-safe, performant backend |
+| **Language**         | Rust         | 1.92.0  | Type-safe, performant backend |
 | **Web Framework**    | Axum         | Latest  | HTTP server and routing       |
 | **Database ORM**     | SeaORM       | Latest  | Type-safe database operations |
 | **Database**         | PostgreSQL   | 16+     | Primary data store            |
@@ -1299,7 +1299,7 @@ See [Dashboard Visibility Breakdown API Documentation](/docs/api/DASHBOARD-VISIB
 
 **Prerequisites**:
 
-- Rust 1.91.1
+- Rust 1.92.0
 - PostgreSQL 16+
 - Redis 7+
 - Node.js 20+ / pnpm 10.24.0

@@ -2,7 +2,7 @@
 
 **Research Date**: December 19, 2025
 **Focus**: SeaORM/SQLx multi-database testing strategies for CI environments
-**Key Technologies**: Rust 1.91+, SeaORM 2.0, SQLx, cargo-nextest, testcontainers-rs
+**Key Technologies**: Rust 1.92+, SeaORM 2.0, SQLx, cargo-nextest, testcontainers-rs
 
 ---
 
@@ -953,4 +953,4 @@ This approach provides:
 - SQLx: 0.7+
 - testcontainers: 0.15+
 - cargo-nextest: 0.9+
-- Rust: 1.91+
+- Rust: 1.92+

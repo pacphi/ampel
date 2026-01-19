@@ -17,7 +17,7 @@ The Ampel project demonstrates **solid engineering fundamentals** with a well-st
 
 - ✅ Clean architecture with proper separation of concerns (5 dedicated crates)
 - ✅ Strong security implementation (Argon2id, AES-256-GCM, JWT)
-- ✅ Modern technology stack (Rust 1.91, React 19, TypeScript 5.9)
+- ✅ Modern technology stack (Rust 1.92, React 19, TypeScript 5.9)
 - ✅ Comprehensive provider abstraction layer
 - ✅ Zero lint errors in both backend and frontend
 - ✅ Good TypeScript type coverage

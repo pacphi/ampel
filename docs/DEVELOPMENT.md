@@ -6,7 +6,7 @@ This guide covers setting up and running Ampel for local development.
 
 ### Required
 
-- **Rust** 1.91+ - Install via [rustup](https://rustup.rs/)
+- **Rust** 1.92+ - Install via [rustup](https://rustup.rs/)
 - **Node.js** 20+ - Install via [nvm](https://github.com/nvm-sh/nvm) or [official installer](https://nodejs.org/)
 - **pnpm** 10+ - Install via `corepack enable && corepack prepare pnpm@latest --activate`
 - **PostgreSQL** 16+ - Via Docker or local installation

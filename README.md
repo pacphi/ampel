@@ -141,7 +141,7 @@ Open [http://localhost:3000](http://localhost:3000) and connect your first repos
 
 Built with a modern, performant stack designed for production workloads:
 
-- **Backend**: Rust 1.91+ with Axum (REST API), SeaORM (database), Apalis (background jobs)
+- **Backend**: Rust 1.92+ with Axum (REST API), SeaORM (database), Apalis (background jobs)
 - **Frontend**: React 19 + TypeScript, Vite, TanStack Query, shadcn/ui, Tailwind CSS
 - **Database**: PostgreSQL 16 for data, Redis 7 for caching
 - **Observability**: Prometheus metrics, Grafana dashboards, OpenTelemetry tracing
