@@ -3,9 +3,11 @@ use std::collections::BTreeMap;
 use thiserror::Error;
 
 pub mod json;
+pub mod properties;
 pub mod yaml;
 
 pub use json::JsonFormat;
+pub use properties::PropertiesFormat;
 pub use yaml::YamlFormat;
 
 #[derive(Error, Debug)]

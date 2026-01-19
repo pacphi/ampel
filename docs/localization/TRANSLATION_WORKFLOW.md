@@ -159,7 +159,7 @@ Before translation, check which languages are missing the new keys:
 
 ```bash
 cd crates/ampel-i18n-builder
-cargo run --bin cargo-i18n -- missing --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- missing --translation-dir ../../frontend/public/locales
 ```
 
 Output shows missing keys per language:
@@ -181,7 +181,7 @@ Translate each language one-by-one (recommended for control):
 cd crates/ampel-i18n-builder
 
 # Translate only missing keys in settings namespace for German
-cargo run --bin cargo-i18n -- translate \
+cargo run --bin ampel-i18n -- translate \
   --lang de \
   --namespace settings \
   --translation-dir ../../frontend/public/locales
@@ -190,7 +190,7 @@ cargo run --bin cargo-i18n -- translate \
 ### Step 5: Regenerate TypeScript Types
 
 ```bash
-cargo run --bin cargo-i18n -- generate-types \
+cargo run --bin ampel-i18n -- generate-types \
   --translation-dir ../../frontend/public/locales
 ```
 
@@ -221,10 +221,10 @@ Build from source (not yet published as binary):
 
 ```bash
 # Build the CLI
-cargo build --release --bin cargo-i18n --package ampel-i18n-builder
+cargo build --release --bin ampel-i18n --package ampel-i18n-builder
 
 # Or use via cargo run
-cargo run --package ampel-i18n-builder --bin cargo-i18n -- --help
+cargo run --package ampel-i18n-builder --bin ampel-i18n -- --help
 ```
 
 ### Configuration
@@ -284,7 +284,7 @@ translation:
 #### Translate Command Options
 
 ```bash
-cargo run --bin cargo-i18n -- translate --help
+cargo run --bin ampel-i18n -- translate --help
 
 Options:
   --lang <LANG>              Target language code (required)
@@ -323,14 +323,14 @@ Tier 1: Systran → Fails? → Tier 2: DeepL → Fails? → Tier 3: Google → F
 **Automatic (Recommended):**
 
 ```bash
-cargo run --bin cargo-i18n -- translate --lang de
+cargo run --bin ampel-i18n -- translate --lang de
 # Uses first available provider, falls back on failure
 ```
 
 **Explicit Provider (No Fallback):**
 
 ```bash
-cargo run --bin cargo-i18n -- translate --lang de --provider deepl --no-fallback
+cargo run --bin ampel-i18n -- translate --lang de --provider deepl --no-fallback
 ```
 
 ### Translation Output Example
@@ -499,7 +499,7 @@ node scripts/i18n-coverage-report.js --format markdown
 1. **Check for missing keys:**
 
    ```bash
-   cargo run --bin cargo-i18n -- missing
+   cargo run --bin ampel-i18n -- missing
    ```
 
    Expected: `✓ All translations complete - no missing keys`
@@ -522,7 +522,7 @@ node scripts/i18n-coverage-report.js --format markdown
 
 4. **Regenerate types:**
    ```bash
-   cargo run --bin cargo-i18n -- generate-types
+   cargo run --bin ampel-i18n -- generate-types
    ```
 
 ---
@@ -538,10 +538,10 @@ node scripts/i18n-coverage-report.js --format markdown
 ```bash
 # Option A: Run from i18n-builder directory
 cd crates/ampel-i18n-builder
-cargo run --bin cargo-i18n -- translate --lang de --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- translate --lang de --translation-dir ../../frontend/public/locales
 
 # Option B: Use --package flag from project root (env not loaded)
-cargo run --package ampel-i18n-builder --bin cargo-i18n -- translate --lang de
+cargo run --package ampel-i18n-builder --bin ampel-i18n -- translate --lang de
 ```
 
 ### Pitfall 2: Translated Placeholders (Pre-Fix)
@@ -570,7 +570,7 @@ cargo run --package ampel-i18n-builder --bin cargo-i18n -- translate --lang de
 **Solution:** Always run after adding/modifying keys:
 
 ```bash
-cargo run --bin cargo-i18n -- generate-types --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- generate-types --translation-dir ../../frontend/public/locales
 ```
 
 ### Pitfall 4: API Rate Limits
@@ -586,7 +586,7 @@ curl -H "Authorization: DeepL-Auth-Key $DEEPL_API_KEY" \
   https://api-free.deepl.com/v2/usage
 
 # Use --batch-size to reduce request frequency
-cargo run --bin cargo-i18n -- translate --lang de --batch-size 25
+cargo run --bin ampel-i18n -- translate --lang de --batch-size 25
 ```
 
 ### Pitfall 5: Full-Width Characters in CJK Translations
@@ -638,11 +638,11 @@ jobs:
           node-version: '20'
 
       - name: Build i18n-builder
-        run: cargo build --release --bin cargo-i18n --package ampel-i18n-builder
+        run: cargo build --release --bin ampel-i18n --package ampel-i18n-builder
 
       - name: Check missing translations
         run: |
-          ./target/release/cargo-i18n missing \
+          ./target/release/ampel-i18n missing \
             --translation-dir frontend/public/locales
 
       - name: Validate translations
@@ -726,10 +726,10 @@ Error: Coverage below threshold: 92.0% < 95.0%
 
 ```bash
 # Find missing translations
-cargo run --bin cargo-i18n -- missing --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- missing --translation-dir ../../frontend/public/locales
 
 # Translate missing keys
-cargo run --bin cargo-i18n -- translate --lang de --namespace settings
+cargo run --bin ampel-i18n -- translate --lang de --namespace settings
 ```
 
 ---
@@ -740,19 +740,19 @@ cargo run --bin cargo-i18n -- translate --lang de --namespace settings
 
 ```bash
 # Check missing translations
-cargo run --bin cargo-i18n -- missing
+cargo run --bin ampel-i18n -- missing
 
 # Translate specific language/namespace
-cargo run --bin cargo-i18n -- translate --lang de --namespace settings
+cargo run --bin ampel-i18n -- translate --lang de --namespace settings
 
 # Force re-translate all keys
-cargo run --bin cargo-i18n -- translate --lang de --force
+cargo run --bin ampel-i18n -- translate --lang de --force
 
 # Generate TypeScript types
-cargo run --bin cargo-i18n -- generate-types
+cargo run --bin ampel-i18n -- generate-types
 
 # Check coverage
-cargo run --bin cargo-i18n -- coverage --min-coverage 95
+cargo run --bin ampel-i18n -- coverage --min-coverage 95
 
 # Validate translations
 node scripts/validate-translations.js
@@ -771,18 +771,18 @@ node scripts/i18n-coverage-report.js --format text
 cd crates/ampel-i18n-builder
 
 # 3. Verify missing keys
-cargo run --bin cargo-i18n -- missing --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- missing --translation-dir ../../frontend/public/locales
 
 # 4. Translate all languages
 for lang in ar cs da de en-GB es-ES es-MX fi fr he hi it ja ko nl no pl pt-BR ru sr sv th tr vi zh-CN zh-TW; do
-  cargo run --bin cargo-i18n -- translate \
+  cargo run --bin ampel-i18n -- translate \
     --lang "$lang" \
     --namespace settings \
     --translation-dir ../../frontend/public/locales
 done
 
 # 5. Regenerate types
-cargo run --bin cargo-i18n -- generate-types --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- generate-types --translation-dir ../../frontend/public/locales
 
 # 6. Validate
 cd ../..

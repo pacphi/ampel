@@ -70,7 +70,7 @@ utoipa-swagger-ui.workspace = true
 lettre.workspace = true
 
 # Internationalization
-rust-i18n = "3.0"
+rust-i18n = "3.1"
 serde_yaml = "0.9"
 cookie = "0.18"
 

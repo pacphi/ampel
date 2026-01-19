@@ -111,13 +111,13 @@ if let Some(timeout) = args.timeout {
 **Old behavior preserved:**
 
 ```bash
-cargo-i18n translate --lang fi --provider deepl --no-fallback
+ampel-i18n translate --lang fi --provider deepl --no-fallback
 ```
 
 **New behavior (default):**
 
 ```bash
-cargo-i18n translate --lang fi
+ampel-i18n translate --lang fi
 # Uses all available providers with automatic fallback
 ```
 
@@ -128,7 +128,7 @@ cargo-i18n translate --lang fi
 ### Example 1: Default Fallback Mode
 
 ```bash
-cargo-i18n translate --lang fi
+ampel-i18n translate --lang fi
 ```
 
 **What happens:**
@@ -141,7 +141,7 @@ cargo-i18n translate --lang fi
 ### Example 2: CLI Overrides
 
 ```bash
-cargo-i18n translate --lang fi \
+ampel-i18n translate --lang fi \
   --timeout 60 \
   --batch-size 50 \
   --disable-provider openai
@@ -157,7 +157,7 @@ cargo-i18n translate --lang fi \
 ### Example 3: Backward Compatible Mode
 
 ```bash
-cargo-i18n translate --lang fi --provider deepl --no-fallback
+ampel-i18n translate --lang fi --provider deepl --no-fallback
 ```
 
 **What happens:**
@@ -174,16 +174,16 @@ cargo-i18n translate --lang fi --provider deepl --no-fallback
 
 ```bash
 # Test fallback mode
-cargo run --package ampel-i18n-builder --bin cargo-i18n -- translate --lang fi --dry-run
+cargo run --package ampel-i18n-builder --bin ampel-i18n -- translate --lang fi --dry-run
 
 # Test single provider mode
-cargo run --package ampel-i18n-builder --bin cargo-i18n -- translate --lang fi --provider deepl --no-fallback --dry-run
+cargo run --package ampel-i18n-builder --bin ampel-i18n -- translate --lang fi --provider deepl --no-fallback --dry-run
 
 # Test CLI overrides
-cargo run --package ampel-i18n-builder --bin cargo-i18n -- translate --lang fi --timeout 30 --batch-size 100 --dry-run
+cargo run --package ampel-i18n-builder --bin ampel-i18n -- translate --lang fi --timeout 30 --batch-size 100 --dry-run
 
 # Show help
-cargo run --package ampel-i18n-builder --bin cargo-i18n -- translate --help
+cargo run --package ampel-i18n-builder --bin ampel-i18n -- translate --help
 ```
 
 ### Automated Testing

@@ -105,10 +105,10 @@ SYSTRAN_API_KEY=your-systran-api-key-here
 
 ```bash
 # Tool automatically tries all providers in sequence
-cargo run --bin cargo-i18n -- translate --lang de --provider auto
+cargo run --bin ampel-i18n -- translate --lang de --provider auto
 
 # Or specify starting provider
-cargo run --bin cargo-i18n -- translate --lang de --provider systran
+cargo run --bin ampel-i18n -- translate --lang de --provider systran
 # Will fallback to DeepL → Google → OpenAI if needed
 ```
 

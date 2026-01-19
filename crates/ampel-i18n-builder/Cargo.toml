@@ -10,7 +10,7 @@ keywords = ["i18n", "localization", "translation", "cli"]
 categories = ["command-line-utilities", "internationalization"]
 
 [[bin]]
-name = "cargo-i18n"
+name = "ampel-i18n"
 path = "src/main.rs"
 
 [lib]
@@ -19,7 +19,7 @@ path = "src/lib.rs"
 
 [dependencies]
 # Async runtime
-tokio = { version = "1.43", features = ["full"] }
+tokio = { version = "1.49", features = ["full"] }
 async-trait = "0.1"
 
 # HTTP client
@@ -46,13 +46,31 @@ anyhow = "1.0"
 
 # Utilities
 chrono = "0.4"
-regex = "1.11"
-colored = "2.1"
+regex = "1.12"
+colored = "2.2"
 indicatif = "0.17"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 secrecy = "0.10"
 dotenv = "0.15"
+
+# String extraction
+sha2 = "0.10"
+hex = "0.4"
+glob = "0.3"
+walkdir = "2.5"
+
+# Code refactoring - TypeScript/React with OXC (stable Rust, production-ready)
+oxc_parser = "0.40"
+oxc_ast = "0.40"
+oxc_span = "0.40"
+oxc_allocator = "0.40"
+
+# Code refactoring - Rust with Syn (industry standard, stable Rust)
+syn = { version = "2.0", features = ["full", "visit-mut", "extra-traits", "parsing"] }
+quote = "1.0"
+prettyplease = "0.2"
+proc-macro2 = "1.0"
 
 # Rate limiting and caching
 governor = "0.6"
@@ -61,8 +79,8 @@ lru = "0.16"
 
 [dev-dependencies]
 tokio-test = "0.4"
-mockito = "1.6"
-tempfile = "3.14"
+mockito = "1.7"
+tempfile = "3.24"
 
 [features]
 default = []

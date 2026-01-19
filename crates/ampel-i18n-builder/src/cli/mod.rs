@@ -4,17 +4,21 @@ use clap::{Parser, Subcommand, ValueEnum};
 use std::path::PathBuf;
 
 pub mod coverage;
+pub mod doctor;
 pub mod export;
+pub mod extract;
 pub mod generate_types;
 pub mod import;
+pub mod init;
 pub mod missing;
+pub mod refactor;
 pub mod report;
 pub mod sync;
 pub mod translate;
 pub mod validate;
 
 #[derive(Parser)]
-#[command(name = "cargo-i18n")]
+#[command(name = "ampel-i18n")]
 #[command(bin_name = "cargo i18n")]
 #[command(about = "Translation automation for Ampel", long_about = None)]
 #[command(version)]
@@ -25,6 +29,12 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
+    /// Interactive setup wizard for first-time users
+    Init(InitArgs),
+
+    /// Run health checks and validate configuration
+    Doctor(DoctorArgs),
+
     /// Translate missing keys using AI translation service
     Translate(TranslateArgs),
 
@@ -51,6 +61,12 @@ pub enum Commands {
 
     /// Generate TypeScript type definitions from translations
     GenerateTypes(GenerateTypesArgs),
+
+    /// Extract translatable strings from source code
+    Extract(ExtractArgs),
+
+    /// Refactor source code to use i18n function calls
+    Refactor(RefactorArgs),
 }
 
 #[derive(Parser)]
@@ -260,4 +276,124 @@ pub struct GenerateTypesArgs {
     /// Path to translation directory
     #[arg(long, default_value = "frontend/public/locales")]
     pub translation_dir: PathBuf,
+}
+
+#[derive(Parser)]
+pub struct InitArgs {
+    /// Skip interactive prompts and use defaults
+    #[arg(long)]
+    pub non_interactive: bool,
+
+    /// Project framework (react, vue, rust, etc.)
+    #[arg(long)]
+    pub framework: Option<String>,
+
+    /// Target languages (comma-separated, e.g., "fr,de,es")
+    #[arg(long)]
+    pub languages: Option<String>,
+
+    /// Translation provider (openai, deepl, google, systran)
+    #[arg(long)]
+    pub provider: Option<String>,
+
+    /// Translation directory path
+    #[arg(long)]
+    pub translation_dir: Option<PathBuf>,
+}
+
+#[derive(Parser)]
+pub struct DoctorArgs {
+    /// Show detailed diagnostic information
+    #[arg(long)]
+    pub verbose: bool,
+
+    /// Attempt to fix common issues automatically
+    #[arg(long)]
+    pub fix: bool,
+}
+
+#[derive(Parser)]
+pub struct ExtractArgs {
+    /// Source directories to scan (can be repeated)
+    #[arg(short, long, num_args = 1..)]
+    pub source: Vec<PathBuf>,
+
+    /// File patterns to match (e.g., "*.tsx", "*.rs")
+    #[arg(short, long, num_args = 1.., default_values = ["*.tsx", "*.ts"])]
+    pub patterns: Vec<String>,
+
+    /// Target namespace for extracted strings
+    #[arg(short, long)]
+    pub namespace: Option<String>,
+
+    /// Output format
+    #[arg(short, long, value_enum, default_value = "json")]
+    pub format: ExtractionFormat,
+
+    /// Key generation strategy
+    #[arg(short, long, value_enum, default_value = "semantic")]
+    pub key_strategy: KeyStrategyArg,
+
+    /// Merge with existing translations
+    #[arg(long)]
+    pub merge: bool,
+
+    /// Preview extraction without writing files
+    #[arg(long)]
+    pub dry_run: bool,
+
+    /// Output file path
+    #[arg(
+        short,
+        long,
+        default_value = "frontend/public/locales/en/extracted.json"
+    )]
+    pub output: PathBuf,
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+pub enum ExtractionFormat {
+    /// JSON format
+    Json,
+    /// YAML format
+    Yaml,
+    /// Java .properties format
+    Properties,
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+pub enum KeyStrategyArg {
+    /// Semantic keys (e.g., "button.clickMe")
+    Semantic,
+    /// Hash-based keys (e.g., "str_a3f2b1c4")
+    Hash,
+    /// Incremental keys (e.g., "str_001")
+    Incremental,
+}
+
+#[derive(Parser)]
+pub struct RefactorArgs {
+    /// File or directory to refactor
+    #[arg(short, long)]
+    pub target: PathBuf,
+
+    /// Translation mapping file (JSON with text→key mapping from extract command)
+    #[arg(short, long)]
+    pub mapping: PathBuf,
+
+    /// Default namespace for generated keys
+    #[arg(short, long, default_value = "common")]
+    pub namespace: String,
+
+    /// File patterns to match (for directory refactoring)
+    #[arg(short, long, num_args = 1.., default_values = ["*.tsx", "*.ts", "*.rs"])]
+    pub patterns: Vec<String>,
+
+    /// Preview changes without modifying files
+    #[arg(long)]
+    pub dry_run: bool,
+
+    /// Skip creating backups
+    #[arg(long)]
+    pub no_backup: bool,
 }

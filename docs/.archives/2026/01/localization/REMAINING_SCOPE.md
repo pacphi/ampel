@@ -435,7 +435,7 @@ export default function Repositories() {
 
 ```bash
 cd crates/ampel-i18n-builder
-cargo run --bin cargo-i18n -- missing --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- missing --translation-dir ../../frontend/public/locales
 ```
 
 #### Step 3.2: Translate All Languages
@@ -447,19 +447,19 @@ cd crates/ampel-i18n-builder
 # Translate new namespaces for all 26 target languages
 for lang in ar cs da de en-GB es-ES es-MX fi fr he hi it ja ko nl no pl pt-BR ru sr sv th tr vi zh-CN zh-TW; do
   echo "Translating analytics for $lang..."
-  cargo run --bin cargo-i18n -- translate \
+  cargo run --bin ampel-i18n -- translate \
     --lang "$lang" \
     --namespace analytics \
     --translation-dir ../../frontend/public/locales
 
   echo "Translating merge for $lang..."
-  cargo run --bin cargo-i18n -- translate \
+  cargo run --bin ampel-i18n -- translate \
     --lang "$lang" \
     --namespace merge \
     --translation-dir ../../frontend/public/locales
 
   echo "Translating repositories for $lang..."
-  cargo run --bin cargo-i18n -- translate \
+  cargo run --bin ampel-i18n -- translate \
     --lang "$lang" \
     --namespace repositories \
     --translation-dir ../../frontend/public/locales
@@ -469,7 +469,7 @@ done
 #### Step 3.3: Regenerate TypeScript Types
 
 ```bash
-cargo run --bin cargo-i18n -- generate-types --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- generate-types --translation-dir ../../frontend/public/locales
 ```
 
 This updates `frontend/src/i18n/types.ts` with:
@@ -568,17 +568,17 @@ for lang in ar cs da de en-GB es-ES es-MX fi fr he hi it ja ko nl no pl pt-BR ru
   mkdir -p ../ampel-api/locales/$lang
 
   # Use CLI to translate (backend uses YAML format)
-  cargo run --bin cargo-i18n -- translate \
+  cargo run --bin ampel-i18n -- translate \
     --lang "$lang" \
     --namespace analytics \
     --translation-dir ../ampel-api/locales
 
-  cargo run --bin cargo-i18n -- translate \
+  cargo run --bin ampel-i18n -- translate \
     --lang "$lang" \
     --namespace merge \
     --translation-dir ../ampel-api/locales
 
-  cargo run --bin cargo-i18n -- translate \
+  cargo run --bin ampel-i18n -- translate \
     --lang "$lang" \
     --namespace repositories \
     --translation-dir ../ampel-api/locales
@@ -807,19 +807,19 @@ t!("merge.errors.too_many_prs", max = 50)
 ```bash
 # Check missing translations
 cd crates/ampel-i18n-builder
-cargo run --bin cargo-i18n -- missing --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- missing --translation-dir ../../frontend/public/locales
 
 # Translate specific namespace/language
-cargo run --bin cargo-i18n -- translate --lang de --namespace merge --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- translate --lang de --namespace merge --translation-dir ../../frontend/public/locales
 
 # Force retranslate all keys
-cargo run --bin cargo-i18n -- translate --lang de --force --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- translate --lang de --force --translation-dir ../../frontend/public/locales
 
 # Generate TypeScript types
-cargo run --bin cargo-i18n -- generate-types --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- generate-types --translation-dir ../../frontend/public/locales
 
 # Check coverage
-cargo run --bin cargo-i18n -- coverage --min-coverage 95 --translation-dir ../../frontend/public/locales
+cargo run --bin ampel-i18n -- coverage --min-coverage 95 --translation-dir ../../frontend/public/locales
 
 # Validate translations
 node scripts/validate-translations.js

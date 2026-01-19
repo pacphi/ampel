@@ -1281,7 +1281,7 @@ echo "✅ i18n validation passed"
 | **Translation API rate limits/costs**              | Medium | Medium     | Caching (Redis), rate limiting, monthly budget alerts    | Pause automated updates, manual translation    |
 | **Complex script rendering issues (Thai, Arabic)** | High   | Medium     | Dedicated testing phase, browser compatibility matrix    | Disable specific languages, font fallbacks     |
 | **Complex pluralization bugs (Finnish, Czech)**    | Medium | Medium     | Comprehensive test suite, native speaker validation      | Simplify plural forms, fallback to basic forms |
-| **ampel-i18n-builder bugs delay timeline**         | Medium | Low        | Thorough testing, fallback to manual workflows           | Use cargo-i18n instead                         |
+| **ampel-i18n-builder bugs delay timeline**         | Medium | Low        | Thorough testing, fallback to manual workflows           | Use ampel-i18n instead                         |
 | **Developer adoption resistance**                  | Low    | Low        | Good DX, documentation, training sessions                | N/A - process change                           |
 
 ### Medium-Risk Areas

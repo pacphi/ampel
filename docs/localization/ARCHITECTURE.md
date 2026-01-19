@@ -2319,7 +2319,7 @@ pub struct ChangeSet {
 # Dockerfile (multi-stage build with i18n)
 
 # Build stage
-FROM rust:1.91-slim as builder
+FROM rust:1.92-slim as builder
 
 WORKDIR /app
 

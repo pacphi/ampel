@@ -124,7 +124,7 @@ When creating new ADRs, follow this structure:
 
 ### Technology Stack
 
-- **Backend**: Rust 1.91+ (Axum 0.7, SeaORM, Apalis)
+- **Backend**: Rust 1.92+ (Axum 0.7, SeaORM, Apalis)
 - **Frontend**: React 19 + TypeScript (Vite, TanStack Query)
 - **Database**: PostgreSQL 16, Redis 7
 - **Testing**: Vitest, cargo test, integration tests

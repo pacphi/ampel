@@ -4,7 +4,7 @@
 //! respects environment variable precedence.
 //!
 //! Note: These tests are marked as `#[ignore]` by default because they require
-//! the cargo-i18n binary to be built in the workspace, which may not be available
+//! the ampel-i18n binary to be built in the workspace, which may not be available
 //! in all CI environments. Run with `cargo test -- --ignored` to execute them.
 
 use std::fs;
@@ -23,10 +23,10 @@ fn get_workspace_root() -> PathBuf {
         .expect("Failed to find workspace root")
 }
 
-/// Get the path to the cargo-i18n binary
+/// Get the path to the ampel-i18n binary
 fn get_binary_path() -> PathBuf {
     let workspace_root = get_workspace_root();
-    workspace_root.join("target/debug/cargo-i18n")
+    workspace_root.join("target/debug/ampel-i18n")
 }
 
 #[test]
@@ -46,7 +46,7 @@ fn test_cli_loads_dotenv_file() {
     // Build the CLI binary (in debug mode)
     let crate_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let build_output = Command::new("cargo")
-        .args(["build", "--bin", "cargo-i18n"])
+        .args(["build", "--bin", "ampel-i18n"])
         .current_dir(&crate_dir)
         .output()
         .expect("Failed to build CLI");

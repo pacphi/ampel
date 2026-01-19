@@ -36,7 +36,7 @@ Successfully consolidated Docker assets from the `fly/` directory into the `dock
 
 | Feature                      | fly/ Version                                   | docker/ Version      | Winner                    |
 | ---------------------------- | ---------------------------------------------- | -------------------- | ------------------------- |
-| **Rust Base Image**          | `lukemathwalker/cargo-chef:latest-rust-1.91.1` | `rust:1.91-bookworm` | docker/ (more flexible)   |
+| **Rust Base Image**          | `lukemathwalker/cargo-chef:latest-rust-1.92.0` | `rust:1.92-bookworm` | docker/ (more flexible)   |
 | **BuildKit Cache Mounts**    | ❌ No                                          | ✅ Yes               | docker/ (faster rebuilds) |
 | **Health Checks**            | ✅ Yes                                         | ❌ No                | fly/ (better monitoring)  |
 | **Security Headers (nginx)** | ✅ Comprehensive                               | ❌ Basic             | fly/ (better security)    |
@@ -62,7 +62,7 @@ Successfully consolidated Docker assets from the `fly/` directory into the `dock
 **Retained from docker/ version:**
 
 - ✅ BuildKit cache mounts for faster rebuilds
-- ✅ rust:1.91-bookworm base image
+- ✅ rust:1.92-bookworm base image
 - ✅ Separate planner stage
 
 **Result:** Best of both worlds - BuildKit optimization + production-ready features
@@ -78,7 +78,7 @@ Successfully consolidated Docker assets from the `fly/` directory into the `dock
 **Retained from docker/ version:**
 
 - ✅ BuildKit cache mounts
-- ✅ rust:1.91-bookworm base image
+- ✅ rust:1.92-bookworm base image
 - ✅ Separate planner stage
 
 **Result:** Consistent with API, optimized for background jobs
@@ -401,7 +401,7 @@ The Docker asset consolidation has been successfully completed. The `docker/` di
 
 | Aspect         | fly/                      | docker/            | Final   |
 | -------------- | ------------------------- | ------------------ | ------- |
-| Base Image     | lukemathwalker/cargo-chef | rust:1.91-bookworm | docker/ |
+| Base Image     | lukemathwalker/cargo-chef | rust:1.92-bookworm | docker/ |
 | Cache Strategy | Basic                     | BuildKit mounts    | docker/ |
 | Runtime Deps   | Complete                  | Minimal            | fly/    |
 | Health Check   | Yes                       | No                 | fly/    |

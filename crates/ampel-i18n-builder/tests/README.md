@@ -174,7 +174,7 @@ cargo test --test integration -- --ignored --nocapture
 
 **Minimum Requirements:**
 
-- Rust 1.91+
+- Rust 1.92+
 - No external dependencies for core tests
 
 **Optional Requirements (for ignored tests):**

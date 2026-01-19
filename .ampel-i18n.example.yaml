@@ -1,6 +1,19 @@
 # Ampel i18n Builder Configuration Example
 # Copy this file to .ampel-i18n.yaml and configure with your API keys
 
+# =============================================================================
+# PROJECT SETTINGS
+# =============================================================================
+
+# Directory containing translation files (relative to project root)
+# Default: "frontend/public/locales"
+# This can be overridden with the --translation-dir CLI flag
+translation_dir: frontend/public/locales
+
+# =============================================================================
+# TRANSLATION API SETTINGS
+# =============================================================================
+
 translation:
   # =============================================================================
   # API Keys (Required)
@@ -138,9 +151,11 @@ translation:
     # OpenAI GPT API (Tier 4 - Fallback for Edge Cases)
     # ---------------------------------------------------------------------------
     # Best for: Technical content, complex placeholders, context-aware translation
-    # Rate limit: No specific limit (token-based)
-    # Batch size: Unlimited (limited by context window)
-    # Cost: High (token-based pricing)
+    # Default model: gpt-5-mini (400k context, $0.25/1M input, $2.00/1M output)
+    # Rate limit (Tier 1): 500 RPM, 500,000 TPM
+    # Knowledge cutoff: May 31, 2024
+    # Batch size: Unlimited (limited by 400k context window)
+    # Other models: gpt-5-mini-2025-08-07, gpt-4o, gpt-4o-mini, gpt-4-turbo
     openai:
       enabled: true
       priority: 4
@@ -151,6 +166,11 @@ translation:
       retry_delay_ms: 2000
       max_delay_ms: 60000
       backoff_multiplier: 2.0
+
+      # OpenAI model to use (optional, default: gpt-5-mini)
+      # Valid models: gpt-5-mini, gpt-5-mini-2025-08-07, gpt-4o, gpt-4o-mini, gpt-4-turbo
+      # See: https://platform.openai.com/docs/models
+      model: gpt-5-mini
 
       # Optional: OpenAI handles all languages well but is expensive
       # Typically used as universal fallback, so no language preferences
