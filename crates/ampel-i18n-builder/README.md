@@ -8,7 +8,22 @@ Never installed a Rust tool before? **No problem!** This tool is designed to be 
 
 ### Option 1: Use Claude Code (Easiest) 🤖
 
-If you have Claude Code CLI, just say:
+If you have Claude Code CLI installed, follow these steps:
+
+**Step 1: Install the Claude Code skill** (one-time setup)
+
+```bash
+# Option A: Install globally for all projects
+cp -r skills/ampel-i18n ~/.claude/skills/
+
+# Option B: Install for this project only
+mkdir -p .claude/skills
+cp -r skills/ampel-i18n .claude/skills/
+```
+
+**Step 2: Restart Claude Code** to recognize the new skill
+
+**Step 3: Use the skill**
 
 ```
 /ampel-i18n:localize
