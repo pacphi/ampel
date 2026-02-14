@@ -54,6 +54,15 @@
     "updatedAt": "업데이트됨"
   },
   "prDashboard": "PR 대시보드",
+  "refresh": {
+    "complete": "새로 고침 완료!",
+    "completed": "완전한",
+    "currentRepository": "상쾌한",
+    "description": "모든 Git 제공업체에서 최신 풀 리퀘스트를 가져옵니다.",
+    "progress": "{{completed}}개 중 {{total}}개 저장소가 새로 고쳐졌습니다.",
+    "started": "시작됨",
+    "title": "리포지토리 새로 고침"
+  },
   "sort": {
     "author": "저자",
     "created": "생성 날짜",

@@ -54,6 +54,15 @@
     "updatedAt": "Zaktualizowano"
   },
   "prDashboard": "Panel PR",
+  "refresh": {
+    "complete": "Odświeżanie zakończone!",
+    "completed": "Zakończony",
+    "currentRepository": "Orzeźwiający",
+    "description": "Pobieranie najnowszych żądań ściągnięcia od wszystkich dostawców Git",
+    "progress": "Odświeżono {{completed}} z {{total}} repozytoriów",
+    "started": "Rozpoczęto",
+    "title": "Odświeżanie repozytoriów"
+  },
   "sort": {
     "author": "Autor",
     "created": "Data utworzenia",

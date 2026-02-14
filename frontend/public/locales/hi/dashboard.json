@@ -54,6 +54,15 @@
     "updatedAt": "अपडेट किया गया"
   },
   "prDashboard": "PR डैशबोर्ड",
+  "refresh": {
+    "complete": "रीफ़्रेश पूरा हुआ!",
+    "completed": "पुरा होना।",
+    "currentRepository": "रिफ्रेशिंग",
+    "description": "सभी गिट प्रदाताओं से नवीनतम पुल अनुरोध प्राप्त किए जा रहे हैं",
+    "progress": "{{completed}} में से {{total}} रिपॉजिटरी रीफ्रेश हो गईं",
+    "started": "शुरू कर दिया",
+    "title": "रिपॉजिटरी को रीफ़्रेश करना"
+  },
   "sort": {
     "author": "लेखक",
     "created": "निर्मित तिथि",

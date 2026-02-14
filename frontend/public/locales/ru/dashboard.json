@@ -54,6 +54,15 @@
     "updatedAt": "Обновлено"
   },
   "prDashboard": "Панель PR",
+  "refresh": {
+    "complete": "Обновление завершено!",
+    "completed": "Завершенный",
+    "currentRepository": "Освежающий",
+    "description": "Получение последних запросов на слияние от всех git-провайдеров.",
+    "progress": "{{completed}} репозиториев {{total}} обновлены",
+    "started": "Началось",
+    "title": "Обновление репозиториев"
+  },
   "sort": {
     "author": "Автор",
     "created": "Дата создания",

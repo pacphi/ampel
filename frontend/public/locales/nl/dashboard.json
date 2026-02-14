@@ -54,6 +54,15 @@
     "updatedAt": "Bijgewerkt"
   },
   "prDashboard": "PR-dashboard",
+  "refresh": {
+    "complete": "Vernieuwing voltooid!",
+    "completed": "Voltooid",
+    "currentRepository": "Verfrissend",
+    "description": "De nieuwste pull-requests van alle Git-providers ophalen.",
+    "progress": "{{completed}} van {{total}} repositories vernieuwd",
+    "started": "Gestart",
+    "title": "Repositories vernieuwen"
+  },
   "sort": {
     "author": "Auteur",
     "created": "Aanmaakdatum",

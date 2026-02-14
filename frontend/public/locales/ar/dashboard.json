@@ -54,6 +54,15 @@
     "updatedAt": "تم التحديث"
   },
   "prDashboard": "لوحة طلبات السحب",
+  "refresh": {
+    "complete": "تم التحديث بنجاح!",
+    "completed": "مكتمل",
+    "currentRepository": "منعش",
+    "description": "جلب أحدث طلبات السحب من جميع مزودي خدمة Git",
+    "progress": "تم تحديث {{completed}} من {{total}} مستودع",
+    "started": "بدأ",
+    "title": "تحديث المستودعات"
+  },
   "sort": {
     "author": "المؤلف",
     "created": "تاريخ الإنشاء",

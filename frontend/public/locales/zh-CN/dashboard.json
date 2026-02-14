@@ -54,6 +54,15 @@
     "updatedAt": "更新于"
   },
   "prDashboard": "PR仪表板",
+  "refresh": {
+    "complete": "刷新完成！",
+    "completed": "完全的",
+    "currentRepository": "令人耳目一新",
+    "description": "从所有 Git 提供商处获取最新的拉取请求",
+    "progress": "{{completed}} 中的 {{total}} 个存储库已刷新",
+    "started": "开始",
+    "title": "刷新存储库"
+  },
   "sort": {
     "author": "作者",
     "created": "创建日期",

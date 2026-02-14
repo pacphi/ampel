@@ -54,6 +54,15 @@
     "updatedAt": "Actualizado"
   },
   "prDashboard": "Panel de relaciones públicas",
+  "refresh": {
+    "complete": "¡Actualización completa!",
+    "completed": "Terminado",
+    "currentRepository": "Refrescante",
+    "description": "Obtener las últimas solicitudes de extracción de todos los proveedores de Git",
+    "progress": "{{completed}} de {{total}} repositorios actualizados",
+    "started": "Comenzó",
+    "title": "Actualización de repositorios"
+  },
   "sort": {
     "author": "Autor",
     "created": "Fecha de creación",

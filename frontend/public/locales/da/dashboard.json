@@ -54,6 +54,15 @@
     "updatedAt": "Opdateret"
   },
   "prDashboard": "PR-dashboard",
+  "refresh": {
+    "complete": "Opdatering fuldført!",
+    "completed": "Færdiggjort",
+    "currentRepository": "Forfriskende",
+    "description": "Henter de seneste pull requests fra alle git-udbydere",
+    "progress": "{{completed}} af {{total}} arkiver opdateret",
+    "started": "Startet",
+    "title": "Opdatering af arkiver"
+  },
   "sort": {
     "author": "Forfatter",
     "created": "Oprettelsesdato",

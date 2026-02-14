@@ -54,6 +54,15 @@
     "updatedAt": "Päivitetty"
   },
   "prDashboard": "PR-hallintapaneeli",
+  "refresh": {
+    "complete": "Päivitys valmis!",
+    "completed": "Valmis",
+    "currentRepository": "Virkistävä",
+    "description": "Haetaan uusimpia pull-pyyntöjä kaikilta git-palveluntarjoajilta",
+    "progress": "{{completed}} / {{total}} arkistoa päivitetty",
+    "started": "Aloitettu",
+    "title": "Arkiston päivittäminen"
+  },
   "sort": {
     "author": "Kirjoittaja",
     "created": "Luontipäivämäärä",

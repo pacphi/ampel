@@ -54,6 +54,15 @@
     "updatedAt": "Güncellendi"
   },
   "prDashboard": "PR Kontrol Paneli",
+  "refresh": {
+    "complete": "Yenileme işlemi tamamlandı!",
+    "completed": "Tamamlanmış",
+    "currentRepository": "Ferahlatıcı",
+    "description": "Tüm git sağlayıcılarından en son çekme istekleri alınıyor.",
+    "progress": "{{completed}} / {{total}} depo yenilendi",
+    "started": "Başladı",
+    "title": "Depoları Yenileme"
+  },
   "sort": {
     "author": "Yazar",
     "created": "Oluşturulma tarihi",

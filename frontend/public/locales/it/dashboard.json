@@ -54,6 +54,15 @@
     "updatedAt": "Aggiornato"
   },
   "prDashboard": "Pannello di controllo delle relazioni pubbliche",
+  "refresh": {
+    "complete": "Aggiornamento completato!",
+    "completed": "Completato",
+    "currentRepository": "Rinfrescante",
+    "description": "Recupero delle ultime richieste pull da tutti i provider git",
+    "progress": "{{completed}} di {{total}} repository aggiornati",
+    "started": "Iniziato",
+    "title": "Aggiornamento dei repository"
+  },
   "sort": {
     "author": "Autore",
     "created": "Data di creazione",

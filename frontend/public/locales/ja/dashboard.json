@@ -54,6 +54,15 @@
     "updatedAt": "更新済み"
   },
   "prDashboard": "PRダッシュボード",
+  "refresh": {
+    "complete": "リフレッシュが完了しました！",
+    "completed": "完了",
+    "currentRepository": "爽やか",
+    "description": "すべてのGitプロバイダから最新のプルリクエストを取得する",
+    "progress": "{{completed}} / {{total}} 個のリポジトリが更新されました",
+    "started": "開始",
+    "title": "リポジトリの更新"
+  },
   "sort": {
     "author": "著者",
     "created": "作成日",

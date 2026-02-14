@@ -54,6 +54,15 @@
     "updatedAt": "Uppdaterad"
   },
   "prDashboard": "PR-instrumentpanel",
+  "refresh": {
+    "complete": "Uppdatering klar!",
+    "completed": "Avslutad",
+    "currentRepository": "Uppfriskande",
+    "description": "Hämtar de senaste pull requests från alla git-leverantörer",
+    "progress": "{{completed}} av {{total}} arkiv uppdaterade",
+    "started": "Började",
+    "title": "Uppdaterar arkiv"
+  },
   "sort": {
     "author": "Författare",
     "created": "Skapad datum",

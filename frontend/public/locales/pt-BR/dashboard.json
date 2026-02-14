@@ -54,6 +54,15 @@
     "updatedAt": "Atualizado"
   },
   "prDashboard": "Painel de RP",
+  "refresh": {
+    "complete": "Atualização concluída!",
+    "completed": "Concluído",
+    "currentRepository": "Refrescante",
+    "description": "Obtendo os pull requests mais recentes de todos os provedores Git.",
+    "progress": "{{completed}} de {{total}} repositórios atualizados",
+    "started": "Iniciado",
+    "title": "Atualizando repositórios"
+  },
   "sort": {
     "author": "Autor",
     "created": "Data de criação",

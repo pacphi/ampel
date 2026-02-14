@@ -54,6 +54,15 @@
     "updatedAt": "更新時間"
   },
   "prDashboard": "PR 儀表板",
+  "refresh": {
+    "complete": "刷新完成！",
+    "completed": "完全的",
+    "currentRepository": "令人耳目一新",
+    "description": "從所有 Git 提供者取得最新的拉取請求",
+    "progress": "{{completed}} 中的 {{total}} 個儲存庫已刷新",
+    "started": "開始",
+    "title": "刷新儲存庫"
+  },
   "sort": {
     "author": "作者",
     "created": "創建日期",

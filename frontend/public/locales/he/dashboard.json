@@ -54,6 +54,15 @@
     "updatedAt": "עודכן"
   },
   "prDashboard": "לוח PR",
+  "refresh": {
+    "complete": "רענון הושלם!",
+    "completed": "הושלם",
+    "currentRepository": "מְרַעֲנֵן",
+    "description": "אחזור בקשות ה-pull האחרונות מכל ספקי ה-git",
+    "progress": "{{completed}} מתוך {{total}} מאגרים רעננו",
+    "started": "התחיל",
+    "title": "רענון מאגרים"
+  },
   "sort": {
     "author": "מְחַבֵּר",
     "created": "תאריך יצירה",

@@ -54,6 +54,15 @@
     "updatedAt": "Aktualizováno"
   },
   "prDashboard": "PR Dashboard",
+  "refresh": {
+    "complete": "Obnovení dokončeno!",
+    "completed": "Dokončeno",
+    "currentRepository": "Osvěžující",
+    "description": "Načítání nejnovějších pull requestů od všech poskytovatelů gitu",
+    "progress": "{{completed}} z {{total}} repozitářů obnoveno",
+    "started": "Zahájeno",
+    "title": "Obnovení repozitářů"
+  },
   "sort": {
     "author": "Autor",
     "created": "Datum vytvoření",

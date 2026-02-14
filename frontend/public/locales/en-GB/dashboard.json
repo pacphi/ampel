@@ -66,6 +66,15 @@
     "noPullRequests": "No pull requests found",
     "title": "Pull Requests"
   },
+  "refresh": {
+    "complete": "Refresh complete!",
+    "completed": "Completed",
+    "currentRepository": "Refreshing",
+    "description": "Fetching the latest pull requests from all git providers",
+    "progress": "{{completed}} of {{total}} repositories refreshed",
+    "started": "Started",
+    "title": "Refreshing Repositories"
+  },
   "sort": {
     "author": "Author",
     "created": "Created date",

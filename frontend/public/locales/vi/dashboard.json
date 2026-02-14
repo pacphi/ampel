@@ -54,6 +54,15 @@
     "updatedAt": "Đã cập nhật"
   },
   "prDashboard": "Bảng điều khiển PR",
+  "refresh": {
+    "complete": "Quá trình làm mới hoàn tất!",
+    "completed": "Hoàn thành",
+    "currentRepository": "Tươi mát",
+    "description": "Tải về các yêu cầu kéo (pull request) mới nhất từ tất cả các nhà cung cấp Git.",
+    "progress": "{{completed}} trong số {{total}} kho lưu trữ đã được làm mới",
+    "started": "Bắt đầu",
+    "title": "Làm mới kho lưu trữ"
+  },
   "sort": {
     "author": "Tác giả",
     "created": "Ngày tạo",

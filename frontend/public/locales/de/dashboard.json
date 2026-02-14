@@ -54,6 +54,15 @@
     "updatedAt": "Aktualisiert"
   },
   "prDashboard": "PR-Dashboard",
+  "refresh": {
+    "complete": "Aktualisierung abgeschlossen!",
+    "completed": "Vollendet",
+    "currentRepository": "Erfrischend",
+    "description": "Die neuesten Pull-Requests von allen Git-Anbietern abrufen",
+    "progress": "{{completed}} von {{total}} aktualisierten Repositories",
+    "started": "Begonnen",
+    "title": "Aktualisierung der Repositories"
+  },
   "sort": {
     "author": "Autor",
     "created": "Erstellungsdatum",

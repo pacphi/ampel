@@ -54,6 +54,15 @@
     "updatedAt": "อัปเดต"
   },
   "prDashboard": "แดชบอร์ด PR",
+  "refresh": {
+    "complete": "รีเฟรชเสร็จสมบูรณ์!",
+    "completed": "สมบูรณ์",
+    "currentRepository": "สดชื่น",
+    "description": "กำลังดึงข้อมูล pull request ล่าสุดจากผู้ให้บริการ git ทั้งหมด",
+    "progress": "รีโพสิทอรี {{completed}} ของ {{total}} ได้รับการอัปเดตแล้ว",
+    "started": "เริ่ม",
+    "title": "การรีเฟรชที่เก็บข้อมูล"
+  },
   "sort": {
     "author": "ผู้เขียน",
     "created": "วันที่สร้าง",

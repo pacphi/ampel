@@ -54,6 +54,15 @@
     "updatedAt": "Mis à jour"
   },
   "prDashboard": "Tableau de bord RP",
+  "refresh": {
+    "complete": "Actualisation terminée !",
+    "completed": "Complété",
+    "currentRepository": "Rafraîchissant",
+    "description": "Récupération des dernières demandes d'extraction de tous les fournisseurs Git",
+    "progress": "{{completed}} des {{total}} dépôts actualisés",
+    "started": "Commencé",
+    "title": "Référentiels actualisés"
+  },
   "sort": {
     "author": "Auteur",
     "created": "Date de création",
