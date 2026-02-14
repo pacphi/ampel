@@ -101,5 +101,14 @@
       "prs": "PRs",
       "lastUpdated": "Last Updated"
     }
+  },
+  "refresh": {
+    "title": "Refreshing Repositories",
+    "description": "Fetching the latest pull requests from all git providers",
+    "progress": "{{completed}} of {{total}} repositories refreshed",
+    "currentRepository": "Refreshing",
+    "complete": "Refresh complete!",
+    "started": "Started",
+    "completed": "Completed"
   }
 }

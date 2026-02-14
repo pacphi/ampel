@@ -157,3 +157,17 @@ export interface ApiResponse<T> {
   data?: T;
   error?: string;
 }
+
+export interface RefreshJobResponse {
+  jobId: string;
+}
+
+export interface RefreshJobStatus {
+  jobId: string;
+  totalRepositories: number;
+  completed: number;
+  currentRepository?: string;
+  isComplete: boolean;
+  startedAt: string;
+  completedAt?: string;
+}

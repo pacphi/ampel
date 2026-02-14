@@ -80,7 +80,7 @@ impl PollRepositoryJob {
         Ok(due_repos)
     }
 
-    async fn poll_single_repo(
+    pub async fn poll_single_repo(
         &self,
         db: &DatabaseConnection,
         encryption_service: &EncryptionService,

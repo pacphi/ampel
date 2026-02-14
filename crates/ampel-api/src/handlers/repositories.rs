@@ -5,7 +5,9 @@ use axum::{
 };
 use rust_i18n::t;
 use sea_orm::{ColumnTrait, EntityTrait, QueryFilter};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
+use std::sync::Arc;
+use tokio::sync::RwLock;
 use uuid::Uuid;
 
 use ampel_core::models::{
@@ -14,10 +16,17 @@ use ampel_core::models::{
 };
 use ampel_db::entities::provider_account;
 use ampel_db::queries::{PrQueries, RepoQueries};
+use ampel_worker::jobs::poll_repository::PollRepositoryJob;
 
 use crate::extractors::{AuthUser, ValidatedJson};
 use crate::handlers::{ApiError, ApiResponse};
 use crate::AppState;
+
+// In-memory refresh status tracking
+lazy_static::lazy_static! {
+    static ref REFRESH_JOBS: Arc<RwLock<std::collections::HashMap<Uuid, RefreshJobStatus>>> =
+        Arc::new(RwLock::new(std::collections::HashMap::new()));
+}
 
 #[derive(Debug, Deserialize)]
 pub struct ListReposQuery {
@@ -303,4 +312,118 @@ pub async fn update_repository(
 #[derive(Debug, Deserialize)]
 pub struct UpdateRepositoryRequest {
     pub poll_interval_seconds: Option<i32>,
+}
+
+/// Refresh job status tracking
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RefreshJobStatus {
+    pub job_id: Uuid,
+    pub total_repositories: usize,
+    pub completed: usize,
+    pub current_repository: Option<String>,
+    pub is_complete: bool,
+    pub started_at: chrono::DateTime<chrono::Utc>,
+    pub completed_at: Option<chrono::DateTime<chrono::Utc>>,
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RefreshJobResponse {
+    pub job_id: Uuid,
+}
+
+/// Trigger refresh of all user repositories
+pub async fn refresh_all_repositories(
+    State(state): State<AppState>,
+    auth: AuthUser,
+) -> Result<Json<ApiResponse<RefreshJobResponse>>, ApiError> {
+    let repos = RepoQueries::find_by_user_id(&state.db, auth.user_id).await?;
+    let job_id = Uuid::new_v4();
+    let total_repositories = repos.len();
+
+    // Initialize job status
+    let status = RefreshJobStatus {
+        job_id,
+        total_repositories,
+        completed: 0,
+        current_repository: None,
+        is_complete: false,
+        started_at: chrono::Utc::now(),
+        completed_at: None,
+    };
+
+    REFRESH_JOBS.write().await.insert(job_id, status);
+
+    // Spawn background task to refresh all repositories
+    let db = state.db.clone();
+    let encryption_service = state.encryption_service.clone();
+    let provider_factory = state.provider_factory.clone();
+
+    tokio::spawn(async move {
+        let poll_job = PollRepositoryJob;
+
+        for (idx, repo) in repos.iter().enumerate() {
+            // Update status with current repository
+            {
+                let mut jobs = REFRESH_JOBS.write().await;
+                if let Some(status) = jobs.get_mut(&job_id) {
+                    status.current_repository = Some(format!("{}/{}", repo.owner, repo.name));
+                }
+            }
+
+            // Poll the repository
+            if let Err(e) = poll_job
+                .poll_single_repo(&db, &encryption_service, &provider_factory, repo)
+                .await
+            {
+                tracing::error!(
+                    "Failed to refresh repository {}/{}: {}",
+                    repo.owner,
+                    repo.name,
+                    e
+                );
+            }
+
+            // Update progress
+            {
+                let mut jobs = REFRESH_JOBS.write().await;
+                if let Some(status) = jobs.get_mut(&job_id) {
+                    status.completed = idx + 1;
+                }
+            }
+        }
+
+        // Mark job as complete
+        {
+            let mut jobs = REFRESH_JOBS.write().await;
+            if let Some(status) = jobs.get_mut(&job_id) {
+                status.is_complete = true;
+                status.completed_at = Some(chrono::Utc::now());
+                status.current_repository = None;
+            }
+        }
+
+        tracing::info!(
+            "Completed refresh job {} for {} repositories",
+            job_id,
+            total_repositories
+        );
+    });
+
+    Ok(Json(ApiResponse::success(RefreshJobResponse { job_id })))
+}
+
+/// Get refresh job status
+pub async fn get_refresh_status(
+    State(_state): State<AppState>,
+    _auth: AuthUser,
+    Path(job_id): Path<Uuid>,
+) -> Result<Json<ApiResponse<RefreshJobStatus>>, ApiError> {
+    let jobs = REFRESH_JOBS.read().await;
+    let status = jobs
+        .get(&job_id)
+        .ok_or_else(|| ApiError::not_found(t!("errors.refresh.job_not_found")))?;
+
+    Ok(Json(ApiResponse::success(status.clone())))
 }

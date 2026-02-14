@@ -55,3 +55,7 @@ errors:
   # Rate limit
   rate_limit:
     exceeded: "Rate limit exceeded"
+
+  # Refresh errors
+  refresh:
+    job_not_found: "Refresh job not found"

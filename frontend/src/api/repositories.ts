@@ -5,6 +5,8 @@ import type {
   GitProvider,
   Repository,
   RepositoryWithStatus,
+  RefreshJobResponse,
+  RefreshJobStatus,
 } from '@/types';
 
 export const repositoriesApi = {
@@ -50,5 +52,19 @@ export const repositoriesApi = {
 
   async remove(id: string): Promise<void> {
     await apiClient.delete(`/repositories/${id}`);
+  },
+
+  async refreshAll(): Promise<RefreshJobResponse> {
+    const response = await apiClient.post<ApiResponse<RefreshJobResponse>>(
+      '/repositories/refresh-all'
+    );
+    return response.data.data!;
+  },
+
+  async getRefreshStatus(jobId: string): Promise<RefreshJobStatus> {
+    const response = await apiClient.get<ApiResponse<RefreshJobStatus>>(
+      `/repositories/refresh-status/${jobId}`
+    );
+    return response.data.data!;
   },
 };

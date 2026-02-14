@@ -55,6 +55,14 @@ pub fn create_router(state: AppState) -> Router {
             get(repositories::discover_repositories),
         )
         .route(
+            "/api/repositories/refresh-all",
+            post(repositories::refresh_all_repositories),
+        )
+        .route(
+            "/api/repositories/refresh-status/{job_id}",
+            get(repositories::get_refresh_status),
+        )
+        .route(
             "/api/repositories/{id}",
             get(repositories::get_repository)
                 .patch(repositories::update_repository)

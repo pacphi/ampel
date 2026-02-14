@@ -1,18 +1,21 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { dashboardApi } from '@/api/dashboard';
 import { pullRequestsApi } from '@/api/pullRequests';
+import { repositoriesApi } from '@/api/repositories';
 import { settingsApi } from '@/api/settings';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Card } from '@/components/ui/card';
 import GridView from '@/components/dashboard/GridView';
 import ListView from '@/components/dashboard/ListView';
 import PRListView from '@/components/dashboard/PRListView';
 import SummaryBreakdownTile from '@/components/dashboard/SummaryBreakdownTile';
+import RefreshProgress from '@/components/dashboard/RefreshProgress';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import { Grid, List, RefreshCw, GitPullRequest, Boxes } from 'lucide-react';
+import { Grid, List, RefreshCw, GitPullRequest, Boxes, X } from 'lucide-react';
 import type { PullRequestWithDetails } from '@/types';
 import { useRepositoryFilters } from '@/hooks/useRepositoryFilters';
 
@@ -53,7 +56,8 @@ export default function Dashboard() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const { filters, setFilters, filterRepositories } = useRepositoryFilters();
   const queryClient = useQueryClient();
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [refreshJobId, setRefreshJobId] = useState<string | null>(null);
+  const [showRefreshProgress, setShowRefreshProgress] = useState(false);
 
   const { data: summary, isLoading: summaryLoading } = useQuery({
     queryKey: ['dashboard', 'summary'],
@@ -74,16 +78,40 @@ export default function Dashboard() {
 
   // Refresh all dashboard data
   const handleRefresh = async () => {
-    setIsRefreshing(true);
+    setShowRefreshProgress(true);
     try {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['dashboard'] }),
-        queryClient.invalidateQueries({ queryKey: ['pull-requests'] }),
-      ]);
-    } finally {
-      setIsRefreshing(false);
+      const { jobId } = await repositoriesApi.refreshAll();
+      setRefreshJobId(jobId);
+    } catch (error) {
+      console.error('Failed to start refresh:', error);
+      setShowRefreshProgress(false);
+      setRefreshJobId(null);
     }
   };
+
+  // Poll for refresh status
+  const { data: refreshStatus } = useQuery({
+    queryKey: ['refresh-status', refreshJobId],
+    queryFn: () => repositoriesApi.getRefreshStatus(refreshJobId!),
+    enabled: !!refreshJobId,
+    refetchInterval: refreshJobId ? 1000 : false,
+  });
+
+  // Derive refreshing state from query
+  const isRefreshing = !!refreshJobId && !refreshStatus?.isComplete;
+
+  // Handle refresh completion
+  useEffect(() => {
+    if (refreshStatus?.isComplete) {
+      // Stop polling by clearing the job ID
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setRefreshJobId(null);
+      // Invalidate queries to show fresh data
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['pull-requests'] });
+      queryClient.invalidateQueries({ queryKey: ['repositories'] });
+    }
+  }, [refreshStatus?.isComplete, queryClient]);
 
   const { data: settings } = useQuery({
     queryKey: ['user-settings', 'behavior'],
@@ -208,6 +236,35 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Refresh Progress Banner */}
+      {showRefreshProgress && (
+        <Card className="relative border-primary/50 bg-primary/5">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute top-2 right-2 h-6 w-6 p-0"
+            onClick={() => setShowRefreshProgress(false)}
+            aria-label="Close"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+          <div className="p-4 pr-12">
+            {refreshStatus ? (
+              <RefreshProgress status={refreshStatus} />
+            ) : (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <RefreshCw className="h-4 w-4 animate-spin text-primary" />
+                  <span className="text-muted-foreground">
+                    Starting refresh of {summary?.totalRepositories || 0} repositories...
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        </Card>
+      )}
 
       {/* Combined Summary + Breakdown Tiles */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
