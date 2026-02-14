@@ -1340,7 +1340,7 @@ templates:
 
     setup_steps:
       - name: 'Checkout'
-        uses: 'actions/checkout@v4'
+        uses: 'actions/checkout@v6'
 
       - name: 'Install Rust toolchain'
         uses: 'dtolnay/rust-action@stable'
@@ -1386,7 +1386,7 @@ templates:
 
     setup_steps:
       - name: 'Checkout'
-        uses: 'actions/checkout@v4'
+        uses: 'actions/checkout@v6'
 
       - name: 'Setup Node.js'
         uses: 'actions/setup-node@v4'
@@ -1430,7 +1430,7 @@ templates:
 
     setup_steps:
       - name: 'Checkout'
-        uses: 'actions/checkout@v4'
+        uses: 'actions/checkout@v6'
 
       - name: 'Setup Python'
         uses: 'actions/setup-python@v5'
@@ -1481,7 +1481,7 @@ templates:
 
     setup_steps:
       - name: 'Checkout'
-        uses: 'actions/checkout@v4'
+        uses: 'actions/checkout@v6'
 
       - name: 'Setup Go'
         uses: 'actions/setup-go@v5'
@@ -2398,7 +2398,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Fly.io CLI
         uses: superfly/flyctl-actions/setup-flyctl@master

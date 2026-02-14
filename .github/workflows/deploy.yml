@@ -71,7 +71,7 @@ jobs:
       frontend: ${{ steps.filter.outputs.frontend }}
       fly_config: ${{ steps.filter.outputs.fly_config }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: dorny/paths-filter@v3
         id: filter
@@ -105,7 +105,7 @@ jobs:
       github.event.inputs.skip_tests != 'true'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -139,7 +139,7 @@ jobs:
       github.event.inputs.skip_tests != 'true'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -189,7 +189,7 @@ jobs:
       (needs.changes.outputs.backend == 'true' || github.event.inputs.deploy_api == 'true' || github.event.inputs.force_deploy == 'true')
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
@@ -225,7 +225,7 @@ jobs:
       (needs.changes.outputs.backend == 'true' || github.event.inputs.deploy_worker == 'true' || github.event.inputs.force_deploy == 'true')
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
@@ -256,7 +256,7 @@ jobs:
       (needs.changes.outputs.frontend == 'true' || github.event.inputs.deploy_frontend == 'true' || github.event.inputs.force_deploy == 'true')
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
@@ -294,7 +294,7 @@ jobs:
       (github.event.inputs.run_migrations != 'false')
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master

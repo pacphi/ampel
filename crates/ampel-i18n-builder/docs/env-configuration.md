@@ -232,7 +232,7 @@ jobs:
     env:
       DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: cargo test --features integration-tests
 ```
 
