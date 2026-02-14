@@ -25,22 +25,25 @@ git checkout -b release/v0.1.0
 
 ### 2. Update Version Numbers
 
-Update versions in:
+Three files must be kept in sync:
+
+- `Cargo.toml` — `[workspace.package] version` (used by all workspace crates)
+- `crates/ampel-i18n-builder/Cargo.toml` — `[package] version` (standalone crate, not in workspace)
+- `frontend/package.json` — `version`
+
+Use the bump script to update all three at once:
 
 ```bash
-# Root Cargo.toml
-sed -i '' 's/version = "0.0.1"/version = "0.1.0"/' Cargo.toml
+# Explicit version
+./scripts/bump-version.sh 0.4.0
 
-# Frontend package.json
-cd frontend
-npm version 0.1.0 --no-git-tag-version
-cd ..
+# Or use symbolic bump types
+./scripts/bump-version.sh patch   # 0.3.0 -> 0.3.1
+./scripts/bump-version.sh minor   # 0.3.0 -> 0.4.0
+./scripts/bump-version.sh major   # 0.3.0 -> 1.0.0
 ```
 
-Or manually edit:
-
-- `Cargo.toml` - `[workspace.package] version`
-- `frontend/package.json` - `version`
+You can also edit the files manually if you prefer.
 
 ### 3. Update Changelog
 
@@ -204,7 +207,7 @@ git push origin v0.1.1
 Before releasing:
 
 - [ ] All CI checks pass on main
-- [ ] Version numbers updated
+- [ ] Version numbers updated (run `./scripts/bump-version.sh` or manually update all 3 files)
 - [ ] Changelog updated
 - [ ] Documentation updated
 - [ ] Database migrations tested
