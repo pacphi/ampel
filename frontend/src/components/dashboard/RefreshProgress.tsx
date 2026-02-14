@@ -34,7 +34,8 @@ export default function RefreshProgress({ status }: RefreshProgressProps) {
         <div className="flex items-center gap-2 text-sm">
           <Loader2 className="h-4 w-4 animate-spin text-primary" />
           <span className="text-muted-foreground">
-            {t('dashboard:refresh.currentRepository')}: <span className="font-medium text-foreground">{status.currentRepository}</span>
+            {t('dashboard:refresh.currentRepository')}:{' '}
+            <span className="font-medium text-foreground">{status.currentRepository}</span>
           </span>
         </div>
       )}
