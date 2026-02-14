@@ -56,13 +56,22 @@ vi.mock('@/api/settings', () => ({
   },
 }));
 
+vi.mock('@/api/repositories', () => ({
+  repositoriesApi: {
+    refreshAll: vi.fn(),
+    getRefreshStatus: vi.fn(),
+  },
+}));
+
 import { dashboardApi } from '@/api/dashboard';
 import { pullRequestsApi } from '@/api/pullRequests';
 import { settingsApi } from '@/api/settings';
+import { repositoriesApi } from '@/api/repositories';
 
 const mockedDashboardApi = vi.mocked(dashboardApi);
 const mockedPullRequestsApi = vi.mocked(pullRequestsApi);
 const mockedSettingsApi = vi.mocked(settingsApi);
+const mockedRepositoriesApi = vi.mocked(repositoriesApi);
 
 function renderDashboard() {
   const queryClient = new QueryClient({
@@ -337,6 +346,7 @@ describe('Dashboard', () => {
   describe('Refresh Button', () => {
     it('refetches all dashboard data when refresh is clicked', async () => {
       const user = userEvent.setup();
+      const jobId = 'test-job-id';
       let gridCallCount = 0;
       let summaryCallCount = 0;
       let prsCallCount = 0;
@@ -368,6 +378,17 @@ describe('Dashboard', () => {
         deleteBranchesDefault: false,
       });
 
+      // Mock refresh API
+      mockedRepositoriesApi.refreshAll.mockResolvedValue({ jobId });
+      mockedRepositoriesApi.getRefreshStatus.mockResolvedValue({
+        jobId,
+        totalRepositories: 10,
+        completed: 10,
+        isComplete: true,
+        startedAt: new Date().toISOString(),
+        completedAt: new Date().toISOString(),
+      });
+
       renderDashboard();
 
       await waitFor(() => {
@@ -382,34 +403,25 @@ describe('Dashboard', () => {
       const refreshButton = screen.getByRole('button', { name: /refresh/i });
       await user.click(refreshButton);
 
-      // After refresh, all queries should be refetched
+      // Wait for refresh to complete and queries to be invalidated
       await waitFor(() => {
         expect(gridCallCount).toBe(2);
       });
-      await waitFor(() => {
-        expect(summaryCallCount).toBe(2);
-      });
-      await waitFor(() => {
-        expect(prsCallCount).toBe(2);
-      });
+      expect(summaryCallCount).toBe(2);
+      expect(prsCallCount).toBe(2);
     });
 
     it('shows loading state while refreshing', async () => {
       const user = userEvent.setup();
-      let resolveGrid: () => void;
-      const gridPromise = new Promise<void>((resolve) => {
-        resolveGrid = resolve;
-      });
+      const jobId = 'test-job-id-2';
+      let statusCallCount = 0;
 
       mockedDashboardApi.getSummary.mockResolvedValue({
         totalRepositories: 10,
         totalOpenPrs: 5,
         statusCounts: { green: 2, yellow: 2, red: 1 },
       });
-      mockedDashboardApi.getGrid.mockImplementation(async () => {
-        await gridPromise;
-        return [];
-      });
+      mockedDashboardApi.getGrid.mockResolvedValue([]);
       mockedPullRequestsApi.list.mockResolvedValue({
         data: [],
         total: 0,
@@ -422,8 +434,21 @@ describe('Dashboard', () => {
         deleteBranchesDefault: false,
       });
 
-      // Resolve initial load
-      resolveGrid!();
+      // Mock refresh API - job starts but not complete initially
+      mockedRepositoriesApi.refreshAll.mockResolvedValue({ jobId });
+      mockedRepositoriesApi.getRefreshStatus.mockImplementation(async () => {
+        statusCallCount++;
+        const isComplete = statusCallCount > 2; // Complete after a few polls
+        return {
+          jobId,
+          totalRepositories: 10,
+          completed: isComplete ? 10 : 5,
+          currentRepository: isComplete ? undefined : 'owner/repo',
+          isComplete,
+          startedAt: new Date().toISOString(),
+          completedAt: isComplete ? new Date().toISOString() : undefined,
+        };
+      });
 
       renderDashboard();
 
@@ -431,31 +456,22 @@ describe('Dashboard', () => {
         expect(screen.getByRole('button', { name: /refresh/i })).toBeInTheDocument();
       });
 
-      // Setup a new promise for the refresh
-      const refreshPromise = new Promise<void>((resolve) => {
-        resolveGrid = resolve;
-      });
-      mockedDashboardApi.getGrid.mockImplementation(async () => {
-        await refreshPromise;
-        return [];
-      });
-
       const refreshButton = screen.getByRole('button', { name: /refresh/i });
       await user.click(refreshButton);
 
-      // Should show loading state
+      // Should show refreshing state (button text changes)
       await waitFor(() => {
         expect(screen.getByRole('button', { name: /refreshing/i })).toBeInTheDocument();
       });
       expect(screen.getByRole('button', { name: /refreshing/i })).toBeDisabled();
 
-      // Resolve the refresh
-      resolveGrid!();
-
-      // Should return to normal state
-      await waitFor(() => {
-        expect(screen.getByRole('button', { name: /^refresh$/i })).toBeInTheDocument();
-      });
+      // Wait for refresh to complete
+      await waitFor(
+        () => {
+          expect(screen.getByRole('button', { name: /^refresh$/i })).toBeInTheDocument();
+        },
+        { timeout: 5000 }
+      );
       expect(screen.getByRole('button', { name: /^refresh$/i })).not.toBeDisabled();
     });
   });
