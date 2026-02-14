@@ -47,10 +47,10 @@ impl EncryptionService {
         let mut nonce_bytes = [0u8; NONCE_SIZE];
         rng.fill(&mut nonce_bytes);
 
-        let nonce = Nonce::from_slice(&nonce_bytes);
+        let nonce = Nonce::from(nonce_bytes);
         let ciphertext = self
             .cipher
-            .encrypt(nonce, plaintext.as_bytes())
+            .encrypt(&nonce, plaintext.as_bytes())
             .map_err(|e| AmpelError::EncryptionError(format!("Encryption failed: {}", e)))?;
 
         // Prepend nonce to ciphertext
@@ -70,11 +70,14 @@ impl EncryptionService {
         }
 
         let (nonce_bytes, ciphertext) = encrypted.split_at(NONCE_SIZE);
-        let nonce = Nonce::from_slice(nonce_bytes);
+        let nonce_array: [u8; NONCE_SIZE] = nonce_bytes
+            .try_into()
+            .map_err(|_| AmpelError::EncryptionError("Invalid nonce length".to_string()))?;
+        let nonce = Nonce::from(nonce_array);
 
         let plaintext = self
             .cipher
-            .decrypt(nonce, ciphertext)
+            .decrypt(&nonce, ciphertext)
             .map_err(|e| AmpelError::EncryptionError(format!("Decryption failed: {}", e)))?;
 
         String::from_utf8(plaintext)

@@ -330,7 +330,7 @@ outdated-backend:
 
 outdated-frontend:
 	@echo "==> Checking for outdated frontend dependencies..."
-	-cd frontend && pnpm outdated
+	cd frontend && pnpm outdated || true
 
 upgrade: upgrade-backend upgrade-frontend
 
