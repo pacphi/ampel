@@ -17,9 +17,19 @@
     "@secretlint/secretlint-rule-privatekey": "^11.2.5",
     "@secretlint/secretlint-rule-sendgrid": "^11.2.5",
     "@secretlint/secretlint-rule-slack": "^11.2.5",
-    "markdownlint-cli2": "^0.19.1",
+    "markdownlint-cli2": "^0.20.0",
     "prettier": "^3.5.3",
     "secretlint": "^11.2.5"
   },
-  "packageManager": "pnpm@10.24.0"
+  "packageManager": "pnpm@10.24.0",
+  "pnpm": {
+    "overrides": {
+      "markdown-it": ">=14.1.1",
+      "lodash": ">=4.17.23"
+    }
+  },
+  "overrides": {
+    "markdown-it": ">=14.1.1",
+    "lodash": ">=4.17.23"
+  }
 }
