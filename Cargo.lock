@@ -89,7 +89,7 @@ checksum = "683d7910e743518b0e34f1186f92494becacb047c7b6bf616c96772180fef923"
 
 [[package]]
 name = "ampel-api"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "ampel-core",
  "ampel-db",
@@ -138,7 +138,7 @@ dependencies = [
 
 [[package]]
 name = "ampel-core"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "argon2",
@@ -159,7 +159,7 @@ dependencies = [
 
 [[package]]
 name = "ampel-db"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "aes-gcm",
  "ampel-core",
@@ -181,7 +181,7 @@ dependencies = [
 
 [[package]]
 name = "ampel-i18n-builder"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -225,7 +225,7 @@ dependencies = [
 
 [[package]]
 name = "ampel-providers"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "ampel-core",
  "anyhow",
@@ -247,7 +247,7 @@ dependencies = [
 
 [[package]]
 name = "ampel-worker"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "ampel-core",
  "ampel-db",
@@ -4393,9 +4393,9 @@ dependencies = [
 
 [[package]]
 name = "rustls-webpki"
-version = "0.103.9"
+version = "0.103.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d7df23109aa6c1567d1c575b9952556388da57401e4ace1d15f79eedad0d8f53"
+checksum = "df33b2b81ac578cabaf06b89b0631153a3f416b0a886e8a7a1707fb51abbd1ef"
 dependencies = [
  "ring",
  "rustls-pki-types",
