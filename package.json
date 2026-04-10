@@ -25,11 +25,11 @@
   "pnpm": {
     "overrides": {
       "markdown-it": ">=14.1.1",
-      "lodash": ">=4.17.23"
+      "lodash": ">=4.18.1"
     }
   },
   "overrides": {
     "markdown-it": ">=14.1.1",
-    "lodash": ">=4.17.23"
+    "lodash": ">=4.18.1"
   }
 }
