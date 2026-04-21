@@ -3,7 +3,7 @@ use aes_gcm::{
     Aes256Gcm, Nonce,
 };
 use base64::{engine::general_purpose::STANDARD as BASE64, Engine};
-use rand::Rng;
+use rand::RngCore;
 
 use ampel_core::errors::{AmpelError, AmpelResult};
 
@@ -43,9 +43,9 @@ impl EncryptionService {
 
     /// Encrypt plaintext, returning nonce + ciphertext
     pub fn encrypt(&self, plaintext: &str) -> AmpelResult<Vec<u8>> {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         let mut nonce_bytes = [0u8; NONCE_SIZE];
-        rng.fill(&mut nonce_bytes);
+        rng.fill_bytes(&mut nonce_bytes);
 
         let nonce = Nonce::from(nonce_bytes);
         let ciphertext = self
@@ -88,7 +88,7 @@ impl EncryptionService {
 /// Generate a new random 32-byte encryption key as base64
 pub fn generate_encryption_key() -> String {
     let mut key = [0u8; 32];
-    rand::thread_rng().fill(&mut key);
+    rand::rng().fill_bytes(&mut key);
     BASE64.encode(key)
 }
 
