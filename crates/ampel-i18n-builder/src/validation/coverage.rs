@@ -21,13 +21,15 @@ impl CoverageValidator {
                 if let Some(target_value) = target.get(key) {
                     match (value, target_value) {
                         (TranslationValue::String(_), TranslationValue::String(s))
-                            if !s.is_empty() => {
-                                1
-                            }
+                            if !s.is_empty() =>
+                        {
+                            1
+                        }
                         (TranslationValue::Plural(_), TranslationValue::Plural(p))
-                            if !p.other.is_empty() => {
-                                1
-                            }
+                            if !p.other.is_empty() =>
+                        {
+                            1
+                        }
                         (
                             TranslationValue::Nested(source_nested),
                             TranslationValue::Nested(target_nested),

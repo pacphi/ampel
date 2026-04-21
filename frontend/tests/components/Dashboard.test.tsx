@@ -5,7 +5,7 @@
  * with MSW for API mocking and proper i18n integration.
  */
 
-import { describe, expect, beforeAll, afterAll, afterEach } from 'vitest';
+import { describe, expect } from 'vitest';
 import { render, screen, waitFor } from '../setup/test-utils';
 import userEvent from '@testing-library/user-event';
 import { server, http, HttpResponse, delay } from '../setup/msw/server';
@@ -20,13 +20,7 @@ import { mockPullRequests, createPaginatedResponse } from '../setup/msw/fixtures
 import { mockUserSettings } from '../setup/msw/fixtures/settings';
 import { successResponse, errorResponse } from '../setup/msw/fixtures/auth';
 
-// ============================================================================
-// MSW Server Lifecycle
-// ============================================================================
-
-beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }));
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+// MSW server lifecycle is managed globally in tests/setup.ts
 
 // ============================================================================
 // Test Fixtures and Helpers
@@ -316,6 +310,21 @@ Feature('Dashboard Page', () => {
         }),
         http.get(`${API_BASE}/settings/behavior`, () => {
           return HttpResponse.json(successResponse(mockUserSettings));
+        }),
+        http.post(`${API_BASE}/repositories/refresh-all`, () => {
+          return HttpResponse.json(successResponse({ jobId: 'test-job-1' }));
+        }),
+        http.get(`${API_BASE}/repositories/refresh-status/:jobId`, () => {
+          return HttpResponse.json(
+            successResponse({
+              jobId: 'test-job-1',
+              totalRepositories: 1,
+              completed: 1,
+              isComplete: true,
+              startedAt: new Date().toISOString(),
+              completedAt: new Date().toISOString(),
+            })
+          );
         })
       );
 
@@ -484,9 +493,7 @@ Feature('Dashboard Page', () => {
 // ============================================================================
 
 describe('Dashboard API Integration', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }));
-  afterEach(() => server.resetHandlers());
-  afterAll(() => server.close());
+  // MSW server lifecycle is managed globally in tests/setup.ts
 
   it('should handle network errors gracefully', async () => {
     server.use(
