@@ -37,7 +37,7 @@ export function EditAccountPage() {
   useEffect(() => {
     if (account && !accountLoaded.current) {
       accountLoaded.current = true;
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+       
       setFormData({
         accountLabel: account.accountLabel,
         isActive: account.isActive,

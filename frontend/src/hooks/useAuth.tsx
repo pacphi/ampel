@@ -32,6 +32,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (token) {
+      // setState is called inside an async .finally() callback, not synchronously
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       refreshUser().finally(() => setIsLoading(false));
     } else {
       setIsLoading(false);

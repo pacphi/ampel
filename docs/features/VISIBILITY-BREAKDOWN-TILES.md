@@ -12,7 +12,6 @@
 
 - **API Documentation**: [Dashboard Visibility Breakdown API](/docs/api/DASHBOARD-VISIBILITY-BREAKDOWN.md)
 - **Component Documentation**: [BreakdownTile Component](/docs/components/BREAKDOWN-TILE.md)
-- **Implementation Plan**: [Visibility Breakdown Implementation](/docs/planning/VISIBILITY-BREAKDOWN-TILES-IMPLEMENTATION.md)
 - **Architecture**: [Database Schema & Data Models](/docs/ARCHITECTURE.md#52-repository-visibility)
 
 ---

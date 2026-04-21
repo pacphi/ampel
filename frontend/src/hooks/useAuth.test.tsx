@@ -50,6 +50,7 @@ function TestComponent() {
 function ComponentWithoutProvider() {
   try {
     useAuth();
+    // eslint-disable-next-line react-hooks/error-boundaries
     return <div>no-error</div>;
   } catch (e) {
     return <div data-testid="error">{(e as Error).message}</div>;

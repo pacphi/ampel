@@ -59,21 +59,19 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
 }) => {
   const { i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = React.useState('');
-  const [favorites, setFavorites] = React.useState<string[]>([]);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const searchInputRef = React.useRef<HTMLInputElement>(null);
-
-  // Load favorites from localStorage
-  React.useEffect(() => {
+  const [favorites, setFavorites] = React.useState<string[]>(() => {
     const stored = localStorage.getItem(STORAGE_KEY_FAVORITES);
     if (stored) {
       try {
-        setFavorites(JSON.parse(stored));
+        return JSON.parse(stored) as string[];
       } catch {
         // Failed to parse favorites, using empty array
       }
     }
-  }, []);
+    return [];
+  });
+  const [isOpen, setIsOpen] = React.useState(false);
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
 
   // Load language from localStorage on mount
   React.useEffect(() => {

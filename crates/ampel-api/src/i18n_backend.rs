@@ -96,22 +96,19 @@ impl NestedYamlBackend {
                     }
                 }
             }
-            Value::String(s) => {
-                if !prefix.is_empty() {
+            Value::String(s)
+                if !prefix.is_empty() => {
                     result.insert(prefix, s.clone());
                 }
-            }
             // Handle other scalar types
-            Value::Number(n) => {
-                if !prefix.is_empty() {
+            Value::Number(n)
+                if !prefix.is_empty() => {
                     result.insert(prefix, n.to_string());
                 }
-            }
-            Value::Bool(b) => {
-                if !prefix.is_empty() {
+            Value::Bool(b)
+                if !prefix.is_empty() => {
                     result.insert(prefix, b.to_string());
                 }
-            }
             _ => {}
         }
     }

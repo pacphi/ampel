@@ -20,20 +20,14 @@ impl CoverageValidator {
             .map(|(key, value)| {
                 if let Some(target_value) = target.get(key) {
                     match (value, target_value) {
-                        (TranslationValue::String(_), TranslationValue::String(s)) => {
-                            if !s.is_empty() {
+                        (TranslationValue::String(_), TranslationValue::String(s))
+                            if !s.is_empty() => {
                                 1
-                            } else {
-                                0
                             }
-                        }
-                        (TranslationValue::Plural(_), TranslationValue::Plural(p)) => {
-                            if !p.other.is_empty() {
+                        (TranslationValue::Plural(_), TranslationValue::Plural(p))
+                            if !p.other.is_empty() => {
                                 1
-                            } else {
-                                0
                             }
-                        }
                         (
                             TranslationValue::Nested(source_nested),
                             TranslationValue::Nested(target_nested),
