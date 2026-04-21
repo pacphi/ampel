@@ -1,6 +1,6 @@
 # Release Process
 
-This document describes how to create releases for Ampel using Git and GitHub automation.
+Releases are fully automated by [release-please](https://github.com/googleapis/release-please). Maintainers do not bump versions, edit `CHANGELOG.md`, or create tags by hand.
 
 ## Versioning
 
@@ -10,215 +10,228 @@ Ampel follows [Semantic Versioning](https://semver.org/):
 - **MINOR** (0.1.0): New features, backwards compatible
 - **PATCH** (0.0.1): Bug fixes, backwards compatible
 
-## Release Workflow
+While Ampel is pre-1.0 (`0.x.y`), `feat:` commits bump the minor version and `fix:` commits bump the patch. Breaking changes (`feat!:` / `BREAKING CHANGE:`) also bump the minor until 1.0.
 
-### 1. Prepare the Release
+All three version-bearing files are kept in sync automatically:
 
-```bash
-# Ensure you're on main with latest changes
-git checkout main
-git pull origin main
-
-# Create a release branch
-git checkout -b release/v0.1.0
-```
-
-### 2. Update Version Numbers
-
-Three files must be kept in sync:
-
-- `Cargo.toml` — `[workspace.package] version` (used by all workspace crates)
-- `crates/ampel-i18n-builder/Cargo.toml` — `[package] version` (standalone crate, not in workspace)
+- `Cargo.toml` — `[workspace.package] version`
+- `crates/ampel-i18n-builder/Cargo.toml` — `[package] version`
 - `frontend/package.json` — `version`
 
-Use the bump script to update all three at once:
+## How a Release Happens
+
+### 1. Merge PRs to `main`
+
+Use [Conventional Commit](https://www.conventionalcommits.org/) prefixes on PR titles (squash-merge titles become the commit on `main` and drive the changelog):
+
+| Prefix      | Changelog section  | Version impact (pre-1.0) |
+| ----------- | ------------------ | ------------------------ |
+| `feat:`     | Features           | minor                    |
+| `fix:`      | Bug Fixes          | patch                    |
+| `perf:`     | Performance        | patch                    |
+| `docs:`     | Documentation      | none                     |
+| `refactor:` | Code Refactoring   | none                     |
+| `test:`     | Tests              | none                     |
+| `build:`    | Build System       | none                     |
+| `ci:`       | Continuous Integration | none                 |
+| `chore:`    | Miscellaneous Chores | none                   |
+
+Append `!` (e.g. `feat!:`) or include `BREAKING CHANGE:` in the body to flag a breaking change.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full convention.
+
+### 2. Review the Release PR
+
+After each merge to `main`, the `Release` workflow runs. release-please opens (or updates) a PR titled `chore(main): release X.Y.Z` containing:
+
+- Version bumps in all three files listed above
+- A new section prepended to `CHANGELOG.md`
+- An updated `.release-please-manifest.json`
+
+Review it like any other PR. The proposed version comes from the Conventional Commit types accumulated since the last release.
+
+### 3. Merge the Release PR
+
+Merging triggers release-please to:
+
+1. Push the tag `vX.Y.Z` to `main`
+2. Create a GitHub Release with the changelog section as the body
+
+The same `Release` workflow run then executes the build/publish jobs, gated on `release_created`:
+
+- **Docker Images** pushed to GHCR:
+  - `ghcr.io/pacphi/ampel-api:vX.Y.Z`
+  - `ghcr.io/pacphi/ampel-worker:vX.Y.Z`
+  - `ghcr.io/pacphi/ampel-frontend:vX.Y.Z`
+- **Binaries** attached to the GitHub Release:
+  - Linux x86_64, macOS x86_64, macOS ARM64
+- **Crate**: `ampel-i18n-builder` published to crates.io
+
+## Pre-releases
+
+To cut an alpha/beta/rc, include a `Release-As:` footer in a commit on `main`:
+
+```text
+chore: cut next beta
+
+Release-As: 0.4.0-beta.1
+```
+
+release-please will propose that exact version in the next Release PR. Pre-releases are marked accordingly on GitHub.
+
+## Hotfixes
+
+1. Open a PR against `main` with a `fix:` commit.
+2. Merge it. release-please will include it in the next Release PR as a patch bump.
+3. If a hotfix must ship without unrelated in-flight work, either:
+   - Merge only the `fix:` PR, then merge the Release PR immediately, or
+   - Use a `Release-As: X.Y.Z` footer to force a specific patch version.
+
+## Rollback
+
+1. Open a PR reverting the offending commit(s) with a `fix:` or `revert:` title.
+2. Merge it. release-please will open a Release PR bumping the patch version.
+3. Merge the Release PR to ship the rollback.
+
+For immediate operational rollback, redeploy the previous image tag:
 
 ```bash
-# Explicit version
-./scripts/bump-version.sh 0.4.0
-
-# Or use symbolic bump types
-./scripts/bump-version.sh patch   # 0.3.0 -> 0.3.1
-./scripts/bump-version.sh minor   # 0.3.0 -> 0.4.0
-./scripts/bump-version.sh major   # 0.3.0 -> 1.0.0
-```
-
-You can also edit the files manually if you prefer.
-
-### 3. Update Changelog
-
-Create or update `CHANGELOG.md`:
-
-```markdown
-# Changelog
-
-## [0.1.0] - 2025-01-15
-
-### Added
-
-- Initial release
-- GitHub, GitLab, Bitbucket PAT authentication
-- PR dashboard with traffic light status
-- Repository health scoring
-- Team management
-
-### Fixed
-
-- N/A
-
-### Changed
-
-- N/A
-```
-
-### 4. Create Release Commit
-
-```bash
-git add -A
-git commit -m "chore: prepare release v0.1.0"
-git push origin release/v0.1.0
-```
-
-### 5. Create Pull Request
-
-Open a PR from `release/v0.1.0` to `main` for final review.
-
-### 6. Tag and Release
-
-After merging to main:
-
-```bash
-git checkout main
-git pull origin main
-
-# Create annotated tag
-git tag -a v0.1.0 -m "Release v0.1.0"
-
-# Push tag
-git push origin v0.1.0
-```
-
-## GitHub Release Automation
-
-When you push a tag, the GitHub Actions workflow automatically:
-
-1. Builds release binaries for multiple platforms
-2. Builds and pushes Docker images
-3. Creates a GitHub Release with artifacts
-
-### Release Workflow (`.github/workflows/release.yml`)
-
-The release workflow is triggered on version tags:
-
-```yaml
-on:
-  push:
-    tags:
-      - 'v*'
-```
-
-### Release Artifacts
-
-Each release includes:
-
-- **Docker Images**: Published to GitHub Container Registry
-  - `ghcr.io/pacphi/ampel-api:v0.1.0`
-  - `ghcr.io/pacphi/ampel-worker:v0.1.0`
-  - `ghcr.io/pacphi/ampel-frontend:v0.1.0`
-
-- **Binary Releases** (optional): Pre-compiled binaries for:
-  - Linux x86_64
-  - macOS x86_64
-  - macOS ARM64
-
-### Configuring Container Registry
-
-1. Create a GitHub Personal Access Token with `write:packages` scope
-2. Add as repository secret: `GHCR_TOKEN`
-3. The workflow will automatically authenticate and push images
-
-## Hotfix Process
-
-For urgent fixes to production:
-
-```bash
-# Create hotfix branch from the release tag
-git checkout v0.1.0
-git checkout -b hotfix/v0.1.1
-
-# Make fixes
-# ... edit files ...
-
-# Commit and push
-git add -A
-git commit -m "fix: critical security patch"
-git push origin hotfix/v0.1.1
-
-# After PR approval and merge
-git checkout main
-git pull origin main
-git tag -a v0.1.1 -m "Hotfix v0.1.1"
-git push origin v0.1.1
-```
-
-## Pre-release Versions
-
-For beta or release candidates:
-
-```bash
-# Beta release
-git tag -a v0.2.0-beta.1 -m "Beta release v0.2.0-beta.1"
-
-# Release candidate
-git tag -a v0.2.0-rc.1 -m "Release candidate v0.2.0-rc.1"
-```
-
-Pre-release tags trigger the same workflow but are marked as pre-release in GitHub.
-
-## Rollback Process
-
-If a release has critical issues:
-
-### Immediate Rollback
-
-```bash
-# Revert to previous Docker image
-docker pull ghcr.io/pacphi/ampel-api:v0.0.9
+# Docker Compose
+docker pull ghcr.io/pacphi/ampel-api:vX.Y.(Z-1)
 docker compose up -d
 
-# Or on Fly.io
-fly deploy --image ghcr.io/pacphi/ampel-api:v0.0.9
+# Fly.io
+fly deploy --image ghcr.io/pacphi/ampel-api:vX.Y.(Z-1)
 ```
 
-### Git Revert
+## Required Secrets
+
+- `GITHUB_TOKEN` — provided automatically by GitHub Actions.
+- `CARGO_REGISTRY_TOKEN` — repository secret used to publish `ampel-i18n-builder` to crates.io.
+
+## Configuration
+
+- `.github/workflows/release.yml` — single workflow driving everything.
+- `release-please-config.json` — release-please monorepo config with linked versions.
+- `.release-please-manifest.json` — current version of each tracked package.
+- `CHANGELOG.md` — auto-maintained; do not edit by hand.
+
+## CLI Walkthrough
+
+A concrete, terminal-only workflow using `git` and `gh`. Assumes `gh auth status` is green and the repo default is set (`gh repo set-default pacphi/ampel`).
+
+### Sanity checks (one-time)
 
 ```bash
-# Create revert commit
-git revert HEAD
-git push origin main
-
-# Create patch release
-git tag -a v0.1.1 -m "Revert v0.1.0 changes"
-git push origin v0.1.1
+# Squash-merge must use PR title (release-please relies on this)
+gh api repos/pacphi/ampel --jq '{title: .squash_merge_commit_title, msg: .squash_merge_commit_message}'
+# Want: title=PR_TITLE or COMMIT_OR_PR_TITLE; msg=PR_BODY or COMMIT_MESSAGES
 ```
 
-## Release Checklist
+### Daily: merging work into `main`
 
-Before releasing:
+```bash
+git checkout -b feat/new-thing
+# ...hack...
+git commit -m "feat(api): add /metrics endpoint"
+git push -u origin feat/new-thing
 
-- [ ] All CI checks pass on main
-- [ ] Version numbers updated (run `./scripts/bump-version.sh` or manually update all 3 files)
-- [ ] Changelog updated
-- [ ] Documentation updated
-- [ ] Database migrations tested
-- [ ] Manual QA completed
-- [ ] Release notes drafted
+gh pr create --fill
+# After review:
+gh pr merge --squash --delete-branch
+```
 
-After releasing:
+The squash-merge PR title is what release-please reads — it drives both the version bump and the changelog entry.
 
-- [ ] Verify GitHub Release created
-- [ ] Verify Docker images published
-- [ ] Deploy to staging environment
-- [ ] Run smoke tests
-- [ ] Deploy to production
-- [ ] Announce release (if applicable)
+### After merging to `main`: the rolling Release PR
+
+Each merge to `main` runs the `Release` workflow. The `release-please` job opens or updates a single rolling Release PR titled `chore(main): release X.Y.Z`:
+
+```bash
+# Watch the workflow run
+gh run watch
+
+# Find the Release PR
+gh pr list --label "autorelease: pending"
+
+RPR=$(gh pr list --label "autorelease: pending" --json number -q '.[0].number')
+gh pr view $RPR
+gh pr diff $RPR
+```
+
+The Release PR accumulates every subsequent merge until you decide to ship.
+
+**Do not hand-edit the Release PR** — release-please force-pushes its branch on every run and will overwrite your changes. To force a regeneration:
+
+```bash
+gh pr close $RPR
+git commit --allow-empty -m "chore: recompute release"
+git push origin main
+```
+
+### Cutting the release
+
+Merging the Release PR (squash) is the single action that ships the release:
+
+```bash
+RPR=$(gh pr list --label "autorelease: pending" --json number -q '.[0].number')
+gh pr merge $RPR --squash
+
+# Watch the full pipeline: tag creation, Docker build/push, binaries, crate publish
+gh run watch
+```
+
+### Verifying the release
+
+```bash
+git fetch --tags
+git tag --sort=-v:refname | head -3
+
+gh release view vX.Y.Z
+gh release view vX.Y.Z --json assets --jq '.assets[].name'
+
+# Docker images
+gh api /users/pacphi/packages/container/ampel-api/versions --jq '.[0].metadata.container.tags'
+
+# crates.io (may lag ~1 min while indexing)
+curl -s https://crates.io/api/v1/crates/ampel-i18n-builder | jq '.crate.max_version'
+
+# Version files on main
+git pull
+grep '^version' Cargo.toml | head -1
+grep '"version"' frontend/package.json | head -1
+```
+
+### Forcing a specific version
+
+Push an empty commit with a `Release-As:` footer. The next workflow run updates the Release PR to use that exact version.
+
+```bash
+git commit --allow-empty -m "chore: cut beta" -m "Release-As: 0.4.0-beta.1"
+git push origin main
+```
+
+### Re-running a failed release pipeline
+
+The tag is cut by the `release-please` job; if a downstream job (Docker, binaries, crate) fails transiently, just re-run the failed jobs:
+
+```bash
+gh run list --workflow=release.yml --limit 5
+gh run rerun <run-id> --failed
+gh run watch
+```
+
+### Manual trigger
+
+The workflow also responds to `workflow_dispatch`:
+
+```bash
+gh workflow run release.yml --ref main
+gh run watch
+```
+
+### Mental model
+
+- You never run `git tag`, edit version files, or edit `CHANGELOG.md` by hand.
+- You only merge two kinds of things to `main`: normal PRs (with conventional titles) and the Release PR (when you want to ship).
+- The workflow is idempotent — re-pushing just recomputes the Release PR; re-running on a tagged commit is a no-op.
