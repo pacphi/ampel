@@ -7,9 +7,12 @@
   "changelog-path": "CHANGELOG.md",
   "packages": {
     ".": {
-      "release-type": "rust",
+      "release-type": "simple",
       "component": "ampel",
-      "include-component-in-tag": false
+      "include-component-in-tag": false,
+      "extra-files": [
+        "Cargo.toml"
+      ]
     },
     "crates/ampel-i18n-builder": {
       "release-type": "rust",
