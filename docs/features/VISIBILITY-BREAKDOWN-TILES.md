@@ -10,9 +10,9 @@
 
 ## Quick Links
 
-- **API Documentation**: [Dashboard Visibility Breakdown API](/docs/api/DASHBOARD-VISIBILITY-BREAKDOWN.md)
-- **Component Documentation**: [BreakdownTile Component](/docs/components/BREAKDOWN-TILE.md)
-- **Architecture**: [Database Schema & Data Models](/docs/ARCHITECTURE.md#52-repository-visibility)
+- **API Documentation**: [Dashboard Visibility Breakdown API](../api/DASHBOARD-VISIBILITY-BREAKDOWN.md)
+- **Component Documentation**: [BreakdownTile Component](../components/BREAKDOWN-TILE.md)
+- **Architecture**: [Database Schema & Data Models](../ARCHITECTURE.md#52-repository-visibility)
 
 ---
 
@@ -518,4 +518,4 @@ npm run test:e2e -- dashboard
 ---
 
 **Feature Maintained By**: Full Stack Team
-**Questions?**: See [CLAUDE.md](/CLAUDE.md) for AI assistant guidance
+**Questions?**: See [CLAUDE.md](../../CLAUDE.md) for AI assistant guidance

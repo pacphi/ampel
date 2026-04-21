@@ -1243,7 +1243,7 @@ let scheduler = Scheduler::new()
 - Provider counts (GitHub/GitLab/Bitbucket)
 - **Visibility breakdowns**: Repository, Open PRs, Ready to Merge, Needs Attention counts broken down by public/private/archived
 
-See [Dashboard Visibility Breakdown API Documentation](/docs/api/DASHBOARD-VISIBILITY-BREAKDOWN.md) for complete details.
+See [Dashboard Visibility Breakdown API Documentation](api/DASHBOARD-VISIBILITY-BREAKDOWN.md) for complete details.
 
 ### 10.6 Bulk Merge Endpoints
 

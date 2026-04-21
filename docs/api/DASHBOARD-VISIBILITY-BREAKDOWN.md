@@ -490,4 +490,4 @@ components:
 ---
 
 **Document Maintained By**: Engineering Team
-**Questions?**: See [CLAUDE.md](/CLAUDE.md) for AI assistant guidance
+**Questions?**: See [CLAUDE.md](../../CLAUDE.md) for AI assistant guidance

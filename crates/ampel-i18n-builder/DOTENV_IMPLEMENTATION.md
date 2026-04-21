@@ -153,9 +153,9 @@ DEEPL_API_KEY=prod_key cargo run -- translate en --target-locale fr
 
 ## Documentation
 
-- **[.env.example](/.env.example)** - Copy this to start
+- **[.env.example](../../.env.example)** - Copy this to start
 - **[docs/env-configuration.md](docs/env-configuration.md)** - Complete guide
-- **[README.md](/README.md)** - Quick start updated
+- **[README.md](../../README.md)** - Quick start updated
 
 ## Implementation Notes
 

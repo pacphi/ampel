@@ -447,8 +447,8 @@ pnpm test -- SummaryBreakdownTile
 
 ## Related Documentation
 
-- [Dashboard Visibility Breakdown API](/docs/api/DASHBOARD-VISIBILITY-BREAKDOWN.md)
-- [Visibility Breakdown Feature](/docs/features/VISIBILITY-BREAKDOWN-TILES.md)
+- [Dashboard Visibility Breakdown API](../api/DASHBOARD-VISIBILITY-BREAKDOWN.md)
+- [Visibility Breakdown Feature](../features/VISIBILITY-BREAKDOWN-TILES.md)
 - [shadcn/ui Card Component](https://ui.shadcn.com/docs/components/card)
 - [Lucide Icons](https://lucide.dev/)
 
