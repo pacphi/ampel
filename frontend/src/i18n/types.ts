@@ -399,6 +399,15 @@ export interface DashboardTranslations {
     updatedAt: string;
   };
   prDashboard: string;
+  refresh: {
+    complete: string;
+    completed: string;
+    currentRepository: string;
+    description: string;
+    progress: string;
+    started: string;
+    title: string;
+  };
   sort: {
     author: string;
     created: string;

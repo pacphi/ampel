@@ -24,17 +24,17 @@ All three version-bearing files are kept in sync automatically:
 
 Use [Conventional Commit](https://www.conventionalcommits.org/) prefixes on PR titles (squash-merge titles become the commit on `main` and drive the changelog):
 
-| Prefix      | Changelog section  | Version impact (pre-1.0) |
-| ----------- | ------------------ | ------------------------ |
-| `feat:`     | Features           | minor                    |
-| `fix:`      | Bug Fixes          | patch                    |
-| `perf:`     | Performance        | patch                    |
-| `docs:`     | Documentation      | none                     |
-| `refactor:` | Code Refactoring   | none                     |
-| `test:`     | Tests              | none                     |
-| `build:`    | Build System       | none                     |
-| `ci:`       | Continuous Integration | none                 |
-| `chore:`    | Miscellaneous Chores | none                   |
+| Prefix      | Changelog section      | Version impact (pre-1.0) |
+| ----------- | ---------------------- | ------------------------ |
+| `feat:`     | Features               | minor                    |
+| `fix:`      | Bug Fixes              | patch                    |
+| `perf:`     | Performance            | patch                    |
+| `docs:`     | Documentation          | none                     |
+| `refactor:` | Code Refactoring       | none                     |
+| `test:`     | Tests                  | none                     |
+| `build:`    | Build System           | none                     |
+| `ci:`       | Continuous Integration | none                     |
+| `chore:`    | Miscellaneous Chores   | none                     |
 
 Append `!` (e.g. `feat!:`) or include `BREAKING CHANGE:` in the body to flag a breaking change.
 

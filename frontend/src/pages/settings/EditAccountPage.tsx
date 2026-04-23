@@ -37,7 +37,7 @@ export function EditAccountPage() {
   useEffect(() => {
     if (account && !accountLoaded.current) {
       accountLoaded.current = true;
-       
+
       setFormData({
         accountLabel: account.accountLabel,
         isActive: account.isActive,

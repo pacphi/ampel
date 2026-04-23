@@ -11,11 +11,13 @@ This feature adds real-time repository refresh functionality to the Dashboard, a
 #### 1. New API Endpoints
 
 **POST `/api/repositories/refresh-all`**
+
 - Triggers immediate polling of all user repositories
 - Returns a job ID for progress tracking
 - Spawns a background task to refresh repositories concurrently
 
 **GET `/api/repositories/refresh-status/:job_id`**
+
 - Returns real-time status of a refresh job
 - Includes progress (completed/total), current repository being refreshed, and completion status
 
@@ -57,6 +59,7 @@ This feature adds real-time repository refresh functionality to the Dashboard, a
 **File: `frontend/src/api/repositories.ts`**
 
 Added two new methods:
+
 ```typescript
 async refreshAll(): Promise<RefreshJobResponse>
 async getRefreshStatus(jobId: string): Promise<RefreshJobStatus>
@@ -97,6 +100,7 @@ interface RefreshJobStatus {
 **File: `frontend/src/components/dashboard/RefreshProgress.tsx`**
 
 Real-time progress display showing:
+
 - Progress bar with percentage
 - "X of Y repositories refreshed"
 - Current repository being refreshed (with animated spinner)
@@ -112,6 +116,7 @@ Custom Progress component using shadcn/ui patterns for visual progress bar.
 **File: `frontend/public/locales/en/dashboard.json`**
 
 Added translation keys for:
+
 - Dialog title and description
 - Progress message
 - Current repository label
@@ -125,10 +130,12 @@ Added error message for "refresh job not found".
 ### Dependencies
 
 **Backend:**
+
 - Added `lazy_static = "1.5"` for static job storage
 - Added `ampel-worker` dependency to reuse polling logic
 
 **Frontend:**
+
 - Used existing TanStack Query for polling
 - Used existing shadcn/ui Dialog component
 
@@ -154,21 +161,25 @@ Added error message for "refresh job not found".
 ### Technical Details
 
 **Background Processing:**
+
 - Uses `tokio::spawn` for non-blocking execution
 - API returns immediately while work continues
 - No impact on API responsiveness
 
 **Progress Tracking:**
+
 - In-memory HashMap with RwLock for thread-safe access
 - Write lock held briefly to update status
 - Read lock for status queries (no blocking)
 
 **Polling Strategy:**
+
 - Frontend polls every 1000ms while job is active
 - TanStack Query manages polling lifecycle
 - Automatic stop when job completes
 
 **Error Handling:**
+
 - Individual repository failures logged but don't stop the job
 - Job continues processing remaining repositories
 - Progress accurately reflects completed count
@@ -176,6 +187,7 @@ Added error message for "refresh job not found".
 ## Files Modified
 
 ### Backend
+
 - `crates/ampel-api/Cargo.toml` - Added dependencies
 - `crates/ampel-api/src/handlers/repositories.rs` - New handlers and job tracking
 - `crates/ampel-api/src/routes/mod.rs` - New routes
@@ -183,6 +195,7 @@ Added error message for "refresh job not found".
 - `crates/ampel-worker/src/jobs/poll_repository.rs` - Made method public
 
 ### Frontend
+
 - `frontend/src/api/repositories.ts` - New API methods
 - `frontend/src/types/index.ts` - New type definitions
 - `frontend/src/pages/Dashboard.tsx` - Refresh logic and progress dialog
@@ -209,6 +222,7 @@ Added error message for "refresh job not found".
 To test the feature:
 
 1. **Start the application:**
+
    ```bash
    make docker-up
    make dev-api
