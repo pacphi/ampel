@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Download coverage artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
@@ -61,7 +61,7 @@ jobs:
 
       - name: Find PR number
         id: pr
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const { data: pullRequests } = await github.rest.pulls.list({
@@ -82,7 +82,7 @@ jobs:
 
       - name: Post coverage comment
         if: steps.pr.outputs.result != 'null'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
