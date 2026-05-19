@@ -1,0 +1,13 @@
+# pnpm 11 security settings for the frontend project.
+#
+# minimumReleaseAge: pnpm 11 defaults to 1440 minutes (24 hours), blocking packages
+# published less than 24 hours ago. All installs here use --frozen-lockfile, so
+# packages only enter via reviewed lockfile commits — the extra delay adds friction
+# without meaningful benefit. Set to 0 to disable.
+minimumReleaseAge: 0
+
+# allowBuilds: pnpm 11 requires explicit approval for packages that run install
+# scripts. esbuild compiles its native binary; msw generates the service worker.
+allowBuilds:
+  esbuild: true
+  msw: true
