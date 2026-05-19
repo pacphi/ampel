@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/pacphi/ampel/compare/v0.5.0...v0.5.1) (2026-05-19)
+
+
+### Bug Fixes
+
+* **ci:** drop x86_64 Darwin binary target (macos-15-intel requires paid runners) ([ea517a5](https://github.com/pacphi/ampel/commit/ea517a5f004055f91e673fb58b905ffeca3592a8))
+
 ## [0.5.0](https://github.com/pacphi/ampel/compare/v0.4.0...v0.5.0) (2026-05-19)
 
 
