@@ -15,6 +15,7 @@ use ampel_i18n_builder::config::Config;
 use ampel_i18n_builder::translator::fallback::FallbackTranslationRouter;
 use ampel_i18n_builder::translator::{TranslationService, Translator};
 use serde_json::json;
+use serial_test::serial;
 use std::collections::HashMap;
 use std::env;
 use std::fs;
@@ -24,6 +25,7 @@ use tempfile::TempDir;
 // TEST CATEGORY 1: Provider Initialization Tests
 // ============================================================================
 
+#[serial]
 #[tokio::test]
 async fn test_provider_init_no_api_keys() {
     // Clear all API key environment variables
@@ -47,6 +49,7 @@ async fn test_provider_init_no_api_keys() {
     }
 }
 
+#[serial]
 #[tokio::test]
 async fn test_provider_init_single_key() {
     // Set only DeepL key
@@ -68,6 +71,7 @@ async fn test_provider_init_single_key() {
     env::remove_var("DEEPL_API_KEY");
 }
 
+#[serial]
 #[tokio::test]
 async fn test_provider_init_all_keys() {
     // Set all API keys
@@ -97,6 +101,7 @@ async fn test_provider_init_all_keys() {
 // TEST CATEGORY 2: Fallback Chain Tests
 // ============================================================================
 
+#[serial]
 #[tokio::test]
 async fn test_fallback_systran_to_deepl() {
     // This test requires mocking provider failures
@@ -115,6 +120,7 @@ async fn test_fallback_systran_to_deepl() {
     env::remove_var("DEEPL_API_KEY");
 }
 
+#[serial]
 #[tokio::test]
 async fn test_fallback_chain_ordering() {
     // Verify providers are initialized in correct tier order
@@ -140,6 +146,7 @@ async fn test_fallback_chain_ordering() {
 // TEST CATEGORY 3: Language Preference Tests
 // ============================================================================
 
+#[serial]
 #[tokio::test]
 async fn test_language_preference_finnish_deepl() {
     // Finnish should prefer DeepL (tier 2) over others
@@ -157,6 +164,7 @@ async fn test_language_preference_finnish_deepl() {
     env::remove_var("DEEPL_API_KEY");
 }
 
+#[serial]
 #[tokio::test]
 async fn test_language_preference_arabic_google() {
     // Arabic should prefer Google (tier 3) for broader coverage
@@ -178,6 +186,7 @@ async fn test_language_preference_arabic_google() {
 // TEST CATEGORY 4: CLI Parameter Tests
 // ============================================================================
 
+#[serial]
 #[test]
 fn test_cli_timeout_parameter() {
     // Verify timeout is configurable
@@ -187,6 +196,7 @@ fn test_cli_timeout_parameter() {
     assert_eq!(config.translation.timeout_secs, 120);
 }
 
+#[serial]
 #[test]
 fn test_cli_batch_size_parameter() {
     // Verify batch size is configurable
@@ -196,6 +206,7 @@ fn test_cli_batch_size_parameter() {
     assert_eq!(config.translation.batch_size, 25);
 }
 
+#[serial]
 #[test]
 fn test_cli_provider_selection() {
     // Test provider can be specified via config
@@ -213,6 +224,7 @@ fn test_cli_provider_selection() {
 // TEST CATEGORY 5: .env File Integration Test
 // ============================================================================
 
+#[serial]
 #[tokio::test]
 async fn test_dotenv_file_loading() {
     let temp_dir = TempDir::new().unwrap();
@@ -240,6 +252,7 @@ async fn test_dotenv_file_loading() {
     env::remove_var("GOOGLE_API_KEY");
 }
 
+#[serial]
 #[test]
 fn test_env_override_dotenv() {
     // System environment variables should override .env file
@@ -256,6 +269,7 @@ fn test_env_override_dotenv() {
 // TEST CATEGORY 6: End-to-End Translation Test
 // ============================================================================
 
+#[serial]
 #[tokio::test]
 async fn test_e2e_translation_structure() {
     // Test translation output structure without actual API call
@@ -272,6 +286,7 @@ async fn test_e2e_translation_structure() {
     assert!(input.contains_key("farewell"));
 }
 
+#[serial]
 #[test]
 fn test_placeholder_preservation() {
     // Test that placeholder patterns are recognized
@@ -282,6 +297,7 @@ fn test_placeholder_preservation() {
     assert!(text_with_placeholders.contains("{count}"));
 }
 
+#[serial]
 #[test]
 fn test_batch_processing_chunking() {
     // Test batch chunking logic
@@ -300,6 +316,7 @@ fn test_batch_processing_chunking() {
 // TEST CATEGORY 7: Error Handling Tests
 // ============================================================================
 
+#[serial]
 #[test]
 fn test_invalid_api_key_error() {
     env::set_var("DEEPL_API_KEY", "invalid-key");
@@ -313,6 +330,7 @@ fn test_invalid_api_key_error() {
     env::remove_var("DEEPL_API_KEY");
 }
 
+#[serial]
 #[test]
 fn test_invalid_language_code_detection() {
     // Test that invalid language codes are detected
@@ -328,6 +346,7 @@ fn test_invalid_language_code_detection() {
     }
 }
 
+#[serial]
 #[test]
 fn test_empty_batch_handling() {
     let empty_batch: HashMap<String, serde_json::Value> = HashMap::new();
@@ -337,6 +356,7 @@ fn test_empty_batch_handling() {
     assert!(empty_batch.is_empty());
 }
 
+#[serial]
 #[test]
 fn test_network_timeout_configuration() {
     let mut config = Config::default();
@@ -350,6 +370,7 @@ fn test_network_timeout_configuration() {
 // TEST CATEGORY 8: Configuration Validation Tests
 // ============================================================================
 
+#[serial]
 #[test]
 fn test_invalid_tier_priority() {
     // Test that tier validation works
@@ -360,6 +381,7 @@ fn test_invalid_tier_priority() {
     }
 }
 
+#[serial]
 #[test]
 fn test_timeout_validation() {
     let mut config = Config::default();
@@ -372,6 +394,7 @@ fn test_timeout_validation() {
     assert!(config.translation.timeout_secs <= 600);
 }
 
+#[serial]
 #[test]
 fn test_batch_size_validation() {
     let mut config = Config::default();
@@ -384,6 +407,7 @@ fn test_batch_size_validation() {
     assert!(config.translation.batch_size <= 100);
 }
 
+#[serial]
 #[test]
 fn test_config_defaults() {
     let config = Config::default();
@@ -393,6 +417,7 @@ fn test_config_defaults() {
     assert!(config.translation.batch_size > 0);
 }
 
+#[serial]
 #[test]
 fn test_required_fields_validation() {
     let config = Config::default();
@@ -406,6 +431,7 @@ fn test_required_fields_validation() {
 // Integration Test: Full Provider Chain
 // ============================================================================
 
+#[serial]
 #[tokio::test]
 async fn test_full_provider_chain_availability() {
     // Test that router correctly tracks provider availability
@@ -427,6 +453,7 @@ async fn test_full_provider_chain_availability() {
     env::remove_var("OPENAI_API_KEY");
 }
 
+#[serial]
 #[tokio::test]
 async fn test_provider_tier_ordering() {
     // Verify providers are ordered by tier (1=highest, 4=lowest)

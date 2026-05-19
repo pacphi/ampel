@@ -52,7 +52,7 @@ indicatif = "0.17"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 secrecy = "0.10"
-dotenv = "0.15"
+dotenvy = "0.15"
 
 # String extraction
 sha2 = "0.10"
@@ -81,6 +81,7 @@ lru = "0.16"
 tokio-test = "0.4"
 mockito = "1.7"
 tempfile = "3.24"
+serial_test = "3"
 
 [features]
 default = []

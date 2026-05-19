@@ -5,10 +5,11 @@
 //! 2. System environment variables override .env values
 //! 3. CLI works correctly without .env file
 //!
-//! Note: Tests use `dotenv::from_path()` instead of `set_current_dir` +
-//! `dotenv::dotenv()` because `set_current_dir` is process-global and
+//! Note: Tests use `dotenvy::from_path()` instead of `set_current_dir` +
+//! `dotenvy::dotenv()` because `set_current_dir` is process-global and
 //! causes race conditions when tests run in parallel.
 
+use serial_test::serial;
 use std::env;
 use std::fs;
 use tempfile::TempDir;
@@ -25,7 +26,7 @@ fn test_dotenv_precedence() {
     .expect("Failed to write .env");
 
     // Load .env from explicit path (avoids set_current_dir race condition)
-    dotenv::from_path(&env_file).expect("Failed to load .env");
+    dotenvy::from_path(&env_file).expect("Failed to load .env");
 
     assert_eq!(
         env::var("TEST_VAR_FROM_DOTENV").ok(),
@@ -49,7 +50,7 @@ fn test_system_env_overrides_dotenv() {
     env::set_var("OVERRIDE_TEST", "from_system");
 
     // Load .env file - should NOT override system env
-    dotenv::from_path(&env_file).ok();
+    dotenvy::from_path(&env_file).ok();
 
     // System env should still be "from_system", not overridden by .env
     assert_eq!(
@@ -68,7 +69,7 @@ fn test_dotenv_missing_is_ok() {
     let temp_dir = TempDir::new().expect("Failed to create temp dir");
     let missing_env = temp_dir.path().join(".env");
 
-    let result = dotenv::from_path(&missing_env);
+    let result = dotenvy::from_path(&missing_env);
     assert!(result.is_err(), ".env file should not exist in temp dir");
 }
 
@@ -88,7 +89,7 @@ OPENAI_API_KEY=test_openai_key
     )
     .expect("Failed to write .env");
 
-    dotenv::from_path(&env_file).expect("Failed to load .env");
+    dotenvy::from_path(&env_file).expect("Failed to load .env");
 
     assert_eq!(
         env::var("SYSTRAN_API_KEY").ok(),
@@ -129,7 +130,7 @@ AMPEL_I18N_MAX_RETRIES=5
     )
     .expect("Failed to write .env");
 
-    dotenv::from_path(&env_file).expect("Failed to load .env");
+    dotenvy::from_path(&env_file).expect("Failed to load .env");
 
     assert_eq!(
         env::var("AMPEL_I18N_TIMEOUT_SECS").ok(),
