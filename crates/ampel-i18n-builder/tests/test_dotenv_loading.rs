@@ -14,6 +14,7 @@ use std::env;
 use std::fs;
 use tempfile::TempDir;
 
+#[serial]
 #[test]
 fn test_dotenv_precedence() {
     let temp_dir = TempDir::new().expect("Failed to create temp dir");
@@ -39,6 +40,7 @@ fn test_dotenv_precedence() {
     env::remove_var("ANOTHER_VAR");
 }
 
+#[serial]
 #[test]
 fn test_system_env_overrides_dotenv() {
     let temp_dir = TempDir::new().expect("Failed to create temp dir");
@@ -63,6 +65,7 @@ fn test_system_env_overrides_dotenv() {
     env::remove_var("OVERRIDE_TEST");
 }
 
+#[serial]
 #[test]
 fn test_dotenv_missing_is_ok() {
     // Attempt to load a .env from a path that doesn't exist
@@ -73,6 +76,7 @@ fn test_dotenv_missing_is_ok() {
     assert!(result.is_err(), ".env file should not exist in temp dir");
 }
 
+#[serial]
 #[test]
 fn test_api_key_env_vars() {
     let temp_dir = TempDir::new().expect("Failed to create temp dir");
@@ -115,6 +119,7 @@ OPENAI_API_KEY=test_openai_key
     env::remove_var("OPENAI_API_KEY");
 }
 
+#[serial]
 #[test]
 fn test_config_override_env_vars() {
     let temp_dir = TempDir::new().expect("Failed to create temp dir");

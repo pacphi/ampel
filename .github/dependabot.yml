@@ -39,6 +39,23 @@ updates:
         update-types: ["version-update:semver-prerelease"]
 
   # ===========================================
+  # Root tooling: npm/pnpm dependencies (secretlint, markdownlint, prettier)
+  # ===========================================
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    commit-message:
+      prefix: "deps(tooling)"
+    labels:
+      - "dependencies"
+      - "tooling"
+    open-pull-requests-limit: 5
+
+  # ===========================================
   # Frontend: npm/pnpm dependencies
   # ===========================================
   - package-ecosystem: "npm"
