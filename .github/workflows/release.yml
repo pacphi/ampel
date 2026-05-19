@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Existing tag to build assets for (e.g. v0.5.1). Skips release-please.'
+        required: false
+        type: string
 
 env:
   REGISTRY: ghcr.io
@@ -23,13 +28,14 @@ jobs:
     name: Release Please
     runs-on: ubuntu-latest
     outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
-      version: ${{ steps.release.outputs.version }}
+      release_created: ${{ inputs.tag_name != '' || steps.release.outputs.release_created }}
+      tag_name: ${{ inputs.tag_name != '' && inputs.tag_name || steps.release.outputs.tag_name }}
+      version: ${{ inputs.tag_name != '' && inputs.tag_name || steps.release.outputs.version }}
 
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
+        if: inputs.tag_name == ''
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
