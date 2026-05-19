@@ -19,7 +19,7 @@
 ### Prerequisites
 
 - Rust 1.92+
-- Node.js 18+ and pnpm 10.24+
+- Node.js 18+ and pnpm 11+
 - Redis 7+ (for caching, optional)
 - DeepL API key (for translation)
 

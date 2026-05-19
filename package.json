@@ -21,5 +21,5 @@
     "prettier": "^3.8.3",
     "secretlint": "^13.0.2"
   },
-  "packageManager": "pnpm@10.33.4"
+  "packageManager": "pnpm@11.1.3"
 }

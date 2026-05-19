@@ -90,7 +90,7 @@ Ampel is a unified pull request management dashboard that consolidates PRs from 
 
 ### 2.3 Development Tools
 
-- **Package Manager**: pnpm 10.24.0 (frontend), Cargo (backend)
+- **Package Manager**: pnpm 11.1.3 (frontend), Cargo (backend)
 - **Testing**: Vitest (frontend), cargo test (backend)
 - **Linting**: ESLint (frontend), Clippy (backend)
 - **Formatting**: Prettier (frontend), rustfmt (backend)
@@ -1302,7 +1302,7 @@ See [Dashboard Visibility Breakdown API Documentation](api/DASHBOARD-VISIBILITY-
 - Rust 1.92.0
 - PostgreSQL 16+
 - Redis 7+
-- Node.js 20+ / pnpm 10.24.0
+- Node.js 20+ / pnpm 11.1.3
 
 **Environment Configuration**:
 
