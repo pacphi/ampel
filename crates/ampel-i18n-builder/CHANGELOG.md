@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/pacphi/ampel/compare/v0.4.0...v0.4.1) (2026-05-19)
+
+
+### Bug Fixes
+
+* **ci:** add missing #[serial] attributes and configure Dependabot for root tooling ([8fb20cf](https://github.com/pacphi/ampel/commit/8fb20cf80c444687f40db41175d1fc3fe724f41e))
+
 ## [0.4.0](https://github.com/pacphi/ampel/compare/v0.3.0...v0.4.0) (2026-04-21)
 
 ### Bug Fixes
