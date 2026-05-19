@@ -8,13 +8,14 @@
 # =============================================================================
 FROM node:26-alpine AS deps
 
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@11.1.3 --activate
+# corepack was removed from Node.js 23+; install pnpm directly via npm
+RUN npm install -g pnpm@11.1.3
 
 WORKDIR /app
 
 # Copy package files first for better caching
-COPY frontend/package.json frontend/pnpm-lock.yaml ./
+# pnpm-workspace.yaml carries pnpm 11 security settings (minimumReleaseAge, allowBuilds)
+COPY frontend/package.json frontend/pnpm-lock.yaml frontend/pnpm-workspace.yaml ./
 
 # Install dependencies with cache mount for pnpm store
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
@@ -25,8 +26,8 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
 # =============================================================================
 FROM node:26-alpine AS builder
 
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@11.1.3 --activate
+# corepack was removed from Node.js 23+; install pnpm directly via npm
+RUN npm install -g pnpm@11.1.3
 
 WORKDIR /app
 
