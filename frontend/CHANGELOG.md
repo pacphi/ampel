@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/pacphi/ampel/compare/v0.4.0...v0.4.1) (2026-05-19)
+
+
+### Bug Fixes
+
+* **ci:** disable pnpm 11 minimumReleaseAge policy for frontend ([05834c5](https://github.com/pacphi/ampel/commit/05834c5c6dac17fb5196fefc5d85d20ea3efb812))
+
 ## [0.4.0](https://github.com/pacphi/ampel/compare/v0.3.0...v0.4.0) (2026-04-21)
 
 ### Bug Fixes
