@@ -9,6 +9,7 @@ mod m20251224_000001_performance_indexes;
 mod m20251227_000001_user_language;
 mod m20260626_000001_remediation_loops;
 mod m20260626_000002_model_provider_account;
+mod m20260626_000003_org_air_gapped;
 
 use sea_orm_migration::prelude::*;
 
@@ -29,6 +30,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20251227_000001_user_language::Migration),
             Box::new(m20260626_000001_remediation_loops::Migration),
             Box::new(m20260626_000002_model_provider_account::Migration),
+            Box::new(m20260626_000003_org_air_gapped::Migration),
         ]
     }
 }
