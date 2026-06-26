@@ -4,6 +4,7 @@ use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
+use crate::remediation::{RemediationCapable, RemediationCaps};
 use crate::traits::{
     GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderPullRequest,
     ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
@@ -174,6 +175,91 @@ fn parse_datetime(s: &str) -> DateTime<Utc> {
 
 fn parse_datetime_opt(s: &Option<String>) -> Option<DateTime<Utc>> {
     s.as_ref().map(|s| parse_datetime(s))
+}
+
+fn github_pr_to_provider(pr: GitHubPR) -> ProviderPullRequest {
+    ProviderPullRequest {
+        provider_id: pr.id.to_string(),
+        number: pr.number,
+        title: pr.title,
+        description: pr.body,
+        url: pr.html_url,
+        state: pr.state,
+        source_branch: pr.head.branch_ref,
+        target_branch: pr.base.branch_ref,
+        author: pr.user.login,
+        author_avatar_url: pr.user.avatar_url,
+        is_draft: pr.draft.unwrap_or(false),
+        is_mergeable: pr.mergeable,
+        has_conflicts: pr.mergeable_state.as_deref() == Some("dirty"),
+        additions: pr.additions.unwrap_or(0),
+        deletions: pr.deletions.unwrap_or(0),
+        changed_files: pr.changed_files.unwrap_or(0),
+        commits_count: pr.commits.unwrap_or(0),
+        comments_count: pr.comments.unwrap_or(0),
+        created_at: parse_datetime(&pr.created_at),
+        updated_at: parse_datetime(&pr.updated_at),
+        merged_at: parse_datetime_opt(&pr.merged_at),
+        closed_at: parse_datetime_opt(&pr.closed_at),
+    }
+}
+
+// --- Remediation write primitives (ADR-002) ---
+
+#[derive(Debug, Deserialize)]
+struct GitHubRefResponse {
+    object: GitHubRefObject,
+}
+
+#[derive(Debug, Deserialize)]
+struct GitHubRefObject {
+    sha: String,
+}
+
+#[derive(Debug, Serialize)]
+struct GitHubCreateRef<'a> {
+    #[serde(rename = "ref")]
+    git_ref: String,
+    sha: &'a str,
+}
+
+#[derive(Debug, Serialize)]
+struct GitHubMergeBranch<'a> {
+    base: &'a str,
+    head: &'a str,
+}
+
+#[derive(Debug, Serialize)]
+struct GitHubCreatePr<'a> {
+    title: &'a str,
+    body: &'a str,
+    head: &'a str,
+    base: &'a str,
+}
+
+#[derive(Debug, Serialize)]
+struct GitHubUpdatePr<'a> {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    title: Option<&'a str>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    body: Option<&'a str>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    state: Option<&'a str>,
+}
+
+#[derive(Debug, Serialize)]
+struct GitHubCreateComment<'a> {
+    body: &'a str,
+}
+
+#[derive(Debug, Deserialize)]
+struct GitHubCommentResponse {
+    id: i64,
+}
+
+#[derive(Debug, Serialize)]
+struct GitHubAddLabels<'a> {
+    labels: &'a [String],
 }
 
 #[async_trait]
@@ -655,5 +741,341 @@ impl GitProvider for GitHubProvider {
             remaining: rate.resources.core.remaining,
             reset_at: Utc.timestamp_opt(rate.resources.core.reset, 0).unwrap(),
         })
+    }
+}
+
+#[async_trait]
+impl RemediationCapable for GitHubProvider {
+    fn capabilities(&self) -> RemediationCaps {
+        // GitHub's REST API supports every remediation primitive.
+        RemediationCaps::all()
+    }
+
+    async fn get_default_branch_sha(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+    ) -> ProviderResult<String> {
+        let repository = self.get_repository(credentials, owner, repo).await?;
+        let response = self
+            .client
+            .get(self.api_url(&format!(
+                "/repos/{}/{}/git/ref/heads/{}",
+                owner, repo, repository.default_branch
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: "Failed to resolve default branch SHA".to_string(),
+            });
+        }
+
+        let git_ref: GitHubRefResponse = response.json().await?;
+        Ok(git_ref.object.sha)
+    }
+
+    async fn create_branch(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        branch_name: &str,
+        from_sha: &str,
+    ) -> ProviderResult<()> {
+        let body = GitHubCreateRef {
+            git_ref: format!("refs/heads/{}", branch_name),
+            sha: from_sha,
+        };
+        let response = self
+            .client
+            .post(self.api_url(&format!("/repos/{}/{}/git/refs", owner, repo)))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .json(&body)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to create branch {}", branch_name),
+            });
+        }
+        Ok(())
+    }
+
+    async fn update_branch_from_base(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        branch_name: &str,
+        base_branch: &str,
+    ) -> ProviderResult<()> {
+        // Merge `base_branch` into `branch_name` via the repository merges endpoint.
+        let body = GitHubMergeBranch {
+            base: branch_name,
+            head: base_branch,
+        };
+        let response = self
+            .client
+            .post(self.api_url(&format!("/repos/{}/{}/merges", owner, repo)))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .json(&body)
+            .send()
+            .await?;
+
+        let status = response.status();
+        // 201 = merged; 204 = already up to date. Both are success.
+        if status.as_u16() == 204 || status.is_success() {
+            return Ok(());
+        }
+        if status.as_u16() == 409 {
+            return Err(ProviderError::ApiError {
+                status_code: 409,
+                message: format!(
+                    "Merge conflict updating {} from {}",
+                    branch_name, base_branch
+                ),
+            });
+        }
+        Err(ProviderError::ApiError {
+            status_code: status.as_u16(),
+            message: "Failed to update branch from base".to_string(),
+        })
+    }
+
+    async fn create_pull_request(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        title: &str,
+        body: &str,
+        head: &str,
+        base: &str,
+    ) -> ProviderResult<ProviderPullRequest> {
+        let payload = GitHubCreatePr {
+            title,
+            body,
+            head,
+            base,
+        };
+        let response = self
+            .client
+            .post(self.api_url(&format!("/repos/{}/{}/pulls", owner, repo)))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .json(&payload)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: "Failed to create pull request".to_string(),
+            });
+        }
+
+        let pr: GitHubPR = response.json().await?;
+        Ok(github_pr_to_provider(pr))
+    }
+
+    async fn update_pull_request(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+        title: Option<&str>,
+        body: Option<&str>,
+    ) -> ProviderResult<()> {
+        let payload = GitHubUpdatePr {
+            title,
+            body,
+            state: None,
+        };
+        let response = self
+            .client
+            .patch(self.api_url(&format!("/repos/{}/{}/pulls/{}", owner, repo, pr_number)))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .json(&payload)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to update pull request #{}", pr_number),
+            });
+        }
+        Ok(())
+    }
+
+    async fn close_pull_request(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+    ) -> ProviderResult<()> {
+        let payload = GitHubUpdatePr {
+            title: None,
+            body: None,
+            state: Some("closed"),
+        };
+        let response = self
+            .client
+            .patch(self.api_url(&format!("/repos/{}/{}/pulls/{}", owner, repo, pr_number)))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .json(&payload)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to close pull request #{}", pr_number),
+            });
+        }
+        Ok(())
+    }
+
+    async fn create_comment(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+        body: &str,
+    ) -> ProviderResult<i64> {
+        let payload = GitHubCreateComment { body };
+        let response = self
+            .client
+            .post(self.api_url(&format!(
+                "/repos/{}/{}/issues/{}/comments",
+                owner, repo, pr_number
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .json(&payload)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to comment on pull request #{}", pr_number),
+            });
+        }
+
+        let comment: GitHubCommentResponse = response.json().await?;
+        Ok(comment.id)
+    }
+
+    async fn add_labels(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+        labels: &[String],
+    ) -> ProviderResult<()> {
+        let payload = GitHubAddLabels { labels };
+        let response = self
+            .client
+            .post(self.api_url(&format!(
+                "/repos/{}/{}/issues/{}/labels",
+                owner, repo, pr_number
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .json(&payload)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to add labels to pull request #{}", pr_number),
+            });
+        }
+        Ok(())
+    }
+
+    async fn get_status_for_ref(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        git_ref: &str,
+    ) -> ProviderResult<Vec<ProviderCICheck>> {
+        let response = self
+            .client
+            .get(self.api_url(&format!(
+                "/repos/{}/{}/commits/{}/check-runs",
+                owner, repo, git_ref
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to get status for ref {}", git_ref),
+            });
+        }
+
+        let checks: GitHubCheckRunsResponse = response.json().await?;
+        Ok(checks
+            .check_runs
+            .into_iter()
+            .map(|c| ProviderCICheck {
+                name: c.name,
+                status: c.status,
+                conclusion: c.conclusion,
+                url: c.html_url,
+                started_at: parse_datetime_opt(&c.started_at),
+                completed_at: parse_datetime_opt(&c.completed_at),
+            })
+            .collect())
+    }
+
+    async fn delete_branch(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        branch_name: &str,
+    ) -> ProviderResult<()> {
+        let response = self
+            .client
+            .delete(self.api_url(&format!(
+                "/repos/{}/{}/git/refs/heads/{}",
+                owner, repo, branch_name
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .header("Accept", "application/vnd.github+json")
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to delete branch {}", branch_name),
+            });
+        }
+        Ok(())
     }
 }
