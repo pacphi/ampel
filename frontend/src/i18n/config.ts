@@ -98,6 +98,7 @@ export const NAMESPACES = [
   'merge',
   'notifications',
   'providers',
+  'remediation',
   'repositories',
   'settings',
   'validation',
