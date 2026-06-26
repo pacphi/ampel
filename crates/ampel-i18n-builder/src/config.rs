@@ -500,6 +500,17 @@ fn default_log_fallback_events() -> bool {
 mod tests {
     use super::*;
 
+    /// Serializes tests that mutate the **process-global** current directory and the
+    /// `AMPEL_I18N_CONFIG` env var. Without this, `cargo test`'s default multi-threaded
+    /// runner (and especially the `llvm-cov` harness) interleaves their `set_current_dir`
+    /// calls, so one test observes another's cwd and `find_config_file` returns the wrong
+    /// result. Lock is poison-tolerant: a panicking test must not wedge the rest.
+    static CWD_ENV_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
+    fn cwd_env_guard() -> std::sync::MutexGuard<'static, ()> {
+        CWD_ENV_LOCK.lock().unwrap_or_else(|e| e.into_inner())
+    }
+
     #[test]
     fn test_default_config() {
         let config = Config::default();
@@ -740,6 +751,7 @@ translation:
 
     #[test]
     fn test_find_config_file_returns_none_when_not_found() {
+        let _guard = cwd_env_guard();
         // Temporarily change to a directory without config
         let temp_dir = std::env::temp_dir().join("ampel-i18n-test-no-config");
         std::fs::create_dir_all(&temp_dir).ok();
@@ -759,6 +771,7 @@ translation:
 
     #[test]
     fn test_find_config_file_uses_env_var() {
+        let _guard = cwd_env_guard();
         let temp_dir = std::env::temp_dir().join("ampel-i18n-test-env");
         std::fs::create_dir_all(&temp_dir).ok();
         let config_path = temp_dir.join(".ampel-i18n.yaml");
@@ -777,6 +790,7 @@ translation:
 
     #[test]
     fn test_find_config_file_searches_parent_dirs() {
+        let _guard = cwd_env_guard();
         let temp_dir = std::env::temp_dir().join("ampel-i18n-test-parent");
         let nested_dir = temp_dir.join("sub1").join("sub2");
         std::fs::create_dir_all(&nested_dir).ok();
