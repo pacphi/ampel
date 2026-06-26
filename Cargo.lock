@@ -89,7 +89,7 @@ checksum = "683d7910e743518b0e34f1186f92494becacb047c7b6bf616c96772180fef923"
 
 [[package]]
 name = "ampel-api"
-version = "0.4.0"
+version = "0.5.1"
 dependencies = [
  "ampel-core",
  "ampel-db",
@@ -138,7 +138,7 @@ dependencies = [
 
 [[package]]
 name = "ampel-core"
-version = "0.4.0"
+version = "0.5.1"
 dependencies = [
  "anyhow",
  "argon2",
@@ -159,7 +159,7 @@ dependencies = [
 
 [[package]]
 name = "ampel-db"
-version = "0.4.0"
+version = "0.5.1"
 dependencies = [
  "aes-gcm",
  "ampel-core",
@@ -181,7 +181,7 @@ dependencies = [
 
 [[package]]
 name = "ampel-i18n-builder"
-version = "0.4.0"
+version = "0.5.1"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -226,7 +226,7 @@ dependencies = [
 
 [[package]]
 name = "ampel-providers"
-version = "0.4.0"
+version = "0.5.1"
 dependencies = [
  "ampel-core",
  "anyhow",
@@ -248,7 +248,7 @@ dependencies = [
 
 [[package]]
 name = "ampel-worker"
-version = "0.4.0"
+version = "0.5.1"
 dependencies = [
  "ampel-core",
  "ampel-db",
@@ -3749,9 +3749,9 @@ dependencies = [
 
 [[package]]
 name = "quinn-proto"
-version = "0.11.14"
+version = "0.11.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "434b42fec591c96ef50e21e886936e66d3cc3f737104fdb9b737c40ffb94c098"
+checksum = "4fcb935c5bec503c2f0e306bdd3e58bb9029dcb14fa8d9ac76e3a5256ac0763e"
 dependencies = [
  "bytes",
  "getrandom 0.3.4",
@@ -4853,7 +4853,7 @@ version = "0.8.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c1c97747dbf44bb1ca44a561ece23508e99cb592e862f22222dcf42f51d1e451"
 dependencies = [
- "heck 0.5.0",
+ "heck 0.4.1",
  "proc-macro2",
  "quote",
  "syn 2.0.115",
