@@ -6,7 +6,7 @@ use axum::{
 
 use crate::handlers::{
     accounts, analytics, auth, bot_rules, bulk_merge, dashboard, notifications, pr_filters,
-    pull_requests, repositories, teams, user_preferences, user_settings,
+    pull_requests, remediation, repositories, teams, user_preferences, user_settings,
 };
 use crate::{
     health_handler, metrics_handler,
@@ -144,6 +144,26 @@ pub fn create_router(state: AppState) -> Router {
             get(pr_filters::get_pr_filters).put(pr_filters::update_pr_filters),
         )
         .route("/api/pr-filters/reset", post(pr_filters::reset_pr_filters))
+        // Remediation routes (Fleet PR Remediation — Phase 1)
+        .route(
+            "/api/remediation/policies",
+            get(remediation::list_policies).post(remediation::create_policy),
+        )
+        .route(
+            "/api/remediation/policies/{id}",
+            get(remediation::get_policy)
+                .patch(remediation::update_policy)
+                .delete(remediation::delete_policy),
+        )
+        .route(
+            "/api/remediation/policies/{id}/toggle",
+            post(remediation::toggle_policy),
+        )
+        .route(
+            "/api/remediation/repositories/{repo_id}/preview",
+            post(remediation::preview_repository),
+        )
+        .route("/api/remediation/fleet", get(remediation::get_fleet))
         // Analytics routes
         .route(
             "/api/analytics/summary",
