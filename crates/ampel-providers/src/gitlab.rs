@@ -4,6 +4,7 @@ use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
+use crate::remediation::{RemediationCapable, RemediationCaps};
 use crate::traits::{
     GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderPullRequest,
     ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
@@ -150,6 +151,69 @@ fn parse_datetime(s: &str) -> DateTime<Utc> {
 
 fn parse_datetime_opt(s: &Option<String>) -> Option<DateTime<Utc>> {
     s.as_ref().map(|s| parse_datetime(s))
+}
+
+fn gitlab_mr_to_provider(mr: GitLabMR) -> ProviderPullRequest {
+    let state = match mr.state.as_str() {
+        "opened" => "open",
+        other => other,
+    };
+    let changes: i32 = mr.changes_count.and_then(|c| c.parse().ok()).unwrap_or(0);
+    ProviderPullRequest {
+        provider_id: mr.id.to_string(),
+        number: mr.iid,
+        title: mr.title,
+        description: mr.description,
+        url: mr.web_url,
+        state: state.to_string(),
+        source_branch: mr.source_branch,
+        target_branch: mr.target_branch,
+        author: mr.author.username,
+        author_avatar_url: mr.author.avatar_url,
+        is_draft: mr.draft,
+        is_mergeable: Some(mr.merge_status.as_deref() == Some("can_be_merged")),
+        has_conflicts: mr.has_conflicts,
+        additions: 0,
+        deletions: 0,
+        changed_files: changes,
+        commits_count: 0,
+        comments_count: mr.user_notes_count.unwrap_or(0),
+        created_at: parse_datetime(&mr.created_at),
+        updated_at: parse_datetime(&mr.updated_at),
+        merged_at: parse_datetime_opt(&mr.merged_at),
+        closed_at: parse_datetime_opt(&mr.closed_at),
+    }
+}
+
+// --- Remediation write primitives (ADR-002) ---
+
+#[derive(Debug, Deserialize)]
+struct GitLabBranchRef {
+    commit: GitLabBranchCommit,
+}
+
+#[derive(Debug, Deserialize)]
+struct GitLabBranchCommit {
+    id: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct GitLabMrRef {
+    iid: i32,
+}
+
+#[derive(Debug, Deserialize)]
+struct GitLabNoteResponse {
+    id: i64,
+}
+
+#[derive(Debug, Deserialize)]
+struct GitLabCommitStatus {
+    name: Option<String>,
+    status: String,
+    target_url: Option<String>,
+    started_at: Option<String>,
+    finished_at: Option<String>,
 }
 
 #[async_trait]
@@ -664,5 +728,374 @@ impl GitProvider for GitLabProvider {
             remaining: 2000,
             reset_at: Utc::now() + chrono::Duration::hours(1),
         })
+    }
+}
+
+#[async_trait]
+impl RemediationCapable for GitLabProvider {
+    fn capabilities(&self) -> RemediationCaps {
+        // GitLab's REST v4 API supports every remediation primitive. `update_branch_from_base`
+        // is realised through the per-MR rebase endpoint (see method below).
+        RemediationCaps::all()
+    }
+
+    async fn get_default_branch_sha(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+    ) -> ProviderResult<String> {
+        let project_path = format!("{}/{}", owner, repo);
+        let encoded_path = urlencoding::encode(&project_path);
+        let project = self.get_repository(credentials, owner, repo).await?;
+        let encoded_branch = urlencoding::encode(&project.default_branch);
+        let response = self
+            .client
+            .get(self.api_url(&format!(
+                "/projects/{}/repository/branches/{}",
+                encoded_path, encoded_branch
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: "Failed to resolve default branch SHA".to_string(),
+            });
+        }
+
+        let branch: GitLabBranchRef = response.json().await?;
+        Ok(branch.commit.id)
+    }
+
+    async fn create_branch(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        branch_name: &str,
+        from_sha: &str,
+    ) -> ProviderResult<()> {
+        let project_path = format!("{}/{}", owner, repo);
+        let encoded_path = urlencoding::encode(&project_path);
+        let response = self
+            .client
+            .post(self.api_url(&format!("/projects/{}/repository/branches", encoded_path)))
+            .header("Authorization", self.auth_header(credentials))
+            .query(&[("branch", branch_name), ("ref", from_sha)])
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to create branch {}", branch_name),
+            });
+        }
+        Ok(())
+    }
+
+    async fn update_branch_from_base(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        branch_name: &str,
+        _base_branch: &str,
+    ) -> ProviderResult<()> {
+        // GitLab has no branch-level merge primitive; the documented "REST rebase" path
+        // operates on the merge request whose source branch is `branch_name`. We look it up
+        // and trigger the async rebase against its target (the consolidation base).
+        let project_path = format!("{}/{}", owner, repo);
+        let encoded_path = urlencoding::encode(&project_path);
+        let lookup = self
+            .client
+            .get(self.api_url(&format!("/projects/{}/merge_requests", encoded_path)))
+            .header("Authorization", self.auth_header(credentials))
+            .query(&[("source_branch", branch_name), ("state", "opened")])
+            .send()
+            .await?;
+
+        if !lookup.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: lookup.status().as_u16(),
+                message: "Failed to look up merge request for branch update".to_string(),
+            });
+        }
+
+        let mrs: Vec<GitLabMrRef> = lookup.json().await?;
+        let iid = mrs.first().map(|m| m.iid).ok_or_else(|| {
+            ProviderError::NotFound(format!(
+                "No open merge request found for branch {}",
+                branch_name
+            ))
+        })?;
+
+        let response = self
+            .client
+            .put(self.api_url(&format!(
+                "/projects/{}/merge_requests/{}/rebase",
+                encoded_path, iid
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to rebase merge request !{}", iid),
+            });
+        }
+        Ok(())
+    }
+
+    async fn create_pull_request(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        title: &str,
+        body: &str,
+        head: &str,
+        base: &str,
+    ) -> ProviderResult<ProviderPullRequest> {
+        let project_path = format!("{}/{}", owner, repo);
+        let encoded_path = urlencoding::encode(&project_path);
+        let response = self
+            .client
+            .post(self.api_url(&format!("/projects/{}/merge_requests", encoded_path)))
+            .header("Authorization", self.auth_header(credentials))
+            .query(&[
+                ("source_branch", head),
+                ("target_branch", base),
+                ("title", title),
+                ("description", body),
+            ])
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: "Failed to create merge request".to_string(),
+            });
+        }
+
+        let mr: GitLabMR = response.json().await?;
+        Ok(gitlab_mr_to_provider(mr))
+    }
+
+    async fn update_pull_request(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+        title: Option<&str>,
+        body: Option<&str>,
+    ) -> ProviderResult<()> {
+        let project_path = format!("{}/{}", owner, repo);
+        let encoded_path = urlencoding::encode(&project_path);
+        let mut query: Vec<(&str, &str)> = Vec::new();
+        if let Some(t) = title {
+            query.push(("title", t));
+        }
+        if let Some(b) = body {
+            query.push(("description", b));
+        }
+        let response = self
+            .client
+            .put(self.api_url(&format!(
+                "/projects/{}/merge_requests/{}",
+                encoded_path, pr_number
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .query(&query)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to update merge request !{}", pr_number),
+            });
+        }
+        Ok(())
+    }
+
+    async fn close_pull_request(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+    ) -> ProviderResult<()> {
+        let project_path = format!("{}/{}", owner, repo);
+        let encoded_path = urlencoding::encode(&project_path);
+        let response = self
+            .client
+            .put(self.api_url(&format!(
+                "/projects/{}/merge_requests/{}",
+                encoded_path, pr_number
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .query(&[("state_event", "close")])
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to close merge request !{}", pr_number),
+            });
+        }
+        Ok(())
+    }
+
+    async fn create_comment(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+        body: &str,
+    ) -> ProviderResult<i64> {
+        let project_path = format!("{}/{}", owner, repo);
+        let encoded_path = urlencoding::encode(&project_path);
+        let response = self
+            .client
+            .post(self.api_url(&format!(
+                "/projects/{}/merge_requests/{}/notes",
+                encoded_path, pr_number
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .query(&[("body", body)])
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to comment on merge request !{}", pr_number),
+            });
+        }
+
+        let note: GitLabNoteResponse = response.json().await?;
+        Ok(note.id)
+    }
+
+    async fn add_labels(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+        labels: &[String],
+    ) -> ProviderResult<()> {
+        let project_path = format!("{}/{}", owner, repo);
+        let encoded_path = urlencoding::encode(&project_path);
+        let add_labels = labels.join(",");
+        let response = self
+            .client
+            .put(self.api_url(&format!(
+                "/projects/{}/merge_requests/{}",
+                encoded_path, pr_number
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .query(&[("add_labels", add_labels.as_str())])
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to add labels to merge request !{}", pr_number),
+            });
+        }
+        Ok(())
+    }
+
+    async fn get_status_for_ref(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        git_ref: &str,
+    ) -> ProviderResult<Vec<ProviderCICheck>> {
+        let project_path = format!("{}/{}", owner, repo);
+        let encoded_path = urlencoding::encode(&project_path);
+        let encoded_ref = urlencoding::encode(git_ref);
+        let response = self
+            .client
+            .get(self.api_url(&format!(
+                "/projects/{}/repository/commits/{}/statuses",
+                encoded_path, encoded_ref
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to get status for ref {}", git_ref),
+            });
+        }
+
+        let statuses: Vec<GitLabCommitStatus> = response.json().await?;
+        Ok(statuses
+            .into_iter()
+            .map(|s| {
+                let (status, conclusion) = match s.status.as_str() {
+                    "pending" | "created" => ("queued".to_string(), None),
+                    "running" => ("in_progress".to_string(), None),
+                    "success" => ("completed".to_string(), Some("success".to_string())),
+                    "failed" => ("completed".to_string(), Some("failure".to_string())),
+                    "canceled" => ("completed".to_string(), Some("cancelled".to_string())),
+                    "skipped" => ("completed".to_string(), Some("skipped".to_string())),
+                    _ => ("queued".to_string(), None),
+                };
+                ProviderCICheck {
+                    name: s.name.unwrap_or_else(|| "unknown".to_string()),
+                    status,
+                    conclusion,
+                    url: s.target_url,
+                    started_at: parse_datetime_opt(&s.started_at),
+                    completed_at: parse_datetime_opt(&s.finished_at),
+                }
+            })
+            .collect())
+    }
+
+    async fn delete_branch(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        branch_name: &str,
+    ) -> ProviderResult<()> {
+        let project_path = format!("{}/{}", owner, repo);
+        let encoded_path = urlencoding::encode(&project_path);
+        let encoded_branch = urlencoding::encode(branch_name);
+        let response = self
+            .client
+            .delete(self.api_url(&format!(
+                "/projects/{}/repository/branches/{}",
+                encoded_path, encoded_branch
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to delete branch {}", branch_name),
+            });
+        }
+        Ok(())
     }
 }
