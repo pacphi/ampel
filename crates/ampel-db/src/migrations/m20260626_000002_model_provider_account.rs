@@ -1,0 +1,201 @@
+use sea_orm_migration::prelude::*;
+
+#[derive(DeriveMigrationName)]
+pub struct Migration;
+
+#[async_trait::async_trait]
+impl MigrationTrait for Migration {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        // model_provider_account ----------------------------------------------
+        manager
+            .create_table(
+                Table::create()
+                    .table(ModelProviderAccount::Table)
+                    .if_not_exists()
+                    .col(
+                        ColumnDef::new(ModelProviderAccount::Id)
+                            .uuid()
+                            .not_null()
+                            .primary_key(),
+                    )
+                    .col(ColumnDef::new(ModelProviderAccount::OrganizationId).uuid())
+                    .col(ColumnDef::new(ModelProviderAccount::UserId).uuid())
+                    .col(
+                        ColumnDef::new(ModelProviderAccount::ProviderKind)
+                            .string()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(ModelProviderAccount::DisplayName)
+                            .string()
+                            .not_null(),
+                    )
+                    .col(ColumnDef::new(ModelProviderAccount::CredentialsEncrypted).binary())
+                    .col(ColumnDef::new(ModelProviderAccount::EndpointUrl).string())
+                    .col(
+                        ColumnDef::new(ModelProviderAccount::EgressClass)
+                            .string()
+                            .not_null()
+                            .default("external"),
+                    )
+                    .col(ColumnDef::new(ModelProviderAccount::ModelId).string())
+                    .col(
+                        ColumnDef::new(ModelProviderAccount::Enabled)
+                            .boolean()
+                            .not_null()
+                            .default(true),
+                    )
+                    .col(
+                        ColumnDef::new(ModelProviderAccount::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null()
+                            .default(Expr::current_timestamp()),
+                    )
+                    .col(
+                        ColumnDef::new(ModelProviderAccount::UpdatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null()
+                            .default(Expr::current_timestamp()),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx_model_provider_account_organization_id")
+                    .table(ModelProviderAccount::Table)
+                    .col(ModelProviderAccount::OrganizationId)
+                    .to_owned(),
+            )
+            .await?;
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx_model_provider_account_user_id")
+                    .table(ModelProviderAccount::Table)
+                    .col(ModelProviderAccount::UserId)
+                    .to_owned(),
+            )
+            .await?;
+
+        // remediation_playbook -------------------------------------------------
+        manager
+            .create_table(
+                Table::create()
+                    .table(RemediationPlaybook::Table)
+                    .if_not_exists()
+                    .col(
+                        ColumnDef::new(RemediationPlaybook::Id)
+                            .uuid()
+                            .not_null()
+                            .primary_key(),
+                    )
+                    .col(
+                        ColumnDef::new(RemediationPlaybook::PlaybookId)
+                            .string()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(RemediationPlaybook::Version)
+                            .integer()
+                            .not_null()
+                            .default(1),
+                    )
+                    .col(
+                        ColumnDef::new(RemediationPlaybook::Source)
+                            .string()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(RemediationPlaybook::Name)
+                            .string()
+                            .not_null(),
+                    )
+                    .col(ColumnDef::new(RemediationPlaybook::Description).text())
+                    .col(
+                        ColumnDef::new(RemediationPlaybook::Content)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(RemediationPlaybook::Enabled)
+                            .boolean()
+                            .not_null()
+                            .default(true),
+                    )
+                    .col(
+                        ColumnDef::new(RemediationPlaybook::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null()
+                            .default(Expr::current_timestamp()),
+                    )
+                    .col(
+                        ColumnDef::new(RemediationPlaybook::UpdatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null()
+                            .default(Expr::current_timestamp()),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx_remediation_playbook_unique_id_version")
+                    .table(RemediationPlaybook::Table)
+                    .col(RemediationPlaybook::PlaybookId)
+                    .col(RemediationPlaybook::Version)
+                    .unique()
+                    .to_owned(),
+            )
+            .await?;
+
+        Ok(())
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .drop_table(Table::drop().table(RemediationPlaybook::Table).to_owned())
+            .await?;
+        manager
+            .drop_table(Table::drop().table(ModelProviderAccount::Table).to_owned())
+            .await?;
+
+        Ok(())
+    }
+}
+
+#[derive(DeriveIden)]
+enum ModelProviderAccount {
+    Table,
+    Id,
+    OrganizationId,
+    UserId,
+    ProviderKind,
+    DisplayName,
+    CredentialsEncrypted,
+    EndpointUrl,
+    EgressClass,
+    ModelId,
+    Enabled,
+    CreatedAt,
+    UpdatedAt,
+}
+
+#[derive(DeriveIden)]
+enum RemediationPlaybook {
+    Table,
+    Id,
+    PlaybookId,
+    Version,
+    Source,
+    Name,
+    Description,
+    Content,
+    Enabled,
+    CreatedAt,
+    UpdatedAt,
+}
