@@ -272,4 +272,37 @@ mod tests {
         let body = json!({ "usage": {} });
         assert!(parse_response(&body, OutputContract::ToolUse).is_err());
     }
+
+    #[test]
+    fn should_use_exact_claude_per_token_rates() {
+        // Spend-cap integrity depends on these rates: $3 / 1M input, $15 / 1M
+        // output → 0.003 / 1k and 0.015 / 1k.
+        match ClaudeProvider::cost_model() {
+            CostModel::PerToken {
+                input_per_1k,
+                output_per_1k,
+            } => {
+                assert_eq!(input_per_1k, Decimal::new(3, 3));
+                assert_eq!(output_per_1k, Decimal::new(15, 3));
+            }
+            other => panic!("expected PerToken, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn should_map_usage_to_exact_cost_and_tokens() {
+        // A response with usage{input,output} parses to exact tokens and the
+        // exact cost via the pure parse + compute_cost path (no network).
+        let body = json!({
+            "content": [ { "type": "text", "text": "--- a\n+++ b\n" } ],
+            "usage": { "input_tokens": 1000, "output_tokens": 2000 }
+        });
+        let (_out, input_tokens, output_tokens) =
+            parse_response(&body, OutputContract::UnifiedDiff).unwrap();
+        assert_eq!((input_tokens, output_tokens), (1000, 2000));
+        let cost = compute_cost(&ClaudeProvider::cost_model(), input_tokens, output_tokens);
+        // 1000 * 0.003/1k + 2000 * 0.015/1k = 0.003 + 0.030 = 0.033
+        assert_eq!(cost, Decimal::new(33, 3));
+        assert_eq!(input_tokens + output_tokens, 3000);
+    }
 }

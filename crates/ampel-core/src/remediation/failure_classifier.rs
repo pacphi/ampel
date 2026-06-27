@@ -362,6 +362,28 @@ mod tests {
     }
 
     #[test]
+    fn should_prefer_lockfile_conflict_over_build_error_when_both_present() {
+        // Co-occurring markers: a Cargo.lock conflict AND a `could not compile`
+        // build error. Lockfile precedence must beat the build-error fallback.
+        assert_classified_as(
+            "Auto-merging Cargo.lock\n<<<<<<< HEAD\nfoo = 1.0\n=======\nfoo = 2.0\n>>>>>>> branch\n\
+             error: could not compile `ampel` due to previous error",
+            FailureClass::LockfileConflict,
+        );
+    }
+
+    #[test]
+    fn should_prefer_type_error_over_build_error_when_both_present() {
+        // Co-occurring markers: a TypeScript `error TS####` AND a generic
+        // `build failed`. Type-error precedence must beat the build-error check.
+        assert_classified_as(
+            "src/app.ts(10,5): error TS2322: Type 'string' is not assignable to type 'number'.\n\
+             build failed",
+            FailureClass::TypeError,
+        );
+    }
+
+    #[test]
     fn should_classify_unrecognized_log_as_unknown_with_zero_confidence() {
         let result = classify_heuristic("Cloning into 'repo'... done.\nSetting up environment.");
         assert_eq!(result.class, FailureClass::Unknown);

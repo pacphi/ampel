@@ -268,4 +268,64 @@ mod tests {
     fn should_error_when_candidates_missing() {
         assert!(parse_response(&json!({}), OutputContract::ToolUse).is_err());
     }
+
+    #[test]
+    fn should_include_untrusted_preamble_and_one_part_per_block() {
+        // M5: the first user part must be the untrusted preamble, and there must
+        // be exactly one part per context block plus that preamble.
+        let req = InferenceRequest {
+            system: "You fix CI failures.".into(),
+            context_blocks: vec![
+                ContextBlock {
+                    label: "ci_log".into(),
+                    content: "boom".into(),
+                    is_untrusted_data: true,
+                },
+                ContextBlock {
+                    label: "diff".into(),
+                    content: "--- a".into(),
+                    is_untrusted_data: true,
+                },
+            ],
+            max_tokens: 256,
+            output_contract: OutputContract::ToolUse,
+        };
+        let body = build_request_body(&req);
+        let parts = body["contents"][0]["parts"].as_array().unwrap();
+        assert_eq!(parts.len(), req.context_blocks.len() + 1);
+        assert_eq!(parts[0]["text"], UNTRUSTED_PREAMBLE);
+    }
+
+    #[test]
+    fn should_use_exact_gemini_per_token_rates() {
+        // Spend-cap integrity depends on these rates: ~$0.10 / 1M input,
+        // ~$0.40 / 1M output → 0.0001 / 1k and 0.0004 / 1k.
+        match GeminiProvider::cost_model() {
+            CostModel::PerToken {
+                input_per_1k,
+                output_per_1k,
+            } => {
+                assert_eq!(input_per_1k, Decimal::new(1, 4));
+                assert_eq!(output_per_1k, Decimal::new(4, 4));
+            }
+            other => panic!("expected PerToken, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn should_map_usage_to_exact_cost_and_tokens() {
+        // usage{prompt,candidate} → exact tokens + exact cost via parse +
+        // compute_cost (no network).
+        let body = json!({
+            "candidates": [ { "content": { "parts": [ { "text": "patch" } ] } } ],
+            "usageMetadata": { "promptTokenCount": 10_000, "candidatesTokenCount": 5_000 }
+        });
+        let (_out, input_tokens, output_tokens) =
+            parse_response(&body, OutputContract::UnifiedDiff).unwrap();
+        assert_eq!((input_tokens, output_tokens), (10_000, 5_000));
+        let cost = compute_cost(&GeminiProvider::cost_model(), input_tokens, output_tokens);
+        // 10000 * 0.0001/1k + 5000 * 0.0004/1k = 0.001 + 0.002 = 0.003
+        assert_eq!(cost, Decimal::new(3, 3));
+        assert_eq!(input_tokens + output_tokens, 15_000);
+    }
 }

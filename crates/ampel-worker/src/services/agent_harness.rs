@@ -310,6 +310,29 @@ mod tests {
         }
     }
 
+    /// Verifier that always errors (CI query/run itself failed).
+    struct ErroringVerifier;
+    #[async_trait]
+    impl CiVerifier for ErroringVerifier {
+        async fn verify(&self, _worktree_ref: &str) -> AmpelResult<VerificationStatus> {
+            Err(ampel_core::errors::AmpelError::ProviderError(
+                "ci verify failed".into(),
+            ))
+        }
+    }
+
+    /// Verifier that always reports red with fixed logs (never green).
+    struct AlwaysRedVerifier;
+    #[async_trait]
+    impl CiVerifier for AlwaysRedVerifier {
+        async fn verify(&self, _worktree_ref: &str) -> AmpelResult<VerificationStatus> {
+            Ok(VerificationStatus {
+                green: false,
+                logs: "still red".into(),
+            })
+        }
+    }
+
     /// Records every apply/commit so tests can count edits.
     #[derive(Default)]
     struct RecordingWorktree {
@@ -564,6 +587,116 @@ mod tests {
             .iter()
             .all(|b| b.is_untrusted_data));
         assert!(recorded[0].context_blocks[0].content.contains(injection));
+    }
+
+    #[tokio::test]
+    async fn should_stop_exactly_on_cap_boundary_with_two_infer_calls() {
+        // M2: cap 2.0, each response costs 1.0. iter1 (0<2.0)->1.0; iter2
+        // (1.0<2.0)->2.0; iter3 pre-check 2.0>=2.0 -> stop. Exactly 2 infer calls
+        // (the `>=` boundary must not allow a 3rd paid call landing on the cap).
+        let provider = Arc::new(
+            MockModelProvider::new(inference_caps())
+                .with_response(diff_response(Decimal::new(1, 0)))
+                .with_response(diff_response(Decimal::new(1, 0)))
+                .with_response(diff_response(Decimal::new(1, 0))),
+        );
+        let verifier = Arc::new(AlwaysRedVerifier);
+        let budget = AgentBudget {
+            max_iterations: 10,
+            max_seconds: 600,
+            max_cost: Decimal::new(2, 0), // exactly 2.0
+        };
+
+        let outcome = harness()
+            .run(
+                "test result: FAILED".into(),
+                ctx(),
+                &playbook(),
+                provider.clone(),
+                &ModelCredentials::default(),
+                Arc::new(RecordingWorktree::default()),
+                verifier,
+                "wt-cap",
+                budget,
+            )
+            .await;
+
+        assert!(!outcome.passed);
+        assert_eq!(outcome.iterations, 2);
+        assert_eq!(outcome.cost, Decimal::new(2, 0));
+        assert_eq!(
+            outcome.terminal_reason,
+            AgentTerminalReason::BudgetExhausted
+        );
+        assert_eq!(provider.call_count(), 2); // never a 3rd call on the cap
+    }
+
+    #[tokio::test]
+    async fn should_budget_exhaust_immediately_when_max_seconds_zero() {
+        // M3: max_seconds == 0 trips the time gate on the very first pre-iteration
+        // check, before any classify/infer. Zero iterations, zero infer calls.
+        let provider = Arc::new(
+            MockModelProvider::new(inference_caps()).with_response(diff_response(Decimal::ZERO)),
+        );
+        let verifier = Arc::new(AlwaysRedVerifier);
+        let budget = AgentBudget {
+            max_iterations: 5,
+            max_seconds: 0,
+            max_cost: Decimal::new(100, 0),
+        };
+
+        let outcome = harness()
+            .run(
+                "build failed".into(),
+                ctx(),
+                &playbook(),
+                provider.clone(),
+                &ModelCredentials::default(),
+                Arc::new(RecordingWorktree::default()),
+                verifier,
+                "wt-time",
+                budget,
+            )
+            .await;
+
+        assert!(!outcome.passed);
+        assert_eq!(outcome.iterations, 0);
+        assert_eq!(
+            outcome.terminal_reason,
+            AgentTerminalReason::BudgetExhausted
+        );
+        assert_eq!(provider.call_count(), 0); // never called
+    }
+
+    #[tokio::test]
+    async fn should_terminate_error_when_verifier_errors() {
+        // M6: a verifier that returns Err terminates the run as Error — never a
+        // success/green signal — after the (paid) infer + apply + commit.
+        let provider = Arc::new(
+            MockModelProvider::new(inference_caps()).with_response(diff_response(Decimal::ZERO)),
+        );
+        let worktree = Arc::new(RecordingWorktree::default());
+
+        let outcome = harness()
+            .run(
+                "build failed".into(),
+                ctx(),
+                &playbook(),
+                provider.clone(),
+                &ModelCredentials::default(),
+                worktree.clone(),
+                Arc::new(ErroringVerifier),
+                "wt-err",
+                big_budget(),
+            )
+            .await;
+
+        assert!(!outcome.passed);
+        assert_eq!(outcome.terminal_reason, AgentTerminalReason::Error);
+        assert_ne!(outcome.terminal_reason, AgentTerminalReason::CiGreen);
+        // The infer + edit happened, but no green was ever signalled.
+        assert_eq!(outcome.iterations, 1);
+        assert_eq!(*worktree.committed.lock().unwrap(), 1);
     }
 
     #[tokio::test]

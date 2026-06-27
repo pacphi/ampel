@@ -16,7 +16,9 @@ use ampel_core::remediation::{
 use ampel_db::encryption::EncryptionService;
 use ampel_db::entities::{model_provider_account, remediation_agent_session};
 use ampel_worker::services::agent_harness::{AgentWorktree, CiVerifier, VerificationStatus};
-use ampel_worker::services::agentic_tier::{AgentTierOutcome, AgenticTier, DbAgenticTier};
+use ampel_worker::services::agentic_tier::{
+    AccountScope, AgentTierOutcome, AgenticTier, DbAgenticTier,
+};
 use ampel_worker::services::playbook_resolver::PlaybookContext;
 use async_trait::async_trait;
 use chrono::Utc;
@@ -77,6 +79,45 @@ async fn seed_ollama_account(db: &DatabaseConnection) -> Uuid {
     id
 }
 
+/// Seed a local Ollama account with explicit tenant + spend fields.
+#[allow(clippy::too_many_arguments)]
+async fn seed_account(
+    db: &DatabaseConnection,
+    organization_id: Option<Uuid>,
+    user_id: Option<Uuid>,
+    is_default: bool,
+    spend_cap_usd: Option<&str>,
+    spend_used_usd: &str,
+) -> Uuid {
+    let id = Uuid::new_v4();
+    let now = Utc::now();
+    model_provider_account::ActiveModel {
+        id: Set(id),
+        organization_id: Set(organization_id),
+        user_id: Set(user_id),
+        provider_kind: Set("ollama".to_string()),
+        display_name: Set("Local".to_string()),
+        credentials_encrypted: Set(None),
+        endpoint_url: Set(Some("http://localhost:11434".to_string())),
+        egress_class: Set("local_only".to_string()),
+        model_id: Set(Some("qwen2.5-coder".to_string())),
+        enabled: Set(true),
+        auth_type: Set("none".to_string()),
+        spend_cap_usd: Set(spend_cap_usd.map(str::to_string)),
+        spend_used_usd: Set(spend_used_usd.to_string()),
+        validation_status: Set("valid".to_string()),
+        last_validated_at: Set(None),
+        model_path: Set(None),
+        is_default: Set(is_default),
+        created_at: Set(now),
+        updated_at: Set(now),
+    }
+    .insert(db)
+    .await
+    .unwrap();
+    id
+}
+
 /// Fake worktree: records nothing, succeeds on every apply/commit.
 struct OkWorktree;
 
@@ -121,6 +162,14 @@ fn diff_response() -> InferenceResponse {
         output: NormalizedProviderOutput::UnifiedDiff("--- a\n+++ b\n".to_string()),
         tokens_used: 42,
         cost: Decimal::ZERO,
+    }
+}
+
+fn diff_response_with_cost(cost: Decimal) -> InferenceResponse {
+    InferenceResponse {
+        output: NormalizedProviderOutput::UnifiedDiff("--- a\n+++ b\n".to_string()),
+        tokens_used: 42,
+        cost,
     }
 }
 
@@ -213,4 +262,131 @@ async fn should_handoff_and_persist_egress_blocked_when_air_gapped_external() {
     assert_eq!(sessions.len(), 1);
     assert_eq!(sessions[0].status, "egress_blocked");
     assert_eq!(sessions[0].iterations, 0);
+}
+
+#[tokio::test]
+async fn should_increment_account_spend_after_a_run() {
+    // Arrange: a local account (no cap) and a mock that reports a $0.50 run cost.
+    let db = sqlite().await;
+    let account_id = seed_account(&db, None, Some(Uuid::new_v4()), true, None, "0").await;
+    let run_id = Uuid::new_v4();
+
+    let provider = Arc::new(
+        MockModelProvider::new(local_caps())
+            .with_response(diff_response_with_cost(Decimal::new(50, 2))),
+    );
+    let tier = DbAgenticTier::new(
+        db.clone(),
+        Arc::new(EncryptionService::new(&[7u8; 32])),
+        Arc::new(HeuristicClassifier),
+        Arc::new(OkWorktree),
+        Arc::new(GreenVerifier),
+        false,
+        run_ctx(),
+        "worktree-1",
+        "error[E0432]: build failed",
+    )
+    .with_provider_override(provider);
+
+    // Act
+    let outcome = tier.attempt(run_id).await.unwrap();
+
+    // Assert: recovered, and the account's cumulative spend rose by exactly $0.50.
+    assert_eq!(outcome, AgentTierOutcome::Recovered);
+    let account = model_provider_account::Entity::find_by_id(account_id)
+        .one(&db)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(account.spend_used_usd, "0.50");
+}
+
+#[tokio::test]
+async fn should_refuse_dispatch_when_spend_cap_already_reached() {
+    // Arrange: an account whose cumulative spend already equals its cap.
+    let db = sqlite().await;
+    let account_id =
+        seed_account(&db, None, Some(Uuid::new_v4()), true, Some("1.00"), "1.00").await;
+    let run_id = Uuid::new_v4();
+
+    // Provider must NEVER be called once the cap gate fires.
+    let provider = Arc::new(
+        MockModelProvider::new(local_caps())
+            .with_response(diff_response_with_cost(Decimal::new(1, 0))),
+    );
+    let tier = DbAgenticTier::new(
+        db.clone(),
+        Arc::new(EncryptionService::new(&[7u8; 32])),
+        Arc::new(HeuristicClassifier),
+        Arc::new(OkWorktree),
+        Arc::new(GreenVerifier),
+        false,
+        run_ctx(),
+        "worktree-1",
+        "error[E0432]: build failed",
+    )
+    .with_provider_override(provider.clone());
+
+    // Act
+    let outcome = tier.attempt(run_id).await.unwrap();
+
+    // Assert: handed off before any model call, recorded as `spend_blocked`,
+    // and the spend was not mutated.
+    assert_eq!(outcome, AgentTierOutcome::Exhausted);
+    assert_eq!(provider.call_count(), 0);
+    let sessions = remediation_agent_session::Entity::find()
+        .all(&db)
+        .await
+        .unwrap();
+    assert_eq!(sessions.len(), 1);
+    assert_eq!(sessions[0].status, "spend_blocked");
+    assert_eq!(sessions[0].iterations, 0);
+    let account = model_provider_account::Entity::find_by_id(account_id)
+        .one(&db)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(account.spend_used_usd, "1.00");
+}
+
+#[tokio::test]
+async fn should_select_only_in_tenant_scope() {
+    // Arrange: two enabled default accounts in two different orgs. The run is
+    // scoped to org B; selection must pick B's account, never A's.
+    let db = sqlite().await;
+    let org_a = Uuid::new_v4();
+    let org_b = Uuid::new_v4();
+    let _account_a = seed_account(&db, Some(org_a), None, true, None, "0").await;
+    let account_b = seed_account(&db, Some(org_b), None, true, None, "0").await;
+    let run_id = Uuid::new_v4();
+
+    let provider = Arc::new(MockModelProvider::new(local_caps()).with_response(diff_response()));
+    let tier = DbAgenticTier::new(
+        db.clone(),
+        Arc::new(EncryptionService::new(&[7u8; 32])),
+        Arc::new(HeuristicClassifier),
+        Arc::new(OkWorktree),
+        Arc::new(GreenVerifier),
+        false,
+        run_ctx(),
+        "worktree-1",
+        "error[E0432]: build failed",
+    )
+    .with_provider_override(provider)
+    .with_account_scope(AccountScope {
+        organization_id: Some(org_b),
+        user_id: None,
+    });
+
+    // Act
+    let outcome = tier.attempt(run_id).await.unwrap();
+
+    // Assert: recovered using org B's account only (no cross-tenant selection).
+    assert_eq!(outcome, AgentTierOutcome::Recovered);
+    let sessions = remediation_agent_session::Entity::find()
+        .all(&db)
+        .await
+        .unwrap();
+    assert_eq!(sessions.len(), 1);
+    assert_eq!(sessions[0].model_provider_account_id, Some(account_b));
 }
