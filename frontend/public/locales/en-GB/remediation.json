@@ -6,7 +6,9 @@
     "fleet": "Fleet",
     "runs": "Runs",
     "policies": "Policies",
-    "audit": "Audit"
+    "audit": "Audit",
+    "modelAccounts": "Model Accounts",
+    "playbooks": "Playbooks"
   },
   "fleet": {
     "title": "Fleet Overview",
@@ -93,7 +95,8 @@
     "confirmAutoMerge": {
       "title": "Enable auto-merge?",
       "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge"
+      "confirm": "Enable auto-merge",
+      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
     }
   },
   "policies": {
@@ -203,6 +206,96 @@
       "pr": "PR",
       "autonomy": "Autonomy",
       "completedAt": "Completed"
+    }
+  },
+  "modelAccounts": {
+    "title": "Model Accounts",
+    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
+    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
+    "create": "Add model account",
+    "createTitle": "Add model account",
+    "providerKind": "Provider",
+    "providerKindLabel": {
+      "claude": "Claude",
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
+    },
+    "displayName": "Display name",
+    "displayNamePlaceholder": "e.g. Team Claude key",
+    "apiKey": "API key",
+    "apiKeyPlaceholder": "Paste the provider API key",
+    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
+    "endpointUrl": "Endpoint URL",
+    "endpointUrlPlaceholder": "http://localhost:11434",
+    "modelId": "Model ID",
+    "modelIdPlaceholder": "e.g. claude-sonnet-4",
+    "spendCap": "Spend cap (USD)",
+    "spend": "Spend",
+    "default": "Default",
+    "save": "Save account",
+    "saving": "Saving…",
+    "validate": "Validate",
+    "validating": "Validating…",
+    "empty": "No model accounts yet. Add one to enable agentic remediation.",
+    "error": "Failed to load model accounts.",
+    "validationStatus": {
+      "unvalidated": "Unvalidated",
+      "valid": "Valid",
+      "invalid": "Invalid"
+    },
+    "egress": {
+      "external": "External egress",
+      "local_only": "Local only"
+    },
+    "errors": {
+      "displayNameRequired": "A display name is required.",
+      "createFailed": "Failed to create the model account.",
+      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+    }
+  },
+  "playbooks": {
+    "title": "Playbooks",
+    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
+    "create": "New playbook",
+    "playbookId": "Playbook ID",
+    "playbookIdPlaceholder": "e.g. custom-remediation",
+    "name": "Name",
+    "namePlaceholder": "Human-readable name",
+    "scopeType": "Scope type",
+    "scopeId": "Scope ID",
+    "scopeIdPlaceholder": "Owning team, org, or repository ID",
+    "content": "Playbook (YAML)",
+    "contentPlaceholder": "Enter the playbook YAML…",
+    "save": "Save playbook",
+    "saving": "Saving…",
+    "preview": "Validate / Preview",
+    "previewing": "Rendering…",
+    "renderedPrompt": "Rendered prompt",
+    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
+    "error": "Failed to load playbooks.",
+    "errors": {
+      "playbookIdRequired": "A playbook ID is required.",
+      "nameRequired": "A name is required.",
+      "contentRequired": "Playbook content is required.",
+      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
+      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
+    }
+  },
+  "agentSession": {
+    "title": "Agent session",
+    "iterations": "Iterations",
+    "tokensUsed": "Tokens used",
+    "cost": "Cost",
+    "failureClass": "Failure class",
+    "classifier": "Classifier",
+    "transcript": "View transcript",
+    "status": {
+      "running": "Running",
+      "succeeded": "Succeeded",
+      "failed": "Failed",
+      "handoff_human": "Handed off to human",
+      "budget_exceeded": "Budget exceeded"
     }
   }
 }

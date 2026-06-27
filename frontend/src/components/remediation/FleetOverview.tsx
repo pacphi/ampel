@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useFleetRemediation, usePreviewRepository } from '@/hooks/useFleetRemediation';
+import { markFleetPreviewed } from '@/lib/fleetPreviewGate';
 import type { ConsolidationPlan, FleetRow, PolicyState } from '@/types/remediation';
 
 function policyStateVariant(
@@ -42,7 +43,11 @@ export function FleetOverview() {
     setActiveRepo(row);
     setPlan(null);
     previewMutation.mutate(row.repositoryId, {
-      onSuccess: (data) => setPlan(data),
+      onSuccess: (data) => {
+        setPlan(data);
+        // Unlocks the auto-merge-first-time gate in the PolicyEditor.
+        markFleetPreviewed();
+      },
     });
   };
 

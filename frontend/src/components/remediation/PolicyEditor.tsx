@@ -23,6 +23,7 @@ import {
   useCreateRemediationPolicy,
   useUpdateRemediationPolicy,
 } from '@/hooks/useRemediationPolicies';
+import { hasFleetPreviewed } from '@/lib/fleetPreviewGate';
 import type {
   AutonomyLevel,
   CreatePolicyRequest,
@@ -93,11 +94,23 @@ interface PolicyEditorProps {
   policy?: RemediationPolicy;
   /** Optional preset scope id for new policies (e.g. selected repository). */
   defaultScopeId?: string;
+  /**
+   * Whether a fleet dry-run preview has been run. Gates the FIRST move to
+   * Auto-merge (Phase 4 safeguard). Defaults to the persisted gate state; tests
+   * pass it explicitly.
+   */
+  fleetPreviewed?: boolean;
   onSaved?: (policy: RemediationPolicy) => void;
   onCancel?: () => void;
 }
 
-export function PolicyEditor({ policy, defaultScopeId, onSaved, onCancel }: PolicyEditorProps) {
+export function PolicyEditor({
+  policy,
+  defaultScopeId,
+  fleetPreviewed,
+  onSaved,
+  onCancel,
+}: PolicyEditorProps) {
   const { t } = useTranslation(['remediation', 'common']);
   const isEdit = !!policy;
 
@@ -118,6 +131,13 @@ export function PolicyEditor({ policy, defaultScopeId, onSaved, onCancel }: Poli
 
   const isSaving = createMutation.isPending || updateMutation.isPending;
 
+  // Auto-merge-first-time gate (Phase 4): the first time a policy is moved to
+  // Auto-merge, the operator must have run a fleet preview. A policy already in
+  // Auto-merge is exempt (it has been through the gate before).
+  const previewSatisfied = fleetPreviewed ?? hasFleetPreviewed();
+  const alreadyAutoMerge = policy?.autoMergeEnabled === true;
+  const autoMergeBlocked = !alreadyAutoMerge && !previewSatisfied;
+
   const selectStop = (next: AutonomyStop) => {
     setError(null);
     if (next === 'auto_merge') {
@@ -134,6 +154,10 @@ export function PolicyEditor({ policy, defaultScopeId, onSaved, onCancel }: Poli
   };
 
   const confirmAutoMerge = () => {
+    // Gate: refuse to apply Auto-merge the first time without a fleet preview.
+    if (autoMergeBlocked) {
+      return;
+    }
     setStop('auto_merge');
     setEnabled(true);
     setConfirmOpen(false);
@@ -319,11 +343,19 @@ export function PolicyEditor({ policy, defaultScopeId, onSaved, onCancel }: Poli
               {t('remediation:editor.confirmAutoMerge.description')}
             </DialogDescription>
           </DialogHeader>
+          {autoMergeBlocked && (
+            <div
+              role="alert"
+              className="rounded-md bg-amber-500/10 p-3 text-sm text-amber-700 dark:text-amber-400"
+            >
+              {t('remediation:editor.confirmAutoMerge.previewRequired')}
+            </div>
+          )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setConfirmOpen(false)}>
               {t('common:actions.cancel')}
             </Button>
-            <Button variant="destructive" onClick={confirmAutoMerge}>
+            <Button variant="destructive" onClick={confirmAutoMerge} disabled={autoMergeBlocked}>
               {t('remediation:editor.confirmAutoMerge.confirm')}
             </Button>
           </DialogFooter>

@@ -737,6 +737,22 @@ export interface ProvidersTranslations {
 }
 
 export interface RemediationTranslations {
+  agentSession: {
+    classifier: string;
+    cost: string;
+    failureClass: string;
+    iterations: string;
+    status: {
+      budget_exceeded: string;
+      failed: string;
+      handoff_human: string;
+      running: string;
+      succeeded: string;
+    };
+    title: string;
+    tokensUsed: string;
+    transcript: string;
+  };
   audit: {
     action: {
       consolidated: string;
@@ -816,6 +832,7 @@ export interface RemediationTranslations {
     confirmAutoMerge: {
       confirm: string;
       description: string;
+      previewRequired: string;
       title: string;
     };
     createTitle: string;
@@ -860,7 +877,81 @@ export interface RemediationTranslations {
     noPolicy: string;
     paused: string;
   };
+  modelAccounts: {
+    airGapNotice: string;
+    apiKey: string;
+    apiKeyHint: string;
+    apiKeyPlaceholder: string;
+    create: string;
+    createTitle: string;
+    default: string;
+    description: string;
+    displayName: string;
+    displayNamePlaceholder: string;
+    egress: {
+      external: string;
+      local_only: string;
+    };
+    empty: string;
+    endpointUrl: string;
+    endpointUrlPlaceholder: string;
+    error: string;
+    errors: {
+      airGapped: string;
+      createFailed: string;
+      displayNameRequired: string;
+    };
+    modelId: string;
+    modelIdPlaceholder: string;
+    providerKind: string;
+    providerKindLabel: {
+      claude: string;
+      gemini: string;
+      ollama: string;
+      onnx: string;
+    };
+    save: string;
+    saving: string;
+    spend: string;
+    spendCap: string;
+    title: string;
+    validate: string;
+    validating: string;
+    validationStatus: {
+      invalid: string;
+      unvalidated: string;
+      valid: string;
+    };
+  };
   nav: string;
+  playbooks: {
+    content: string;
+    contentPlaceholder: string;
+    create: string;
+    description: string;
+    empty: string;
+    error: string;
+    errors: {
+      contentRequired: string;
+      nameRequired: string;
+      playbookIdRequired: string;
+      previewFailed: string;
+      saveFailed: string;
+    };
+    name: string;
+    namePlaceholder: string;
+    playbookId: string;
+    playbookIdPlaceholder: string;
+    preview: string;
+    previewing: string;
+    renderedPrompt: string;
+    save: string;
+    saving: string;
+    scopeId: string;
+    scopeIdPlaceholder: string;
+    scopeType: string;
+    title: string;
+  };
   policies: {
     create: string;
     description: string;
@@ -939,6 +1030,8 @@ export interface RemediationTranslations {
   tabs: {
     audit: string;
     fleet: string;
+    modelAccounts: string;
+    playbooks: string;
     policies: string;
     runs: string;
   };
