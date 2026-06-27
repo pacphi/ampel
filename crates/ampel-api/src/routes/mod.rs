@@ -5,9 +5,9 @@ use axum::{
 };
 
 use crate::handlers::{
-    accounts, analytics, auth, bot_rules, bulk_merge, dashboard, notifications, pr_filters,
-    pull_requests, remediation, remediation_runs, repositories, teams, user_preferences,
-    user_settings,
+    accounts, analytics, auth, bot_rules, bulk_merge, dashboard, model_accounts, notifications,
+    pr_filters, pull_requests, remediation, remediation_playbooks, remediation_runs, repositories,
+    teams, user_preferences, user_settings,
 };
 use crate::{
     health_handler, metrics_handler,
@@ -165,6 +165,36 @@ pub fn create_router(state: AppState) -> Router {
             post(remediation::preview_repository),
         )
         .route("/api/remediation/fleet", get(remediation::get_fleet))
+        // Model provider accounts (Phase 4 — Agentic Remediation Tier)
+        .route(
+            "/api/model-accounts",
+            get(model_accounts::list_model_accounts).post(model_accounts::create_model_account),
+        )
+        .route(
+            "/api/model-accounts/{id}",
+            get(model_accounts::get_model_account)
+                .patch(model_accounts::update_model_account)
+                .delete(model_accounts::delete_model_account),
+        )
+        .route(
+            "/api/model-accounts/{id}/validate",
+            post(model_accounts::validate_model_account),
+        )
+        // Remediation playbooks (Phase 4 — ADR-006)
+        .route(
+            "/api/remediation/playbooks",
+            get(remediation_playbooks::list_playbooks).post(remediation_playbooks::create_playbook),
+        )
+        .route(
+            "/api/remediation/playbooks/{id}",
+            get(remediation_playbooks::get_playbook)
+                .patch(remediation_playbooks::update_playbook)
+                .delete(remediation_playbooks::delete_playbook),
+        )
+        .route(
+            "/api/remediation/playbooks/{id}/preview",
+            post(remediation_playbooks::preview_playbook),
+        )
         // Remediation runs (Phase 3 — Observability & UX)
         .route("/api/remediation/runs", get(remediation_runs::list_runs))
         .route("/api/remediation/runs/{id}", get(remediation_runs::get_run))

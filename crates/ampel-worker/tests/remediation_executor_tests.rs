@@ -22,12 +22,18 @@ use ampel_providers::RemediationCapable;
 use ampel_worker::services::notifier::{
     RemediationNotifier, RunMergedNotification, SourcePrsClosedNotification,
 };
-use ampel_worker::services::{ProviderAdapter, RemediationExecutor, RunOutcome};
+use ampel_worker::services::{
+    AgentTierOutcome, AgenticTier, ProviderAdapter, RemediationExecutor, RunOutcome,
+};
 use async_trait::async_trait;
 use sea_orm::{Database, DatabaseConnection};
 use sea_orm_migration::SchemaManager;
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Mutex;
 use uuid::Uuid;
+
+use ampel_core::errors::AmpelResult;
+use ampel_core::remediation::RemediationTier;
 
 const OWNER: &str = "acme";
 const REPO: &str = "widgets";
@@ -378,6 +384,182 @@ async fn should_handoff_without_merge_when_mergeable_is_unknown() {
         .remediation_calls()
         .iter()
         .any(|c| matches!(c, RemediationCall::ClosePullRequest { .. })));
+}
+
+/// A Tier-2 fake that, on attempt, flips the consolidated PR's CI to green and
+/// reports recovery — simulating an agent that pushed a successful fix.
+struct RecoveringTier {
+    mock: MockProvider,
+    attempts: Arc<AtomicUsize>,
+}
+
+#[async_trait]
+impl AgenticTier for RecoveringTier {
+    async fn attempt(&self, _run_id: Uuid) -> AmpelResult<AgentTierOutcome> {
+        self.attempts.fetch_add(1, Ordering::SeqCst);
+        // The "agent" pushes a fix: the consolidated PR's required check is green.
+        let _ = self.mock.clone().with_ci_checks(
+            OWNER,
+            REPO,
+            CONSOLIDATED_PR as i32,
+            vec![green_check("build")],
+        );
+        Ok(AgentTierOutcome::Recovered)
+    }
+}
+
+/// A Tier-2 fake that always reports the budget was exhausted (no recovery).
+struct ExhaustedTier {
+    attempts: Arc<AtomicUsize>,
+}
+
+#[async_trait]
+impl AgenticTier for ExhaustedTier {
+    async fn attempt(&self, _run_id: Uuid) -> AmpelResult<AgentTierOutcome> {
+        self.attempts.fetch_add(1, Ordering::SeqCst);
+        Ok(AgentTierOutcome::Exhausted)
+    }
+}
+
+/// A red, mergeable consolidated PR — verify is unsafe (red) so the Tier-2 seam
+/// engages, but the PR would be mergeable once CI goes green.
+fn red_mergeable_mock() -> MockProvider {
+    MockProvider::new()
+        .with_ci_checks(
+            OWNER,
+            REPO,
+            CONSOLIDATED_PR as i32,
+            vec![red_check("build")],
+        )
+        .with_pull_requests(
+            OWNER,
+            REPO,
+            vec![consolidated_pr_record(CONSOLIDATED_PR as i32, Some(true))],
+        )
+}
+
+#[tokio::test]
+async fn should_recover_and_merge_via_agentic_tier_on_red_then_green() {
+    // Arrange: verify is RED; a fix_and_consolidate tier recovers (pushes a fix)
+    // so the re-verify is green and the run merges to completion.
+    let conn = sqlite().await;
+    let run_repo: Arc<dyn RemediationRunRepository> =
+        Arc::new(SeaOrmRemediationRunRepository::new(conn.clone()));
+    let sandbox = Arc::new(FakeSandboxRunner::with_outcome(
+        Some(CONSOLIDATED_PR),
+        "headsha",
+    ));
+    let mock = red_mergeable_mock();
+    let attempts = Arc::new(AtomicUsize::new(0));
+    let tier = Arc::new(RecoveringTier {
+        mock: mock.clone(),
+        attempts: attempts.clone(),
+    });
+    let executor = RemediationExecutor::new(
+        run_repo.clone(),
+        sandbox,
+        VerificationService::new(),
+        adapter(&mock),
+    )
+    .with_agentic_tier(tier, RemediationTier::FixAndConsolidate);
+    let run = run_repo
+        .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+        .await
+        .unwrap();
+
+    // Act
+    let outcome = executor
+        .execute(run.id, vec![pr(1), pr(2)], repo_ctx())
+        .await
+        .unwrap();
+
+    // Assert: the tier was consulted exactly once and the run reached completed.
+    assert_eq!(attempts.load(Ordering::SeqCst), 1);
+    assert_eq!(outcome, RunOutcome::Completed);
+    assert_eq!(
+        run_repo.get_run(run.id).await.unwrap().unwrap().state,
+        RunState::Completed
+    );
+}
+
+#[tokio::test]
+async fn should_not_invoke_agentic_tier_for_consolidate_only_tier() {
+    // Arrange: RED verify but a consolidate_only tier must NEVER reach the model.
+    let conn = sqlite().await;
+    let run_repo: Arc<dyn RemediationRunRepository> =
+        Arc::new(SeaOrmRemediationRunRepository::new(conn.clone()));
+    let sandbox = Arc::new(FakeSandboxRunner::with_outcome(
+        Some(CONSOLIDATED_PR),
+        "headsha",
+    ));
+    let mock = red_mergeable_mock();
+    let attempts = Arc::new(AtomicUsize::new(0));
+    let tier = Arc::new(ExhaustedTier {
+        attempts: attempts.clone(),
+    });
+    let executor = RemediationExecutor::new(
+        run_repo.clone(),
+        sandbox,
+        VerificationService::new(),
+        adapter(&mock),
+    )
+    .with_agentic_tier(tier, RemediationTier::ConsolidateOnly);
+    let run = run_repo
+        .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+        .await
+        .unwrap();
+
+    // Act
+    let outcome = executor
+        .execute(run.id, vec![pr(1)], repo_ctx())
+        .await
+        .unwrap();
+
+    // Assert: the gate skipped the tier entirely; the run handed off.
+    assert_eq!(attempts.load(Ordering::SeqCst), 0);
+    assert_eq!(outcome, RunOutcome::HandoffHuman);
+}
+
+#[tokio::test]
+async fn should_handoff_when_agentic_tier_exhausted() {
+    // Arrange: RED verify; fix_and_consolidate tier engages but cannot recover.
+    let conn = sqlite().await;
+    let run_repo: Arc<dyn RemediationRunRepository> =
+        Arc::new(SeaOrmRemediationRunRepository::new(conn.clone()));
+    let sandbox = Arc::new(FakeSandboxRunner::with_outcome(
+        Some(CONSOLIDATED_PR),
+        "headsha",
+    ));
+    let mock = red_mergeable_mock();
+    let attempts = Arc::new(AtomicUsize::new(0));
+    let tier = Arc::new(ExhaustedTier {
+        attempts: attempts.clone(),
+    });
+    let executor = RemediationExecutor::new(
+        run_repo.clone(),
+        sandbox,
+        VerificationService::new(),
+        adapter(&mock),
+    )
+    .with_agentic_tier(tier, RemediationTier::FixAndConsolidate);
+    let run = run_repo
+        .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+        .await
+        .unwrap();
+
+    // Act
+    let outcome = executor
+        .execute(run.id, vec![pr(1)], repo_ctx())
+        .await
+        .unwrap();
+
+    // Assert: the tier was consulted but could not recover → handoff.
+    assert_eq!(attempts.load(Ordering::SeqCst), 1);
+    assert_eq!(outcome, RunOutcome::HandoffHuman);
+    assert_eq!(
+        run_repo.get_run(run.id).await.unwrap().unwrap().state,
+        RunState::HandoffHuman
+    );
 }
 
 /// Records the notifications it receives so tests can assert the emit path.

@@ -11,6 +11,7 @@ mod m20260626_000001_remediation_loops;
 mod m20260626_000002_model_provider_account;
 mod m20260626_000003_org_air_gapped;
 mod m20260627_000001_remediation_run_phase2_columns;
+mod m20260627_000002_model_provider_phase4_columns;
 
 use sea_orm_migration::prelude::*;
 
@@ -58,6 +59,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20260626_000002_model_provider_account::Migration),
             Box::new(m20260626_000003_org_air_gapped::Migration),
             Box::new(m20260627_000001_remediation_run_phase2_columns::Migration),
+            Box::new(m20260627_000002_model_provider_phase4_columns::Migration),
         ]
     }
 }
@@ -98,6 +100,10 @@ mod tests {
             .up(&manager)
             .await
             .expect("up model_provider_account");
+        super::m20260627_000002_model_provider_phase4_columns::Migration
+            .up(&manager)
+            .await
+            .expect("up model_provider_phase4_columns");
 
         conn
     }

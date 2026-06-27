@@ -23,6 +23,12 @@ pub const CONFLICTS_TOTAL: &str = "remediation_conflicts_total";
 pub const HANDOFFS_TOTAL: &str = "remediation_handoffs_total";
 /// Run-duration histogram, labelled by `phase`.
 pub const DURATION_SECONDS: &str = "remediation_duration_seconds";
+/// Agentic-tier iteration counter (Phase 4), unlabelled total.
+pub const AGENT_ITERATIONS_TOTAL: &str = "remediation_agent_iterations_total";
+/// Agentic-tier spend counter in USD (Phase 4), unlabelled total.
+pub const AGENT_COST_USD: &str = "remediation_agent_cost_usd";
+/// Agentic-tier session counter (Phase 4), labelled by terminal `outcome`.
+pub const AGENT_SESSIONS_TOTAL: &str = "remediation_agent_sessions_total";
 
 /// Describe every remediation metric. Safe to call once at worker startup
 /// (mirrors the `ampel-api` describe pattern).
@@ -48,6 +54,32 @@ pub fn describe_metrics() {
         Unit::Seconds,
         "Remediation run duration in seconds, by terminal phase"
     );
+    describe_counter!(
+        AGENT_ITERATIONS_TOTAL,
+        "Total agentic-tier remediation iterations across all sessions"
+    );
+    describe_counter!(
+        AGENT_COST_USD,
+        "Total agentic-tier model spend in USD across all sessions"
+    );
+    describe_counter!(
+        AGENT_SESSIONS_TOTAL,
+        "Total agentic-tier remediation sessions, by terminal outcome"
+    );
+}
+
+/// Record one completed agentic-tier session: its iteration + spend totals and a
+/// bounded terminal `outcome` label (e.g. `ci_green`, `budget_exhausted`,
+/// `max_iterations`, `error`, `egress_blocked`). `cost_usd` is the exact spend
+/// rendered to f64 only at the metric boundary (never used for money math).
+///
+/// Called from the Tier-2 [`crate::services::agentic_tier::DbAgenticTier`]; the
+/// bin does not construct that yet (see its module note), hence the allow.
+#[allow(dead_code)]
+pub fn record_agent_session(outcome: &str, iterations: u32, cost_usd: f64) {
+    counter!(AGENT_ITERATIONS_TOTAL).increment(iterations as u64);
+    counter!(AGENT_COST_USD).increment(cost_usd.max(0.0) as u64);
+    counter!(AGENT_SESSIONS_TOTAL, "outcome" => outcome.to_string()).increment(1);
 }
 
 /// Record a run reaching a terminal `state` and its total `duration_secs`.

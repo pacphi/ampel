@@ -8,6 +8,7 @@
 //! - [`notifier`]: notification delivery seam (Slack via `ampel-core`, or noop).
 
 pub mod agent_harness;
+pub mod agentic_tier;
 pub mod failure_classifier;
 pub mod notifier;
 pub mod playbook;
@@ -20,6 +21,10 @@ pub mod sandbox_runner;
 // use these yet, hence the allow.
 #[allow(unused_imports)]
 pub use agent_harness::{AgentWorktree, CiVerifier, RemediationAgentHarness, VerificationStatus};
+#[allow(unused_imports)]
+pub use agentic_tier::{
+    assert_egress_allowed, tier_allows_agentic, AgentTierOutcome, AgenticTier, DbAgenticTier,
+};
 #[allow(unused_imports)]
 pub use failure_classifier::CascadeClassifier;
 #[allow(unused_imports)]

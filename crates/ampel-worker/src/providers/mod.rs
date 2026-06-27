@@ -44,8 +44,29 @@ pub use ollama::OllamaProvider;
 #[allow(unused_imports)]
 pub use onnx::OnnxClassifierProvider;
 
-use ampel_core::remediation::{ContextBlock, CostModel};
+use ampel_core::errors::{AmpelError, AmpelResult};
+use ampel_core::remediation::{ContextBlock, CostModel, ModelProvider, ProviderKind};
 use rust_decimal::Decimal;
+use std::sync::Arc;
+
+/// Build the concrete edit-capable [`ModelProvider`] for a [`ProviderKind`]
+/// (ADR-009 factory). Claude/Gemini/Ollama are reqwest-backed.
+///
+/// ONNX is **classify-only** (it drives the [`CascadeClassifier`], not the
+/// agentic edit loop) and additionally needs a model path, so it is never a
+/// valid agentic edit provider — selecting it here is a configuration error.
+///
+/// [`CascadeClassifier`]: crate::services::failure_classifier::CascadeClassifier
+pub fn build_model_provider(kind: ProviderKind) -> AmpelResult<Arc<dyn ModelProvider>> {
+    match kind {
+        ProviderKind::Claude => Ok(Arc::new(claude::ClaudeProvider::new())),
+        ProviderKind::Gemini => Ok(Arc::new(gemini::GeminiProvider::new())),
+        ProviderKind::Ollama => Ok(Arc::new(ollama::OllamaProvider::new())),
+        ProviderKind::Onnx => Err(AmpelError::ConfigError(
+            "ONNX is a classify-only provider and cannot drive the agentic edit loop".to_string(),
+        )),
+    }
+}
 
 /// Prepended to the untrusted-data channel so the model treats the following
 /// blocks strictly as information, never as instructions.
@@ -119,5 +140,27 @@ mod tests {
     #[test]
     fn should_compute_zero_cost_for_free_model() {
         assert_eq!(compute_cost(&CostModel::Free, 5000, 9000), Decimal::ZERO);
+    }
+
+    #[test]
+    fn should_build_external_providers_for_hosted_kinds() {
+        use ampel_core::remediation::{Egress, ProviderKind};
+        let claude = build_model_provider(ProviderKind::Claude).unwrap();
+        let gemini = build_model_provider(ProviderKind::Gemini).unwrap();
+        assert_eq!(claude.capabilities().egress, Egress::External);
+        assert_eq!(gemini.capabilities().egress, Egress::External);
+    }
+
+    #[test]
+    fn should_build_local_only_provider_for_ollama() {
+        use ampel_core::remediation::{Egress, ProviderKind};
+        let ollama = build_model_provider(ProviderKind::Ollama).unwrap();
+        assert_eq!(ollama.capabilities().egress, Egress::LocalOnly);
+    }
+
+    #[test]
+    fn should_error_building_onnx_as_edit_provider() {
+        use ampel_core::remediation::ProviderKind;
+        assert!(build_model_provider(ProviderKind::Onnx).is_err());
     }
 }

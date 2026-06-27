@@ -1,7 +1,7 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Serialize, Deserialize)]
 #[sea_orm(table_name = "remediation_agent_session")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
@@ -20,6 +20,12 @@ pub struct Model {
 
     pub status: String,
     pub transcript_ref: Option<String>,
+
+    // Phase 4 (ADR-012): failure classification snapshot.
+    pub failure_class: Option<String>,
+    /// `heuristic` | `onnx` | `model`.
+    pub classifier_source: Option<String>,
+    pub classifier_confidence: Option<f64>,
 
     // Timestamps
     pub started_at: DateTimeUtc,

@@ -29,7 +29,7 @@ use std::sync::Arc;
 use std::time::Instant;
 
 use ampel_core::errors::AmpelResult;
-use ampel_core::remediation::{MergeDisposition, PrRef, RunState};
+use ampel_core::remediation::{MergeDisposition, PrRef, RemediationTier, RunState};
 use ampel_core::services::{
     ConsolidateResult, HandoffReason, MergeOutcome, RemediationOrchestrator, RemediationProvider,
     RemediationRunRepository, RepoContext, RunUpdate, SandboxRunner, VerificationService,
@@ -37,6 +37,7 @@ use ampel_core::services::{
 use uuid::Uuid;
 
 use crate::observability;
+use crate::services::agentic_tier::{tier_allows_agentic, AgentTierOutcome, AgenticTier};
 use crate::services::notifier::{
     NoopNotifier, RemediationNotifier, RunMergedNotification, SourcePrsClosedNotification,
 };
@@ -62,6 +63,11 @@ pub struct RemediationExecutor {
     /// Provider kind used as the `provider` label on merge metrics + payloads.
     provider_label: String,
     notifier: Arc<dyn RemediationNotifier>,
+    /// Optional Tier-2 agentic seam (Phase 4). When present and the resolved
+    /// `remediation_tier` permits it, a RED verify triggers an autonomous
+    /// recovery attempt before handing off to a human.
+    agentic_tier: Option<Arc<dyn AgenticTier>>,
+    remediation_tier: RemediationTier,
 }
 
 impl RemediationExecutor {
@@ -78,7 +84,26 @@ impl RemediationExecutor {
             orchestrator,
             provider_label: "unknown".to_string(),
             notifier: Arc::new(NoopNotifier),
+            agentic_tier: None,
+            remediation_tier: RemediationTier::ConsolidateOnly,
         }
+    }
+
+    /// Inject the Tier-2 agentic seam together with the run's resolved
+    /// `remediation_tier`. Only `fix_and_consolidate` / `full_remediation` will
+    /// actually invoke the model (see [`tier_allows_agentic`]).
+    ///
+    /// Exercised by the executor integration tests; the bin's run job does not
+    /// yet construct the sandbox-backed tier (see `agentic_tier` module note).
+    #[allow(dead_code)]
+    pub fn with_agentic_tier(
+        mut self,
+        tier: Arc<dyn AgenticTier>,
+        remediation_tier: RemediationTier,
+    ) -> Self {
+        self.agentic_tier = Some(tier);
+        self.remediation_tier = remediation_tier;
+        self
     }
 
     /// Set the provider-kind label used on merge metrics and notification
@@ -165,6 +190,34 @@ impl RemediationExecutor {
         //    moves to `merging`.
         let verification = self.orchestrator.verify(run_id).await?;
         if !verification.is_safe_to_merge() {
+            // Tier-2 (Phase 4): a RED verify under an agentic tier may be
+            // recovered by an autonomous fix attempt. The run is still in
+            // `verifying` (a non-safe verify does not transition), so a
+            // successful recovery can legally re-verify and advance to merge.
+            if let Some(tier) = &self.agentic_tier {
+                if tier_allows_agentic(self.remediation_tier) {
+                    match tier.attempt(run_id).await? {
+                        AgentTierOutcome::Recovered => {
+                            // The agent pushed fixes — re-verify the consolidated
+                            // PR. A now-safe verify advances `verifying → merging`
+                            // (or parks at the human gate).
+                            let reverify = self.orchestrator.verify(run_id).await?;
+                            if reverify.is_safe_to_merge() {
+                                if self.run_state(run_id).await? == Some(RunState::AwaitingApproval)
+                                {
+                                    return Ok(RunOutcome::AwaitingApproval);
+                                }
+                                return self.merge_and_finalize(run_id, &prs).await;
+                            }
+                            // Still not safe after recovery → hand off below.
+                        }
+                        AgentTierOutcome::Exhausted => {
+                            // Budget/egress/error — hand off below.
+                        }
+                    }
+                }
+            }
+
             self.repo
                 .transition_state(
                     run_id,

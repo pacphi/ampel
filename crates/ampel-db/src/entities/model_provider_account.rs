@@ -23,6 +23,21 @@ pub struct Model {
     pub model_id: Option<String>,
     pub enabled: bool,
 
+    // Phase 4 (ADR-008): auth + validation + spend accounting.
+    /// How credentials authenticate (`api_key`, `none` for local providers).
+    pub auth_type: String,
+    /// Optional spend ceiling in USD; Decimal-as-string for cross-DB exactness.
+    pub spend_cap_usd: Option<String>,
+    /// Cumulative spend in USD; Decimal-as-string, defaults to "0".
+    pub spend_used_usd: String,
+    /// `unvalidated` | `valid` | `invalid` (set after a provider ping).
+    pub validation_status: String,
+    pub last_validated_at: Option<DateTimeUtc>,
+    /// On-disk model path (ONNX local providers).
+    pub model_path: Option<String>,
+    /// Whether this is the default account for its scope.
+    pub is_default: bool,
+
     // Timestamps
     pub created_at: DateTimeUtc,
     pub updated_at: DateTimeUtc,
