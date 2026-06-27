@@ -30,6 +30,24 @@ metrics-exporter-prometheus = { workspace = true, features = ["http-listener"] }
 # Serialization
 serde.workspace = true
 serde_json.workspace = true
+serde_yaml = "0.9"
+
+# HTTP client for hosted/local model providers (Claude/Gemini/Ollama).
+reqwest.workspace = true
+
+# Exact decimal money math for model cost/spend accounting (never f64).
+rust_decimal = { version = "1", features = ["serde"] }
+
+# Playbook templating (STRICT undefined) + embedded default playbook asset.
+minijinja = "2"
+rust-embed = "8"
+
+# ONNX local classifier (ADR-009/012). Feature-gated OFF by default: the `ort`
+# native runtime is not available on CI runners, so the whole onnx path (the
+# OnnxClassifierProvider + the cascade's L2 stage) compiles out unless the
+# `onnx` feature is enabled.
+ort = { version = "=2.0.0-rc.10", optional = true }
+ndarray = { version = "0.16", optional = true }
 
 # Utilities
 uuid.workspace = true
@@ -48,6 +66,14 @@ rust-i18n = "3.1"
 ampel-core.workspace = true
 ampel-db.workspace = true
 ampel-providers.workspace = true
+
+[features]
+default = []
+# Enables the local ONNX classifier (L2 cascade stage). OFF in CI: pulls the
+# `ort`/`ndarray` native stack. `--all-features` WILL enable this; if `ort`
+# cannot build in the current environment, verify the default feature set
+# instead (see crate docs / slice-2 report).
+onnx = ["dep:ort", "dep:ndarray"]
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
