@@ -10,10 +10,36 @@ mod m20251227_000001_user_language;
 mod m20260626_000001_remediation_loops;
 mod m20260626_000002_model_provider_account;
 mod m20260626_000003_org_air_gapped;
+mod m20260627_000001_remediation_run_phase2_columns;
 
 use sea_orm_migration::prelude::*;
 
 pub struct Migrator;
+
+/// Reusable schema builders for SQLite-backed tests (in this crate and in
+/// downstream crates such as `ampel-worker`).
+///
+/// The full [`Migrator`] cannot run against SQLite (the `provider_accounts`
+/// migration uses `ALTER TABLE ... ADD FOREIGN KEY` + a partial unique index).
+/// The remediation migrations, however, are self-contained, so this helper
+/// applies exactly those — the loops tables plus the Phase-2 columns — directly
+/// via a [`SchemaManager`]. It is intentionally `pub` (not `#[cfg(test)]`) so
+/// integration tests in other crates can reuse it.
+pub mod test_support {
+    use sea_orm_migration::prelude::DbErr;
+    use sea_orm_migration::{MigrationTrait, SchemaManager};
+
+    /// Apply the remediation schema (loops tables + Phase-2 columns) to `manager`.
+    pub async fn apply_remediation_schema(manager: &SchemaManager<'_>) -> Result<(), DbErr> {
+        super::m20260626_000001_remediation_loops::Migration
+            .up(manager)
+            .await?;
+        super::m20260627_000001_remediation_run_phase2_columns::Migration
+            .up(manager)
+            .await?;
+        Ok(())
+    }
+}
 
 #[async_trait::async_trait]
 impl MigratorTrait for Migrator {
@@ -31,6 +57,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20260626_000001_remediation_loops::Migration),
             Box::new(m20260626_000002_model_provider_account::Migration),
             Box::new(m20260626_000003_org_air_gapped::Migration),
+            Box::new(m20260627_000001_remediation_run_phase2_columns::Migration),
         ]
     }
 }
@@ -63,6 +90,10 @@ mod tests {
             .up(&manager)
             .await
             .expect("up remediation_loops");
+        super::m20260627_000001_remediation_run_phase2_columns::Migration
+            .up(&manager)
+            .await
+            .expect("up remediation_run_phase2_columns");
         super::m20260626_000002_model_provider_account::Migration
             .up(&manager)
             .await

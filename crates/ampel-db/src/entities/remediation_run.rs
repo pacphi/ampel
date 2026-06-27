@@ -16,6 +16,13 @@ pub struct Model {
 
     // State machine
     pub state: String,
+    /// Snapshot of the granted autonomy level for this run (snake_case string).
+    /// Stored on the run so the orchestrator's autonomy gate does not need to
+    /// re-resolve the policy mid-flight. Added in the Phase-2 columns migration.
+    pub autonomy_level: String,
+    /// The verified consolidated-ref HEAD SHA captured at `verify` time — the
+    /// TOCTOU anchor re-checked immediately before merge. Added in Phase 2.
+    pub head_sha: Option<String>,
     /// JSON snapshot of the selected PRs at run time; parsed at the service layer.
     pub pr_selection_snapshot: String,
     /// JSON consolidation plan; parsed at the service layer.

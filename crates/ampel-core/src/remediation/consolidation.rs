@@ -10,6 +10,41 @@ pub struct PrRef {
     pub branch: String,
 }
 
+/// Final decision recorded for a single source PR in a remediation run.
+///
+/// Set once per source PR and immutable thereafter (drives the audit log and
+/// SSE progress events). `#[non_exhaustive]` guards against accidental addition
+/// of mutable variants. Persisted to `remediation_run_pr` as JSON
+/// (externally tagged via the `disposition` key, snake_case).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "disposition", rename_all = "snake_case")]
+#[non_exhaustive]
+pub enum MergeDisposition {
+    /// Commits were included in the consolidated PR and the original closed.
+    Consolidated,
+    /// The PR was closed; the consolidating PR number is recorded for traceability.
+    ClosedWithRef { consolidated_pr_number: u64 },
+    /// Skipped because of an unresolved merge conflict.
+    SkippedConflict { reason: String },
+    /// No action taken; records why (e.g. `"draft"`, `"excluded by label"`).
+    LeftOpen { reason: String },
+}
+
+impl MergeDisposition {
+    /// True if the PR was acted upon (closed or consolidated).
+    pub fn is_terminal(&self) -> bool {
+        matches!(self, Self::Consolidated | Self::ClosedWithRef { .. })
+    }
+
+    /// The reason text, when the variant carries one.
+    pub fn reason(&self) -> Option<&str> {
+        match self {
+            Self::SkippedConflict { reason } | Self::LeftOpen { reason } => Some(reason),
+            _ => None,
+        }
+    }
+}
+
 /// The read-only result of a `preview` (dry-run). Building this performs zero
 /// repository writes — it only reads the DB and projects what a run *would* do.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -105,5 +140,53 @@ mod tests {
             serde_json::from_str::<ConsolidationPlan>(&json).unwrap(),
             plan
         );
+    }
+
+    #[test]
+    fn should_round_trip_merge_disposition_json() {
+        for d in [
+            MergeDisposition::Consolidated,
+            MergeDisposition::ClosedWithRef {
+                consolidated_pr_number: 42,
+            },
+            MergeDisposition::SkippedConflict {
+                reason: "lockfile".into(),
+            },
+            MergeDisposition::LeftOpen {
+                reason: "draft".into(),
+            },
+        ] {
+            let json = serde_json::to_string(&d).unwrap();
+            assert_eq!(serde_json::from_str::<MergeDisposition>(&json).unwrap(), d);
+        }
+    }
+
+    #[test]
+    fn should_tag_merge_disposition_with_snake_case_key() {
+        let json = serde_json::to_string(&MergeDisposition::Consolidated).unwrap();
+        assert_eq!(json, "{\"disposition\":\"consolidated\"}");
+    }
+
+    #[test]
+    fn should_report_terminal_only_for_acted_dispositions() {
+        assert!(MergeDisposition::Consolidated.is_terminal());
+        assert!(MergeDisposition::ClosedWithRef {
+            consolidated_pr_number: 1
+        }
+        .is_terminal());
+        assert!(!MergeDisposition::SkippedConflict { reason: "x".into() }.is_terminal());
+        assert!(!MergeDisposition::LeftOpen { reason: "x".into() }.is_terminal());
+    }
+
+    #[test]
+    fn should_expose_reason_only_for_reasoned_dispositions() {
+        assert_eq!(
+            MergeDisposition::SkippedConflict {
+                reason: "conflict".into()
+            }
+            .reason(),
+            Some("conflict")
+        );
+        assert_eq!(MergeDisposition::Consolidated.reason(), None);
     }
 }

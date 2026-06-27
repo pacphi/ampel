@@ -2,6 +2,7 @@ pub mod encryption;
 pub mod entities;
 pub mod migrations;
 pub mod queries;
+pub mod repositories;
 
 pub use entities::*;
 pub use migrations::Migrator;
