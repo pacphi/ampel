@@ -1,10 +1,29 @@
 //! Adapts a real `ampel_providers::RemediationCapable` provider into the
 //! `ampel_core::services::RemediationProvider` seam the orchestrator depends on.
 //!
-//! Every write is gated on the provider's [`RemediationCaps`]: an unsupported
-//! operation returns a clean [`AmpelError`] rather than panicking, so a
-//! partial-support provider (e.g. Bitbucket) degrades gracefully. No force-push
-//! primitive is reachable through this adapter — by construction.
+//! Every operation is **capability-driven** (Phase 5): the adapter consults the
+//! provider's [`RemediationCaps`] and takes the primary API path when supported,
+//! otherwise routes to a graceful fallback rather than erroring or panicking. A
+//! partial-support provider (e.g. Bitbucket) therefore reaches the same end
+//! state as a fully-capable one. No force-push primitive is reachable through
+//! this adapter — by construction.
+//!
+//! ## Fallback map (Phase 5a)
+//!
+//! - **`get_status_for_ref`** — when the provider cannot resolve CI/status for an
+//!   arbitrary ref (`caps.get_status_for_ref == false`), the adapter falls back
+//!   to the base [`GitProvider::get_ci_checks`] PR-level endpoint and normalizes
+//!   the result locally. Both yield `Vec<ProviderCICheck>`, so the verify/merge
+//!   gate is identical regardless of which path produced the checks.
+//! - **`create_comment`** (audit-trail comment on close) — best-effort: a
+//!   provider that cannot comment (`caps.create_comment == false`) still closes
+//!   the source PR; the comment is skipped, not fatal.
+//! - **`update_branch_from_base`** — not part of this seam. Bitbucket lacks the
+//!   API primitive, but the sandbox clone-push consolidation already produces the
+//!   fully-merged consolidated branch, so the API-level branch update is never
+//!   required: the sandbox push *is* the fallback.
+//! - **`add_labels`** — not part of this seam. When unsupported the run simply
+//!   never issues labels; this is a no-op degrade, never a failure.
 //!
 //! ## Why `pr_number.to_string()` is used as the status ref
 //!
@@ -90,14 +109,23 @@ fn provider_err(e: ProviderError) -> AmpelError {
 impl RemediationProvider for ProviderAdapter {
     async fn get_status_for_ref(&self, pr_number: i64) -> AmpelResult<ProviderRefStatus> {
         let caps = self.provider.capabilities();
-        self.caps_guard(caps.get_status_for_ref, "get_status_for_ref")?;
 
-        let git_ref = pr_number.to_string();
-        let checks = self
-            .provider
-            .get_status_for_ref(&self.credentials, &self.owner, &self.repo, &git_ref)
-            .await
-            .map_err(provider_err)?;
+        // Capability-driven CI status (Phase 5a). Primary path: the arbitrary-ref
+        // status endpoint. Fallback (provider cannot resolve an arbitrary ref,
+        // e.g. Bitbucket): the base `GitProvider` PR-level checks endpoint. Both
+        // return `Vec<ProviderCICheck>`, so the gate downstream is identical.
+        let checks = if caps.get_status_for_ref {
+            let git_ref = pr_number.to_string();
+            self.provider
+                .get_status_for_ref(&self.credentials, &self.owner, &self.repo, &git_ref)
+                .await
+                .map_err(provider_err)?
+        } else {
+            self.provider
+                .get_ci_checks(&self.credentials, &self.owner, &self.repo, pr_number as i32)
+                .await
+                .map_err(provider_err)?
+        };
 
         let checks: Vec<RawCiCheck> = checks
             .into_iter()
@@ -162,18 +190,21 @@ impl RemediationProvider for ProviderAdapter {
 
     async fn close_pull_request(&self, pr_number: i64, comment: &str) -> AmpelResult<()> {
         let caps = self.provider.capabilities();
-        // Leave the audit-trail comment first, then close. Both capability-gated.
-        self.caps_guard(caps.create_comment, "create_comment")?;
-        self.provider
-            .create_comment(
-                &self.credentials,
-                &self.owner,
-                &self.repo,
-                pr_number as i32,
-                comment,
-            )
-            .await
-            .map_err(provider_err)?;
+        // Leave the audit-trail comment first, then close. The comment is
+        // best-effort (Phase 5a graceful degrade): a provider that cannot comment
+        // still closes the source PR — the comment is skipped, never fatal.
+        if caps.create_comment {
+            self.provider
+                .create_comment(
+                    &self.credentials,
+                    &self.owner,
+                    &self.repo,
+                    pr_number as i32,
+                    comment,
+                )
+                .await
+                .map_err(provider_err)?;
+        }
 
         self.caps_guard(caps.close_pull_request, "close_pull_request")?;
         self.provider

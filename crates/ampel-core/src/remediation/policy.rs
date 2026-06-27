@@ -135,6 +135,46 @@ impl FromStr for ScopeType {
     }
 }
 
+/// How the agentic tier picks the model provider when more than one account is
+/// eligible (Phase 5b).
+///
+/// `Default` preserves the pre-existing, configuration-driven ordering — there is
+/// NO behavior change. `FallbackChain` opts a run into learning-biased ordering:
+/// the `PolicyResolver` reorders the provider chain by historical pass-rate per
+/// failure class (highest first), so the most-effective provider is tried first.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ModelSelectionMode {
+    /// Stable, configuration-driven order (no learning bias).
+    #[default]
+    Default,
+    /// Learning-biased order: highest historical pass-rate provider first.
+    FallbackChain,
+}
+
+impl fmt::Display for ModelSelectionMode {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(match self {
+            Self::Default => "default",
+            Self::FallbackChain => "fallback_chain",
+        })
+    }
+}
+
+impl FromStr for ModelSelectionMode {
+    type Err = AmpelError;
+
+    fn from_str(s: &str) -> AmpelResult<Self> {
+        match s {
+            "default" => Ok(Self::Default),
+            "fallback_chain" => Ok(Self::FallbackChain),
+            other => Err(AmpelError::ValidationError(format!(
+                "unknown model_selection_mode: {other}"
+            ))),
+        }
+    }
+}
+
 /// Strategy for choosing which open PRs a run operates on.
 ///
 /// Stored as JSON text in `remediation_policy.pr_selection`. Externally tagged

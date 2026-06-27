@@ -5,20 +5,64 @@
 use crate::errors::{AmpelError, AmpelResult};
 use crate::remediation::db;
 use crate::remediation::{
-    AutonomyLevel, PrSelectionStrategy, RemediationCriteria, RemediationTier,
+    AutonomyLevel, FailureClass, ModelSelectionMode, PrSelectionStrategy, ProviderKind,
+    RemediationCriteria, RemediationTier,
 };
+use crate::services::learning_signal::{bias_provider_chain, LearningStatsReader};
 use sea_orm::{ColumnTrait, DatabaseConnection, DbErr, EntityTrait, QueryFilter, QueryOrder};
+use std::sync::Arc;
 use uuid::Uuid;
 
 /// Resolves the effective [`RemediationCriteria`] for a repository.
 #[derive(Clone)]
 pub struct PolicyResolver {
     db: DatabaseConnection,
+    /// Optional learning-stats source. `None` → no bias (default ordering).
+    stats_reader: Option<Arc<dyn LearningStatsReader>>,
 }
 
 impl PolicyResolver {
     pub fn new(db: DatabaseConnection) -> Self {
-        Self { db }
+        Self {
+            db,
+            stats_reader: None,
+        }
+    }
+
+    /// Attach a [`LearningStatsReader`] so `fallback_chain` runs can be biased by
+    /// historical pass-rate. Without it, [`resolve_provider_order`] always returns
+    /// the default order unchanged.
+    ///
+    /// [`resolve_provider_order`]: PolicyResolver::resolve_provider_order
+    pub fn with_stats_reader(mut self, reader: Arc<dyn LearningStatsReader>) -> Self {
+        self.stats_reader = Some(reader);
+        self
+    }
+
+    /// Produce the provider try-order for the agentic tier.
+    ///
+    /// In [`ModelSelectionMode::Default`] (or when no [`LearningStatsReader`] is
+    /// attached) `default_order` is returned verbatim — guaranteeing NO behavior
+    /// change outside the `fallback_chain` mode. In
+    /// [`ModelSelectionMode::FallbackChain`] the chain is reordered so the
+    /// provider with the highest historical pass-rate for `failure_class` is tried
+    /// first; providers with no recorded data keep their stable default position.
+    pub async fn resolve_provider_order(
+        &self,
+        mode: ModelSelectionMode,
+        failure_class: FailureClass,
+        default_order: Vec<ProviderKind>,
+    ) -> AmpelResult<Vec<ProviderKind>> {
+        let Some(reader) = self
+            .stats_reader
+            .as_ref()
+            .filter(|_| mode == ModelSelectionMode::FallbackChain)
+        else {
+            return Ok(default_order);
+        };
+
+        let stats = reader.provider_stats(failure_class).await?;
+        Ok(bias_provider_chain(&default_order, &stats))
     }
 
     /// Resolve the effective policy for `repo_id`.
@@ -331,6 +375,96 @@ mod tests {
 
         // Assert
         assert!(!criteria.air_gapped);
+    }
+
+    fn default_order() -> Vec<ProviderKind> {
+        vec![
+            ProviderKind::Claude,
+            ProviderKind::Gemini,
+            ProviderKind::Ollama,
+            ProviderKind::Onnx,
+        ]
+    }
+
+    #[tokio::test]
+    async fn should_keep_default_order_when_mode_is_default() {
+        // Arrange: a reader that WOULD reorder, but mode is Default → ignored.
+        use crate::services::learning_signal::InMemoryLearningStatsReader;
+        let db = testkit::memory_db().await;
+        let reader = std::sync::Arc::new(InMemoryLearningStatsReader::new().with_stats(
+            FailureClass::BuildError,
+            ProviderKind::Onnx,
+            10,
+            10,
+        ));
+        let resolver = PolicyResolver::new(db).with_stats_reader(reader);
+
+        // Act
+        let order = resolver
+            .resolve_provider_order(
+                ModelSelectionMode::Default,
+                FailureClass::BuildError,
+                default_order(),
+            )
+            .await
+            .unwrap();
+
+        // Assert
+        assert_eq!(order, default_order());
+    }
+
+    #[tokio::test]
+    async fn should_keep_default_order_when_no_reader_attached() {
+        // Arrange: fallback_chain mode but no stats reader → no bias.
+        let db = testkit::memory_db().await;
+        let resolver = PolicyResolver::new(db);
+
+        // Act
+        let order = resolver
+            .resolve_provider_order(
+                ModelSelectionMode::FallbackChain,
+                FailureClass::BuildError,
+                default_order(),
+            )
+            .await
+            .unwrap();
+
+        // Assert
+        assert_eq!(order, default_order());
+    }
+
+    #[tokio::test]
+    async fn should_bias_highest_pass_rate_provider_first_in_fallback_chain() {
+        // Arrange: Ollama has the best build_error pass-rate; Gemini next.
+        use crate::services::learning_signal::InMemoryLearningStatsReader;
+        let db = testkit::memory_db().await;
+        let reader = std::sync::Arc::new(
+            InMemoryLearningStatsReader::new()
+                .with_stats(FailureClass::BuildError, ProviderKind::Gemini, 10, 5)
+                .with_stats(FailureClass::BuildError, ProviderKind::Ollama, 10, 9),
+        );
+        let resolver = PolicyResolver::new(db).with_stats_reader(reader);
+
+        // Act
+        let order = resolver
+            .resolve_provider_order(
+                ModelSelectionMode::FallbackChain,
+                FailureClass::BuildError,
+                default_order(),
+            )
+            .await
+            .unwrap();
+
+        // Assert: data-backed providers lead (by rate desc); no-data keep default.
+        assert_eq!(
+            order,
+            vec![
+                ProviderKind::Ollama,
+                ProviderKind::Gemini,
+                ProviderKind::Claude,
+                ProviderKind::Onnx,
+            ]
+        );
     }
 
     #[tokio::test]

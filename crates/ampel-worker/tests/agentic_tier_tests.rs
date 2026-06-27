@@ -11,8 +11,9 @@ use std::sync::Arc;
 use ampel_core::errors::AmpelResult;
 use ampel_core::remediation::{
     CostModel, Egress, HeuristicClassifier, InferenceResponse, MockModelProvider, Modality,
-    ModelCaps, ModelKind, NormalizedProviderOutput, OutputContract,
+    ModelCaps, ModelKind, NormalizedProviderOutput, OutputContract, ProviderKind,
 };
+use ampel_core::services::{InMemoryLearningSignalRecorder, LearningOutcome};
 use ampel_db::encryption::EncryptionService;
 use ampel_db::entities::{model_provider_account, remediation_agent_session};
 use ampel_worker::services::agent_harness::{AgentWorktree, CiVerifier, VerificationStatus};
@@ -140,6 +141,19 @@ impl CiVerifier for GreenVerifier {
         Ok(VerificationStatus {
             green: true,
             logs: String::new(),
+        })
+    }
+}
+
+/// Verifier that never goes green — the agent loop exhausts its budget.
+struct RedVerifier;
+
+#[async_trait]
+impl CiVerifier for RedVerifier {
+    async fn verify(&self, _worktree_ref: &str) -> AmpelResult<VerificationStatus> {
+        Ok(VerificationStatus {
+            green: false,
+            logs: "still red".into(),
         })
     }
 }
@@ -347,6 +361,120 @@ async fn should_refuse_dispatch_when_spend_cap_already_reached() {
         .unwrap()
         .unwrap();
     assert_eq!(account.spend_used_usd, "1.00");
+}
+
+#[tokio::test]
+async fn should_record_passed_learning_signal_on_recovery() {
+    // Arrange: a local Ollama account, a mock that emits a clean diff, CI goes
+    // green on re-verify, and an in-memory learning recorder is attached.
+    let db = sqlite().await;
+    seed_ollama_account(&db).await;
+    let run_id = Uuid::new_v4();
+    let recorder = Arc::new(InMemoryLearningSignalRecorder::new());
+
+    let provider = Arc::new(MockModelProvider::new(local_caps()).with_response(diff_response()));
+    let tier = DbAgenticTier::new(
+        db.clone(),
+        Arc::new(EncryptionService::new(&[7u8; 32])),
+        Arc::new(HeuristicClassifier),
+        Arc::new(OkWorktree),
+        Arc::new(GreenVerifier),
+        false,
+        run_ctx(),
+        "worktree-1",
+        "error[E0432]: build failed",
+    )
+    .with_provider_override(provider)
+    .with_learning_recorder(recorder.clone());
+
+    // Act
+    let outcome = tier.attempt(run_id).await.unwrap();
+
+    // Assert: recovered, and exactly one learning signal recorded the provider
+    // kind, classified failure class, and a `passed` outcome.
+    assert_eq!(outcome, AgentTierOutcome::Recovered);
+    let signals = recorder.recorded();
+    assert_eq!(signals.len(), 1);
+    assert_eq!(signals[0].provider, ProviderKind::Ollama);
+    assert_eq!(
+        signals[0].failure_class,
+        ampel_core::remediation::FailureClass::BuildError
+    );
+    assert_eq!(signals[0].outcome, LearningOutcome::Passed);
+}
+
+#[tokio::test]
+async fn should_record_exhausted_learning_signal_when_ci_never_greens() {
+    // Arrange: CI stays red; the loop runs to MaxIterations (embedded ceiling = 4)
+    // so the agent never recovers. Supply enough diffs that infer never runs dry.
+    let db = sqlite().await;
+    seed_ollama_account(&db).await;
+    let run_id = Uuid::new_v4();
+    let recorder = Arc::new(InMemoryLearningSignalRecorder::new());
+
+    let mut provider = MockModelProvider::new(local_caps());
+    for _ in 0..4 {
+        provider = provider.with_response(diff_response());
+    }
+    let tier = DbAgenticTier::new(
+        db.clone(),
+        Arc::new(EncryptionService::new(&[7u8; 32])),
+        Arc::new(HeuristicClassifier),
+        Arc::new(OkWorktree),
+        Arc::new(RedVerifier),
+        false,
+        run_ctx(),
+        "worktree-1",
+        "error[E0432]: build failed",
+    )
+    .with_provider_override(Arc::new(provider))
+    .with_learning_recorder(recorder.clone());
+
+    // Act
+    let outcome = tier.attempt(run_id).await.unwrap();
+
+    // Assert: handed off, and the lone signal records an `exhausted` outcome.
+    assert_eq!(outcome, AgentTierOutcome::Exhausted);
+    let signals = recorder.recorded();
+    assert_eq!(signals.len(), 1);
+    assert_eq!(signals[0].outcome, LearningOutcome::Exhausted);
+}
+
+#[tokio::test]
+async fn should_not_record_learning_signal_on_egress_block() {
+    // Arrange: an air-gapped policy with an External-egress provider is refused
+    // BEFORE any model attempt, so no learning data point exists.
+    let db = sqlite().await;
+    seed_ollama_account(&db).await;
+    let run_id = Uuid::new_v4();
+    let recorder = Arc::new(InMemoryLearningSignalRecorder::new());
+
+    let external_caps = ModelCaps {
+        egress: Egress::External,
+        ..local_caps()
+    };
+    let provider = Arc::new(MockModelProvider::new(external_caps));
+    let tier = DbAgenticTier::new(
+        db.clone(),
+        Arc::new(EncryptionService::new(&[7u8; 32])),
+        Arc::new(HeuristicClassifier),
+        Arc::new(OkWorktree),
+        Arc::new(GreenVerifier),
+        true,
+        run_ctx(),
+        "worktree-1",
+        "boom",
+    )
+    .with_provider_override(provider)
+    .with_learning_recorder(recorder.clone());
+
+    // Act
+    let outcome = tier.attempt(run_id).await.unwrap();
+
+    // Assert: handed off with no learning signal (the session row still records
+    // the egress block separately).
+    assert_eq!(outcome, AgentTierOutcome::Exhausted);
+    assert!(recorder.recorded().is_empty());
 }
 
 #[tokio::test]

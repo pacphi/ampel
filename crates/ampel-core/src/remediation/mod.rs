@@ -6,6 +6,7 @@
 
 mod consolidation;
 mod failure_classifier;
+mod fingerprint;
 mod model_provider;
 mod policy;
 mod run;
@@ -17,13 +18,18 @@ pub use failure_classifier::{
     classify_heuristic, ClassificationResult, ClassifierSource, FailureClass, FailureClassifier,
     HeuristicClassifier,
 };
+pub use fingerprint::{
+    detect_lockfile_kind, effective_completion_command, regen_command_for, Ecosystem,
+    HeuristicFingerprinter, LockfileKind, RepoFingerprint, RepoFingerprinter,
+};
 pub use model_provider::{
     AgentBudget, AgentOutcome, AgentTask, AgentTerminalReason, ContextBlock, CostModel, Egress,
     InferenceRequest, InferenceResponse, Modality, ModelCaps, ModelCredentials, ModelKind,
     ModelProvider, NormalizedProviderOutput, OutputContract, ProviderKind, ToolCall,
 };
 pub use policy::{
-    AutonomyLevel, PrSelectionStrategy, RemediationCriteria, RemediationTier, ScopeType,
+    AutonomyLevel, ModelSelectionMode, PrSelectionStrategy, RemediationCriteria, RemediationTier,
+    ScopeType,
 };
 pub use run::RunState;
 

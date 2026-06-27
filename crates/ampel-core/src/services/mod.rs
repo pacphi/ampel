@@ -1,7 +1,9 @@
 mod auth_service;
+mod learning_signal;
 mod notification_service;
 mod policy_resolver;
 mod pr_service;
+mod reflexion_memory;
 mod remediation_repository;
 mod remediation_service;
 mod repo_service;
@@ -9,9 +11,11 @@ mod sandbox_runner;
 mod verification_service;
 
 pub use auth_service::*;
+pub use learning_signal::*;
 pub use notification_service::*;
 pub use policy_resolver::*;
 pub use pr_service::*;
+pub use reflexion_memory::*;
 pub use remediation_repository::*;
 pub use remediation_service::*;
 pub use repo_service::*;

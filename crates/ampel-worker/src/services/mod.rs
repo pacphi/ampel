@@ -14,6 +14,11 @@ pub mod notifier;
 pub mod playbook;
 pub mod playbook_resolver;
 pub mod provider_adapter;
+/// Vector-backed reflexion memory — `reflexion` feature only (compiles out when
+/// off). The trait + Noop/in-memory fakes live in `ampel-core` and are always
+/// available; this is the optional vector store implementation.
+#[cfg(feature = "reflexion")]
+pub mod reflexion;
 pub mod remediation_executor;
 pub mod sandbox_runner;
 

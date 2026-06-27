@@ -28,7 +28,7 @@ use std::fmt;
 use std::str::FromStr;
 
 /// Which concrete provider backs an account (ADR-009 v1 set).
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ProviderKind {
     Claude,

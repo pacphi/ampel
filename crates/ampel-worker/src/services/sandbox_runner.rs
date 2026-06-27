@@ -13,10 +13,13 @@
 //! - `GIT_TERMINAL_PROMPT=0` / `GIT_ASKPASS=echo` prevent interactive prompts.
 //! - No force-push primitive exists anywhere in this module.
 
+use std::sync::Arc;
 use std::time::Duration;
 
 use ampel_core::errors::{AmpelError, AmpelResult};
-use ampel_core::remediation::PrRef;
+use ampel_core::remediation::{
+    regen_command_for, HeuristicFingerprinter, LockfileKind, PrRef, RepoFingerprinter,
+};
 use ampel_core::services::{ConsolidationOutcome, ConsolidationSpec, SandboxRunner};
 use async_trait::async_trait;
 
@@ -43,37 +46,54 @@ pub enum LockfileClass {
     GemfileLock,
 }
 
+impl From<LockfileClass> for LockfileKind {
+    fn from(class: LockfileClass) -> Self {
+        match class {
+            LockfileClass::NpmPackageLock => LockfileKind::PackageLockJson,
+            LockfileClass::PnpmLock => LockfileKind::PnpmLock,
+            LockfileClass::YarnLock => LockfileKind::YarnLock,
+            LockfileClass::CargoLock => LockfileKind::CargoLock,
+            LockfileClass::GoModules => LockfileKind::GoSum,
+            LockfileClass::PoetryLock => LockfileKind::PoetryLock,
+            LockfileClass::GemfileLock => LockfileKind::GemfileLock,
+        }
+    }
+}
+
+impl From<LockfileKind> for LockfileClass {
+    fn from(kind: LockfileKind) -> Self {
+        match kind {
+            LockfileKind::PackageLockJson => LockfileClass::NpmPackageLock,
+            LockfileKind::PnpmLock => LockfileClass::PnpmLock,
+            LockfileKind::YarnLock => LockfileClass::YarnLock,
+            LockfileKind::CargoLock => LockfileClass::CargoLock,
+            LockfileKind::GoSum => LockfileClass::GoModules,
+            LockfileKind::PoetryLock => LockfileClass::PoetryLock,
+            LockfileKind::GemfileLock => LockfileClass::GemfileLock,
+        }
+    }
+}
+
 /// Classify a repo-relative path as a known lockfile, by file name (ADR-005).
 /// Returns `None` for non-lockfiles.
+///
+/// Delegates to the canonical [`ampel_core::remediation::detect_lockfile_kind`]
+/// so there is exactly one detection table; this wrapper preserves the worker's
+/// historical [`LockfileClass`] surface.
 #[allow(dead_code)]
 pub fn detect_lockfile_class(path: &str) -> Option<LockfileClass> {
-    // Match on the final path component only.
-    let name = path.rsplit(['/', '\\']).next().unwrap_or(path);
-    match name {
-        "package-lock.json" => Some(LockfileClass::NpmPackageLock),
-        "pnpm-lock.yaml" => Some(LockfileClass::PnpmLock),
-        "yarn.lock" => Some(LockfileClass::YarnLock),
-        "Cargo.lock" => Some(LockfileClass::CargoLock),
-        "go.sum" | "go.mod" => Some(LockfileClass::GoModules),
-        "poetry.lock" => Some(LockfileClass::PoetryLock),
-        "Gemfile.lock" => Some(LockfileClass::GemfileLock),
-        _ => None,
-    }
+    ampel_core::remediation::detect_lockfile_kind(path).map(LockfileClass::from)
 }
 
 /// The deterministic regeneration command for a lockfile class (ADR-005 table).
 /// Returned as argv (program first) so the caller never builds a shell string.
+///
+/// Delegates to the single source-of-truth table in `ampel-core`
+/// ([`regen_command_for`]); the worker no longer carries its own copy, so the
+/// consolidation path and the [`RepoFingerprinter`] can never diverge.
 #[allow(dead_code)]
 pub fn regen_command(class: LockfileClass) -> &'static [&'static str] {
-    match class {
-        LockfileClass::NpmPackageLock => &["npm", "install", "--package-lock-only"],
-        LockfileClass::PnpmLock => &["pnpm", "install", "--frozen-lockfile=false"],
-        LockfileClass::YarnLock => &["yarn", "install", "--mode", "update-lockfile"],
-        LockfileClass::CargoLock => &["cargo", "generate-lockfile"],
-        LockfileClass::GoModules => &["go", "mod", "tidy"],
-        LockfileClass::PoetryLock => &["poetry", "lock", "--no-update"],
-        LockfileClass::GemfileLock => &["bundle", "lock", "--update"],
-    }
+    regen_command_for(LockfileKind::from(class))
 }
 
 /// A single git step in the consolidation sequence.
@@ -231,17 +251,72 @@ fn binary_on_path(bin: &str) -> bool {
 /// unit-tested above as pure functions.
 pub struct PodmanSandboxRunner {
     config: SandboxConfig,
+    /// Repo fingerprinter used to derive lockfile regen commands (and, later, the
+    /// completion command) for a consolidation. Defaults to the pure
+    /// [`HeuristicFingerprinter`]; the planned CICD Intelligence engine slots in
+    /// here behind the same `Arc<dyn RepoFingerprinter>` with no other changes.
+    #[allow(dead_code)] // consumed by the (CI-gated) container path + tests
+    fingerprinter: Arc<dyn RepoFingerprinter>,
 }
 
 impl PodmanSandboxRunner {
     pub fn new(config: SandboxConfig) -> Self {
-        Self { config }
+        Self {
+            config,
+            fingerprinter: Arc::new(HeuristicFingerprinter::new()),
+        }
+    }
+
+    /// Override the default heuristic fingerprinter (e.g. with the future CICD
+    /// Intelligence engine). The trait is the only seam callers need.
+    #[allow(dead_code)] // wired into the worker binary in a later slice
+    pub fn with_fingerprinter(mut self, fingerprinter: Arc<dyn RepoFingerprinter>) -> Self {
+        self.fingerprinter = fingerprinter;
+        self
     }
 
     /// Construct from the environment; falls back to a Podman/Docker auto-detect.
     pub fn from_env() -> AmpelResult<Self> {
         Ok(Self::new(SandboxConfig::from_env()?))
     }
+
+    /// Fingerprint-aware regen selection: given the repo's file listing and the
+    /// set of conflicted lockfile paths a merge touched, resolve each path to its
+    /// deterministic regen argv **via the injected fingerprinter** (not a local
+    /// hardcoded pattern table). Paths the fingerprint does not recognize as a
+    /// lockfile are dropped. Deterministic + side-effect-free.
+    #[allow(dead_code)] // consumed by the (CI-gated) container path + tests
+    pub async fn resolve_lockfile_regen(
+        &self,
+        files: &[String],
+        conflicted_lockfiles: &[String],
+    ) -> AmpelResult<Vec<(String, Vec<String>)>> {
+        resolve_lockfile_regen_with(self.fingerprinter.as_ref(), files, conflicted_lockfiles).await
+    }
+}
+
+/// Pure, injectable form of [`PodmanSandboxRunner::resolve_lockfile_regen`]:
+/// fingerprints the repo, then maps each conflicted lockfile path to the
+/// fingerprint-derived regen command. Lives free so it is unit-testable against
+/// any [`RepoFingerprinter`] (default heuristic or the future engine) with no
+/// container.
+#[allow(dead_code)] // consumed by the (CI-gated) container path + tests
+pub async fn resolve_lockfile_regen_with(
+    fingerprinter: &dyn RepoFingerprinter,
+    files: &[String],
+    conflicted_lockfiles: &[String],
+) -> AmpelResult<Vec<(String, Vec<String>)>> {
+    let fingerprint = fingerprinter.fingerprint(files, None).await?;
+    let mut out = Vec::with_capacity(conflicted_lockfiles.len());
+    for path in conflicted_lockfiles {
+        if let Some(argv) = fingerprint.regen_command_for_path(path) {
+            out.push((
+                path.clone(),
+                argv.iter().map(|s| s.to_string()).collect::<Vec<_>>(),
+            ));
+        }
+    }
+    Ok(out)
 }
 
 #[async_trait]
@@ -446,5 +521,98 @@ mod tests {
         // Assert
         assert!(!scrubbed.contains("ghp_supersecret"));
         assert!(scrubbed.contains("***redacted***"));
+    }
+
+    // --- Phase 5c: fingerprint-aware regen selection -----------------------
+
+    /// Parity guard: routing a class through the fingerprint API yields the exact
+    /// same argv as the legacy `regen_command`, for all 7 package managers — i.e.
+    /// the worker delegate and the single source-of-truth table cannot diverge.
+    #[test]
+    fn should_match_legacy_regen_command_for_all_seven_package_managers() {
+        for class in [
+            LockfileClass::NpmPackageLock,
+            LockfileClass::PnpmLock,
+            LockfileClass::YarnLock,
+            LockfileClass::CargoLock,
+            LockfileClass::GoModules,
+            LockfileClass::PoetryLock,
+            LockfileClass::GemfileLock,
+        ] {
+            // legacy worker surface vs canonical core table — must be identical.
+            assert_eq!(
+                regen_command(class),
+                regen_command_for(LockfileKind::from(class)),
+                "regen table diverged for {class:?}"
+            );
+        }
+    }
+
+    #[tokio::test]
+    async fn should_select_regen_command_via_fingerprinter_for_conflicted_lockfile() {
+        // Arrange: a polyglot repo listing + two conflicted lockfiles.
+        let runner = PodmanSandboxRunner::new(SandboxConfig {
+            runtime: SandboxRuntime::Podman,
+            image: "img".into(),
+            clone_depth: 1,
+            subprocess_timeout: Duration::from_secs(1),
+        });
+        let files = vec![
+            "Cargo.toml".to_string(),
+            "Cargo.lock".to_string(),
+            "frontend/package.json".to_string(),
+            "frontend/package-lock.json".to_string(),
+        ];
+        let conflicted = vec![
+            "Cargo.lock".to_string(),
+            "frontend/package-lock.json".to_string(),
+        ];
+
+        // Act: the consolidation path resolves regen commands through the
+        // injected fingerprinter (NOT a local hardcoded pattern match).
+        let resolved = runner
+            .resolve_lockfile_regen(&files, &conflicted)
+            .await
+            .unwrap();
+
+        // Assert: each conflicted lockfile mapped to its fingerprint-derived argv.
+        assert_eq!(
+            resolved,
+            vec![
+                (
+                    "Cargo.lock".to_string(),
+                    vec!["cargo".to_string(), "generate-lockfile".to_string()]
+                ),
+                (
+                    "frontend/package-lock.json".to_string(),
+                    vec![
+                        "npm".to_string(),
+                        "install".to_string(),
+                        "--package-lock-only".to_string()
+                    ]
+                ),
+            ]
+        );
+    }
+
+    #[tokio::test]
+    async fn should_drop_non_lockfile_paths_from_regen_selection() {
+        // A path the fingerprint does not recognize as a lockfile is skipped.
+        let runner = PodmanSandboxRunner::new(SandboxConfig {
+            runtime: SandboxRuntime::Podman,
+            image: "img".into(),
+            clone_depth: 1,
+            subprocess_timeout: Duration::from_secs(1),
+        });
+        let files = vec!["Cargo.toml".to_string(), "Cargo.lock".to_string()];
+        let conflicted = vec!["Cargo.lock".to_string(), "src/main.rs".to_string()];
+
+        let resolved = runner
+            .resolve_lockfile_regen(&files, &conflicted)
+            .await
+            .unwrap();
+
+        assert_eq!(resolved.len(), 1);
+        assert_eq!(resolved[0].0, "Cargo.lock");
     }
 }

@@ -13,6 +13,7 @@ mod m20260626_000003_org_air_gapped;
 mod m20260627_000001_remediation_run_phase2_columns;
 mod m20260627_000002_model_provider_phase4_columns;
 mod m20260627_000003_remediation_playbook_scope;
+mod m20260627_000004_learning_signal;
 
 use sea_orm_migration::prelude::*;
 
@@ -62,6 +63,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20260627_000001_remediation_run_phase2_columns::Migration),
             Box::new(m20260627_000002_model_provider_phase4_columns::Migration),
             Box::new(m20260627_000003_remediation_playbook_scope::Migration),
+            Box::new(m20260627_000004_learning_signal::Migration),
         ]
     }
 }
@@ -78,7 +80,7 @@ mod tests {
     //! SQLite database.
 
     use crate::entities::{
-        model_provider_account, remediation_agent_session, remediation_playbook,
+        learning_signal, model_provider_account, remediation_agent_session, remediation_playbook,
         remediation_policy, remediation_run, remediation_run_pr,
     };
     use sea_orm::{Database, DatabaseConnection, EntityTrait};
@@ -110,12 +112,16 @@ mod tests {
             .up(&manager)
             .await
             .expect("up remediation_playbook_scope");
+        super::m20260627_000004_learning_signal::Migration
+            .up(&manager)
+            .await
+            .expect("up learning_signal");
 
         conn
     }
 
     #[tokio::test]
-    async fn should_create_all_six_remediation_tables_on_sqlite() {
+    async fn should_create_all_remediation_tables_on_sqlite() {
         // Arrange + Act
         let conn = apply_remediation_migrations().await;
 
@@ -144,6 +150,10 @@ mod tests {
             .all(&conn)
             .await
             .expect("remediation_playbook table exists");
+        learning_signal::Entity::find()
+            .all(&conn)
+            .await
+            .expect("learning_signal table exists");
     }
 
     #[tokio::test]
