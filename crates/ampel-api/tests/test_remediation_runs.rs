@@ -16,7 +16,8 @@ use tower::ServiceExt;
 use uuid::Uuid;
 
 use ampel_db::entities::{
-    remediation_policy, remediation_run, remediation_run_pr, repository, user,
+    remediation_agent_session, remediation_policy, remediation_run, remediation_run_pr, repository,
+    user,
 };
 
 // ---------------------------------------------------------------------------
@@ -151,6 +152,36 @@ async fn seed_disposition(conn: &DatabaseConnection, run_id: Uuid, pr_number: i6
         pr_number: Set(pr_number),
         disposition: Set(json.to_string()),
         created_at: Set(Utc::now()),
+    }
+    .insert(conn)
+    .await
+    .unwrap();
+}
+
+async fn seed_agent_session(
+    conn: &DatabaseConnection,
+    run_id: Uuid,
+    iterations: i32,
+    status: &str,
+) {
+    let now = Utc::now();
+    remediation_agent_session::ActiveModel {
+        id: Set(Uuid::new_v4()),
+        remediation_run_id: Set(run_id),
+        model_provider_account_id: Set(None),
+        playbook_ref: Set(None),
+        iterations: Set(iterations),
+        max_iterations: Set(Some(10)),
+        tokens_used: Set(1234),
+        cost_usd: Set(Some("0.0456".to_string())),
+        status: Set(status.to_string()),
+        transcript_ref: Set(Some("transcript://abc".to_string())),
+        failure_class: Set(Some("transient".to_string())),
+        classifier_source: Set(Some("heuristic".to_string())),
+        classifier_confidence: Set(Some(0.87)),
+        started_at: Set(now),
+        completed_at: Set(None),
+        created_at: Set(now),
     }
     .insert(conn)
     .await
@@ -323,6 +354,72 @@ async fn test_get_run_returns_dispositions_and_conflict_report() {
             .len(),
         1
     );
+
+    test_db.cleanup().await;
+}
+
+#[tokio::test]
+async fn test_get_run_includes_agent_session_when_present() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let conn = test_db.connection().clone();
+    let app = create_test_app(conn.clone()).await;
+    let token = register_and_login(&app).await;
+    let user_id = current_user_id(&conn).await;
+
+    let repo = seed_repository(&conn, user_id).await;
+    let run = seed_run(&conn, repo, "completed", "success").await;
+    seed_agent_session(&conn, run, 3, "succeeded").await;
+
+    let resp = app
+        .clone()
+        .oneshot(get(&format!("/api/remediation/runs/{run}"), &token))
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+    let detail = parse_json(resp).await;
+
+    let session = &detail["data"]["agentSession"];
+    assert!(session.is_object());
+    assert_eq!(session["iterations"], 3);
+    assert_eq!(session["status"], "succeeded");
+    assert_eq!(session["maxIterations"], 10);
+    assert_eq!(session["tokensUsed"], 1234);
+    assert_eq!(session["costUsd"], "0.0456");
+    assert_eq!(session["failureClass"], "transient");
+    assert_eq!(session["classifierSource"], "heuristic");
+    assert_eq!(session["transcriptRef"], "transcript://abc");
+
+    test_db.cleanup().await;
+}
+
+#[tokio::test]
+async fn test_get_run_agent_session_is_null_when_absent() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let conn = test_db.connection().clone();
+    let app = create_test_app(conn.clone()).await;
+    let token = register_and_login(&app).await;
+    let user_id = current_user_id(&conn).await;
+
+    let repo = seed_repository(&conn, user_id).await;
+    let run = seed_run(&conn, repo, "completed", "success").await;
+
+    let resp = app
+        .clone()
+        .oneshot(get(&format!("/api/remediation/runs/{run}"), &token))
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+    let detail = parse_json(resp).await;
+
+    assert!(detail["data"]["agentSession"].is_null());
 
     test_db.cleanup().await;
 }

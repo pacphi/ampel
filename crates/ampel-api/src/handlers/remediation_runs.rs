@@ -42,7 +42,9 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use ampel_core::remediation::{MergeDisposition, RunState};
-use ampel_db::entities::{remediation_run, remediation_run_pr, repository};
+use ampel_db::entities::{
+    remediation_agent_session, remediation_run, remediation_run_pr, repository,
+};
 
 use crate::extractors::AuthUser;
 use crate::handlers::{ApiError, ApiResponse};
@@ -155,6 +157,40 @@ pub struct ConflictReport {
     pub skipped: Vec<ConflictEntry>,
 }
 
+/// Agent-session snapshot for the run-detail view (Phase 4). Mirrors the
+/// non-secret columns of `remediation_agent_session`; credential/account
+/// references (`model_provider_account_id`) are intentionally omitted.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AgentSessionDto {
+    pub iterations: i32,
+    pub max_iterations: Option<i32>,
+    pub tokens_used: i64,
+    /// Decimal cost carried as a string (entity convention), serialized as-is.
+    pub cost_usd: Option<String>,
+    pub status: String,
+    pub failure_class: Option<String>,
+    pub classifier_source: Option<String>,
+    pub classifier_confidence: Option<f64>,
+    pub transcript_ref: Option<String>,
+}
+
+impl From<remediation_agent_session::Model> for AgentSessionDto {
+    fn from(m: remediation_agent_session::Model) -> Self {
+        Self {
+            iterations: m.iterations,
+            max_iterations: m.max_iterations,
+            tokens_used: m.tokens_used,
+            cost_usd: m.cost_usd,
+            status: m.status,
+            failure_class: m.failure_class,
+            classifier_source: m.classifier_source,
+            classifier_confidence: m.classifier_confidence,
+            transcript_ref: m.transcript_ref,
+        }
+    }
+}
+
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RunDetail {
@@ -162,6 +198,8 @@ pub struct RunDetail {
     pub prs: Vec<PrDispositionView>,
     pub ci_matrix: CiMatrix,
     pub conflict_report: ConflictReport,
+    /// Most-recent agent session for this run, if any (Phase 4).
+    pub agent_session: Option<AgentSessionDto>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -357,11 +395,20 @@ pub async fn get_run(
         predicted_conflicts,
     };
 
+    // Most-recent agent session for this run (None if the run never ran an agent).
+    let agent_session = remediation_agent_session::Entity::find()
+        .filter(remediation_agent_session::Column::RemediationRunId.eq(run_id))
+        .order_by_desc(remediation_agent_session::Column::CreatedAt)
+        .one(&state.db)
+        .await?
+        .map(AgentSessionDto::from);
+
     Ok(Json(ApiResponse::success(RunDetail {
         run: RunSummary::from(run),
         prs,
         ci_matrix,
         conflict_report,
+        agent_session,
     })))
 }
 
