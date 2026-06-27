@@ -12,6 +12,7 @@ pub mod remediation;
 pub mod remediation_playbooks;
 pub mod remediation_runs;
 pub mod repositories;
+pub mod security;
 pub mod teams;
 pub mod user_preferences;
 pub mod user_settings;
@@ -68,6 +69,10 @@ impl ApiError {
 
     pub fn unauthorized(message: impl Into<String>) -> Self {
         Self::new(StatusCode::UNAUTHORIZED, message)
+    }
+
+    pub fn forbidden(message: impl Into<String>) -> Self {
+        Self::new(StatusCode::FORBIDDEN, message)
     }
 
     pub fn not_found(message: impl Into<String>) -> Self {

@@ -1,8 +1,21 @@
 //! Remediation playbook CRUD + preview (Phase 4 — ADR-006).
 //!
 //! Playbooks are DB-stored overrides of the embedded default remediation
-//! playbook. They are global operator resources (keyed by `playbook_id` slug +
-//! `version`), so every endpoint requires authentication.
+//! playbook. They drive the agentic remediation prompts, so they are **owned
+//! resources**: every read and write is gated on the caller's access to the
+//! playbook's `(scope_type, scope_id)`, mirroring `remediation_policy` /
+//! `model_provider_account`.
+//!
+//! ## Authorization
+//! - `scope_type=user`   → `scope_id == auth.user_id`.
+//! - `scope_type=org`    → caller owns the organization.
+//! - `scope_type=team`   → caller is an **admin** member (`team_member.role='admin'`).
+//! - `scope_type=repository` → caller owns the repository.
+//! - `scope_id IS NULL`  → built-in/global sentinel: readable by any authenticated
+//!   caller, mutable by none (writes 404).
+//!
+//! Cross-scope reads return `404` (never leak existence); creating in a scope the
+//! caller does not administer returns `403`. `list` returns only accessible rows.
 //!
 //! ## Preview (no model call)
 //! `POST /api/remediation/playbooks/{id}/preview` resolves the stored YAML
@@ -23,12 +36,14 @@ use axum::{
     Json,
 };
 use chrono::Utc;
-use sea_orm::{ActiveModelTrait, EntityTrait, Set};
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, Condition, EntityTrait, PaginatorTrait, QueryFilter, Set,
+};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use ampel_core::remediation::FailureClass;
-use ampel_db::entities::remediation_playbook;
+use ampel_core::remediation::{FailureClass, ScopeType};
+use ampel_db::entities::{organization, remediation_playbook, repository, team_member};
 use ampel_worker::services::playbook_resolver::{
     build_system_instruction, resolve, PlaybookContext, PlaybookScope,
 };
@@ -52,6 +67,11 @@ pub struct CreatePlaybookRequest {
     pub content: String,
     pub source: Option<String>,
     pub enabled: Option<bool>,
+    /// Ownership scope; defaults to `user` (owned by the caller).
+    pub scope_type: Option<ScopeType>,
+    /// Owning scope UUID. Required for non-`user` scopes; defaults to the caller
+    /// for `user` scope.
+    pub scope_id: Option<Uuid>,
 }
 
 #[derive(Debug, Default, Deserialize)]
@@ -74,6 +94,8 @@ pub struct PlaybookResponse {
     pub description: Option<String>,
     pub content: String,
     pub enabled: bool,
+    pub scope_type: String,
+    pub scope_id: Option<Uuid>,
     pub created_at: String,
     pub updated_at: String,
 }
@@ -89,6 +111,8 @@ impl From<remediation_playbook::Model> for PlaybookResponse {
             description: m.description,
             content: m.content,
             enabled: m.enabled,
+            scope_type: m.scope_type,
+            scope_id: m.scope_id,
             created_at: m.created_at.to_rfc3339(),
             updated_at: m.updated_at.to_rfc3339(),
         }
@@ -118,15 +142,182 @@ pub struct PreviewResponse {
 }
 
 // ============================================================================
+// Scope / ownership authorization
+// ============================================================================
+
+/// Whether `user_id` administers `(scope_type, scope_id)` — owner for
+/// org/repository, `admin` member for team, self for user.
+async fn scope_admin_access(
+    state: &AppState,
+    user_id: Uuid,
+    scope_type: ScopeType,
+    scope_id: Uuid,
+) -> Result<bool, ApiError> {
+    let allowed = match scope_type {
+        ScopeType::User => scope_id == user_id,
+        ScopeType::Repository => repository::Entity::find_by_id(scope_id)
+            .one(&state.db)
+            .await?
+            .map(|r| r.user_id == user_id)
+            .unwrap_or(false),
+        ScopeType::Team => {
+            team_member::Entity::find()
+                .filter(team_member::Column::TeamId.eq(scope_id))
+                .filter(team_member::Column::UserId.eq(user_id))
+                .filter(team_member::Column::Role.eq("admin"))
+                .count(&state.db)
+                .await?
+                > 0
+        }
+        ScopeType::Org => organization::Entity::find_by_id(scope_id)
+            .one(&state.db)
+            .await?
+            .map(|o| o.owner_id == user_id)
+            .unwrap_or(false),
+    };
+    Ok(allowed)
+}
+
+/// Read access: built-in/global rows (`scope_id IS NULL`) are readable by any
+/// authenticated caller; scoped rows require administering their scope.
+async fn can_read(
+    state: &AppState,
+    user_id: Uuid,
+    row: &remediation_playbook::Model,
+) -> Result<bool, ApiError> {
+    match row.scope_id {
+        None => Ok(true),
+        Some(scope_id) => {
+            let scope_type: ScopeType = row
+                .scope_type
+                .parse()
+                .map_err(|_| ApiError::internal("invalid scope_type in database"))?;
+            scope_admin_access(state, user_id, scope_type, scope_id).await
+        }
+    }
+}
+
+/// Write access: built-in/global rows are immutable; scoped rows require
+/// administering their scope.
+async fn can_write(
+    state: &AppState,
+    user_id: Uuid,
+    row: &remediation_playbook::Model,
+) -> Result<bool, ApiError> {
+    match row.scope_id {
+        None => Ok(false),
+        Some(scope_id) => {
+            let scope_type: ScopeType = row
+                .scope_type
+                .parse()
+                .map_err(|_| ApiError::internal("invalid scope_type in database"))?;
+            scope_admin_access(state, user_id, scope_type, scope_id).await
+        }
+    }
+}
+
+/// Load a playbook the caller may read, else `404` (no existence leak).
+async fn load_readable(
+    state: &AppState,
+    user_id: Uuid,
+    id: Uuid,
+) -> Result<remediation_playbook::Model, ApiError> {
+    let row = remediation_playbook::Entity::find_by_id(id)
+        .one(&state.db)
+        .await?
+        .ok_or_else(|| ApiError::not_found("Playbook not found"))?;
+    if can_read(state, user_id, &row).await? {
+        Ok(row)
+    } else {
+        Err(ApiError::not_found("Playbook not found"))
+    }
+}
+
+/// Load a playbook the caller may modify, else `404` (no existence leak).
+async fn load_writable(
+    state: &AppState,
+    user_id: Uuid,
+    id: Uuid,
+) -> Result<remediation_playbook::Model, ApiError> {
+    let row = remediation_playbook::Entity::find_by_id(id)
+        .one(&state.db)
+        .await?
+        .ok_or_else(|| ApiError::not_found("Playbook not found"))?;
+    if can_write(state, user_id, &row).await? {
+        Ok(row)
+    } else {
+        Err(ApiError::not_found("Playbook not found"))
+    }
+}
+
+// ============================================================================
 // Handlers
 // ============================================================================
 
-/// GET /api/remediation/playbooks
+/// GET /api/remediation/playbooks — only rows the caller can access (their scopes
+/// plus built-in/global sentinels).
 pub async fn list_playbooks(
     State(state): State<AppState>,
-    _auth: AuthUser,
+    auth: AuthUser,
 ) -> Result<Json<ApiResponse<Vec<PlaybookResponse>>>, ApiError> {
-    let rows = remediation_playbook::Entity::find().all(&state.db).await?;
+    let user_id = auth.user_id;
+
+    let owned_org_ids: Vec<Uuid> = organization::Entity::find()
+        .filter(organization::Column::OwnerId.eq(user_id))
+        .all(&state.db)
+        .await?
+        .into_iter()
+        .map(|o| o.id)
+        .collect();
+    let admin_team_ids: Vec<Uuid> = team_member::Entity::find()
+        .filter(team_member::Column::UserId.eq(user_id))
+        .filter(team_member::Column::Role.eq("admin"))
+        .all(&state.db)
+        .await?
+        .into_iter()
+        .map(|m| m.team_id)
+        .collect();
+    let owned_repo_ids: Vec<Uuid> = repository::Entity::find()
+        .filter(repository::Column::UserId.eq(user_id))
+        .all(&state.db)
+        .await?
+        .into_iter()
+        .map(|r| r.id)
+        .collect();
+
+    // Built-in/global sentinels (scope_id IS NULL) are visible to everyone.
+    let mut condition = Condition::any().add(remediation_playbook::Column::ScopeId.is_null());
+    condition = condition.add(
+        Condition::all()
+            .add(remediation_playbook::Column::ScopeType.eq(ScopeType::User.to_string()))
+            .add(remediation_playbook::Column::ScopeId.eq(user_id)),
+    );
+    if !owned_org_ids.is_empty() {
+        condition = condition.add(
+            Condition::all()
+                .add(remediation_playbook::Column::ScopeType.eq(ScopeType::Org.to_string()))
+                .add(remediation_playbook::Column::ScopeId.is_in(owned_org_ids)),
+        );
+    }
+    if !admin_team_ids.is_empty() {
+        condition = condition.add(
+            Condition::all()
+                .add(remediation_playbook::Column::ScopeType.eq(ScopeType::Team.to_string()))
+                .add(remediation_playbook::Column::ScopeId.is_in(admin_team_ids)),
+        );
+    }
+    if !owned_repo_ids.is_empty() {
+        condition = condition.add(
+            Condition::all()
+                .add(remediation_playbook::Column::ScopeType.eq(ScopeType::Repository.to_string()))
+                .add(remediation_playbook::Column::ScopeId.is_in(owned_repo_ids)),
+        );
+    }
+
+    let rows = remediation_playbook::Entity::find()
+        .filter(condition)
+        .all(&state.db)
+        .await?;
     Ok(Json(ApiResponse::success(
         rows.into_iter().map(PlaybookResponse::from).collect(),
     )))
@@ -138,6 +329,21 @@ pub async fn create_playbook(
     auth: AuthUser,
     Json(req): Json<CreatePlaybookRequest>,
 ) -> Result<(StatusCode, Json<ApiResponse<PlaybookResponse>>), ApiError> {
+    // Resolve and authorize the ownership scope before any work. User scope
+    // defaults to the caller; other scopes require an explicit scope_id.
+    let scope_type = req.scope_type.unwrap_or(ScopeType::User);
+    let scope_id = match scope_type {
+        ScopeType::User => req.scope_id.unwrap_or(auth.user_id),
+        _ => req.scope_id.ok_or_else(|| {
+            ApiError::bad_request("scope_id is required for non-user playbook scopes")
+        })?,
+    };
+    if !scope_admin_access(&state, auth.user_id, scope_type, scope_id).await? {
+        return Err(ApiError::forbidden(
+            "you are not an administrator of the target playbook scope",
+        ));
+    }
+
     // Lint: the YAML must parse into a valid Playbook (ADR-006 schema).
     ampel_worker::services::playbook::Playbook::from_yaml(&req.content)
         .map_err(|e| ApiError::unprocessable_entity(format!("invalid playbook YAML: {e}")))?;
@@ -152,6 +358,8 @@ pub async fn create_playbook(
         description: Set(req.description),
         content: Set(req.content),
         enabled: Set(req.enabled.unwrap_or(true)),
+        scope_type: Set(scope_type.to_string()),
+        scope_id: Set(Some(scope_id)),
         created_at: Set(now),
         updated_at: Set(now),
     };
@@ -166,13 +374,10 @@ pub async fn create_playbook(
 /// GET /api/remediation/playbooks/{id}
 pub async fn get_playbook(
     State(state): State<AppState>,
-    _auth: AuthUser,
+    auth: AuthUser,
     Path(id): Path<Uuid>,
 ) -> Result<Json<ApiResponse<PlaybookResponse>>, ApiError> {
-    let row = remediation_playbook::Entity::find_by_id(id)
-        .one(&state.db)
-        .await?
-        .ok_or_else(|| ApiError::not_found("Playbook not found"))?;
+    let row = load_readable(&state, auth.user_id, id).await?;
     Ok(Json(ApiResponse::success(PlaybookResponse::from(row))))
 }
 
@@ -183,10 +388,7 @@ pub async fn update_playbook(
     Path(id): Path<Uuid>,
     Json(req): Json<UpdatePlaybookRequest>,
 ) -> Result<Json<ApiResponse<PlaybookResponse>>, ApiError> {
-    let row = remediation_playbook::Entity::find_by_id(id)
-        .one(&state.db)
-        .await?
-        .ok_or_else(|| ApiError::not_found("Playbook not found"))?;
+    let row = load_writable(&state, auth.user_id, id).await?;
 
     if let Some(content) = &req.content {
         ampel_worker::services::playbook::Playbook::from_yaml(content)
@@ -218,10 +420,7 @@ pub async fn delete_playbook(
     auth: AuthUser,
     Path(id): Path<Uuid>,
 ) -> Result<StatusCode, ApiError> {
-    let row = remediation_playbook::Entity::find_by_id(id)
-        .one(&state.db)
-        .await?
-        .ok_or_else(|| ApiError::not_found("Playbook not found"))?;
+    let row = load_writable(&state, auth.user_id, id).await?;
     remediation_playbook::Entity::delete_by_id(row.id)
         .exec(&state.db)
         .await?;
@@ -232,14 +431,11 @@ pub async fn delete_playbook(
 /// POST /api/remediation/playbooks/{id}/preview — render the prompt, no model call.
 pub async fn preview_playbook(
     State(state): State<AppState>,
-    _auth: AuthUser,
+    auth: AuthUser,
     Path(id): Path<Uuid>,
     Json(req): Json<PreviewRequest>,
 ) -> Result<Json<ApiResponse<PreviewResponse>>, ApiError> {
-    let row = remediation_playbook::Entity::find_by_id(id)
-        .one(&state.db)
-        .await?
-        .ok_or_else(|| ApiError::not_found("Playbook not found"))?;
+    let row = load_readable(&state, auth.user_id, id).await?;
 
     let failure_class: FailureClass = req
         .failure_class

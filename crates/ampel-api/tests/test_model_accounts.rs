@@ -14,12 +14,12 @@ use axum::{
 };
 use chrono::Utc;
 use common::{create_test_app, TestDb};
-use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
+use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, Set};
 use serde_json::{json, Value};
 use tower::ServiceExt;
 use uuid::Uuid;
 
-use ampel_db::entities::{organization, user};
+use ampel_db::entities::{organization, team, team_member, user};
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -341,5 +341,433 @@ async fn should_reject_invalid_playbook_yaml_with_422() {
         .await
         .unwrap();
     assert_eq!(resp.status(), StatusCode::UNPROCESSABLE_ENTITY);
+    test_db.cleanup().await;
+}
+
+// ---------------------------------------------------------------------------
+// FINDING 1 — SSRF guard on user-supplied endpoint_url
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn should_reject_external_account_pointing_at_cloud_metadata() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+    let token = register_and_login(&app, "ssrf1@example.com").await;
+
+    let resp = app
+        .clone()
+        .oneshot(post(
+            &app,
+            "/api/model-accounts",
+            &token,
+            json!({
+                "providerKind": "claude",
+                "displayName": "SSRF",
+                "apiKey": "sk-x",
+                "endpointUrl": "http://169.254.169.254/latest/meta-data/"
+            }),
+        ))
+        .await
+        .unwrap();
+
+    // Rejected before any provider/network call (422 from the guard).
+    assert_eq!(resp.status(), StatusCode::UNPROCESSABLE_ENTITY);
+    test_db.cleanup().await;
+}
+
+#[tokio::test]
+async fn should_reject_external_account_pointing_at_private_or_localhost() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+    let token = register_and_login(&app, "ssrf2@example.com").await;
+
+    for url in ["http://localhost:8080/", "http://10.0.0.1/"] {
+        let resp = app
+            .clone()
+            .oneshot(post(
+                &app,
+                "/api/model-accounts",
+                &token,
+                json!({
+                    "providerKind": "gemini",
+                    "displayName": "SSRF",
+                    "apiKey": "sk-x",
+                    "endpointUrl": url
+                }),
+            ))
+            .await
+            .unwrap();
+        assert_eq!(
+            resp.status(),
+            StatusCode::UNPROCESSABLE_ENTITY,
+            "external endpoint {url} should be rejected"
+        );
+    }
+    test_db.cleanup().await;
+}
+
+#[tokio::test]
+async fn should_allow_local_only_ollama_pointing_at_localhost() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+    let token = register_and_login(&app, "ssrf3@example.com").await;
+
+    // Ollama is local_only — localhost is its legitimate target, so the guard
+    // must let it past (account is created).
+    let resp = app
+        .clone()
+        .oneshot(post(
+            &app,
+            "/api/model-accounts",
+            &token,
+            json!({
+                "providerKind": "ollama",
+                "displayName": "Local Ollama",
+                "endpointUrl": "http://localhost:11434"
+            }),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::CREATED);
+    test_db.cleanup().await;
+}
+
+#[tokio::test]
+async fn should_return_generic_error_on_validate_failure() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+    let token = register_and_login(&app, "ssrf4@example.com").await;
+
+    // Ollama (local_only) pointing at a closed local port: validation fails, but
+    // the client-facing message must be generic — no upstream/transport detail.
+    let created = app
+        .clone()
+        .oneshot(post(
+            &app,
+            "/api/model-accounts",
+            &token,
+            json!({
+                "providerKind": "ollama",
+                "displayName": "Local Ollama",
+                "endpointUrl": "http://127.0.0.1:1"
+            }),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(created.status(), StatusCode::CREATED);
+    let id = parse_json(created).await["data"]["id"]
+        .as_str()
+        .unwrap()
+        .to_string();
+
+    let resp = app
+        .clone()
+        .oneshot(post(
+            &app,
+            &format!("/api/model-accounts/{id}/validate"),
+            &token,
+            json!({}),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+    let json = parse_json(resp).await;
+    let data = &json["data"];
+    assert_eq!(data["isValid"], false);
+    assert_eq!(data["validationStatus"], "invalid");
+    let msg = data["errorMessage"].as_str().unwrap_or("");
+    assert_eq!(
+        msg, "validation failed: could not reach or authenticate provider",
+        "validate error must be generic, got: {msg}"
+    );
+    test_db.cleanup().await;
+}
+
+// ---------------------------------------------------------------------------
+// FINDING 2 — playbook ownership scope authorization
+// ---------------------------------------------------------------------------
+
+async fn seed_team(conn: &DatabaseConnection, org_id: Uuid) -> Uuid {
+    let id = Uuid::new_v4();
+    let now = Utc::now();
+    team::ActiveModel {
+        id: Set(id),
+        organization_id: Set(org_id),
+        name: Set("Team".to_string()),
+        slug: Set(format!("team-{id}")),
+        description: Set(None),
+        created_at: Set(now),
+        updated_at: Set(now),
+    }
+    .insert(conn)
+    .await
+    .unwrap();
+    id
+}
+
+async fn seed_team_member(conn: &DatabaseConnection, team_id: Uuid, user_id: Uuid, role: &str) {
+    team_member::ActiveModel {
+        id: Set(Uuid::new_v4()),
+        team_id: Set(team_id),
+        user_id: Set(user_id),
+        role: Set(role.to_string()),
+        joined_at: Set(Utc::now()),
+    }
+    .insert(conn)
+    .await
+    .unwrap();
+}
+
+const VALID_PLAYBOOK_YAML: &str = r#"
+version: 1
+role: "You are an autonomous CI remediation engineer"
+tasks:
+  failed_ci:
+    instructions: "Fix the failing build in {{ repo_full_name }}"
+loop:
+  max_iterations: 3
+  max_seconds: 600
+  max_cost_usd: "1.00"
+tools_policy:
+  allowed: [read_file, apply_patch]
+output_contract: unified_diff
+"#;
+
+#[tokio::test]
+async fn should_forbid_org_playbook_create_for_non_admin() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+
+    // Org owned by user A; user B (the caller) is not an admin of it.
+    let _token_a = register_and_login(&app, "pbowner@example.com").await;
+    let owner_id = current_user_id(test_db.connection()).await;
+    let org_id = seed_org(test_db.connection(), owner_id, false).await;
+    let token_b = register_and_login(&app, "pbintruder@example.com").await;
+
+    let resp = app
+        .clone()
+        .oneshot(post(
+            &app,
+            "/api/remediation/playbooks",
+            &token_b,
+            json!({
+                "playbookId": "org-pb",
+                "name": "Org PB",
+                "content": VALID_PLAYBOOK_YAML,
+                "scopeType": "org",
+                "scopeId": org_id,
+            }),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::FORBIDDEN);
+    test_db.cleanup().await;
+}
+
+#[tokio::test]
+async fn should_allow_org_playbook_create_for_owner() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+
+    let token = register_and_login(&app, "pborgadmin@example.com").await;
+    let user_id = current_user_id(test_db.connection()).await;
+    let org_id = seed_org(test_db.connection(), user_id, false).await;
+
+    let resp = app
+        .clone()
+        .oneshot(post(
+            &app,
+            "/api/remediation/playbooks",
+            &token,
+            json!({
+                "playbookId": "org-pb",
+                "name": "Org PB",
+                "content": VALID_PLAYBOOK_YAML,
+                "scopeType": "org",
+                "scopeId": org_id,
+            }),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::CREATED);
+    let data = parse_json(resp).await;
+    assert_eq!(data["data"]["scopeType"], "org");
+    test_db.cleanup().await;
+}
+
+#[tokio::test]
+async fn should_allow_team_playbook_create_for_admin_member_only() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+
+    let token = register_and_login(&app, "pbteamadmin@example.com").await;
+    let user_id = current_user_id(test_db.connection()).await;
+    let org_id = seed_org(test_db.connection(), user_id, false).await;
+    let team_id = seed_team(test_db.connection(), org_id).await;
+    // The caller is a non-admin member first.
+    seed_team_member(test_db.connection(), team_id, user_id, "member").await;
+
+    let body = json!({
+        "playbookId": "team-pb",
+        "name": "Team PB",
+        "content": VALID_PLAYBOOK_YAML,
+        "scopeType": "team",
+        "scopeId": team_id,
+    });
+    let resp = app
+        .clone()
+        .oneshot(post(
+            &app,
+            "/api/remediation/playbooks",
+            &token,
+            body.clone(),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(
+        resp.status(),
+        StatusCode::FORBIDDEN,
+        "non-admin team member must not create team playbooks"
+    );
+
+    // Promote the existing membership to admin and retry → allowed.
+    let member = team_member::Entity::find()
+        .filter(team_member::Column::TeamId.eq(team_id))
+        .filter(team_member::Column::UserId.eq(user_id))
+        .one(test_db.connection())
+        .await
+        .unwrap()
+        .unwrap();
+    let mut active: team_member::ActiveModel = member.into();
+    active.role = Set("admin".to_string());
+    active.update(test_db.connection()).await.unwrap();
+    let resp = app
+        .clone()
+        .oneshot(post(&app, "/api/remediation/playbooks", &token, body))
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::CREATED);
+    test_db.cleanup().await;
+}
+
+#[tokio::test]
+async fn should_return_404_for_cross_scope_playbook_get() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+
+    // User A creates a user-scoped playbook (defaults to own scope).
+    let token_a = register_and_login(&app, "pbusera@example.com").await;
+    let created = app
+        .clone()
+        .oneshot(post(
+            &app,
+            "/api/remediation/playbooks",
+            &token_a,
+            json!({ "playbookId": "mine", "name": "Mine", "content": VALID_PLAYBOOK_YAML }),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(created.status(), StatusCode::CREATED);
+    let pb_id = parse_json(created).await["data"]["id"]
+        .as_str()
+        .unwrap()
+        .to_string();
+
+    // User B cannot read it (404, not 403, to avoid leaking existence).
+    let token_b = register_and_login(&app, "pbuserb@example.com").await;
+    let resp = app
+        .clone()
+        .oneshot(get(
+            &app,
+            &format!("/api/remediation/playbooks/{pb_id}"),
+            &token_b,
+        ))
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::NOT_FOUND);
+    test_db.cleanup().await;
+}
+
+#[tokio::test]
+async fn should_list_only_accessible_playbooks() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+
+    // User A creates a playbook in their own scope.
+    let token_a = register_and_login(&app, "pblista@example.com").await;
+    app.clone()
+        .oneshot(post(
+            &app,
+            "/api/remediation/playbooks",
+            &token_a,
+            json!({ "playbookId": "a-pb", "name": "A", "content": VALID_PLAYBOOK_YAML }),
+        ))
+        .await
+        .unwrap();
+
+    // User B creates their own; B's list must NOT include A's playbook.
+    let token_b = register_and_login(&app, "pblistb@example.com").await;
+    app.clone()
+        .oneshot(post(
+            &app,
+            "/api/remediation/playbooks",
+            &token_b,
+            json!({ "playbookId": "b-pb", "name": "B", "content": VALID_PLAYBOOK_YAML }),
+        ))
+        .await
+        .unwrap();
+
+    let resp = app
+        .clone()
+        .oneshot(get(&app, "/api/remediation/playbooks", &token_b))
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+    let json = parse_json(resp).await;
+    let rows = json["data"].as_array().unwrap();
+    assert!(
+        rows.iter().all(|r| r["playbookId"] != "a-pb"),
+        "user B must not see user A's playbook"
+    );
+    assert!(
+        rows.iter().any(|r| r["playbookId"] == "b-pb"),
+        "user B should see their own playbook"
+    );
     test_db.cleanup().await;
 }

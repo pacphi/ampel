@@ -34,6 +34,7 @@ use ampel_core::remediation::{Egress, ModelCredentials, ModelProvider, ProviderK
 use ampel_db::entities::{model_provider_account, organization};
 
 use crate::extractors::AuthUser;
+use crate::handlers::security::assert_endpoint_safe;
 use crate::handlers::{ApiError, ApiResponse};
 use crate::AppState;
 
@@ -267,6 +268,13 @@ pub async fn create_model_account(
         }
     }
 
+    // SSRF guard: a user-supplied endpoint_url must not point at internal hosts
+    // for external-egress providers (local-only providers are exempt — that is
+    // their purpose). Applied before any value is persisted or pinged.
+    if let Some(ep) = req.endpoint_url.as_deref() {
+        assert_endpoint_safe(ep, egress).await?;
+    }
+
     // Encrypt the key (if any). Never stored or logged in plaintext.
     let credentials_encrypted = match req.api_key.as_deref() {
         Some(key) if !key.is_empty() => Some(
@@ -353,12 +361,19 @@ pub async fn update_model_account(
     Json(req): Json<UpdateModelAccountRequest>,
 ) -> Result<Json<ApiResponse<ModelAccountResponse>>, ApiError> {
     let account = load_authorized_account(&state, auth.user_id, account_id).await?;
+    // Effective egress for the SSRF guard (egress_class is not user-updatable).
+    let egress = account
+        .egress_class
+        .parse::<Egress>()
+        .unwrap_or(Egress::External);
     let mut active: model_provider_account::ActiveModel = account.into();
 
     if let Some(v) = req.display_name {
         active.display_name = Set(v);
     }
     if let Some(v) = req.endpoint_url {
+        // SSRF guard on the replacement URL before it is persisted.
+        assert_endpoint_safe(&v, egress).await?;
         active.endpoint_url = Set(Some(v));
     }
     if let Some(v) = req.model_id {
@@ -435,6 +450,16 @@ pub async fn validate_model_account(
         ),
         None => None,
     };
+    // SSRF guard: re-check the stored endpoint at the actual network call site
+    // (defense in depth — the URL could have been set before this guard existed).
+    if let Some(ep) = account.endpoint_url.as_deref() {
+        let egress = account
+            .egress_class
+            .parse::<Egress>()
+            .unwrap_or(Egress::External);
+        assert_endpoint_safe(ep, egress).await?;
+    }
+
     let creds = ModelCredentials {
         api_key,
         endpoint_url: account.endpoint_url.clone(),
@@ -451,7 +476,21 @@ pub async fn validate_model_account(
     let now = Utc::now();
     let (status, is_valid, error_message) = match validation {
         Ok(()) => ("valid", true, None),
-        Err(e) => ("invalid", false, Some(e.to_string())),
+        Err(e) => {
+            // Log the detailed upstream error server-side (no secrets); return a
+            // generic message so provider/internal detail never leaks to clients.
+            tracing::warn!(
+                account_id = %account_id,
+                provider_kind = %kind,
+                error = %e,
+                "Model provider validation failed"
+            );
+            (
+                "invalid",
+                false,
+                Some("validation failed: could not reach or authenticate provider".to_string()),
+            )
+        }
     };
 
     let mut active: model_provider_account::ActiveModel = account.into();
