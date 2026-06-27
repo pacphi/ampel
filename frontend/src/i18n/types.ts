@@ -72,6 +72,7 @@ export type TranslationNamespace =
   | 'merge'
   | 'notifications'
   | 'providers'
+  | 'remediation'
   | 'repositories'
   | 'settings'
   | 'validation';
@@ -735,6 +736,114 @@ export interface ProvidersTranslations {
   title: string;
 }
 
+export interface RemediationTranslations {
+  autonomyHint: {
+    auto_merge: string;
+    consolidate: string;
+    dry_run: string;
+    off: string;
+  };
+  autonomyLevel: {
+    auto_with_approval: string;
+    dry_run_only: string;
+    fully_autonomous: string;
+    suggest_only: string;
+  };
+  autonomyStop: {
+    auto_merge: string;
+    consolidate: string;
+    dry_run: string;
+    off: string;
+  };
+  editor: {
+    autonomy: string;
+    confirmAutoMerge: {
+      confirm: string;
+      description: string;
+      title: string;
+    };
+    createTitle: string;
+    description: string;
+    editTitle: string;
+    enabled: string;
+    errors: {
+      saveFailed: string;
+      scopeIdRequired: string;
+    };
+    maxPrsPerRun: string;
+    minOpenPrs: string;
+    save: string;
+    saving: string;
+    scopeId: string;
+    scopeIdPlaceholder: string;
+    scopeType: string;
+  };
+  fleet: {
+    airGappedOff: string;
+    airGappedOn: string;
+    columns: {
+      actions: string;
+      airGapped: string;
+      eligibility: string;
+      openPrs: string;
+      policyState: string;
+      repository: string;
+    };
+    description: string;
+    eligible: string;
+    empty: string;
+    error: string;
+    notEligible: string;
+    preview: string;
+    tableLabel: string;
+    title: string;
+  };
+  nav: string;
+  policies: {
+    create: string;
+    description: string;
+    disable: string;
+    empty: string;
+    enable: string;
+    statusDisabled: string;
+    statusEnabled: string;
+    title: string;
+  };
+  policyState: {
+    auto_merge: string;
+    auto_with_approval: string;
+    disabled: string;
+    dry_run: string;
+    none: string;
+    suggest: string;
+  };
+  preview: {
+    blockedByAirGap: string;
+    conflicts: string;
+    description: string;
+    error: string;
+    estimatedDuration: string;
+    loading: string;
+    noneSelected: string;
+    prCount: string;
+    seconds: string;
+    title: string;
+    wouldSelect: string;
+  };
+  scopeType: {
+    org: string;
+    repository: string;
+    team: string;
+    user: string;
+  };
+  subtitle: string;
+  tabs: {
+    fleet: string;
+    policies: string;
+  };
+  title: string;
+}
+
 export interface RepositoriesTranslations {
   addFrom: {
     addAll: string;
@@ -949,6 +1058,7 @@ export interface Translations {
   merge: MergeTranslations;
   notifications: NotificationsTranslations;
   providers: ProvidersTranslations;
+  remediation: RemediationTranslations;
   repositories: RepositoriesTranslations;
   settings: SettingsTranslations;
   validation: ValidationTranslations;
