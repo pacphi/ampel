@@ -187,11 +187,41 @@ export interface ConflictReport {
   skipped: RemediationSkipped[];
 }
 
+/**
+ * Phase 4 — Agentic Remediation Tier: agent session telemetry.
+ *
+ * Present on a run detail only when the run engaged the Tier-2 agentic fixer.
+ * Field naming matches the backend JSON contract (camelCase).
+ */
+export type AgentSessionStatus =
+  | 'running'
+  | 'succeeded'
+  | 'failed'
+  | 'handoff_human'
+  | 'budget_exceeded';
+
+/** Source of the failure classification driving the agent prompt. */
+export type ClassifierSource = 'rules' | 'model' | 'heuristic';
+
+export interface AgentSession {
+  iterations: number;
+  maxIterations?: number | null;
+  tokensUsed: number;
+  costUsd?: string | number | null;
+  status: AgentSessionStatus;
+  failureClass?: string | null;
+  classifierSource?: ClassifierSource | string | null;
+  classifierConfidence?: number | null;
+  transcriptRef?: string | null;
+}
+
 /** Run detail (single-run endpoint): summary + dispositions + matrices. */
 export interface RunDetail extends RemediationRun {
   dispositions: PrDisposition[];
   ciMatrix: CiMatrix | null;
   conflictReport: ConflictReport | null;
+  /** Present only when the run engaged the Tier-2 agentic fixer (Phase 4). */
+  agentSession?: AgentSession | null;
 }
 
 export interface ListRunsFilters {

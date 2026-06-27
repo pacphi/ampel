@@ -17,6 +17,13 @@ pub struct Model {
     pub content: String,
     pub enabled: bool,
 
+    /// Ownership scope: `org` | `team` | `user` | `repository`. Authorization is
+    /// gated on the caller's access to `(scope_type, scope_id)`.
+    pub scope_type: String,
+    /// Owning scope UUID. `None` marks a built-in/global sentinel playbook
+    /// (readable by any authenticated caller, mutable by none).
+    pub scope_id: Option<Uuid>,
+
     // Timestamps
     pub created_at: DateTimeUtc,
     pub updated_at: DateTimeUtc,

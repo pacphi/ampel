@@ -59,7 +59,7 @@ describe('PolicyEditor', () => {
 
   it('should_applyAutoMerge_when_confirmationAccepted', async () => {
     const user = userEvent.setup();
-    render(<PolicyEditor />);
+    render(<PolicyEditor fleetPreviewed />);
 
     await user.type(screen.getByLabelText('remediation:editor.scopeId'), 'repo-1');
     await user.click(screen.getByRole('radio', { name: 'remediation:autonomyStop.auto_merge' }));
@@ -87,11 +87,57 @@ describe('PolicyEditor', () => {
 
   it('should_blockSave_when_scopeIdMissing', async () => {
     const user = userEvent.setup();
-    render(<PolicyEditor />);
+    render(<PolicyEditor fleetPreviewed />);
 
     await user.click(screen.getByRole('button', { name: 'remediation:editor.save' }));
 
     expect(screen.getByText('remediation:editor.errors.scopeIdRequired')).toBeInTheDocument();
     expect(mockCreate).not.toHaveBeenCalled();
+  });
+
+  // --- Phase 4: auto-merge-first-time gate (requires a fleet preview first) ---
+
+  it('should_blockAutoMergeConfirm_when_noFleetPreviewRun', async () => {
+    const user = userEvent.setup();
+    render(<PolicyEditor fleetPreviewed={false} />);
+
+    await user.click(screen.getByRole('radio', { name: 'remediation:autonomyStop.auto_merge' }));
+
+    // Gate message shown and the confirm button is disabled until a preview runs.
+    expect(
+      screen.getByText('remediation:editor.confirmAutoMerge.previewRequired')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'remediation:editor.confirmAutoMerge.confirm' })
+    ).toBeDisabled();
+  });
+
+  it('should_notApplyAutoMerge_when_gateBlocksConfirm', async () => {
+    const user = userEvent.setup();
+    const { container } = render(<PolicyEditor fleetPreviewed={false} />);
+
+    await user.type(screen.getByLabelText('remediation:editor.scopeId'), 'repo-1');
+    await user.click(screen.getByRole('radio', { name: 'remediation:autonomyStop.auto_merge' }));
+    // Clicking the disabled confirm has no effect; auto_merge is not applied.
+    await user.click(
+      screen.getByRole('button', { name: 'remediation:editor.confirmAutoMerge.confirm' })
+    );
+
+    const autoMergeRadio = container.querySelector<HTMLInputElement>('input[value="auto_merge"]');
+    expect(autoMergeRadio).not.toBeChecked();
+  });
+
+  it('should_allowAutoMerge_when_fleetPreviewedTrue', async () => {
+    const user = userEvent.setup();
+    render(<PolicyEditor fleetPreviewed />);
+
+    await user.click(screen.getByRole('radio', { name: 'remediation:autonomyStop.auto_merge' }));
+
+    expect(
+      screen.queryByText('remediation:editor.confirmAutoMerge.previewRequired')
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'remediation:editor.confirmAutoMerge.confirm' })
+    ).toBeEnabled();
   });
 });

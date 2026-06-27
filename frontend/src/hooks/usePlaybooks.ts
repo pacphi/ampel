@@ -1,0 +1,67 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { playbooksApi } from '@/api/playbooks';
+import type {
+  CreatePlaybookRequest,
+  PlaybookPreviewRequest,
+  UpdatePlaybookRequest,
+} from '@/types/playbook';
+
+export const playbookKeys = {
+  all: ['remediation', 'playbooks'] as const,
+  detail: (id: string) => ['remediation', 'playbooks', id] as const,
+};
+
+export function usePlaybooks() {
+  return useQuery({
+    queryKey: playbookKeys.all,
+    queryFn: () => playbooksApi.listPlaybooks(),
+  });
+}
+
+export function usePlaybook(id: string) {
+  return useQuery({
+    queryKey: playbookKeys.detail(id),
+    queryFn: () => playbooksApi.getPlaybook(id),
+    enabled: !!id,
+  });
+}
+
+export function useCreatePlaybook() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CreatePlaybookRequest) => playbooksApi.createPlaybook(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: playbookKeys.all });
+    },
+  });
+}
+
+export function useUpdatePlaybook() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdatePlaybookRequest }) =>
+      playbooksApi.updatePlaybook(id, data),
+    onSuccess: (_data, { id }) => {
+      queryClient.invalidateQueries({ queryKey: playbookKeys.all });
+      queryClient.invalidateQueries({ queryKey: playbookKeys.detail(id) });
+    },
+  });
+}
+
+export function useDeletePlaybook() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => playbooksApi.deletePlaybook(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: playbookKeys.all });
+    },
+  });
+}
+
+/** Preview mutation — renders the assembled prompt with no model call. */
+export function usePreviewPlaybook() {
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data?: PlaybookPreviewRequest }) =>
+      playbooksApi.previewPlaybook(id, data),
+  });
+}

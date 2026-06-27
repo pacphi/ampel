@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Bot, ClipboardList, ListChecks, Plus, Server, SlidersHorizontal } from 'lucide-react';
+import {
+  Bot,
+  BrainCircuit,
+  ClipboardList,
+  FileCode,
+  ListChecks,
+  Plus,
+  Server,
+  SlidersHorizontal,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +19,8 @@ import { PolicyEditor } from '@/components/remediation/PolicyEditor';
 import { RunsPanel } from '@/components/remediation/RunsPanel';
 import { AuditLog } from '@/components/remediation/AuditLog';
 import { KillSwitch } from '@/components/remediation/KillSwitch';
+import { ModelAccountManager } from '@/components/remediation/ModelAccountManager';
+import { PlaybookEditor } from '@/components/remediation/PlaybookEditor';
 import {
   useDeleteRemediationPolicy,
   useRemediationPolicies,
@@ -17,12 +28,14 @@ import {
 } from '@/hooks/useRemediationPolicies';
 import type { RemediationPolicy } from '@/types/remediation';
 
-type Tab = 'fleet' | 'runs' | 'policies' | 'audit';
+type Tab = 'fleet' | 'runs' | 'policies' | 'modelAccounts' | 'playbooks' | 'audit';
 
 const TAB_ICON = {
   fleet: Server,
   runs: ListChecks,
   policies: SlidersHorizontal,
+  modelAccounts: BrainCircuit,
+  playbooks: FileCode,
   audit: ClipboardList,
 } as const;
 
@@ -47,6 +60,8 @@ export default function Remediation() {
     { id: 'fleet', label: t('remediation:tabs.fleet') },
     { id: 'runs', label: t('remediation:tabs.runs') },
     { id: 'policies', label: t('remediation:tabs.policies') },
+    { id: 'modelAccounts', label: t('remediation:tabs.modelAccounts') },
+    { id: 'playbooks', label: t('remediation:tabs.playbooks') },
     { id: 'audit', label: t('remediation:tabs.audit') },
   ];
 
@@ -112,6 +127,42 @@ export default function Remediation() {
             </CardHeader>
             <CardContent>
               <RunsPanel />
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {tab === 'modelAccounts' && (
+        <div
+          role="tabpanel"
+          id="remediation-panel-modelAccounts"
+          aria-labelledby="remediation-tab-modelAccounts"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('remediation:modelAccounts.title')}</CardTitle>
+              <CardDescription>{t('remediation:modelAccounts.description')}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ModelAccountManager />
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {tab === 'playbooks' && (
+        <div
+          role="tabpanel"
+          id="remediation-panel-playbooks"
+          aria-labelledby="remediation-tab-playbooks"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('remediation:playbooks.title')}</CardTitle>
+              <CardDescription>{t('remediation:playbooks.description')}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <PlaybookEditor />
             </CardContent>
           </Card>
         </div>

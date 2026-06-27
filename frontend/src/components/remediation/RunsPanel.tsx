@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RunTimeline } from './RunTimeline';
 import { CiCheckMatrix } from './CiCheckMatrix';
 import { ConflictReport } from './ConflictReport';
+import { AgentSessionViewer } from './AgentSessionViewer';
 import {
   useApproveRun,
   useCancelRun,
@@ -118,6 +119,17 @@ function RunDetailView({ runId, onBack }: { runId: string; onBack: () => void })
               <ConflictReport report={run.conflictReport} />
             </CardContent>
           </Card>
+
+          {run.agentSession && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">{t('remediation:agentSession.title')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <AgentSessionViewer session={run.agentSession} />
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>

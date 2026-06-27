@@ -9,6 +9,7 @@ rust_i18n::i18n!("locales", fallback = "en");
 
 mod jobs;
 mod observability;
+mod providers;
 mod services;
 
 use ampel_core::services::SandboxRunner;
