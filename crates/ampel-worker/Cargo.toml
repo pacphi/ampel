@@ -48,3 +48,7 @@ ampel-providers.workspace = true
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
 sea-orm-migration.workspace = true
+# Enable the in-process fakes for CI-safe integration tests (no DB/container/network):
+# ampel-core's FakeSandboxRunner and ampel-providers' MockProvider.
+ampel-core = { workspace = true, features = ["test-utils"] }
+ampel-providers = { workspace = true, features = ["test-utils"] }
