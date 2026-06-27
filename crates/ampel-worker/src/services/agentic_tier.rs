@@ -37,7 +37,9 @@ use ampel_core::remediation::{
     AgentBudget, AgentOutcome, AgentTerminalReason, Egress, FailureClassifier, ModelCredentials,
     ModelProvider, ProviderKind, RemediationTier,
 };
-use ampel_core::services::{LearningOutcome, LearningSignal, LearningSignalRecorder};
+use ampel_core::services::{
+    LearningOutcome, LearningSignal, LearningSignalRecorder, ReflexionMemory,
+};
 use ampel_db::encryption::EncryptionService;
 use ampel_db::entities::{model_provider_account, remediation_agent_session};
 use async_trait::async_trait;
@@ -197,6 +199,12 @@ pub struct DbAgenticTier {
     /// `learning_signal` row is appended per completed model-driven session.
     /// `None` → no learning signal (the session row is still persisted).
     learning_recorder: Option<Arc<dyn LearningSignalRecorder>>,
+    /// Optional reflexion memory (Phase 5b+, feature-flagged). When set, the
+    /// harness recalls similar prior trajectories (as untrusted context) and
+    /// records this session's trajectory. `None` (default) → byte-identical to
+    /// the deterministic learning_signal-only path. Production constructs the
+    /// vector-backed memory only behind the `reflexion` cargo feature.
+    reflexion_memory: Option<Arc<dyn ReflexionMemory>>,
 }
 
 impl DbAgenticTier {
@@ -226,6 +234,7 @@ impl DbAgenticTier {
             account_scope: None,
             provider_override: None,
             learning_recorder: None,
+            reflexion_memory: None,
         }
     }
 
@@ -233,6 +242,15 @@ impl DbAgenticTier {
     /// SeaORM-backed recorder; tests inject an in-memory fake.
     pub fn with_learning_recorder(mut self, recorder: Arc<dyn LearningSignalRecorder>) -> Self {
         self.learning_recorder = Some(recorder);
+        self
+    }
+
+    /// Attach a [`ReflexionMemory`] (Phase 5b+, feature-flagged). Production wires
+    /// the vector-backed memory only when the `reflexion` cargo feature is on;
+    /// tests inject the in-memory fake. Omitting this leaves the run on the
+    /// deterministic default path (no recall, no trajectory record).
+    pub fn with_reflexion_memory(mut self, memory: Arc<dyn ReflexionMemory>) -> Self {
+        self.reflexion_memory = Some(memory);
         self
     }
 
@@ -425,7 +443,12 @@ impl AgenticTier for DbAgenticTier {
         let (playbook, budget) = self.resolve_playbook()?;
         let classification = self.classifier.classify(&self.failing_logs).await;
 
-        let harness = RemediationAgentHarness::new(self.classifier.clone());
+        let mut harness = RemediationAgentHarness::new(self.classifier.clone());
+        // Attach reflexion memory only when configured (feature-flagged). The
+        // default path leaves the harness memory-less → byte-identical behavior.
+        if let Some(memory) = self.reflexion_memory.as_ref() {
+            harness = harness.with_memory(memory.clone(), kind);
+        }
         let outcome = harness
             .run(
                 self.failing_logs.clone(),

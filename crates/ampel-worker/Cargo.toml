@@ -49,6 +49,16 @@ rust-embed = "8"
 ort = { version = "=2.0.0-rc.10", optional = true }
 ndarray = { version = "0.16", optional = true }
 
+# Vector-backed reflexion memory (Phase 5b+). Feature-gated OFF by default
+# (mirrors `onnx`): default-features disabled so NO egress (`api-embeddings` =
+# reqwest), NO native SIMD (`simd` = simsimd), NO ONNX (`onnx-embeddings` = ort).
+# Only the pure-Rust HNSW index (`hnsw` -> hnsw_rs) + in-memory store
+# (`memory-only`) are pulled — air-gap-safe and CI-buildable.
+ruvector-core = { version = "2.2.3", default-features = false, features = [
+    "hnsw",
+    "memory-only",
+], optional = true }
+
 # Utilities
 uuid.workspace = true
 chrono.workspace = true
@@ -74,6 +84,10 @@ default = []
 # cannot build in the current environment, verify the default feature set
 # instead (see crate docs / slice-2 report).
 onnx = ["dep:ort", "dep:ndarray"]
+# Enables the vector-backed reflexion memory (VectorReflexionMemory). OFF by
+# default and NOT in `default`: when off, ruvector-core is not compiled and the
+# deterministic learning_signal bias is the sole decision path. Air-gap-safe.
+reflexion = ["dep:ruvector-core"]
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
