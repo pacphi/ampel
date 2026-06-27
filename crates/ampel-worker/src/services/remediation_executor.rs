@@ -1,4 +1,4 @@
-//! Drives one remediation run through the Phase-2 state machine.
+//! Drives one remediation run through the Phase-2/3 state machine.
 //!
 //! Wires the injected collaborators (repository CAS, sandbox runner, verifier,
 //! provider adapter) into an [`RemediationOrchestrator`] and walks a single
@@ -6,18 +6,42 @@
 //! All state mutation flows through the orchestrator's CAS transitions; the
 //! executor only owns the *sequencing* and the one transition the orchestrator
 //! leaves to the caller (a non-safe `verify` ⇒ `handoff_human`).
+//!
+//! ## Human-approval gate (Phase 3)
+//! Under the `auto_with_approval` autonomy tier a safe `verify` parks the run in
+//! `awaiting_approval` (the orchestrator stops short of merging). The executor
+//! detects this and returns [`RunOutcome::AwaitingApproval`] cleanly — this is
+//! NOT a failure, so the C1 error→`Failed` wrapper must never see it.
+//!
+//! A human approves out-of-band: the API `approve` endpoint CAS-advances the run
+//! `awaiting_approval → merging`. The next time the worker drives the run, the
+//! executor finds it already in `merging` and **resumes at `do_merge`** (with the
+//! orchestrator's TOCTOU re-verify), then finalizes.
+//!
+//! ## Observability (Phase 3)
+//! Metric emission lives here (the worker layer) so `ampel-core` stays
+//! dependency-light. The executor records run terminal counts/durations, merge
+//! counts, skipped-conflict counts, and handoff counts at the points where each
+//! outcome is observed. The happy path also emits `RemediationRunMerged` and
+//! `SourcePrsClosed` notifications via the injected [`RemediationNotifier`].
 
 use std::sync::Arc;
+use std::time::Instant;
 
 use ampel_core::errors::AmpelResult;
-use ampel_core::remediation::{PrRef, RunState};
+use ampel_core::remediation::{MergeDisposition, PrRef, RunState};
 use ampel_core::services::{
-    ConsolidateResult, MergeOutcome, RemediationOrchestrator, RemediationProvider,
+    ConsolidateResult, HandoffReason, MergeOutcome, RemediationOrchestrator, RemediationProvider,
     RemediationRunRepository, RepoContext, RunUpdate, SandboxRunner, VerificationService,
 };
 use uuid::Uuid;
 
-/// Terminal outcome of an executor run.
+use crate::observability;
+use crate::services::notifier::{
+    NoopNotifier, RemediationNotifier, RunMergedNotification, SourcePrsClosedNotification,
+};
+
+/// Terminal (or parked) outcome of an executor run.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum RunOutcome {
     /// Autonomy did not permit writes — parked in `no_op`.
@@ -26,12 +50,18 @@ pub enum RunOutcome {
     Completed,
     /// Withheld at a safety gate (non-green verify or TOCTOU) — `handoff_human`.
     HandoffHuman,
+    /// Parked at the human-approval gate (`awaiting_approval`). Not terminal and
+    /// not a failure — the run resumes once a human approves.
+    AwaitingApproval,
 }
 
 /// Sequences a single remediation run.
 pub struct RemediationExecutor {
     repo: Arc<dyn RemediationRunRepository>,
     orchestrator: RemediationOrchestrator,
+    /// Provider kind used as the `provider` label on merge metrics + payloads.
+    provider_label: String,
+    notifier: Arc<dyn RemediationNotifier>,
 }
 
 impl RemediationExecutor {
@@ -43,19 +73,39 @@ impl RemediationExecutor {
     ) -> Self {
         let orchestrator =
             RemediationOrchestrator::new(repo.clone(), sandbox, verification, provider);
-        Self { repo, orchestrator }
+        Self {
+            repo,
+            orchestrator,
+            provider_label: "unknown".to_string(),
+            notifier: Arc::new(NoopNotifier),
+        }
     }
 
-    /// Execute `run_id` end-to-end: consolidate → verify → (re-verify) merge →
-    /// finalize. Short-circuits to [`RunOutcome::NoOp`] under read-only autonomy
-    /// and to [`RunOutcome::HandoffHuman`] at any safety gate.
+    /// Set the provider-kind label used on merge metrics and notification
+    /// payloads (e.g. `github`).
+    pub fn with_provider_label(mut self, label: impl Into<String>) -> Self {
+        self.provider_label = label.into();
+        self
+    }
+
+    /// Inject the notification delivery seam (defaults to a no-op).
+    pub fn with_notifier(mut self, notifier: Arc<dyn RemediationNotifier>) -> Self {
+        self.notifier = notifier;
+        self
+    }
+
+    /// Execute `run_id`: consolidate → verify → (gate?) → (re-verify) merge →
+    /// finalize. Short-circuits to [`RunOutcome::NoOp`] under read-only autonomy,
+    /// to [`RunOutcome::AwaitingApproval`] at the human gate, and to
+    /// [`RunOutcome::HandoffHuman`] at any safety gate. A run already in `merging`
+    /// (human-approved) resumes at `do_merge`.
     ///
     /// Crash safety (chaos DoD): ANY error from the orchestration drives a
     /// best-effort CAS of the run from its current active state into
     /// [`RunState::Failed`] (with a secret-scrubbed `error_message`) BEFORE the
     /// error propagates — the run is never left in a non-terminal active state.
-    /// (A TTL reaper for orphaned runs that crash the process entirely is out of
-    /// scope here and tracked separately.)
+    /// The `awaiting_approval` parked state is an `Ok` outcome and is therefore
+    /// never treated as a failure by this wrapper.
     pub async fn execute(
         &self,
         run_id: Uuid,
@@ -65,10 +115,15 @@ impl RemediationExecutor {
         // Capture the secret up front so we can scrub it from any error message
         // before persisting — `repo_ctx` is moved into the run below.
         let secret = repo_ctx.credential.expose().to_string();
+        let started = Instant::now();
         match self.execute_inner(run_id, prs, repo_ctx).await {
-            Ok(outcome) => Ok(outcome),
+            Ok(outcome) => {
+                self.record_terminal_metric(outcome, started.elapsed().as_secs_f64());
+                Ok(outcome)
+            }
             Err(e) => {
                 self.mark_failed(run_id, &e, &secret).await;
+                observability::record_run_terminal("failed", started.elapsed().as_secs_f64());
                 Err(e)
             }
         }
@@ -80,18 +135,34 @@ impl RemediationExecutor {
         prs: Vec<PrRef>,
         repo_ctx: RepoContext,
     ) -> AmpelResult<RunOutcome> {
+        // Resume a human-approved run already advanced to `merging` (the API
+        // approve endpoint CAS-advanced awaiting_approval → merging). Pick up at
+        // do_merge; consolidate/verify already ran on the prior pass.
+        if self.run_state(run_id).await? == Some(RunState::Merging) {
+            return self.merge_and_finalize(run_id, &prs).await;
+        }
+
         // 1. Consolidate (sandbox). Read-only autonomy parks the run in no_op.
-        match self
+        let consolidated = match self
             .orchestrator
             .consolidate(run_id, prs.clone(), repo_ctx)
             .await?
         {
             ConsolidateResult::NoOp => return Ok(RunOutcome::NoOp),
-            ConsolidateResult::Consolidated(_) => {}
+            ConsolidateResult::Consolidated(outcome) => outcome,
+        };
+        // Count any skipped-conflict dispositions the sandbox surfaced.
+        for (_, disposition) in &consolidated.dispositions {
+            if let MergeDisposition::SkippedConflict { reason } = disposition {
+                observability::record_conflict(observability::classify_conflict(reason));
+            }
         }
 
-        // 2. Verify (ADR-010). A safe result transitions verifying→merging; a
-        //    non-safe result leaves the run in `verifying`, so we hand it off.
+        // 2. Verify (ADR-010). A non-safe result leaves the run in `verifying`,
+        //    so we hand it off. A safe result advances the run — but the *next*
+        //    state depends on the autonomy tier (the orchestrator decides):
+        //    `auto_with_approval` parks in `awaiting_approval`; otherwise it
+        //    moves to `merging`.
         let verification = self.orchestrator.verify(run_id).await?;
         if !verification.is_safe_to_merge() {
             self.repo
@@ -102,20 +173,76 @@ impl RemediationExecutor {
                     RunUpdate::none(),
                 )
                 .await?;
+            observability::record_handoff("verification_unsafe");
             return Ok(RunOutcome::HandoffHuman);
         }
-
-        // 3. Re-verify immediately before merge (TOCTOU). A moved SHA or a fresh
-        //    non-green result hands off without ever calling merge.
-        match self.orchestrator.do_merge(run_id).await? {
-            MergeOutcome::HandedOff { .. } => return Ok(RunOutcome::HandoffHuman),
-            MergeOutcome::Merged { .. } => {}
+        // Parked at the human gate? Stop cleanly (NOT a failure, NOT terminal).
+        if self.run_state(run_id).await? == Some(RunState::AwaitingApproval) {
+            return Ok(RunOutcome::AwaitingApproval);
         }
 
-        // 4. Finalize: close each source PR with a "Superseded by #N" comment.
+        // 3 + 4. Re-verify (TOCTOU) + merge, then finalize.
+        self.merge_and_finalize(run_id, &prs).await
+    }
+
+    /// Drive `do_merge` (with the orchestrator's TOCTOU re-verify) and, on a
+    /// successful merge, finalize the run. Emits merge metrics and the merge /
+    /// sources-closed notifications. A TOCTOU/unsafe re-verify hands off.
+    async fn merge_and_finalize(&self, run_id: Uuid, prs: &[PrRef]) -> AmpelResult<RunOutcome> {
+        match self.orchestrator.do_merge(run_id).await? {
+            MergeOutcome::HandedOff { reason, .. } => {
+                observability::record_handoff(handoff_reason_label(reason));
+                return Ok(RunOutcome::HandoffHuman);
+            }
+            MergeOutcome::Merged { .. } => {
+                observability::record_merge(&self.provider_label);
+            }
+        }
+
+        let consolidated_pr = self
+            .repo
+            .get_run(run_id)
+            .await?
+            .and_then(|r| r.consolidated_pr_number)
+            .unwrap_or_default();
+
+        self.notifier
+            .run_merged(RunMergedNotification {
+                run_id,
+                consolidated_pr_number: consolidated_pr,
+                provider: self.provider_label.clone(),
+            })
+            .await;
+
+        // Finalize: close each source PR with a "Superseded by #N" comment.
         let source_prs: Vec<i64> = prs.iter().map(|p| p.number as i64).collect();
         self.orchestrator.finalize(run_id, &source_prs).await?;
+
+        self.notifier
+            .sources_closed(SourcePrsClosedNotification {
+                run_id,
+                consolidated_pr_number: consolidated_pr,
+                closed_pr_numbers: source_prs,
+            })
+            .await;
+
         Ok(RunOutcome::Completed)
+    }
+
+    /// Record the terminal run counter + duration histogram for a finished run.
+    /// `awaiting_approval` is parked, not terminal, so it is intentionally skipped.
+    fn record_terminal_metric(&self, outcome: RunOutcome, duration_secs: f64) {
+        let state = match outcome {
+            RunOutcome::Completed => "completed",
+            RunOutcome::NoOp => "no_op",
+            RunOutcome::HandoffHuman => "handoff_human",
+            RunOutcome::AwaitingApproval => return,
+        };
+        observability::record_run_terminal(state, duration_secs);
+    }
+
+    async fn run_state(&self, run_id: Uuid) -> AmpelResult<Option<RunState>> {
+        Ok(self.repo.get_run(run_id).await?.map(|r| r.state))
     }
 
     /// Best-effort: move an active run into `Failed`, recording a scrubbed error.
@@ -155,6 +282,14 @@ impl RemediationExecutor {
                 );
             }
         }
+    }
+}
+
+/// Bounded label for a [`HandoffReason`] (Prometheus-safe).
+fn handoff_reason_label(reason: HandoffReason) -> &'static str {
+    match reason {
+        HandoffReason::ShaChanged => "sha_changed",
+        HandoffReason::NotSafe => "not_safe",
     }
 }
 

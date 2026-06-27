@@ -97,6 +97,7 @@ dependencies = [
  "ampel-providers",
  "ampel-worker",
  "anyhow",
+ "async-stream",
  "async-trait",
  "axum 0.8.8",
  "axum-extra",
@@ -261,6 +262,8 @@ dependencies = [
  "chrono",
  "config",
  "dotenvy",
+ "metrics",
+ "metrics-exporter-prometheus",
  "rust-i18n",
  "sea-orm",
  "sea-orm-migration",
@@ -2665,11 +2668,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dd7399781913e5393588a8d8c6a2867bf85fb38eaf2502fdce465aad2dc6f034"
 dependencies = [
  "base64 0.22.1",
+ "http-body-util",
+ "hyper",
+ "hyper-util",
  "indexmap 2.13.0",
+ "ipnet",
  "metrics",
  "metrics-util",
  "quanta",
  "thiserror 1.0.69",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]

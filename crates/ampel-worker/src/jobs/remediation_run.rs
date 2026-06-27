@@ -22,9 +22,23 @@ use ampel_db::entities::{provider_account, repository};
 use ampel_db::repositories::SeaOrmRemediationRunRepository;
 use ampel_providers::traits::ProviderCredentials;
 
+use crate::services::notifier::{LoggingNotifier, RemediationNotifier, SlackNotifier};
 use crate::services::{
     remediation_capable_provider, ProviderAdapter, RemediationExecutor, RunOutcome,
 };
+
+/// Build the notification delivery channel from the environment. When
+/// `REMEDIATION_SLACK_WEBHOOK_URL` is set, events are delivered to Slack via the
+/// shared `NotificationService`; otherwise they are logged (no network).
+fn notifier_from_env() -> Arc<dyn RemediationNotifier> {
+    match std::env::var("REMEDIATION_SLACK_WEBHOOK_URL") {
+        Ok(url) if !url.is_empty() => {
+            let channel = std::env::var("REMEDIATION_SLACK_CHANNEL").ok();
+            Arc::new(SlackNotifier::new(url, channel))
+        }
+        _ => Arc::new(LoggingNotifier),
+    }
+}
 
 /// Drives one remediation run identified by `run_id`.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -100,7 +114,9 @@ impl RemediationRunJob {
         ));
 
         let executor =
-            RemediationExecutor::new(run_repo, sandbox, VerificationService::new(), adapter);
+            RemediationExecutor::new(run_repo, sandbox, VerificationService::new(), adapter)
+                .with_provider_label(repo.provider.clone())
+                .with_notifier(notifier_from_env());
 
         let repo_ctx = RepoContext {
             clone_url: repo.url.clone(),

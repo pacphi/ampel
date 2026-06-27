@@ -8,6 +8,7 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 rust_i18n::i18n!("locales", fallback = "en");
 
 mod jobs;
+mod observability;
 mod services;
 
 use ampel_core::services::SandboxRunner;
@@ -41,6 +42,20 @@ async fn main() -> anyhow::Result<()> {
         .init();
 
     tracing::info!("Starting Ampel Worker...");
+
+    // Install the Prometheus scrape endpoint for remediation metrics. The
+    // exporter serves `/metrics` on METRICS_PORT (default 9100) for Prometheus
+    // to scrape; describe the metric names/units up front.
+    let metrics_port = std::env::var("METRICS_PORT")
+        .ok()
+        .and_then(|v| v.parse::<u16>().ok())
+        .unwrap_or(9100);
+    let metrics_addr = std::net::SocketAddr::from(([0, 0, 0, 0], metrics_port));
+    metrics_exporter_prometheus::PrometheusBuilder::new()
+        .with_http_listener(metrics_addr)
+        .install()?;
+    observability::describe_metrics();
+    tracing::info!("Prometheus metrics listening on http://{metrics_addr}/metrics");
 
     // Load configuration
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");

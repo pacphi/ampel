@@ -6,7 +6,8 @@ use axum::{
 
 use crate::handlers::{
     accounts, analytics, auth, bot_rules, bulk_merge, dashboard, notifications, pr_filters,
-    pull_requests, remediation, repositories, teams, user_preferences, user_settings,
+    pull_requests, remediation, remediation_runs, repositories, teams, user_preferences,
+    user_settings,
 };
 use crate::{
     health_handler, metrics_handler,
@@ -164,6 +165,29 @@ pub fn create_router(state: AppState) -> Router {
             post(remediation::preview_repository),
         )
         .route("/api/remediation/fleet", get(remediation::get_fleet))
+        // Remediation runs (Phase 3 — Observability & UX)
+        .route("/api/remediation/runs", get(remediation_runs::list_runs))
+        .route("/api/remediation/runs/{id}", get(remediation_runs::get_run))
+        .route(
+            "/api/remediation/runs/{id}/events",
+            get(remediation_runs::run_events),
+        )
+        .route(
+            "/api/remediation/runs/{id}/approve",
+            post(remediation_runs::approve_run),
+        )
+        .route(
+            "/api/remediation/runs/{id}/cancel",
+            post(remediation_runs::cancel_run),
+        )
+        .route(
+            "/api/remediation/sse-token",
+            post(remediation_runs::create_sse_token),
+        )
+        .route(
+            "/api/remediation/repositories/{repo_id}/run",
+            post(remediation_runs::trigger_run),
+        )
         // Analytics routes
         .route(
             "/api/analytics/summary",
