@@ -1,0 +1,107 @@
+{
+  "nav": "Remediation",
+  "title": "Fleet Remediation",
+  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
+  "tabs": {
+    "fleet": "Fleet",
+    "policies": "Policies"
+  },
+  "fleet": {
+    "title": "Fleet Overview",
+    "description": "Per-repository remediation eligibility and policy state.",
+    "tableLabel": "Repository remediation status",
+    "error": "Failed to load the fleet overview.",
+    "empty": "No repositories found.",
+    "eligible": "Eligible",
+    "notEligible": "Not eligible",
+    "airGappedOn": "Air-gapped",
+    "airGappedOff": "Connected",
+    "preview": "Preview",
+    "columns": {
+      "repository": "Repository",
+      "openPrs": "Open PRs",
+      "eligibility": "Eligibility",
+      "policyState": "Policy",
+      "airGapped": "Air-gap",
+      "actions": "Actions"
+    }
+  },
+  "policyState": {
+    "none": "No policy",
+    "disabled": "Disabled",
+    "dry_run": "Dry-run",
+    "suggest": "Suggest",
+    "auto_with_approval": "Auto (with approval)",
+    "auto_merge": "Auto-merge"
+  },
+  "preview": {
+    "title": "Dry-run preview — {{repo}}",
+    "description": "Read-only projection of what a remediation run would do. No changes are made.",
+    "loading": "Computing preview…",
+    "error": "Failed to compute the preview.",
+    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
+    "prCount": "Pull requests selected",
+    "estimatedDuration": "Estimated duration",
+    "seconds": "{{count}}s",
+    "conflicts": "Predicted conflicts",
+    "wouldSelect": "Would select",
+    "noneSelected": "No pull requests would be selected."
+  },
+  "scopeType": {
+    "repository": "Repository",
+    "team": "Team",
+    "org": "Organization",
+    "user": "User"
+  },
+  "autonomyLevel": {
+    "dry_run_only": "Dry-run only",
+    "suggest_only": "Suggest only",
+    "auto_with_approval": "Auto with approval",
+    "fully_autonomous": "Fully autonomous"
+  },
+  "autonomyStop": {
+    "off": "Off",
+    "dry_run": "Dry-run",
+    "consolidate": "Consolidate-only",
+    "auto_merge": "Auto-merge"
+  },
+  "autonomyHint": {
+    "off": "Remediation is disabled for this scope.",
+    "dry_run": "Previews consolidation plans without making any changes.",
+    "consolidate": "Consolidates pull requests but requires human approval before merging.",
+    "auto_merge": "Consolidates and merges automatically without human approval."
+  },
+  "editor": {
+    "createTitle": "Create policy",
+    "editTitle": "Edit policy",
+    "description": "Configure how remediation behaves for this scope.",
+    "scopeType": "Scope type",
+    "scopeId": "Scope ID",
+    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
+    "enabled": "Enabled",
+    "autonomy": "Autonomy level",
+    "minOpenPrs": "Minimum open PRs",
+    "maxPrsPerRun": "Max PRs per run",
+    "save": "Save policy",
+    "saving": "Saving…",
+    "errors": {
+      "scopeIdRequired": "Scope ID is required.",
+      "saveFailed": "Failed to save the policy."
+    },
+    "confirmAutoMerge": {
+      "title": "Enable auto-merge?",
+      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
+      "confirm": "Enable auto-merge"
+    }
+  },
+  "policies": {
+    "title": "Policies",
+    "description": "Remediation policies you manage across your scopes.",
+    "create": "New policy",
+    "empty": "No policies yet. Create one to get started.",
+    "statusEnabled": "Enabled",
+    "statusDisabled": "Disabled",
+    "enable": "Enable",
+    "disable": "Disable"
+  }
+}

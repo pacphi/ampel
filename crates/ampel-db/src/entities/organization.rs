@@ -11,6 +11,10 @@ pub struct Model {
     pub slug: String,
     pub description: Option<String>,
     pub logo_url: Option<String>,
+    /// ADR-014 org-level air-gapped ceiling. When true, the effective
+    /// remediation policy is forced air-gapped regardless of policy config.
+    #[sea_orm(default_value = false)]
+    pub air_gapped: bool,
     pub created_at: DateTimeUtc,
     pub updated_at: DateTimeUtc,
 }

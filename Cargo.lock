@@ -148,6 +148,7 @@ dependencies = [
  "lettre",
  "rand 0.9.4",
  "reqwest",
+ "sea-orm",
  "serde",
  "serde_json",
  "thiserror 1.0.69",

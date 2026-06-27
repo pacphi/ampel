@@ -7,6 +7,7 @@ pub mod dashboard;
 pub mod notifications;
 pub mod pr_filters;
 pub mod pull_requests;
+pub mod remediation;
 pub mod repositories;
 pub mod teams;
 pub mod user_preferences;
@@ -76,6 +77,10 @@ impl ApiError {
 
     pub fn conflict(message: impl Into<String>) -> Self {
         Self::new(StatusCode::CONFLICT, message)
+    }
+
+    pub fn unprocessable_entity(message: impl Into<String>) -> Self {
+        Self::new(StatusCode::UNPROCESSABLE_ENTITY, message)
     }
 }
 

@@ -9,6 +9,10 @@ license.workspace = true
 tokio.workspace = true
 async-trait.workspace = true
 
+# Database (read-side queries for remediation services; entities defined
+# locally to avoid an ampel-db -> ampel-core dependency cycle)
+sea-orm.workspace = true
+
 # Serialization
 serde.workspace = true
 serde_json.workspace = true

@@ -1,16 +1,25 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, GitBranch, GitMerge, Settings, CircleDot, BarChart3 } from 'lucide-react';
+import {
+  LayoutDashboard,
+  GitBranch,
+  GitMerge,
+  Settings,
+  CircleDot,
+  BarChart3,
+  Bot,
+} from 'lucide-react';
 
 export default function Sidebar() {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation(['common', 'remediation']);
   const location = useLocation();
 
   const navigation = [
     { name: t('common:navigation.dashboard'), href: '/dashboard', icon: LayoutDashboard },
     { name: t('common:navigation.repositories'), href: '/repositories', icon: GitBranch },
     { name: t('common:navigation.merge'), href: '/merge', icon: GitMerge },
+    { name: t('remediation:nav'), href: '/remediation', icon: Bot },
     { name: t('common:navigation.analytics'), href: '/analytics', icon: BarChart3 },
     { name: t('common:navigation.settings'), href: '/settings', icon: Settings },
   ];
