@@ -149,6 +149,7 @@ dependencies = [
  "lettre",
  "rand 0.9.4",
  "reqwest",
+ "rust_decimal",
  "sea-orm",
  "serde",
  "serde_json",

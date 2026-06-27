@@ -17,6 +17,10 @@ sea-orm.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 
+# Exact decimal arithmetic for model cost/spend accounting (never use f64 for
+# money). Already present transitively via sea-orm; pinned here as a direct dep.
+rust_decimal = { version = "1", features = ["serde"] }
+
 # Validation
 validator.workspace = true
 

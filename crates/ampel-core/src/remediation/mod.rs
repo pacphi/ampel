@@ -5,16 +5,30 @@
 //! defined in [`db`] to avoid an `ampel-db -> ampel-core` dependency cycle.
 
 mod consolidation;
+mod failure_classifier;
+mod model_provider;
 mod policy;
 mod run;
 
 pub(crate) mod db;
 
 pub use consolidation::{ConsolidationPlan, MergeDisposition, PrRef};
+pub use failure_classifier::{
+    classify_heuristic, ClassificationResult, ClassifierSource, FailureClass, FailureClassifier,
+    HeuristicClassifier,
+};
+pub use model_provider::{
+    AgentBudget, AgentOutcome, AgentTask, AgentTerminalReason, ContextBlock, CostModel, Egress,
+    InferenceRequest, InferenceResponse, Modality, ModelCaps, ModelCredentials, ModelKind,
+    ModelProvider, NormalizedProviderOutput, OutputContract, ProviderKind, ToolCall,
+};
 pub use policy::{
     AutonomyLevel, PrSelectionStrategy, RemediationCriteria, RemediationTier, ScopeType,
 };
 pub use run::RunState;
+
+#[cfg(any(test, feature = "test-utils"))]
+pub use model_provider::MockModelProvider;
 
 #[cfg(test)]
 pub(crate) mod testkit {
