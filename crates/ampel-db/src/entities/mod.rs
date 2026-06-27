@@ -1,6 +1,7 @@
 pub mod auto_merge_rule;
 pub mod ci_check;
 pub mod health_score;
+pub mod learning_signal;
 pub mod merge_operation;
 pub mod merge_operation_item;
 pub mod model_provider_account;
@@ -25,6 +26,7 @@ pub mod user_settings;
 pub use auto_merge_rule::Entity as AutoMergeRuleEntity;
 pub use ci_check::Entity as CICheckEntity;
 pub use health_score::Entity as HealthScoreEntity;
+pub use learning_signal::Entity as LearningSignalEntity;
 pub use merge_operation::Entity as MergeOperationEntity;
 pub use merge_operation_item::Entity as MergeOperationItemEntity;
 pub use model_provider_account::Entity as ModelProviderAccountEntity;

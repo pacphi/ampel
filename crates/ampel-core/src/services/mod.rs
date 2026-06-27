@@ -1,4 +1,5 @@
 mod auth_service;
+mod learning_signal;
 mod notification_service;
 mod policy_resolver;
 mod pr_service;
@@ -9,6 +10,7 @@ mod sandbox_runner;
 mod verification_service;
 
 pub use auth_service::*;
+pub use learning_signal::*;
 pub use notification_service::*;
 pub use policy_resolver::*;
 pub use pr_service::*;

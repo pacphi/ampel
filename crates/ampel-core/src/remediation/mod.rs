@@ -23,7 +23,8 @@ pub use model_provider::{
     ModelProvider, NormalizedProviderOutput, OutputContract, ProviderKind, ToolCall,
 };
 pub use policy::{
-    AutonomyLevel, PrSelectionStrategy, RemediationCriteria, RemediationTier, ScopeType,
+    AutonomyLevel, ModelSelectionMode, PrSelectionStrategy, RemediationCriteria, RemediationTier,
+    ScopeType,
 };
 pub use run::RunState;
 

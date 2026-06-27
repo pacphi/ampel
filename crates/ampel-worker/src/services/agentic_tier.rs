@@ -37,6 +37,7 @@ use ampel_core::remediation::{
     AgentBudget, AgentOutcome, AgentTerminalReason, Egress, FailureClassifier, ModelCredentials,
     ModelProvider, ProviderKind, RemediationTier,
 };
+use ampel_core::services::{LearningOutcome, LearningSignal, LearningSignalRecorder};
 use ampel_db::encryption::EncryptionService;
 use ampel_db::entities::{model_provider_account, remediation_agent_session};
 use async_trait::async_trait;
@@ -192,6 +193,10 @@ pub struct DbAgenticTier {
     /// Test seam: inject a provider (e.g. `MockModelProvider`) instead of the
     /// real reqwest factory. `None` in production → [`build_model_provider`].
     provider_override: Option<Arc<dyn ModelProvider>>,
+    /// Optional strategy-learning recorder (Phase 5b). When set, one
+    /// `learning_signal` row is appended per completed model-driven session.
+    /// `None` → no learning signal (the session row is still persisted).
+    learning_recorder: Option<Arc<dyn LearningSignalRecorder>>,
 }
 
 impl DbAgenticTier {
@@ -220,7 +225,15 @@ impl DbAgenticTier {
             playbook_override_yaml: None,
             account_scope: None,
             provider_override: None,
+            learning_recorder: None,
         }
+    }
+
+    /// Attach a [`LearningSignalRecorder`] (Phase 5b). Production wires the
+    /// SeaORM-backed recorder; tests inject an in-memory fake.
+    pub fn with_learning_recorder(mut self, recorder: Arc<dyn LearningSignalRecorder>) -> Self {
+        self.learning_recorder = Some(recorder);
+        self
     }
 
     /// Restrict model-account selection to the run's tenant scope (ADR-008). The
@@ -332,6 +345,9 @@ impl DbAgenticTier {
 #[async_trait]
 impl AgenticTier for DbAgenticTier {
     async fn attempt(&self, run_id: Uuid) -> AmpelResult<AgentTierOutcome> {
+        // Wall-clock start for the learning signal's duration_secs (Phase 5b).
+        let started = std::time::Instant::now();
+
         // 1. Select the account + provider.
         let account = self.select_account().await?;
         let kind: ProviderKind = account.provider_kind.parse()?;
@@ -457,6 +473,32 @@ impl AgenticTier for DbAgenticTier {
             outcome.iterations,
             outcome.cost.to_string().parse::<f64>().unwrap_or(0.0),
         );
+
+        // 6. Strategy-learning signal (Phase 5b). One row per completed
+        // model-driven session: provider KIND (never a key), classified failure
+        // class, the playbook that drove it, terminal outcome, duration, cost.
+        // Early egress/spend handoffs return above without a model attempt and so
+        // record no learning signal (no provider-vs-failure-class data point).
+        if let Some(recorder) = self.learning_recorder.as_ref() {
+            let playbook_id = if self.playbook_override_yaml.is_some() {
+                "override"
+            } else {
+                "global"
+            };
+            let signal = LearningSignal {
+                provider: kind,
+                failure_class: classification.class,
+                playbook_id: playbook_id.to_string(),
+                playbook_version: playbook.version as i32,
+                outcome: LearningOutcome::from_passed(outcome.passed),
+                duration_secs: started.elapsed().as_secs() as i64,
+                cost_usd: Some(outcome.cost),
+            };
+            if let Err(e) = recorder.record(signal).await {
+                // Learning is best-effort; never fail the run over a signal write.
+                tracing::warn!(%run_id, error = %e, "failed to record learning signal");
+            }
+        }
 
         Ok(AgentTierOutcome::from_agent_outcome(&outcome))
     }
