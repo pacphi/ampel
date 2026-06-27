@@ -8,6 +8,7 @@ pub mod notifications;
 pub mod pr_filters;
 pub mod pull_requests;
 pub mod remediation;
+pub mod remediation_runs;
 pub mod repositories;
 pub mod teams;
 pub mod user_preferences;

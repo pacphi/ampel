@@ -97,6 +97,7 @@ dependencies = [
  "ampel-providers",
  "ampel-worker",
  "anyhow",
+ "async-stream",
  "async-trait",
  "axum 0.8.8",
  "axum-extra",
