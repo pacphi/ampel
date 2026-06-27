@@ -4,7 +4,9 @@
   "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
   "tabs": {
     "fleet": "Fleet",
-    "policies": "Policies"
+    "runs": "Runs",
+    "policies": "Policies",
+    "audit": "Audit"
   },
   "fleet": {
     "title": "Fleet Overview",
@@ -103,5 +105,104 @@
     "statusDisabled": "Disabled",
     "enable": "Enable",
     "disable": "Disable"
+  },
+  "killSwitch": {
+    "label": "Pause all remediation",
+    "active": "Remediation active",
+    "paused": "Remediation paused",
+    "noPolicy": "No policy to pause"
+  },
+  "runs": {
+    "title": "Remediation runs",
+    "description": "History of remediation runs with live state, CI status, and conflict details.",
+    "tableLabel": "Remediation run history",
+    "timelineLabel": "Run state timeline",
+    "error": "Failed to load remediation runs.",
+    "empty": "No remediation runs yet.",
+    "back": "Back to runs",
+    "view": "View",
+    "timeline": "Timeline",
+    "approve": "Approve",
+    "reject": "Reject",
+    "dispositions": "Pull request dispositions",
+    "noDispositions": "No dispositions recorded yet.",
+    "columns": {
+      "repository": "Repository",
+      "state": "State",
+      "pr": "Consolidated PR",
+      "started": "Started",
+      "actions": "Actions"
+    }
+  },
+  "runState": {
+    "created": "Created",
+    "selecting": "Selecting PRs",
+    "consolidating": "Consolidating",
+    "verifying": "Verifying",
+    "awaiting_approval": "Awaiting approval",
+    "merging": "Merging",
+    "finalizing": "Finalizing",
+    "agent_fixing": "Agent fixing",
+    "completed": "Completed",
+    "handoff_human": "Handed off to human",
+    "failed": "Failed",
+    "cancelled": "Cancelled",
+    "no_op": "No-op"
+  },
+  "disposition": {
+    "consolidated": "Consolidated",
+    "closedWithRef": "Closed (superseded)",
+    "skippedConflict": "Skipped (conflict)",
+    "leftOpen": "Left open"
+  },
+  "ci": {
+    "title": "CI checks",
+    "tableLabel": "CI check matrix",
+    "empty": "No CI information available.",
+    "statusCheck": "CI status",
+    "predictedConflict": "Predicted conflict",
+    "required": "Required",
+    "optional": "Optional",
+    "headSha": "Head SHA",
+    "logs": "Logs",
+    "viewLogs": "View logs",
+    "columns": {
+      "check": "Check",
+      "type": "Type",
+      "status": "Status"
+    },
+    "tone": {
+      "green": "Passing",
+      "yellow": "Pending",
+      "red": "Failing"
+    }
+  },
+  "conflicts": {
+    "title": "Conflicts",
+    "empty": "No conflicts or skipped pull requests.",
+    "conflicted": "Conflicted",
+    "skipped": "Skipped"
+  },
+  "audit": {
+    "title": "Audit log",
+    "description": "Append-only record of autonomous merges and closes.",
+    "tableLabel": "Remediation audit log",
+    "empty": "No autonomous actions recorded.",
+    "filterRepo": "Repository",
+    "allRepos": "All repositories",
+    "since": "Since",
+    "until": "Until",
+    "exportCsv": "Export CSV",
+    "action": {
+      "merged": "Merged",
+      "consolidated": "Consolidated"
+    },
+    "columns": {
+      "action": "Action",
+      "repository": "Repository",
+      "pr": "PR",
+      "autonomy": "Autonomy",
+      "completedAt": "Completed"
+    }
   }
 }

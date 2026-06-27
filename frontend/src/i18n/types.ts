@@ -737,6 +737,28 @@ export interface ProvidersTranslations {
 }
 
 export interface RemediationTranslations {
+  audit: {
+    action: {
+      consolidated: string;
+      merged: string;
+    };
+    allRepos: string;
+    columns: {
+      action: string;
+      autonomy: string;
+      completedAt: string;
+      pr: string;
+      repository: string;
+    };
+    description: string;
+    empty: string;
+    exportCsv: string;
+    filterRepo: string;
+    since: string;
+    tableLabel: string;
+    title: string;
+    until: string;
+  };
   autonomyHint: {
     auto_merge: string;
     consolidate: string;
@@ -754,6 +776,40 @@ export interface RemediationTranslations {
     consolidate: string;
     dry_run: string;
     off: string;
+  };
+  ci: {
+    columns: {
+      check: string;
+      status: string;
+      type: string;
+    };
+    empty: string;
+    headSha: string;
+    logs: string;
+    optional: string;
+    predictedConflict: string;
+    required: string;
+    statusCheck: string;
+    tableLabel: string;
+    title: string;
+    tone: {
+      green: string;
+      red: string;
+      yellow: string;
+    };
+    viewLogs: string;
+  };
+  conflicts: {
+    conflicted: string;
+    empty: string;
+    skipped: string;
+    title: string;
+  };
+  disposition: {
+    closedWithRef: string;
+    consolidated: string;
+    leftOpen: string;
+    skippedConflict: string;
   };
   editor: {
     autonomy: string;
@@ -798,6 +854,12 @@ export interface RemediationTranslations {
     tableLabel: string;
     title: string;
   };
+  killSwitch: {
+    active: string;
+    label: string;
+    noPolicy: string;
+    paused: string;
+  };
   nav: string;
   policies: {
     create: string;
@@ -830,6 +892,43 @@ export interface RemediationTranslations {
     title: string;
     wouldSelect: string;
   };
+  runState: {
+    agent_fixing: string;
+    awaiting_approval: string;
+    cancelled: string;
+    completed: string;
+    consolidating: string;
+    created: string;
+    failed: string;
+    finalizing: string;
+    handoff_human: string;
+    merging: string;
+    no_op: string;
+    selecting: string;
+    verifying: string;
+  };
+  runs: {
+    approve: string;
+    back: string;
+    columns: {
+      actions: string;
+      pr: string;
+      repository: string;
+      started: string;
+      state: string;
+    };
+    description: string;
+    dispositions: string;
+    empty: string;
+    error: string;
+    noDispositions: string;
+    reject: string;
+    tableLabel: string;
+    timeline: string;
+    timelineLabel: string;
+    title: string;
+    view: string;
+  };
   scopeType: {
     org: string;
     repository: string;
@@ -838,8 +937,10 @@ export interface RemediationTranslations {
   };
   subtitle: string;
   tabs: {
+    audit: string;
     fleet: string;
     policies: string;
+    runs: string;
   };
   title: string;
 }
