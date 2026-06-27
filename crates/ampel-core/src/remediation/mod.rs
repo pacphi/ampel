@@ -6,13 +6,15 @@
 
 mod consolidation;
 mod policy;
+mod run;
 
 pub(crate) mod db;
 
-pub use consolidation::{ConsolidationPlan, PrRef};
+pub use consolidation::{ConsolidationPlan, MergeDisposition, PrRef};
 pub use policy::{
     AutonomyLevel, PrSelectionStrategy, RemediationCriteria, RemediationTier, ScopeType,
 };
+pub use run::RunState;
 
 #[cfg(test)]
 pub(crate) mod testkit {

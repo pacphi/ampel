@@ -36,5 +36,10 @@ rand.workspace = true
 lettre.workspace = true
 reqwest.workspace = true
 
+[features]
+# Exposes in-process fakes (InMemoryRemediationRunRepository, FakeSandboxRunner)
+# for downstream crates' tests without pulling in a real DB/container.
+test-utils = []
+
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
