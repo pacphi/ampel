@@ -333,6 +333,18 @@ impl RemediationOrchestrator {
     /// Otherwise merge and transition `merging`→`finalizing`.
     pub async fn do_merge(&self, run_id: Uuid) -> AmpelResult<MergeOutcome> {
         let run = self.load(run_id).await?;
+
+        // Guard the irreversible side-effect: refuse to merge unless the run is
+        // genuinely in `Merging`. The Merging->Finalizing CAS below is NOT the
+        // only guard — an out-of-order/wrong-state call must fail BEFORE the
+        // provider merge is ever reached (no merge on stale state).
+        if run.state != RunState::Merging {
+            return Err(AmpelError::ValidationError(format!(
+                "do_merge requires state `merging`, run {run_id} is in `{}`",
+                run.state
+            )));
+        }
+
         let pr = self.consolidated_pr(&run)?;
         let snapshot_sha = run.head_sha.clone().ok_or_else(|| {
             AmpelError::ValidationError("no verified snapshot sha for merge".into())
@@ -353,11 +365,12 @@ impl RemediationOrchestrator {
             } else {
                 HandoffReason::NotSafe
             };
+            // M5: persist the handoff reason for observability (no secrets).
             self.cas(
                 run.id,
                 RunState::Merging,
                 RunState::HandoffHuman,
-                RunUpdate::none(),
+                RunUpdate::with_error_message(format!("handoff: {reason:?}")),
             )
             .await?;
             return Ok(MergeOutcome::HandedOff {
@@ -382,10 +395,39 @@ impl RemediationOrchestrator {
     /// recorded during `consolidate`; this only performs the close + comment.
     pub async fn finalize(&self, run_id: Uuid, source_prs: &[i64]) -> AmpelResult<()> {
         let run = self.load(run_id).await?;
+
+        // Guard the irreversible side-effect: refuse to close any source PR
+        // unless the run is genuinely in `Finalizing`. A wrong-state call must
+        // fail BEFORE any close happens.
+        if run.state != RunState::Finalizing {
+            return Err(AmpelError::ValidationError(format!(
+                "finalize requires state `finalizing`, run {run_id} is in `{}`",
+                run.state
+            )));
+        }
+
         let consolidated = self.consolidated_pr(&run)?;
         let comment = format!("Superseded by #{consolidated}");
+
+        // M4: re-entrant + idempotent. Skip PRs already recorded as closed so a
+        // partial-close failure is recoverable on re-run without double-closing.
+        let already_closed = self.repo.closed_source_prs(run.id).await?;
         for &pr in source_prs {
+            if already_closed.contains(&pr) {
+                continue;
+            }
             self.provider.close_pull_request(pr, &comment).await?;
+            // Record the close BEFORE proceeding so a later failure leaves an
+            // accurate idempotency ledger for the re-run.
+            self.repo
+                .record_disposition(
+                    run.id,
+                    pr,
+                    crate::remediation::MergeDisposition::ClosedWithRef {
+                        consolidated_pr_number: consolidated as u64,
+                    },
+                )
+                .await?;
         }
         self.cas(
             run.id,
@@ -432,7 +474,7 @@ impl RemediationOrchestrator {
 mod tests {
     use super::*;
     use crate::remediation::testkit;
-    use crate::remediation::{AutonomyLevel, RemediationTier};
+    use crate::remediation::{AutonomyLevel, MergeDisposition, RemediationTier};
 
     fn criteria(strategy: PrSelectionStrategy, skip_draft: bool, max: i32) -> RemediationCriteria {
         RemediationCriteria {
@@ -700,6 +742,8 @@ mod tests {
         mergeable: bool,
         merge_calls: Mutex<u32>,
         closed: Mutex<Vec<(i64, String)>>,
+        /// PRs whose *next* close attempt should fail once (then succeed).
+        fail_close_once: Mutex<HashSet<i64>>,
     }
 
     impl MockProvider {
@@ -712,7 +756,13 @@ mod tests {
                 mergeable: true,
                 merge_calls: Mutex::new(0),
                 closed: Mutex::new(Vec::new()),
+                fail_close_once: Mutex::new(HashSet::new()),
             }
+        }
+
+        /// Arrange for the next `close_pull_request(pr)` to fail exactly once.
+        fn fail_next_close(&self, pr: i64) {
+            self.fail_close_once.lock().unwrap().insert(pr);
         }
 
         fn checks_handle(&self) -> std::sync::MutexGuard<'_, Vec<RawCiCheck>> {
@@ -755,6 +805,12 @@ mod tests {
         }
 
         async fn close_pull_request(&self, pr_number: i64, comment: &str) -> AmpelResult<()> {
+            // Simulate a transient close failure (chaos GAP-2) exactly once.
+            if self.fail_close_once.lock().unwrap().remove(&pr_number) {
+                return Err(AmpelError::ProviderError(format!(
+                    "transient close failure for #{pr_number}"
+                )));
+            }
             self.closed
                 .lock()
                 .unwrap()
@@ -820,7 +876,23 @@ mod tests {
             .all(|(_, c)| c == "Superseded by #9001"));
         let final_run = repo.get_run(run.id).await.unwrap().unwrap();
         assert_eq!(final_run.state, RunState::Completed);
-        assert_eq!(repo.dispositions_for(run.id).len(), 2);
+        // 2 `Consolidated` (from consolidate) + 2 `ClosedWithRef` (from finalize).
+        let dispositions = repo.dispositions_for(run.id);
+        assert_eq!(dispositions.len(), 4);
+        assert_eq!(
+            dispositions
+                .iter()
+                .filter(|(_, d)| matches!(d, MergeDisposition::Consolidated))
+                .count(),
+            2
+        );
+        assert_eq!(
+            dispositions
+                .iter()
+                .filter(|(_, d)| matches!(d, MergeDisposition::ClosedWithRef { .. }))
+                .count(),
+            2
+        );
     }
 
     #[tokio::test]
@@ -946,5 +1018,128 @@ mod tests {
         // Assert: the CAS loses and surfaces as an error; no sandbox write.
         assert!(matches!(result, Err(AmpelError::InternalError(_))));
         assert!(!sandbox.was_invoked());
+    }
+
+    #[tokio::test]
+    async fn should_refuse_merge_when_run_not_in_merging_state() {
+        // Arrange: consolidate leaves the run in `verifying`; we skip `verify`,
+        // so the run is NOT in `merging` when do_merge is (wrongly) invoked.
+        let repo = Arc::new(InMemoryRemediationRunRepository::new());
+        let sandbox = Arc::new(FakeSandboxRunner::with_outcome(Some(9001), "headsha"));
+        let provider = Arc::new(MockProvider::green(&["headsha", "headsha"]));
+        let orch = orchestrator(repo.clone(), sandbox, provider.clone());
+        let run = repo
+            .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+            .await
+            .unwrap();
+        orch.consolidate(run.id, vec![pr_ref(1)], repo_ctx())
+            .await
+            .unwrap();
+
+        // Act: call do_merge while still in `verifying`.
+        let result = orch.do_merge(run.id).await;
+
+        // Assert: refused BEFORE any merge side-effect.
+        assert!(matches!(result, Err(AmpelError::ValidationError(_))));
+        assert_eq!(provider.merge_call_count(), 0);
+        assert_eq!(
+            repo.get_run(run.id).await.unwrap().unwrap().state,
+            RunState::Verifying
+        );
+    }
+
+    #[tokio::test]
+    async fn should_refuse_finalize_when_run_not_in_finalizing_state() {
+        // Arrange: drive a handoff so the run lands in `handoff_human`, then try
+        // to finalize it (illegal — finalize must only run from `finalizing`).
+        let repo = Arc::new(InMemoryRemediationRunRepository::new());
+        let sandbox = Arc::new(FakeSandboxRunner::with_outcome(Some(9001), "sha-old"));
+        let provider = Arc::new(MockProvider::green(&["sha-old", "sha-new"]));
+        let orch = orchestrator(repo.clone(), sandbox, provider.clone());
+        let run = repo
+            .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+            .await
+            .unwrap();
+        orch.consolidate(run.id, vec![pr_ref(1)], repo_ctx())
+            .await
+            .unwrap();
+        orch.verify(run.id).await.unwrap();
+        orch.do_merge(run.id).await.unwrap(); // -> handoff_human (SHA changed)
+
+        // Act
+        let result = orch.finalize(run.id, &[1]).await;
+
+        // Assert: refused, zero source-PR closes.
+        assert!(matches!(result, Err(AmpelError::ValidationError(_))));
+        assert!(provider.closed_prs().is_empty());
+        assert_eq!(
+            repo.get_run(run.id).await.unwrap().unwrap().state,
+            RunState::HandoffHuman
+        );
+    }
+
+    #[tokio::test]
+    async fn should_persist_handoff_reason_on_handoff() {
+        // Arrange: SHA moves between verify and the merge gate (TOCTOU handoff).
+        let repo = Arc::new(InMemoryRemediationRunRepository::new());
+        let sandbox = Arc::new(FakeSandboxRunner::with_outcome(Some(9001), "sha-old"));
+        let provider = Arc::new(MockProvider::green(&["sha-old", "sha-new"]));
+        let orch = orchestrator(repo.clone(), sandbox, provider);
+        let run = repo
+            .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+            .await
+            .unwrap();
+        orch.consolidate(run.id, vec![pr_ref(1)], repo_ctx())
+            .await
+            .unwrap();
+        orch.verify(run.id).await.unwrap();
+
+        // Act
+        orch.do_merge(run.id).await.unwrap();
+
+        // Assert: the handoff reason was persisted (not none).
+        let final_run = repo.get_run(run.id).await.unwrap().unwrap();
+        assert_eq!(final_run.state, RunState::HandoffHuman);
+        let msg = final_run.error_message.expect("handoff reason persisted");
+        assert!(msg.contains("ShaChanged"));
+    }
+
+    #[tokio::test]
+    async fn should_be_reentrant_and_idempotent_on_partial_finalize_failure() {
+        // Arrange: walk to `finalizing`, then make the 2nd source close fail once.
+        let repo = Arc::new(InMemoryRemediationRunRepository::new());
+        let sandbox = Arc::new(FakeSandboxRunner::with_outcome(Some(9001), "headsha"));
+        let provider = Arc::new(MockProvider::green(&["headsha", "headsha"]));
+        let orch = orchestrator(repo.clone(), sandbox, provider.clone());
+        let run = repo
+            .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+            .await
+            .unwrap();
+        orch.consolidate(run.id, vec![pr_ref(1), pr_ref(2)], repo_ctx())
+            .await
+            .unwrap();
+        orch.verify(run.id).await.unwrap();
+        orch.do_merge(run.id).await.unwrap(); // -> finalizing
+        provider.fail_next_close(2);
+
+        // Act 1: first finalize closes #1, then fails on #2 — state stays finalizing.
+        let first = orch.finalize(run.id, &[1, 2]).await;
+        assert!(first.is_err());
+        assert_eq!(
+            repo.get_run(run.id).await.unwrap().unwrap().state,
+            RunState::Finalizing
+        );
+
+        // Act 2: re-run finalize — must skip #1 (already closed) and close #2.
+        orch.finalize(run.id, &[1, 2]).await.unwrap();
+
+        // Assert: each PR closed exactly once; #1 not double-closed; completed.
+        let closed: Vec<i64> = provider.closed_prs().iter().map(|(n, _)| *n).collect();
+        assert_eq!(closed.iter().filter(|&&n| n == 1).count(), 1);
+        assert_eq!(closed.iter().filter(|&&n| n == 2).count(), 1);
+        assert_eq!(
+            repo.get_run(run.id).await.unwrap().unwrap().state,
+            RunState::Completed
+        );
     }
 }

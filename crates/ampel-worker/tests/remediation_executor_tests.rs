@@ -17,7 +17,7 @@ use ampel_core::services::{
 use ampel_db::migrations::test_support::apply_remediation_schema;
 use ampel_db::repositories::SeaOrmRemediationRunRepository;
 use ampel_providers::mock::{MockProvider, RemediationCall};
-use ampel_providers::traits::{ProviderCICheck, ProviderCredentials};
+use ampel_providers::traits::{ProviderCICheck, ProviderCredentials, ProviderPullRequest};
 use ampel_providers::RemediationCapable;
 use ampel_worker::services::{ProviderAdapter, RemediationExecutor, RunOutcome};
 use sea_orm::{Database, DatabaseConnection};
@@ -62,6 +62,36 @@ fn red_check(name: &str) -> ProviderCICheck {
     }
 }
 
+/// A consolidated-PR record with an explicit mergeable signal. The adapter
+/// fails closed, so reaching the merge gate now requires `is_mergeable == Some(true)`.
+fn consolidated_pr_record(number: i32, mergeable: Option<bool>) -> ProviderPullRequest {
+    let now = chrono::Utc::now();
+    ProviderPullRequest {
+        provider_id: number.to_string(),
+        number,
+        title: "Consolidated".to_string(),
+        description: None,
+        url: format!("https://example.test/pr/{number}"),
+        state: "open".to_string(),
+        source_branch: "ampel/remediation".to_string(),
+        target_branch: "main".to_string(),
+        author: "ampel".to_string(),
+        author_avatar_url: None,
+        is_draft: false,
+        is_mergeable: mergeable,
+        has_conflicts: false,
+        additions: 0,
+        deletions: 0,
+        changed_files: 0,
+        commits_count: 0,
+        comments_count: 0,
+        created_at: now,
+        updated_at: now,
+        merged_at: None,
+        closed_at: None,
+    }
+}
+
 fn pr(n: i32) -> PrRef {
     PrRef {
         number: n,
@@ -102,12 +132,18 @@ async fn should_reach_completed_and_close_sources_on_happy_path() {
         Some(CONSOLIDATED_PR),
         "headsha",
     ));
-    let mock = MockProvider::new().with_ci_checks(
-        OWNER,
-        REPO,
-        CONSOLIDATED_PR as i32,
-        vec![green_check("build")],
-    );
+    let mock = MockProvider::new()
+        .with_ci_checks(
+            OWNER,
+            REPO,
+            CONSOLIDATED_PR as i32,
+            vec![green_check("build")],
+        )
+        .with_pull_requests(
+            OWNER,
+            REPO,
+            vec![consolidated_pr_record(CONSOLIDATED_PR as i32, Some(true))],
+        );
     let executor = RemediationExecutor::new(
         run_repo.clone(),
         sandbox,
@@ -207,6 +243,11 @@ async fn should_handoff_without_merge_when_sha_changes_at_gate() {
             CONSOLIDATED_PR as i32,
             vec![green_check("build")],
         )
+        .with_pull_requests(
+            OWNER,
+            REPO,
+            vec![consolidated_pr_record(CONSOLIDATED_PR as i32, Some(true))],
+        )
         .with_default_branch_sha("sha-old");
     let orchestrator = RemediationOrchestrator::new(
         run_repo.clone(),
@@ -245,6 +286,96 @@ async fn should_handoff_without_merge_when_sha_changes_at_gate() {
 }
 
 #[tokio::test]
+async fn should_fail_run_to_terminal_when_sandbox_errors() {
+    // Arrange (chaos C1): the sandbox crashes during consolidation. The run must
+    // end in a terminal `failed` state with a scrubbed error_message, and the
+    // provider must never be touched (zero merges/closes).
+    let conn = sqlite().await;
+    let run_repo: Arc<dyn RemediationRunRepository> =
+        Arc::new(SeaOrmRemediationRunRepository::new(conn.clone()));
+    let sandbox = Arc::new(FakeSandboxRunner::failing("sandbox container crashed"));
+    let mock = MockProvider::new();
+    let executor = RemediationExecutor::new(
+        run_repo.clone(),
+        sandbox,
+        VerificationService::new(),
+        adapter(&mock),
+    );
+    let run = run_repo
+        .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+        .await
+        .unwrap();
+
+    // Act
+    let result = executor
+        .execute(run.id, vec![pr(1), pr(2)], repo_ctx())
+        .await;
+
+    // Assert: error surfaced, run is terminal `failed`, error_message recorded,
+    // and the provider saw zero remediation calls (no merge, no close).
+    assert!(result.is_err());
+    let persisted = run_repo.get_run(run.id).await.unwrap().unwrap();
+    assert_eq!(persisted.state, RunState::Failed);
+    let msg = persisted.error_message.expect("error_message persisted");
+    assert!(msg.contains("sandbox container crashed"));
+    assert!(!msg.contains("ghp_secret_pat")); // secret scrubbed
+    assert!(mock.remediation_calls().is_empty());
+}
+
+#[tokio::test]
+async fn should_handoff_without_merge_when_mergeable_is_unknown() {
+    // Arrange (pentest C4): green CI, but the consolidated PR's mergeable signal
+    // is unknown (None). Fail-closed => not safe => handoff, never merge.
+    let conn = sqlite().await;
+    let run_repo: Arc<dyn RemediationRunRepository> =
+        Arc::new(SeaOrmRemediationRunRepository::new(conn.clone()));
+    let sandbox = Arc::new(FakeSandboxRunner::with_outcome(
+        Some(CONSOLIDATED_PR),
+        "headsha",
+    ));
+    let mock = MockProvider::new()
+        .with_ci_checks(
+            OWNER,
+            REPO,
+            CONSOLIDATED_PR as i32,
+            vec![green_check("build")],
+        )
+        .with_pull_requests(
+            OWNER,
+            REPO,
+            vec![consolidated_pr_record(CONSOLIDATED_PR as i32, None)],
+        );
+    let executor = RemediationExecutor::new(
+        run_repo.clone(),
+        sandbox,
+        VerificationService::new(),
+        adapter(&mock),
+    );
+    let run = run_repo
+        .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+        .await
+        .unwrap();
+
+    // Act
+    let outcome = executor
+        .execute(run.id, vec![pr(1)], repo_ctx())
+        .await
+        .unwrap();
+
+    // Assert: unknown mergeable is treated as unsafe — handed off at the verify
+    // gate (so do_merge is never reached) and no source PR is closed.
+    assert_eq!(outcome, RunOutcome::HandoffHuman);
+    assert_eq!(
+        run_repo.get_run(run.id).await.unwrap().unwrap().state,
+        RunState::HandoffHuman
+    );
+    assert!(!mock
+        .remediation_calls()
+        .iter()
+        .any(|c| matches!(c, RemediationCall::ClosePullRequest { .. })));
+}
+
+#[tokio::test]
 async fn should_handoff_without_merge_when_ci_turns_red_at_gate() {
     // Arrange: green at verify, but CI flips red before the merge-gate re-verify.
     let conn = sqlite().await;
@@ -254,12 +385,18 @@ async fn should_handoff_without_merge_when_ci_turns_red_at_gate() {
         Some(CONSOLIDATED_PR),
         "headsha",
     ));
-    let mock = MockProvider::new().with_ci_checks(
-        OWNER,
-        REPO,
-        CONSOLIDATED_PR as i32,
-        vec![green_check("build")],
-    );
+    let mock = MockProvider::new()
+        .with_ci_checks(
+            OWNER,
+            REPO,
+            CONSOLIDATED_PR as i32,
+            vec![green_check("build")],
+        )
+        .with_pull_requests(
+            OWNER,
+            REPO,
+            vec![consolidated_pr_record(CONSOLIDATED_PR as i32, Some(true))],
+        );
     let orchestrator = RemediationOrchestrator::new(
         run_repo.clone(),
         sandbox,

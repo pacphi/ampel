@@ -27,6 +27,8 @@ pub struct RemediationRun {
     pub consolidated_pr_number: Option<i64>,
     /// The CI SHA snapshot captured at `verify` time — the TOCTOU anchor.
     pub head_sha: Option<String>,
+    /// Last persisted error / handoff reason (secret-scrubbed), if any.
+    pub error_message: Option<String>,
 }
 
 /// Optional column updates applied atomically with a state transition.
@@ -47,6 +49,15 @@ impl RunUpdate {
     pub fn with_head_sha(sha: impl Into<String>) -> Self {
         Self {
             head_sha: Some(sha.into()),
+            ..Self::default()
+        }
+    }
+
+    /// Update carrying an error/handoff reason for observability on a terminal
+    /// or handoff transition. The caller is responsible for scrubbing secrets.
+    pub fn with_error_message(message: impl Into<String>) -> Self {
+        Self {
+            error_message: Some(message.into()),
             ..Self::default()
         }
     }
@@ -95,6 +106,12 @@ pub trait RemediationRunRepository: Send + Sync {
 
     /// Record the consolidated PR number produced by the run.
     async fn set_consolidated_pr(&self, run_id: Uuid, pr_number: i64) -> AmpelResult<()>;
+
+    /// Source PR numbers already recorded as *closed* (superseded) for this run.
+    ///
+    /// Used by `finalize` to stay idempotent across re-entry: a partial close
+    /// failure can be re-run without double-closing PRs already handled.
+    async fn closed_source_prs(&self, run_id: Uuid) -> AmpelResult<Vec<i64>>;
 }
 
 #[cfg(any(test, feature = "test-utils"))]
@@ -159,6 +176,7 @@ mod in_memory {
                 autonomy_level,
                 consolidated_pr_number: None,
                 head_sha: None,
+                error_message: None,
             };
             self.inner.lock().unwrap().runs.insert(run.id, run.clone());
             Ok(run)
@@ -196,6 +214,9 @@ mod in_memory {
             if let Some(sha) = updates.head_sha {
                 run.head_sha = Some(sha);
             }
+            if let Some(msg) = updates.error_message {
+                run.error_message = Some(msg);
+            }
             Ok(true)
         }
 
@@ -230,6 +251,22 @@ mod in_memory {
                 run.consolidated_pr_number = Some(pr_number);
             }
             Ok(())
+        }
+
+        async fn closed_source_prs(&self, run_id: Uuid) -> AmpelResult<Vec<i64>> {
+            Ok(self
+                .inner
+                .lock()
+                .unwrap()
+                .dispositions
+                .get(&run_id)
+                .map(|ds| {
+                    ds.iter()
+                        .filter(|(_, d)| matches!(d, MergeDisposition::ClosedWithRef { .. }))
+                        .map(|(pr, _)| *pr)
+                        .collect()
+                })
+                .unwrap_or_default())
         }
     }
 }

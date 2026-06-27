@@ -111,15 +111,16 @@ impl RemediationProvider for ProviderAdapter {
             .await
             .map_err(provider_err)?;
 
-        // Mergeability from the PR when available; assume mergeable otherwise
-        // (the sandbox already produced a clean merge — CI gates the rest).
+        // Mergeability from the PR — FAIL CLOSED. An unknown (`None`) or
+        // unfetchable mergeable signal must NOT be treated as mergeable: we never
+        // merge on optimistic assumptions about provider data.
         let mergeable = match self
             .provider
             .get_pull_request(&self.credentials, &self.owner, &self.repo, pr_number as i32)
             .await
         {
-            Ok(pr) => pr.is_mergeable.unwrap_or(true),
-            Err(_) => true,
+            Ok(pr) => pr.is_mergeable.unwrap_or(false),
+            Err(_) => false,
         };
 
         Ok(ProviderRefStatus {

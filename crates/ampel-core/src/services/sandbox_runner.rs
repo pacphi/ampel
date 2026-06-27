@@ -107,6 +107,7 @@ mod fake {
     //! Deterministic in-process fake — no subprocess, no container.
 
     use super::*;
+    use crate::errors::AmpelError;
     use std::sync::Mutex;
 
     /// Returns a deterministic outcome (all PRs `Consolidated`) and records the
@@ -114,6 +115,9 @@ mod fake {
     pub struct FakeSandboxRunner {
         consolidated_pr_number: Option<i64>,
         head_sha: String,
+        /// When set, `run_consolidation` returns this error instead of an outcome
+        /// (simulates a sandbox/infra crash for chaos tests).
+        error: Option<String>,
         last_spec: Mutex<Option<ConsolidationSpec>>,
     }
 
@@ -122,6 +126,7 @@ mod fake {
             Self {
                 consolidated_pr_number: Some(9001),
                 head_sha: "fakehead0000000000000000000000000000cafe".to_string(),
+                error: None,
                 last_spec: Mutex::new(None),
             }
         }
@@ -140,7 +145,16 @@ mod fake {
             Self {
                 consolidated_pr_number,
                 head_sha: head_sha.into(),
+                error: None,
                 last_spec: Mutex::new(None),
+            }
+        }
+
+        /// A fake that fails the consolidation with `message` (chaos/infra crash).
+        pub fn failing(message: impl Into<String>) -> Self {
+            Self {
+                error: Some(message.into()),
+                ..Self::default()
             }
         }
 
@@ -161,6 +175,10 @@ mod fake {
             &self,
             spec: ConsolidationSpec,
         ) -> AmpelResult<ConsolidationOutcome> {
+            if let Some(message) = &self.error {
+                *self.last_spec.lock().unwrap() = Some(spec);
+                return Err(AmpelError::InternalError(message.clone()));
+            }
             let dispositions = spec
                 .prs
                 .iter()

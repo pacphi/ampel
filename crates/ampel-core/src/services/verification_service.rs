@@ -149,7 +149,12 @@ impl VerificationService {
             .iter()
             .any(|name| !normalized.iter().any(|c| &c.name == name));
 
-        let all_required_green = !any_required_missing
+        // Fail closed when no required checks are configured: an operator MUST
+        // define the branch-protection required set before autonomous merge is
+        // ever considered safe. An empty required set is therefore NOT green —
+        // `.all()` over an empty iterator is vacuously true, so guard explicitly.
+        let all_required_green = !required_check_names.is_empty()
+            && !any_required_missing
             && normalized
                 .iter()
                 .filter(|c| c.required)
@@ -292,6 +297,98 @@ mod tests {
         assert_eq!(r.ampel_status, AmpelStatus::Green);
         assert!(r.all_required_green);
         assert!(!r.is_safe_to_merge());
+    }
+
+    #[test]
+    fn should_fail_closed_when_required_set_is_empty() {
+        // Arrange: green checks but NO required-check set configured.
+        let svc = VerificationService::new();
+        let checks = [check("build", "completed", Some("success"))];
+
+        // Act
+        let r = svc.verify(&checks, &required(&[]), true, "sha1");
+
+        // Assert: empty required set is never safe (operator must define one).
+        assert!(!r.all_required_green);
+        assert!(!r.is_safe_to_merge());
+    }
+
+    #[test]
+    fn should_fail_closed_when_multi_required_subset_present() {
+        // Arrange: two required checks, only "build" present + green.
+        let svc = VerificationService::new();
+        let checks = [check("build", "completed", Some("success"))];
+
+        // Act
+        let r = svc.verify(&checks, &required(&["build", "test"]), true, "sha1");
+
+        // Assert: missing "test" forces red and blocks merge.
+        assert_eq!(r.ampel_status, AmpelStatus::Red);
+        assert!(!r.all_required_green);
+        assert!(!r.is_safe_to_merge());
+    }
+
+    #[test]
+    fn should_be_red_when_required_check_completed_with_no_conclusion() {
+        // Arrange: required check completed but conclusion absent (None).
+        let svc = VerificationService::new();
+        let checks = [check("build", "completed", None)];
+
+        // Act
+        let r = svc.verify(&checks, &required(&["build"]), true, "sha1");
+
+        // Assert: unknown/None conclusion on a completed check => red.
+        assert_eq!(r.ampel_status, AmpelStatus::Red);
+        assert!(!r.all_required_green);
+        assert!(!r.is_safe_to_merge());
+    }
+
+    #[test]
+    fn should_be_red_when_required_check_timed_out() {
+        // Arrange: required check completed with a non-success terminal outcome.
+        let svc = VerificationService::new();
+        let checks = [check("build", "completed", Some("timed_out"))];
+
+        // Act
+        let r = svc.verify(&checks, &required(&["build"]), true, "sha1");
+
+        // Assert
+        assert_eq!(r.ampel_status, AmpelStatus::Red);
+        assert!(!r.all_required_green);
+        assert!(!r.is_safe_to_merge());
+    }
+
+    #[test]
+    fn should_map_cancelled_required_check_to_yellow_and_block() {
+        // Arrange: required check was cancelled.
+        let svc = VerificationService::new();
+        let checks = [check("build", "completed", Some("cancelled"))];
+
+        // Act
+        let r = svc.verify(&checks, &required(&["build"]), true, "sha1");
+
+        // Assert: cancelled => yellow (not green), so not safe.
+        assert_eq!(r.ampel_status, AmpelStatus::Yellow);
+        assert!(!r.all_required_green);
+        assert!(!r.is_safe_to_merge());
+    }
+
+    #[test]
+    fn should_treat_skipped_check_as_non_blocking() {
+        // Arrange: required "build" green; a non-required "lint" skipped.
+        let svc = VerificationService::new();
+        let checks = [
+            check("build", "completed", Some("success")),
+            check("lint", "completed", Some("skipped")),
+        ];
+
+        // Act
+        let r = svc.verify(&checks, &required(&["build"]), true, "sha1");
+
+        // Assert: skipped does not block — overall green + safe.
+        assert_eq!(r.ampel_status, AmpelStatus::Green);
+        assert!(r.all_required_green);
+        assert!(r.is_safe_to_merge());
     }
 
     #[test]

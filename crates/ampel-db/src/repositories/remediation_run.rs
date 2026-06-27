@@ -50,6 +50,7 @@ fn to_read_model(m: remediation_run::Model) -> AmpelResult<RemediationRun> {
         autonomy_level: AutonomyLevel::from_str(&m.autonomy_level)?,
         consolidated_pr_number: m.consolidated_pr_number,
         head_sha: m.head_sha,
+        error_message: m.error_message,
     })
 }
 
@@ -102,6 +103,7 @@ impl RemediationRunRepository for SeaOrmRemediationRunRepository {
             autonomy_level,
             consolidated_pr_number: None,
             head_sha: None,
+            error_message: None,
         })
     }
 
@@ -210,6 +212,24 @@ impl RemediationRunRepository for SeaOrmRemediationRunRepository {
             .map_err(db_err)?;
         Ok(())
     }
+
+    async fn closed_source_prs(&self, run_id: Uuid) -> AmpelResult<Vec<i64>> {
+        let rows = remediation_run_pr::Entity::find()
+            .filter(remediation_run_pr::Column::RemediationRunId.eq(run_id))
+            .all(&self.db)
+            .await
+            .map_err(db_err)?;
+        let mut out = Vec::new();
+        for row in rows {
+            // A `ClosedWithRef` disposition marks a source PR already superseded.
+            if let Ok(MergeDisposition::ClosedWithRef { .. }) =
+                serde_json::from_str::<MergeDisposition>(&row.disposition)
+            {
+                out.push(row.pr_number);
+            }
+        }
+        Ok(out)
+    }
 }
 
 #[cfg(test)]
@@ -312,6 +332,33 @@ mod tests {
         assert_eq!(
             repo.get_run(run.id).await.unwrap().unwrap().state,
             RunState::Selecting
+        );
+    }
+
+    #[tokio::test]
+    async fn should_reject_illegal_transition_and_leave_state_unchanged() {
+        // Arrange: a fresh run in `created`.
+        let repo = SeaOrmRemediationRunRepository::new(sqlite_with_remediation_tables().await);
+        let run = repo
+            .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+            .await
+            .unwrap();
+
+        // Act: created -> merging is not a legal edge (skips selecting/…/verifying).
+        let result = repo
+            .transition_state(
+                run.id,
+                RunState::Created,
+                RunState::Merging,
+                RunUpdate::none(),
+            )
+            .await;
+
+        // Assert: rejected before touching the DB; persisted state still `created`.
+        assert!(matches!(result, Err(AmpelError::ValidationError(_))));
+        assert_eq!(
+            repo.get_run(run.id).await.unwrap().unwrap().state,
+            RunState::Created
         );
     }
 

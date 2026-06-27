@@ -49,7 +49,32 @@ impl RemediationExecutor {
     /// Execute `run_id` end-to-end: consolidate → verify → (re-verify) merge →
     /// finalize. Short-circuits to [`RunOutcome::NoOp`] under read-only autonomy
     /// and to [`RunOutcome::HandoffHuman`] at any safety gate.
+    ///
+    /// Crash safety (chaos DoD): ANY error from the orchestration drives a
+    /// best-effort CAS of the run from its current active state into
+    /// [`RunState::Failed`] (with a secret-scrubbed `error_message`) BEFORE the
+    /// error propagates — the run is never left in a non-terminal active state.
+    /// (A TTL reaper for orphaned runs that crash the process entirely is out of
+    /// scope here and tracked separately.)
     pub async fn execute(
+        &self,
+        run_id: Uuid,
+        prs: Vec<PrRef>,
+        repo_ctx: RepoContext,
+    ) -> AmpelResult<RunOutcome> {
+        // Capture the secret up front so we can scrub it from any error message
+        // before persisting — `repo_ctx` is moved into the run below.
+        let secret = repo_ctx.credential.expose().to_string();
+        match self.execute_inner(run_id, prs, repo_ctx).await {
+            Ok(outcome) => Ok(outcome),
+            Err(e) => {
+                self.mark_failed(run_id, &e, &secret).await;
+                Err(e)
+            }
+        }
+    }
+
+    async fn execute_inner(
         &self,
         run_id: Uuid,
         prs: Vec<PrRef>,
@@ -91,5 +116,53 @@ impl RemediationExecutor {
         let source_prs: Vec<i64> = prs.iter().map(|p| p.number as i64).collect();
         self.orchestrator.finalize(run_id, &source_prs).await?;
         Ok(RunOutcome::Completed)
+    }
+
+    /// Best-effort: move an active run into `Failed`, recording a scrubbed error.
+    /// Infra/sandbox errors land here; the TOCTOU/unsafe-merge case is already
+    /// handled inside the orchestrator (it hands off to a human, not Failed).
+    /// Failures of this step itself are logged, never propagated — we must not
+    /// mask the original error.
+    async fn mark_failed(&self, run_id: Uuid, err: &ampel_core::errors::AmpelError, secret: &str) {
+        let scrubbed = scrub_secret(&err.to_string(), secret);
+        match self.repo.get_run(run_id).await {
+            Ok(Some(run)) if run.state.is_active() => {
+                if let Err(cas_err) = self
+                    .repo
+                    .transition_state(
+                        run_id,
+                        run.state,
+                        RunState::Failed,
+                        RunUpdate::with_error_message(scrubbed),
+                    )
+                    .await
+                {
+                    tracing::error!(
+                        %run_id,
+                        error = %cas_err,
+                        "failed to mark remediation run as failed after error"
+                    );
+                }
+            }
+            Ok(_) => {
+                // Already terminal (e.g. handed off) or missing — nothing to do.
+            }
+            Err(load_err) => {
+                tracing::error!(
+                    %run_id,
+                    error = %load_err,
+                    "could not load remediation run to mark it failed"
+                );
+            }
+        }
+    }
+}
+
+/// Redact a known secret from a message before it is persisted/logged.
+fn scrub_secret(message: &str, secret: &str) -> String {
+    if secret.is_empty() {
+        message.to_string()
+    } else {
+        message.replace(secret, "***redacted***")
     }
 }
