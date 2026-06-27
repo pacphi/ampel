@@ -23,6 +23,10 @@ apalis-cron.workspace = true
 # Database
 sea-orm.workspace = true
 
+# Metrics (Prometheus scrape endpoint + counters/histograms)
+metrics.workspace = true
+metrics-exporter-prometheus = { workspace = true, features = ["http-listener"] }
+
 # Serialization
 serde.workspace = true
 serde_json.workspace = true

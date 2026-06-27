@@ -5,7 +5,9 @@
 //! - [`sandbox_runner`]: Podman/Docker [`SandboxRunner`] + pure consolidation
 //!   logic (lockfile/regen/merge-sequence/runtime detection).
 //! - [`remediation_executor`]: drives one run through the state machine.
+//! - [`notifier`]: notification delivery seam (Slack via `ampel-core`, or noop).
 
+pub mod notifier;
 pub mod provider_adapter;
 pub mod remediation_executor;
 pub mod sandbox_runner;

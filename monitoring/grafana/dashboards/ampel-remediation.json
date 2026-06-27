@@ -1,0 +1,96 @@
+{
+  "dashboard": {
+    "title": "Ampel Remediation",
+    "tags": ["ampel", "remediation"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Runs by Terminal State",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "sum by (state) (rate(remediation_runs_total[5m]))",
+            "legendFormat": "{{state}}"
+          }
+        ],
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        }
+      },
+      {
+        "id": 2,
+        "title": "Merges by Provider",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "sum by (provider) (rate(remediation_merges_total[5m]))",
+            "legendFormat": "{{provider}}"
+          }
+        ],
+        "gridPos": {
+          "x": 12,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        }
+      },
+      {
+        "id": 3,
+        "title": "Conflicts by Class",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum by (conflict_class) (rate(remediation_conflicts_total[5m]))",
+            "legendFormat": "{{conflict_class}}"
+          }
+        ],
+        "gridPos": {
+          "x": 0,
+          "y": 8,
+          "w": 8,
+          "h": 6
+        }
+      },
+      {
+        "id": 4,
+        "title": "Handoffs by Reason",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum by (reason) (rate(remediation_handoffs_total[5m]))",
+            "legendFormat": "{{reason}}"
+          }
+        ],
+        "gridPos": {
+          "x": 8,
+          "y": 8,
+          "w": 8,
+          "h": 6
+        }
+      },
+      {
+        "id": 5,
+        "title": "Run Duration (p95) by Phase",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum by (le, phase) (rate(remediation_duration_seconds_bucket[5m])))",
+            "legendFormat": "p95 {{phase}}"
+          }
+        ],
+        "gridPos": {
+          "x": 16,
+          "y": 8,
+          "w": 8,
+          "h": 6
+        }
+      }
+    ],
+    "schemaVersion": 27,
+    "version": 1
+  }
+}

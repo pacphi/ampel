@@ -9,13 +9,20 @@
 //!
 //! Transition graph (authoritative):
 //! ```text
-//! created ──► selecting ──► consolidating ──► verifying ──► merging ──► finalizing ──► completed
-//!                                                │  ▲
-//!                                                ▼  │
-//!                                            agent_fixing
+//! created ─► selecting ─► consolidating ─► verifying ─► merging ─► finalizing ─► completed
+//!                                            │  ▲          ▲
+//!                                            ▼  │          │
+//!                                        agent_fixing      │
+//!                                            │             │
+//!                                            ▼             │
+//!                                     awaiting_approval ───┘   (human gate)
 //! created ──► no_op
 //! <any non-terminal> ──► handoff_human | failed | cancelled
 //! ```
+//! The `awaiting_approval` gate is reached from `verifying` only for the
+//! `auto_with_approval` autonomy tier (a safe verification parks the run there
+//! until a human approves, which advances it to `merging`). The
+//! `fully_autonomous` tier keeps the direct `verifying → merging` edge.
 //! Terminal states (`completed`, `handoff_human`, `failed`, `cancelled`,
 //! `no_op`) permit no outgoing transitions.
 
@@ -32,6 +39,7 @@ pub enum RunState {
     Selecting,
     Consolidating,
     Verifying,
+    AwaitingApproval,
     Merging,
     Finalizing,
     AgentFixing,
@@ -80,6 +88,8 @@ impl RunState {
                 | (Selecting, Consolidating)
                 | (Consolidating, Verifying)
                 | (Verifying, Merging)
+                | (Verifying, AwaitingApproval)
+                | (AwaitingApproval, Merging)
                 | (Verifying, AgentFixing)
                 | (AgentFixing, Verifying)
                 | (Merging, Finalizing)
@@ -95,6 +105,7 @@ impl fmt::Display for RunState {
             Self::Selecting => "selecting",
             Self::Consolidating => "consolidating",
             Self::Verifying => "verifying",
+            Self::AwaitingApproval => "awaiting_approval",
             Self::Merging => "merging",
             Self::Finalizing => "finalizing",
             Self::AgentFixing => "agent_fixing",
@@ -117,6 +128,7 @@ impl FromStr for RunState {
             "selecting" => Ok(Self::Selecting),
             "consolidating" => Ok(Self::Consolidating),
             "verifying" => Ok(Self::Verifying),
+            "awaiting_approval" => Ok(Self::AwaitingApproval),
             "merging" => Ok(Self::Merging),
             "finalizing" => Ok(Self::Finalizing),
             "agent_fixing" => Ok(Self::AgentFixing),
@@ -137,11 +149,12 @@ mod tests {
     use super::RunState::*;
     use super::*;
 
-    const ALL: [RunState; 12] = [
+    const ALL: [RunState; 13] = [
         Created,
         Selecting,
         Consolidating,
         Verifying,
+        AwaitingApproval,
         Merging,
         Finalizing,
         AgentFixing,
@@ -187,6 +200,37 @@ mod tests {
     }
 
     #[test]
+    fn should_allow_awaiting_approval_gate_path() {
+        // Verifying parks at the human gate, then a human approves to merging.
+        assert!(Verifying.can_transition_to(AwaitingApproval));
+        assert!(AwaitingApproval.can_transition_to(Merging));
+        // The no-approval (fully autonomous) path remains a direct edge.
+        assert!(Verifying.can_transition_to(Merging));
+    }
+
+    #[test]
+    fn should_allow_awaiting_approval_to_bail_out() {
+        assert!(AwaitingApproval.can_transition_to(HandoffHuman));
+        assert!(AwaitingApproval.can_transition_to(Cancelled));
+        assert!(AwaitingApproval.can_transition_to(Failed));
+    }
+
+    #[test]
+    fn should_reject_awaiting_approval_skipping_merge() {
+        // The gate cannot jump straight to finalizing/completed.
+        assert!(!AwaitingApproval.can_transition_to(Finalizing));
+        assert!(!AwaitingApproval.can_transition_to(Completed));
+    }
+
+    #[test]
+    fn should_serialize_awaiting_approval_as_snake_case_json() {
+        assert_eq!(
+            serde_json::to_string(&RunState::AwaitingApproval).unwrap(),
+            "\"awaiting_approval\""
+        );
+    }
+
+    #[test]
     fn should_allow_agent_fixing_loop() {
         assert!(Verifying.can_transition_to(AgentFixing));
         assert!(AgentFixing.can_transition_to(Verifying));
@@ -204,6 +248,7 @@ mod tests {
             Selecting,
             Consolidating,
             Verifying,
+            AwaitingApproval,
             Merging,
             Finalizing,
             AgentFixing,
@@ -249,6 +294,7 @@ mod tests {
             Selecting,
             Consolidating,
             Verifying,
+            AwaitingApproval,
             Merging,
             Finalizing,
             AgentFixing,

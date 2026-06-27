@@ -19,9 +19,14 @@ use ampel_db::repositories::SeaOrmRemediationRunRepository;
 use ampel_providers::mock::{MockProvider, RemediationCall};
 use ampel_providers::traits::{ProviderCICheck, ProviderCredentials, ProviderPullRequest};
 use ampel_providers::RemediationCapable;
+use ampel_worker::services::notifier::{
+    RemediationNotifier, RunMergedNotification, SourcePrsClosedNotification,
+};
 use ampel_worker::services::{ProviderAdapter, RemediationExecutor, RunOutcome};
+use async_trait::async_trait;
 use sea_orm::{Database, DatabaseConnection};
 use sea_orm_migration::SchemaManager;
+use std::sync::Mutex;
 use uuid::Uuid;
 
 const OWNER: &str = "acme";
@@ -373,6 +378,194 @@ async fn should_handoff_without_merge_when_mergeable_is_unknown() {
         .remediation_calls()
         .iter()
         .any(|c| matches!(c, RemediationCall::ClosePullRequest { .. })));
+}
+
+/// Records the notifications it receives so tests can assert the emit path.
+#[derive(Default)]
+struct FakeNotifier {
+    merged: Mutex<Vec<RunMergedNotification>>,
+    closed: Mutex<Vec<SourcePrsClosedNotification>>,
+}
+
+#[async_trait]
+impl RemediationNotifier for FakeNotifier {
+    async fn run_merged(&self, event: RunMergedNotification) {
+        self.merged.lock().unwrap().push(event);
+    }
+    async fn sources_closed(&self, event: SourcePrsClosedNotification) {
+        self.closed.lock().unwrap().push(event);
+    }
+}
+
+/// A green, mergeable consolidated PR — the standard happy-path provider mock.
+fn green_mergeable_mock() -> MockProvider {
+    MockProvider::new()
+        .with_ci_checks(
+            OWNER,
+            REPO,
+            CONSOLIDATED_PR as i32,
+            vec![green_check("build")],
+        )
+        .with_pull_requests(
+            OWNER,
+            REPO,
+            vec![consolidated_pr_record(CONSOLIDATED_PR as i32, Some(true))],
+        )
+}
+
+#[tokio::test]
+async fn should_park_in_awaiting_approval_under_auto_with_approval() {
+    // Arrange: auto_with_approval grants writes, but a safe verify must STOP at
+    // the human gate — never merging, never closing a source PR.
+    let conn = sqlite().await;
+    let run_repo: Arc<dyn RemediationRunRepository> =
+        Arc::new(SeaOrmRemediationRunRepository::new(conn.clone()));
+    let sandbox = Arc::new(FakeSandboxRunner::with_outcome(
+        Some(CONSOLIDATED_PR),
+        "headsha",
+    ));
+    let mock = green_mergeable_mock();
+    let executor = RemediationExecutor::new(
+        run_repo.clone(),
+        sandbox,
+        VerificationService::new(),
+        adapter(&mock),
+    );
+    let run = run_repo
+        .create_run(Uuid::new_v4(), AutonomyLevel::AutoWithApproval)
+        .await
+        .unwrap();
+
+    // Act
+    let outcome = executor
+        .execute(run.id, vec![pr(1), pr(2)], repo_ctx())
+        .await
+        .unwrap();
+
+    // Assert: parked awaiting approval. Verify performs provider *reads*, but no
+    // write (merge/close) may occur before a human approves.
+    assert_eq!(outcome, RunOutcome::AwaitingApproval);
+    assert_eq!(
+        run_repo.get_run(run.id).await.unwrap().unwrap().state,
+        RunState::AwaitingApproval
+    );
+    assert!(!mock.remediation_calls().iter().any(|c| matches!(
+        c,
+        RemediationCall::ClosePullRequest { .. } | RemediationCall::CreateComment { .. }
+    )));
+}
+
+#[tokio::test]
+async fn should_resume_and_merge_when_run_already_in_merging_after_approval() {
+    // Arrange: park at the gate, then simulate the API approve endpoint advancing
+    // the run awaiting_approval -> merging. A re-execute must resume at do_merge.
+    let conn = sqlite().await;
+    let run_repo: Arc<dyn RemediationRunRepository> =
+        Arc::new(SeaOrmRemediationRunRepository::new(conn.clone()));
+    let sandbox = Arc::new(FakeSandboxRunner::with_outcome(
+        Some(CONSOLIDATED_PR),
+        "headsha",
+    ));
+    let mock = green_mergeable_mock();
+    let notifier = Arc::new(FakeNotifier::default());
+    let executor = RemediationExecutor::new(
+        run_repo.clone(),
+        sandbox,
+        VerificationService::new(),
+        adapter(&mock),
+    )
+    .with_provider_label("github")
+    .with_notifier(notifier.clone());
+    let run = run_repo
+        .create_run(Uuid::new_v4(), AutonomyLevel::AutoWithApproval)
+        .await
+        .unwrap();
+
+    // Park at the gate.
+    let parked = executor
+        .execute(run.id, vec![pr(1), pr(2)], repo_ctx())
+        .await
+        .unwrap();
+    assert_eq!(parked, RunOutcome::AwaitingApproval);
+
+    // Simulate human approval (the API CAS awaiting_approval -> merging).
+    let advanced = run_repo
+        .transition_state(
+            run.id,
+            RunState::AwaitingApproval,
+            RunState::Merging,
+            ampel_core::services::RunUpdate::none(),
+        )
+        .await
+        .unwrap();
+    assert!(advanced);
+
+    // Act: re-execute — resumes at do_merge and finalizes.
+    let outcome = executor
+        .execute(run.id, vec![pr(1), pr(2)], repo_ctx())
+        .await
+        .unwrap();
+
+    // Assert: completed, sources closed, and both notifications emitted.
+    assert_eq!(outcome, RunOutcome::Completed);
+    assert_eq!(
+        run_repo.get_run(run.id).await.unwrap().unwrap().state,
+        RunState::Completed
+    );
+    let closed: Vec<i32> = mock
+        .remediation_calls()
+        .iter()
+        .filter_map(|c| match c {
+            RemediationCall::ClosePullRequest { pr_number, .. } => Some(*pr_number),
+            _ => None,
+        })
+        .collect();
+    assert_eq!(closed, vec![1, 2]);
+    assert_eq!(notifier.merged.lock().unwrap().len(), 1);
+    assert_eq!(notifier.closed.lock().unwrap().len(), 1);
+}
+
+#[tokio::test]
+async fn should_emit_notifications_on_happy_path() {
+    // Arrange: fully-autonomous green run with a recording notifier.
+    let conn = sqlite().await;
+    let run_repo: Arc<dyn RemediationRunRepository> =
+        Arc::new(SeaOrmRemediationRunRepository::new(conn.clone()));
+    let sandbox = Arc::new(FakeSandboxRunner::with_outcome(
+        Some(CONSOLIDATED_PR),
+        "headsha",
+    ));
+    let mock = green_mergeable_mock();
+    let notifier = Arc::new(FakeNotifier::default());
+    let executor = RemediationExecutor::new(
+        run_repo.clone(),
+        sandbox,
+        VerificationService::new(),
+        adapter(&mock),
+    )
+    .with_provider_label("github")
+    .with_notifier(notifier.clone());
+    let run = run_repo
+        .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+        .await
+        .unwrap();
+
+    // Act
+    let outcome = executor
+        .execute(run.id, vec![pr(1), pr(2), pr(3)], repo_ctx())
+        .await
+        .unwrap();
+
+    // Assert: merged notification carries the provider + consolidated PR; the
+    // sources-closed notification lists every closed source PR. No secrets.
+    assert_eq!(outcome, RunOutcome::Completed);
+    let merged = notifier.merged.lock().unwrap();
+    assert_eq!(merged.len(), 1);
+    assert_eq!(merged[0].provider, "github");
+    assert_eq!(merged[0].consolidated_pr_number, CONSOLIDATED_PR);
+    let closed = notifier.closed.lock().unwrap();
+    assert_eq!(closed.len(), 1);
+    assert_eq!(closed[0].closed_pr_numbers, vec![1, 2, 3]);
 }
 
 #[tokio::test]

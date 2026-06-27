@@ -9,7 +9,7 @@
 use crate::errors::{AmpelError, AmpelResult};
 use crate::remediation::db;
 use crate::remediation::{
-    ConsolidationPlan, PrRef, PrSelectionStrategy, RemediationCriteria, RunState,
+    AutonomyLevel, ConsolidationPlan, PrRef, PrSelectionStrategy, RemediationCriteria, RunState,
 };
 use crate::services::{
     CiVerificationResult, ConsolidationOutcome, ConsolidationSpec, CredentialHandle,
@@ -300,9 +300,18 @@ impl RemediationOrchestrator {
         Ok(ConsolidateResult::Consolidated(outcome))
     }
 
-    /// Verify the consolidated PR's CI (ADR-010). Transitions
-    /// `verifying`→`merging` only when the result is safe to merge, anchoring
-    /// the verified SHA for the later TOCTOU re-check.
+    /// Verify the consolidated PR's CI (ADR-010), anchoring the verified SHA for
+    /// the later TOCTOU re-check.
+    ///
+    /// A safe verification advances the run, but the *next* state depends on the
+    /// autonomy tier (see [`Self::requires_human_approval`]):
+    /// - `auto_with_approval` ⇒ `verifying → awaiting_approval` and STOP. The run
+    ///   is parked at the human gate; no merge happens until [`Self::approve`].
+    /// - otherwise (`fully_autonomous`) ⇒ `verifying → merging` (the caller then
+    ///   drives [`Self::do_merge`]).
+    ///
+    /// A non-safe verification leaves the run in `verifying` (the caller hands it
+    /// off to a human).
     pub async fn verify(&self, run_id: Uuid) -> AmpelResult<CiVerificationResult> {
         let run = self.load(run_id).await?;
         let pr = self.consolidated_pr(&run)?;
@@ -316,16 +325,54 @@ impl RemediationOrchestrator {
         );
 
         if result.is_safe_to_merge() {
+            let next = if Self::requires_human_approval(&run) {
+                RunState::AwaitingApproval
+            } else {
+                RunState::Merging
+            };
             self.cas(
                 run.id,
                 RunState::Verifying,
-                RunState::Merging,
+                next,
                 RunUpdate::with_head_sha(result.ref_sha.clone()),
             )
             .await?;
         }
 
         Ok(result)
+    }
+
+    /// Whether the run's autonomy tier requires a human to approve the merge.
+    ///
+    /// `auto_with_approval` gates the merge behind a human; `fully_autonomous`
+    /// merges without a gate. (Read-only tiers never reach `verify` — they
+    /// short-circuit to `no_op` in [`Self::consolidate`].)
+    fn requires_human_approval(run: &RemediationRun) -> bool {
+        matches!(run.autonomy_level, AutonomyLevel::AutoWithApproval)
+    }
+
+    /// Human-approval gate exit: assert the run is parked in `awaiting_approval`,
+    /// CAS `awaiting_approval → merging`, then drive [`Self::do_merge`] (which
+    /// performs the TOCTOU re-verify before any irreversible merge).
+    ///
+    /// Refuses (without side effects) when the run is not actually awaiting
+    /// approval, so a double-approve or an out-of-order call cannot merge.
+    pub async fn approve(&self, run_id: Uuid) -> AmpelResult<MergeOutcome> {
+        let run = self.load(run_id).await?;
+        if run.state != RunState::AwaitingApproval {
+            return Err(AmpelError::ValidationError(format!(
+                "approve requires state `awaiting_approval`, run {run_id} is in `{}`",
+                run.state
+            )));
+        }
+        self.cas(
+            run.id,
+            RunState::AwaitingApproval,
+            RunState::Merging,
+            RunUpdate::none(),
+        )
+        .await?;
+        self.do_merge(run_id).await
     }
 
     /// Re-verify immediately before merge (TOCTOU). If the SHA moved or fresh
@@ -1141,5 +1188,122 @@ mod tests {
             repo.get_run(run.id).await.unwrap().unwrap().state,
             RunState::Completed
         );
+    }
+
+    #[tokio::test]
+    async fn should_park_at_awaiting_approval_without_merging_under_auto_with_approval() {
+        // Arrange: auto_with_approval grants writes, so consolidate proceeds, but
+        // a safe verify must STOP at the human gate (no merge).
+        let repo = Arc::new(InMemoryRemediationRunRepository::new());
+        let sandbox = Arc::new(FakeSandboxRunner::with_outcome(Some(9001), "headsha"));
+        let provider = Arc::new(MockProvider::green(&["headsha", "headsha"]));
+        let orch = orchestrator(repo.clone(), sandbox, provider.clone());
+        let run = repo
+            .create_run(Uuid::new_v4(), AutonomyLevel::AutoWithApproval)
+            .await
+            .unwrap();
+
+        // Act
+        orch.consolidate(run.id, vec![pr_ref(1)], repo_ctx())
+            .await
+            .unwrap();
+        let verification = orch.verify(run.id).await.unwrap();
+
+        // Assert: parked awaiting approval; the merge was NOT called.
+        assert!(verification.is_safe_to_merge());
+        assert_eq!(
+            repo.get_run(run.id).await.unwrap().unwrap().state,
+            RunState::AwaitingApproval
+        );
+        assert_eq!(provider.merge_call_count(), 0);
+    }
+
+    #[tokio::test]
+    async fn should_merge_once_after_human_approval() {
+        // Arrange: park at the gate, then approve.
+        let repo = Arc::new(InMemoryRemediationRunRepository::new());
+        let sandbox = Arc::new(FakeSandboxRunner::with_outcome(Some(9001), "headsha"));
+        let provider = Arc::new(MockProvider::green(&["headsha", "headsha"]));
+        let orch = orchestrator(repo.clone(), sandbox, provider.clone());
+        let run = repo
+            .create_run(Uuid::new_v4(), AutonomyLevel::AutoWithApproval)
+            .await
+            .unwrap();
+        orch.consolidate(run.id, vec![pr_ref(1)], repo_ctx())
+            .await
+            .unwrap();
+        orch.verify(run.id).await.unwrap();
+
+        // Act: human approves -> CAS awaiting_approval->merging -> TOCTOU -> merge.
+        let merge = orch.approve(run.id).await.unwrap();
+        orch.finalize(run.id, &[1]).await.unwrap();
+
+        // Assert: merged exactly once and run completed.
+        assert!(matches!(merge, MergeOutcome::Merged { .. }));
+        assert_eq!(provider.merge_call_count(), 1);
+        assert_eq!(
+            repo.get_run(run.id).await.unwrap().unwrap().state,
+            RunState::Completed
+        );
+    }
+
+    #[tokio::test]
+    async fn should_refuse_approve_when_run_not_awaiting_approval() {
+        // Arrange: fully autonomous run goes straight to merging (never parks).
+        let repo = Arc::new(InMemoryRemediationRunRepository::new());
+        let sandbox = Arc::new(FakeSandboxRunner::with_outcome(Some(9001), "headsha"));
+        let provider = Arc::new(MockProvider::green(&["headsha", "headsha"]));
+        let orch = orchestrator(repo.clone(), sandbox, provider.clone());
+        let run = repo
+            .create_run(Uuid::new_v4(), AutonomyLevel::FullyAutonomous)
+            .await
+            .unwrap();
+        orch.consolidate(run.id, vec![pr_ref(1)], repo_ctx())
+            .await
+            .unwrap();
+        orch.verify(run.id).await.unwrap(); // -> merging (no gate)
+
+        // Act: approve is illegal here (run is in `merging`, not the gate).
+        let result = orch.approve(run.id).await;
+
+        // Assert: refused before any merge side-effect.
+        assert!(matches!(result, Err(AmpelError::ValidationError(_))));
+        assert_eq!(provider.merge_call_count(), 0);
+    }
+
+    #[tokio::test]
+    async fn should_cancel_run_parked_at_awaiting_approval() {
+        // Arrange: park at the human gate.
+        let repo = Arc::new(InMemoryRemediationRunRepository::new());
+        let sandbox = Arc::new(FakeSandboxRunner::with_outcome(Some(9001), "headsha"));
+        let provider = Arc::new(MockProvider::green(&["headsha", "headsha"]));
+        let orch = orchestrator(repo.clone(), sandbox, provider.clone());
+        let run = repo
+            .create_run(Uuid::new_v4(), AutonomyLevel::AutoWithApproval)
+            .await
+            .unwrap();
+        orch.consolidate(run.id, vec![pr_ref(1)], repo_ctx())
+            .await
+            .unwrap();
+        orch.verify(run.id).await.unwrap();
+
+        // Act: cancel the parked run (the universal bail-out edge).
+        let cancelled = repo
+            .transition_state(
+                run.id,
+                RunState::AwaitingApproval,
+                RunState::Cancelled,
+                RunUpdate::none(),
+            )
+            .await
+            .unwrap();
+
+        // Assert: cancelled, never merged.
+        assert!(cancelled);
+        assert_eq!(
+            repo.get_run(run.id).await.unwrap().unwrap().state,
+            RunState::Cancelled
+        );
+        assert_eq!(provider.merge_call_count(), 0);
     }
 }
