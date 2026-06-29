@@ -5,8 +5,9 @@ use axum::{
 };
 
 use crate::handlers::{
-    accounts, analytics, auth, bot_rules, bulk_merge, dashboard, notifications, pr_filters,
-    pull_requests, repositories, teams, user_preferences, user_settings,
+    accounts, analytics, auth, bot_rules, bulk_merge, dashboard, model_accounts, notifications,
+    pr_filters, pull_requests, remediation, remediation_playbooks, remediation_runs, repositories,
+    teams, user_preferences, user_settings,
 };
 use crate::{
     health_handler, metrics_handler,
@@ -144,6 +145,79 @@ pub fn create_router(state: AppState) -> Router {
             get(pr_filters::get_pr_filters).put(pr_filters::update_pr_filters),
         )
         .route("/api/pr-filters/reset", post(pr_filters::reset_pr_filters))
+        // Remediation routes (Fleet PR Remediation — Phase 1)
+        .route(
+            "/api/remediation/policies",
+            get(remediation::list_policies).post(remediation::create_policy),
+        )
+        .route(
+            "/api/remediation/policies/{id}",
+            get(remediation::get_policy)
+                .patch(remediation::update_policy)
+                .delete(remediation::delete_policy),
+        )
+        .route(
+            "/api/remediation/policies/{id}/toggle",
+            post(remediation::toggle_policy),
+        )
+        .route(
+            "/api/remediation/repositories/{repo_id}/preview",
+            post(remediation::preview_repository),
+        )
+        .route("/api/remediation/fleet", get(remediation::get_fleet))
+        // Model provider accounts (Phase 4 — Agentic Remediation Tier)
+        .route(
+            "/api/model-accounts",
+            get(model_accounts::list_model_accounts).post(model_accounts::create_model_account),
+        )
+        .route(
+            "/api/model-accounts/{id}",
+            get(model_accounts::get_model_account)
+                .patch(model_accounts::update_model_account)
+                .delete(model_accounts::delete_model_account),
+        )
+        .route(
+            "/api/model-accounts/{id}/validate",
+            post(model_accounts::validate_model_account),
+        )
+        // Remediation playbooks (Phase 4 — ADR-006)
+        .route(
+            "/api/remediation/playbooks",
+            get(remediation_playbooks::list_playbooks).post(remediation_playbooks::create_playbook),
+        )
+        .route(
+            "/api/remediation/playbooks/{id}",
+            get(remediation_playbooks::get_playbook)
+                .patch(remediation_playbooks::update_playbook)
+                .delete(remediation_playbooks::delete_playbook),
+        )
+        .route(
+            "/api/remediation/playbooks/{id}/preview",
+            post(remediation_playbooks::preview_playbook),
+        )
+        // Remediation runs (Phase 3 — Observability & UX)
+        .route("/api/remediation/runs", get(remediation_runs::list_runs))
+        .route("/api/remediation/runs/{id}", get(remediation_runs::get_run))
+        .route(
+            "/api/remediation/runs/{id}/events",
+            get(remediation_runs::run_events),
+        )
+        .route(
+            "/api/remediation/runs/{id}/approve",
+            post(remediation_runs::approve_run),
+        )
+        .route(
+            "/api/remediation/runs/{id}/cancel",
+            post(remediation_runs::cancel_run),
+        )
+        .route(
+            "/api/remediation/sse-token",
+            post(remediation_runs::create_sse_token),
+        )
+        .route(
+            "/api/remediation/repositories/{repo_id}/run",
+            post(remediation_runs::trigger_run),
+        )
         // Analytics routes
         .route(
             "/api/analytics/summary",

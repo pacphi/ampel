@@ -1,0 +1,6 @@
+# Root tooling workspace settings (no workspace packages — frontend manages its own lockfile).
+# Overrides force patched versions of transitive dependencies pulled in by markdownlint-cli2
+# to resolve Dependabot security advisories (dev-only markdown tooling).
+overrides:
+  markdown-it: ^14.2.0
+  js-yaml: ^4.3.0

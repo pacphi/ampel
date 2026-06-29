@@ -18,7 +18,7 @@
     "@secretlint/secretlint-rule-sendgrid": "^13.0.2",
     "@secretlint/secretlint-rule-slack": "^13.0.2",
     "markdownlint-cli2": "^0.22.1",
-    "prettier": "^3.8.3",
+    "prettier": "^3.9.1",
     "secretlint": "^13.0.2"
   },
   "packageManager": "pnpm@11.1.3"

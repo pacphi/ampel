@@ -114,7 +114,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '26'
           cache: 'pnpm'
           cache-dependency-path: frontend/pnpm-lock.yaml
 
@@ -205,6 +205,7 @@ jobs:
   test-rtl:
     name: Test RTL Support
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v6
@@ -217,7 +218,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '26'
           cache: 'pnpm'
           cache-dependency-path: frontend/pnpm-lock.yaml
 
@@ -229,7 +230,13 @@ jobs:
       - name: Install Playwright
         run: |
           cd frontend
-          pnpm exec playwright install --with-deps chromium firefox
+          # Only download browsers when visual specs actually exist; otherwise the
+          # heavyweight --with-deps install runs for zero tests (and can hang).
+          if ls tests/visual/*.spec.ts 1> /dev/null 2>&1; then
+            pnpm exec playwright install --with-deps chromium firefox
+          else
+            echo "No visual test files found, skipping Playwright install..."
+          fi
 
       - name: Run RTL visual regression tests
         run: |
@@ -272,7 +279,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '26'
           cache: 'pnpm'
           cache-dependency-path: frontend/pnpm-lock.yaml
 
@@ -302,7 +309,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '26'
           cache: 'pnpm'
           cache-dependency-path: frontend/pnpm-lock.yaml
 

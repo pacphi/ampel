@@ -16,6 +16,8 @@ path = "src/main.rs"
 # Async
 tokio.workspace = true
 async-trait.workspace = true
+futures = "0.3"
+async-stream = "0.3"
 
 # Web framework
 axum.workspace = true

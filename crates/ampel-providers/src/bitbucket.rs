@@ -5,6 +5,7 @@ use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 use crate::error::{ProviderError, ProviderResult};
+use crate::remediation::{RemediationCapable, RemediationCaps};
 use crate::traits::{
     GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderPullRequest,
     ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
@@ -187,6 +188,86 @@ fn parse_datetime(s: &str) -> DateTime<Utc> {
 
 fn parse_datetime_opt(s: &Option<String>) -> Option<DateTime<Utc>> {
     s.as_ref().map(|s| parse_datetime(s))
+}
+
+fn bitbucket_pr_to_provider(pr: BitbucketPR) -> ProviderPullRequest {
+    let state = match pr.state.as_str() {
+        "OPEN" => "open",
+        "MERGED" => "merged",
+        "DECLINED" | "SUPERSEDED" => "closed",
+        other => other,
+    };
+    let merged_at = if pr.state == "MERGED" {
+        Some(parse_datetime(&pr.updated_on))
+    } else {
+        None
+    };
+    let closed_at = if pr.state != "OPEN" {
+        Some(parse_datetime(&pr.updated_on))
+    } else {
+        None
+    };
+    ProviderPullRequest {
+        provider_id: pr.id.to_string(),
+        number: pr.id,
+        title: pr.title,
+        description: pr.description,
+        url: pr.links.html.href,
+        state: state.to_string(),
+        source_branch: pr.source.branch.name,
+        target_branch: pr.destination.branch.name,
+        author: pr
+            .author
+            .username
+            .or(pr.author.display_name)
+            .unwrap_or_default(),
+        author_avatar_url: pr.author.links.and_then(|l| l.avatar.map(|a| a.href)),
+        is_draft: false,
+        is_mergeable: None,
+        has_conflicts: false,
+        additions: 0,
+        deletions: 0,
+        changed_files: 0,
+        commits_count: 0,
+        comments_count: pr.comment_count.unwrap_or(0),
+        created_at: parse_datetime(&pr.created_on),
+        updated_at: parse_datetime(&pr.updated_on),
+        merged_at,
+        closed_at,
+    }
+}
+
+// --- Remediation write primitives (ADR-002) ---
+//
+// Bitbucket Cloud's REST surface is thinner than GitHub/GitLab. Per ADR-002, two operations
+// have no first-class endpoint and are reported as unsupported in `capabilities()`:
+//   * `update_branch_from_base` — no branch-level merge/rebase primitive (clone-push fallback)
+//   * `add_labels` — Bitbucket has no PR label concept
+// Both return `ProviderError::NotSupported`; the job layer checks `capabilities()` first.
+
+#[derive(Debug, Deserialize)]
+struct BitbucketBranchRef {
+    target: BitbucketBranchTarget,
+}
+
+#[derive(Debug, Deserialize)]
+struct BitbucketBranchTarget {
+    hash: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct BitbucketCommentResponse {
+    id: i64,
+}
+
+#[derive(Debug, Deserialize)]
+struct BitbucketCommitStatus {
+    key: Option<String>,
+    name: Option<String>,
+    state: String,
+    url: Option<String>,
+    created_on: Option<String>,
+    updated_on: Option<String>,
 }
 
 #[async_trait]
@@ -724,5 +805,308 @@ impl GitProvider for BitbucketProvider {
             remaining: 1000,
             reset_at: Utc::now() + chrono::Duration::hours(1),
         })
+    }
+}
+
+#[async_trait]
+impl RemediationCapable for BitbucketProvider {
+    fn capabilities(&self) -> RemediationCaps {
+        // Bitbucket lacks a branch-level merge/rebase primitive and a PR label concept.
+        RemediationCaps {
+            update_branch_from_base: false,
+            add_labels: false,
+            ..RemediationCaps::all()
+        }
+    }
+
+    async fn get_default_branch_sha(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+    ) -> ProviderResult<String> {
+        let repository = self.get_repository(credentials, owner, repo).await?;
+        let response = self
+            .client
+            .get(self.api_url(&format!(
+                "/repositories/{}/{}/refs/branches/{}",
+                owner, repo, repository.default_branch
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: "Failed to resolve default branch SHA".to_string(),
+            });
+        }
+
+        let branch: BitbucketBranchRef = response.json().await?;
+        Ok(branch.target.hash)
+    }
+
+    async fn create_branch(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        branch_name: &str,
+        from_sha: &str,
+    ) -> ProviderResult<()> {
+        let body = serde_json::json!({ "name": branch_name, "target": { "hash": from_sha } });
+        let response = self
+            .client
+            .post(self.api_url(&format!("/repositories/{}/{}/refs/branches", owner, repo)))
+            .header("Authorization", self.auth_header(credentials))
+            .json(&body)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to create branch {}", branch_name),
+            });
+        }
+        Ok(())
+    }
+
+    async fn update_branch_from_base(
+        &self,
+        _credentials: &ProviderCredentials,
+        _owner: &str,
+        _repo: &str,
+        _branch_name: &str,
+        _base_branch: &str,
+    ) -> ProviderResult<()> {
+        // Unsupported on Bitbucket — see `capabilities()`. Job layer falls back to clone-push.
+        Err(ProviderError::NotSupported(
+            "Bitbucket has no branch-level update-from-base primitive".to_string(),
+        ))
+    }
+
+    async fn create_pull_request(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        title: &str,
+        body: &str,
+        head: &str,
+        base: &str,
+    ) -> ProviderResult<ProviderPullRequest> {
+        let payload = serde_json::json!({
+            "title": title,
+            "description": body,
+            "source": { "branch": { "name": head } },
+            "destination": { "branch": { "name": base } },
+        });
+        let response = self
+            .client
+            .post(self.api_url(&format!("/repositories/{}/{}/pullrequests", owner, repo)))
+            .header("Authorization", self.auth_header(credentials))
+            .json(&payload)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: "Failed to create pull request".to_string(),
+            });
+        }
+
+        let pr: BitbucketPR = response.json().await?;
+        Ok(bitbucket_pr_to_provider(pr))
+    }
+
+    async fn update_pull_request(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+        title: Option<&str>,
+        body: Option<&str>,
+    ) -> ProviderResult<()> {
+        let mut payload = serde_json::Map::new();
+        if let Some(t) = title {
+            payload.insert(
+                "title".to_string(),
+                serde_json::Value::String(t.to_string()),
+            );
+        }
+        if let Some(b) = body {
+            payload.insert(
+                "description".to_string(),
+                serde_json::Value::String(b.to_string()),
+            );
+        }
+        let response = self
+            .client
+            .put(self.api_url(&format!(
+                "/repositories/{}/{}/pullrequests/{}",
+                owner, repo, pr_number
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .json(&serde_json::Value::Object(payload))
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to update pull request #{}", pr_number),
+            });
+        }
+        Ok(())
+    }
+
+    async fn close_pull_request(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+    ) -> ProviderResult<()> {
+        // Bitbucket "decline" is the close-without-merge operation.
+        let response = self
+            .client
+            .post(self.api_url(&format!(
+                "/repositories/{}/{}/pullrequests/{}/decline",
+                owner, repo, pr_number
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to decline pull request #{}", pr_number),
+            });
+        }
+        Ok(())
+    }
+
+    async fn create_comment(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+        body: &str,
+    ) -> ProviderResult<i64> {
+        let payload = serde_json::json!({ "content": { "raw": body } });
+        let response = self
+            .client
+            .post(self.api_url(&format!(
+                "/repositories/{}/{}/pullrequests/{}/comments",
+                owner, repo, pr_number
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .json(&payload)
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to comment on pull request #{}", pr_number),
+            });
+        }
+
+        let comment: BitbucketCommentResponse = response.json().await?;
+        Ok(comment.id)
+    }
+
+    async fn add_labels(
+        &self,
+        _credentials: &ProviderCredentials,
+        _owner: &str,
+        _repo: &str,
+        _pr_number: i32,
+        _labels: &[String],
+    ) -> ProviderResult<()> {
+        // Unsupported on Bitbucket — see `capabilities()`. Job layer logs + skips.
+        Err(ProviderError::NotSupported(
+            "Bitbucket pull requests do not support labels".to_string(),
+        ))
+    }
+
+    async fn get_status_for_ref(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        git_ref: &str,
+    ) -> ProviderResult<Vec<ProviderCICheck>> {
+        let response = self
+            .client
+            .get(self.api_url(&format!(
+                "/repositories/{}/{}/commit/{}/statuses",
+                owner, repo, git_ref
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to get status for ref {}", git_ref),
+            });
+        }
+
+        let page: BitbucketPaginated<BitbucketCommitStatus> = response.json().await?;
+        Ok(page
+            .values
+            .into_iter()
+            .map(|s| {
+                let (status, conclusion) = match s.state.as_str() {
+                    "INPROGRESS" => ("in_progress".to_string(), None),
+                    "SUCCESSFUL" => ("completed".to_string(), Some("success".to_string())),
+                    "FAILED" => ("completed".to_string(), Some("failure".to_string())),
+                    "STOPPED" => ("completed".to_string(), Some("cancelled".to_string())),
+                    _ => ("queued".to_string(), None),
+                };
+                ProviderCICheck {
+                    name: s.name.or(s.key).unwrap_or_else(|| "unknown".to_string()),
+                    status,
+                    conclusion,
+                    url: s.url,
+                    started_at: parse_datetime_opt(&s.created_on),
+                    completed_at: parse_datetime_opt(&s.updated_on),
+                }
+            })
+            .collect())
+    }
+
+    async fn delete_branch(
+        &self,
+        credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        branch_name: &str,
+    ) -> ProviderResult<()> {
+        let response = self
+            .client
+            .delete(self.api_url(&format!(
+                "/repositories/{}/{}/refs/branches/{}",
+                owner, repo, branch_name
+            )))
+            .header("Authorization", self.auth_header(credentials))
+            .send()
+            .await?;
+
+        if !response.status().is_success() {
+            return Err(ProviderError::ApiError {
+                status_code: response.status().as_u16(),
+                message: format!("Failed to delete branch {}", branch_name),
+            });
+        }
+        Ok(())
     }
 }

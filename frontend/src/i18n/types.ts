@@ -72,6 +72,7 @@ export type TranslationNamespace =
   | 'merge'
   | 'notifications'
   | 'providers'
+  | 'remediation'
   | 'repositories'
   | 'settings'
   | 'validation';
@@ -735,6 +736,308 @@ export interface ProvidersTranslations {
   title: string;
 }
 
+export interface RemediationTranslations {
+  agentSession: {
+    classifier: string;
+    cost: string;
+    failureClass: string;
+    iterations: string;
+    status: {
+      budget_exceeded: string;
+      failed: string;
+      handoff_human: string;
+      running: string;
+      succeeded: string;
+    };
+    title: string;
+    tokensUsed: string;
+    transcript: string;
+  };
+  audit: {
+    action: {
+      consolidated: string;
+      merged: string;
+    };
+    allRepos: string;
+    columns: {
+      action: string;
+      autonomy: string;
+      completedAt: string;
+      pr: string;
+      repository: string;
+    };
+    description: string;
+    empty: string;
+    exportCsv: string;
+    filterRepo: string;
+    since: string;
+    tableLabel: string;
+    title: string;
+    until: string;
+  };
+  autonomyHint: {
+    auto_merge: string;
+    consolidate: string;
+    dry_run: string;
+    off: string;
+  };
+  autonomyLevel: {
+    auto_with_approval: string;
+    dry_run_only: string;
+    fully_autonomous: string;
+    suggest_only: string;
+  };
+  autonomyStop: {
+    auto_merge: string;
+    consolidate: string;
+    dry_run: string;
+    off: string;
+  };
+  ci: {
+    columns: {
+      check: string;
+      status: string;
+      type: string;
+    };
+    empty: string;
+    headSha: string;
+    logs: string;
+    optional: string;
+    predictedConflict: string;
+    required: string;
+    statusCheck: string;
+    tableLabel: string;
+    title: string;
+    tone: {
+      green: string;
+      red: string;
+      yellow: string;
+    };
+    viewLogs: string;
+  };
+  conflicts: {
+    conflicted: string;
+    empty: string;
+    skipped: string;
+    title: string;
+  };
+  disposition: {
+    closedWithRef: string;
+    consolidated: string;
+    leftOpen: string;
+    skippedConflict: string;
+  };
+  editor: {
+    autonomy: string;
+    confirmAutoMerge: {
+      confirm: string;
+      description: string;
+      previewRequired: string;
+      title: string;
+    };
+    createTitle: string;
+    description: string;
+    editTitle: string;
+    enabled: string;
+    errors: {
+      saveFailed: string;
+      scopeIdRequired: string;
+    };
+    maxPrsPerRun: string;
+    minOpenPrs: string;
+    save: string;
+    saving: string;
+    scopeId: string;
+    scopeIdPlaceholder: string;
+    scopeType: string;
+  };
+  fleet: {
+    airGappedOff: string;
+    airGappedOn: string;
+    columns: {
+      actions: string;
+      airGapped: string;
+      eligibility: string;
+      openPrs: string;
+      policyState: string;
+      repository: string;
+    };
+    description: string;
+    eligible: string;
+    empty: string;
+    error: string;
+    notEligible: string;
+    preview: string;
+    tableLabel: string;
+    title: string;
+  };
+  killSwitch: {
+    active: string;
+    label: string;
+    noPolicy: string;
+    paused: string;
+  };
+  modelAccounts: {
+    airGapNotice: string;
+    apiKey: string;
+    apiKeyHint: string;
+    apiKeyPlaceholder: string;
+    create: string;
+    createTitle: string;
+    default: string;
+    description: string;
+    displayName: string;
+    displayNamePlaceholder: string;
+    egress: {
+      external: string;
+      local_only: string;
+    };
+    empty: string;
+    endpointUrl: string;
+    endpointUrlPlaceholder: string;
+    error: string;
+    errors: {
+      airGapped: string;
+      createFailed: string;
+      displayNameRequired: string;
+    };
+    modelId: string;
+    modelIdPlaceholder: string;
+    providerKind: string;
+    providerKindLabel: {
+      claude: string;
+      gemini: string;
+      ollama: string;
+      onnx: string;
+    };
+    save: string;
+    saving: string;
+    spend: string;
+    spendCap: string;
+    title: string;
+    validate: string;
+    validating: string;
+    validationStatus: {
+      invalid: string;
+      unvalidated: string;
+      valid: string;
+    };
+  };
+  nav: string;
+  playbooks: {
+    content: string;
+    contentPlaceholder: string;
+    create: string;
+    description: string;
+    empty: string;
+    error: string;
+    errors: {
+      contentRequired: string;
+      nameRequired: string;
+      playbookIdRequired: string;
+      previewFailed: string;
+      saveFailed: string;
+    };
+    name: string;
+    namePlaceholder: string;
+    playbookId: string;
+    playbookIdPlaceholder: string;
+    preview: string;
+    previewing: string;
+    renderedPrompt: string;
+    save: string;
+    saving: string;
+    scopeId: string;
+    scopeIdPlaceholder: string;
+    scopeType: string;
+    title: string;
+  };
+  policies: {
+    create: string;
+    description: string;
+    disable: string;
+    empty: string;
+    enable: string;
+    statusDisabled: string;
+    statusEnabled: string;
+    title: string;
+  };
+  policyState: {
+    auto_merge: string;
+    auto_with_approval: string;
+    disabled: string;
+    dry_run: string;
+    none: string;
+    suggest: string;
+  };
+  preview: {
+    blockedByAirGap: string;
+    conflicts: string;
+    description: string;
+    error: string;
+    estimatedDuration: string;
+    loading: string;
+    noneSelected: string;
+    prCount: string;
+    seconds: string;
+    title: string;
+    wouldSelect: string;
+  };
+  runState: {
+    agent_fixing: string;
+    awaiting_approval: string;
+    cancelled: string;
+    completed: string;
+    consolidating: string;
+    created: string;
+    failed: string;
+    finalizing: string;
+    handoff_human: string;
+    merging: string;
+    no_op: string;
+    selecting: string;
+    verifying: string;
+  };
+  runs: {
+    approve: string;
+    back: string;
+    columns: {
+      actions: string;
+      pr: string;
+      repository: string;
+      started: string;
+      state: string;
+    };
+    description: string;
+    dispositions: string;
+    empty: string;
+    error: string;
+    noDispositions: string;
+    reject: string;
+    tableLabel: string;
+    timeline: string;
+    timelineLabel: string;
+    title: string;
+    view: string;
+  };
+  scopeType: {
+    org: string;
+    repository: string;
+    team: string;
+    user: string;
+  };
+  subtitle: string;
+  tabs: {
+    audit: string;
+    fleet: string;
+    modelAccounts: string;
+    playbooks: string;
+    policies: string;
+    runs: string;
+  };
+  title: string;
+}
+
 export interface RepositoriesTranslations {
   addFrom: {
     addAll: string;
@@ -949,6 +1252,7 @@ export interface Translations {
   merge: MergeTranslations;
   notifications: NotificationsTranslations;
   providers: ProvidersTranslations;
+  remediation: RemediationTranslations;
   repositories: RepositoriesTranslations;
   settings: SettingsTranslations;
   validation: ValidationTranslations;

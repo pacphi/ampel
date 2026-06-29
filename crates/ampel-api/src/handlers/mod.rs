@@ -4,10 +4,15 @@ pub mod auth;
 pub mod bot_rules;
 pub mod bulk_merge;
 pub mod dashboard;
+pub mod model_accounts;
 pub mod notifications;
 pub mod pr_filters;
 pub mod pull_requests;
+pub mod remediation;
+pub mod remediation_playbooks;
+pub mod remediation_runs;
 pub mod repositories;
+pub mod security;
 pub mod teams;
 pub mod user_preferences;
 pub mod user_settings;
@@ -66,6 +71,10 @@ impl ApiError {
         Self::new(StatusCode::UNAUTHORIZED, message)
     }
 
+    pub fn forbidden(message: impl Into<String>) -> Self {
+        Self::new(StatusCode::FORBIDDEN, message)
+    }
+
     pub fn not_found(message: impl Into<String>) -> Self {
         Self::new(StatusCode::NOT_FOUND, message)
     }
@@ -76,6 +85,10 @@ impl ApiError {
 
     pub fn conflict(message: impl Into<String>) -> Self {
         Self::new(StatusCode::CONFLICT, message)
+    }
+
+    pub fn unprocessable_entity(message: impl Into<String>) -> Self {
+        Self::new(StatusCode::UNPROCESSABLE_ENTITY, message)
     }
 }
 

@@ -38,11 +38,83 @@ use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 
 use crate::error::{ProviderError, ProviderResult};
+use crate::remediation::{RemediationCapable, RemediationCaps};
 use crate::traits::{
     GitProvider, MergeResult, ProviderCICheck, ProviderCredentials, ProviderPullRequest,
     ProviderReview, ProviderUser, RateLimitInfo, TokenValidation,
 };
 use ampel_core::models::{DiscoveredRepository, GitProvider as Provider, MergeRequest};
+
+/// A recorded [`RemediationCapable`] write operation.
+///
+/// The mock appends one of these for every write it receives, letting worker/job tests
+/// assert *which* remediation calls were issued and with what arguments — deterministic,
+/// in-memory, no HTTP. Retrieve the log with [`MockProvider::remediation_calls`].
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum RemediationCall {
+    /// `get_default_branch_sha(owner, repo)`
+    GetDefaultBranchSha { owner: String, repo: String },
+    /// `create_branch(owner, repo, branch_name, from_sha)`
+    CreateBranch {
+        owner: String,
+        repo: String,
+        branch_name: String,
+        from_sha: String,
+    },
+    /// `update_branch_from_base(owner, repo, branch_name, base_branch)`
+    UpdateBranchFromBase {
+        owner: String,
+        repo: String,
+        branch_name: String,
+        base_branch: String,
+    },
+    /// `create_pull_request(owner, repo, title, head, base)`
+    CreatePullRequest {
+        owner: String,
+        repo: String,
+        title: String,
+        head: String,
+        base: String,
+    },
+    /// `update_pull_request(owner, repo, pr_number)`
+    UpdatePullRequest {
+        owner: String,
+        repo: String,
+        pr_number: i32,
+    },
+    /// `close_pull_request(owner, repo, pr_number)`
+    ClosePullRequest {
+        owner: String,
+        repo: String,
+        pr_number: i32,
+    },
+    /// `create_comment(owner, repo, pr_number, body)`
+    CreateComment {
+        owner: String,
+        repo: String,
+        pr_number: i32,
+        body: String,
+    },
+    /// `add_labels(owner, repo, pr_number, labels)`
+    AddLabels {
+        owner: String,
+        repo: String,
+        pr_number: i32,
+        labels: Vec<String>,
+    },
+    /// `get_status_for_ref(owner, repo, git_ref)`
+    GetStatusForRef {
+        owner: String,
+        repo: String,
+        git_ref: String,
+    },
+    /// `delete_branch(owner, repo, branch_name)`
+    DeleteBranch {
+        owner: String,
+        repo: String,
+        branch_name: String,
+    },
+}
 
 /// Internal state for mock provider
 #[derive(Debug, Clone, Default)]
@@ -59,6 +131,15 @@ struct MockState {
     should_fail_user: bool,
     should_fail_repositories: bool,
     should_fail_pull_requests: bool,
+    /// Capability descriptor returned by `RemediationCapable::capabilities`.
+    /// `None` means "all supported" (the common case for worker tests).
+    remediation_caps: Option<RemediationCaps>,
+    /// SHA returned by `get_default_branch_sha`; defaults when unset.
+    default_branch_sha: Option<String>,
+    /// Ordered log of every remediation write the mock received.
+    remediation_calls: Vec<RemediationCall>,
+    /// Monotonic comment id source so `create_comment` returns stable, unique ids.
+    next_comment_id: i64,
 }
 
 /// Mock Git provider for testing
@@ -215,6 +296,26 @@ impl MockProvider {
     pub fn with_rate_limit(self, rate_limit: RateLimitInfo) -> Self {
         self.state.lock().unwrap().rate_limit = Some(rate_limit);
         self
+    }
+
+    /// Configure the `RemediationCaps` this provider advertises.
+    ///
+    /// Use to simulate partial-support providers (e.g. Bitbucket): a write whose flag is
+    /// `false` returns [`ProviderError::NotSupported`] instead of recording a success.
+    pub fn with_remediation_caps(self, caps: RemediationCaps) -> Self {
+        self.state.lock().unwrap().remediation_caps = Some(caps);
+        self
+    }
+
+    /// Configure the SHA returned by `get_default_branch_sha`.
+    pub fn with_default_branch_sha(self, sha: impl Into<String>) -> Self {
+        self.state.lock().unwrap().default_branch_sha = Some(sha.into());
+        self
+    }
+
+    /// Snapshot of every remediation write the mock has received, in call order.
+    pub fn remediation_calls(&self) -> Vec<RemediationCall> {
+        self.state.lock().unwrap().remediation_calls.clone()
     }
 }
 
@@ -408,6 +509,277 @@ impl GitProvider for MockProvider {
             remaining: 4999,
             reset_at: Utc::now() + chrono::Duration::hours(1),
         }))
+    }
+}
+
+#[async_trait]
+impl RemediationCapable for MockProvider {
+    fn capabilities(&self) -> RemediationCaps {
+        self.state
+            .lock()
+            .unwrap()
+            .remediation_caps
+            .clone()
+            .unwrap_or_else(RemediationCaps::all)
+    }
+
+    async fn get_default_branch_sha(
+        &self,
+        _credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+    ) -> ProviderResult<String> {
+        let mut state = self.state.lock().unwrap();
+        state
+            .remediation_calls
+            .push(RemediationCall::GetDefaultBranchSha {
+                owner: owner.to_string(),
+                repo: repo.to_string(),
+            });
+        Ok(state
+            .default_branch_sha
+            .clone()
+            .unwrap_or_else(|| "mockdefaultsha000000000000000000000000000".to_string()))
+    }
+
+    async fn create_branch(
+        &self,
+        _credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        branch_name: &str,
+        from_sha: &str,
+    ) -> ProviderResult<()> {
+        let mut state = self.state.lock().unwrap();
+        ensure_supported(&state, |c| c.create_branch, "create_branch")?;
+        state.remediation_calls.push(RemediationCall::CreateBranch {
+            owner: owner.to_string(),
+            repo: repo.to_string(),
+            branch_name: branch_name.to_string(),
+            from_sha: from_sha.to_string(),
+        });
+        Ok(())
+    }
+
+    async fn update_branch_from_base(
+        &self,
+        _credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        branch_name: &str,
+        base_branch: &str,
+    ) -> ProviderResult<()> {
+        let mut state = self.state.lock().unwrap();
+        ensure_supported(
+            &state,
+            |c| c.update_branch_from_base,
+            "update_branch_from_base",
+        )?;
+        state
+            .remediation_calls
+            .push(RemediationCall::UpdateBranchFromBase {
+                owner: owner.to_string(),
+                repo: repo.to_string(),
+                branch_name: branch_name.to_string(),
+                base_branch: base_branch.to_string(),
+            });
+        Ok(())
+    }
+
+    async fn create_pull_request(
+        &self,
+        _credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        title: &str,
+        body: &str,
+        head: &str,
+        base: &str,
+    ) -> ProviderResult<ProviderPullRequest> {
+        let mut state = self.state.lock().unwrap();
+        ensure_supported(&state, |c| c.create_pull_request, "create_pull_request")?;
+        // Deterministic, unique PR number: 1-based count of prior PR creations.
+        let number = state
+            .remediation_calls
+            .iter()
+            .filter(|c| matches!(c, RemediationCall::CreatePullRequest { .. }))
+            .count() as i32
+            + 1;
+        state
+            .remediation_calls
+            .push(RemediationCall::CreatePullRequest {
+                owner: owner.to_string(),
+                repo: repo.to_string(),
+                title: title.to_string(),
+                head: head.to_string(),
+                base: base.to_string(),
+            });
+        let now = Utc::now();
+        Ok(ProviderPullRequest {
+            provider_id: number.to_string(),
+            number,
+            title: title.to_string(),
+            description: Some(body.to_string()),
+            url: format!("https://mock.local/{}/{}/pull/{}", owner, repo, number),
+            state: "open".to_string(),
+            source_branch: head.to_string(),
+            target_branch: base.to_string(),
+            author: "mockuser".to_string(),
+            author_avatar_url: None,
+            is_draft: false,
+            is_mergeable: Some(true),
+            has_conflicts: false,
+            additions: 0,
+            deletions: 0,
+            changed_files: 0,
+            commits_count: 0,
+            comments_count: 0,
+            created_at: now,
+            updated_at: now,
+            merged_at: None,
+            closed_at: None,
+        })
+    }
+
+    async fn update_pull_request(
+        &self,
+        _credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+        _title: Option<&str>,
+        _body: Option<&str>,
+    ) -> ProviderResult<()> {
+        let mut state = self.state.lock().unwrap();
+        ensure_supported(&state, |c| c.update_pull_request, "update_pull_request")?;
+        state
+            .remediation_calls
+            .push(RemediationCall::UpdatePullRequest {
+                owner: owner.to_string(),
+                repo: repo.to_string(),
+                pr_number,
+            });
+        Ok(())
+    }
+
+    async fn close_pull_request(
+        &self,
+        _credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+    ) -> ProviderResult<()> {
+        let mut state = self.state.lock().unwrap();
+        ensure_supported(&state, |c| c.close_pull_request, "close_pull_request")?;
+        state
+            .remediation_calls
+            .push(RemediationCall::ClosePullRequest {
+                owner: owner.to_string(),
+                repo: repo.to_string(),
+                pr_number,
+            });
+        Ok(())
+    }
+
+    async fn create_comment(
+        &self,
+        _credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+        body: &str,
+    ) -> ProviderResult<i64> {
+        let mut state = self.state.lock().unwrap();
+        ensure_supported(&state, |c| c.create_comment, "create_comment")?;
+        state.next_comment_id += 1;
+        let comment_id = state.next_comment_id;
+        state
+            .remediation_calls
+            .push(RemediationCall::CreateComment {
+                owner: owner.to_string(),
+                repo: repo.to_string(),
+                pr_number,
+                body: body.to_string(),
+            });
+        Ok(comment_id)
+    }
+
+    async fn add_labels(
+        &self,
+        _credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        pr_number: i32,
+        labels: &[String],
+    ) -> ProviderResult<()> {
+        let mut state = self.state.lock().unwrap();
+        ensure_supported(&state, |c| c.add_labels, "add_labels")?;
+        state.remediation_calls.push(RemediationCall::AddLabels {
+            owner: owner.to_string(),
+            repo: repo.to_string(),
+            pr_number,
+            labels: labels.to_vec(),
+        });
+        Ok(())
+    }
+
+    async fn get_status_for_ref(
+        &self,
+        _credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        git_ref: &str,
+    ) -> ProviderResult<Vec<ProviderCICheck>> {
+        let mut state = self.state.lock().unwrap();
+        ensure_supported(&state, |c| c.get_status_for_ref, "get_status_for_ref")?;
+        state
+            .remediation_calls
+            .push(RemediationCall::GetStatusForRef {
+                owner: owner.to_string(),
+                repo: repo.to_string(),
+                git_ref: git_ref.to_string(),
+            });
+        // Reuse any CI checks configured under an "owner/repo/git_ref" key; else empty.
+        let key = format!("{}/{}/{}", owner, repo, git_ref);
+        Ok(state.ci_checks.get(&key).cloned().unwrap_or_default())
+    }
+
+    async fn delete_branch(
+        &self,
+        _credentials: &ProviderCredentials,
+        owner: &str,
+        repo: &str,
+        branch_name: &str,
+    ) -> ProviderResult<()> {
+        let mut state = self.state.lock().unwrap();
+        ensure_supported(&state, |c| c.delete_branch, "delete_branch")?;
+        state.remediation_calls.push(RemediationCall::DeleteBranch {
+            owner: owner.to_string(),
+            repo: repo.to_string(),
+            branch_name: branch_name.to_string(),
+        });
+        Ok(())
+    }
+}
+
+/// Reject a write whose capability flag is disabled, mirroring how a partial-support
+/// provider (e.g. Bitbucket) surfaces unsupported operations as
+/// [`ProviderError::NotSupported`]. `None` caps means "all supported".
+fn ensure_supported(
+    state: &MockState,
+    flag: impl Fn(&RemediationCaps) -> bool,
+    op: &str,
+) -> ProviderResult<()> {
+    let caps = state
+        .remediation_caps
+        .clone()
+        .unwrap_or_else(RemediationCaps::all);
+    if flag(&caps) {
+        Ok(())
+    } else {
+        Err(ProviderError::NotSupported(format!(
+            "MockProvider: {op} disabled by configured capabilities"
+        )))
     }
 }
 

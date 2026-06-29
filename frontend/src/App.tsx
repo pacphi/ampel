@@ -9,6 +9,7 @@ import Dashboard from '@/pages/Dashboard';
 import Repositories from '@/pages/Repositories';
 import Analytics from '@/pages/Analytics';
 import Merge from '@/pages/Merge';
+import Remediation from '@/pages/Remediation';
 import Settings from '@/pages/Settings';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
@@ -31,6 +32,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="repositories" element={<Repositories />} />
             <Route path="merge" element={<Merge />} />
+            <Route path="remediation" element={<Remediation />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="settings/*" element={<Settings />} />
           </Route>

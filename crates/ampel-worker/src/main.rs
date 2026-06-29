@@ -8,17 +8,24 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 rust_i18n::i18n!("locales", fallback = "en");
 
 mod jobs;
+mod observability;
+mod providers;
+mod services;
 
+use ampel_core::services::SandboxRunner;
 use jobs::{
     cleanup::CleanupJob, health_score::HealthScoreJob, metrics_collection::MetricsCollectionJob,
-    poll_repository::PollRepositoryJob,
+    poll_repository::PollRepositoryJob, remediation_sweep::RemediationSweepJob,
 };
+use services::PodmanSandboxRunner;
 
 #[derive(Clone)]
 pub struct WorkerState {
     pub db: sea_orm::DatabaseConnection,
     pub encryption_service: Arc<ampel_db::encryption::EncryptionService>,
     pub provider_factory: Arc<ampel_providers::ProviderFactory>,
+    /// Sandbox runner used by the remediation jobs (Podman/Docker in prod).
+    pub sandbox_runner: Arc<dyn SandboxRunner>,
 }
 
 #[tokio::main]
@@ -37,6 +44,20 @@ async fn main() -> anyhow::Result<()> {
 
     tracing::info!("Starting Ampel Worker...");
 
+    // Install the Prometheus scrape endpoint for remediation metrics. The
+    // exporter serves `/metrics` on METRICS_PORT (default 9100) for Prometheus
+    // to scrape; describe the metric names/units up front.
+    let metrics_port = std::env::var("METRICS_PORT")
+        .ok()
+        .and_then(|v| v.parse::<u16>().ok())
+        .unwrap_or(9100);
+    let metrics_addr = std::net::SocketAddr::from(([0, 0, 0, 0], metrics_port));
+    metrics_exporter_prometheus::PrometheusBuilder::new()
+        .with_http_listener(metrics_addr)
+        .install()?;
+    observability::describe_metrics();
+    tracing::info!("Prometheus metrics listening on http://{metrics_addr}/metrics");
+
     // Load configuration
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let encryption_key = std::env::var("ENCRYPTION_KEY").expect("ENCRYPTION_KEY must be set");
@@ -53,10 +74,27 @@ async fn main() -> anyhow::Result<()> {
 
     let provider_factory = Arc::new(ampel_providers::ProviderFactory::new());
 
+    // Sandbox runner for remediation. Detection is deferred to first use in
+    // prod; if no runtime is configured/available we log and fall back to a
+    // runner whose execution path errors cleanly (no panics at startup).
+    let sandbox_runner: Arc<dyn SandboxRunner> = match PodmanSandboxRunner::from_env() {
+        Ok(runner) => Arc::new(runner),
+        Err(e) => {
+            tracing::warn!("Sandbox runtime not configured ({e}); remediation runs will error until configured");
+            Arc::new(PodmanSandboxRunner::new(services::SandboxConfig {
+                runtime: services::sandbox_runner::SandboxRuntime::Podman,
+                image: "ghcr.io/ampel/remediation-sandbox:latest".to_string(),
+                clone_depth: 50,
+                subprocess_timeout: std::time::Duration::from_secs(300),
+            }))
+        }
+    };
+
     let state = WorkerState {
         db,
         encryption_service,
         provider_factory,
+        sandbox_runner,
     };
 
     // Create job monitors
@@ -96,6 +134,15 @@ async fn main() -> anyhow::Result<()> {
                     apalis_cron::Schedule::from_str("0 0 * * * *").unwrap(),
                 ))
                 .build_fn(calculate_health_scores)
+        })
+        .register({
+            WorkerBuilder::new("remediation-sweep")
+                .data(state.clone())
+                .backend(CronStream::new(
+                    // Run every 15 minutes
+                    apalis_cron::Schedule::from_str("0 */15 * * * *").unwrap(),
+                ))
+                .build_fn(run_remediation_sweep)
         });
 
     tracing::info!("Starting job monitors...");
@@ -157,6 +204,27 @@ async fn calculate_health_scores(
     let job = jobs::health_score::HealthScoreJob;
     if let Err(e) = job.execute(&state.db).await {
         tracing::error!("Health score job failed: {}", e);
+    }
+
+    Ok(())
+}
+
+async fn run_remediation_sweep(
+    _job: RemediationSweepJob,
+    state: Data<WorkerState>,
+) -> Result<(), Error> {
+    tracing::info!("Running remediation sweep job");
+
+    let job = jobs::remediation_sweep::RemediationSweepJob;
+    if let Err(e) = job
+        .execute(
+            &state.db,
+            &state.encryption_service,
+            state.sandbox_runner.clone(),
+        )
+        .await
+    {
+        tracing::error!("Remediation sweep job failed: {}", e);
     }
 
     Ok(())

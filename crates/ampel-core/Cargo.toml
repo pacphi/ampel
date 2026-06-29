@@ -9,9 +9,17 @@ license.workspace = true
 tokio.workspace = true
 async-trait.workspace = true
 
+# Database (read-side queries for remediation services; entities defined
+# locally to avoid an ampel-db -> ampel-core dependency cycle)
+sea-orm.workspace = true
+
 # Serialization
 serde.workspace = true
 serde_json.workspace = true
+
+# Exact decimal arithmetic for model cost/spend accounting (never use f64 for
+# money). Already present transitively via sea-orm; pinned here as a direct dep.
+rust_decimal = { version = "1", features = ["serde"] }
 
 # Validation
 validator.workspace = true
@@ -31,6 +39,11 @@ rand.workspace = true
 # Email & HTTP
 lettre.workspace = true
 reqwest.workspace = true
+
+[features]
+# Exposes in-process fakes (InMemoryRemediationRunRepository, FakeSandboxRunner)
+# for downstream crates' tests without pulling in a real DB/container.
+test-utils = []
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
