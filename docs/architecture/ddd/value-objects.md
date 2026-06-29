@@ -16,7 +16,7 @@ The Rust sketches below are illustrative. Each type lives in
 1. [RemediationCriteria](#1-remediationcriteria)
 2. [AgentBudget](#2-agentbudget)
 3. [MergeDisposition](#3-mergedisposition)
-4. [CiVerificationResult](#4-civersificationresult)
+4. [CiVerificationResult](#4-civerificationresult)
 5. [AmpelStatus (reference)](#5-ampelstatus-reference)
 6. [ConsolidationPlan](#6-consolidationplan)
 7. [RemediationScope](#7-remediationscope)
