@@ -3,7 +3,7 @@
 > **Feature**: Autonomous triage, consolidation, and remediation of open PRs across every
 > repository under Ampel management (GitHub, GitLab, Bitbucket).  
 > **Trigger condition**: > 3 open pull requests in a repository with an enabled policy.  
-> **Design references**: `REMEDIATION_LOOPS_DESIGN.md`, `AGENTIC_REMEDIATION_MODEL_PROVIDERS.md`  
+> **Design references**: `REMEDIATION-LOOPS-DESIGN.md`, `AGENTIC-REMEDIATION-MODEL-PROVIDERS.md`  
 > **ADR references**: ADR-002 through ADR-014 in `docs/architecture/adr/`  
 > **Date**: 2026-06-24
 

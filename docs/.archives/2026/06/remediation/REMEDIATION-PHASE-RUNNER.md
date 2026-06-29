@@ -1,7 +1,7 @@
 # Fleet Remediation — Phase Runner
 
 A reusable, phase-scoped prompt for implementing the Fleet PR Remediation feature one phase at
-a time. See [`IMPLEMENTATION_PLAN.md`](./IMPLEMENTATION_PLAN.md) for the phase definitions.
+a time. See [`REMEDIATION-IMPLEMENTATION-PLAN.md`](./REMEDIATION-IMPLEMENTATION-PLAN.md) for the phase definitions.
 
 ## How to use
 
@@ -30,7 +30,7 @@ cannot start until the earlier gate truly passed.
 # Fleet Remediation — Phase Runner
 
 PHASE: 0          # ← set to 0,1,2,3,4,5 (the only thing you change between runs)
-PLAN: docs/planning/autonomous-remediation/IMPLEMENTATION_PLAN.md
+PLAN: docs/.archives/2026/06/remediation/REMEDIATION-IMPLEMENTATION-PLAN.md
 
 You are implementing ONE phase of the Fleet PR Remediation feature, then STOPPING.
 Do not start the next phase. Comprehensive and thorough within this phase only.

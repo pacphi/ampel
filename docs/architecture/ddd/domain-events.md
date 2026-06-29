@@ -795,4 +795,4 @@ The frontend uses `event_type` as the discriminant to route incoming SSE message
 
 ---
 
-*This catalog reflects the design as of June 2026. As the state machine in `REMEDIATION_LOOPS_DESIGN.md §4` evolves, this document must be updated in the same commit that changes the state transitions.*
+*This catalog reflects the design as of June 2026. As the state machine in [`REMEDIATION-LOOPS-DESIGN.md`](../../.archives/2026/06/remediation/REMEDIATION-LOOPS-DESIGN.md) §4 evolves, this document must be updated in the same commit that changes the state transitions.*

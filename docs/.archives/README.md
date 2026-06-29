@@ -19,10 +19,12 @@ docs/.archives/
 │       ├── testing/
 │       └── ...
 ├── 2026/
-│   └── 01/               # January 2026
-│       ├── localization/
-│       ├── testing/
-│       └── ...
+│   ├── 01/               # January 2026
+│   │   ├── localization/
+│   │   ├── testing/
+│   │   └── ...
+│   └── 06/               # June 2026
+│       └── remediation/
 └── README.md
 ```
 
@@ -78,9 +80,29 @@ A narrative of the major documentation epochs, for anyone curious about how we g
 - Language switcher UI components
 - Extensive test suite updates for i18n compatibility
 
+### June 2026 - Autonomous Remediation
+
+**Focus**: Self-driving PR/CI remediation loops and long-horizon phase orchestration
+
+- Fleet PR remediation loop design and state machine
+- Long-horizon phase orchestrator and per-phase runner discipline
+- Cross-provider filing aggregation research and flows
+- Model providers, credentials, and playbooks for agentic remediation
+- Observability and metrics for autonomous remediation
+
 ---
 
 ## Archive Organization
+
+### `/2026/06/` - June 2026
+
+**remediation/** (7 files) - Autonomous PR/CI remediation initiative
+
+- Implementation plan and remediation loops design (state machine)
+- Phase orchestrator (long-horizon) and phase runner (per-phase gates)
+- Cross-provider filing aggregation research and flows
+- Model providers, credentials, and playbooks
+- Observability and metrics
 
 ### `/2026/01/` - January 2026
 
@@ -183,4 +205,4 @@ When archiving, place documents in the appropriate `YYYY/MM/category/` directory
 
 ---
 
-_Last updated: January 9, 2026_
+_Last updated: June 29, 2026_

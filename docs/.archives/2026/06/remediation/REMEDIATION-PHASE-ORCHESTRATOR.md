@@ -2,10 +2,10 @@
 
 A goal-driven, memory-efficient driver that completes **all** phases (0→5) of the Fleet PR
 Remediation feature across many sessions, using a hierarchical-mesh swarm. It wraps the
-per-phase gate in [`PHASE_RUNNER.md`](./PHASE_RUNNER.md) in an outer loop so the full ~13-week
+per-phase gate in [`REMEDIATION-PHASE-RUNNER.md`](./REMEDIATION-PHASE-RUNNER.md) in an outer loop so the full ~13-week
 scope finishes without any single session holding all the context.
 
-See [`IMPLEMENTATION_PLAN.md`](./IMPLEMENTATION_PLAN.md) for the phase definitions.
+See [`REMEDIATION-IMPLEMENTATION-PLAN.md`](./REMEDIATION-IMPLEMENTATION-PLAN.md) for the phase definitions.
 
 ## Why this exists
 
@@ -19,7 +19,7 @@ The scope spans 6 phases / ~13+ weeks — far more than one context window. So s
 | **Ephemeral / agent-local** | One worker's single task | swarm agents report *compact* results via SendMessage, never file dumps | ❌ discarded after phase |
 
 The load-bearing rule: **never load all of the planning docs.** Each phase reads only
-`IMPLEMENTATION_PLAN.md`'s section for phase N + the ADRs in that phase's "Gates ADR" line +
+`REMEDIATION-IMPLEMENTATION-PLAN.md`'s section for phase N + the ADRs in that phase's "Gates ADR" line +
 the DDD aggregates it names. The durable tier carries everything else as compact summaries.
 
 ## Agentic-QE integration
@@ -66,7 +66,7 @@ durable tier (`namespace: remediation-qe`) — feeding Phase 5b strategy learnin
    optimization pass and ends the loop.
 
 **Idempotent:** re-running re-enters a half-done phase via the Step A.4 resume check.
-**Gated:** a phase advances only on a real green gate (the `PHASE_RUNNER.md` Step 4 checklist).
+**Gated:** a phase advances only on a real green gate (the `REMEDIATION-PHASE-RUNNER.md` Step 4 checklist).
 **Goal-driven:** the loop terminates only when the GOAL state is reached, not after a fixed count.
 
 ### `/loop` vs `/goal` — use both, at different scopes
@@ -102,8 +102,8 @@ durable tier (`namespace: remediation-qe`) — feeding Phase 5b strategy learnin
 GOAL: every phase 0→5 of the Fleet PR Remediation feature carries a
   `feat(remediation): phase <N> complete — gate PASSED` commit, with CI green and
   a final optimization pass done. You drive ONE phase per run, then STOP.
-PLAN: docs/planning/autonomous-remediation/IMPLEMENTATION_PLAN.md
-RUNNER: docs/planning/autonomous-remediation/PHASE_RUNNER.md   # per-phase gate spec — obey it verbatim
+PLAN: docs/.archives/2026/06/remediation/REMEDIATION-IMPLEMENTATION-PLAN.md
+RUNNER: docs/.archives/2026/06/remediation/REMEDIATION-PHASE-RUNNER.md   # per-phase gate spec — obey it verbatim
 MEM_NS: remediation                                            # ruflo memory namespace for this scope
 
 ## STEP A — Locate current state (read-only, cheap)
@@ -214,7 +214,7 @@ merge the whole feature. Lower blast radius: a bad phase only touches `develop`.
 
 **Drive it** with `/loop` self-paced for cross-session durability + fresh context per phase:
 ```
-/loop Execute the AUTONOMOUS PR/CI prompt block in @docs/planning/autonomous-remediation/PHASE_ORCHESTRATOR.md — run until GOAL or FIX_BUDGET exhaustion.
+/loop Execute the AUTONOMOUS PR/CI prompt block in @docs/.archives/2026/06/remediation/REMEDIATION-PHASE-ORCHESTRATOR.md — run until GOAL or FIX_BUDGET exhaustion.
 ```
 The in-phase CI wait uses a backgrounded `gh pr checks --watch`, so the agent idles (no token burn)
 while CI runs and is re-invoked when checks finish.
@@ -227,8 +227,8 @@ GOAL: every phase 0→5 is implemented on its own branch, opened as a PR, driven
   `feat(remediation): phase <N> complete — gate PASSED`, followed by a final optimization PR.
   When all land, open ONE PR ${BASE} → ${TRUNK} and STOP for human decision. `main` is NEVER
   merged autonomously. Issue once; run UNATTENDED until GOAL or a hard stop.
-PLAN:   docs/planning/autonomous-remediation/IMPLEMENTATION_PLAN.md
-RUNNER: docs/planning/autonomous-remediation/PHASE_RUNNER.md   # per-phase discipline — obey verbatim
+PLAN:   docs/.archives/2026/06/remediation/REMEDIATION-IMPLEMENTATION-PLAN.md
+RUNNER: docs/.archives/2026/06/remediation/REMEDIATION-PHASE-RUNNER.md   # per-phase discipline — obey verbatim
 TRUNK:  main                           # protected; only a human merges the final integration PR into it
 BASE:   develop                        # long-running integration branch (CI already runs on it) — the autonomous base
 MEM_NS: remediation
@@ -342,9 +342,9 @@ Let A = count of `fix(remediation): ci attempt` commits already on this branch
 - The agent never self-certifies: remote CI is the merge authority for phase PRs.
 ```
 
-## Relationship to PHASE_RUNNER.md
+## Relationship to REMEDIATION-PHASE-RUNNER.md
 
-| Concern | PHASE_RUNNER.md (per-phase) | This orchestrator (long-horizon) |
+| Concern | REMEDIATION-PHASE-RUNNER.md (per-phase) | This orchestrator (long-horizon) |
 |---|---|---|
 | Scope per run | One phase, set manually via `PHASE:` | One phase, **discovered** from git markers |
 | Progression | Human increments `PHASE:` and re-runs | `/loop` self-pacing advances automatically on green gate |
