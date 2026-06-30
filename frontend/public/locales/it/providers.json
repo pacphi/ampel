@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Apri le password dell'app Bitbucket",
     "permissions": {
       "accountRead": "Account: Leggi",
       "pullRequestsRead": "Richieste di pull: Leggi",
@@ -12,7 +13,8 @@
       "step2": "Fai clic su \"Crea password app\"",
       "step3": "Inserisci un'etichetta per la password",
       "step4": "Selezionare le autorizzazioni richieste:",
-      "step5": "Fai clic su \"Crea\" e copia la password"
+      "step5": "Fai clic su \"Crea\" e copia la password",
+      "step6": "Inserisci la password dell'app qui sotto per collegare il tuo account."
     },
     "title": "Istruzioni per la password dell'app Bitbucket"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Mantieni il tuo token al sicuro e non condividerlo mai pubblicamente."
   },
   "github": {
+    "linkText": "Impostazioni del token Open GitHub",
     "note": "Sono supportati anche i token a grana fine con autorizzazioni di accesso al repository.",
     "scopes": {
       "readOrg": "read:org (Leggi l'organizzazione e l'appartenenza al team)",
@@ -38,6 +41,7 @@
     "title": "Istruzioni per il token GitHub"
   },
   "gitlab": {
+    "linkText": "Impostazioni del token Open GitLab",
     "scopes": {
       "api": "api (accesso API completo)",
       "readApi": "read_api (accesso API di sola lettura)",
@@ -47,7 +51,8 @@
       "step1": "Vai su GitLab → Impostazioni utente → Token di accesso",
       "step2": "Inserisci un nome per il token e una data di scadenza facoltativa",
       "step3": "Selezionare gli ambiti richiesti:",
-      "step4": "Fai clic su \"Crea token di accesso personale\" e copialo"
+      "step4": "Fai clic su \"Crea token di accesso personale\" e copialo",
+      "step5": "Incolla il token qui sotto per collegare il tuo account"
     },
     "title": "Istruzioni per il token GitLab"
   },

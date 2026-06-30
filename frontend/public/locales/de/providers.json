@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Passwörter der Bitbucket-App öffnen",
     "permissions": {
       "accountRead": "Konto: Lesen",
       "pullRequestsRead": "Pull-Anfragen: Lesen",
@@ -12,7 +13,8 @@
       "step2": "Klicken Sie auf „App-Passwort erstellen“.",
       "step3": "Geben Sie eine Bezeichnung für das Passwort ein",
       "step4": "Wählen Sie die erforderlichen Berechtigungen aus:",
-      "step5": "Klicken Sie auf „Erstellen“ und kopieren Sie das Passwort."
+      "step5": "Klicken Sie auf „Erstellen“ und kopieren Sie das Passwort.",
+      "step6": "Fügen Sie unten das App-Passwort ein, um Ihr Konto zu verbinden."
     },
     "title": "Bitbucket App-Passwortanweisungen"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Bewahren Sie Ihr Token sicher auf und geben Sie es niemals öffentlich weiter."
   },
   "github": {
+    "linkText": "GitHub-Token-Einstellungen öffnen",
     "note": "Feingranulare Token werden auch mit Repository-Zugriffsberechtigungen unterstützt.",
     "scopes": {
       "readOrg": "read:org (Organisation und Teammitgliedschaft lesen)",
@@ -38,6 +41,7 @@
     "title": "GitHub-Token-Anleitung"
   },
   "gitlab": {
+    "linkText": "GitLab-Token-Einstellungen öffnen",
     "scopes": {
       "api": "API (Voller API-Zugriff)",
       "readApi": "read_api (Nur-Lesezugriff auf die API)",
@@ -47,7 +51,8 @@
       "step1": "Gehen Sie zu GitLab → Benutzereinstellungen → Zugriffstoken",
       "step2": "Geben Sie einen Token-Namen und optional ein Ablaufdatum ein.",
       "step3": "Wählen Sie die erforderlichen Bereiche aus:",
-      "step4": "Klicken Sie auf „Persönliches Zugriffstoken erstellen“ und kopieren Sie es."
+      "step4": "Klicken Sie auf „Persönliches Zugriffstoken erstellen“ und kopieren Sie es.",
+      "step5": "Fügen Sie den unten stehenden Token ein, um Ihr Konto zu verbinden."
     },
     "title": "GitLab-Token-Anleitung"
   },

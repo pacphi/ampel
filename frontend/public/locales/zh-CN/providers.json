@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "打开 Bitbucket 应用密码",
     "permissions": {
       "accountRead": "账户：阅读",
       "pullRequestsRead": "拉取请求：读取",
@@ -12,7 +13,8 @@
       "step2": "点击“创建应用密码”",
       "step3": "请输入密码标签",
       "step4": "请选择所需的权限：",
-      "step5": "点击“创建”并复制密码"
+      "step5": "点击“创建”并复制密码",
+      "step6": "请在下方粘贴应用密码以连接您的帐户"
     },
     "title": "Bitbucket 应用密码说明"
   },
@@ -22,6 +24,7 @@
     "securityNote": "妥善保管您的令牌，切勿公开分享。"
   },
   "github": {
+    "linkText": "打开 GitHub 令牌设置",
     "note": "存储库访问权限也支持细粒度令牌。",
     "scopes": {
       "readOrg": "read:org（读取组织和团队成员信息）",
@@ -38,6 +41,7 @@
     "title": "GitHub Token 使用说明"
   },
   "gitlab": {
+    "linkText": "打开 GitLab 令牌设置",
     "scopes": {
       "api": "API（完整 API 访问权限）",
       "readApi": "read_api（只读 API 访问）",
@@ -47,7 +51,8 @@
       "step1": "前往 GitLab → 用户设置 → 访问令牌",
       "step2": "输入令牌名称和可选的过期日期",
       "step3": "选择所需的范围：",
-      "step4": "点击“创建个人访问令牌”并复制它"
+      "step4": "点击“创建个人访问令牌”并复制它",
+      "step5": "粘贴以下令牌以连接您的帐户"
     },
     "title": "GitLab Token 使用说明"
   },

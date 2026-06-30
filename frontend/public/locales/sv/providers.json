@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Öppna Bitbucket-applösenord",
     "permissions": {
       "accountRead": "Konto: Läs",
       "pullRequestsRead": "Hämtningsförfrågningar: Läs",
@@ -12,7 +13,8 @@
       "step2": "Klicka på \"Skapa applösenord\"",
       "step3": "Ange en etikett för lösenordet",
       "step4": "Välj de behörigheter som krävs:",
-      "step5": "Klicka på \"Skapa\" och kopiera lösenordet"
+      "step5": "Klicka på \"Skapa\" och kopiera lösenordet",
+      "step6": "Klistra in applösenordet nedan för att ansluta ditt konto"
     },
     "title": "Instruktioner för lösenord för Bitbucket-appen"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Håll din token säker och dela den aldrig offentligt."
   },
   "github": {
+    "linkText": "Öppna GitHub-tokeninställningar",
     "note": "Finkorniga tokens stöds också med åtkomstbehörigheter för arkivet.",
     "scopes": {
       "readOrg": "read:org (Läs org- och teammedlemskap)",
@@ -38,6 +41,7 @@
     "title": "Instruktioner för GitHub-token"
   },
   "gitlab": {
+    "linkText": "Öppna GitLab-tokeninställningar",
     "scopes": {
       "api": "api (fullständig API-åtkomst)",
       "readApi": "read_api (skrivskyddad API-åtkomst)",
@@ -47,7 +51,8 @@
       "step1": "Gå till GitLab → Användarinställningar → Åtkomsttokens",
       "step2": "Ange ett tokennamn och ett valfritt utgångsdatum",
       "step3": "Välj önskade omfattningar:",
-      "step4": "Klicka på \"Skapa personlig åtkomsttoken\" och kopiera den"
+      "step4": "Klicka på \"Skapa personlig åtkomsttoken\" och kopiera den",
+      "step5": "Klistra in token nedan för att ansluta ditt konto"
     },
     "title": "Instruktioner för GitLab-token"
   },
