@@ -97,3 +97,7 @@ tarpaulin-report.html
 
 # Test result files
 test-results.json
+
+# Autopilot parked/queued pipelines — staged locally, never committed.
+# Promoted into .autopilot/pipeline.yml only when their run starts.
+.autopilot/queued/

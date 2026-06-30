@@ -2,18 +2,15 @@
 
 ## [0.5.1](https://github.com/pacphi/ampel/compare/v0.5.0...v0.5.1) (2026-05-19)
 
-
 ### Bug Fixes
 
 * **ci:** drop x86_64 Darwin binary target (macos-15-intel requires paid runners) ([ea517a5](https://github.com/pacphi/ampel/commit/ea517a5f004055f91e673fb58b905ffeca3592a8))
 
 ## [0.5.0](https://github.com/pacphi/ampel/compare/v0.4.0...v0.5.0) (2026-05-19)
 
-
 ### Features
 
 * release 0.5.0 ([f7e3c75](https://github.com/pacphi/ampel/commit/f7e3c75c89d91fb0f488c2b0ea13ab8cb64e547c))
-
 
 ### Bug Fixes
 
@@ -26,15 +23,15 @@
 
 ### Bug Fixes
 
-- **ci:** apply cargo fmt and fix Dashboard test for msw 2.13 ([34bb477](https://github.com/pacphi/ampel/commit/34bb477736371b6b97b008601271fe4cbb870f3f))
-- **ci:** use simple release-type at workspace root ([81e3368](https://github.com/pacphi/ampel/commit/81e33680635cb47d25ed8741e570a300e81040b4))
-- **docs:** convert absolute markdown links to relative paths for lychee link checker ([a244d9f](https://github.com/pacphi/ampel/commit/a244d9f574dcffbf65eeb26ec14e5e1ce899acc5))
-- resolve broken doc links, ESLint errors, and cargo clippy warnings ([9a6238a](https://github.com/pacphi/ampel/commit/9a6238a96dd682d6ce47cadcfe997cce7e8e595d))
-- **security:** resolve dependabot alerts for axios, vite, lodash, rand, rustls-webpki, quinn-proto, and transitive npm deps ([6e328f4](https://github.com/pacphi/ampel/commit/6e328f4c825766199e7f843e0fecbeffa0da05fa))
+* **ci:** apply cargo fmt and fix Dashboard test for msw 2.13 ([34bb477](https://github.com/pacphi/ampel/commit/34bb477736371b6b97b008601271fe4cbb870f3f))
+* **ci:** use simple release-type at workspace root ([81e3368](https://github.com/pacphi/ampel/commit/81e33680635cb47d25ed8741e570a300e81040b4))
+* **docs:** convert absolute markdown links to relative paths for lychee link checker ([a244d9f](https://github.com/pacphi/ampel/commit/a244d9f574dcffbf65eeb26ec14e5e1ce899acc5))
+* resolve broken doc links, ESLint errors, and cargo clippy warnings ([9a6238a](https://github.com/pacphi/ampel/commit/9a6238a96dd682d6ce47cadcfe997cce7e8e595d))
+* **security:** resolve dependabot alerts for axios, vite, lodash, rand, rustls-webpki, quinn-proto, and transitive npm deps ([6e328f4](https://github.com/pacphi/ampel/commit/6e328f4c825766199e7f843e0fecbeffa0da05fa))
 
 ### Miscellaneous Chores
 
-- release 0.4.0 ([c0469b5](https://github.com/pacphi/ampel/commit/c0469b5d6eb3f43214f06c61e53c16c335382808))
+* release 0.4.0 ([c0469b5](https://github.com/pacphi/ampel/commit/c0469b5d6eb3f43214f06c61e53c16c335382808))
 
 ## Changelog
 

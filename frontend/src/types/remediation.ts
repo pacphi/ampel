@@ -10,20 +10,12 @@
 export type ScopeType = 'repository' | 'team' | 'org' | 'user';
 
 export type AutonomyLevel =
-  | 'dry_run_only'
-  | 'suggest_only'
-  | 'auto_with_approval'
-  | 'fully_autonomous';
+  'dry_run_only' | 'suggest_only' | 'auto_with_approval' | 'fully_autonomous';
 
 export type RemediationTier = 'consolidate_only' | 'fix_and_consolidate' | 'full_remediation';
 
 export type PolicyState =
-  | 'none'
-  | 'disabled'
-  | 'dry_run'
-  | 'suggest'
-  | 'auto_with_approval'
-  | 'auto_merge';
+  'none' | 'disabled' | 'dry_run' | 'suggest' | 'auto_with_approval' | 'auto_merge';
 
 /**
  * Strategy for choosing which open PRs a run operates on. Externally tagged to
@@ -194,11 +186,7 @@ export interface ConflictReport {
  * Field naming matches the backend JSON contract (camelCase).
  */
 export type AgentSessionStatus =
-  | 'running'
-  | 'succeeded'
-  | 'failed'
-  | 'handoff_human'
-  | 'budget_exceeded';
+  'running' | 'succeeded' | 'failed' | 'handoff_human' | 'budget_exceeded';
 
 /** Source of the failure classification driving the agent prompt. */
 export type ClassifierSource = 'rules' | 'model' | 'heuristic';
