@@ -97,7 +97,8 @@
       "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
       "confirm": "Enable auto-merge",
       "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
+    },
+    "noScopes": "You don't manage any scopes of this type yet."
   },
   "policies": {
     "title": "Policies",

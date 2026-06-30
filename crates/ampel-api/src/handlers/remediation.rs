@@ -27,7 +27,9 @@ use ampel_core::remediation::{
     AutonomyLevel, ConsolidationPlan, PrSelectionStrategy, RemediationTier, ScopeType,
 };
 use ampel_core::services::{PolicyResolver, RemediationService};
-use ampel_db::entities::{organization, pull_request, remediation_policy, repository, team_member};
+use ampel_db::entities::{
+    organization, pull_request, remediation_policy, repository, team, team_member, user,
+};
 
 use crate::extractors::AuthUser;
 use crate::handlers::{ApiError, ApiResponse};
@@ -311,6 +313,98 @@ pub async fn list_policies(
 
     let responses = policies.into_iter().map(PolicyResponse::from).collect();
     Ok(Json(ApiResponse::success(responses)))
+}
+
+/// A selectable scope (a `scope_id` plus a human-readable label) the caller is
+/// allowed to attach a policy to.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ScopeOption {
+    pub id: Uuid,
+    pub label: String,
+}
+
+/// The caller's manageable scopes, grouped by scope type. Drives the policy
+/// editor's scope pickers so operators never have to type a raw UUID.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ScopesResponse {
+    /// The caller themselves — the only valid `scope_id` for a User-scoped
+    /// policy (the handler enforces `scope_id == user_id`).
+    pub user: ScopeOption,
+    pub repositories: Vec<ScopeOption>,
+    pub teams: Vec<ScopeOption>,
+    pub orgs: Vec<ScopeOption>,
+}
+
+/// GET /api/remediation/scopes
+///
+/// Returns the scopes the caller may attach a remediation policy to, each with
+/// a display label. Mirrors the authorization in `assert_scope_access` so the
+/// editor only ever offers values the create/update handlers will accept.
+pub async fn list_scopes(
+    State(state): State<AppState>,
+    auth: AuthUser,
+) -> Result<Json<ApiResponse<ScopesResponse>>, ApiError> {
+    let me = user::Entity::find_by_id(auth.user_id)
+        .one(&state.db)
+        .await?
+        .ok_or_else(|| ApiError::not_found("User not found"))?;
+    let user = ScopeOption {
+        id: me.id,
+        label: me.display_name.unwrap_or(me.email),
+    };
+
+    let repositories = repository::Entity::find()
+        .filter(repository::Column::UserId.eq(auth.user_id))
+        .all(&state.db)
+        .await?
+        .into_iter()
+        .map(|r| ScopeOption {
+            id: r.id,
+            label: r.full_name,
+        })
+        .collect();
+
+    let team_ids: Vec<Uuid> = team_member::Entity::find()
+        .filter(team_member::Column::UserId.eq(auth.user_id))
+        .all(&state.db)
+        .await?
+        .into_iter()
+        .map(|m| m.team_id)
+        .collect();
+    let teams = if team_ids.is_empty() {
+        Vec::new()
+    } else {
+        team::Entity::find()
+            .filter(team::Column::Id.is_in(team_ids))
+            .all(&state.db)
+            .await?
+            .into_iter()
+            .map(|t| ScopeOption {
+                id: t.id,
+                label: t.name,
+            })
+            .collect()
+    };
+
+    let orgs = organization::Entity::find()
+        .filter(organization::Column::OwnerId.eq(auth.user_id))
+        .all(&state.db)
+        .await?
+        .into_iter()
+        .map(|o| ScopeOption {
+            id: o.id,
+            label: o.name,
+        })
+        .collect();
+
+    Ok(Json(ApiResponse::success(ScopesResponse {
+        user,
+        repositories,
+        teams,
+        orgs,
+    })))
 }
 
 /// POST /api/remediation/policies

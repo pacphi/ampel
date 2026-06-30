@@ -111,7 +111,8 @@
     "saving": "절약…",
     "scopeId": "범위 ID",
     "scopeIdPlaceholder": "저장소, 팀, 조직 또는 사용자 ID를 입력하세요.",
-    "scopeType": "범위 유형"
+    "scopeType": "범위 유형",
+    "noScopes": "아직 이 유형의 범위를 관리하고 있지 않습니다."
   },
   "fleet": {
     "airGappedOff": "연결됨",

@@ -111,7 +111,8 @@
     "saving": "Tasarruf…",
     "scopeId": "Kapsam Kimliği",
     "scopeIdPlaceholder": "Depo, ekip, kuruluş veya kullanıcı kimliğini girin.",
-    "scopeType": "Kapsam türü"
+    "scopeType": "Kapsam türü",
+    "noScopes": "Bu türde henüz hiçbir kapsamı yönetmiyorsunuz."
   },
   "fleet": {
     "airGappedOff": "Bağlı",

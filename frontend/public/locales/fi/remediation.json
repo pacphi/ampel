@@ -111,7 +111,8 @@
     "saving": "Tallennetaan…",
     "scopeId": "Vaikutusalueen tunnus",
     "scopeIdPlaceholder": "Anna tietovaraston, tiimin, organisaation tai käyttäjätunnuksen nimi.",
-    "scopeType": "Laajuustyyppi"
+    "scopeType": "Laajuustyyppi",
+    "noScopes": "Et hallinnoi vielä tämän tyyppisiä laajuuksia."
   },
   "fleet": {
     "airGappedOff": "Yhdistetty",

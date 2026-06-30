@@ -5,7 +5,16 @@ import type { CreatePolicyRequest, UpdatePolicyRequest } from '@/types/remediati
 export const remediationPolicyKeys = {
   all: ['remediation', 'policies'] as const,
   detail: (id: string) => ['remediation', 'policies', id] as const,
+  scopes: ['remediation', 'scopes'] as const,
 };
+
+/** The scopes the caller may attach a policy to, for the editor's pickers. */
+export function useRemediationScopes() {
+  return useQuery({
+    queryKey: remediationPolicyKeys.scopes,
+    queryFn: () => remediationApi.listScopes(),
+  });
+}
 
 export function useRemediationPolicies() {
   return useQuery({

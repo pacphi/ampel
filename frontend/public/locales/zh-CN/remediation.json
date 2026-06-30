@@ -111,7 +111,8 @@
     "saving": "保存…",
     "scopeId": "范围 ID",
     "scopeIdPlaceholder": "请输入存储库、团队、组织或用户 ID",
-    "scopeType": "范围类型"
+    "scopeType": "范围类型",
+    "noScopes": "您还没有管理此类型的任何范围。"
   },
   "fleet": {
     "airGappedOff": "已连接",

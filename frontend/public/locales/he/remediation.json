@@ -111,7 +111,8 @@
     "saving": "חִסָכוֹן…",
     "scopeId": "מזהה היקף",
     "scopeIdPlaceholder": "הזן את מזהה המאגר, הצוות, הארגון או המשתמש",
-    "scopeType": "סוג היקף"
+    "scopeType": "סוג היקף",
+    "noScopes": "אינך מנהל עדיין אף היקף מסוג זה."
   },
   "fleet": {
     "airGappedOff": "מְחוּבָּר",

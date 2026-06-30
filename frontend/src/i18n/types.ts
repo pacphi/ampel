@@ -877,6 +877,7 @@ export interface RemediationTranslations {
     };
     maxPrsPerRun: string;
     minOpenPrs: string;
+    noScopes: string;
     save: string;
     saving: string;
     scopeId: string;

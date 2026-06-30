@@ -111,7 +111,8 @@
     "saving": "Saving…",
     "scopeId": "Scope ID",
     "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "scopeType": "Scope type"
+    "scopeType": "Scope type",
+    "noScopes": "You don't manage any scopes of this type yet."
   },
   "fleet": {
     "airGappedOff": "Connected",
