@@ -1,21 +1,20 @@
-# PARKED pipeline — not active. Promote to .autopilot/pipeline.yml only after the
-# docs-lint-consolidation run completes (one active pipeline.yml at a time).
+# ACTIVE pipeline — promoted from .autopilot/queued/ on run start (one active pipeline at a time).
 # profile.yml is stack-level and shared — reused as-is.
 
-feature_id: "i18n-key-coverage"
-goal: "Every component t() reference resolves to a real EN i18n key (fix missing keys AND mis-pathed references), then translate the new keys across all 26 non-English locales."
+feature_id: "app-version-footer"
+goal: "Show the app version in the UI footer (bottom-left): the clean released version in production builds, and a SemVer pre-release form (e.g. v0.5.1-dev+<sha>) in dev to disambiguate development builds from releases."
 spec: |
-  Discovered via the Add Provider Account screen (settings/accounts/add): the UI renders RAW i18n
-  keys instead of values, even in English — e.g. providers:{github.linkText, gitlab.steps.step5,
-  bitbucket.steps.step6, bitbucket.linkText}; accounts:{add.form.instanceUrl, add.form.instanceUrlPlaceholder,
-  add.form.instanceUrlDescription, add.form.tokenPlaceholder_<provider>, add.form.appPassword,
-  add.form.bitbucketUsername, add.form.bitbucketUsernamePlaceholder, add.form.bitbucketUsernameDescription}.
-  Plus a MIS-PATHED reference: AddAccountPage calls t('common:cancel') but the key is common:actions.cancel
-  (common:cancel does not exist), so the button renders the fallback "cancel" instead of "Cancel".
-  i18next prints the raw key (or key tail) whenever a t() reference does not resolve in its namespace.
-  This is a KEY-COVERAGE bug (plumbing), distinct from the #41 remediation translation gap and unrelated
-  to the docs-lint cleanup. Audit ALL namespaces, not just this form — there are likely more gaps.
-  The repo already has the ampel-i18n CLI (extract/report) and an i18n-validation CI workflow to lean on.
+  Source of truth for the version is release-please: frontend/package.json `version` and the Cargo
+  workspace `version` (both marked `# x-release-please-version`) are bumped together on release —
+  currently 0.5.1. The frontend does NOT currently inject the version at build time (vite.config has no
+  `define`), and there is NO footer component (layout is Header.tsx / Layout.tsx / Sidebar.tsx).
+  Requirement: a footer, bottom-left preferred, that displays the version. Disambiguate dev vs release
+  per SemVer best practice:
+    - production build (`vite build`, import.meta.env.PROD): clean release version, e.g. "v0.5.1".
+    - dev (`vite dev` / make dev-frontend, import.meta.env.DEV): a pre-release identifier, e.g.
+      "v0.5.1-dev" or "v0.5.1-dev+<short-git-sha>" (prerelease per SemVer §9, sha as build metadata §10).
+  Pre-release versions sort BELOW the release, which is the correct signal that a dev build is "ahead of
+  but not yet" the next release.
 
 references:
   prd:     "docs/planning/PRODUCT_SPEC.md"
@@ -23,45 +22,47 @@ references:
   adr_dir: "docs/architecture/adr"
   ddd_dir: "docs/architecture/ddd"
   extra:
-    - "docs/localization/SPECIFICATION.md"
-    - "docs/localization/DEVELOPER-GUIDE.md"
-    - "crates/ampel-i18n-builder/README.md"
+    - "frontend/vite.config.ts"
+    - "frontend/src/components/layout/Layout.tsx"
 
 trunk: main
 base:  develop
 autonomy: pr_ci
 fix_budget: 5
-# Phase 0 may touch component source (correcting a few t() paths) + adds EN keys; low blast radius.
 risk_phases: []
 
 phases:
   - id: 0
-    goal: "Make EN whole: audit every t('ns:key') reference across src/ against the en/<ns>.json source; add every missing key with a proper English value, and correct mis-pathed references (e.g. common:cancel -> common:actions.cancel). After this phase the app renders real English everywhere — no raw keys."
+    goal: "Expose the app version to the frontend at build time, with a SemVer-correct dev/release distinction — no UI yet."
     deliverables:
-      - "A reusable audit (e.g. scripts/i18n-key-audit.mjs) that enumerates all static t('ns:key') usages in frontend/src and the known dynamic suffixes (tokenPlaceholder_<provider>, etc.), resolves each against frontend/public/locales/en/<ns>.json, and lists every UNRESOLVED reference."
-      - "All missing EN keys added with correct English values — at minimum the providers (github/gitlab/bitbucket linkText + steps.*) and accounts (add.form.*) keys seen on settings/accounts/add, plus any others the audit surfaces in other namespaces."
-      - "Mis-pathed references corrected: AddAccountPage `t('common:cancel')` -> `t('common:actions.cancel')` (or add a common:cancel alias) so the Cancel button reads 'Cancel'."
+      - "vite.config.ts `define` injects the package.json `version` (e.g. as `__APP_VERSION__`) and the short git SHA (e.g. `__GIT_SHA__`) at build time; reads version from package.json (the release-please source of truth), not a hardcoded literal."
+      - "A small version helper (e.g. frontend/src/lib/version.ts) exporting a displayVersion() that returns `v<version>` when import.meta.env.PROD and `v<version>-dev+<sha>` (SemVer prerelease+build-metadata) when import.meta.env.DEV."
+      - "Unit test (vitest) covering both PROD and DEV branches of displayVersion()."
     definition_of_done:
-      - "cmd: node scripts/i18n-key-audit.mjs reports 0 unresolved t() references against the en source"
-      - "grep:absent: the Add Provider Account flow no longer references a non-existent key — every providers:/accounts: key used by TokenInstructions.tsx + AddAccountPage.tsx exists in en/providers.json / en/accounts.json"
-      - "cmd: jq -e '.actions.cancel' frontend/public/locales/en/common.json  AND the cancel button resolves to \"Cancel\" (mis-path fixed or alias added)"
-      - "prose: settings/accounts/add for GitHub, GitLab, Bitbucket renders English labels/placeholders/instructions, not raw keys (visual confirmation on the screens that surfaced this)."
-    conventions: "Add keys to the EN namespace JSON that the component's useTranslation() declares; keep nesting/style consistent with neighboring keys. Prefer correcting a wrong t() path over adding a duplicate key, unless an alias is clearly intended. Do NOT touch other locales here — translation is phase 1. Keep generated frontend/src/i18n/types.ts regenerated if the namespace key set changes (it's .prettierignore'd and must match the generator)."
+      - "grep: __APP_VERSION__ (or chosen token) defined in frontend/vite.config.ts via `define`, sourced from package.json version"
+      - "cmd: cd frontend && pnpm run type-check passes"
+      - "cmd: cd frontend && pnpm test -- --run src/lib/version (the helper's tests pass, covering PROD release form and DEV pre-release form)"
+      - "grep:absent: a hardcoded version string literal like \"0.5.1\" in version.ts (must derive from the injected define, so release-please bumps flow through automatically)"
+      - "prose: dev output is a valid SemVer pre-release (contains a `-dev` prerelease tag); prod output has no prerelease tag."
+    conventions: "Match existing frontend conventions (TS, vitest co-located or __tests__). Derive version from package.json so release-please bumps require no manual edits here. Use import.meta.env.PROD/DEV for the mode switch. Keep the helper pure/testable; inject env via the define, don't read process.env at runtime."
     depends_on: []
     adrs: []
     ddd: []
 
   - id: 1
-    goal: "Translate every newly-added/changed EN key across all 26 non-English locales, preserving key parity and placeholders."
+    goal: "Render the version in a footer (bottom-left) wired into the app layout."
     deliverables:
-      - "All affected namespaces (providers, accounts, common, + any others touched in phase 0) translated for the 26 non-English locales via the ampel-i18n CLI (--detect-untranslated, Google->OpenAI, Systran/DeepL disabled — same config as the #41 run)."
-      - "Key parity restored: each locale's affected namespaces match the en key set (0 missing / 0 extra)."
+      - "A Footer component (frontend/src/components/layout/Footer.tsx) that renders displayVersion() bottom-left, styled subtly (muted, small) with Tailwind, consistent with Header/Sidebar."
+      - "Footer wired into Layout.tsx so it appears app-wide at the bottom."
+      - "Any user-facing label text (if added beyond the version string) uses an i18n key that EXISTS in en/<ns>.json (no raw keys — do not reintroduce the key-coverage bug); prefer showing just the version string to keep it label-light."
+      - "Component test asserting the version string renders and is positioned in the footer."
     definition_of_done:
-      - "cmd: per affected namespace, per locale, `ampel-i18n translate --lang <code> --namespace <ns> --detect-untranslated` exits 0 (loop over 26 locales; CLI has no --all)"
-      - "cmd: for each affected namespace+locale, jq key-set equals en (parity 0 missing/0 extra)"
-      - "cmd: {{interpolation}} placeholder integrity vs en for the new keys"
-      - "prose: RTL (ar,he) + CJK (ja,ko,zh-CN,zh-TW) render the new keys in target script; CI i18n-validation (Validate React/Rust Translations, RTL, Complex Scripts, Pluralization) green on the PR."
-    conventions: "Reuse the ephemeral provider config (Google primary, OpenAI fallback; Systran/DeepL disabled) and run the CLI from crates/ampel-i18n-builder so its dotenvy loads the co-located .env. Translation-only — no further key/plumbing changes."
+      - "grep: Footer rendered in frontend/src/components/layout/Layout.tsx"
+      - "cmd: cd frontend && pnpm test -- --run Footer (component test passes, asserts version text present)"
+      - "cmd: cd frontend && pnpm run build succeeds and `grep -r __APP_VERSION__ dist` finds NO unreplaced token (the define actually substituted)"
+      - "cmd: cd frontend && pnpm exec prettier --check \"src/**/*.{ts,tsx,css,json}\" and pnpm run lint pass (the phase-2 docs-lint hard prettier gate is now active)"
+      - "prose: footer appears bottom-left; in a dev run it shows the -dev pre-release form, in a prod build the clean version (visual confirmation)."
+    conventions: "Bottom-left placement as requested. Keep it unobtrusive (muted foreground, small text). Reuse shadcn/Tailwind tokens already in the layout. If any label is added, add its i18n key to en first (lesson from i18n-key-coverage)."
     depends_on: [0]
     adrs: []
     ddd: []
