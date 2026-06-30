@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "Luokittelija",
+    "cost": "Maksaa",
+    "failureClass": "Vikaluokka",
+    "iterations": "Iteraatiot",
+    "status": {
+      "budget_exceeded": "Budjetti ylitetty",
+      "failed": "Epäonnistui",
+      "handoff_human": "Luovutettu ihmiselle",
+      "running": "Juoksu",
+      "succeeded": "Onnistui"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "Agentti-istunto",
+    "tokensUsed": "Käytetyt tokenit",
+    "transcript": "Näytä transkriptio"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "Yhdistetty",
+      "merged": "Yhdistetty"
     },
+    "allRepos": "Kaikki tietovarastot",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
+      "action": "Toiminta",
+      "autonomy": "Autonomia",
+      "completedAt": "Valmis",
       "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "repository": "Arkisto"
+    },
+    "description": "Vain lisättävä tietue itsenäisistä yhdistämisistä ja sulkemisista.",
+    "empty": "Ei rekisteröityjä autonomisia toimia.",
+    "exportCsv": "Vie CSV-tiedosto",
+    "filterRepo": "Arkisto",
+    "since": "Koska",
+    "tableLabel": "Korjausloki",
+    "title": "Tarkastusloki",
+    "until": "Kunnes"
+  },
+  "autonomyHint": {
+    "auto_merge": "Yhdistää ja yhdistää automaattisesti ilman ihmisen hyväksyntää.",
+    "consolidate": "Yhdistää pull-pyynnöt, mutta vaatii ihmisen hyväksynnän ennen yhdistämistä.",
+    "dry_run": "Esikatselee konsolidointisuunnitelmia tekemättä muutoksia.",
+    "off": "Korjaus on poistettu käytöstä tässä laajuusalueessa."
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "Auto hyväksynnällä",
+    "dry_run_only": "Vain kuivakäyttö",
+    "fully_autonomous": "Täysin autonominen",
+    "suggest_only": "Vain ehdotukset"
+  },
+  "autonomyStop": {
+    "auto_merge": "Automaattinen yhdistäminen",
+    "consolidate": "Vain konsolidointi",
+    "dry_run": "Kuiva-ajo",
+    "off": "Pois"
+  },
+  "ci": {
+    "columns": {
+      "check": "Tarkista",
+      "status": "Status",
+      "type": "Tyyppi"
+    },
+    "empty": "CI-tietoja ei ole saatavilla.",
+    "headSha": "Pään SHA",
+    "logs": "Lokit",
+    "optional": "Valinnainen",
+    "predictedConflict": "Ennustettu konflikti",
+    "required": "Pakollinen",
+    "statusCheck": "CI-tila",
+    "tableLabel": "CI-tarkistusmatriisi",
+    "title": "CI-tarkistukset",
+    "tone": {
+      "green": "Syöttäminen",
+      "red": "Epäonnistuminen",
+      "yellow": "Odottaa"
+    },
+    "viewLogs": "Näytä lokit"
+  },
+  "conflicts": {
+    "conflicted": "Ristiriitainen",
+    "empty": "Ei ristiriitoja tai ohitettuja pull-pyyntöjä.",
+    "skipped": "Ohitettu",
+    "title": "Konfliktit"
+  },
+  "disposition": {
+    "closedWithRef": "Suljettu (korvattu)",
+    "consolidated": "Yhdistetty",
+    "leftOpen": "Avoinna",
+    "skippedConflict": "Ohitettu (ristiriita)"
+  },
+  "editor": {
+    "autonomy": "Autonomiataso",
+    "confirmAutoMerge": {
+      "confirm": "Ota automaattinen yhdistäminen käyttöön",
+      "description": "Automaattinen yhdistäminen yhdistää pull-pyynnöt automaattisesti ilman ihmisen hyväksyntää. Tämä voi muokata tietovarastojasi. Oletko varma?",
+      "previewRequired": "Suorita kaluston esikatselu ennen automaattisen yhdistämisen käyttöönottoa ensimmäistä kertaa, jotta näet tarkalleen, mitä yksi ajo tekee.",
+      "title": "Ota automaattinen yhdistäminen käyttöön?"
+    },
+    "createTitle": "Luo käytäntö",
+    "description": "Määritä, miten korjaus toimii tässä vaikutusalueella.",
+    "editTitle": "Muokkaa käytäntöä",
+    "enabled": "Käytössä",
+    "errors": {
+      "saveFailed": "Käytännön tallentaminen epäonnistui.",
+      "scopeIdRequired": "Soveltamisalatunnus on pakollinen."
+    },
+    "maxPrsPerRun": "PR-enimmäismäärä ajoa kohden",
+    "minOpenPrs": "Avointen PR-pyyntöjen vähimmäismäärä",
+    "save": "Tallenna käytäntö",
+    "saving": "Tallennetaan…",
+    "scopeId": "Vaikutusalueen tunnus",
+    "scopeIdPlaceholder": "Anna tietovaraston, tiimin, organisaation tai käyttäjätunnuksen nimi.",
+    "scopeType": "Laajuustyyppi"
+  },
+  "fleet": {
+    "airGappedOff": "Yhdistetty",
+    "airGappedOn": "Ilmarakoinen",
+    "columns": {
+      "actions": "Toiminnot",
+      "airGapped": "Ilmarako",
+      "eligibility": "Kelpoisuus",
+      "openPrs": "Avoimet PR:t",
+      "policyState": "Käytäntö",
+      "repository": "Arkisto"
+    },
+    "description": "Tietovarastokohtainen korjauskelpoisuus ja käytännön tila.",
+    "eligible": "Tukikelpoinen",
+    "empty": "Ei löytynyt arkistoja.",
+    "error": "Kaluston yleiskatsauksen lataaminen epäonnistui.",
+    "notEligible": "Ei kelvollinen",
+    "preview": "Esikatselu",
+    "tableLabel": "Arkiston kunnostuksen tila",
+    "title": "Kaluston yleiskatsaus"
+  },
+  "killSwitch": {
+    "active": "Korjaus käynnissä",
+    "label": "Keskeytä kaikki korjaukset",
+    "noPolicy": "Ei keskeytettävää käytäntöä",
+    "paused": "Korjaus keskeytetty"
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
+    "airGapNotice": "Ilmaraolla varustetut organisaatiot voivat käyttää vain paikallisia palveluntarjoajia (Ollama, ONNX). Ulkoisen palveluntarjoajan (Claude, Gemini) lisääminen ilmaraolla varustettuun organisaatioon hylätään.",
+    "apiKey": "API-avain",
+    "apiKeyHint": "Tallennetaan salattuna eikä sitä koskaan enää näytetä. Jätä tyhjäksi säilyttääksesi olemassa olevan avaimen.",
+    "apiKeyPlaceholder": "Liitä tarjoajan API-avain",
+    "create": "Lisää mallitili",
+    "createTitle": "Lisää mallitili",
+    "default": "Oletus",
+    "description": "Määritä tekoälymallin tarjoajat, joita agenttinen korjaustaso käyttää epäonnistuneiden pull-pyyntöjen korjaamiseen.",
+    "displayName": "Näyttönimi",
+    "displayNamePlaceholder": "esim. Team Claude -avain",
+    "egress": {
+      "external": "Ulkoinen uloskäynti",
+      "local_only": "Vain paikallisesti"
+    },
+    "empty": "Ei vielä mallitilejä. Lisää yksi ottaaksesi agenttikohtaisen korjauksen käyttöön.",
+    "endpointUrl": "Päätepisteen URL-osoite",
+    "endpointUrlPlaceholder": "http://paikallinenhost:11434",
+    "error": "Mallitilien lataaminen epäonnistui.",
+    "errors": {
+      "airGapped": "Tässä organisaatiossa on ilmaraot: ulkoisen lähtevän liikenteen mallintarjoajat (Claude, Gemini) eivät ole sallittuja.",
+      "createFailed": "Mallitilin luominen epäonnistui.",
+      "displayNameRequired": "Näyttönimi on pakollinen."
+    },
+    "modelId": "Mallitunnus",
+    "modelIdPlaceholder": "esim. claude-sonnet-4",
+    "providerKind": "Palveluntarjoaja",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
+      "gemini": "Kaksoset",
+      "ollama": "Ollama (paikallinen)",
+      "onnx": "ONNX (paikallinen)"
     },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
+    "save": "Tallenna tili",
+    "saving": "Tallennetaan…",
+    "spend": "Viettää",
+    "spendCap": "Kulutuskatto (USD)",
+    "title": "Mallitilit",
+    "validate": "Vahvista",
+    "validating": "Vahvistetaan…",
     "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
-    "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
-    },
-    "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "invalid": "Virheellinen",
+      "unvalidated": "Vahvistamaton",
+      "valid": "Voimassa"
     }
   },
+  "nav": "Kunnostus",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "Käsikirja (YAML)",
+    "contentPlaceholder": "Aloita YAML:n käyttöohje…",
+    "create": "Uusi pelisuunnitelma",
+    "description": "Mukauta agentin käyttämiä korjauskehotteita. Vahvista toimintasuunnitelma esikatsellaksesi renderöityä kehotetta ilman mallikutsua.",
+    "empty": "Ei vielä peliohjeita. Sisäänrakennettua oletuspeliohjetta käytetään, kunnes lisäät sellaisen.",
+    "error": "Pelikirjojen lataaminen epäonnistui.",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "Käsikirjan sisältö on pakollinen.",
+      "nameRequired": "Nimi vaaditaan.",
+      "playbookIdRequired": "Pelikirjan tunnus vaaditaan.",
+      "previewFailed": "Käsikirjan renderöinti epäonnistui. Tarkista YAML-tiedostosta virheet.",
+      "saveFailed": "Käsikirjan tallennus epäonnistui. Tarkista YAML-tiedostosta virheet."
+    },
+    "name": "Nimi",
+    "namePlaceholder": "Ihmisen luettavissa oleva nimi",
+    "playbookId": "Pelikirjan tunnus",
+    "playbookIdPlaceholder": "esim. mukautettu korjaus",
+    "preview": "Vahvista / Esikatsele",
+    "previewing": "Renderöinti…",
+    "renderedPrompt": "Renderöity kehote",
+    "save": "Tallenna pelisuunnitelma",
+    "saving": "Tallennetaan…",
+    "scopeId": "Vaikutusalueen tunnus",
+    "scopeIdPlaceholder": "Omistavan tiimin, organisaation tai tietovaraston tunnus",
+    "scopeType": "Laajuustyyppi",
+    "title": "Pelikirjat"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "Uusi käytäntö",
+    "description": "Korjauskäytännöt, joita hallitset kaikilla alueilla.",
+    "disable": "Poista käytöstä",
+    "empty": "Ei vielä käytäntöjä. Luo yksi aloittaaksesi.",
+    "enable": "Ota käyttöön",
+    "statusDisabled": "Liikuntarajoitteinen",
+    "statusEnabled": "Käytössä",
+    "title": "Käytännöt"
+  },
+  "policyState": {
+    "auto_merge": "Automaattinen yhdistäminen",
+    "auto_with_approval": "Auto (hyväksynnällä)",
+    "disabled": "Liikuntarajoitteinen",
+    "dry_run": "Kuiva-ajo",
+    "none": "Ei käytäntöä",
+    "suggest": "Ehdota"
+  },
+  "preview": {
+    "blockedByAirGap": "Tässä tietovarastossa ei ole ilmarakoa; ulkoisten palveluntarjoajien toiminnot estyisivät.",
+    "conflicts": "Ennustetut konfliktit",
+    "description": "Korjausajon vaikutuksesta tehty vain luku -tilassa oleva ennuste. Muutoksia ei tehdä.",
+    "error": "Esikatselun laskeminen epäonnistui.",
+    "estimatedDuration": "Arvioitu kesto",
+    "loading": "Tietojenkäsittelyn esikatselu…",
+    "noneSelected": "Yhtään pull-pyyntöä ei valita.",
+    "prCount": "Pull-pyynnöt valittu",
+    "seconds": "{{count}}s",
+    "title": "Koeajon esikatselu — {{repo}}",
+    "wouldSelect": "Valitsisi"
+  },
+  "runState": {
+    "agent_fixing": "Agentin korjaus",
+    "awaiting_approval": "Odotetaan hyväksyntää",
+    "cancelled": "Peruutettu",
+    "completed": "Valmis",
+    "consolidating": "Yhdistäminen",
+    "created": "Luotu",
+    "failed": "Epäonnistui",
+    "finalizing": "Viimeistely",
+    "handoff_human": "Luovutettu ihmiselle",
+    "merging": "Yhdistäminen",
+    "no_op": "Ei toimintoa",
+    "selecting": "PR:ien valitseminen",
+    "verifying": "Vahvistetaan"
+  },
+  "runs": {
+    "approve": "Hyväksyä",
+    "back": "Takaisin juoksujen pariin",
+    "columns": {
+      "actions": "Toiminnot",
+      "pr": "Yhdistetty PR",
+      "repository": "Arkisto",
+      "started": "Aloitettu",
+      "state": "Osavaltio"
+    },
+    "description": "Korjausajojen historia, joka sisältää reaaliaikaisen tilan, CI-tilan ja konfliktitiedot.",
+    "dispositions": "Pull-pyyntöjen käsittelytavat",
+    "empty": "Korjaustoimenpiteitä ei ole vielä tehty.",
+    "error": "Korjausajojen lataaminen epäonnistui.",
+    "noDispositions": "Ei vielä tallennettuja määräyksiä.",
+    "reject": "Hylätä",
+    "tableLabel": "Korjausajohistoria",
+    "timeline": "Aikajana",
+    "timelineLabel": "Suoritustilan aikajana",
+    "title": "Korjausjaksot",
+    "view": "Näytä"
+  },
+  "scopeType": {
+    "org": "Organisaatio",
+    "repository": "Arkisto",
+    "team": "Joukkue",
+    "user": "Käyttäjä"
+  },
+  "subtitle": "Automatisoi pull-pyyntöjen yhdistäminen eri tietovarastoissasi käytäntöpohjaisten hallintalaitteiden avulla.",
+  "tabs": {
+    "audit": "Tarkastaa",
+    "fleet": "Laivasto",
+    "modelAccounts": "Mallitilit",
+    "playbooks": "Pelikirjat",
+    "policies": "Käytännöt",
+    "runs": "Juoksut"
+  },
+  "title": "Kaluston kunnostus"
 }

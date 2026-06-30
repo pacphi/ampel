@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "Classificatore",
+    "cost": "Costo",
+    "failureClass": "Classe di fallimento",
+    "iterations": "Iterazioni",
+    "status": {
+      "budget_exceeded": "Budget superato",
+      "failed": "Fallito",
+      "handoff_human": "Consegnato all'umano",
+      "running": "Corsa",
+      "succeeded": "Riuscito"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "Sessione agente",
+    "tokensUsed": "Token utilizzati",
+    "transcript": "Visualizza la trascrizione"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "Consolidato",
+      "merged": "Unito"
     },
+    "allRepos": "Tutti i repository",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
+      "action": "Azione",
+      "autonomy": "Autonomia",
+      "completedAt": "Completato",
       "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "repository": "Archivio"
+    },
+    "description": "Registrazione in sola aggiunta di fusioni e chiusure autonome.",
+    "empty": "Nessuna azione autonoma registrata.",
+    "exportCsv": "Esporta in formato CSV",
+    "filterRepo": "Archivio",
+    "since": "Da",
+    "tableLabel": "Registro di controllo delle attività di bonifica",
+    "title": "registro di controllo",
+    "until": "Fino a"
+  },
+  "autonomyHint": {
+    "auto_merge": "Consolida e unisce automaticamente i dati senza necessità di approvazione umana.",
+    "consolidate": "Consolida le pull request, ma richiede l'approvazione umana prima dell'unione.",
+    "dry_run": "Visualizza in anteprima i piani di consolidamento senza apportare modifiche.",
+    "off": "La correzione è disabilitata per questo ambito."
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "Auto con approvazione",
+    "dry_run_only": "Solo prova a secco",
+    "fully_autonomous": "Completamente autonomo",
+    "suggest_only": "Suggerimento soltanto"
+  },
+  "autonomyStop": {
+    "auto_merge": "Unione automatica",
+    "consolidate": "Solo consolidamento",
+    "dry_run": "Prova a secco",
+    "off": "Spento"
+  },
+  "ci": {
+    "columns": {
+      "check": "Controllo",
+      "status": "Stato",
+      "type": "Tipo"
+    },
+    "empty": "Nessuna informazione CI disponibile.",
+    "headSha": "Capo SAL",
+    "logs": "Registri",
+    "optional": "Opzionale",
+    "predictedConflict": "conflitto previsto",
+    "required": "Necessario",
+    "statusCheck": "stato CI",
+    "tableLabel": "matrice di controllo CI",
+    "title": "Controlli CI",
+    "tone": {
+      "green": "Passaggio",
+      "red": "Fallimento",
+      "yellow": "In attesa di"
+    },
+    "viewLogs": "Visualizza i registri"
+  },
+  "conflicts": {
+    "conflicted": "In conflitto",
+    "empty": "Nessun conflitto o richiesta pull ignorata.",
+    "skipped": "Saltato",
+    "title": "Conflitti"
+  },
+  "disposition": {
+    "closedWithRef": "Chiuso (sostituito)",
+    "consolidated": "Consolidato",
+    "leftOpen": "Lasciato aperto",
+    "skippedConflict": "Saltato (conflitto)"
+  },
+  "editor": {
+    "autonomy": "Livello di autonomia",
+    "confirmAutoMerge": {
+      "confirm": "Abilita l'unione automatica",
+      "description": "La fusione automatica consolida e unisce automaticamente le pull request senza approvazione umana. Questo può modificare i tuoi repository. Sei sicuro?",
+      "previewRequired": "Esegui un'anteprima della flotta prima di abilitare la fusione automatica per la prima volta, in modo da poter vedere esattamente cosa succederebbe durante una simulazione.",
+      "title": "Abilitare l'unione automatica?"
+    },
+    "createTitle": "Creare una politica",
+    "description": "Configura il comportamento della correzione per questo ambito.",
+    "editTitle": "Modifica le norme",
+    "enabled": "Abilitato",
+    "errors": {
+      "saveFailed": "Impossibile salvare la policy.",
+      "scopeIdRequired": "È richiesto l'ID dell'ambito."
+    },
+    "maxPrsPerRun": "Numero massimo di PR per run",
+    "minOpenPrs": "PR aperte minime",
+    "save": "Salva le politiche",
+    "saving": "Risparmio…",
+    "scopeId": "ID ambito",
+    "scopeIdPlaceholder": "Inserisci l'ID del repository, del team, dell'organizzazione o dell'utente",
+    "scopeType": "Tipo di ambito"
+  },
+  "fleet": {
+    "airGappedOff": "Collegato",
+    "airGappedOn": "con intercapedine d'aria",
+    "columns": {
+      "actions": "Azioni",
+      "airGapped": "intercapedine d'aria",
+      "eligibility": "Requisiti di ammissibilità",
+      "openPrs": "PR aperti",
+      "policyState": "Politica",
+      "repository": "Archivio"
+    },
+    "description": "Idoneità alla bonifica per singolo repository e stato delle politiche.",
+    "eligible": "Idoneo",
+    "empty": "Nessun repository trovato.",
+    "error": "Impossibile caricare la panoramica della flotta.",
+    "notEligible": "Non idoneo",
+    "preview": "Anteprima",
+    "tableLabel": "Stato di bonifica del repository",
+    "title": "Panoramica della flotta"
+  },
+  "killSwitch": {
+    "active": "Intervento di bonifica attivo",
+    "label": "Sospendere tutte le attività di bonifica",
+    "noPolicy": "Nessuna politica da sospendere",
+    "paused": "Interruzione di bonifica sospesa"
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
+    "airGapNotice": "Le organizzazioni isolate dalla rete possono utilizzare solo provider locali (Ollama, ONNX). L'aggiunta di un provider esterno (Claude, Gemini) a un'organizzazione isolata dalla rete non è consentita.",
+    "apiKey": "Chiave API",
+    "apiKeyHint": "Archiviata in forma crittografata e mai più visualizzata. Lasciare vuoto per mantenere la chiave esistente.",
+    "apiKeyPlaceholder": "Incolla la chiave API del provider",
+    "create": "Aggiungi account modello",
+    "createTitle": "Aggiungi account modello",
+    "default": "Predefinito",
+    "description": "Configura i provider di modelli di IA che il livello di correzione agentica utilizza per correggere le pull request non riuscite.",
+    "displayName": "Nome da visualizzare",
+    "displayNamePlaceholder": "ad esempio la chiave del Team Claude",
+    "egress": {
+      "external": "Uscita esterna",
+      "local_only": "Solo locale"
+    },
+    "empty": "Nessun account modello ancora disponibile. Aggiungine uno per abilitare la correzione automatica.",
+    "endpointUrl": "URL dell'endpoint",
+    "endpointUrlPlaceholder": "http://localhost:11434",
+    "error": "Impossibile caricare gli account modello.",
+    "errors": {
+      "airGapped": "Questa organizzazione è isolata dalla rete: i fornitori di modelli di uscita esterna (Claude, Gemini) non sono ammessi.",
+      "createFailed": "Impossibile creare l'account modello.",
+      "displayNameRequired": "È richiesto un nome visualizzato."
+    },
+    "modelId": "ID modello",
+    "modelIdPlaceholder": "ad esempio claude-sonnet-4",
+    "providerKind": "Fornitore",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
+      "gemini": "Gemelli",
+      "ollama": "Ollama (locale)",
+      "onnx": "ONNX (locale)"
     },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
+    "save": "Salva account",
+    "saving": "Risparmio…",
+    "spend": "Trascorrere",
+    "spendCap": "Limite di spesa (USD)",
+    "title": "Conti modello",
+    "validate": "Convalidare",
+    "validating": "Convalida in corso…",
     "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
-    "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
-    },
-    "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "invalid": "Non valido",
+      "unvalidated": "Non convalidato",
+      "valid": "Valido"
     }
   },
+  "nav": "Bonifica",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "Manuale operativo (YAML)",
+    "contentPlaceholder": "Ecco il playbook YAML…",
+    "create": "Nuovo manuale di gioco",
+    "description": "Personalizza i suggerimenti di correzione utilizzati dall'agente. Convalida un playbook per visualizzare in anteprima il suggerimento visualizzato senza chiamare il modello.",
+    "empty": "Nessun playbook ancora disponibile. Verrà utilizzato il playbook predefinito integrato finché non ne aggiungerai uno.",
+    "error": "Impossibile caricare i playbook.",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "È necessario il contenuto del manuale di gioco.",
+      "nameRequired": "È necessario inserire un nome.",
+      "playbookIdRequired": "È richiesto un ID del playbook.",
+      "previewFailed": "Impossibile generare il playbook. Verificare la presenza di errori nel file YAML.",
+      "saveFailed": "Impossibile salvare il playbook. Verificare la presenza di errori nel file YAML."
+    },
+    "name": "Nome",
+    "namePlaceholder": "nome leggibile dall'uomo",
+    "playbookId": "ID del playbook",
+    "playbookIdPlaceholder": "ad esempio, bonifica personalizzata",
+    "preview": "Convalida / Anteprima",
+    "previewing": "Rendering…",
+    "renderedPrompt": "Richiesta resa",
+    "save": "Salva playbook",
+    "saving": "Risparmio…",
+    "scopeId": "ID ambito",
+    "scopeIdPlaceholder": "ID del team, dell'organizzazione o del repository proprietario",
+    "scopeType": "Tipo di ambito",
+    "title": "Manuali di gioco"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "Nuova politica",
+    "description": "Politiche di bonifica che gestisci per tutti i tuoi ambiti di competenza.",
+    "disable": "Disabilita",
+    "empty": "Nessuna policy ancora. Creane una per iniziare.",
+    "enable": "Abilitare",
+    "statusDisabled": "Disabile",
+    "statusEnabled": "Abilitato",
+    "title": "Politiche"
+  },
+  "policyState": {
+    "auto_merge": "Unione automatica",
+    "auto_with_approval": "Auto (con autorizzazione)",
+    "disabled": "Disabile",
+    "dry_run": "Prova a secco",
+    "none": "Nessuna politica",
+    "suggest": "Suggerire"
+  },
+  "preview": {
+    "blockedByAirGap": "Questo repository è isolato dalla rete; le azioni di provider esterni verrebbero bloccate.",
+    "conflicts": "Conflitti previsti",
+    "description": "Proiezione in sola lettura di ciò che farebbe un'esecuzione di correzione. Non vengono apportate modifiche.",
+    "error": "Impossibile calcolare l'anteprima.",
+    "estimatedDuration": "Durata stimata",
+    "loading": "Anteprima informatica…",
+    "noneSelected": "Non verrà selezionata alcuna pull request.",
+    "prCount": "Richieste di pull selezionate",
+    "seconds": "{{count}}s",
+    "title": "Anteprima della prova a secco — {{repo}}",
+    "wouldSelect": "Sceglierei"
+  },
+  "runState": {
+    "agent_fixing": "Agente di riparazione",
+    "awaiting_approval": "In attesa di approvazione",
+    "cancelled": "Annullato",
+    "completed": "Completato",
+    "consolidating": "Consolidamento",
+    "created": "Creato",
+    "failed": "Fallito",
+    "finalizing": "Finalizzazione",
+    "handoff_human": "Consegnato all'umano",
+    "merging": "Fusione",
+    "no_op": "Nessun intervento chirurgico",
+    "selecting": "Selezione dei PR",
+    "verifying": "Verifica"
+  },
+  "runs": {
+    "approve": "Approvare",
+    "back": "Torna alle corse",
+    "columns": {
+      "actions": "Azioni",
+      "pr": "Comunicato stampa consolidato",
+      "repository": "Archivio",
+      "started": "Iniziato",
+      "state": "Stato"
+    },
+    "description": "Cronologia delle esecuzioni di correzione con stato in tempo reale, stato CI e dettagli dei conflitti.",
+    "dispositions": "Esiti delle pull request",
+    "empty": "Non sono ancora state effettuate operazioni di bonifica.",
+    "error": "Impossibile caricare le esecuzioni di correzione.",
+    "noDispositions": "Non sono ancora state registrate decisioni.",
+    "reject": "Rifiutare",
+    "tableLabel": "Cronologia delle esecuzioni di bonifica",
+    "timeline": "cronologia",
+    "timelineLabel": "Cronologia dello stato di esecuzione",
+    "title": "Le operazioni di bonifica",
+    "view": "Visualizzazione"
+  },
+  "scopeType": {
+    "org": "Organizzazione",
+    "repository": "Archivio",
+    "team": "Squadra",
+    "user": "Utente"
+  },
+  "subtitle": "Automatizza il consolidamento delle pull request tra i tuoi repository con controlli basati su policy.",
+  "tabs": {
+    "audit": "Valutazione",
+    "fleet": "Flotta",
+    "modelAccounts": "Conti modello",
+    "playbooks": "Manuali di gioco",
+    "policies": "Politiche",
+    "runs": "Corse"
+  },
+  "title": "Risanamento della flotta"
 }

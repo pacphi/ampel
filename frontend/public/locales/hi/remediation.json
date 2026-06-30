@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "वर्गीकरणकर्ता",
+    "cost": "लागत",
+    "failureClass": "विफलता वर्ग",
+    "iterations": "पुनरावृत्तियों",
+    "status": {
+      "budget_exceeded": "बजट सीमा से अधिक हो गया।",
+      "failed": "असफल",
+      "handoff_human": "मानव को सौंप दिया गया",
+      "running": "दौड़ना",
+      "succeeded": "सफल हुए"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "एजेंट सत्र",
+    "tokensUsed": "उपयोग किए गए टोकन",
+    "transcript": "प्रतिलेख देखें"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "समेकित",
+      "merged": "विलय होना"
     },
+    "allRepos": "सभी रिपॉजिटरी",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
-      "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "action": "कार्रवाई",
+      "autonomy": "स्वायत्तता",
+      "completedAt": "पुरा होना।",
+      "pr": "जनसंपर्क",
+      "repository": "कोष"
+    },
+    "description": "स्वचालित विलय और समापन का केवल-संलग्न रिकॉर्ड।",
+    "empty": "कोई स्वायत्त क्रिया दर्ज नहीं की गई।",
+    "exportCsv": "CSV निर्यात करें",
+    "filterRepo": "कोष",
+    "since": "तब से",
+    "tableLabel": "सुधार ऑडिट लॉग",
+    "title": "ऑडिट लॉग",
+    "until": "जब तक"
+  },
+  "autonomyHint": {
+    "auto_merge": "यह मानवीय अनुमोदन के बिना स्वचालित रूप से समेकित और विलय हो जाता है।",
+    "consolidate": "यह पुल रिक्वेस्ट को समेकित करता है लेकिन मर्ज करने से पहले मानवीय अनुमोदन की आवश्यकता होती है।",
+    "dry_run": "बिना कोई बदलाव किए समेकन योजनाओं का पूर्वावलोकन करता है।",
+    "off": "इस दायरे के लिए सुधार प्रक्रिया अक्षम है।"
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "अनुमोदन के साथ ऑटो",
+    "dry_run_only": "केवल पूर्व-परीक्षण",
+    "fully_autonomous": "पूर्णतः स्वायत्त",
+    "suggest_only": "केवल सुझाव दें"
+  },
+  "autonomyStop": {
+    "auto_merge": "ऑटो-मर्ज",
+    "consolidate": "केवल समेकन",
+    "dry_run": "पूर्वाभ्यास",
+    "off": "बंद"
+  },
+  "ci": {
+    "columns": {
+      "check": "जाँच करना",
+      "status": "स्थिति",
+      "type": "प्रकार"
+    },
+    "empty": "सीआई संबंधी कोई जानकारी उपलब्ध नहीं है।",
+    "headSha": "प्रमुख एसएचए",
+    "logs": "लॉग्स",
+    "optional": "वैकल्पिक",
+    "predictedConflict": "संघर्ष की भविष्यवाणी",
+    "required": "आवश्यक",
+    "statusCheck": "सीआई स्थिति",
+    "tableLabel": "सीआई चेक मैट्रिक्स",
+    "title": "सीआई जाँच",
+    "tone": {
+      "green": "पासिंग",
+      "red": "असफलता",
+      "yellow": "लंबित"
+    },
+    "viewLogs": "लॉग देखें"
+  },
+  "conflicts": {
+    "conflicted": "विरोध हुआ",
+    "empty": "कोई विवाद या छूटी हुई पुल रिक्वेस्ट नहीं हैं।",
+    "skipped": "छोड़ा गया",
+    "title": "संघर्ष"
+  },
+  "disposition": {
+    "closedWithRef": "बंद (अधिस्थापित)",
+    "consolidated": "समेकित",
+    "leftOpen": "खुला छोड़ देना",
+    "skippedConflict": "छोड़ा गया (विवाद)"
+  },
+  "editor": {
+    "autonomy": "स्वायत्तता स्तर",
+    "confirmAutoMerge": {
+      "confirm": "ऑटो-मर्ज सक्षम करें",
+      "description": "ऑटो-मर्ज सुविधा मानव अनुमोदन के बिना ही पुल रिक्वेस्ट को स्वचालित रूप से समेकित और मर्ज कर देती है। इससे आपकी रिपॉजिटरी में बदलाव हो सकते हैं। क्या आप निश्चित हैं?",
+      "previewRequired": "पहली बार ऑटो-मर्ज को सक्षम करने से पहले फ्लीट का पूर्वावलोकन चलाएं, ताकि आप ठीक से देख सकें कि एक रन क्या करेगा।",
+      "title": "ऑटो-मर्ज चालू करें?"
+    },
+    "createTitle": "नीति बनाएं",
+    "description": "इस दायरे के लिए सुधार प्रक्रिया के व्यवहार को कॉन्फ़िगर करें।",
+    "editTitle": "नीति संपादित करें",
+    "enabled": "सक्रिय",
+    "errors": {
+      "saveFailed": "पॉलिसी को सेव करने में विफल।",
+      "scopeIdRequired": "स्कोप आईडी आवश्यक है।"
+    },
+    "maxPrsPerRun": "प्रति रन अधिकतम पीआर",
+    "minOpenPrs": "न्यूनतम खुले पीआर",
+    "save": "नीति सहेजें",
+    "saving": "बचत हो रही है…",
+    "scopeId": "स्कोप आईडी",
+    "scopeIdPlaceholder": "रिपॉजिटरी, टीम, संगठन या उपयोगकर्ता आईडी दर्ज करें",
+    "scopeType": "स्कोप प्रकार"
+  },
+  "fleet": {
+    "airGappedOff": "जुड़े हुए",
+    "airGappedOn": "हवा से ही गैप",
+    "columns": {
+      "actions": "कार्रवाई",
+      "airGapped": "वायु-अंतराल",
+      "eligibility": "पात्रता",
+      "openPrs": "ओपन पीआर",
+      "policyState": "नीति",
+      "repository": "कोष"
+    },
+    "description": "प्रत्येक रिपॉजिटरी के लिए उपचारात्मक पात्रता और नीति की स्थिति।",
+    "eligible": "योग्य",
+    "empty": "कोई रिपॉजिटरी नहीं मिली।",
+    "error": "बेड़े का अवलोकन लोड करने में विफल।",
+    "notEligible": "पात्र नहीं है",
+    "preview": "पूर्व दर्शन",
+    "tableLabel": "रिपॉजिटरी सुधार स्थिति",
+    "title": "बेड़े का अवलोकन"
+  },
+  "killSwitch": {
+    "active": "उपचारात्मक कार्य सक्रिय है",
+    "label": "सभी सुधारात्मक कार्य रोकें",
+    "noPolicy": "विराम लगाने की कोई नीति नहीं है",
+    "paused": "सुधार कार्य रोक दिया गया"
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
-    "providerKindLabel": {
-      "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
-    },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
-    "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
+    "airGapNotice": "एयर-गैप्ड संगठन केवल स्थानीय प्रदाताओं (ओलामा, ओएनएनएक्स) का ही उपयोग कर सकते हैं। एयर-गैप्ड संगठन में बाहरी प्रदाता (क्लाउड, जेमिनी) को शामिल करना अस्वीकृत है।",
+    "apiKey": "एपीआई कुंजी",
+    "apiKeyHint": "यह कुंजी एन्क्रिप्टेड रूप में संग्रहीत की जाती है और फिर कभी प्रदर्शित नहीं की जाती। मौजूदा कुंजी को बनाए रखने के लिए इसे खाली छोड़ दें।",
+    "apiKeyPlaceholder": "प्रदाता API कुंजी पेस्ट करें",
+    "create": "मॉडल खाता जोड़ें",
+    "createTitle": "मॉडल खाता जोड़ें",
+    "default": "गलती करना",
+    "description": "एजेंटिक रिमेडिएशन टियर द्वारा विफल पुल अनुरोधों को ठीक करने के लिए उपयोग किए जाने वाले एआई मॉडल प्रदाताओं को कॉन्फ़िगर करें।",
+    "displayName": "प्रदर्शित होने वाला नाम",
+    "displayNamePlaceholder": "उदाहरण के लिए, टीम क्लाउड कुंजी",
     "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
+      "external": "बाहरी निकास",
+      "local_only": "केवल स्थानीय"
     },
+    "empty": "अभी तक कोई मॉडल खाते उपलब्ध नहीं हैं। एजेंटिक सुधार को सक्षम करने के लिए एक खाता जोड़ें।",
+    "endpointUrl": "एंडपॉइंट यूआरएल",
+    "endpointUrlPlaceholder": "http://localhost:11434",
+    "error": "मॉडल खातों को लोड करने में विफलता।",
     "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "airGapped": "यह संगठन एयर-गैप्ड है: बाहरी-निकास मॉडल प्रदाताओं (क्लाउड, जेमिनी) की अनुमति नहीं है।",
+      "createFailed": "मॉडल खाता बनाने में विफलता।",
+      "displayNameRequired": "एक डिस्प्ले नाम आवश्यक है।"
+    },
+    "modelId": "मॉडल आईडी",
+    "modelIdPlaceholder": "उदाहरण के लिए, क्लाउड-सॉनेट-4",
+    "providerKind": "प्रदाता",
+    "providerKindLabel": {
+      "claude": "क्लाउड",
+      "gemini": "मिथुन",
+      "ollama": "ओलामा (स्थानीय)",
+      "onnx": "ONNX (स्थानीय)"
+    },
+    "save": "खाता सहेजें",
+    "saving": "बचत हो रही है…",
+    "spend": "खर्च करना",
+    "spendCap": "खर्च की सीमा (USD)",
+    "title": "मॉडल खाते",
+    "validate": "मान्य",
+    "validating": "सत्यापन हो रहा है…",
+    "validationStatus": {
+      "invalid": "अमान्य",
+      "unvalidated": "अमान्य",
+      "valid": "वैध"
     }
   },
+  "nav": "उपचार",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "प्लेबुक (YAML)",
+    "contentPlaceholder": "प्लेबुक YAML दर्ज करें…",
+    "create": "नई रणनीति पुस्तिका",
+    "description": "एजेंट द्वारा उपयोग किए जाने वाले सुधार संबंधी संकेतों को अनुकूलित करें। बिना मॉडल कॉल के प्रदर्शित संकेत का पूर्वावलोकन करने के लिए प्लेबुक को मान्य करें।",
+    "empty": "अभी तक कोई प्लेबुक उपलब्ध नहीं है। जब तक आप कोई प्लेबुक नहीं जोड़ते, तब तक अंतर्निहित डिफ़ॉल्ट प्लेबुक का उपयोग किया जाएगा।",
+    "error": "प्लेबुक लोड करने में विफल।",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "प्लेबुक सामग्री आवश्यक है।",
+      "nameRequired": "नाम आवश्यक है।",
+      "playbookIdRequired": "प्लेबुक आईडी आवश्यक है।",
+      "previewFailed": "प्लेबुक को रेंडर करने में विफलता। त्रुटियों के लिए YAML फ़ाइल की जाँच करें।",
+      "saveFailed": "प्लेबुक को सहेजने में विफलता। त्रुटियों के लिए YAML फ़ाइल की जाँच करें।"
+    },
+    "name": "नाम",
+    "namePlaceholder": "मानव-पठनीय नाम",
+    "playbookId": "प्लेबुक आईडी",
+    "playbookIdPlaceholder": "उदाहरण के लिए, कस्टम-उपचार",
+    "preview": "सत्यापित करें / पूर्वावलोकन करें",
+    "previewing": "रेंडरिंग…",
+    "renderedPrompt": "प्रस्तुत प्रॉम्प्ट",
+    "save": "प्लेबुक सहेजें",
+    "saving": "बचत हो रही है…",
+    "scopeId": "स्कोप आईडी",
+    "scopeIdPlaceholder": "स्वामित्व वाली टीम, संगठन या रिपॉजिटरी आईडी",
+    "scopeType": "स्कोप प्रकार",
+    "title": "प्लेबुक"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "नई नीति",
+    "description": "आपके कार्यक्षेत्र में आप जिन सुधार नीतियों का प्रबंधन करते हैं।",
+    "disable": "अक्षम करना",
+    "empty": "अभी तक कोई नीति नहीं है। शुरुआत करने के लिए एक नीति बनाएं।",
+    "enable": "सक्षम",
+    "statusDisabled": "अक्षम",
+    "statusEnabled": "सक्रिय",
+    "title": "नीतियों"
+  },
+  "policyState": {
+    "auto_merge": "ऑटो-मर्ज",
+    "auto_with_approval": "ऑटो (अनुमोदन के साथ)",
+    "disabled": "अक्षम",
+    "dry_run": "पूर्वाभ्यास",
+    "none": "कोई नीति नहीं",
+    "suggest": "सुझाव देना"
+  },
+  "preview": {
+    "blockedByAirGap": "यह रिपॉजिटरी एयर-गैप्ड है; बाहरी प्रदाताओं की कार्रवाइयां अवरुद्ध हो जाएंगी।",
+    "conflicts": "अनुमानित संघर्ष",
+    "description": "यह केवल पठनीय प्रक्षेपण है जो दर्शाता है कि सुधार प्रक्रिया से क्या परिणाम होंगे। इसमें कोई परिवर्तन नहीं किया जाता है।",
+    "error": "पूर्वावलोकन की गणना करने में विफलता।",
+    "estimatedDuration": "अनुमानित अवधि",
+    "loading": "कंप्यूटिंग का पूर्वावलोकन…",
+    "noneSelected": "कोई भी पुल रिक्वेस्ट चयनित नहीं होगी।",
+    "prCount": "चयनित पुल अनुरोध",
+    "seconds": "{{count}}s",
+    "title": "ड्राई-रन पूर्वावलोकन — {{repo}}",
+    "wouldSelect": "चयन करेंगे"
+  },
+  "runState": {
+    "agent_fixing": "एजेंट फिक्सिंग",
+    "awaiting_approval": "मंजूरी का इंतजार",
+    "cancelled": "रद्द कर दिया गया",
+    "completed": "पुरा होना।",
+    "consolidating": "समेकन",
+    "created": "बनाया था",
+    "failed": "असफल",
+    "finalizing": "अंतिम रूप दिया जा",
+    "handoff_human": "मानव को सौंप दिया गया",
+    "merging": "विलय",
+    "no_op": "कोई-op",
+    "selecting": "पीआर का चयन करना",
+    "verifying": "सत्यापन"
+  },
+  "runs": {
+    "approve": "मंज़ूरी देना",
+    "back": "दौड़ पर वापस",
+    "columns": {
+      "actions": "कार्रवाई",
+      "pr": "समेकित जनसंपर्क",
+      "repository": "कोष",
+      "started": "शुरू कर दिया",
+      "state": "राज्य"
+    },
+    "description": "उपचारात्मक प्रक्रियाओं का इतिहास लाइव स्थिति, सीआई स्थिति और संघर्ष विवरण के साथ चलता है।",
+    "dispositions": "पुल अनुरोध निपटान",
+    "empty": "अभी तक कोई सुधार अभियान नहीं चलाया गया है।",
+    "error": "सुधारात्मक प्रक्रियाओं को लोड करने में विफलता।",
+    "noDispositions": "अभी तक कोई निपटान दर्ज नहीं किया गया है।",
+    "reject": "अस्वीकार करना",
+    "tableLabel": "सुधार अभियान का इतिहास",
+    "timeline": "समय",
+    "timelineLabel": "रन स्टेट टाइमलाइन",
+    "title": "सुधार कार्य जारी हैं",
+    "view": "देखना"
+  },
+  "scopeType": {
+    "org": "संगठन",
+    "repository": "कोष",
+    "team": "टीम",
+    "user": "उपयोगकर्ता"
+  },
+  "subtitle": "नीति-आधारित नियंत्रणों के साथ अपने सभी रिपॉजिटरी में पुल अनुरोधों के समेकन को स्वचालित करें।",
+  "tabs": {
+    "audit": "अंकेक्षण",
+    "fleet": "बेड़ा",
+    "modelAccounts": "मॉडल खाते",
+    "playbooks": "प्लेबुक",
+    "policies": "नीतियों",
+    "runs": "दौड़ें"
+  },
+  "title": "बेड़ा सुधार"
 }

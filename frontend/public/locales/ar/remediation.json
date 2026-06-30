@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "المصنف",
+    "cost": "يكلف",
+    "failureClass": "فئة الفشل",
+    "iterations": "التكرارات",
+    "status": {
+      "budget_exceeded": "تجاوزت الميزانية",
+      "failed": "فشل",
+      "handoff_human": "تم تسليمها إلى الإنسان",
+      "running": "جري",
+      "succeeded": "نجح"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "جلسة الوكيل",
+    "tokensUsed": "الرموز المستخدمة",
+    "transcript": "عرض النص"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "موحد",
+      "merged": "تم الدمج"
     },
+    "allRepos": "جميع المستودعات",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
-      "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "action": "فعل",
+      "autonomy": "استقلال",
+      "completedAt": "مكتمل",
+      "pr": "العلاقات العامة",
+      "repository": "مستودع"
+    },
+    "description": "سجل الإضافة فقط لعمليات الدمج والإغلاق التلقائية.",
+    "empty": "لم يتم تسجيل أي إجراءات تلقائية.",
+    "exportCsv": "تصدير ملف CSV",
+    "filterRepo": "مستودع",
+    "since": "منذ",
+    "tableLabel": "سجل تدقيق المعالجة",
+    "title": "سجل التدقيق",
+    "until": "حتى"
+  },
+  "autonomyHint": {
+    "auto_merge": "يقوم بتوحيد ودمج البيانات تلقائيًا دون موافقة بشرية.",
+    "consolidate": "يقوم بتوحيد طلبات السحب ولكنه يتطلب موافقة بشرية قبل الدمج.",
+    "dry_run": "معاينة خطط الدمج دون إجراء أي تغييرات.",
+    "off": "تم تعطيل خاصية المعالجة لهذا النطاق."
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "سيارة بموافقة مسبقة",
+    "dry_run_only": "تجربة جافة فقط",
+    "fully_autonomous": "مستقل تمامًا",
+    "suggest_only": "اقتراح فقط"
+  },
+  "autonomyStop": {
+    "auto_merge": "الدمج التلقائي",
+    "consolidate": "التوحيد فقط",
+    "dry_run": "تجربة جافة",
+    "off": "عن"
+  },
+  "ci": {
+    "columns": {
+      "check": "يفحص",
+      "status": "حالة",
+      "type": "يكتب"
+    },
+    "empty": "لا تتوفر معلومات عن CI.",
+    "headSha": "رئيس شا",
+    "logs": "سجلات",
+    "optional": "خياري",
+    "predictedConflict": "صراع متوقع",
+    "required": "مطلوب",
+    "statusCheck": "حالة CI",
+    "tableLabel": "مصفوفة فحص CI",
+    "title": "عمليات التحقق من التحسين المستمر",
+    "tone": {
+      "green": "المرور",
+      "red": "الفشل",
+      "yellow": "قيد الانتظار"
+    },
+    "viewLogs": "عرض السجلات"
+  },
+  "conflicts": {
+    "conflicted": "متضارب",
+    "empty": "لا توجد تعارضات أو طلبات سحب تم تخطيها.",
+    "skipped": "تم التخطي",
+    "title": "الصراعات"
+  },
+  "disposition": {
+    "closedWithRef": "مغلق (تم استبداله)",
+    "consolidated": "موحد",
+    "leftOpen": "مفتوح من اليسار",
+    "skippedConflict": "تم التخطي (تعارض)"
+  },
+  "editor": {
+    "autonomy": "مستوى الاستقلالية",
+    "confirmAutoMerge": {
+      "confirm": "تفعيل الدمج التلقائي",
+      "description": "تقوم خاصية الدمج التلقائي بتوحيد ودمج طلبات السحب تلقائيًا دون الحاجة إلى موافقة المستخدم. قد يؤدي ذلك إلى تعديل مستودعاتك. هل أنت متأكد؟",
+      "previewRequired": "قم بتشغيل معاينة الأسطول قبل تمكين الدمج التلقائي لأول مرة، حتى تتمكن من رؤية ما ستفعله عملية التشغيل بالضبط.",
+      "title": "تفعيل الدمج التلقائي؟"
+    },
+    "createTitle": "إنشاء سياسة",
+    "description": "قم بضبط كيفية عمل المعالجة لهذا النطاق.",
+    "editTitle": "سياسة التعديل",
+    "enabled": "مُفعّل",
+    "errors": {
+      "saveFailed": "فشل حفظ السياسة.",
+      "scopeIdRequired": "معرف النطاق مطلوب."
+    },
+    "maxPrsPerRun": "الحد الأقصى للأرقام القياسية الشخصية لكل جولة",
+    "minOpenPrs": "الحد الأدنى من طلبات السحب المفتوحة",
+    "save": "سياسة الحفظ",
+    "saving": "توفير…",
+    "scopeId": "معرف النطاق",
+    "scopeIdPlaceholder": "أدخل معرّف المستودع أو الفريق أو المؤسسة أو المستخدم",
+    "scopeType": "نوع النطاق"
+  },
+  "fleet": {
+    "airGappedOff": "متصل",
+    "airGappedOn": "معزول عن الهواء",
+    "columns": {
+      "actions": "الإجراءات",
+      "airGapped": "فجوة هوائية",
+      "eligibility": "الأهلية",
+      "openPrs": "طلبات السحب المفتوحة",
+      "policyState": "سياسة",
+      "repository": "مستودع"
+    },
+    "description": "أهلية معالجة البيانات لكل مستودع وحالة السياسة.",
+    "eligible": "صالح",
+    "empty": "لم يتم العثور على أي مستودعات.",
+    "error": "فشل تحميل نظرة عامة على الأسطول.",
+    "notEligible": "غير مؤهل",
+    "preview": "معاينة",
+    "tableLabel": "حالة معالجة المستودع",
+    "title": "نظرة عامة على الأسطول"
+  },
+  "killSwitch": {
+    "active": "المعالجة نشطة",
+    "label": "أوقف جميع عمليات المعالجة",
+    "noPolicy": "لا توجد سياسة للتوقف",
+    "paused": "تم إيقاف أعمال المعالجة"
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
-    "providerKindLabel": {
-      "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
-    },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
-    "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
+    "airGapNotice": "لا يُسمح للمؤسسات المعزولة عن الشبكة باستخدام سوى مزودي خدمات محليين (أولاما، أو إن إن إكس). ويُرفض إضافة أي مزود خدمة خارجي (كلود، جيميني) إلى مؤسسة معزولة عن الشبكة.",
+    "apiKey": "مفتاح API",
+    "apiKeyHint": "يتم تخزينها بشكل مشفر ولن يتم عرضها مرة أخرى. اترك هذا الحقل فارغًا للاحتفاظ بالمفتاح الحالي.",
+    "apiKeyPlaceholder": "ألصق مفتاح واجهة برمجة التطبيقات (API) الخاص بالمزود",
+    "create": "إضافة حساب نموذجي",
+    "createTitle": "إضافة حساب نموذجي",
+    "default": "تقصير",
+    "description": "قم بتكوين موفري نماذج الذكاء الاصطناعي الذين تستخدمهم طبقة المعالجة الآلية لإصلاح طلبات السحب الفاشلة.",
+    "displayName": "اسم العرض",
+    "displayNamePlaceholder": "مثال: مفتاح فريق كلود",
     "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
+      "external": "مخرج خارجي",
+      "local_only": "محلي فقط"
     },
+    "empty": "لا توجد حسابات نموذجية حتى الآن. أضف حسابًا واحدًا لتمكين المعالجة الآلية.",
+    "endpointUrl": "عنوان URL لنقطة النهاية",
+    "endpointUrlPlaceholder": "http://localhost:11434",
+    "error": "فشل تحميل حسابات النموذج.",
     "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "airGapped": "هذه المنظمة معزولة عن العالم الخارجي: لا يُسمح لمقدمي نموذج الخروج الخارجي (كلود، جيميني).",
+      "createFailed": "فشل إنشاء حساب النموذج.",
+      "displayNameRequired": "اسم العرض مطلوب."
+    },
+    "modelId": "معرف النموذج",
+    "modelIdPlaceholder": "مثال: claude-sonnet-4",
+    "providerKind": "مزود",
+    "providerKindLabel": {
+      "claude": "كلود",
+      "gemini": "تَوأَم",
+      "ollama": "أولاما (محلي)",
+      "onnx": "ONNX (محلي)"
+    },
+    "save": "حفظ الحساب",
+    "saving": "توفير…",
+    "spend": "ينفق",
+    "spendCap": "الحد الأقصى للإنفاق (بالدولار الأمريكي)",
+    "title": "حسابات نموذجية",
+    "validate": "التحقق من الصحة",
+    "validating": "جارٍ التحقق...",
+    "validationStatus": {
+      "invalid": "غير صالح",
+      "unvalidated": "غير موثق",
+      "valid": "صالح"
     }
   },
+  "nav": "المعالجة",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "دليل التشغيل (YAML)",
+    "contentPlaceholder": "أدخل دليل YAML…",
+    "create": "خطة عمل جديدة",
+    "description": "قم بتخصيص مطالبات المعالجة التي يستخدمها الوكيل. تحقق من صحة دليل التشغيل لمعاينة المطالبة المعروضة بدون استدعاء النموذج.",
+    "empty": "لا توجد خطط عمل حتى الآن. يتم استخدام خطة العمل الافتراضية المدمجة إلى حين إضافة خطة عمل جديدة.",
+    "error": "فشل تحميل ملفات التشغيل.",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "محتوى دليل التشغيل مطلوب.",
+      "nameRequired": "الاسم مطلوب.",
+      "playbookIdRequired": "يلزم وجود معرف دليل اللعب.",
+      "previewFailed": "فشل عرض ملف التشغيل. تحقق من ملف YAML بحثًا عن الأخطاء.",
+      "saveFailed": "فشل حفظ ملف التشغيل. تحقق من ملف YAML بحثًا عن الأخطاء."
+    },
+    "name": "اسم",
+    "namePlaceholder": "اسم سهل القراءة",
+    "playbookId": "معرف دفتر التشغيل",
+    "playbookIdPlaceholder": "مثال: المعالجة المخصصة",
+    "preview": "التحقق / المعاينة",
+    "previewing": "جارٍ العرض...",
+    "renderedPrompt": "موجه العرض",
+    "save": "حفظ خطة اللعب",
+    "saving": "توفير…",
+    "scopeId": "معرف النطاق",
+    "scopeIdPlaceholder": "معرّف الفريق أو المؤسسة أو المستودع المالك",
+    "scopeType": "نوع النطاق",
+    "title": "خطط العمل"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "سياسة جديدة",
+    "description": "سياسات المعالجة التي تديرها عبر نطاقاتك.",
+    "disable": "إبطال",
+    "empty": "لا توجد سياسات حتى الآن. أنشئ واحدة للبدء.",
+    "enable": "يُمكَِن",
+    "statusDisabled": "عاجز",
+    "statusEnabled": "مُفعّل",
+    "title": "السياسات"
+  },
+  "policyState": {
+    "auto_merge": "الدمج التلقائي",
+    "auto_with_approval": "سيارة (بموافقة)",
+    "disabled": "عاجز",
+    "dry_run": "تجربة جافة",
+    "none": "لا توجد سياسة",
+    "suggest": "يقترح"
+  },
+  "preview": {
+    "blockedByAirGap": "هذا المستودع معزول تماماً عن الشبكة؛ وسيتم حظر إجراءات الموفر الخارجي.",
+    "conflicts": "الصراعات المتوقعة",
+    "description": "عرضٌ للقراءة فقط لما ستفعله عملية المعالجة. لم تُجرَ أي تغييرات.",
+    "error": "فشل حساب المعاينة.",
+    "estimatedDuration": "المدة المقدرة",
+    "loading": "معاينة الحوسبة…",
+    "noneSelected": "لن يتم اختيار أي طلبات سحب.",
+    "prCount": "تم تحديد طلبات السحب",
+    "seconds": "{{count}}s",
+    "title": "معاينة تجريبية — {{repo}}",
+    "wouldSelect": "سأختار"
+  },
+  "runState": {
+    "agent_fixing": "إصلاح الوكيل",
+    "awaiting_approval": "في انتظار الموافقة",
+    "cancelled": "تم الإلغاء",
+    "completed": "مكتمل",
+    "consolidating": "التوحيد",
+    "created": "مخلوق",
+    "failed": "فشل",
+    "finalizing": "وضع اللمسات الأخيرة",
+    "handoff_human": "تم تسليمها إلى الإنسان",
+    "merging": "الاندماج",
+    "no_op": "لا يوجد إجراء",
+    "selecting": "اختيار العلاقات العامة",
+    "verifying": "تم التحقق"
+  },
+  "runs": {
+    "approve": "يعتمد",
+    "back": "العودة إلى الجري",
+    "columns": {
+      "actions": "الإجراءات",
+      "pr": "العلاقات العامة الموحدة",
+      "repository": "مستودع",
+      "started": "بدأ",
+      "state": "ولاية"
+    },
+    "description": "تاريخ عمليات المعالجة مع الحالة الحية، وحالة CI، وتفاصيل التعارض.",
+    "dispositions": "قرارات طلبات السحب",
+    "empty": "لم يتم إجراء أي عمليات إصلاح حتى الآن.",
+    "error": "فشل تحميل عمليات المعالجة.",
+    "noDispositions": "لم يتم تسجيل أي قرارات حتى الآن.",
+    "reject": "يرفض",
+    "tableLabel": "سجل عمليات المعالجة",
+    "timeline": "الجدول الزمني",
+    "timelineLabel": "جدول زمني لحالة التشغيل",
+    "title": "عمليات المعالجة",
+    "view": "منظر"
+  },
+  "scopeType": {
+    "org": "منظمة",
+    "repository": "مستودع",
+    "team": "فريق",
+    "user": "مستخدم"
+  },
+  "subtitle": "قم بأتمتة عملية دمج طلبات السحب عبر مستودعاتك باستخدام عناصر تحكم قائمة على السياسات.",
+  "tabs": {
+    "audit": "مراجعة",
+    "fleet": "أسطول",
+    "modelAccounts": "حسابات نموذجية",
+    "playbooks": "خطط العمل",
+    "policies": "السياسات",
+    "runs": "يركض"
+  },
+  "title": "إصلاح الأسطول"
 }
