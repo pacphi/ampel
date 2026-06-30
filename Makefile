@@ -6,7 +6,7 @@
 .PHONY: dev dev-api dev-worker dev-frontend
 .PHONY: test test-backend test-frontend test-integration test-coverage test-backend-coverage test-frontend-coverage
 .PHONY: lint lint-backend lint-frontend lint-docs lint-fix lint-fix-backend lint-fix-frontend lint-fix-docs
-.PHONY: format format-backend format-frontend format-docs format-check format-check-docs
+.PHONY: format format-backend format-frontend format-check
 .PHONY: audit audit-backend audit-frontend
 .PHONY: license-check license-check-backend license-check-frontend
 .PHONY: outdated outdated-backend outdated-frontend
@@ -263,7 +263,7 @@ lint-fix-docs:
 	@echo "==> Auto-fixing markdown lint issues..."
 	pnpm run lint:md:fix
 
-format: format-backend format-frontend format-docs
+format: format-backend format-frontend
 
 format-backend:
 	@echo "==> Formatting backend..."
@@ -273,11 +273,7 @@ format-frontend:
 	@echo "==> Formatting frontend..."
 	cd frontend && pnpm run format
 
-format-docs:
-	@echo "==> Formatting markdown files..."
-	pnpm run format
-
-format-check: format-check-backend format-check-frontend format-check-docs
+format-check: format-check-backend format-check-frontend
 
 format-check-backend:
 	@echo "==> Checking backend formatting..."
@@ -286,10 +282,6 @@ format-check-backend:
 format-check-frontend:
 	@echo "==> Checking frontend formatting..."
 	cd frontend && pnpm run format:check
-
-format-check-docs:
-	@echo "==> Checking markdown formatting..."
-	pnpm run format:check
 
 # =============================================================================
 # Security
