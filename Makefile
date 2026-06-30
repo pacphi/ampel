@@ -15,6 +15,7 @@
 .PHONY: deploy deploy-fly
 .PHONY: gh-ci gh-release gh-watch gh-runs gh-status
 .PHONY: i18n build-i18n build-i18n-release test-i18n install-i18n clean-i18n
+.PHONY: admin admin-list admin-reset build-admin install-admin
 
 # =============================================================================
 # Help
@@ -82,6 +83,13 @@ help:
 	@echo "  install-i18n     - Install ampel-i18n CLI tool locally"
 	@echo "  clean-i18n       - Clean i18n-builder build artifacts"
 	@echo "  i18n ARGS='...'  - Run ampel-i18n tool (e.g., make i18n ARGS='--help')"
+	@echo ""
+	@echo "Administration (requires DATABASE_URL):"
+	@echo "  admin-list                  - List all users"
+	@echo "  admin-reset EMAIL=u@e.com   - Reset a user's password (prompts; or pass PASSWORD=...)"
+	@echo "  build-admin                 - Build ampel-admin CLI tool (debug)"
+	@echo "  install-admin               - Install ampel-admin CLI tool locally"
+	@echo "  admin ARGS='...'            - Run ampel-admin with arbitrary args"
 
 # =============================================================================
 # Setup & Dependencies
@@ -508,6 +516,54 @@ clean-i18n:
 i18n:
 	@echo "==> Running ampel-i18n..."
 	cargo run --package ampel-i18n-builder --bin ampel-i18n -- $(ARGS)
+
+# =============================================================================
+# Administration (ampel-admin)
+# =============================================================================
+
+# Build the ampel-admin CLI tool (debug mode)
+build-admin:
+	@echo "==> Building ampel-admin CLI tool..."
+	cargo build --package ampel-api --bin ampel-admin
+
+# Install the ampel-admin tool to ~/.cargo/bin
+install-admin:
+	@echo "==> Installing ampel-admin CLI tool..."
+	cargo install --path crates/ampel-api --bin ampel-admin --force
+	@echo ""
+	@echo "ampel-admin installed to ~/.cargo/bin/ampel-admin"
+	@echo "Run 'ampel-admin --help' to get started"
+
+# List all users (requires DATABASE_URL)
+# Usage: make admin-list
+admin-list:
+	@cargo run --quiet --package ampel-api --bin ampel-admin -- list-users
+
+# Reset a user's password (requires DATABASE_URL)
+# Usage: make admin-reset EMAIL=user@example.com
+#        make admin-reset EMAIL=user@example.com PASSWORD=new-secret
+# If PASSWORD is omitted you are prompted interactively (input hidden), which is
+# safer than passing it on the command line (visible in shell history / ps).
+admin-reset:
+ifndef EMAIL
+	$(error EMAIL not specified. Usage: make admin-reset EMAIL=user@example.com [PASSWORD=secret])
+endif
+	@cargo run --quiet --package ampel-api --bin ampel-admin -- \
+		reset-password --email $(EMAIL) $(if $(PASSWORD),--password $(PASSWORD),)
+
+# Run the ampel-admin tool with arbitrary arguments (requires DATABASE_URL)
+# Usage: make admin ARGS='list-users'
+# Usage: make admin ARGS='reset-password --id <uuid>'
+admin:
+ifndef ARGS
+	@echo "Usage: make admin ARGS='<command>'   (e.g. make admin ARGS='list-users')"
+	@echo "Common operations have dedicated targets:"
+	@echo "  make admin-list                              # list all users"
+	@echo "  make admin-reset EMAIL=user@example.com      # reset a password (prompts)"
+	@echo "  make admin-reset EMAIL=u@e.com PASSWORD=...   # reset non-interactively"
+else
+	@cargo run --quiet --package ampel-api --bin ampel-admin -- $(ARGS)
+endif
 
 # Monitoring targets
 include Makefile.monitoring

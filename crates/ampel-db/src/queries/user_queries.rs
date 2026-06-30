@@ -1,6 +1,7 @@
 use chrono::Utc;
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, DatabaseConnection, DbErr, EntityTrait, QueryFilter, Set,
+    ActiveModelTrait, ColumnTrait, DatabaseConnection, DbErr, EntityTrait, QueryFilter, QueryOrder,
+    Set,
 };
 use uuid::Uuid;
 
@@ -12,6 +13,11 @@ impl UserQueries {
     /// Find user by ID
     pub async fn find_by_id(db: &DatabaseConnection, id: Uuid) -> Result<Option<Model>, DbErr> {
         Entity::find_by_id(id).one(db).await
+    }
+
+    /// List all users, oldest first
+    pub async fn list(db: &DatabaseConnection) -> Result<Vec<Model>, DbErr> {
+        Entity::find().order_by_asc(Column::CreatedAt).all(db).await
     }
 
     /// Find user by email

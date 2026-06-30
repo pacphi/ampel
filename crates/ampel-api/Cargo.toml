@@ -12,6 +12,10 @@ openapi = []
 name = "ampel-api"
 path = "src/main.rs"
 
+[[bin]]
+name = "ampel-admin"
+path = "src/bin/ampel-admin.rs"
+
 [dependencies]
 # Async
 tokio.workspace = true
@@ -70,6 +74,10 @@ cookie = "0.18"
 
 # Lazy statics
 lazy_static = "1.5"
+
+# Admin CLI (ampel-admin binary)
+clap = { version = "4.5", features = ["derive"] }
+rpassword = "7"
 
 # Internal
 ampel-core.workspace = true
