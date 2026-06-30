@@ -84,11 +84,26 @@ export interface AccountsTranslations {
       accountLabel: string;
       accountLabelDescription: string;
       accountLabelPlaceholder: string;
+      accountLabelRequired: string;
+      appPassword: string;
+      bitbucketUsername: string;
+      bitbucketUsernameDescription: string;
+      bitbucketUsernamePlaceholder: string;
+      hideToken: string;
+      instanceUrl: string;
+      instanceUrlDescription: string;
+      instanceUrlPlaceholder: string;
       provider: string;
       selectProvider: string;
+      showToken: string;
       token: string;
       tokenDescription: string;
       tokenPlaceholder: string;
+      tokenPlaceholder_bitbucket: string;
+      tokenPlaceholder_github: string;
+      tokenPlaceholder_gitlab: string;
+      tokenRequired: string;
+      usernameRequired: string;
     };
     submit: string;
     submitting: string;
@@ -129,11 +144,23 @@ export interface AccountsTranslations {
     backToAccounts: string;
     form: {
       accountLabel: string;
+      accountLabelDescription: string;
       accountLabelPlaceholder: string;
+      active: string;
+      activeDescription: string;
       currentToken: string;
+      hideToken: string;
+      showToken: string;
       token: string;
       tokenDescription: string;
       tokenPlaceholder: string;
+    };
+    info: {
+      email: string;
+      instance: string;
+      repositories: string;
+      status: string;
+      username: string;
     };
     notFound: string;
     submit: string;
@@ -682,6 +709,7 @@ export interface NotificationsTranslations {
 
 export interface ProvidersTranslations {
   bitbucket: {
+    linkText: string;
     permissions: {
       accountRead: string;
       pullRequestsRead: string;
@@ -695,6 +723,7 @@ export interface ProvidersTranslations {
       step3: string;
       step4: string;
       step5: string;
+      step6: string;
     };
     title: string;
   };
@@ -704,6 +733,7 @@ export interface ProvidersTranslations {
     securityNote: string;
   };
   github: {
+    linkText: string;
     note: string;
     scopes: {
       readOrg: string;
@@ -720,6 +750,7 @@ export interface ProvidersTranslations {
     title: string;
   };
   gitlab: {
+    linkText: string;
     scopes: {
       api: string;
       readApi: string;
@@ -730,6 +761,7 @@ export interface ProvidersTranslations {
       step2: string;
       step3: string;
       step4: string;
+      step5: string;
     };
     title: string;
   };
