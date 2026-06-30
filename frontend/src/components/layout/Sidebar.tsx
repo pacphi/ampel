@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
+import { displayVersion } from '@/lib/version';
 import {
   LayoutDashboard,
   GitBranch,
@@ -28,7 +29,12 @@ export default function Sidebar() {
     <div className="flex w-64 flex-col border-r bg-card">
       <div className="flex h-16 items-center gap-2 border-b px-6">
         <CircleDot className="h-8 w-8 text-ampel-green" />
-        <span className="text-xl font-bold">{t('common:app.name')}</span>
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-xl font-bold">{t('common:app.name')}</span>
+          <span className="text-xs font-normal text-muted-foreground" data-testid="app-version">
+            {displayVersion()}
+          </span>
+        </div>
       </div>
       <nav className="flex-1 space-y-1 p-4">
         {navigation.map((item) => {
