@@ -25,10 +25,12 @@ describe('version', () => {
   });
 
   describe('displayVersion', () => {
-    it('renders the version injected at build time', () => {
-      // __APP_VERSION__ / __GIT_SHA__ are substituted by Vite `define`; tests run
-      // in DEV mode (import.meta.env.PROD === false), so the dev form is returned.
-      expect(displayVersion()).toMatch(/^v\d+\.\d+\.\d+/);
+    it('renders the build-time version in the DEV pre-release form under the test runner', () => {
+      // __APP_VERSION__ / __GIT_SHA__ are substituted by `define`; tests run in
+      // DEV mode (import.meta.env.PROD === false). Anchor the `-dev` pre-release
+      // marker so a flipped PROD/DEV switch (e.g. passing import.meta.env.DEV, or
+      // an inverted ternary) is actually caught — not just the version prefix.
+      expect(displayVersion()).toMatch(/^v\d+\.\d+\.\d+-dev/);
     });
   });
 });

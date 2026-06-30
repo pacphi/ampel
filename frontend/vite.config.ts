@@ -2,30 +2,18 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import { execFileSync } from 'child_process';
-import { readFileSync } from 'fs';
+import { versionInfo } from './build/version';
 
-// Source the version from package.json — release-please's source of truth
-// (frontend/package.json `version`, x-release-please-version) — so release
-// bumps flow through automatically with no manual edits here.
-const pkg = JSON.parse(readFileSync(path.resolve(__dirname, 'package.json'), 'utf-8')) as {
-  version: string;
-};
-
-// Short git SHA as SemVer build metadata to disambiguate dev builds. Best-effort:
-// fall back to "unknown" when git is unavailable (e.g. a tarball build).
-const gitSha = (() => {
-  try {
-    return execFileSync('git', ['rev-parse', '--short', 'HEAD']).toString().trim();
-  } catch {
-    return 'unknown';
-  }
-})();
+// Version + short git SHA, derived once (see build/version.ts) and shared with
+// vitest.config.ts so build and tests inject identical values.
+const { appVersion, gitSha } = versionInfo(__dirname);
 
 export default defineConfig({
   plugins: [react()],
+  // Inject the version at build time, sourced from package.json (release-please
+  // source of truth) — so release bumps flow through with no edits here.
   define: {
-    __APP_VERSION__: JSON.stringify(pkg.version),
+    __APP_VERSION__: JSON.stringify(appVersion),
     __GIT_SHA__: JSON.stringify(gitSha),
   },
   resolve: {
