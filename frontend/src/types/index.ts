@@ -96,13 +96,7 @@ export interface CICheck {
   name: string;
   status: 'queued' | 'in_progress' | 'completed';
   conclusion?:
-    | 'success'
-    | 'failure'
-    | 'neutral'
-    | 'cancelled'
-    | 'skipped'
-    | 'timed_out'
-    | 'action_required';
+    'success' | 'failure' | 'neutral' | 'cancelled' | 'skipped' | 'timed_out' | 'action_required';
   url?: string;
   startedAt?: string;
   completedAt?: string;
