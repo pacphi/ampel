@@ -20,9 +20,6 @@ serde_json.workspace = true
 # Utilities
 uuid.workspace = true
 chrono.workspace = true
-thiserror.workspace = true
-anyhow.workspace = true
-tracing.workspace = true
 
 # Encryption
 aes-gcm.workspace = true
@@ -34,9 +31,6 @@ ampel-core.workspace = true
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
-
-# Test isolation and fixtures
-tempfile = "3.24"
 
 [[test]]
 name = "integration"

@@ -17,7 +17,13 @@ use chrono::Utc;
 use common::{create_test_app, TestDb};
 use sea_orm::Set;
 use serde_json::{json, Value};
+use std::sync::atomic::{AtomicI32, Ordering};
 use std::time::Instant;
+
+/// Monotonic source of unique PR numbers. The pull_requests table has a UNIQUE
+/// constraint on (repository_id, number); using a process-wide counter avoids
+/// the random-number collisions that previously made these tests flaky.
+static PR_NUMBER: AtomicI32 = AtomicI32::new(1);
 use tower::ServiceExt;
 use uuid::Uuid;
 
@@ -116,7 +122,7 @@ async fn create_pull_request(
         repository_id: Set(repository_id),
         provider: Set("github".to_string()),
         provider_id: Set(format!("pr-{}", Uuid::new_v4())),
-        number: Set((Uuid::new_v4().as_u128() % 10000) as i32),
+        number: Set(PR_NUMBER.fetch_add(1, Ordering::Relaxed)),
         title: Set(format!("Test PR {}", Uuid::new_v4())),
         description: Set(Some("Test pull request".to_string())),
         url: Set(format!("https://github.com/test/pr/{}", Uuid::new_v4())),

@@ -13,6 +13,8 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\"",
     "type-check": "tsc --noEmit",
     "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:rtl": "vitest tests/i18n/",
     "test:i18n:coverage": "vitest run tests/i18n/ --coverage",
     "test:visual": "playwright test",
