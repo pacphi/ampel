@@ -17,12 +17,6 @@ on:
           - linux/arm64
           - linux/amd64
         default: linux/arm64
-  # TEMPORARY: lets this run on the CI overhaul branch before the workflow
-  # exists on the default branch (workflow_dispatch requires that). Remove
-  # before merge — leaving dispatch-only behind.
-  push:
-    branches:
-      - ci/rust-pipeline-overhaul
 
 concurrency:
   group: arch-smoke-${{ github.ref }}
