@@ -24,6 +24,9 @@ export default [
       globals: {
         ...globals.browser,
         React: 'readonly',
+        // Build-time constants injected by Vite `define` (see vite.config.ts).
+        __APP_VERSION__: 'readonly',
+        __GIT_SHA__: 'readonly',
       },
       parser: tsparser,
       parserOptions: {

@@ -1,9 +1,29 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { execFileSync } from 'child_process';
+import { readFileSync } from 'fs';
+
+// Mirror vite.config.ts's build-time version injection so __APP_VERSION__ /
+// __GIT_SHA__ resolve under the test runner too (vitest uses THIS config, not
+// vite.config.ts). Version comes from package.json (release-please source of truth).
+const pkg = JSON.parse(readFileSync(path.resolve(__dirname, 'package.json'), 'utf-8')) as {
+  version: string;
+};
+const gitSha = (() => {
+  try {
+    return execFileSync('git', ['rev-parse', '--short', 'HEAD']).toString().trim();
+  } catch {
+    return 'unknown';
+  }
+})();
 
 export default defineConfig({
   plugins: [react()],
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+    __GIT_SHA__: JSON.stringify(gitSha),
+  },
   test: {
     // Use jsdom environment for React component testing
     environment: 'jsdom',
