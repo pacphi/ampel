@@ -1,0 +1,66 @@
+name: Arch Build Smoke Test
+
+# Validates that the Docker images build for a given platform WITHOUT pushing
+# anything (no registry write, no tag, no release). Primarily used to verify
+# the QEMU-emulated linux/arm64 build that the Release workflow publishes, and
+# to measure how slow that emulated build actually is.
+#
+# Run on demand from the Actions tab (or: gh workflow run arch-build-smoke.yml
+# --ref <branch> -f platform=linux/arm64).
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Target platform to build (push is always disabled)'
+        type: choice
+        options:
+          - linux/arm64
+          - linux/amd64
+        default: linux/arm64
+  # TEMPORARY: lets this run on the CI overhaul branch before the workflow
+  # exists on the default branch (workflow_dispatch requires that). Remove
+  # before merge — leaving dispatch-only behind.
+  push:
+    branches:
+      - ci/rust-pipeline-overhaul
+
+concurrency:
+  group: arch-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  arch-build:
+    name: Build ${{ matrix.image }} (${{ github.event.inputs.platform || 'linux/arm64' }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: docker/Dockerfile.api
+            image: api
+          - dockerfile: docker/Dockerfile.worker
+            image: worker
+          - dockerfile: docker/Dockerfile.frontend
+            image: frontend
+            build_args: VITE_API_URL=/api
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build ${{ matrix.image }} for ${{ github.event.inputs.platform || 'linux/arm64' }} (no push)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          platforms: ${{ github.event.inputs.platform || 'linux/arm64' }}
+          push: false
+          tags: ampel-${{ matrix.image }}:smoke
+          build-args: ${{ matrix.build_args }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
