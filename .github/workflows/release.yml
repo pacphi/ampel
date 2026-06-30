@@ -15,6 +15,12 @@ env:
   REGISTRY: ghcr.io
   IMAGE_PREFIX: ${{ github.repository_owner }}/ampel
 
+# Serialize releases; never cancel an in-flight release (tags/images must not
+# be left half-published).
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: write
   pull-requests: write

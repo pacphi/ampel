@@ -12,7 +12,25 @@ all-features = true
 [advisories]
 db-path = "~/.cargo/advisory-db"
 db-urls = ["https://github.com/rustsec/advisory-db"]
-ignore = []
+# This gate is BLOCKING in CI: any new advisory fails the build.
+# The entries below are pre-existing, transitive advisories with no
+# actionable fix available to us today. Each is documented with its
+# source and an exit condition. Review on every dependency bump and
+# remove an entry the moment a fixed upstream version lands.
+ignore = [
+    # rsa "Marvin Attack" timing sidechannel. No safe upgrade exists upstream.
+    # Pulled transitively via jsonwebtoken (RS256 JWT verification) -> rsa.
+    # Risk is limited to attackers who can observe RSA decryption timing.
+    # Remove when jsonwebtoken/rsa ship a mitigated release.
+    "RUSTSEC-2023-0071",
+    # bincode unmaintained. Transitive via ruvector-core -> hnsw_rs -> bincode.
+    # Remove when the dependency chain drops bincode or it is re-adopted.
+    "RUSTSEC-2025-0141",
+    # number_prefix unmaintained. Transitive (progress-bar formatting).
+    "RUSTSEC-2025-0119",
+    # proc-macro-error2 unmaintained. Transitive proc-macro dependency.
+    "RUSTSEC-2026-0173",
+]
 
 [licenses]
 # Allow common open-source licenses used in the Rust ecosystem

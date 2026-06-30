@@ -6,15 +6,26 @@ on:
   pull_request:
     branches: [main, develop]
 
+# Cancel superseded runs on the same ref (e.g. rapid pushes to a PR branch).
+# Never cancel runs on the protected branches.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: 1
   RUSTFLAGS: "-D warnings"
   PNPM_VERSION: 11.1.3
+  # NOTE: keep in sync with rust-toolchain.toml (the canonical pin for local dev).
   RUST_VERSION: "1.95.0"
-  # sccache configuration for faster Rust builds
-  SCCACHE_GHA_ENABLED: "true"
-  RUSTC_WRAPPER: "sccache"
+  # CI build hygiene (see corrode.dev "faster CI builds"):
+  #  - incremental compilation only adds dependency-tracking overhead on clean runners
+  #  - dropping debuginfo shrinks target/ dramatically (this is what previously
+  #    blew the runner disk during instrumented coverage builds)
+  CARGO_INCREMENTAL: "0"
+  CARGO_PROFILE_TEST_DEBUG: "0"
+  CARGO_PROFILE_DEV_DEBUG: "line-tables-only"
   # Test environment configuration
   CI_MODE: "true"
   RUST_LOG: "warn"
@@ -35,18 +46,15 @@ jobs:
           toolchain: ${{ env.RUST_VERSION }}
           components: rustfmt, clippy
 
-      - name: Run sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.10
-
-      - name: Cache cargo registry
-        uses: actions/cache@v5
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
         with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-registry-
+          shared-key: "lint"
+
+      - name: Install cargo-machete
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-machete
 
       - name: Check formatting
         run: cargo fmt --all -- --check
@@ -54,20 +62,18 @@ jobs:
       - name: Run clippy
         run: cargo clippy --all-targets --all-features -- -D warnings -D clippy::all
 
-      - name: Check for unused dependencies
-        run: |
-          cargo install cargo-machete || true
-          cargo machete || echo "Some unused dependencies found (non-blocking)"
+      - name: Check for unused dependencies (advisory)
+        run: cargo machete || echo "::warning::cargo-machete found potentially unused dependencies (non-blocking)"
 
   # ============================================
-  # Backend Security Checks
+  # Backend Security Checks (BLOCKING)
+  # cargo-audit + cargo-deny gate the build. Known, unfixable transitive
+  # advisories are documented in deny.toml's ignore list, so any NEW advisory
+  # fails CI.
   # ============================================
   backend-security:
     name: Backend Security Audit
     runs-on: ubuntu-latest
-    env:
-      # Disable sccache for this job - it doesn't need build caching
-      RUSTC_WRAPPER: ""
     steps:
       - uses: actions/checkout@v6
 
@@ -86,42 +92,74 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-registry-
 
-      - name: Install cargo-audit
-        run: cargo install cargo-audit --locked
+      - name: Install audit tools
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-audit,cargo-deny
 
-      - name: Run security audit
+      - name: Run security audit (vulnerabilities)
         run: cargo audit
 
-      - name: Install cargo-deny
-        run: cargo install cargo-deny --locked || true
+      - name: Check advisories, licenses, bans and sources
+        run: cargo deny check
 
-      - name: Check licenses and advisories
-        run: cargo deny check || echo "cargo-deny check completed with warnings"
-        continue-on-error: true
+  # ============================================
+  # Backend Build — build once, test many.
+  # Produces a cargo-nextest archive that the unit and integration test
+  # jobs consume WITHOUT recompiling. This is the single workspace compile
+  # per CI run (https://nexte.st/docs/ci-features/archiving/).
+  # ============================================
+  backend-build-archive:
+    name: Backend Build (test archive)
+    runs-on: ubuntu-latest
+    needs: [backend-lint]
+    env:
+      # Use lld for faster linking of the dependency-heavy workspace.
+      RUSTFLAGS: "-D warnings -C link-arg=-fuse-ld=lld"
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install lld
+        run: sudo apt-get update && sudo apt-get install -y lld
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "build"
+          cache-on-failure: true
+
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@cargo-nextest
+
+      - name: Build and archive tests
+        run: |
+          cargo nextest archive \
+            --workspace \
+            --all-features \
+            --locked \
+            --archive-file nextest-archive.tar.zst
+
+      - name: Upload test archive
+        uses: actions/upload-artifact@v7
+        with:
+          name: nextest-archive
+          path: nextest-archive.tar.zst
+          retention-days: 1
 
   # ============================================
   # Backend Unit Tests (SQLite In-Memory)
-  # Fast parallel execution for unit tests
+  # Runs from the prebuilt archive — no recompilation.
   # ============================================
   backend-unit-test:
     name: Backend Unit Tests (SQLite)
     runs-on: ubuntu-latest
-    needs: [backend-lint]
-
+    needs: [backend-build-archive]
     steps:
-      - name: Free disk space
-        run: |
-          echo "Disk space before cleanup:"
-          df -h
-          # Remove unnecessary large packages to free disk space
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-          sudo docker image prune --all --force || true
-          echo "Disk space after cleanup:"
-          df -h
-
       - uses: actions/checkout@v6
 
       - name: Install Rust toolchain
@@ -129,20 +167,13 @@ jobs:
         with:
           toolchain: ${{ env.RUST_VERSION }}
 
-      - name: Run sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.10
-
-      - name: Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          shared-key: "rust-build"
-          cache-on-failure: true
-
       - name: Install cargo-nextest
         uses: taiki-e/install-action@cargo-nextest
 
-      - name: Build tests
-        run: cargo build --all-features --tests
+      - name: Download test archive
+        uses: actions/download-artifact@v7
+        with:
+          name: nextest-archive
 
       - name: Run unit tests with nextest (SQLite)
         env:
@@ -152,41 +183,28 @@ jobs:
           TEST_DATABASE_TYPE: sqlite
         run: |
           cargo nextest run \
-            --all-features \
-            --no-fail-fast \
-            --test-threads 4 \
-            --retries 2 \
-            --failure-output immediate-final \
-            --success-output never \
-            --profile ci
-
-      - name: Generate test report
-        if: always()
-        run: |
-          cargo nextest run \
-            --all-features \
-            --no-fail-fast \
+            --archive-file nextest-archive.tar.zst \
+            --workspace-remap . \
             --profile ci \
-            --message-format json > test-results.json || true
+            --no-fail-fast \
+            --test-threads 4
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: backend-unit-test-results
-          path: |
-            test-results.json
-            target/nextest/ci/
+          path: target/nextest/ci/
           retention-days: 7
 
   # ============================================
   # Backend Integration Tests (PostgreSQL)
-  # Full database feature testing
+  # Runs from the prebuilt archive — no recompilation.
   # ============================================
   backend-integration-test:
     name: Backend Integration Tests (PostgreSQL)
     runs-on: ubuntu-latest
-    needs: [backend-lint]
+    needs: [backend-build-archive]
 
     services:
       postgres:
@@ -204,19 +222,6 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Free disk space
-        run: |
-          echo "Disk space before cleanup:"
-          df -h
-          # Remove unnecessary large packages to free disk space
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-          sudo docker image prune --all --force || true
-          echo "Disk space after cleanup:"
-          df -h
-
       - uses: actions/checkout@v6
 
       - name: Install Rust toolchain
@@ -224,17 +229,13 @@ jobs:
         with:
           toolchain: ${{ env.RUST_VERSION }}
 
-      - name: Run sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.10
-
-      - name: Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          shared-key: "rust-build"
-          cache-on-failure: true
-
       - name: Install cargo-nextest
         uses: taiki-e/install-action@cargo-nextest
+
+      - name: Download test archive
+        uses: actions/download-artifact@v7
+        with:
+          name: nextest-archive
 
       - name: Wait for PostgreSQL
         run: |
@@ -251,9 +252,6 @@ jobs:
           psql -h localhost -U ampel -d ampel_test -c "SELECT version();"
           echo "Database connection successful"
 
-      - name: Build tests
-        run: cargo build --all-features --tests
-
       - name: Run integration tests with nextest (PostgreSQL)
         env:
           DATABASE_URL: postgres://ampel:ampel@localhost:5432/ampel_test
@@ -264,12 +262,11 @@ jobs:
           RUST_LOG: info
         run: |
           cargo nextest run \
-            --all-features \
+            --archive-file nextest-archive.tar.zst \
+            --workspace-remap . \
+            --profile ci \
             --no-fail-fast \
-            --test-threads 2 \
-            --retries 3 \
-            --failure-output immediate-final \
-            --profile ci
+            --test-threads 2
 
       - name: Verify database cleanup
         if: always()
@@ -279,8 +276,6 @@ jobs:
           echo "Checking for leftover test data..."
           TABLE_COUNT=$(psql -h localhost -U ampel -d ampel_test -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public';")
           echo "Tables in database: $TABLE_COUNT"
-
-          # Clean up any test data
           psql -h localhost -U ampel -d ampel_test -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
           echo "Database cleaned up successfully"
 
@@ -289,22 +284,21 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: backend-integration-test-results
-          path: |
-            target/nextest/ci/
+          path: target/nextest/ci/
           retention-days: 7
 
   # ============================================
-  # Backend Coverage Report
-  # Uses cargo-llvm-cov for 5-10x faster coverage than tarpaulin
+  # Backend Coverage Report (non-blocking, PRs only)
+  # Coverage requires its own instrumented build, so it cannot reuse the
+  # test archive. CARGO_PROFILE_TEST_DEBUG=0 keeps target/ small enough to
+  # fit the runner disk (the previous disk-exhaustion root cause). If this
+  # job ever hits ENOSPC again, add a free-disk-space step here.
   # ============================================
   backend-coverage:
     name: Backend Test Coverage
     runs-on: ubuntu-latest
-    needs: [backend-unit-test, backend-integration-test]
+    needs: [backend-lint]
     if: github.event_name == 'pull_request'
-    env:
-      # Disable sccache for coverage - incompatible with RUSTC_WRAPPER
-      RUSTC_WRAPPER: ""
 
     services:
       postgres:
@@ -336,7 +330,7 @@ jobs:
       - name: Rust cache
         uses: Swatinem/rust-cache@v2
         with:
-          shared-key: "rust-coverage"
+          shared-key: "coverage"
 
       - name: Generate coverage report
         env:
@@ -348,6 +342,7 @@ jobs:
           cargo llvm-cov \
             --all-features \
             --workspace \
+            --locked \
             --codecov \
             --output-path coverage/codecov.json
 
@@ -363,42 +358,6 @@ jobs:
         with:
           name: backend-coverage-report
           path: coverage/
-          retention-days: 7
-
-  # ============================================
-  # Backend Build
-  # ============================================
-  backend-build:
-    name: Backend Build (Release)
-    runs-on: ubuntu-latest
-    needs: [backend-unit-test, backend-integration-test]
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: ${{ env.RUST_VERSION }}
-
-      - name: Run sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.10
-
-      - name: Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          shared-key: "rust-build"
-
-      - name: Build release binary
-        run: cargo build --release
-
-      - name: Upload release artifacts
-        uses: actions/upload-artifact@v7
-        with:
-          name: backend-release-binaries
-          path: |
-            target/release/ampel-api
-            target/release/ampel-worker
           retention-days: 7
 
   # ============================================
@@ -523,12 +482,13 @@ jobs:
           retention-days: 7
 
   # ============================================
-  # Docker Build Validation
+  # Docker Build Validation (push only)
+  # Validates that the release images compile; gated on tests passing.
   # ============================================
   docker-build:
     name: Docker Build
     runs-on: ubuntu-latest
-    needs: [backend-build, frontend-test]
+    needs: [backend-unit-test, backend-integration-test, frontend-test]
     if: github.event_name == 'push'
 
     strategy:
@@ -560,9 +520,6 @@ jobs:
           cache-to: type=gha,mode=max
 
   # ============================================
-  # Summary Check
-  # ============================================
-  # ============================================
   # Docs Lint (markdownlint — sole docs authority)
   # ============================================
   docs-lint:
@@ -589,6 +546,9 @@ jobs:
       - name: Run markdownlint
         run: pnpm run lint:md
 
+  # ============================================
+  # Summary Check
+  # ============================================
   ci-success:
     name: CI Success
     runs-on: ubuntu-latest
@@ -596,9 +556,9 @@ jobs:
       backend-lint,
       docs-lint,
       backend-security,
+      backend-build-archive,
       backend-unit-test,
       backend-integration-test,
-      backend-build,
       frontend-lint,
       frontend-security,
       frontend-test,
@@ -606,13 +566,14 @@ jobs:
     ]
     if: always()
     steps:
-      - name: Check all jobs passed
+      - name: Check all required jobs passed
         run: |
           if [[ "${{ needs.backend-lint.result }}" != "success" ]] || \
              [[ "${{ needs.docs-lint.result }}" != "success" ]] || \
+             [[ "${{ needs.backend-security.result }}" != "success" ]] || \
+             [[ "${{ needs.backend-build-archive.result }}" != "success" ]] || \
              [[ "${{ needs.backend-unit-test.result }}" != "success" ]] || \
              [[ "${{ needs.backend-integration-test.result }}" != "success" ]] || \
-             [[ "${{ needs.backend-build.result }}" != "success" ]] || \
              [[ "${{ needs.frontend-lint.result }}" != "success" ]] || \
              [[ "${{ needs.frontend-test.result }}" != "success" ]]; then
             echo "Some required jobs failed"
@@ -624,6 +585,7 @@ jobs:
         run: |
           echo "## CI Test Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Backend security (audit + deny): ${{ needs.backend-security.result }}" >> $GITHUB_STEP_SUMMARY
           echo "✅ Backend unit tests (SQLite): ${{ needs.backend-unit-test.result }}" >> $GITHUB_STEP_SUMMARY
           echo "✅ Backend integration tests (PostgreSQL): ${{ needs.backend-integration-test.result }}" >> $GITHUB_STEP_SUMMARY
           echo "✅ Frontend tests: ${{ needs.frontend-test.result }}" >> $GITHUB_STEP_SUMMARY
