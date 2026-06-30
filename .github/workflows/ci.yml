@@ -34,9 +34,13 @@ jobs:
   # ============================================
   # Backend Validation & Linting
   # ============================================
+  # Compile-heavy jobs run on `vars.HEAVY_RUNNER` when set, else fall back to
+  # the free standard runner. To use a larger runner later (org Team/Enterprise
+  # plan or self-hosted), set the repo/org variable HEAVY_RUNNER to its label —
+  # no code change. Leaving it unset keeps everything on free ubuntu-latest.
   backend-lint:
     name: Backend Lint & Format
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.HEAVY_RUNNER || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v6
 
@@ -111,7 +115,7 @@ jobs:
   # ============================================
   backend-build-archive:
     name: Backend Build (test archive)
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.HEAVY_RUNNER || 'ubuntu-latest' }}
     # Intentionally NOT gated on backend-lint: the build and the lint compile
     # the workspace independently, so running them in series doubles the
     # critical path. They run in parallel; ci-success still requires both.
@@ -298,7 +302,7 @@ jobs:
   # ============================================
   backend-coverage:
     name: Backend Test Coverage
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.HEAVY_RUNNER || 'ubuntu-latest' }}
     # Non-blocking and independent of lint, so it starts immediately.
     if: github.event_name == 'pull_request'
 
@@ -514,7 +518,7 @@ jobs:
   # ============================================
   docker-build:
     name: Docker Build
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.HEAVY_RUNNER || 'ubuntu-latest' }}
     needs: [detect-changes, backend-unit-test, backend-integration-test, frontend-test]
     if: github.event_name == 'push' || needs.detect-changes.outputs.docker == 'true'
 
