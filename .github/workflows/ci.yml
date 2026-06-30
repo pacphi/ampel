@@ -112,7 +112,9 @@ jobs:
   backend-build-archive:
     name: Backend Build (test archive)
     runs-on: ubuntu-latest
-    needs: [backend-lint]
+    # Intentionally NOT gated on backend-lint: the build and the lint compile
+    # the workspace independently, so running them in series doubles the
+    # critical path. They run in parallel; ci-success still requires both.
     env:
       # Use lld for faster linking of the dependency-heavy workspace.
       RUSTFLAGS: "-D warnings -C link-arg=-fuse-ld=lld"
@@ -297,7 +299,7 @@ jobs:
   backend-coverage:
     name: Backend Test Coverage
     runs-on: ubuntu-latest
-    needs: [backend-lint]
+    # Non-blocking and independent of lint, so it starts immediately.
     if: github.event_name == 'pull_request'
 
     services:
@@ -482,14 +484,39 @@ jobs:
           retention-days: 7
 
   # ============================================
-  # Docker Build Validation (push only)
-  # Validates that the release images compile; gated on tests passing.
+  # Detect which paths changed (drives conditional jobs)
+  # ============================================
+  detect-changes:
+    name: Detect changed paths
+    runs-on: ubuntu-latest
+    outputs:
+      docker: ${{ steps.filter.outputs.docker }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            docker:
+              - 'docker/**'
+              - 'Cargo.toml'
+              - 'Cargo.lock'
+              - 'crates/**/Cargo.toml'
+              - 'frontend/package.json'
+              - 'frontend/pnpm-lock.yaml'
+              - '.github/workflows/ci.yml'
+
+  # ============================================
+  # Docker Build Validation
+  # Validates the release images compile (no push). Runs on every push to a
+  # protected branch, and on PRs ONLY when Docker-relevant files changed — so
+  # code-only PRs skip it and keep the feedback loop short. Gated on tests.
   # ============================================
   docker-build:
     name: Docker Build
     runs-on: ubuntu-latest
-    needs: [backend-unit-test, backend-integration-test, frontend-test]
-    if: github.event_name == 'push'
+    needs: [detect-changes, backend-unit-test, backend-integration-test, frontend-test]
+    if: github.event_name == 'push' || needs.detect-changes.outputs.docker == 'true'
 
     strategy:
       matrix:
