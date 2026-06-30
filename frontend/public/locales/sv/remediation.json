@@ -111,7 +111,8 @@
     "saving": "Sparande…",
     "scopeId": "Omfattnings-ID",
     "scopeIdPlaceholder": "Ange arkivet, teamet, organisationen eller användar-ID:t",
-    "scopeType": "Omfattningstyp"
+    "scopeType": "Omfattningstyp",
+    "noScopes": "Du hanterar ännu inga omfattningar av den här typen."
   },
   "fleet": {
     "airGappedOff": "Ansluten",

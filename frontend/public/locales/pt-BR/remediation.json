@@ -111,7 +111,8 @@
     "saving": "Salvando…",
     "scopeId": "ID do Escopo",
     "scopeIdPlaceholder": "Insira o ID do repositório, da equipe, da organização ou do usuário.",
-    "scopeType": "Tipo de escopo"
+    "scopeType": "Tipo de escopo",
+    "noScopes": "Você ainda não gerencia nenhum escopo deste tipo."
   },
   "fleet": {
     "airGappedOff": "Conectado",

@@ -485,3 +485,75 @@ async fn test_list_policies_requires_authentication() {
 
     test_db.cleanup().await;
 }
+
+#[tokio::test]
+async fn test_list_scopes_returns_caller_scopes_with_labels() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+    let token = register_and_login(&app).await;
+    let user_id = current_user_id(test_db.connection()).await;
+    let repo_id = seed_repository(test_db.connection(), user_id).await;
+
+    let resp = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method("GET")
+                .uri("/api/remediation/scopes")
+                .header(header::AUTHORIZATION, format!("Bearer {token}"))
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+    let body = parse_json(resp).await;
+
+    // User scope is the caller themselves, labelled by display name.
+    assert_eq!(body["data"]["user"]["id"], user_id.to_string());
+    assert_eq!(body["data"]["user"]["label"], "Remediation User");
+
+    // The seeded repository is offered, labelled by its full name.
+    let repos = body["data"]["repositories"].as_array().unwrap();
+    assert_eq!(repos.len(), 1);
+    assert_eq!(repos[0]["id"], repo_id.to_string());
+    assert_eq!(repos[0]["label"], "octocat/repo");
+
+    test_db.cleanup().await;
+}
+
+#[tokio::test]
+async fn test_create_policy_rejects_non_uuid_scope_id() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+    let token = register_and_login(&app).await;
+
+    // Regression: a non-UUID scope id (e.g. a typed username) must be rejected
+    // by the JSON extractor, never silently accepted. This is the original
+    // "Failed to save the policy" failure mode.
+    let body = json!({
+        "scopeType": "user",
+        "scopeId": "pacphi",
+        "minOpenPrs": 2,
+        "autonomyLevel": "dry_run_only",
+        "remediationTier": "consolidate_only",
+        "maxPrsPerRun": 5,
+        "prSelection": "all_open"
+    });
+    let resp = app
+        .clone()
+        .oneshot(auth_post("/api/remediation/policies", &token, body))
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::UNPROCESSABLE_ENTITY);
+
+    test_db.cleanup().await;
+}

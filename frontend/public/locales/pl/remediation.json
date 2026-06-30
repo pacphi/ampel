@@ -111,7 +111,8 @@
     "saving": "Oszczędność…",
     "scopeId": "Identyfikator zakresu",
     "scopeIdPlaceholder": "Wprowadź identyfikator repozytorium, zespołu, organizacji lub użytkownika",
-    "scopeType": "Typ zakresu"
+    "scopeType": "Typ zakresu",
+    "noScopes": "Nie zarządzasz jeszcze żadnymi zakresami tego typu."
   },
   "fleet": {
     "airGappedOff": "Połączony",

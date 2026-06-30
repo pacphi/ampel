@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/dialog';
 import {
   useCreateRemediationPolicy,
+  useRemediationScopes,
   useUpdateRemediationPolicy,
 } from '@/hooks/useRemediationPolicies';
 import { hasFleetPreviewed } from '@/lib/fleetPreviewGate';
@@ -29,6 +30,7 @@ import type {
   CreatePolicyRequest,
   RemediationPolicy,
   RemediationTier,
+  ScopeOption,
   ScopeType,
   UpdatePolicyRequest,
 } from '@/types/remediation';
@@ -116,9 +118,48 @@ export function PolicyEditor({
 
   const createMutation = useCreateRemediationPolicy();
   const updateMutation = useUpdateRemediationPolicy();
+  const { data: scopes } = useRemediationScopes();
 
   const [scopeType, setScopeType] = useState<ScopeType>(policy?.scopeType ?? 'repository');
-  const [scopeId, setScopeId] = useState<string>(policy?.scopeId ?? defaultScopeId ?? '');
+  // The user's explicit scope pick (Select). `null` until they choose; the
+  // effective id is derived below so we never sync state via an effect.
+  const [pickedScopeId, setPickedScopeId] = useState<string | null>(null);
+
+  // The selectable scopes for the chosen type. The backend requires a real
+  // scope UUID (never a free-typed name), so the editor only ever offers values
+  // the caller actually owns — see GET /api/remediation/scopes.
+  const scopeOptions: ScopeOption[] = useMemo(() => {
+    if (!scopes) return [];
+    switch (scopeType) {
+      case 'user':
+        return [scopes.user];
+      case 'repository':
+        return scopes.repositories;
+      case 'team':
+        return scopes.teams;
+      case 'org':
+        return scopes.orgs;
+    }
+  }, [scopes, scopeType]);
+
+  // The scope id actually submitted, derived (not stored) so it stays valid as
+  // the type or loaded options change. User scope is always the caller (backend
+  // enforces `scope_id == user_id`); otherwise honour an explicit pick, then a
+  // preset, then the first available option.
+  const effectiveScopeId = useMemo(() => {
+    if (isEdit && policy) return policy.scopeId;
+    if (scopeType === 'user') return scopes?.user.id ?? '';
+    if (pickedScopeId && scopeOptions.some((o) => o.id === pickedScopeId)) return pickedScopeId;
+    const preset = defaultScopeId && scopeOptions.find((o) => o.id === defaultScopeId);
+    return preset ? preset.id : (scopeOptions[0]?.id ?? '');
+  }, [isEdit, policy, scopeType, scopes, pickedScopeId, scopeOptions, defaultScopeId]);
+
+  // Friendly label for the locked field in edit mode.
+  const editScopeLabel = useMemo(() => {
+    if (!policy) return '';
+    const match = scopeOptions.find((o) => o.id === policy.scopeId);
+    return match?.label ?? policy.scopeId;
+  }, [policy, scopeOptions]);
   const [enabled, setEnabled] = useState<boolean>(policy?.enabled ?? true);
   const [stop, setStop] = useState<AutonomyStop>(deriveStop(policy));
   const [minOpenPrs, setMinOpenPrs] = useState<number>(policy?.minOpenPrs ?? 2);
@@ -165,7 +206,7 @@ export function PolicyEditor({
 
   const handleSave = () => {
     setError(null);
-    if (!scopeId.trim()) {
+    if (!effectiveScopeId.trim()) {
       setError(t('remediation:editor.errors.scopeIdRequired'));
       return;
     }
@@ -196,7 +237,7 @@ export function PolicyEditor({
 
     const payload: CreatePolicyRequest = {
       scopeType,
-      scopeId: scopeId.trim(),
+      scopeId: effectiveScopeId,
       enabled: effectiveEnabled,
       autonomyLevel: fields.autonomyLevel,
       remediationTier: fields.remediationTier,
@@ -235,13 +276,29 @@ export function PolicyEditor({
         </div>
         <div className="space-y-2">
           <Label htmlFor="policy-scope-id">{t('remediation:editor.scopeId')}</Label>
-          <Input
-            id="policy-scope-id"
-            value={scopeId}
-            onChange={(e) => setScopeId(e.target.value)}
-            placeholder={t('remediation:editor.scopeIdPlaceholder')}
-            disabled={isEdit}
-          />
+          {isEdit ? (
+            <Input id="policy-scope-id" value={editScopeLabel} disabled readOnly />
+          ) : scopeType === 'user' ? (
+            // The only valid User scope is the caller themselves.
+            <Input id="policy-scope-id" value={scopes?.user.label ?? ''} disabled readOnly />
+          ) : scopeOptions.length === 0 ? (
+            <p id="policy-scope-id" className="pt-2 text-sm text-muted-foreground">
+              {t('remediation:editor.noScopes')}
+            </p>
+          ) : (
+            <Select value={effectiveScopeId} onValueChange={setPickedScopeId}>
+              <SelectTrigger id="policy-scope-id">
+                <SelectValue placeholder={t('remediation:editor.scopeIdPlaceholder')} />
+              </SelectTrigger>
+              <SelectContent>
+                {scopeOptions.map((o) => (
+                  <SelectItem key={o.id} value={o.id}>
+                    {o.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         </div>
       </div>
 
@@ -329,7 +386,7 @@ export function PolicyEditor({
             {t('common:actions.cancel')}
           </Button>
         )}
-        <Button onClick={handleSave} disabled={isSaving}>
+        <Button onClick={handleSave} disabled={isSaving || (!isEdit && !effectiveScopeId)}>
           {isSaving ? t('remediation:editor.saving') : t('remediation:editor.save')}
         </Button>
       </div>

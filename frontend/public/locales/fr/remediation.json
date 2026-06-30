@@ -111,7 +111,8 @@
     "saving": "Économie…",
     "scopeId": "ID de portée",
     "scopeIdPlaceholder": "Saisissez l'identifiant du dépôt, de l'équipe, de l'organisation ou de l'utilisateur",
-    "scopeType": "Type de portée"
+    "scopeType": "Type de portée",
+    "noScopes": "Vous ne gérez encore aucune portée de ce type."
   },
   "fleet": {
     "airGappedOff": "Connecté",

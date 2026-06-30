@@ -111,7 +111,8 @@
     "saving": "保存中…",
     "scopeId": "スコープID",
     "scopeIdPlaceholder": "リポジトリ、チーム、組織、またはユーザーIDを入力してください。",
-    "scopeType": "スコープタイプ"
+    "scopeType": "スコープタイプ",
+    "noScopes": "この種類のスコープはまだ管理していません。"
   },
   "fleet": {
     "airGappedOff": "接続済み",

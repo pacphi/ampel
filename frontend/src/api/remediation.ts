@@ -7,6 +7,7 @@ import type {
   ListRunsFilters,
   RemediationPolicy,
   RemediationRun,
+  RemediationScopes,
   RunDetail,
   SseToken,
   UpdatePolicyRequest,
@@ -16,6 +17,11 @@ import type {
  * Typed client for the Fleet Remediation API (base path `/api`, all authed).
  */
 export const remediationApi = {
+  async listScopes(): Promise<RemediationScopes> {
+    const response = await apiClient.get<ApiResponse<RemediationScopes>>('/remediation/scopes');
+    return response.data.data!;
+  },
+
   async listPolicies(): Promise<RemediationPolicy[]> {
     const response = await apiClient.get<ApiResponse<RemediationPolicy[]>>('/remediation/policies');
     return response.data.data!;

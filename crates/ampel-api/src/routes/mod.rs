@@ -146,6 +146,7 @@ pub fn create_router(state: AppState) -> Router {
         )
         .route("/api/pr-filters/reset", post(pr_filters::reset_pr_filters))
         // Remediation routes (Fleet PR Remediation — Phase 1)
+        .route("/api/remediation/scopes", get(remediation::list_scopes))
         .route(
             "/api/remediation/policies",
             get(remediation::list_policies).post(remediation::create_policy),

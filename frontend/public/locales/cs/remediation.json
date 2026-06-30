@@ -111,7 +111,8 @@
     "saving": "Ukládání…",
     "scopeId": "ID rozsahu",
     "scopeIdPlaceholder": "Zadejte ID úložiště, týmu, organizace nebo uživatele",
-    "scopeType": "Typ rozsahu"
+    "scopeType": "Typ rozsahu",
+    "noScopes": "Zatím nespravujete žádné rozsahy tohoto typu."
   },
   "fleet": {
     "airGappedOff": "Připojeno",

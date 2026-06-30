@@ -111,7 +111,8 @@
     "saving": "Speichern…",
     "scopeId": "Bereichs-ID",
     "scopeIdPlaceholder": "Geben Sie das Repository, das Team, die Organisation oder die Benutzer-ID ein.",
-    "scopeType": "Bereichstyp"
+    "scopeType": "Bereichstyp",
+    "noScopes": "Sie verwalten noch keine Bereiche dieses Typs."
   },
   "fleet": {
     "airGappedOff": "Verbunden",

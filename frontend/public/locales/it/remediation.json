@@ -111,7 +111,8 @@
     "saving": "Risparmio…",
     "scopeId": "ID ambito",
     "scopeIdPlaceholder": "Inserisci l'ID del repository, del team, dell'organizzazione o dell'utente",
-    "scopeType": "Tipo di ambito"
+    "scopeType": "Tipo di ambito",
+    "noScopes": "Non gestisci ancora alcun ambito di questo tipo."
   },
   "fleet": {
     "airGappedOff": "Collegato",

@@ -111,7 +111,8 @@
     "saving": "Gemmer…",
     "scopeId": "Omfangs-ID",
     "scopeIdPlaceholder": "Indtast arkiv-, team-, organisations- eller bruger-ID'et",
-    "scopeType": "Omfangstype"
+    "scopeType": "Omfangstype",
+    "noScopes": "Du administrerer endnu ingen omfang af denne type."
   },
   "fleet": {
     "airGappedOff": "Forbundet",

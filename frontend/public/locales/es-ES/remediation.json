@@ -111,7 +111,8 @@
     "saving": "Ahorro…",
     "scopeId": "ID de alcance",
     "scopeIdPlaceholder": "Introduzca el ID del repositorio, equipo, organización o usuario.",
-    "scopeType": "Tipo de alcance"
+    "scopeType": "Tipo de alcance",
+    "noScopes": "Aún no gestionas ningún alcance de este tipo."
   },
   "fleet": {
     "airGappedOff": "Conectado",

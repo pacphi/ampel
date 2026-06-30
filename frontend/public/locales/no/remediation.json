@@ -111,7 +111,8 @@
     "saving": "Lagrer…",
     "scopeId": "Omfangs-ID",
     "scopeIdPlaceholder": "Skriv inn ID-en for arkivet, teamet, organisasjonen eller brukeren",
-    "scopeType": "Omfangstype"
+    "scopeType": "Omfangstype",
+    "noScopes": "Du administrerer ennå ingen omfang av denne typen."
   },
   "fleet": {
     "airGappedOff": "Tilkoblet",

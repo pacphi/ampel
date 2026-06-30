@@ -9,6 +9,21 @@
 
 export type ScopeType = 'repository' | 'team' | 'org' | 'user';
 
+/** A selectable policy scope (a `scopeId` plus a human-readable label). */
+export interface ScopeOption {
+  id: string;
+  label: string;
+}
+
+/** The caller's manageable scopes, grouped by scope type. */
+export interface RemediationScopes {
+  /** The caller themselves — the only valid scope for a User-scoped policy. */
+  user: ScopeOption;
+  repositories: ScopeOption[];
+  teams: ScopeOption[];
+  orgs: ScopeOption[];
+}
+
 export type AutonomyLevel =
   'dry_run_only' | 'suggest_only' | 'auto_with_approval' | 'fully_autonomous';
 

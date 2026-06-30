@@ -111,7 +111,8 @@
     "saving": "Đang lưu…",
     "scopeId": "ID phạm vi",
     "scopeIdPlaceholder": "Nhập ID kho lưu trữ, nhóm, tổ chức hoặc người dùng.",
-    "scopeType": "Loại phạm vi"
+    "scopeType": "Loại phạm vi",
+    "noScopes": "Bạn chưa quản lý phạm vi nào thuộc loại này."
   },
   "fleet": {
     "airGappedOff": "Đã kết nối",

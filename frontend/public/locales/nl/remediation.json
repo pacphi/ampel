@@ -111,7 +111,8 @@
     "saving": "Besparing…",
     "scopeId": "Bereik-ID",
     "scopeIdPlaceholder": "Voer de repository-, team-, organisatie- of gebruikers-ID in.",
-    "scopeType": "Bereiktype"
+    "scopeType": "Bereiktype",
+    "noScopes": "Je beheert nog geen bereiken van dit type."
   },
   "fleet": {
     "airGappedOff": "Aangesloten",

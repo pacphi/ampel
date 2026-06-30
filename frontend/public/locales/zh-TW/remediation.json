@@ -111,7 +111,8 @@
     "saving": "保存…",
     "scopeId": "範圍 ID",
     "scopeIdPlaceholder": "請輸入儲存庫、團隊、組織或使用者 ID",
-    "scopeType": "範圍類型"
+    "scopeType": "範圍類型",
+    "noScopes": "您尚未管理此類型的任何範圍。"
   },
   "fleet": {
     "airGappedOff": "已連接",
