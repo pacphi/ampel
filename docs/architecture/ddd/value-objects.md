@@ -45,8 +45,8 @@ Organization → User, with narrower scopes winning.
 |---|---|---|
 | `min_open_prs` | `u32` | Trigger threshold. Remediation activates only when a repo has strictly more than this many open PRs. |
 | `pr_selection` | `PrSelectionStrategy` | Which PRs to act on: `AllOpen`, `OldestFirst { max: u32 }`, `ByLabel { labels: Vec<String> }`, `ExplicitIds { ids: Vec<u64> }`. |
-| `autonomy_level` | `AutonomyLevel` | `DryRunOnly` | `SuggestOnly` | `AutoWithApproval` | `FullyAutonomous`. |
-| `remediation_tier` | `RemediationTier` | `ConsolidateOnly` | `FixAndConsolidate` | `FullRemediation`. Controls how deeply the agent may modify code. |
+| `autonomy_level` | `AutonomyLevel` | `DryRunOnly`, `SuggestOnly`, `AutoWithApproval`, `FullyAutonomous`. |
+| `remediation_tier` | `RemediationTier` | `ConsolidateOnly`, `FixAndConsolidate`, `FullRemediation`. Controls how deeply the agent may modify code. |
 | `max_prs_per_run` | `u32` | Hard cap on PRs touched per single session. |
 | `allowed_targets` | `Vec<String>` | Base branch names the agent may target (e.g., `["main", "develop"]`). Empty means all branches. |
 | `skip_draft` | `bool` | When `true`, draft PRs are excluded from selection. |
@@ -310,7 +310,7 @@ be discarded.
 | Attribute | Type | Description |
 |---|---|---|
 | `name` | `String` | Human-readable check name (e.g., `"ci / build"`, `"test"`, `"lint"`). |
-| `status` | `CheckStatus` | `Pending` | `Running` | `Green` | `Red` | `Skipped` | `Cancelled`. |
+| `status` | `CheckStatus` | `Pending`, `Running`, `Green`, `Red`, `Skipped`, `Cancelled`. |
 | `required` | `bool` | Whether this check blocks mergeability per the branch protection rules. |
 | `url` | `Option<String>` | Link to the check run detail page. |
 
@@ -494,7 +494,7 @@ A minimal cross-provider PR reference.
 
 | Attribute | Type | Description |
 |---|---|---|
-| `provider` | `GitProvider` | `GitHub` | `GitLab` | `Bitbucket`. |
+| `provider` | `GitProvider` | `GitHub`, `GitLab`, `Bitbucket`. |
 | `repo_full_name` | `String` | e.g., `"org/repo"`. |
 | `number` | `u64` | PR number as reported by the provider. |
 | `title` | `String` | PR title at plan time (snapshot). |

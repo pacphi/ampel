@@ -155,7 +155,7 @@ pending
         states: handoff_human · failed · cancelled · no_op · completed
 ```
 
-- **`closing_sources`** runs *only after* a successful merge. Each source PR is closed with a comment: *"Superseded by #<consolidated> — changes incorporated and merged."* IDs recorded in `closed_pr_ids` for auditability and reversal.
+- **`closing_sources`** runs *only after* a successful merge. Each source PR is closed with a comment: *"Superseded by `#<consolidated>` — changes incorporated and merged."* IDs recorded in `closed_pr_ids` for auditability and reversal.
 - **`awaiting_approval`** is the open-loop human gate: the consolidated PR is built, verified green, labeled `ampel/ready`, and a reviewer is pinged; merge happens on approval via the API.
 - **Re-entrancy:** the consolidated branch name is deterministic (`ampel/remediation/<run-short-id>`), and an advisory lock / `state IN (active…)` check guarantees **one active run per repository**, so a re-trigger reconciles rather than double-consolidating.
 

@@ -759,7 +759,7 @@ classify(log, onnx):
 | `TypeError` | `error TS` OR `Type error` |
 | `Lint` | `eslint` (ci) OR `clippy::deny` |
 | `LockfileConflict` | `lock file` (ci) OR `lockfile` (ci) OR `Cargo.lock` OR `pnpm-lock` (ci) |
-| `TestFailure` | `FAILED` AND (`test ` OR `tests/`) |
+| `TestFailure` | `FAILED` AND (`test` OR `tests/`) |
 | `MissingDependency` | `no such crate` (ci) OR `cannot find crate` (ci) OR `module not found` (ci) OR `package not found` (ci) |
 
 Patterns are evaluated in the order listed; first match wins. New patterns can be added

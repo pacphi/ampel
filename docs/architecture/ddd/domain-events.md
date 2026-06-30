@@ -439,7 +439,7 @@ pub struct RemediationRunCompletedPayload {
 |---|---|
 | **Emitted by** | `RemediationRun` aggregate |
 | **Trigger** | The run cannot proceed autonomously: unresolvable conflicts with agentic tier off, CI red after budget exhausted, or agent aborted. State transitions to `handoff_human`. |
-| **State transition** | `consolidating | remediating | verifying → handoff_human` (terminal for this cycle) |
+| **State transition** | `consolidating \| remediating \| verifying → handoff_human` (terminal for this cycle) |
 
 **Payload:**
 
@@ -499,7 +499,7 @@ pub struct RemediationRunFailedPayload {
 |---|---|
 | **Emitted by** | `RemediationRun` aggregate |
 | **Trigger** | An operator calls `POST /api/remediation/runs/{id}/cancel`. State transitions to `cancelled`. |
-| **State transition** | `pending | selecting | consolidating | remediating | verifying | awaiting_approval → cancelled` (terminal) |
+| **State transition** | `pending \| selecting \| consolidating \| remediating \| verifying \| awaiting_approval → cancelled` (terminal) |
 
 **Payload:**
 
@@ -594,7 +594,7 @@ pub struct AgentIterationCompletedPayload {
 |---|---|
 | **Emitted by** | `RemediationAgentHarness` (within `RemediationRun` aggregate) |
 | **Trigger** | The agentic session ends — either the agent produced a green CI, it ran out of budget, or it was aborted (cancelled or internal error). Control returns to `VerificationService`. |
-| **State transition** | `remediating → verifying` (passed) or `remediating → handoff_human` (budget_exhausted | aborted) |
+| **State transition** | `remediating → verifying` (passed) or `remediating → handoff_human` (budget_exhausted \| aborted) |
 
 **Payload:**
 
