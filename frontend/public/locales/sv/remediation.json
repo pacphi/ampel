@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "Klassificerare",
+    "cost": "Kosta",
+    "failureClass": "Felklass",
+    "iterations": "Iterationer",
+    "status": {
+      "budget_exceeded": "Budget överskriden",
+      "failed": "Misslyckades",
+      "handoff_human": "Överlämnad till människan",
+      "running": "Spring",
+      "succeeded": "Lyckades"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "Agentsession",
+    "tokensUsed": "Använda tokens",
+    "transcript": "Visa transkription"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "Konsoliderad",
+      "merged": "Sammanfogad"
     },
+    "allRepos": "Alla arkiv",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
+      "action": "Handling",
+      "autonomy": "Autonomi",
+      "completedAt": "Avslutad",
       "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "repository": "Förvaring"
+    },
+    "description": "Endast tilläggspost för autonoma sammanslagningar och stängningar.",
+    "empty": "Inga autonoma handlingar registrerade.",
+    "exportCsv": "Exportera CSV",
+    "filterRepo": "Förvaring",
+    "since": "Sedan",
+    "tableLabel": "Åtgärdningsgranskningslogg",
+    "title": "Granskningslogg",
+    "until": "Tills"
+  },
+  "autonomyHint": {
+    "auto_merge": "Konsoliderar och sammanfogar automatiskt utan mänskligt godkännande.",
+    "consolidate": "Konsoliderar pull requests men kräver mänskligt godkännande innan sammanslagning.",
+    "dry_run": "Förhandsgranskar konsolideringsplaner utan att göra några ändringar.",
+    "off": "Reparation är inaktiverad för detta omfång."
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "Bil med godkännande",
+    "dry_run_only": "Endast torrkörning",
+    "fully_autonomous": "Helt autonom",
+    "suggest_only": "Föreslå endast"
+  },
+  "autonomyStop": {
+    "auto_merge": "Automatisk sammanfogning",
+    "consolidate": "Endast konsolidering",
+    "dry_run": "Torrkörning",
+    "off": "Av"
+  },
+  "ci": {
+    "columns": {
+      "check": "Kontrollera",
+      "status": "Status",
+      "type": "Typ"
+    },
+    "empty": "Ingen CI-information tillgänglig.",
+    "headSha": "Chef SHA",
+    "logs": "Loggar",
+    "optional": "Frivillig",
+    "predictedConflict": "Förutsedd konflikt",
+    "required": "Nödvändig",
+    "statusCheck": "CI-status",
+    "tableLabel": "CI-kontrollmatris",
+    "title": "CI-kontroller",
+    "tone": {
+      "green": "Godkänd",
+      "red": "Brist",
+      "yellow": "I avvaktan på"
+    },
+    "viewLogs": "Visa loggar"
+  },
+  "conflicts": {
+    "conflicted": "Konfliktfylld",
+    "empty": "Inga konflikter eller hoppade pull requests.",
+    "skipped": "Hoppade över",
+    "title": "Konflikter"
+  },
+  "disposition": {
+    "closedWithRef": "Stängd (ersatt)",
+    "consolidated": "Konsoliderad",
+    "leftOpen": "Lämnas öppen",
+    "skippedConflict": "Hoppad (konflikt)"
+  },
+  "editor": {
+    "autonomy": "Autonominivå",
+    "confirmAutoMerge": {
+      "confirm": "Aktivera automatisk sammanslagning",
+      "description": "Automatisk sammanslagning konsoliderar och sammanfogar pull requests automatiskt utan mänskligt godkännande. Detta kan ändra dina arkiv. Är du säker?",
+      "previewRequired": "Kör en förhandsgranskning av flottan innan du aktiverar automatisk sammanslagning för första gången, så att du kan se exakt vad en körning skulle göra.",
+      "title": "Aktivera automatisk sammanslagning?"
+    },
+    "createTitle": "Skapa policy",
+    "description": "Konfigurera hur reparationen fungerar för detta omfång.",
+    "editTitle": "Redigera policy",
+    "enabled": "Aktiverad",
+    "errors": {
+      "saveFailed": "Det gick inte att spara policyn.",
+      "scopeIdRequired": "Scope-ID krävs."
+    },
+    "maxPrsPerRun": "Max PR per körning",
+    "minOpenPrs": "Minsta öppna PR:er",
+    "save": "Spara policy",
+    "saving": "Sparande…",
+    "scopeId": "Omfattnings-ID",
+    "scopeIdPlaceholder": "Ange arkivet, teamet, organisationen eller användar-ID:t",
+    "scopeType": "Omfattningstyp"
+  },
+  "fleet": {
+    "airGappedOff": "Ansluten",
+    "airGappedOn": "Luftgap",
+    "columns": {
+      "actions": "Åtgärder",
+      "airGapped": "Luftgap",
+      "eligibility": "Behörighet",
+      "openPrs": "Öppna PR:er",
+      "policyState": "Politik",
+      "repository": "Förvaring"
+    },
+    "description": "Behörighet och policystatus för reparation per databas.",
+    "eligible": "Berättigad",
+    "empty": "Inga arkiv hittades.",
+    "error": "Det gick inte att läsa in översikten över flottan.",
+    "notEligible": "Inte berättigad",
+    "preview": "Förhandsvisning",
+    "tableLabel": "Status för sanering av arkivet",
+    "title": "Översikt över flottan"
+  },
+  "killSwitch": {
+    "active": "Åtgärd aktiv",
+    "label": "Pausa all åtgärd",
+    "noPolicy": "Ingen policy att pausa",
+    "paused": "Åtgärdning pausad"
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
+    "airGapNotice": "Organisationer med luftgapp får endast använda lokala leverantörer (Ollama, ONNX). Att lägga till en extern leverantör (Claude, Gemini) till en organisation med luftgapp avvisas.",
+    "apiKey": "API-nyckel",
+    "apiKeyHint": "Lagras krypterat och visas aldrig igen. Lämna tomt för att behålla den befintliga nyckeln.",
+    "apiKeyPlaceholder": "Klistra in leverantörens API-nyckel",
+    "create": "Lägg till modellkonto",
+    "createTitle": "Lägg till modellkonto",
+    "default": "Standard",
+    "description": "Konfigurera AI-modellleverantörerna som agentens reparationsnivå använder för att åtgärda misslyckade pull-förfrågningar.",
+    "displayName": "Visningsnamn",
+    "displayNamePlaceholder": "t.ex. Team Claude-nyckel",
+    "egress": {
+      "external": "Extern utgång",
+      "local_only": "Endast lokalt"
+    },
+    "empty": "Inga modellkonton ännu. Lägg till ett för att aktivera agentremediering.",
+    "endpointUrl": "Slutpunkts-URL",
+    "endpointUrlPlaceholder": "http://lokalvärd:11434",
+    "error": "Misslyckades med att läsa in modellkonton.",
+    "errors": {
+      "airGapped": "Denna organisation har ett separat system: leverantörer av externa utgående modeller (Claude, Gemini) är inte tillåtna.",
+      "createFailed": "Det gick inte att skapa modellkontot.",
+      "displayNameRequired": "Ett visningsnamn krävs."
+    },
+    "modelId": "Modell-ID",
+    "modelIdPlaceholder": "t.ex. claude-sonnet-4",
+    "providerKind": "Leverantör",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
+      "gemini": "Tvillingarna",
+      "ollama": "Ollama (lokal)",
+      "onnx": "ONNX (lokal)"
     },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
+    "save": "Spara konto",
+    "saving": "Sparande…",
+    "spend": "Spendera",
+    "spendCap": "Utgiftstak (USD)",
+    "title": "Modellkonton",
+    "validate": "Bekräfta",
+    "validating": "Validerar…",
     "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
-    "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
-    },
-    "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "invalid": "Ogiltig",
+      "unvalidated": "Ogiltigförklarad",
+      "valid": "Giltig"
     }
   },
+  "nav": "Sanering",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "Spelbok (YAML)",
+    "contentPlaceholder": "Gå in i YAML-spelboken…",
+    "create": "Ny spelbok",
+    "description": "Anpassa de åtgärdsfrågor som agenten använder. Validera en spelbok för att förhandsgranska den renderade frågan utan modellanrop.",
+    "empty": "Inga spelböcker ännu. Den inbyggda standardspelboken används tills du lägger till en.",
+    "error": "Misslyckades med att läsa in spelböcker.",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "Innehåll i spelboken krävs.",
+      "nameRequired": "Ett namn krävs.",
+      "playbookIdRequired": "Ett playbook-ID krävs.",
+      "previewFailed": "Misslyckades med att rendera spelboken. Kontrollera YAML för fel.",
+      "saveFailed": "Det gick inte att spara spelboken. Kontrollera YAML för fel."
+    },
+    "name": "Namn",
+    "namePlaceholder": "Läsbart namn",
+    "playbookId": "Playbook-ID",
+    "playbookIdPlaceholder": "t.ex. anpassad reparation",
+    "preview": "Validera / Förhandsgranska",
+    "previewing": "Tolkning…",
+    "renderedPrompt": "Renderad prompt",
+    "save": "Spara spelbok",
+    "saving": "Sparande…",
+    "scopeId": "Omfattnings-ID",
+    "scopeIdPlaceholder": "Ägar-ID för team, organisation eller arkiv",
+    "scopeType": "Omfattningstyp",
+    "title": "Spelböcker"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "Ny policy",
+    "description": "Reparationspolicyer som du hanterar över dina omfattningar.",
+    "disable": "Inaktivera",
+    "empty": "Inga policyer ännu. Skapa en för att komma igång.",
+    "enable": "Aktivera",
+    "statusDisabled": "Funktionshindrad",
+    "statusEnabled": "Aktiverad",
+    "title": "Policyer"
+  },
+  "policyState": {
+    "auto_merge": "Automatisk sammanfogning",
+    "auto_with_approval": "Auto (med godkännande)",
+    "disabled": "Funktionshindrad",
+    "dry_run": "Torrkörning",
+    "none": "Ingen policy",
+    "suggest": "Föreslå"
+  },
+  "preview": {
+    "blockedByAirGap": "Detta arkiv har ett airgap; externa leverantörsåtgärder skulle blockeras.",
+    "conflicts": "Förutspådda konflikter",
+    "description": "Skrivskyddad projektion av vad en reparationskörning skulle göra. Inga ändringar görs.",
+    "error": "Misslyckades med att beräkna förhandsgranskningen.",
+    "estimatedDuration": "Beräknad varaktighet",
+    "loading": "Förhandsvisning av datoranvändning…",
+    "noneSelected": "Inga pull requests skulle väljas.",
+    "prCount": "Valda pull-förfrågningar",
+    "seconds": "{{count}}s",
+    "title": "Förhandsvisning av torrkörning — {{repo}}",
+    "wouldSelect": "Skulle välja"
+  },
+  "runState": {
+    "agent_fixing": "Agentfixering",
+    "awaiting_approval": "Väntar på godkännande",
+    "cancelled": "Avbruten",
+    "completed": "Avslutad",
+    "consolidating": "Konsolidering",
+    "created": "Skapad",
+    "failed": "Misslyckades",
+    "finalizing": "Slutför",
+    "handoff_human": "Överlämnad till människan",
+    "merging": "Sammanslagning",
+    "no_op": "Ingen operation",
+    "selecting": "Val av PR",
+    "verifying": "Verifierar"
+  },
+  "runs": {
+    "approve": "Godkänna",
+    "back": "Tillbaka till löpningarna",
+    "columns": {
+      "actions": "Åtgärder",
+      "pr": "Konsoliderad PR",
+      "repository": "Förvaring",
+      "started": "Började",
+      "state": "Ange"
+    },
+    "description": "Historik över reparationskörningar med live-tillstånd, CI-status och konfliktinformation.",
+    "dispositions": "Dispositioner för pull requests",
+    "empty": "Inga åtgärdsförsök pågår ännu.",
+    "error": "Det gick inte att läsa in reparationskörningarna.",
+    "noDispositions": "Inga avyttringar registrerade ännu.",
+    "reject": "Avvisa",
+    "tableLabel": "Historik för reparationskörningar",
+    "timeline": "Tidslinje",
+    "timelineLabel": "Kör tillståndstidslinje",
+    "title": "Åtgärdningskörningar",
+    "view": "Se"
+  },
+  "scopeType": {
+    "org": "Organisation",
+    "repository": "Förvaring",
+    "team": "Team",
+    "user": "Användare"
+  },
+  "subtitle": "Automatisera konsolidering av pull requests över dina databaser med policydrivna kontroller.",
+  "tabs": {
+    "audit": "Granska",
+    "fleet": "Flotta",
+    "modelAccounts": "Modellkonton",
+    "playbooks": "Spelböcker",
+    "policies": "Policyer",
+    "runs": "Löpningar"
+  },
+  "title": "Sanering av flottan"
 }

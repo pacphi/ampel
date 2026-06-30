@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "Klasifikátor",
+    "cost": "Náklady",
+    "failureClass": "Třída selhání",
+    "iterations": "Iterace",
+    "status": {
+      "budget_exceeded": "Překročen rozpočet",
+      "failed": "Selhalo",
+      "handoff_human": "Předáno člověku",
+      "running": "Běh",
+      "succeeded": "Uspěl"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "Relace agenta",
+    "tokensUsed": "Použité tokeny",
+    "transcript": "Zobrazit přepis"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "Konsolidované",
+      "merged": "Sloučeno"
     },
+    "allRepos": "Všechny repozitáře",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
+      "action": "Akce",
+      "autonomy": "Autonomie",
+      "completedAt": "Dokončeno",
       "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "repository": "Úložiště"
+    },
+    "description": "Záznam autonomních sloučení a uzavření, který lze pouze přidat.",
+    "empty": "Nebyly zaznamenány žádné autonomní akce.",
+    "exportCsv": "Exportovat CSV",
+    "filterRepo": "Úložiště",
+    "since": "Od",
+    "tableLabel": "Protokol auditu nápravných opatření",
+    "title": "Protokol auditu",
+    "until": "Až"
+  },
+  "autonomyHint": {
+    "auto_merge": "Automaticky se konsoliduje a slučuje bez lidského souhlasu.",
+    "consolidate": "Sloučí pull requesty, ale před sloučením vyžaduje lidské schválení.",
+    "dry_run": "Zobrazí náhledy konsolidačních plánů bez provedení jakýchkoli změn.",
+    "off": "Náprava je pro tento rozsah zakázána."
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "Auto se schválením",
+    "dry_run_only": "Pouze na zkoušku",
+    "fully_autonomous": "Plně autonomní",
+    "suggest_only": "Pouze navrhnout"
+  },
+  "autonomyStop": {
+    "auto_merge": "Automatické sloučení",
+    "consolidate": "Pouze konsolidace",
+    "dry_run": "Zkušební provoz",
+    "off": "Vypnuto"
+  },
+  "ci": {
+    "columns": {
+      "check": "Kontrola",
+      "status": "Postavení",
+      "type": "Typ"
+    },
+    "empty": "Žádné informace o CI nejsou k dispozici.",
+    "headSha": "Vedoucí SHA",
+    "logs": "Protokoly",
+    "optional": "Volitelný",
+    "predictedConflict": "Předpokládaný konflikt",
+    "required": "Požadovaný",
+    "statusCheck": "Stav CI",
+    "tableLabel": "Matice kontroly CI",
+    "title": "Kontroly CI",
+    "tone": {
+      "green": "Přihrávání",
+      "red": "Selhání",
+      "yellow": "Čeká na vyřízení"
+    },
+    "viewLogs": "Zobrazit protokoly"
+  },
+  "conflicts": {
+    "conflicted": "Konfliktní",
+    "empty": "Žádné konflikty ani vynechané pull requesty.",
+    "skipped": "Přeskočeno",
+    "title": "Konflikty"
+  },
+  "disposition": {
+    "closedWithRef": "Uzavřeno (nahrazeno)",
+    "consolidated": "Konsolidované",
+    "leftOpen": "Ponecháno otevřené",
+    "skippedConflict": "Přeskočeno (konflikt)"
+  },
+  "editor": {
+    "autonomy": "Úroveň autonomie",
+    "confirmAutoMerge": {
+      "confirm": "Povolit automatické sloučení",
+      "description": "Automatické sloučení automaticky konsoliduje a slučuje žádosti o změny bez lidského schválení. To může změnit vaše repozitáře. Jste si jisti?",
+      "previewRequired": "Před prvním povolením automatického sloučení spusťte náhled vozového parku, abyste přesně viděli, co by spuštění udělalo.",
+      "title": "Povolit automatické slučování?"
+    },
+    "createTitle": "Vytvořit zásadu",
+    "description": "Nakonfigurujte, jak se má náprava chovat pro tento rozsah.",
+    "editTitle": "Upravit zásady",
+    "enabled": "Povoleno",
+    "errors": {
+      "saveFailed": "Uložení zásad se nezdařilo.",
+      "scopeIdRequired": "Je vyžadováno ID rozsahu."
+    },
+    "maxPrsPerRun": "Maximální počet osobních rekordů na běh",
+    "minOpenPrs": "Minimální otevřené PR",
+    "save": "Uložit zásady",
+    "saving": "Ukládání…",
+    "scopeId": "ID rozsahu",
+    "scopeIdPlaceholder": "Zadejte ID úložiště, týmu, organizace nebo uživatele",
+    "scopeType": "Typ rozsahu"
+  },
+  "fleet": {
+    "airGappedOff": "Připojeno",
+    "airGappedOn": "Vzduchová mezera",
+    "columns": {
+      "actions": "Akce",
+      "airGapped": "Vzduchová mezera",
+      "eligibility": "Způsobilost",
+      "openPrs": "Otevřené PR",
+      "policyState": "Politika",
+      "repository": "Úložiště"
+    },
+    "description": "Způsobilost k nápravě a stav zásad pro každé úložiště.",
+    "eligible": "Oprávněný",
+    "empty": "Nenalezeny žádné repozitáře.",
+    "error": "Nepodařilo se načíst přehled flotily.",
+    "notEligible": "Nezpůsobilé",
+    "preview": "Náhled",
+    "tableLabel": "Stav sanace repozitáře",
+    "title": "Přehled vozového parku"
+  },
+  "killSwitch": {
+    "active": "Aktivní sanace",
+    "label": "Pozastavit veškeré nápravné práce",
+    "noPolicy": "Žádné zásady pro pozastavení",
+    "paused": "Náprava pozastavena"
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
+    "airGapNotice": "Organizace s vzdušnou mezerou mohou využívat pouze lokální poskytovatele (Ollama, ONNX). Přidání externího poskytovatele (Claude, Gemini) do organizace s vzdušnou mezerou je odmítnuto.",
+    "apiKey": "Klíč API",
+    "apiKeyHint": "Uloženo zašifrováno a nikdy se znovu nezobrazí. Pro zachování stávajícího klíče ponechte pole prázdné.",
+    "apiKeyPlaceholder": "Vložte klíč API poskytovatele",
+    "create": "Přidat modelový účet",
+    "createTitle": "Přidat modelový účet",
+    "default": "Výchozí",
+    "description": "Nakonfigurujte poskytovatele modelů umělé inteligence, které používá vrstva nápravy agentů k opravě neúspěšných žádostí o změny.",
+    "displayName": "Zobrazovaný název",
+    "displayNamePlaceholder": "např. klíč Team Claude",
+    "egress": {
+      "external": "Externí východ",
+      "local_only": "Pouze místní"
+    },
+    "empty": "Zatím žádné modelové účty. Přidejte jeden, abyste povolili agentskou nápravu.",
+    "endpointUrl": "URL koncového bodu",
+    "endpointUrlPlaceholder": "http://localhost:11434",
+    "error": "Načtení účtů modelů se nezdařilo.",
+    "errors": {
+      "airGapped": "Tato organizace je oddělená: poskytovatelé modelu externího výstupu (Claude, Gemini) nejsou povoleni.",
+      "createFailed": "Vytvoření modelu se nezdařilo.",
+      "displayNameRequired": "Je vyžadováno zobrazované jméno."
+    },
+    "modelId": "ID modelu",
+    "modelIdPlaceholder": "např. claude-sonnet-4",
+    "providerKind": "Poskytovatel",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
+      "gemini": "Blíženci",
+      "ollama": "Ollama (místní)",
+      "onnx": "ONNX (místní)"
     },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
+    "save": "Uložit účet",
+    "saving": "Ukládání…",
+    "spend": "Strávit",
+    "spendCap": "Limit útraty (USD)",
+    "title": "Modelové účty",
+    "validate": "Ověřit",
+    "validating": "Ověřování…",
     "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
-    "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
-    },
-    "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "invalid": "Neplatný",
+      "unvalidated": "Neověřené",
+      "valid": "Platný"
     }
   },
+  "nav": "Sanace",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "Příručka (YAML)",
+    "contentPlaceholder": "Vstupte do YAML scénáře…",
+    "create": "Nová příručka",
+    "description": "Přizpůsobte si výzvy k nápravě, které agent používá. Ověřte si playbook pro zobrazení náhledu vykreslené výzvy bez volání modelu.",
+    "empty": "Zatím žádné playbooky. Dokud nový nepřidáte, používá se vestavěný výchozí playbook.",
+    "error": "Načtení herních příruček se nezdařilo.",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "Obsah herní příručky je povinný.",
+      "nameRequired": "Je vyžadováno jméno.",
+      "playbookIdRequired": "Je vyžadováno ID playbooku.",
+      "previewFailed": "Nepodařilo se vykreslit playbook. Zkontrolujte YAML, zda neobsahuje chyby.",
+      "saveFailed": "Uložení playbooku se nezdařilo. Zkontrolujte YAML, zda neobsahuje chyby."
+    },
+    "name": "Jméno",
+    "namePlaceholder": "Člověkem čitelný název",
+    "playbookId": "ID herního plánu",
+    "playbookIdPlaceholder": "např. custom-remediation",
+    "preview": "Ověření / Náhled",
+    "previewing": "Vykreslování…",
+    "renderedPrompt": "Vykreslená výzva",
+    "save": "Uložit postup",
+    "saving": "Ukládání…",
+    "scopeId": "ID rozsahu",
+    "scopeIdPlaceholder": "ID vlastnícího týmu, organizace nebo repozitáře",
+    "scopeType": "Typ rozsahu",
+    "title": "Příručky"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "Nová politika",
+    "description": "Zásady nápravy, které spravujete napříč svými obory.",
+    "disable": "Zakázat",
+    "empty": "Zatím žádné zásady. Vytvořte si jednu a začněte.",
+    "enable": "Umožnit",
+    "statusDisabled": "Zakázáno",
+    "statusEnabled": "Povoleno",
+    "title": "Zásady"
+  },
+  "policyState": {
+    "auto_merge": "Automatické sloučení",
+    "auto_with_approval": "Auto (se schválením)",
+    "disabled": "Zakázáno",
+    "dry_run": "Zkušební provoz",
+    "none": "Žádné zásady",
+    "suggest": "Navrhnout"
+  },
+  "preview": {
+    "blockedByAirGap": "Toto úložiště je uzavřené; akce externích poskytovatelů by byly blokovány.",
+    "conflicts": "Předpokládané konflikty",
+    "description": "Projekce toho, co by provedlo nápravné běhy, pouze pro čtení. Nejsou provedeny žádné změny.",
+    "error": "Nepodařilo se vypočítat náhled.",
+    "estimatedDuration": "Odhadovaná doba trvání",
+    "loading": "Náhled výpočtů…",
+    "noneSelected": "Nebyly by vybrány žádné žádosti o změny (pull requesty).",
+    "prCount": "Vybrány žádosti o změnu obsahu (pull requesty)",
+    "seconds": "{{count}}s",
+    "title": "Náhled zkušebního provozu — {{repo}}",
+    "wouldSelect": "Vybral/a by"
+  },
+  "runState": {
+    "agent_fixing": "Oprava agenta",
+    "awaiting_approval": "Čeká na schválení",
+    "cancelled": "Zrušeno",
+    "completed": "Dokončeno",
+    "consolidating": "Konsolidace",
+    "created": "Vytvořeno",
+    "failed": "Selhalo",
+    "finalizing": "Finalizace",
+    "handoff_human": "Předáno člověku",
+    "merging": "Sloučení",
+    "no_op": "Bez možnosti operace",
+    "selecting": "Výběr PR",
+    "verifying": "Ověřování"
+  },
+  "runs": {
+    "approve": "Schvalovat",
+    "back": "Zpět k běhům",
+    "columns": {
+      "actions": "Akce",
+      "pr": "Konsolidované zprávy o přínosu pro veřejnost",
+      "repository": "Úložiště",
+      "started": "Zahájeno",
+      "state": "Stát"
+    },
+    "description": "Historie spuštěných nápravných opatření s aktivním stavem, stavem CI a podrobnostmi o konfliktu.",
+    "dispositions": "Dispozice žádostí o načtení",
+    "empty": "Zatím neprobíhají žádné sanační práce.",
+    "error": "Nepodařilo se načíst sanační běhy.",
+    "noDispositions": "Zatím nebyly zaznamenány žádné dispozice.",
+    "reject": "Odmítnout",
+    "tableLabel": "Historie běhů nápravných opatření",
+    "timeline": "Časová osa",
+    "timelineLabel": "Časová osa stavu spuštění",
+    "title": "Nápravné běhy",
+    "view": "Pohled"
+  },
+  "scopeType": {
+    "org": "Organizace",
+    "repository": "Úložiště",
+    "team": "Tým",
+    "user": "Uživatel"
+  },
+  "subtitle": "Automatizujte konsolidaci žádostí o změny (pull requestů) napříč vašimi repozitáři pomocí ovládacích prvků řízených zásadami.",
+  "tabs": {
+    "audit": "Audit",
+    "fleet": "Loďstvo",
+    "modelAccounts": "Modelové účty",
+    "playbooks": "Příručky",
+    "policies": "Zásady",
+    "runs": "Běhy"
+  },
+  "title": "Sanace vozového parku"
 }

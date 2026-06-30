@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "分类器",
+    "cost": "成本",
+    "failureClass": "失败类",
+    "iterations": "迭代",
+    "status": {
+      "budget_exceeded": "预算超支",
+      "failed": "失败的",
+      "handoff_human": "移交给人类",
+      "running": "跑步",
+      "succeeded": "成功"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "代理会话",
+    "tokensUsed": "使用的代币",
+    "transcript": "查看文字稿"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "合并",
+      "merged": "合并"
     },
+    "allRepos": "所有仓库",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
-      "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "action": "行动",
+      "autonomy": "自治",
+      "completedAt": "完全的",
+      "pr": "公关",
+      "repository": "存储库"
+    },
+    "description": "仅追加自主合并和关闭的记录。",
+    "empty": "未记录到自主行为。",
+    "exportCsv": "导出 CSV 文件",
+    "filterRepo": "存储库",
+    "since": "自从",
+    "tableLabel": "补救审计日志",
+    "title": "审计日志",
+    "until": "直到"
+  },
+  "autonomyHint": {
+    "auto_merge": "无需人工审核即可自动合并和整合。",
+    "consolidate": "合并拉取请求，但合并前需要人工审核。",
+    "dry_run": "预览合并计划，不做任何更改。",
+    "off": "此范围内的修复功能已禁用。"
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "经批准的汽车",
+    "dry_run_only": "仅进行试运行",
+    "fully_autonomous": "完全自主",
+    "suggest_only": "仅建议"
+  },
+  "autonomyStop": {
+    "auto_merge": "自动合并",
+    "consolidate": "仅合并",
+    "dry_run": "试运行",
+    "off": "离开"
+  },
+  "ci": {
+    "columns": {
+      "check": "查看",
+      "status": "地位",
+      "type": "类型"
+    },
+    "empty": "暂无CI信息。",
+    "headSha": "头部 SHA",
+    "logs": "日志",
+    "optional": "选修的",
+    "predictedConflict": "预测冲突",
+    "required": "必需的",
+    "statusCheck": "CI状态",
+    "tableLabel": "CI 检查矩阵",
+    "title": "CI 检查",
+    "tone": {
+      "green": "通过",
+      "red": "失败",
+      "yellow": "待办的"
+    },
+    "viewLogs": "查看日志"
+  },
+  "conflicts": {
+    "conflicted": "矛盾",
+    "empty": "没有冲突或跳过的拉取请求。",
+    "skipped": "跳过",
+    "title": "冲突"
+  },
+  "disposition": {
+    "closedWithRef": "已关闭（已被取代）",
+    "consolidated": "合并",
+    "leftOpen": "左侧敞开",
+    "skippedConflict": "已跳过（冲突）"
+  },
+  "editor": {
+    "autonomy": "自主级别",
+    "confirmAutoMerge": {
+      "confirm": "启用自动合并",
+      "description": "自动合并功能会在无需人工审核的情况下自动合并拉取请求。这可能会修改您的代码仓库。您确定吗？",
+      "previewRequired": "首次启用自动合并功能之前，请运行舰队预览，以便准确了解运行结果。",
+      "title": "启用自动合并？"
+    },
+    "createTitle": "创建策略",
+    "description": "配置此范围内的修复行为。",
+    "editTitle": "编辑政策",
+    "enabled": "已启用",
+    "errors": {
+      "saveFailed": "策略保存失败。",
+      "scopeIdRequired": "需要提供作用域 ID。"
+    },
+    "maxPrsPerRun": "每次运行的最大PR值",
+    "minOpenPrs": "最少未解决的 PR",
+    "save": "保存策略",
+    "saving": "保存…",
+    "scopeId": "范围 ID",
+    "scopeIdPlaceholder": "请输入存储库、团队、组织或用户 ID",
+    "scopeType": "范围类型"
+  },
+  "fleet": {
+    "airGappedOff": "已连接",
+    "airGappedOn": "气隙式",
+    "columns": {
+      "actions": "行动",
+      "airGapped": "气隙",
+      "eligibility": "合格",
+      "openPrs": "开放的 PR",
+      "policyState": "政策",
+      "repository": "存储库"
+    },
+    "description": "每个存储库的修复资格和政策状态。",
+    "eligible": "有资格的",
+    "empty": "未找到存储库。",
+    "error": "无法加载舰队概览。",
+    "notEligible": "不符合资格",
+    "preview": "预览",
+    "tableLabel": "存储库修复状态",
+    "title": "舰队概览"
+  },
+  "killSwitch": {
+    "active": "修复工作正在进行中",
+    "label": "暂停所有补救措施",
+    "noPolicy": "没有暂停政策",
+    "paused": "补救措施暂停"
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
-    "providerKindLabel": {
-      "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
-    },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
-    "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
+    "airGapNotice": "与外部网络隔离的组织只能使用本地服务提供商（例如 Ollama、ONNX）。向与外部网络隔离的组织添加外部服务提供商（例如 Claude、Gemini）是会被拒绝的。",
+    "apiKey": "API密钥",
+    "apiKeyHint": "密钥已加密存储，且不再显示。留空则保留现有密钥。",
+    "apiKeyPlaceholder": "粘贴提供商 API 密钥",
+    "create": "添加模特账号",
+    "createTitle": "添加模特账号",
+    "default": "默认",
+    "description": "配置代理修复层用于修复失败的拉取请求的 AI 模型提供程序。",
+    "displayName": "显示名称",
+    "displayNamePlaceholder": "例如：克劳德团队的关键",
     "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
+      "external": "外部出口",
+      "local_only": "仅限本地"
     },
+    "empty": "暂无模型帐户。添加一个以启用代理修复功能。",
+    "endpointUrl": "端点 URL",
+    "endpointUrlPlaceholder": "http://localhost:11434",
+    "error": "模型账户加载失败。",
     "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "airGapped": "该组织采用物理隔离：不允许使用外部出口模型提供商（Claude、Gemini）。",
+      "createFailed": "创建模型账户失败。",
+      "displayNameRequired": "必须输入显示名称。"
+    },
+    "modelId": "型号 ID",
+    "modelIdPlaceholder": "例如：克劳德十四行诗4",
+    "providerKind": "提供者",
+    "providerKindLabel": {
+      "claude": "克劳德",
+      "gemini": "双子座",
+      "ollama": "奥拉玛（当地）",
+      "onnx": "ONNX（本地）"
+    },
+    "save": "保存账户",
+    "saving": "保存…",
+    "spend": "花费",
+    "spendCap": "支出上限（美元）",
+    "title": "模型账户",
+    "validate": "证实",
+    "validating": "正在验证……",
+    "validationStatus": {
+      "invalid": "无效的",
+      "unvalidated": "未经验证",
+      "valid": "有效的"
     }
   },
+  "nav": "补救措施",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "剧本（YAML）",
+    "contentPlaceholder": "输入 YAML 剧本……",
+    "create": "新策略手册",
+    "description": "自定义代理使用的修复提示。验证剧本以预览渲染后的提示，无需调用模型。",
+    "empty": "目前还没有剧本。在您添加剧本之前，将使用内置的默认剧本。",
+    "error": "剧本加载失败。",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "需要提供操作手册内容。",
+      "nameRequired": "必须填写姓名。",
+      "playbookIdRequired": "需要剧本ID。",
+      "previewFailed": "剧本渲染失败。请检查 YAML 文件是否存在错误。",
+      "saveFailed": "剧本保存失败。请检查 YAML 文件是否存在错误。"
+    },
+    "name": "姓名",
+    "namePlaceholder": "人类可读的名称",
+    "playbookId": "剧本 ID",
+    "playbookIdPlaceholder": "例如：定制修复",
+    "preview": "验证/预览",
+    "previewing": "渲染中…",
+    "renderedPrompt": "渲染提示",
+    "save": "保存剧本",
+    "saving": "保存…",
+    "scopeId": "范围 ID",
+    "scopeIdPlaceholder": "所属团队、组织或仓库 ID",
+    "scopeType": "范围类型",
+    "title": "剧本"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "新政策",
+    "description": "您在各个范围内管理的补救策略。",
+    "disable": "禁用",
+    "empty": "暂无任何政策。创建一条政策即可开始。",
+    "enable": "使能够",
+    "statusDisabled": "已禁用",
+    "statusEnabled": "已启用",
+    "title": "政策"
+  },
+  "policyState": {
+    "auto_merge": "自动合并",
+    "auto_with_approval": "自动（需审批）",
+    "disabled": "已禁用",
+    "dry_run": "试运行",
+    "none": "无政策",
+    "suggest": "建议"
+  },
+  "preview": {
+    "blockedByAirGap": "此存储库与外界物理隔离；外部提供者的操作将被阻止。",
+    "conflicts": "预测冲突",
+    "description": "这是对修复运行结果的只读预测，不会进行任何更改。",
+    "error": "预览计算失败。",
+    "estimatedDuration": "预计持续时间",
+    "loading": "正在预览……",
+    "noneSelected": "不会选择任何拉取请求。",
+    "prCount": "已选择的拉取请求",
+    "seconds": "{{count}}s",
+    "title": "试运行预览 — {{repo}}",
+    "wouldSelect": "会选择"
+  },
+  "runState": {
+    "agent_fixing": "代理人",
+    "awaiting_approval": "等待批准",
+    "cancelled": "取消",
+    "completed": "完全的",
+    "consolidating": "整合",
+    "created": "创建",
+    "failed": "失败的",
+    "finalizing": "最终确定",
+    "handoff_human": "移交给人类",
+    "merging": "合并",
+    "no_op": "不进行任何操作",
+    "selecting": "选择 PR",
+    "verifying": "核实"
+  },
+  "runs": {
+    "approve": "批准",
+    "back": "回到跑步",
+    "columns": {
+      "actions": "行动",
+      "pr": "综合公关",
+      "repository": "存储库",
+      "started": "开始",
+      "state": "状态"
+    },
+    "description": "修复运行历史记录，包括实时状态、CI 状态和冲突详情。",
+    "dispositions": "拉取请求的处理结果",
+    "empty": "尚未进行任何修复运行。",
+    "error": "修复运行加载失败。",
+    "noDispositions": "尚未记录任何处置结果。",
+    "reject": "拒绝",
+    "tableLabel": "修复运行历史记录",
+    "timeline": "时间线",
+    "timelineLabel": "运行状态时间线",
+    "title": "补救运行",
+    "view": "看法"
+  },
+  "scopeType": {
+    "org": "组织",
+    "repository": "存储库",
+    "team": "团队",
+    "user": "用户"
+  },
+  "subtitle": "利用策略驱动的控制，自动合并各个代码库中的拉取请求。",
+  "tabs": {
+    "audit": "审计",
+    "fleet": "舰队",
+    "modelAccounts": "模型账户",
+    "playbooks": "剧本",
+    "policies": "政策",
+    "runs": "跑"
+  },
+  "title": "舰队整改"
 }

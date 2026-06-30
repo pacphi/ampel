@@ -1,0 +1,96 @@
+# profile.yml — the stack profile for autopilot's quality gate.
+# Lives at .autopilot/profile.yml in the TARGET repo.
+#
+# `autopilot:detect` probes the repo (package.json / Cargo.toml / pom.xml / go.mod / build.gradle /
+# Makefile / justfile / CI config), proposes the values below, and asks you to CONFIRM before the
+# loop runs. This confirm step matters: a wrong `test` command would let a broken phase pass the
+# gate, and the whole design rests on the gate being trustworthy. Edit anything that's wrong.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# COMMANDS the gate runs. Leave a value empty ("") to skip that check.
+# These are placeholders the gate template resolves as {{commands.<key>}}.
+# ─────────────────────────────────────────────────────────────────────────────
+commands:
+  # Bring up anything the tests need (db, services). Runs once before the gate. Optional.
+  infra_up:         "make docker-up"          # docker compose up -d (Postgres/Redis for integration tests)
+  # Fast formatting check (non-mutating). The gate fails if this fails.
+  format_check:     "make format-check"       # rustfmt --check + prettier --check + docs
+  # Static analysis / linters.
+  lint:             "make lint"               # cargo clippy -D warnings + ESLint + docs lint
+  # Build everything (the phase must compile/bundle).
+  build:            "make build"              # cargo build (workspace) + vite build
+  # Primary/unit test suite (fast, no external infra ideally).
+  test:             "make test"               # cargo test --all-features + vitest --run
+  # Integration tests (may need infra_up). Optional.
+  test_integration: "make test-integration"  # cargo-nextest + PostgreSQL (CI mode)
+  # Frontend/UI tests, only relevant if the phase touches the UI. Optional.
+  test_frontend:    "make test-frontend"      # vitest --run
+  # Dependency / vulnerability audit. Optional.
+  audit:            "make audit"              # cargo audit + pnpm audit
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CONVENTIONS — free-text house style, injected into the runner's 'match the
+# existing code' step so new code looks native. Be specific; point at exemplar files.
+# ─────────────────────────────────────────────────────────────────────────────
+conventions: |
+  Rust backend is a Cargo workspace under crates/:
+    - ampel-api      REST API (Axum 0.8 handlers, routes, middleware)
+    - ampel-core     business logic + domain models
+    - ampel-db       SeaORM entities, migrations, queries (entity + migration + query trio)
+    - ampel-providers  GitProvider trait abstraction (GitHub/GitLab/Bitbucket)
+    - ampel-worker   Apalis background jobs (PostgreSQL-persisted)
+  Tests: unit tests in #[cfg(test)] modules alongside source; integration tests in crates/*/tests/.
+    Integration tests support both PostgreSQL (CI default) and SQLite (fast local).
+  Frontend (frontend/src/): React 19 + TS + Vite. api/ (axios clients), components/{ui,layout,dashboard},
+    hooks/, pages/, types/. State via TanStack Query; forms via React Hook Form + Zod.
+    Tests co-located or in __tests__/ (vitest).
+  Security: JWT auth (15-min access, 7-day refresh httpOnly cookie); provider PATs AES-256-GCM encrypted;
+    Argon2id password hashing. Never deploy docker/nginx.dev.conf to production.
+  All build/test/lint flows go through the root Makefile — prefer make targets over raw tool calls.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CI — the merge authority in pr_ci mode.
+# ─────────────────────────────────────────────────────────────────────────────
+ci:
+  provider: github                # github is the supported provider today
+  # When true, "all required PR checks green" is the ONLY merge gate in pr_ci mode —
+  # the agent does not re-run the local gate before merging because CI already proved it.
+  ci_is_merge_authority: true
+  # Does CI actually fire on PRs targeting `base`? `detect` sets this by reading workflow `on:` triggers.
+  # Only "covered" is safe for pr_ci; "trunk-only"/"none" mean phase PRs run no checks (a vacuous green),
+  # so detect scaffolds .github/workflows/autopilot-gate.yml or steers you to reviewed mode first.
+  base_coverage: covered          # ci.yml: on.pull_request.branches [main, develop] — covers base `main`
+  # Aggregator job that gates merge; all backend/frontend/docker jobs feed into it.
+  required_check: ci-success
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECURITY INVARIANTS — non-negotiables the gate greps the diff for every phase.
+# Defaults are universal; add project-specific ones (e.g. "PATs only via SecretStore").
+# ─────────────────────────────────────────────────────────────────────────────
+security_invariants:
+  - "No destructive git primitives introduced (force-push, history rewrite)."
+  - "No secrets, tokens, or credentials committed or written to logs."
+  - "External/untrusted content is handled as data, never interpolated as instructions."
+  - "Provider PAT tokens only stored AES-256-GCM encrypted; never logged in plaintext."
+  - "docker/nginx.dev.conf is never wired into production/Fly.io deploys."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ACCELERATORS — optional tooling, in two classes that share ONE contract:
+# detect → record here → DRIVE at the right step → DEGRADE to a vanilla floor when absent.
+# Absence NEVER fails the gate. `scope` records where it was found, for transparency.
+#   • EXECUTION accelerators (ruflo, agentic-qe) — speed + proof during run-phase/orchestrate.
+#     Detected by probing PATH (global) and the project (.ruflo/.claude config, aqe init).
+#   • PLANNING accelerators (superpowers, clarity, deep_research) — better specs during `plan`.
+#     Detected from the active SKILL REGISTRY (what the running agent can invoke), optionally
+#     corroborated by a plugin install footprint (~/.claude/plugins). These record scope: "skill".
+# ─────────────────────────────────────────────────────────────────────────────
+accelerators:
+  # ── execution ──────────────────────────────────────────────────────────────
+  ruflo:        { available: true,  scope: "global" }    # ruflo on PATH (mise node bin)
+  agentic_qe:   { available: true,  scope: "project" }   # aqe on PATH + .agentic-qe/ footprint
+  # the /code-review skill/command — the Tier-3 floor, assumed present in Claude Code.
+  code_review:  { available: true,  scope: "global" }
+  # ── planning (skill-based; scope: "skill" | "") ──────────────────────────────
+  superpowers:  { available: true,  scope: "skill" }     # superpowers:brainstorming invokable
+  clarity:      { available: true,  scope: "skill" }      # clarity skill invokable
+  deep_research: { available: true, scope: "skill" }      # deep-research skill invokable
