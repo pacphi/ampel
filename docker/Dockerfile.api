@@ -41,6 +41,8 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
 # Copy source code and build the actual binary
 COPY Cargo.toml Cargo.lock ./
 COPY crates ./crates
+# config/ holds the model catalog embedded via include_str! in ampel-core.
+COPY config ./config
 RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
     --mount=type=cache,target=/usr/local/cargo/git,sharing=locked \
     --mount=type=cache,target=/app/target,sharing=locked \

@@ -1,0 +1,84 @@
+# Ampel Remediation — model catalog (the curated source of truth for *selectable*
+# models in the Remediation "Model" tab).
+#
+# This file is parsed by crates/ampel-core/src/remediation/model_catalog.rs and
+# embedded into the binary at build time. EVERY field is optional: entries are
+# deserialized with serde defaults, so a partial or future-extended entry never
+# breaks the catalog. Unknown provider keys are skipped (warned), not fatal.
+#
+# To add a model: drop a new entry under the right provider's `models:` list.
+# Capability fields (modality, egress, output_contract, model kind, cost) are
+# DERIVED from the provider kind when omitted — see CatalogModel::caps — and may
+# be narrowed per-provider via `egress:`.
+#
+# Money fields are quoted strings parsed as exact Decimals (never f64 — ADR-008).
+
+providers:
+  claude:
+    description: "Anthropic Claude — hosted agentic API with native tool use."
+    egress: external
+    models:
+      - id: claude-sonnet-4-6
+        name: "Claude Sonnet 4.6"
+        family: claude
+        context_size: 200000
+        tool_calling: true
+        code_edit: true
+        quality: excellent
+        cost_per_1k_input: "0.003"
+        cost_per_1k_output: "0.015"
+      - id: claude-opus-4-6
+        name: "Claude Opus 4.6"
+        family: claude
+        context_size: 200000
+        tool_calling: true
+        code_edit: true
+        quality: excellent
+        cost_per_1k_input: "0.015"
+        cost_per_1k_output: "0.075"
+
+  gemini:
+    description: "Google Gemini — hosted agentic API with native tool use."
+    egress: external
+    models:
+      - id: gemini-2.5-pro
+        name: "Gemini 2.5 Pro"
+        family: gemini
+        context_size: 1000000
+        tool_calling: true
+        code_edit: true
+        quality: excellent
+        cost_per_1k_input: "0.00125"
+        cost_per_1k_output: "0.010"
+
+  ollama:
+    description: "Local Ollama server (OpenAI-compatible) — stays on the host/network."
+    egress: local_only
+    models:
+      - id: qwen2.5-coder
+        name: "Qwen2.5 Coder 7B"
+        family: qwen
+        context_size: 32768
+        tool_calling: true
+        code_edit: true
+        quality: good
+        ollama_tag: "qwen2.5-coder:7b"
+      - id: deepseek-coder-v2
+        name: "DeepSeek Coder V2 16B"
+        family: deepseek
+        context_size: 32768
+        tool_calling: true
+        code_edit: true
+        quality: good
+        ollama_tag: "deepseek-coder-v2:16b"
+
+  onnx:
+    description: "In-process ONNX classifier — classify-only, no edit loop."
+    egress: local_only
+    models:
+      - id: failure-classifier-minilm
+        name: "Failure Classifier (MiniLM)"
+        family: minilm
+        context_size: 512
+        quality: fair
+        model_path: "models/failure-classifier.onnx"

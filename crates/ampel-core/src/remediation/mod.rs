@@ -7,6 +7,7 @@
 mod consolidation;
 mod failure_classifier;
 mod fingerprint;
+mod model_catalog;
 mod model_provider;
 mod policy;
 mod run;
@@ -21,6 +22,9 @@ pub use failure_classifier::{
 pub use fingerprint::{
     detect_lockfile_kind, effective_completion_command, regen_command_for, Ecosystem,
     HeuristicFingerprinter, LockfileKind, RepoFingerprint, RepoFingerprinter,
+};
+pub use model_catalog::{
+    load_catalog, CatalogEntry, CatalogModel, CatalogProvider, ModelCatalog, DEFAULT_CATALOG_YAML,
 };
 pub use model_provider::{
     AgentBudget, AgentOutcome, AgentTask, AgentTerminalReason, ContextBlock, CostModel, Egress,

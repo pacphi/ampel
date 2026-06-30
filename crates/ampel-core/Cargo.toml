@@ -16,6 +16,8 @@ sea-orm.workspace = true
 # Serialization
 serde.workspace = true
 serde_json.workspace = true
+# Model catalog is a checked-in YAML file (config/models.yaml), parsed here.
+serde_yaml = "0.9"
 
 # Exact decimal arithmetic for model cost/spend accounting (never use f64 for
 # money). Already present transitively via sea-orm; pinned here as a direct dep.
@@ -28,6 +30,7 @@ validator.workspace = true
 uuid.workspace = true
 chrono.workspace = true
 thiserror.workspace = true
+tracing.workspace = true
 
 # Auth
 jsonwebtoken.workspace = true
