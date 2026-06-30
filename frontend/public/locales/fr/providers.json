@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Mots de passe de l'application Ouvrir Bitbucket",
     "permissions": {
       "accountRead": "Compte : Lire",
       "pullRequestsRead": "Demandes de fusion : Lire",
@@ -12,7 +13,8 @@
       "step2": "Cliquez sur « Créer un mot de passe pour l'application »",
       "step3": "Saisissez un libellé pour le mot de passe",
       "step4": "Sélectionnez les autorisations requises :",
-      "step5": "Cliquez sur « Créer » et copiez le mot de passe"
+      "step5": "Cliquez sur « Créer » et copiez le mot de passe",
+      "step6": "Collez le mot de passe de l'application ci-dessous pour connecter votre compte."
     },
     "title": "Instructions relatives au mot de passe de l'application Bitbucket"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Conservez votre jeton en sécurité et ne le partagez jamais publiquement."
   },
   "github": {
+    "linkText": "Ouvrir les paramètres du jeton GitHub",
     "note": "Les jetons à granularité fine sont également pris en charge avec les autorisations d'accès au référentiel.",
     "scopes": {
       "readOrg": "lire:org (Adhésion à l'organisation et à l'équipe de lecture)",
@@ -38,6 +41,7 @@
     "title": "Instructions relatives aux jetons GitHub"
   },
   "gitlab": {
+    "linkText": "Ouvrir les paramètres du jeton GitLab",
     "scopes": {
       "api": "API (Accès complet à l'API)",
       "readApi": "read_api (Accès API en lecture seule)",
@@ -47,7 +51,8 @@
       "step1": "Accédez à GitLab → Paramètres utilisateur → Jetons d'accès",
       "step2": "Saisissez un nom de jeton et une date d'expiration facultative",
       "step3": "Sélectionnez les étendues requises :",
-      "step4": "Cliquez sur « Créer un jeton d’accès personnel » et copiez-le."
+      "step4": "Cliquez sur « Créer un jeton d’accès personnel » et copiez-le.",
+      "step5": "Collez le jeton ci-dessous pour connecter votre compte"
     },
     "title": "Instructions relatives aux jetons GitLab"
   },

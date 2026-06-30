@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Otwórz hasła aplikacji Bitbucket",
     "permissions": {
       "accountRead": "Konto: Odczyt",
       "pullRequestsRead": "Żądania ściągnięcia: Odczyt",
@@ -12,7 +13,8 @@
       "step2": "Kliknij „Utwórz hasło aplikacji”",
       "step3": "Wprowadź etykietę dla hasła",
       "step4": "Wybierz wymagane uprawnienia:",
-      "step5": "Kliknij „Utwórz” i skopiuj hasło"
+      "step5": "Kliknij „Utwórz” i skopiuj hasło",
+      "step6": "Wklej poniżej hasło aplikacji, aby połączyć się ze swoim kontem"
     },
     "title": "Instrukcje dotyczące hasła aplikacji Bitbucket"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Dbaj o bezpieczeństwo swojego tokena i nigdy nie udostępniaj go publicznie."
   },
   "github": {
+    "linkText": "Otwórz ustawienia tokena GitHub",
     "note": "Obsługiwane są również tokeny szczegółowe z uprawnieniami dostępu do repozytorium.",
     "scopes": {
       "readOrg": "read:org (Odczyt organizacji i członkostwa w zespole)",
@@ -38,6 +41,7 @@
     "title": "Instrukcje dotyczące tokena GitHub"
   },
   "gitlab": {
+    "linkText": "Otwórz ustawienia tokena GitLab",
     "scopes": {
       "api": "api (pełny dostęp do API)",
       "readApi": "read_api (dostęp do API tylko do odczytu)",
@@ -47,7 +51,8 @@
       "step1": "Przejdź do GitLab → Ustawienia użytkownika → Tokeny dostępu",
       "step2": "Wprowadź nazwę tokena i opcjonalną datę wygaśnięcia",
       "step3": "Wybierz wymagane zakresy:",
-      "step4": "Kliknij „Utwórz osobisty token dostępu” i skopiuj go"
+      "step4": "Kliknij „Utwórz osobisty token dostępu” i skopiuj go",
+      "step5": "Wklej poniższy token, aby połączyć swoje konto"
     },
     "title": "Instrukcje dotyczące tokena GitLab"
   },

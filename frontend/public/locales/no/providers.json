@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Åpne Bitbucket-apppassord",
     "permissions": {
       "accountRead": "Konto: Les",
       "pullRequestsRead": "Pull-forespørsler: Les",
@@ -12,7 +13,8 @@
       "step2": "Klikk på «Opprett apppassord»",
       "step3": "Skriv inn en etikett for passordet",
       "step4": "Velg de nødvendige tillatelsene:",
-      "step5": "Klikk på «Opprett» og kopier passordet"
+      "step5": "Klikk på «Opprett» og kopier passordet",
+      "step6": "Lim inn apppassordet nedenfor for å koble til kontoen din"
     },
     "title": "Instruksjoner for Bitbucket-apppassord"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Hold tokenen din sikker, og del den aldri offentlig."
   },
   "github": {
+    "linkText": "Åpne GitHub-tokeninnstillinger",
     "note": "Finkornede tokener støttes også med tilgangstillatelser til depotet.",
     "scopes": {
       "readOrg": "read:org (Les org og teammedlemskap)",
@@ -38,6 +41,7 @@
     "title": "GitHub-tokeninstruksjoner"
   },
   "gitlab": {
+    "linkText": "Åpne GitLab-tokeninnstillinger",
     "scopes": {
       "api": "api (full API-tilgang)",
       "readApi": "read_api (skrivebeskyttet API-tilgang)",
@@ -47,7 +51,8 @@
       "step1": "Gå til GitLab → Brukerinnstillinger → Tilgangstokener",
       "step2": "Skriv inn et tokennavn og en valgfri utløpsdato",
       "step3": "Velg de nødvendige omfangene:",
-      "step4": "Klikk på «Opprett personlig tilgangstoken» og kopier den"
+      "step4": "Klikk på «Opprett personlig tilgangstoken» og kopier den",
+      "step5": "Lim inn tokenet nedenfor for å koble til kontoen din"
     },
     "title": "GitLab-tokeninstruksjoner"
   },

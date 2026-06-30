@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Open Bitbucket app passwords",
     "permissions": {
       "accountRead": "Account: Read",
       "pullRequestsRead": "Pull requests: Read",
@@ -12,7 +13,8 @@
       "step2": "Click \"Create app password\"",
       "step3": "Enter a label for the password",
       "step4": "Select the required permissions:",
-      "step5": "Click \"Create\" and copy the password"
+      "step5": "Click \"Create\" and copy the password",
+      "step6": "Paste the app password below to connect your account"
     },
     "title": "Bitbucket App Password Instructions"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Keep your token secure and never share it publicly."
   },
   "github": {
+    "linkText": "Open GitHub token settings",
     "note": "Fine-grained tokens are also supported with repository access permissions.",
     "scopes": {
       "readOrg": "read:org (Read org and team membership)",
@@ -38,6 +41,7 @@
     "title": "GitHub Token Instructions"
   },
   "gitlab": {
+    "linkText": "Open GitLab token settings",
     "scopes": {
       "api": "api (Full API access)",
       "readApi": "read_api (Read-only API access)",
@@ -47,7 +51,8 @@
       "step1": "Go to GitLab → User Settings → Access Tokens",
       "step2": "Enter a token name and optional expiration date",
       "step3": "Select the required scopes:",
-      "step4": "Click \"Create personal access token\" and copy it"
+      "step4": "Click \"Create personal access token\" and copy it",
+      "step5": "Paste the token below to connect your account"
     },
     "title": "GitLab Token Instructions"
   },

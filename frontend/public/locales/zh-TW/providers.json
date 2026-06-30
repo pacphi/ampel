@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "開啟 Bitbucket 應用程式密碼",
     "permissions": {
       "accountRead": "帳戶：閱讀",
       "pullRequestsRead": "拉取請求：讀取",
@@ -12,7 +13,8 @@
       "step2": "點擊“建立應用程式密碼”",
       "step3": "請輸入密碼標籤",
       "step4": "請選擇所需的權限：",
-      "step5": "點擊“建立”並複製密碼"
+      "step5": "點擊“建立”並複製密碼",
+      "step6": "請在下方貼上應用密碼以連結您的帳戶"
     },
     "title": "Bitbucket 應用程式密碼說明"
   },
@@ -22,6 +24,7 @@
     "securityNote": "妥善保管您的令牌，切勿公開分享。"
   },
   "github": {
+    "linkText": "開啟 GitHub 令牌設置",
     "note": "儲存庫存取權限也支援細粒度令牌。",
     "scopes": {
       "readOrg": "read:org（讀取組織和團隊成員資訊）",
@@ -38,6 +41,7 @@
     "title": "GitHub Token 使用說明"
   },
   "gitlab": {
+    "linkText": "開啟 GitLab 令牌設置",
     "scopes": {
       "api": "API（完整 API 存取權限）",
       "readApi": "read_api（只讀 API 存取）",
@@ -47,7 +51,8 @@
       "step1": "前往 GitLab → 使用者設定 → 存取權令牌",
       "step2": "輸入令牌名稱和可選的過期日期",
       "step3": "選擇所需的範圍：",
-      "step4": "點擊“建立個人存取權杖”並複製它"
+      "step4": "點擊“建立個人存取權杖”並複製它",
+      "step5": "貼上以下令牌以連接您的帳戶"
     },
     "title": "GitLab Token 使用說明"
   },

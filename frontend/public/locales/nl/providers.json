@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Open Bitbucket app wachtwoorden",
     "permissions": {
       "accountRead": "Account: Lezen",
       "pullRequestsRead": "Pull-verzoeken: Lezen",
@@ -12,7 +13,8 @@
       "step2": "Klik op \"App-wachtwoord aanmaken\"",
       "step3": "Voer een label in voor het wachtwoord.",
       "step4": "Selecteer de gewenste machtigingen:",
-      "step5": "Klik op \"Aanmaken\" en kopieer het wachtwoord."
+      "step5": "Klik op \"Aanmaken\" en kopieer het wachtwoord.",
+      "step6": "Plak het app-wachtwoord hieronder om je account te koppelen."
     },
     "title": "Instructies voor het wachtwoord van de Bitbucket-app"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Bewaar uw token veilig en deel het nooit openbaar."
   },
   "github": {
+    "linkText": "GitHub-tokeninstellingen openen",
     "note": "Ook gedetailleerde tokens worden ondersteund, in combinatie met toegangsrechten tot de repository.",
     "scopes": {
       "readOrg": "read:org (Lees over organisatie- en teamlidmaatschap)",
@@ -38,6 +41,7 @@
     "title": "Instructies voor het verkrijgen van een GitHub-token"
   },
   "gitlab": {
+    "linkText": "Open de GitLab-tokeninstellingen",
     "scopes": {
       "api": "API (Volledige API-toegang)",
       "readApi": "read_api (Alleen-lezen API-toegang)",
@@ -47,7 +51,8 @@
       "step1": "Ga naar GitLab → Gebruikersinstellingen → Toegangstokens",
       "step2": "Voer een tokennaam en een optionele vervaldatum in.",
       "step3": "Selecteer de gewenste scopes:",
-      "step4": "Klik op \"Persoonlijk toegangstoken aanmaken\" en kopieer het."
+      "step4": "Klik op \"Persoonlijk toegangstoken aanmaken\" en kopieer het.",
+      "step5": "Plak de onderstaande token om je account te koppelen."
     },
     "title": "Instructies voor het verkrijgen van een GitLab-token"
   },

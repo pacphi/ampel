@@ -13,7 +13,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 export function EditAccountPage() {
-  const { t } = useTranslation(['accounts', 'errors']);
+  const { t } = useTranslation(['accounts', 'errors', 'common']);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -61,7 +61,7 @@ export function EditAccountPage() {
       toast({
         variant: 'destructive',
         title: t('accounts:toast.updateFailed'),
-        description: axiosError.response?.data?.error || t('errors:generic'),
+        description: axiosError.response?.data?.error || t('errors:generic.message'),
       });
     },
   });
@@ -222,7 +222,7 @@ export function EditAccountPage() {
                 onClick={() => navigate('/settings/accounts')}
                 disabled={updateAccountMutation.isPending}
               >
-                {t('accounts:edit.cancel')}
+                {t('common:actions.cancel')}
               </Button>
               <Button type="submit" disabled={updateAccountMutation.isPending}>
                 {updateAccountMutation.isPending
