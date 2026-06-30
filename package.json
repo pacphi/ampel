@@ -3,8 +3,6 @@
   "private": true,
   "description": "Unified PR dashboard - project tooling",
   "scripts": {
-    "format": "prettier --write \"**/*.md\"",
-    "format:check": "prettier --check \"**/*.md\"",
     "lint:md": "markdownlint-cli2 \"**/*.md\"",
     "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\""
   },
