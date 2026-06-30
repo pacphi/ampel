@@ -33,9 +33,24 @@
       "accountLabel": "Account Label",
       "accountLabelPlaceholder": "e.g., Work GitHub, Personal GitLab",
       "accountLabelDescription": "A friendly name to identify this account",
+      "accountLabelRequired": "Account label is required",
+      "instanceUrl": "Instance URL",
+      "instanceUrlPlaceholder": "https://gitlab.example.com",
+      "instanceUrlDescription": "The base URL of your self-hosted {{provider}} instance. Leave empty to use the default cloud instance.",
       "token": "Personal Access Token",
       "tokenPlaceholder": "Enter your personal access token",
-      "tokenDescription": "Your token is encrypted and stored securely"
+      "tokenDescription": "Your token is encrypted and stored securely",
+      "tokenPlaceholder_github": "ghp_xxxxxxxxxxxxxxxxxxxx",
+      "tokenPlaceholder_gitlab": "glpat-xxxxxxxxxxxxxxxxxxxx",
+      "tokenPlaceholder_bitbucket": "Enter your app password",
+      "tokenRequired": "Access token is required",
+      "showToken": "Show",
+      "hideToken": "Hide",
+      "appPassword": "App Password",
+      "bitbucketUsername": "Bitbucket Username",
+      "bitbucketUsernamePlaceholder": "your-bitbucket-username",
+      "bitbucketUsernameDescription": "The username associated with your Bitbucket app password",
+      "usernameRequired": "Username is required"
     },
     "submit": "Connect Account",
     "submitting": "Connecting..."
@@ -49,10 +64,22 @@
     "form": {
       "accountLabel": "Account Label",
       "accountLabelPlaceholder": "e.g., Work GitHub",
+      "accountLabelDescription": "A friendly name to identify this account",
       "token": "Personal Access Token",
       "tokenPlaceholder": "Enter new token to update",
       "tokenDescription": "Leave empty to keep current token",
-      "currentToken": "Current token"
+      "currentToken": "Current token",
+      "showToken": "Show",
+      "hideToken": "Hide",
+      "active": "Active",
+      "activeDescription": "Inactive accounts are not synced and are hidden from the dashboard"
+    },
+    "info": {
+      "username": "Username",
+      "email": "Email",
+      "instance": "Instance",
+      "repositories": "Repositories",
+      "status": "Status"
     },
     "submit": "Save Changes",
     "submitting": "Saving..."

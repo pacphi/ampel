@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Avaa Bitbucket-sovelluksen salasanat",
     "permissions": {
       "accountRead": "Tili: Luku",
       "pullRequestsRead": "Pull-pyynnöt: Lue",
@@ -12,7 +13,8 @@
       "step2": "Napsauta \"Luo sovelluksen salasana\"",
       "step3": "Anna salasanalle otsikko",
       "step4": "Valitse tarvittavat käyttöoikeudet:",
-      "step5": "Napsauta \"Luo\" ja kopioi salasana"
+      "step5": "Napsauta \"Luo\" ja kopioi salasana",
+      "step6": "Liitä sovelluksen salasana alla yhdistääksesi tilisi"
     },
     "title": "Bitbucket-sovelluksen salasanan ohjeet"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Pidä tunnuksesi turvassa äläkä koskaan jaa sitä julkisesti."
   },
   "github": {
+    "linkText": "Avaa GitHub-tokenin asetukset",
     "note": "Tarkennettuja tokeneita tuetaan myös tietovaraston käyttöoikeuksilla.",
     "scopes": {
       "readOrg": "read:org (Lue organisaatio ja tiimin jäsenyys)",
@@ -38,6 +41,7 @@
     "title": "GitHub-tokenin ohjeet"
   },
   "gitlab": {
+    "linkText": "Avaa GitLab-tokenin asetukset",
     "scopes": {
       "api": "api (täysi API-käyttöoikeus)",
       "readApi": "read_api (Vain luku -API-käyttöoikeus)",
@@ -47,7 +51,8 @@
       "step1": "Siirry kohtaan GitLab → Käyttäjäasetukset → Käyttöoikeustunnukset",
       "step2": "Anna tunnuksen nimi ja halutessasi vanhenemispäivämäärä",
       "step3": "Valitse tarvittavat laajuusalueet:",
-      "step4": "Klikkaa \"Luo henkilökohtainen käyttöoikeustunnus\" ja kopioi se."
+      "step4": "Klikkaa \"Luo henkilökohtainen käyttöoikeustunnus\" ja kopioi se.",
+      "step5": "Liitä alla oleva tunnus yhdistääksesi tilisi"
     },
     "title": "GitLab-tokenin ohjeet"
   },

@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Bitbucket uygulama şifrelerini açın",
     "permissions": {
       "accountRead": "Hesap: Okuyun",
       "pullRequestsRead": "Çekme istekleri: Okuyun",
@@ -12,7 +13,8 @@
       "step2": "\"Uygulama şifresi oluştur\" seçeneğine tıklayın.",
       "step3": "Parola için bir etiket girin.",
       "step4": "Gerekli izinleri seçin:",
-      "step5": "\"Oluştur\"a tıklayın ve şifreyi kopyalayın."
+      "step5": "\"Oluştur\"a tıklayın ve şifreyi kopyalayın.",
+      "step6": "Hesabınızı bağlamak için uygulama şifresini aşağıya yapıştırın."
     },
     "title": "Bitbucket Uygulama Şifresi Talimatları"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Tokeninizi güvende tutun ve asla herkesle paylaşmayın."
   },
   "github": {
+    "linkText": "GitHub token ayarlarını aç",
     "note": "Depo erişim izinleriyle birlikte ayrıntılı belirteçler de desteklenmektedir.",
     "scopes": {
       "readOrg": "read:org (Read org ve ekip üyeliği)",
@@ -38,6 +41,7 @@
     "title": "GitHub Token Talimatları"
   },
   "gitlab": {
+    "linkText": "GitLab token ayarlarını açın",
     "scopes": {
       "api": "API (Tam API erişimi)",
       "readApi": "read_api (Salt okunur API erişimi)",
@@ -47,7 +51,8 @@
       "step1": "GitLab → Kullanıcı Ayarları → Erişim Token'larına gidin.",
       "step2": "Bir belirteç adı ve isteğe bağlı son kullanma tarihi girin.",
       "step3": "Gerekli kapsamları seçin:",
-      "step4": "\"Kişisel erişim belirteci oluştur\" seçeneğine tıklayın ve kopyalayın."
+      "step4": "\"Kişisel erişim belirteci oluştur\" seçeneğine tıklayın ve kopyalayın.",
+      "step5": "Hesabınızı bağlamak için aşağıdaki kodu yapıştırın."
     },
     "title": "GitLab Token Talimatları"
   },

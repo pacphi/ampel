@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Mở mật khẩu ứng dụng Bitbucket",
     "permissions": {
       "accountRead": "Tài khoản: Đã đọc",
       "pullRequestsRead": "Yêu cầu kéo (Pull requests): Đọc",
@@ -12,7 +13,8 @@
       "step2": "Nhấp vào \"Tạo mật khẩu ứng dụng\"",
       "step3": "Nhập nhãn cho mật khẩu",
       "step4": "Chọn các quyền cần thiết:",
-      "step5": "Nhấp vào \"Tạo\" và sao chép mật khẩu."
+      "step5": "Nhấp vào \"Tạo\" và sao chép mật khẩu.",
+      "step6": "Dán mật khẩu ứng dụng bên dưới để kết nối tài khoản của bạn."
     },
     "title": "Hướng dẫn mật khẩu ứng dụng Bitbucket"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Hãy giữ mã thông báo của bạn an toàn và đừng bao giờ chia sẻ nó công khai."
   },
   "github": {
+    "linkText": "Mở cài đặt mã thông báo GitHub",
     "note": "Các token có mức độ chi tiết cao cũng được hỗ trợ cùng với quyền truy cập kho lưu trữ.",
     "scopes": {
       "readOrg": "read:org (Thành viên của Read org và nhóm)",
@@ -38,6 +41,7 @@
     "title": "Hướng dẫn sử dụng mã thông báo GitHub"
   },
   "gitlab": {
+    "linkText": "Mở cài đặt mã thông báo GitLab",
     "scopes": {
       "api": "API (Truy cập API đầy đủ)",
       "readApi": "read_api (Truy cập API chỉ đọc)",
@@ -47,7 +51,8 @@
       "step1": "Vào GitLab → Cài đặt người dùng → Mã truy cập",
       "step2": "Nhập tên mã thông báo và ngày hết hạn (nếu có).",
       "step3": "Chọn phạm vi cần thiết:",
-      "step4": "Nhấp vào \"Tạo mã truy cập cá nhân\" và sao chép mã đó."
+      "step4": "Nhấp vào \"Tạo mã truy cập cá nhân\" và sao chép mã đó.",
+      "step5": "Dán mã token bên dưới để kết nối tài khoản của bạn."
     },
     "title": "Hướng dẫn sử dụng mã thông báo GitLab"
   },

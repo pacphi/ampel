@@ -1,5 +1,6 @@
 {
   "bitbucket": {
+    "linkText": "Otevření hesel aplikací Bitbucket",
     "permissions": {
       "accountRead": "Účet: Čtení",
       "pullRequestsRead": "Žádosti o načtení: Čtení",
@@ -12,7 +13,8 @@
       "step2": "Klikněte na „Vytvořit heslo aplikace“",
       "step3": "Zadejte popisek hesla",
       "step4": "Vyberte požadovaná oprávnění:",
-      "step5": "Klikněte na „Vytvořit“ a zkopírujte heslo."
+      "step5": "Klikněte na „Vytvořit“ a zkopírujte heslo.",
+      "step6": "Vložte níže heslo aplikace pro propojení účtu"
     },
     "title": "Pokyny pro heslo aplikace Bitbucket"
   },
@@ -22,6 +24,7 @@
     "securityNote": "Uchovávejte svůj token v bezpečí a nikdy jej nesdílejte veřejně."
   },
   "github": {
+    "linkText": "Otevřít nastavení tokenu GitHubu",
     "note": "Jemně odstupňované tokeny jsou také podporovány s oprávněními přístupu k repozitáři.",
     "scopes": {
       "readOrg": "read:org (Číst organizaci a členství v týmu)",
@@ -38,6 +41,7 @@
     "title": "Pokyny k tokenu GitHubu"
   },
   "gitlab": {
+    "linkText": "Otevřít nastavení tokenu GitLab",
     "scopes": {
       "api": "API (plný přístup k API)",
       "readApi": "read_api (přístup k API pouze pro čtení)",
@@ -47,7 +51,8 @@
       "step1": "Přejděte do GitLabu → Nastavení uživatele → Přístupové tokeny",
       "step2": "Zadejte název tokenu a volitelné datum vypršení platnosti",
       "step3": "Vyberte požadované rozsahy:",
-      "step4": "Klikněte na „Vytvořit osobní přístupový token“ a zkopírujte jej."
+      "step4": "Klikněte na „Vytvořit osobní přístupový token“ a zkopírujte jej.",
+      "step5": "Vložte token níže pro propojení vašeho účtu"
     },
     "title": "Pokyny k tokenu GitLab"
   },

@@ -48,7 +48,7 @@ export function AddAccountPage() {
       toast({
         variant: 'destructive',
         title: t('accounts:toast.connectionFailed'),
-        description: axiosError.response?.data?.error || t('errors:generic'),
+        description: axiosError.response?.data?.error || t('errors:generic.message'),
       });
     },
   });
@@ -227,7 +227,7 @@ export function AddAccountPage() {
                 onClick={() => navigate('/settings/accounts')}
                 disabled={addAccountMutation.isPending}
               >
-                {t('common:cancel')}
+                {t('common:actions.cancel')}
               </Button>
               <Button type="submit" disabled={addAccountMutation.isPending}>
                 {addAccountMutation.isPending
