@@ -15,13 +15,11 @@ path = "src/main.rs"
 [dependencies]
 # Async
 tokio.workspace = true
-async-trait.workspace = true
 futures = "0.3"
 async-stream = "0.3"
 
 # Web framework
 axum.workspace = true
-axum-extra.workspace = true
 tower.workspace = true
 tower-http.workspace = true
 
@@ -41,14 +39,9 @@ reqwest.workspace = true
 # Utilities
 uuid.workspace = true
 chrono.workspace = true
-thiserror.workspace = true
 anyhow.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
-tracing-opentelemetry.workspace = true
-opentelemetry.workspace = true
-opentelemetry_sdk.workspace = true
-opentelemetry-otlp.workspace = true
 config.workspace = true
 dotenvy.workspace = true
 url.workspace = true
@@ -66,7 +59,6 @@ jsonwebtoken.workspace = true
 
 # API Documentation
 utoipa.workspace = true
-utoipa-swagger-ui.workspace = true
 
 # Email
 lettre.workspace = true
@@ -84,7 +76,6 @@ ampel-core.workspace = true
 ampel-db.workspace = true
 ampel-providers.workspace = true
 ampel-worker = { path = "../ampel-worker" }
-ampel-i18n-builder = { path = "../ampel-i18n-builder" }
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }

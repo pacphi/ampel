@@ -28,13 +28,10 @@ validator.workspace = true
 uuid.workspace = true
 chrono.workspace = true
 thiserror.workspace = true
-anyhow.workspace = true
-tracing.workspace = true
 
 # Auth
 jsonwebtoken.workspace = true
 argon2.workspace = true
-rand.workspace = true
 
 # Email & HTTP
 lettre.workspace = true

@@ -19,8 +19,10 @@ db-urls = ["https://github.com/rustsec/advisory-db"]
 # remove an entry the moment a fixed upstream version lands.
 ignore = [
     # rsa "Marvin Attack" timing sidechannel. No safe upgrade exists upstream.
-    # Pulled transitively via jsonwebtoken (RS256 JWT verification) -> rsa.
-    # Risk is limited to attackers who can observe RSA decryption timing.
+    # Pulled transitively by jsonwebtoken's `rust_crypto` backend. Ampel signs
+    # JWTs with HS256 and never instantiates an RSA key, so this code path is
+    # never executed. The only rsa-free jsonwebtoken backend is `aws_lc_rs`,
+    # which would add the aws-lc-sys C dependency; not worth it for dead code.
     # Remove when jsonwebtoken/rsa ship a mitigated release.
     "RUSTSEC-2023-0071",
     # bincode unmaintained. Transitive via ruvector-core -> hnsw_rs -> bincode.
