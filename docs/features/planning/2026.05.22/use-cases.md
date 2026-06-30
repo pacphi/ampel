@@ -195,7 +195,7 @@
 1. Aiko opens Claude Code, connected to Brain Server via MCP
 2. Types: "Which of our repos are most at risk from unaddressed major version upgrades?"
 3. Brain Server query executes:
-   - `brain_search("major version upgrade risk unaddressed fleet")` 
+   - `brain_search("major version upgrade risk unaddressed fleet")`
    - Cross-references with repo fingerprints and staleness scores
    - Ranks by: staleness × deprecated_API_usage × (1 - readiness)
 4. Response: "The 5 highest-risk repos are: `checkout-service` (Spring Boot 2.7, 2.1 libyears, 34 javax usages), `auth-service` (Node.js 16 EOL, 0 CI), ..."
