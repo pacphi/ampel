@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "מסווג",
+    "cost": "עֲלוּת",
+    "failureClass": "מחלקת כישלון",
+    "iterations": "איטרציות",
+    "status": {
+      "budget_exceeded": "חריגה מהתקציב",
+      "failed": "נִכשָׁל",
+      "handoff_human": "נמסר לבני אדם",
+      "running": "רִיצָה",
+      "succeeded": "הצליח"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "סשן סוכן",
+    "tokensUsed": "אסימונים בשימוש",
+    "transcript": "הצג תמליל"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "מאוחד",
+      "merged": "ממוזג"
     },
+    "allRepos": "כל המאגרים",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
-      "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "action": "פְּעוּלָה",
+      "autonomy": "אוטונומיה",
+      "completedAt": "הושלם",
+      "pr": "יחסי ציבור",
+      "repository": "מאגר"
+    },
+    "description": "רשומת הוספה בלבד של מיזוגים וסגירות אוטונומיים.",
+    "empty": "לא תועדו פעולות אוטונומיות.",
+    "exportCsv": "ייצוא קובץ CSV",
+    "filterRepo": "מאגר",
+    "since": "מֵאָז",
+    "tableLabel": "יומן ביקורת תיקונים",
+    "title": "יומן ביקורת",
+    "until": "עַד"
+  },
+  "autonomyHint": {
+    "auto_merge": "מאחד וממזג באופן אוטומטי ללא אישור אנושי.",
+    "consolidate": "מאחד בקשות משיכה אך דורש אישור אנושי לפני המיזוג.",
+    "dry_run": "מציג תצוגה מקדימה של תוכניות איחוד מבלי לבצע שינויים.",
+    "off": "תיקון מושבת עבור היקף זה."
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "אוטומטי עם אישור",
+    "dry_run_only": "ריצה יבשה בלבד",
+    "fully_autonomous": "אוטונומי לחלוטין",
+    "suggest_only": "הצעה בלבד"
+  },
+  "autonomyStop": {
+    "auto_merge": "מיזוג אוטומטי",
+    "consolidate": "איחוד בלבד",
+    "dry_run": "ריצה יבשה",
+    "off": "כבוי"
+  },
+  "ci": {
+    "columns": {
+      "check": "לִבדוֹק",
+      "status": "סטָטוּס",
+      "type": "סוּג"
+    },
+    "empty": "אין מידע זמין על CI.",
+    "headSha": "ראש SHA",
+    "logs": "יומני רישום",
+    "optional": "אופציונלי",
+    "predictedConflict": "סכסוך צפוי",
+    "required": "דָרוּשׁ",
+    "statusCheck": "סטטוס CI",
+    "tableLabel": "מטריצת בדיקת CI",
+    "title": "בדיקות CI",
+    "tone": {
+      "green": "חוֹלֵף",
+      "red": "כָּשֵׁל",
+      "yellow": "תָלוּי וְעוֹמֵד"
+    },
+    "viewLogs": "הצג יומני רישום"
+  },
+  "conflicts": {
+    "conflicted": "מתנגש",
+    "empty": "אין התנגשויות או בקשות משיכה שדילגו עליהן.",
+    "skipped": "דילג",
+    "title": "קונפליקטים"
+  },
+  "disposition": {
+    "closedWithRef": "סגור (הוחלף)",
+    "consolidated": "מאוחד",
+    "leftOpen": "נותר פתוח",
+    "skippedConflict": "דילג (התנגשות)"
+  },
+  "editor": {
+    "autonomy": "רמת אוטונומיה",
+    "confirmAutoMerge": {
+      "confirm": "הפעל מיזוג אוטומטי",
+      "description": "מיזוג אוטומטי מאחד וממזג בקשות משיכה באופן אוטומטי ללא אישור אנושי. פעולה זו עלולה לשנות את המאגרים שלך. האם אתה בטוח?",
+      "previewRequired": "הפעל תצוגה מקדימה של צי רכבים לפני הפעלת מיזוג אוטומטי בפעם הראשונה, כך שתוכל לראות בדיוק מה הפעלה תעשה.",
+      "title": "להפעיל מיזוג אוטומטי?"
+    },
+    "createTitle": "צור מדיניות",
+    "description": "הגדר כיצד התיקון יפעל עבור היקף זה.",
+    "editTitle": "עריכת מדיניות",
+    "enabled": "מופעל",
+    "errors": {
+      "saveFailed": "שמירת המדיניות נכשלה.",
+      "scopeIdRequired": "נדרש מזהה היקף."
+    },
+    "maxPrsPerRun": "מקסימום יחסי ציבור לריצה",
+    "minOpenPrs": "יחסי ציבור פתוחים מינימליים",
+    "save": "שמירת מדיניות",
+    "saving": "חִסָכוֹן…",
+    "scopeId": "מזהה היקף",
+    "scopeIdPlaceholder": "הזן את מזהה המאגר, הצוות, הארגון או המשתמש",
+    "scopeType": "סוג היקף"
+  },
+  "fleet": {
+    "airGappedOff": "מְחוּבָּר",
+    "airGappedOn": "מרווח אוויר",
+    "columns": {
+      "actions": "פעולות",
+      "airGapped": "מרווח אוויר",
+      "eligibility": "זכאות",
+      "openPrs": "יחסי ציבור פתוחים",
+      "policyState": "מְדִינִיוּת",
+      "repository": "מאגר"
+    },
+    "description": "זכאות לתיקון לפי מאגר ומצב מדיניות.",
+    "eligible": "זכאי",
+    "empty": "לא נמצאו מאגרים.",
+    "error": "טעינת סקירת הצי נכשלה.",
+    "notEligible": "לא זכאי",
+    "preview": "תצוגה מקדימה",
+    "tableLabel": "סטטוס תיקון המאגר",
+    "title": "סקירת צי"
+  },
+  "killSwitch": {
+    "active": "תיקון פעיל",
+    "label": "השהה את כל התיקונים",
+    "noPolicy": "אין מדיניות להשהייה",
+    "paused": "התיקון הושהה"
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
-    "providerKindLabel": {
-      "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
-    },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
-    "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
+    "airGapNotice": "ארגונים בעלי מרווחי גישה (air-gapped) רשאים להשתמש רק בספקים מקומיים (Ollama, ONNX). הוספת ספק חיצוני (Claude, Gemini) לארגון בעל מרווחי גישה נדחית.",
+    "apiKey": "מפתח API",
+    "apiKeyHint": "נשמר מוצפן ולא יוצג שוב לעולם. השאר ריק כדי לשמור את המפתח הקיים.",
+    "apiKeyPlaceholder": "הדבק את מפתח ה-API של הספק",
+    "create": "הוסף חשבון מודל",
+    "createTitle": "הוסף חשבון מודל",
+    "default": "בְּרִירַת מֶחדָל",
+    "description": "הגדר את ספקי מודל הבינה המלאכותית שבהם משתמשת שכבת התיקון הסוכנית כדי לתקן בקשות משיכה כושלות.",
+    "displayName": "שם תצוגה",
+    "displayNamePlaceholder": "לדוגמה, מפתח צוות קלוד",
     "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
+      "external": "יציאה חיצונית",
+      "local_only": "מקומי בלבד"
     },
+    "empty": "אין עדיין חשבונות מודל. הוסף אחד כדי לאפשר תיקון סוכני.",
+    "endpointUrl": "כתובת אתר של נקודת הקצה",
+    "endpointUrlPlaceholder": "http://localhost:11434",
+    "error": "טעינת חשבונות המודל נכשלה.",
     "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "airGapped": "ארגון זה מנותק: ספקי מודל יציאה חיצונית (קלוד, ג'מיני) אינם מורשים.",
+      "createFailed": "יצירת חשבון המודל נכשלה.",
+      "displayNameRequired": "נדרש שם תצוגה."
+    },
+    "modelId": "מזהה דגם",
+    "modelIdPlaceholder": "לדוגמה קלוד-סונטה-4",
+    "providerKind": "ספק",
+    "providerKindLabel": {
+      "claude": "קלוד",
+      "gemini": "מַזַל תְאוּמִים",
+      "ollama": "אולמה (מקומי)",
+      "onnx": "ONNX (מקומי)"
+    },
+    "save": "שמור חשבון",
+    "saving": "חִסָכוֹן…",
+    "spend": "לְבַלוֹת",
+    "spendCap": "תקרת הוצאה (דולר ארה\"ב)",
+    "title": "חשבונות מודל",
+    "validate": "לְאַמֵת",
+    "validating": "מאמת...",
+    "validationStatus": {
+      "invalid": "לֹא בְּתוֹקֶף",
+      "unvalidated": "לא מאומת",
+      "valid": "תָקֵף"
     }
   },
+  "nav": "תיקון",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "ספר משחקים (YAML)",
+    "contentPlaceholder": "היכנסו לספר המשחקים של YAML…",
+    "create": "ספר משחקים חדש",
+    "description": "התאם אישית את הנחיות התיקון שהסוכן משתמש בהן. אמת מדריך כדי להציג תצוגה מקדימה של ההנחיה המעובדת ללא קריאה למודל.",
+    "empty": "אין עדיין ספרי הדרכה. ספר ההדרכה המובנה כברירת מחדל משמש עד שתוסיף אחד.",
+    "error": "טעינת ספרי ההשמעה נכשלה.",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "נדרש תוכן של ספר ההדרכה.",
+      "nameRequired": "נדרש שם.",
+      "playbookIdRequired": "נדרש מזהה פלייבוק.",
+      "previewFailed": "עיבוד ספר ההדרכה נכשל. בדוק את קובץ ה-YAML לאיתור שגיאות.",
+      "saveFailed": "שמירת ספר ההדרכה נכשלה. בדוק את קובץ ה-YAML לאיתור שגיאות."
+    },
+    "name": "שֵׁם",
+    "namePlaceholder": "שם קריא על ידי בני אדם",
+    "playbookId": "מזהה Playbook",
+    "playbookIdPlaceholder": "לדוגמה, תיקון בהתאמה אישית",
+    "preview": "אימות / תצוגה מקדימה",
+    "previewing": "טִיוּחַ…",
+    "renderedPrompt": "הפקודה הוצגה",
+    "save": "שמור את ספר ההדרכה",
+    "saving": "חִסָכוֹן…",
+    "scopeId": "מזהה היקף",
+    "scopeIdPlaceholder": "מזהה צוות, ארגון או מאגר של הבעלים",
+    "scopeType": "סוג היקף",
+    "title": "ספרי משחק"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "מדיניות חדשה",
+    "description": "מדיניות תיקון שאתה מנהל בכל התחומים שלך.",
+    "disable": "השבת",
+    "empty": "אין עדיין מדיניות. צור אחת כדי להתחיל.",
+    "enable": "לְאַפשֵׁר",
+    "statusDisabled": "נָכֶה",
+    "statusEnabled": "מופעל",
+    "title": "מדיניות"
+  },
+  "policyState": {
+    "auto_merge": "מיזוג אוטומטי",
+    "auto_with_approval": "אוטומטי (עם אישור)",
+    "disabled": "נָכֶה",
+    "dry_run": "ריצה יבשה",
+    "none": "אין מדיניות",
+    "suggest": "לְהַצִיעַ"
+  },
+  "preview": {
+    "blockedByAirGap": "מאגר זה הוא בעל פער אוויר; פעולות של ספקים חיצוניים ייחסמו.",
+    "conflicts": "סכסוכים צפויים",
+    "description": "היטל לקריאה בלבד של מה שהפעלת תיקון תעשה. לא מתבצעים שינויים.",
+    "error": "חישוב התצוגה המקדימה נכשל.",
+    "estimatedDuration": "משך זמן משוער",
+    "loading": "תצוגה מקדימה של מחשוב…",
+    "noneSelected": "לא ייבחרו בקשות משיכה.",
+    "prCount": "בקשות משיכה נבחרו",
+    "seconds": "{{count}}s",
+    "title": "תצוגה מקדימה של ריצה יבשה — {{repo}}",
+    "wouldSelect": "הייתי בוחר"
+  },
+  "runState": {
+    "agent_fixing": "תיקון סוכן",
+    "awaiting_approval": "ממתין לאישור",
+    "cancelled": "בּוּטלָה",
+    "completed": "הושלם",
+    "consolidating": "איחוד",
+    "created": "נוצר",
+    "failed": "נִכשָׁל",
+    "finalizing": "מסיים",
+    "handoff_human": "נמסר לבני אדם",
+    "merging": "מיזוג",
+    "no_op": "ללא ניתוח",
+    "selecting": "בחירת יחסי ציבור",
+    "verifying": "מאמת"
+  },
+  "runs": {
+    "approve": "לְאַשֵׁר",
+    "back": "חזרה לריצות",
+    "columns": {
+      "actions": "פעולות",
+      "pr": "יחסי ציבור מאוחדים",
+      "repository": "מאגר",
+      "started": "התחיל",
+      "state": "מְדִינָה"
+    },
+    "description": "היסטוריית ריצות תיקון עם מצב פעיל, סטטוס CI ופרטי קונפליקט.",
+    "dispositions": "סילוק בקשות משיכה",
+    "empty": "עדיין לא בוצעו פעולות תיקון.",
+    "error": "טעינת ריצות התיקון נכשלה.",
+    "noDispositions": "עדיין לא נרשמו הוצאות.",
+    "reject": "לִדחוֹת",
+    "tableLabel": "היסטוריית הרצת תיקונים",
+    "timeline": "ציר זמן",
+    "timelineLabel": "ציר זמן של מצב ההפעלה",
+    "title": "ריצות תיקון",
+    "view": "נוֹף"
+  },
+  "scopeType": {
+    "org": "אִרגוּן",
+    "repository": "מאגר",
+    "team": "קְבוּצָה",
+    "user": "מִשׁתַמֵשׁ"
+  },
+  "subtitle": "אוטומציה של איחוד בקשות משיכה בין המאגרים שלך באמצעות בקרות מונחות מדיניות.",
+  "tabs": {
+    "audit": "בְּדִיקָה",
+    "fleet": "צִי",
+    "modelAccounts": "חשבונות מודל",
+    "playbooks": "ספרי משחק",
+    "policies": "מדיניות",
+    "runs": "ריצות"
+  },
+  "title": "שיקום צי"
 }

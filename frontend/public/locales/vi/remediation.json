@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "Bộ phân loại",
+    "cost": "Trị giá",
+    "failureClass": "Lớp học thất bại",
+    "iterations": "Các lần lặp",
+    "status": {
+      "budget_exceeded": "Ngân sách vượt quá",
+      "failed": "Thất bại",
+      "handoff_human": "Đã giao cho con người",
+      "running": "Đang chạy",
+      "succeeded": "Thành công"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "Phiên làm việc của đại lý",
+    "tokensUsed": "Mã thông báo được sử dụng",
+    "transcript": "Xem bản ghi"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "Hợp nhất",
+      "merged": "Đã hợp nhất"
     },
+    "allRepos": "Tất cả các kho lưu trữ",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
+      "action": "Hoạt động",
+      "autonomy": "Tự chủ",
+      "completedAt": "Hoàn thành",
       "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "repository": "Kho lưu trữ"
+    },
+    "description": "Bản ghi chỉ thêm dữ liệu về các thao tác hợp nhất và đóng tự động.",
+    "empty": "Không có hành động tự động nào được ghi nhận.",
+    "exportCsv": "Xuất CSV",
+    "filterRepo": "Kho lưu trữ",
+    "since": "Từ",
+    "tableLabel": "nhật ký kiểm toán khắc phục",
+    "title": "nhật ký kiểm toán",
+    "until": "Cho đến khi"
+  },
+  "autonomyHint": {
+    "auto_merge": "Tự động hợp nhất và sáp nhập mà không cần sự phê duyệt của con người.",
+    "consolidate": "Tổng hợp các yêu cầu kéo (pull request) nhưng cần sự chấp thuận của người dùng trước khi hợp nhất.",
+    "dry_run": "Hiển thị trước các kế hoạch hợp nhất mà không thực hiện bất kỳ thay đổi nào.",
+    "off": "Quá trình khắc phục sự cố đã bị vô hiệu hóa cho phạm vi này."
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "Xe tự lái được chấp thuận",
+    "dry_run_only": "Chỉ chạy thử",
+    "fully_autonomous": "Hoàn toàn tự động",
+    "suggest_only": "Chỉ đề xuất"
+  },
+  "autonomyStop": {
+    "auto_merge": "Tự động hợp nhất",
+    "consolidate": "Chỉ hợp nhất",
+    "dry_run": "Thử nghiệm",
+    "off": "Tắt"
+  },
+  "ci": {
+    "columns": {
+      "check": "Kiểm tra",
+      "status": "Trạng thái",
+      "type": "Kiểu"
+    },
+    "empty": "Không có thông tin CI nào.",
+    "headSha": "Trưởng SHA",
+    "logs": "Nhật ký",
+    "optional": "Không bắt buộc",
+    "predictedConflict": "Xung đột được dự đoán",
+    "required": "Yêu cầu",
+    "statusCheck": "Trạng thái CI",
+    "tableLabel": "ma trận kiểm tra CI",
+    "title": "Kiểm tra CI",
+    "tone": {
+      "green": "Đi qua",
+      "red": "Thất bại",
+      "yellow": "Chưa giải quyết"
+    },
+    "viewLogs": "Xem nhật ký"
+  },
+  "conflicts": {
+    "conflicted": "Mâu thuẫn",
+    "empty": "Không có xung đột hoặc yêu cầu kéo bị bỏ qua.",
+    "skipped": "Bỏ qua",
+    "title": "Xung đột"
+  },
+  "disposition": {
+    "closedWithRef": "Đã đóng (đã được thay thế)",
+    "consolidated": "Hợp nhất",
+    "leftOpen": "Để mở",
+    "skippedConflict": "Bỏ qua (xung đột)"
+  },
+  "editor": {
+    "autonomy": "Mức độ tự chủ",
+    "confirmAutoMerge": {
+      "confirm": "Bật tính năng tự động hợp nhất",
+      "description": "Tính năng tự động hợp nhất sẽ tự động tổng hợp và hợp nhất các yêu cầu kéo (pull request) mà không cần sự chấp thuận của con người. Điều này có thể làm thay đổi kho lưu trữ của bạn. Bạn có chắc chắn không?",
+      "previewRequired": "Hãy chạy thử nghiệm xem trước toàn bộ đội hình trước khi bật tính năng Tự động hợp nhất lần đầu tiên, để bạn có thể thấy chính xác quá trình chạy sẽ diễn ra như thế nào.",
+      "title": "Bật tính năng tự động hợp nhất?"
+    },
+    "createTitle": "Tạo chính sách",
+    "description": "Cấu hình cách thức hoạt động của quá trình khắc phục sự cố cho phạm vi này.",
+    "editTitle": "Chỉnh sửa chính sách",
+    "enabled": "Đã bật",
+    "errors": {
+      "saveFailed": "Không thể lưu chính sách.",
+      "scopeIdRequired": "Cần có ID phạm vi."
+    },
+    "maxPrsPerRun": "Số lần chạy tối đa mỗi lần",
+    "minOpenPrs": "Số lượng yêu cầu kéo (PR) đang mở tối thiểu",
+    "save": "Lưu chính sách",
+    "saving": "Đang lưu…",
+    "scopeId": "ID phạm vi",
+    "scopeIdPlaceholder": "Nhập ID kho lưu trữ, nhóm, tổ chức hoặc người dùng.",
+    "scopeType": "Loại phạm vi"
+  },
+  "fleet": {
+    "airGappedOff": "Đã kết nối",
+    "airGappedOn": "Khoảng cách không khí",
+    "columns": {
+      "actions": "Hành động",
+      "airGapped": "Khe hở không khí",
+      "eligibility": "Điều kiện đủ điều kiện",
+      "openPrs": "Yêu cầu kéo mở",
+      "policyState": "Chính sách",
+      "repository": "Kho lưu trữ"
+    },
+    "description": "Điều kiện và chính sách khắc phục sự cố cho từng kho lưu trữ.",
+    "eligible": "Đạt chuẩn",
+    "empty": "Không tìm thấy kho lưu trữ nào.",
+    "error": "Không thể tải thông tin tổng quan về đội xe.",
+    "notEligible": "Không đủ điều kiện",
+    "preview": "Xem trước",
+    "tableLabel": "Trạng thái khắc phục kho lưu trữ",
+    "title": "Tổng quan về đội xe"
+  },
+  "killSwitch": {
+    "active": "Quá trình khắc phục đang diễn ra",
+    "label": "Tạm dừng mọi hoạt động khắc phục sự cố.",
+    "noPolicy": "Không có chính sách tạm dừng",
+    "paused": "Quá trình khắc phục sự cố tạm dừng"
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
+    "airGapNotice": "Các tổ chức không kết nối mạng (air-gapped organizations) chỉ được phép sử dụng các nhà cung cấp dịch vụ cục bộ (Ollama, ONNX). Việc thêm nhà cung cấp dịch vụ bên ngoài (Claude, Gemini) vào một tổ chức không kết nối mạng sẽ bị từ chối.",
+    "apiKey": "Khóa API",
+    "apiKeyHint": "Dữ liệu được lưu trữ dưới dạng mã hóa và sẽ không bao giờ được hiển thị lại. Để trống nếu muốn giữ nguyên khóa hiện có.",
+    "apiKeyPlaceholder": "Dán khóa API của nhà cung cấp.",
+    "create": "Thêm tài khoản mẫu",
+    "createTitle": "Thêm tài khoản mẫu",
+    "default": "Mặc định",
+    "description": "Cấu hình các nhà cung cấp mô hình AI mà tầng khắc phục sự cố dựa trên tác nhân sử dụng để sửa các yêu cầu kéo bị lỗi.",
+    "displayName": "Tên hiển thị",
+    "displayNamePlaceholder": "Ví dụ: Chìa khóa của Đội Claude",
+    "egress": {
+      "external": "Lối thoát hiểm bên ngoài",
+      "local_only": "Chỉ dành cho người địa phương"
+    },
+    "empty": "Hiện chưa có tài khoản mẫu nào. Hãy thêm một tài khoản để kích hoạt tính năng khắc phục sự cố tự động.",
+    "endpointUrl": "URL điểm cuối",
+    "endpointUrlPlaceholder": "http://localhost:11434",
+    "error": "Không thể tải tài khoản mẫu.",
+    "errors": {
+      "airGapped": "Tổ chức này được cách ly hoàn toàn: các nhà cung cấp mô hình truy cập ra bên ngoài (Claude, Gemini) không được phép.",
+      "createFailed": "Không thể tạo tài khoản mẫu.",
+      "displayNameRequired": "Tên hiển thị là bắt buộc."
+    },
+    "modelId": "Mã số mẫu",
+    "modelIdPlaceholder": "ví dụ: claude-sonnet-4",
+    "providerKind": "Nhà cung cấp",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
+      "gemini": "Song Tử",
+      "ollama": "Ollama (người địa phương)",
+      "onnx": "ONNX (địa phương)"
     },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
+    "save": "Lưu tài khoản",
+    "saving": "Đang lưu…",
+    "spend": "Tiêu",
+    "spendCap": "Giới hạn chi tiêu (USD)",
+    "title": "Mẫu tài khoản",
+    "validate": "Xác thực",
+    "validating": "Đang xác thực…",
     "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
-    "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
-    },
-    "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "invalid": "Không hợp lệ",
+      "unvalidated": "Chưa được xác thực",
+      "valid": "Có hiệu lực"
     }
   },
+  "nav": "Khắc phục hậu quả",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "Sổ tay hướng dẫn (YAML)",
+    "contentPlaceholder": "Nhập tệp YAML của playbook…",
+    "create": "Chiến lược mới",
+    "description": "Tùy chỉnh các lời nhắc khắc phục sự cố mà tác nhân sử dụng. Xác thực một playbook để xem trước lời nhắc được hiển thị mà không cần gọi mô hình.",
+    "empty": "Hiện chưa có playbook nào. Playbook mặc định được tích hợp sẵn sẽ được sử dụng cho đến khi bạn thêm một playbook khác.",
+    "error": "Không thể tải các tập lệnh chiến thuật.",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "Nội dung trong cẩm nang là bắt buộc.",
+      "nameRequired": "Cần phải nhập tên.",
+      "playbookIdRequired": "Cần có mã định danh của sổ tay chiến thuật.",
+      "previewFailed": "Không thể hiển thị playbook. Kiểm tra tệp YAML để tìm lỗi.",
+      "saveFailed": "Không thể lưu tập lệnh. Kiểm tra tệp YAML để tìm lỗi."
+    },
+    "name": "Tên",
+    "namePlaceholder": "Tên dễ đọc đối với con người",
+    "playbookId": "Mã số sổ tay",
+    "playbookIdPlaceholder": "ví dụ: khắc phục sự cố tùy chỉnh",
+    "preview": "Xác thực / Xem trước",
+    "previewing": "Đang hiển thị…",
+    "renderedPrompt": "Lời nhắc được hiển thị",
+    "save": "Lưu lại chiến lược",
+    "saving": "Đang lưu…",
+    "scopeId": "ID phạm vi",
+    "scopeIdPlaceholder": "ID nhóm, tổ chức hoặc kho lưu trữ sở hữu",
+    "scopeType": "Loại phạm vi",
+    "title": "Sổ tay chiến thuật"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "Chính sách mới",
+    "description": "Các chính sách khắc phục sự cố mà bạn quản lý trên toàn bộ phạm vi.",
+    "disable": "Vô hiệu hóa",
+    "empty": "Chưa có chính sách nào. Hãy tạo một chính sách để bắt đầu.",
+    "enable": "Cho phép",
+    "statusDisabled": "Tàn tật",
+    "statusEnabled": "Đã bật",
+    "title": "Chính sách"
+  },
+  "policyState": {
+    "auto_merge": "Tự động hợp nhất",
+    "auto_with_approval": "Ô tô (sau khi được chấp thuận)",
+    "disabled": "Tàn tật",
+    "dry_run": "Thử nghiệm",
+    "none": "Không có chính sách nào",
+    "suggest": "Gợi ý"
+  },
+  "preview": {
+    "blockedByAirGap": "Kho lưu trữ này được cách ly hoàn toàn khỏi mạng; các hành động của nhà cung cấp bên ngoài sẽ bị chặn.",
+    "conflicts": "Các cuộc xung đột được dự đoán",
+    "description": "Đây chỉ là bản chiếu mô phỏng kết quả của quá trình xử lý sự cố (chỉ đọc). Không có thay đổi nào được thực hiện.",
+    "error": "Không thể tính toán bản xem trước.",
+    "estimatedDuration": "Thời gian ước tính",
+    "loading": "Tổng quan về lĩnh vực máy tính…",
+    "noneSelected": "Sẽ không có yêu cầu kéo nào được chọn.",
+    "prCount": "Các yêu cầu kéo được chọn",
+    "seconds": "{{count}}s",
+    "title": "Xem trước bản chạy thử — {{repo}}",
+    "wouldSelect": "Sẽ lựa chọn"
+  },
+  "runState": {
+    "agent_fixing": "Sửa lỗi đại lý",
+    "awaiting_approval": "Đang chờ phê duyệt",
+    "cancelled": "Đã hủy",
+    "completed": "Hoàn thành",
+    "consolidating": "Hợp nhất",
+    "created": "Tạo",
+    "failed": "Thất bại",
+    "finalizing": "Hoàn tất",
+    "handoff_human": "Đã giao cho con người",
+    "merging": "Hợp nhất",
+    "no_op": "Không phẫu thuật",
+    "selecting": "Chọn yêu cầu kéo (PR)",
+    "verifying": "Xác minh"
+  },
+  "runs": {
+    "approve": "Chấp thuận",
+    "back": "Quay lại với các lần chạy",
+    "columns": {
+      "actions": "Hành động",
+      "pr": "Quan hệ công chúng hợp nhất",
+      "repository": "Kho lưu trữ",
+      "started": "Bắt đầu",
+      "state": "Tình trạng"
+    },
+    "description": "Lịch sử các lần chạy khắc phục sự cố bao gồm trạng thái hiện tại, trạng thái CI và chi tiết xung đột.",
+    "dispositions": "Trạng thái yêu cầu kéo",
+    "empty": "Chưa có đợt xử lý khắc phục nào được thực hiện.",
+    "error": "Không thể tải các lần chạy khắc phục sự cố.",
+    "noDispositions": "Chưa có thông tin nào về quyết định xử lý vụ việc.",
+    "reject": "Từ chối",
+    "tableLabel": "Lịch sử chạy khắc phục sự cố",
+    "timeline": "Dòng thời gian",
+    "timelineLabel": "Chạy dòng thời gian trạng thái",
+    "title": "Các đợt xử lý khắc phục",
+    "view": "Xem"
+  },
+  "scopeType": {
+    "org": "Tổ chức",
+    "repository": "Kho lưu trữ",
+    "team": "Đội",
+    "user": "Người dùng"
+  },
+  "subtitle": "Tự động hóa việc hợp nhất các yêu cầu kéo (pull request) trên các kho lưu trữ của bạn bằng các điều khiển dựa trên chính sách.",
+  "tabs": {
+    "audit": "Kiểm toán",
+    "fleet": "Hạm đội",
+    "modelAccounts": "Mẫu tài khoản",
+    "playbooks": "Sổ tay chiến thuật",
+    "policies": "Chính sách",
+    "runs": "Chạy"
+  },
+  "title": "Khắc phục sự cố đội xe"
 }

@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "분류기",
+    "cost": "비용",
+    "failureClass": "실패 클래스",
+    "iterations": "반복",
+    "status": {
+      "budget_exceeded": "예산 초과",
+      "failed": "실패한",
+      "handoff_human": "사람에게 넘겨졌습니다",
+      "running": "달리기",
+      "succeeded": "성공했습니다"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "에이전트 세션",
+    "tokensUsed": "사용된 토큰",
+    "transcript": "대본 보기"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "통합",
+      "merged": "병합됨"
     },
+    "allRepos": "모든 저장소",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
-      "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "action": "행동",
+      "autonomy": "자치",
+      "completedAt": "완전한",
+      "pr": "홍보",
+      "repository": "저장소"
+    },
+    "description": "자율 병합 및 종료에 대한 추가 전용 기록입니다.",
+    "empty": "자율적인 동작은 기록되지 않았습니다.",
+    "exportCsv": "CSV 내보내기",
+    "filterRepo": "저장소",
+    "since": "부터",
+    "tableLabel": "개선 조치 감사 로그",
+    "title": "감사 로그",
+    "until": "까지"
+  },
+  "autonomyHint": {
+    "auto_merge": "사람의 승인 없이 자동으로 통합 및 병합합니다.",
+    "consolidate": "풀 리퀘스트를 통합하지만 병합하기 전에 사람의 승인이 필요합니다.",
+    "dry_run": "아무런 변경 없이 통합 계획을 미리 살펴봅니다.",
+    "off": "이 범위에 대해서는 복구 기능이 비활성화되어 있습니다."
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "승인된 차량",
+    "dry_run_only": "시험 실행만 가능",
+    "fully_autonomous": "완전 자율 주행",
+    "suggest_only": "제안만 하세요"
+  },
+  "autonomyStop": {
+    "auto_merge": "자동 병합",
+    "consolidate": "통합 전용",
+    "dry_run": "예행연습",
+    "off": "끄다"
+  },
+  "ci": {
+    "columns": {
+      "check": "확인하다",
+      "status": "상태",
+      "type": "유형"
+    },
+    "empty": "CI 정보가 없습니다.",
+    "headSha": "헤드 SHA",
+    "logs": "로그",
+    "optional": "선택 과목",
+    "predictedConflict": "예측된 갈등",
+    "required": "필수의",
+    "statusCheck": "CI 상태",
+    "tableLabel": "CI 체크 매트릭스",
+    "title": "CI 검사",
+    "tone": {
+      "green": "통과",
+      "red": "실패",
+      "yellow": "보류 중"
+    },
+    "viewLogs": "로그 보기"
+  },
+  "conflicts": {
+    "conflicted": "갈등",
+    "empty": "충돌이나 누락된 풀 리퀘스트가 없습니다.",
+    "skipped": "건너뛰었습니다",
+    "title": "갈등"
+  },
+  "disposition": {
+    "closedWithRef": "종료됨 (대체됨)",
+    "consolidated": "통합",
+    "leftOpen": "열린 상태로 남겨둠",
+    "skippedConflict": "건너뛰었습니다(충돌 발생)"
+  },
+  "editor": {
+    "autonomy": "자율성 수준",
+    "confirmAutoMerge": {
+      "confirm": "자동 병합 활성화",
+      "description": "자동 병합 기능은 사람의 승인 없이 풀 리퀘스트를 자동으로 통합하고 병합합니다. 이 기능은 저장소를 수정할 수 있습니다. 계속하시겠습니까?",
+      "previewRequired": "자동 병합 기능을 처음 활성화하기 전에 함대 미리보기를 실행하여 실행 결과를 정확히 확인하세요.",
+      "title": "자동 병합을 활성화하시겠습니까?"
+    },
+    "createTitle": "정책 생성",
+    "description": "이 범위에 대한 복구 동작 방식을 구성합니다.",
+    "editTitle": "정책 수정",
+    "enabled": "활성화됨",
+    "errors": {
+      "saveFailed": "정책을 저장하는 데 실패했습니다.",
+      "scopeIdRequired": "스코프 ID가 필요합니다."
+    },
+    "maxPrsPerRun": "달리기당 최대 개인 최고 기록",
+    "minOpenPrs": "최소 열린 PR",
+    "save": "정책 저장",
+    "saving": "절약…",
+    "scopeId": "범위 ID",
+    "scopeIdPlaceholder": "저장소, 팀, 조직 또는 사용자 ID를 입력하세요.",
+    "scopeType": "범위 유형"
+  },
+  "fleet": {
+    "airGappedOff": "연결됨",
+    "airGappedOn": "에어갭",
+    "columns": {
+      "actions": "행위",
+      "airGapped": "에어갭",
+      "eligibility": "적임",
+      "openPrs": "PR 열기",
+      "policyState": "정책",
+      "repository": "저장소"
+    },
+    "description": "저장소별 복구 자격 및 정책 상태.",
+    "eligible": "자격이 있는",
+    "empty": "저장소를 찾을 수 없습니다.",
+    "error": "함대 개요를 불러오는 데 실패했습니다.",
+    "notEligible": "자격 없음",
+    "preview": "시사",
+    "tableLabel": "저장소 복구 상태",
+    "title": "함대 개요"
+  },
+  "killSwitch": {
+    "active": "복구 작업 진행 중",
+    "label": "모든 복구 작업을 일시 중지하세요",
+    "noPolicy": "일시 중단할 정책 없음",
+    "paused": "복구 작업이 일시 중단되었습니다."
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
-    "providerKindLabel": {
-      "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
-    },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
-    "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
+    "airGapNotice": "네트워크가 분리된 조직은 로컬 공급업체(Ollama, ONNX)만 사용할 수 있습니다. 외부 공급업체(Claude, Gemini)를 네트워크 분리된 조직에 추가하는 것은 허용되지 않습니다.",
+    "apiKey": "API 키",
+    "apiKeyHint": "암호화되어 저장되며 다시는 표시되지 않습니다. 기존 키를 유지하려면 비워 두십시오.",
+    "apiKeyPlaceholder": "제공업체 API 키를 붙여넣으세요",
+    "create": "모델 계정 추가",
+    "createTitle": "모델 계정 추가",
+    "default": "기본",
+    "description": "에이전트 기반 복구 계층에서 실패한 풀 리퀘스트를 수정하는 데 사용하는 AI 모델 제공자를 구성합니다.",
+    "displayName": "표시 이름",
+    "displayNamePlaceholder": "예: 팀 클로드 키",
     "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
+      "external": "외부 출입구",
+      "local_only": "현지에서만 가능"
     },
+    "empty": "아직 모델 계정이 없습니다. 에이전트 기반 문제 해결을 활성화하려면 모델 계정을 추가하세요.",
+    "endpointUrl": "엔드포인트 URL",
+    "endpointUrlPlaceholder": "http://localhost:11434",
+    "error": "모델 계정을 불러오는 데 실패했습니다.",
     "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "airGapped": "이 조직은 외부 네트워크 연결이 차단되어 있어 외부 접속 모델 제공업체(Claude, Gemini)를 사용할 수 없습니다.",
+      "createFailed": "모델 계정 생성에 실패했습니다.",
+      "displayNameRequired": "표시 이름은 필수입니다."
+    },
+    "modelId": "모델 ID",
+    "modelIdPlaceholder": "예: 클로드 소네트 4",
+    "providerKind": "공급자",
+    "providerKindLabel": {
+      "claude": "클로드",
+      "gemini": "쌍둥이자리",
+      "ollama": "올라마(현지)",
+      "onnx": "ONNX(로컬)"
+    },
+    "save": "저장 계정",
+    "saving": "절약…",
+    "spend": "경비",
+    "spendCap": "지출 한도(USD)",
+    "title": "모델 계정",
+    "validate": "유효성 검사",
+    "validating": "검증 중…",
+    "validationStatus": {
+      "invalid": "유효하지 않은",
+      "unvalidated": "검증되지 않음",
+      "valid": "유효한"
     }
   },
+  "nav": "교정",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "플레이북(YAML)",
+    "contentPlaceholder": "플레이북 YAML 파일을 입력하세요…",
+    "create": "새로운 플레이북",
+    "description": "상담원이 사용하는 문제 해결 프롬프트를 사용자 지정합니다. 모델 호출 없이 렌더링된 프롬프트를 미리 보려면 플레이북을 검증합니다.",
+    "empty": "아직 플레이북이 없습니다. 플레이북을 추가하기 전까지는 기본 플레이북이 사용됩니다.",
+    "error": "플레이북을 불러오는 데 실패했습니다.",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "플레이북 콘텐츠가 필요합니다.",
+      "nameRequired": "이름은 필수 입력 사항입니다.",
+      "playbookIdRequired": "플레이북 ID가 필요합니다.",
+      "previewFailed": "플레이북 렌더링에 실패했습니다. YAML 파일에서 오류를 확인하세요.",
+      "saveFailed": "플레이북 저장에 실패했습니다. YAML 파일에서 오류를 확인하세요."
+    },
+    "name": "이름",
+    "namePlaceholder": "사람이 읽을 수 있는 이름",
+    "playbookId": "플레이북 ID",
+    "playbookIdPlaceholder": "예: 맞춤형 복구",
+    "preview": "유효성 검사/미리보기",
+    "previewing": "표현…",
+    "renderedPrompt": "렌더링된 프롬프트",
+    "save": "플레이북을 저장하세요",
+    "saving": "절약…",
+    "scopeId": "범위 ID",
+    "scopeIdPlaceholder": "소유 팀, 조직 또는 저장소 ID",
+    "scopeType": "범위 유형",
+    "title": "플레이북"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "새로운 정책",
+    "description": "범위 전체에 걸쳐 관리하는 복구 정책입니다.",
+    "disable": "장애를 입히다",
+    "empty": "아직 정책이 없습니다. 시작하려면 정책을 생성하세요.",
+    "enable": "할 수 있게 하다",
+    "statusDisabled": "장애가 있는",
+    "statusEnabled": "활성화됨",
+    "title": "정책"
+  },
+  "policyState": {
+    "auto_merge": "자동 병합",
+    "auto_with_approval": "자동차 (승인 필요)",
+    "disabled": "장애가 있는",
+    "dry_run": "예행연습",
+    "none": "정책 없음",
+    "suggest": "제안하다"
+  },
+  "preview": {
+    "blockedByAirGap": "이 저장소는 외부와 완전히 차단되어 있어 외부 제공업체의 작업이 차단됩니다.",
+    "conflicts": "예측된 갈등",
+    "description": "복구 실행 시 발생할 결과를 보여주는 읽기 전용 예측입니다. 변경 사항은 적용되지 않습니다.",
+    "error": "미리보기를 계산하는 데 실패했습니다.",
+    "estimatedDuration": "예상 소요 시간",
+    "loading": "컴퓨팅 미리보기…",
+    "noneSelected": "제출된 풀 리퀘스트는 모두 선택되지 않습니다.",
+    "prCount": "선택된 풀 리퀘스트",
+    "seconds": "{{count}}s",
+    "title": "사전 실행 미리보기 — {{repo}}",
+    "wouldSelect": "선택하겠습니다"
+  },
+  "runState": {
+    "agent_fixing": "에이전트 수정",
+    "awaiting_approval": "승인 대기 중",
+    "cancelled": "취소",
+    "completed": "완전한",
+    "consolidating": "통합",
+    "created": "생성됨",
+    "failed": "실패한",
+    "finalizing": "마무리 작업",
+    "handoff_human": "사람에게 넘겨졌습니다",
+    "merging": "병합",
+    "no_op": "무작업",
+    "selecting": "PR 선택",
+    "verifying": "확인 중"
+  },
+  "runs": {
+    "approve": "승인하다",
+    "back": "달리기 목록으로 돌아가기",
+    "columns": {
+      "actions": "행위",
+      "pr": "통합 홍보",
+      "repository": "저장소",
+      "started": "시작됨",
+      "state": "상태"
+    },
+    "description": "복구 실행 내역에는 실시간 상태, CI 상태 및 충돌 세부 정보가 포함됩니다.",
+    "dispositions": "풀 리퀘스트 처리 결과",
+    "empty": "아직 복구 실행이 이루어지지 않았습니다.",
+    "error": "복구 실행 결과를 불러오는 데 실패했습니다.",
+    "noDispositions": "아직 처리된 사항이 없습니다.",
+    "reject": "거부하다",
+    "tableLabel": "복구 실행 내역",
+    "timeline": "타임라인",
+    "timelineLabel": "실행 상태 타임라인",
+    "title": "복구 실행",
+    "view": "보다"
+  },
+  "scopeType": {
+    "org": "조직",
+    "repository": "저장소",
+    "team": "팀",
+    "user": "사용자"
+  },
+  "subtitle": "정책 기반 제어를 통해 저장소 전반에 걸쳐 풀 리퀘스트 통합을 자동화하세요.",
+  "tabs": {
+    "audit": "심사",
+    "fleet": "함대",
+    "modelAccounts": "모델 계정",
+    "playbooks": "플레이북",
+    "policies": "정책",
+    "runs": "실행"
+  },
+  "title": "함대 정비"
 }

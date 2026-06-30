@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "Sınıflandırıcı",
+    "cost": "Maliyet",
+    "failureClass": "Başarısızlık sınıfı",
+    "iterations": "Yinelemeler",
+    "status": {
+      "budget_exceeded": "Bütçe aşıldı",
+      "failed": "Arızalı",
+      "handoff_human": "İnsana teslim edildi",
+      "running": "Koşma",
+      "succeeded": "Başarılı"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "Temsilci oturumu",
+    "tokensUsed": "Kullanılan jetonlar",
+    "transcript": "Transkripti görüntüle"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "Konsolide",
+      "merged": "Birleştirildi"
     },
+    "allRepos": "Tüm depolar",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
+      "action": "Aksiyon",
+      "autonomy": "Özerklik",
+      "completedAt": "Tamamlanmış",
       "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "repository": "Depo"
+    },
+    "description": "Bağımsız birleştirme ve kapatma işlemlerinin yalnızca ekleme kaydı.",
+    "empty": "Herhangi bir otonom işlem kaydedilmedi.",
+    "exportCsv": "CSV olarak dışa aktar",
+    "filterRepo": "Depo",
+    "since": "O zamandan beri",
+    "tableLabel": "Düzeltme denetim günlüğü",
+    "title": "Denetim günlüğü",
+    "until": "Değin"
+  },
+  "autonomyHint": {
+    "auto_merge": "İnsan onayı gerektirmeden otomatik olarak birleştirme ve konsolidasyon yapar.",
+    "consolidate": "Çekme isteklerini birleştirir ancak birleştirmeden önce insan onayı gerektirir.",
+    "dry_run": "Herhangi bir değişiklik yapmadan konsolidasyon planlarının önizlemesini gösterir.",
+    "off": "Bu kapsam için düzeltme işlemi devre dışı bırakılmıştır."
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "Onaylı araç",
+    "dry_run_only": "Sadece deneme çalıştırması",
+    "fully_autonomous": "Tamamen otonom",
+    "suggest_only": "Sadece öneride bulunun"
+  },
+  "autonomyStop": {
+    "auto_merge": "Otomatik birleştirme",
+    "consolidate": "Sadece birleştirme",
+    "dry_run": "Deneme çalıştırması",
+    "off": "Kapalı"
+  },
+  "ci": {
+    "columns": {
+      "check": "Kontrol etmek",
+      "status": "Durum",
+      "type": "Tip"
+    },
+    "empty": "Herhangi bir CI bilgisi mevcut değil.",
+    "headSha": "Baş SHA",
+    "logs": "Günlükler",
+    "optional": "İsteğe bağlı",
+    "predictedConflict": "Öngörülen çatışma",
+    "required": "Gerekli",
+    "statusCheck": "CI durumu",
+    "tableLabel": "CI kontrol matrisi",
+    "title": "CI kontrolleri",
+    "tone": {
+      "green": "Geçmek",
+      "red": "Başarısız",
+      "yellow": "Askıda olması"
+    },
+    "viewLogs": "Kayıtları görüntüle"
+  },
+  "conflicts": {
+    "conflicted": "Çelişkili",
+    "empty": "Çakışma veya atlanmış çekme isteği yok.",
+    "skipped": "Atlandı",
+    "title": "Çatışmalar"
+  },
+  "disposition": {
+    "closedWithRef": "Kapalı (geçersiz kılınmış)",
+    "consolidated": "Konsolide",
+    "leftOpen": "Açık bırakıldı",
+    "skippedConflict": "Atlandı (çatışma)"
+  },
+  "editor": {
+    "autonomy": "Özerklik düzeyi",
+    "confirmAutoMerge": {
+      "confirm": "Otomatik birleştirmeyi etkinleştir",
+      "description": "Otomatik birleştirme, çekme isteklerini insan onayı olmadan otomatik olarak birleştirir. Bu, depolarınızda değişikliklere neden olabilir. Emin misiniz?",
+      "previewRequired": "Otomatik birleştirmeyi ilk kez etkinleştirmeden önce bir filo önizlemesi çalıştırın, böylece çalıştırmanın tam olarak ne yapacağını görebilirsiniz.",
+      "title": "Otomatik birleştirmeyi etkinleştir?"
+    },
+    "createTitle": "Politika oluştur",
+    "description": "Bu kapsam için düzeltme işleminin nasıl davranacağını yapılandırın.",
+    "editTitle": "Düzenleme politikası",
+    "enabled": "Etkinleştirilmiş",
+    "errors": {
+      "saveFailed": "Politika kaydedilemedi.",
+      "scopeIdRequired": "Kapsam kimliği gereklidir."
+    },
+    "maxPrsPerRun": "Koşu başına maksimum kişisel rekor",
+    "minOpenPrs": "Minimum açık PR'ler",
+    "save": "Kaydetme politikası",
+    "saving": "Tasarruf…",
+    "scopeId": "Kapsam Kimliği",
+    "scopeIdPlaceholder": "Depo, ekip, kuruluş veya kullanıcı kimliğini girin.",
+    "scopeType": "Kapsam türü"
+  },
+  "fleet": {
+    "airGappedOff": "Bağlı",
+    "airGappedOn": "Hava boşluklu",
+    "columns": {
+      "actions": "Eylemler",
+      "airGapped": "Hava boşluğu",
+      "eligibility": "Uygunluk",
+      "openPrs": "Açık PR'lar",
+      "policyState": "Politika",
+      "repository": "Depo"
+    },
+    "description": "Depo bazında düzeltme uygunluğu ve politika durumu.",
+    "eligible": "Hak sahibi",
+    "empty": "Hiçbir depo bulunamadı.",
+    "error": "Filo genel görünümü yüklenemedi.",
+    "notEligible": "Uygun değil",
+    "preview": "Önizleme",
+    "tableLabel": "Depo düzeltme durumu",
+    "title": "Filo Genel Bakışı"
+  },
+  "killSwitch": {
+    "active": "İyileştirme çalışmaları devam ediyor.",
+    "label": "Tüm düzeltme işlemlerini durdurun",
+    "noPolicy": "Duraklatma politikası yok.",
+    "paused": "Onarım çalışmaları durduruldu"
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
+    "airGapNotice": "İnternet bağlantısı olmayan kuruluşlar yalnızca yerel sağlayıcıları (Ollama, ONNX) kullanabilir. İnternet bağlantısı olmayan bir kuruluşa harici bir sağlayıcı (Claude, Gemini) ekleme talebi reddedilir.",
+    "apiKey": "API anahtarı",
+    "apiKeyHint": "Şifrelenmiş olarak saklanır ve bir daha asla görüntülenmez. Mevcut anahtarı korumak için boş bırakın.",
+    "apiKeyPlaceholder": "Sağlayıcının API anahtarını yapıştırın.",
+    "create": "Model hesabı ekle",
+    "createTitle": "Model hesabı ekle",
+    "default": "Varsayılan",
+    "description": "Aracı tabanlı düzeltme katmanının başarısız olan çekme isteklerini düzeltmek için kullandığı yapay zeka modeli sağlayıcılarını yapılandırın.",
+    "displayName": "Ekran adı",
+    "displayNamePlaceholder": "Örneğin, Claude'un takımının anahtarı",
+    "egress": {
+      "external": "Dış çıkış",
+      "local_only": "Sadece yerel"
+    },
+    "empty": "Henüz model hesap yok. Aracılı düzeltmeyi etkinleştirmek için bir tane ekleyin.",
+    "endpointUrl": "Uç nokta URL'si",
+    "endpointUrlPlaceholder": "http://localhost:11434",
+    "error": "Model hesapları yüklenemedi.",
+    "errors": {
+      "airGapped": "Bu kuruluş hava boşluklu bir yapıya sahiptir: harici çıkış modeli sağlayıcılarına (Claude, Gemini) izin verilmemektedir.",
+      "createFailed": "Model hesabı oluşturulamadı.",
+      "displayNameRequired": "Görünen ad gereklidir."
+    },
+    "modelId": "Model Kimliği",
+    "modelIdPlaceholder": "örneğin claude-sonnet-4",
+    "providerKind": "Sağlayıcı",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
+      "gemini": "İkizler burcu",
+      "ollama": "Ollama (yerel)",
+      "onnx": "ONNX (yerel)"
     },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
+    "save": "Hesabı kaydet",
+    "saving": "Tasarruf…",
+    "spend": "Harcamak",
+    "spendCap": "Harcama limiti (USD)",
+    "title": "Model Hesaplar",
+    "validate": "Doğrula",
+    "validating": "Doğrulama işlemi devam ediyor…",
     "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
-    "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
-    },
-    "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "invalid": "Geçersiz",
+      "unvalidated": "Doğrulanmamış",
+      "valid": "Geçerli"
     }
   },
+  "nav": "İyileştirme",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "Oyun Kitabı (YAML)",
+    "contentPlaceholder": "YAML oyun kılavuzuna girin…",
+    "create": "Yeni strateji kitabı",
+    "description": "Aracının kullandığı düzeltme istemlerini özelleştirin. Model çağrısı olmadan oluşturulan istemi önizlemek için bir playbook'u doğrulayın.",
+    "empty": "Henüz hiçbir playbook yok. Siz bir playbook ekleyene kadar yerleşik varsayılan playbook kullanılır.",
+    "error": "Oyun kitapçıkları yüklenemedi.",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "Oyun planı içeriği gereklidir.",
+      "nameRequired": "Bir isim gereklidir.",
+      "playbookIdRequired": "Bir oyun kitabı kimliği gereklidir.",
+      "previewFailed": "Playbook oluşturulamadı. Hata olup olmadığını kontrol etmek için YAML dosyasını inceleyin.",
+      "saveFailed": "Oyun kitabı kaydedilemedi. Hata olup olmadığını kontrol etmek için YAML dosyasını inceleyin."
+    },
+    "name": "İsim",
+    "namePlaceholder": "İnsan tarafından okunabilir isim",
+    "playbookId": "Oyun Kitabı Kimliği",
+    "playbookIdPlaceholder": "örneğin özel düzeltme",
+    "preview": "Doğrula / Önizle",
+    "previewing": "Oluşturuluyor…",
+    "renderedPrompt": "Oluşturulan komut istemi",
+    "save": "Oyun planını kaydet",
+    "saving": "Tasarruf…",
+    "scopeId": "Kapsam Kimliği",
+    "scopeIdPlaceholder": "Sorumlu ekip, kuruluş veya depo kimliği",
+    "scopeType": "Kapsam türü",
+    "title": "Oyun kılavuzları"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "Yeni politika",
+    "description": "Kapsamlarınız genelinde yönettiğiniz iyileştirme politikaları.",
+    "disable": "Devre dışı bırakmak",
+    "empty": "Henüz hiçbir politika yok. Başlamak için bir tane oluşturun.",
+    "enable": "Olanak vermek",
+    "statusDisabled": "Engelli",
+    "statusEnabled": "Etkinleştirilmiş",
+    "title": "Politikalar"
+  },
+  "policyState": {
+    "auto_merge": "Otomatik birleştirme",
+    "auto_with_approval": "Otomatik (onay ile)",
+    "disabled": "Engelli",
+    "dry_run": "Deneme çalıştırması",
+    "none": "Politika yok",
+    "suggest": "Tavsiye etmek"
+  },
+  "preview": {
+    "blockedByAirGap": "Bu depo, dış bağlantıdan tamamen izole edilmiştir; harici sağlayıcıların eylemleri engellenecektir.",
+    "conflicts": "Tahmin edilen çatışmalar",
+    "description": "Onarım işleminin ne yapacağına dair salt okunur bir projeksiyon. Herhangi bir değişiklik yapılmaz.",
+    "error": "Önizleme hesaplanamadı.",
+    "estimatedDuration": "Tahmini süre",
+    "loading": "Bilgisayar önizlemesi…",
+    "noneSelected": "Hiçbir çekme isteği seçilmeyecektir.",
+    "prCount": "Seçilen çekme istekleri",
+    "seconds": "{{count}}s",
+    "title": "Deneme çalıştırma önizlemesi — {{repo}}",
+    "wouldSelect": "Seçerdim"
+  },
+  "runState": {
+    "agent_fixing": "Ajan düzeltme",
+    "awaiting_approval": "Onay bekleniyor",
+    "cancelled": "İptal edildi",
+    "completed": "Tamamlanmış",
+    "consolidating": "Konsolidasyon",
+    "created": "Oluşturuldu",
+    "failed": "Arızalı",
+    "finalizing": "Sonlandırma",
+    "handoff_human": "İnsana teslim edildi",
+    "merging": "Birleştirme",
+    "no_op": "Ameliyat yok",
+    "selecting": "PR'ları seçme",
+    "verifying": "Doğrulama"
+  },
+  "runs": {
+    "approve": "Onaylamak",
+    "back": "Koşulara geri dön",
+    "columns": {
+      "actions": "Eylemler",
+      "pr": "Konsolide PR",
+      "repository": "Depo",
+      "started": "Başladı",
+      "state": "Durum"
+    },
+    "description": "Onarım geçmişi, canlı durum, CI durumu ve çatışma ayrıntılarıyla birlikte görüntülenir.",
+    "dispositions": "Çekme isteği durumları",
+    "empty": "Henüz herhangi bir düzeltme işlemi yapılmadı.",
+    "error": "Düzeltme işlemleri yüklenemedi.",
+    "noDispositions": "Henüz herhangi bir işlem kaydedilmedi.",
+    "reject": "Reddetmek",
+    "tableLabel": "Düzeltme çalıştırma geçmişi",
+    "timeline": "Zaman çizelgesi",
+    "timelineLabel": "Çalıştırma durumu zaman çizelgesi",
+    "title": "Onarım işlemleri gerçekleştirilir.",
+    "view": "Görüş"
+  },
+  "scopeType": {
+    "org": "Organizasyon",
+    "repository": "Depo",
+    "team": "Takım",
+    "user": "Kullanıcı"
+  },
+  "subtitle": "Politika tabanlı kontrollerle depolarınız genelinde çekme isteklerinin birleştirilmesini otomatikleştirin.",
+  "tabs": {
+    "audit": "Denetim",
+    "fleet": "Filo",
+    "modelAccounts": "Model Hesaplar",
+    "playbooks": "Oyun kılavuzları",
+    "policies": "Politikalar",
+    "runs": "Koşular"
+  },
+  "title": "Filo İyileştirme"
 }

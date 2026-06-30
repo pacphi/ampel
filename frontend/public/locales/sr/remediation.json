@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "Класификатор",
+    "cost": "Цена",
+    "failureClass": "Класа квара",
+    "iterations": "Итерације",
+    "status": {
+      "budget_exceeded": "Буџет је прекорачен",
+      "failed": "Неуспешно",
+      "handoff_human": "Предато човеку",
+      "running": "Трчање",
+      "succeeded": "Успело"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "Сесија агента",
+    "tokensUsed": "Коришћени токени",
+    "transcript": "Погледајте транскрипт"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "Консолидовано",
+      "merged": "Спојено"
     },
+    "allRepos": "Сви репозиторијуми",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
-      "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "action": "Акција",
+      "autonomy": "Аутономија",
+      "completedAt": "Завршено",
+      "pr": "односи с јавношћу",
+      "repository": "Репозиторијум"
+    },
+    "description": "Само додавање записа о аутономним спајањима и затварањима.",
+    "empty": "Нису забележене аутономне акције.",
+    "exportCsv": "Извези CSV датотеку",
+    "filterRepo": "Репозиторијум",
+    "since": "Од",
+    "tableLabel": "Дневник ревизије санације",
+    "title": "Дневник ревизије",
+    "until": "До"
+  },
+  "autonomyHint": {
+    "auto_merge": "Аутоматски се консолидује и спаја без људског одобрења.",
+    "consolidate": "Обједињује захтеве за повлачење, али захтева људско одобрење пре спајања.",
+    "dry_run": "Прегледа планове консолидације без икаквих измена.",
+    "off": "Санација је онемогућена за овај опсег."
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "Аутомат са одобрењем",
+    "dry_run_only": "Само пробни рад",
+    "fully_autonomous": "Потпуно аутономан",
+    "suggest_only": "Само предлози"
+  },
+  "autonomyStop": {
+    "auto_merge": "Аутоматско спајање",
+    "consolidate": "Само консолидација",
+    "dry_run": "Пробни рад",
+    "off": "Искључено"
+  },
+  "ci": {
+    "columns": {
+      "check": "Провери",
+      "status": "Статус",
+      "type": "Тип"
+    },
+    "empty": "Нема доступних информација о CI.",
+    "headSha": "Главни ША",
+    "logs": "Дневници",
+    "optional": "Опционо",
+    "predictedConflict": "Предвиђени сукоб",
+    "required": "Обавезно",
+    "statusCheck": "Статус CI",
+    "tableLabel": "Матрица провере CI",
+    "title": "CI провере",
+    "tone": {
+      "green": "Пасовање",
+      "red": "Неуспех",
+      "yellow": "На чекању"
+    },
+    "viewLogs": "Прикажи логове"
+  },
+  "conflicts": {
+    "conflicted": "Сукобљено",
+    "empty": "Нема сукоба или прескочених захтева за повлачење.",
+    "skipped": "Прескочено",
+    "title": "Сукоби"
+  },
+  "disposition": {
+    "closedWithRef": "Затворено (замењено)",
+    "consolidated": "Консолидовано",
+    "leftOpen": "Остављено отворено",
+    "skippedConflict": "Прескочено (сукоб)"
+  },
+  "editor": {
+    "autonomy": "Ниво аутономије",
+    "confirmAutoMerge": {
+      "confirm": "Омогући аутоматско спајање",
+      "description": "Аутоматско спајање обједињује и спаја захтеве за превлачење аутоматски без људског одобрења. Ово може изменити ваше репозиторијуме. Да ли сте сигурни?",
+      "previewRequired": "Покрените преглед возног парка пре него што први пут омогућите аутоматско спајање, како бисте могли тачно да видите шта би покретање урадило.",
+      "title": "Омогући аутоматско спајање?"
+    },
+    "createTitle": "Креирај политику",
+    "description": "Конфигуришите како се санација понаша за овај опсег.",
+    "editTitle": "Измени политику",
+    "enabled": "Омогућено",
+    "errors": {
+      "saveFailed": "Чување политике није успело.",
+      "scopeIdRequired": "ИД опсега је обавезан."
+    },
+    "maxPrsPerRun": "Максимални бројеви пријава по трчању",
+    "minOpenPrs": "Минимални отворени PR-ови",
+    "save": "Сачувај политику",
+    "saving": "Чување…",
+    "scopeId": "ИД опсега",
+    "scopeIdPlaceholder": "Унесите ИД спремишта, тима, организације или корисника",
+    "scopeType": "Тип опсега"
+  },
+  "fleet": {
+    "airGappedOff": "Повезано",
+    "airGappedOn": "Ваздушни зазор",
+    "columns": {
+      "actions": "Акције",
+      "airGapped": "Ваздушни зазор",
+      "eligibility": "Право учешћа",
+      "openPrs": "Отворени захтеви за запошљавање",
+      "policyState": "Политика",
+      "repository": "Репозиторијум"
+    },
+    "description": "Право на санацију по репозиторијуму и стање политике.",
+    "eligible": "Испуњава услове",
+    "empty": "Није пронађено ниједно спремиште.",
+    "error": "Учитавање прегледа возног парка није успело.",
+    "notEligible": "Не испуњава услове",
+    "preview": "Преглед",
+    "tableLabel": "Статус санације спремишта",
+    "title": "Преглед возног парка"
+  },
+  "killSwitch": {
+    "active": "Санација је активна",
+    "label": "Паузирај све санације",
+    "noPolicy": "Нема правила за паузирање",
+    "paused": "Санација је паузирана"
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
-    "providerKindLabel": {
-      "claude": "Claude",
-      "gemini": "Gemini",
-      "ollama": "Ollama (local)",
-      "onnx": "ONNX (local)"
-    },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
-    "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
+    "airGapNotice": "Организације са ваздушним јазом могу користити само локалне добављаче (Ollama, ONNX). Додавање екстерног добављача (Claude, Gemini) организацији са ваздушним јазом је одбијено.",
+    "apiKey": "API кључ",
+    "apiKeyHint": "Чува се шифровано и никада се више не приказује. Оставите празно да бисте задржали постојећи кључ.",
+    "apiKeyPlaceholder": "Налепите API кључ добављача",
+    "create": "Додај модел налога",
+    "createTitle": "Додај модел налога",
+    "default": "Подразумевано",
+    "description": "Конфигуришите добављаче вештачке интелигенције које агентски ниво санације користи за исправљање неуспешних захтева за повлачење.",
+    "displayName": "Приказано име",
+    "displayNamePlaceholder": "нпр. кључ Тима Клод",
     "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
+      "external": "Спољни излаз",
+      "local_only": "Само локално"
     },
+    "empty": "Још увек нема модел налога. Додајте један да бисте омогућили агентску санацију.",
+    "endpointUrl": "URL крајње тачке",
+    "endpointUrlPlaceholder": "хттп://лоцалхост:11434",
+    "error": "Учитавање модела налога није успело.",
     "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "airGapped": "Ова организација је изолована: добављачи модела спољашњег излаза (Claude, Gemini) нису дозвољени.",
+      "createFailed": "Није успело креирање налога модела.",
+      "displayNameRequired": "Потребно је приказано име."
+    },
+    "modelId": "ИД модела",
+    "modelIdPlaceholder": "нпр. Клод-сонет-4",
+    "providerKind": "Провајдер",
+    "providerKindLabel": {
+      "claude": "Клод",
+      "gemini": "Близанци",
+      "ollama": "Олама (локално)",
+      "onnx": "ONNX (локално)"
+    },
+    "save": "Сачувај налог",
+    "saving": "Чување…",
+    "spend": "Потрошите",
+    "spendCap": "Ограничење потрошње (USD)",
+    "title": "Модел рачуни",
+    "validate": "Валидирај",
+    "validating": "Валидација…",
+    "validationStatus": {
+      "invalid": "Неважеће",
+      "unvalidated": "Непотврђено",
+      "valid": "Важи"
     }
   },
+  "nav": "Санација",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "Приручник (YAML)",
+    "contentPlaceholder": "Уђите у приручник YAML…",
+    "create": "Нови приручник",
+    "description": "Прилагодите упите за санацију које агент користи. Валидирајте плејбук да бисте прегледали приказани упит без позива модела.",
+    "empty": "Још нема референтних приручника. Уграђени подразумевани референтни приручник се користи док га не додате.",
+    "error": "Учитавање плејбукова није успело.",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "Садржај приручника је обавезан.",
+      "nameRequired": "Потребно је име.",
+      "playbookIdRequired": "Потребан је ИД плејбука.",
+      "previewFailed": "Није успело приказивање плејбука. Проверите YAML да ли има грешака.",
+      "saveFailed": "Чување приручника није успело. Проверите YAML датотеку за грешке."
+    },
+    "name": "Име",
+    "namePlaceholder": "Име читљиво људима",
+    "playbookId": "ИД приручника",
+    "playbookIdPlaceholder": "нпр. прилагођена поправка",
+    "preview": "Валидација / Преглед",
+    "previewing": "Рендеровање…",
+    "renderedPrompt": "Приказани упит",
+    "save": "Сачувај приручник",
+    "saving": "Чување…",
+    "scopeId": "ИД опсега",
+    "scopeIdPlaceholder": "ИД тима, организације или спремишта који је власник",
+    "scopeType": "Тип опсега",
+    "title": "Приручници"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "Нова политика",
+    "description": "Политике санације које управљате у свим својим областима.",
+    "disable": "Онемогући",
+    "empty": "Још нема смерница. Направите једну да бисте започели.",
+    "enable": "Омогући",
+    "statusDisabled": "Онемогућено",
+    "statusEnabled": "Омогућено",
+    "title": "Политике"
+  },
+  "policyState": {
+    "auto_merge": "Аутоматско спајање",
+    "auto_with_approval": "Аутоматски (уз одобрење)",
+    "disabled": "Онемогућено",
+    "dry_run": "Пробни рад",
+    "none": "Без политике",
+    "suggest": "Предложи"
+  },
+  "preview": {
+    "blockedByAirGap": "Ово спремиште је затворено; акције спољних добављача би биле блокиране.",
+    "conflicts": "Предвиђени сукоби",
+    "description": "Пројекција само за читање онога што би се санација догодила. Нису направљене никакве измене.",
+    "error": "Израчунавање прегледа није успело.",
+    "estimatedDuration": "Процењено трајање",
+    "loading": "Преглед рачунарства…",
+    "noneSelected": "Ниједан захтев за повлачење не би био изабран.",
+    "prCount": "Изабрани захтеви за повлачење",
+    "seconds": "{{count}}s",
+    "title": "Пробни преглед — {{repo}}",
+    "wouldSelect": "Изабрао/ла бих"
+  },
+  "runState": {
+    "agent_fixing": "Поправка агента",
+    "awaiting_approval": "Чека се одобрење",
+    "cancelled": "Отказано",
+    "completed": "Завршено",
+    "consolidating": "Консолидовање",
+    "created": "Креирано",
+    "failed": "Неуспешно",
+    "finalizing": "Финализација",
+    "handoff_human": "Предато човеку",
+    "merging": "Спајање",
+    "no_op": "Забрањено",
+    "selecting": "Избор ПР-ова",
+    "verifying": "Верификовање"
+  },
+  "runs": {
+    "approve": "Одобри",
+    "back": "Назад на трчања",
+    "columns": {
+      "actions": "Акције",
+      "pr": "Консолидовани односи с јавношћу",
+      "repository": "Репозиторијум",
+      "started": "Започето",
+      "state": "Држава"
+    },
+    "description": "Историја санације се покреће са активним стањем, CI статусом и детаљима о конфликту.",
+    "dispositions": "Распоред захтева за повлачење",
+    "empty": "Још увек нису спроведене санационе радове.",
+    "error": "Учитавање покретања санације није успело.",
+    "noDispositions": "Још увек нису забележене никакве одлуке.",
+    "reject": "Одбиј",
+    "tableLabel": "Историја извршења санације",
+    "timeline": "Временска линија",
+    "timelineLabel": "Временска линија стања покретања",
+    "title": "Санација се одвија",
+    "view": "Поглед"
+  },
+  "scopeType": {
+    "org": "Организација",
+    "repository": "Репозиторијум",
+    "team": "Тим",
+    "user": "Корисник"
+  },
+  "subtitle": "Аутоматизујте консолидацију захтева за повлачење у вашим репозиторијумима помоћу контрола вођених политикама.",
+  "tabs": {
+    "audit": "Ревизија",
+    "fleet": "Флота",
+    "modelAccounts": "Модел рачуни",
+    "playbooks": "Приручници",
+    "policies": "Политике",
+    "runs": "Трчи"
+  },
+  "title": "Санација возног парка"
 }

@@ -1,301 +1,301 @@
 {
-  "nav": "Remediation",
-  "title": "Fleet Remediation",
-  "subtitle": "Automate pull request consolidation across your repositories with policy-driven controls.",
-  "tabs": {
-    "fleet": "Fleet",
-    "runs": "Runs",
-    "policies": "Policies",
-    "audit": "Audit",
-    "modelAccounts": "Model Accounts",
-    "playbooks": "Playbooks"
-  },
-  "fleet": {
-    "title": "Fleet Overview",
-    "description": "Per-repository remediation eligibility and policy state.",
-    "tableLabel": "Repository remediation status",
-    "error": "Failed to load the fleet overview.",
-    "empty": "No repositories found.",
-    "eligible": "Eligible",
-    "notEligible": "Not eligible",
-    "airGappedOn": "Air-gapped",
-    "airGappedOff": "Connected",
-    "preview": "Preview",
-    "columns": {
-      "repository": "Repository",
-      "openPrs": "Open PRs",
-      "eligibility": "Eligibility",
-      "policyState": "Policy",
-      "airGapped": "Air-gap",
-      "actions": "Actions"
-    }
-  },
-  "policyState": {
-    "none": "No policy",
-    "disabled": "Disabled",
-    "dry_run": "Dry-run",
-    "suggest": "Suggest",
-    "auto_with_approval": "Auto (with approval)",
-    "auto_merge": "Auto-merge"
-  },
-  "preview": {
-    "title": "Dry-run preview — {{repo}}",
-    "description": "Read-only projection of what a remediation run would do. No changes are made.",
-    "loading": "Computing preview…",
-    "error": "Failed to compute the preview.",
-    "blockedByAirGap": "This repository is air-gapped; external provider actions would be blocked.",
-    "prCount": "Pull requests selected",
-    "estimatedDuration": "Estimated duration",
-    "seconds": "{{count}}s",
-    "conflicts": "Predicted conflicts",
-    "wouldSelect": "Would select",
-    "noneSelected": "No pull requests would be selected."
-  },
-  "scopeType": {
-    "repository": "Repository",
-    "team": "Team",
-    "org": "Organization",
-    "user": "User"
-  },
-  "autonomyLevel": {
-    "dry_run_only": "Dry-run only",
-    "suggest_only": "Suggest only",
-    "auto_with_approval": "Auto with approval",
-    "fully_autonomous": "Fully autonomous"
-  },
-  "autonomyStop": {
-    "off": "Off",
-    "dry_run": "Dry-run",
-    "consolidate": "Consolidate-only",
-    "auto_merge": "Auto-merge"
-  },
-  "autonomyHint": {
-    "off": "Remediation is disabled for this scope.",
-    "dry_run": "Previews consolidation plans without making any changes.",
-    "consolidate": "Consolidates pull requests but requires human approval before merging.",
-    "auto_merge": "Consolidates and merges automatically without human approval."
-  },
-  "editor": {
-    "createTitle": "Create policy",
-    "editTitle": "Edit policy",
-    "description": "Configure how remediation behaves for this scope.",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "enabled": "Enabled",
-    "autonomy": "Autonomy level",
-    "minOpenPrs": "Minimum open PRs",
-    "maxPrsPerRun": "Max PRs per run",
-    "save": "Save policy",
-    "saving": "Saving…",
-    "errors": {
-      "scopeIdRequired": "Scope ID is required.",
-      "saveFailed": "Failed to save the policy."
+  "agentSession": {
+    "classifier": "Clasificador",
+    "cost": "Costo",
+    "failureClass": "Clase de fracaso",
+    "iterations": "Iteraciones",
+    "status": {
+      "budget_exceeded": "Presupuesto excedido",
+      "failed": "Fallido",
+      "handoff_human": "Entregado a un humano",
+      "running": "Correr",
+      "succeeded": "Tuvo éxito"
     },
-    "confirmAutoMerge": {
-      "title": "Enable auto-merge?",
-      "description": "Auto-merge consolidates and merges pull requests automatically without human approval. This can modify your repositories. Are you sure?",
-      "confirm": "Enable auto-merge",
-      "previewRequired": "Run a fleet preview before enabling Auto-merge for the first time, so you can see exactly what a run would do."
-    }
-  },
-  "policies": {
-    "title": "Policies",
-    "description": "Remediation policies you manage across your scopes.",
-    "create": "New policy",
-    "empty": "No policies yet. Create one to get started.",
-    "statusEnabled": "Enabled",
-    "statusDisabled": "Disabled",
-    "enable": "Enable",
-    "disable": "Disable"
-  },
-  "killSwitch": {
-    "label": "Pause all remediation",
-    "active": "Remediation active",
-    "paused": "Remediation paused",
-    "noPolicy": "No policy to pause"
-  },
-  "runs": {
-    "title": "Remediation runs",
-    "description": "History of remediation runs with live state, CI status, and conflict details.",
-    "tableLabel": "Remediation run history",
-    "timelineLabel": "Run state timeline",
-    "error": "Failed to load remediation runs.",
-    "empty": "No remediation runs yet.",
-    "back": "Back to runs",
-    "view": "View",
-    "timeline": "Timeline",
-    "approve": "Approve",
-    "reject": "Reject",
-    "dispositions": "Pull request dispositions",
-    "noDispositions": "No dispositions recorded yet.",
-    "columns": {
-      "repository": "Repository",
-      "state": "State",
-      "pr": "Consolidated PR",
-      "started": "Started",
-      "actions": "Actions"
-    }
-  },
-  "runState": {
-    "created": "Created",
-    "selecting": "Selecting PRs",
-    "consolidating": "Consolidating",
-    "verifying": "Verifying",
-    "awaiting_approval": "Awaiting approval",
-    "merging": "Merging",
-    "finalizing": "Finalizing",
-    "agent_fixing": "Agent fixing",
-    "completed": "Completed",
-    "handoff_human": "Handed off to human",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "no_op": "No-op"
-  },
-  "disposition": {
-    "consolidated": "Consolidated",
-    "closedWithRef": "Closed (superseded)",
-    "skippedConflict": "Skipped (conflict)",
-    "leftOpen": "Left open"
-  },
-  "ci": {
-    "title": "CI checks",
-    "tableLabel": "CI check matrix",
-    "empty": "No CI information available.",
-    "statusCheck": "CI status",
-    "predictedConflict": "Predicted conflict",
-    "required": "Required",
-    "optional": "Optional",
-    "headSha": "Head SHA",
-    "logs": "Logs",
-    "viewLogs": "View logs",
-    "columns": {
-      "check": "Check",
-      "type": "Type",
-      "status": "Status"
-    },
-    "tone": {
-      "green": "Passing",
-      "yellow": "Pending",
-      "red": "Failing"
-    }
-  },
-  "conflicts": {
-    "title": "Conflicts",
-    "empty": "No conflicts or skipped pull requests.",
-    "conflicted": "Conflicted",
-    "skipped": "Skipped"
+    "title": "Sesión con el agente",
+    "tokensUsed": "Fichas utilizadas",
+    "transcript": "Ver transcripción"
   },
   "audit": {
-    "title": "Audit log",
-    "description": "Append-only record of autonomous merges and closes.",
-    "tableLabel": "Remediation audit log",
-    "empty": "No autonomous actions recorded.",
-    "filterRepo": "Repository",
-    "allRepos": "All repositories",
-    "since": "Since",
-    "until": "Until",
-    "exportCsv": "Export CSV",
     "action": {
-      "merged": "Merged",
-      "consolidated": "Consolidated"
+      "consolidated": "Consolidado",
+      "merged": "Fusionado"
     },
+    "allRepos": "Todos los repositorios",
     "columns": {
-      "action": "Action",
-      "repository": "Repository",
-      "pr": "PR",
-      "autonomy": "Autonomy",
-      "completedAt": "Completed"
-    }
+      "action": "Acción",
+      "autonomy": "Autonomía",
+      "completedAt": "Terminado",
+      "pr": "Relaciones Públicas",
+      "repository": "Repositorio"
+    },
+    "description": "Registro de fusiones y cierres autónomos (solo para añadir).",
+    "empty": "No se registraron acciones autónomas.",
+    "exportCsv": "Exportar CSV",
+    "filterRepo": "Repositorio",
+    "since": "Desde",
+    "tableLabel": "Registro de auditoría de remediación",
+    "title": "Registro de auditoría",
+    "until": "Hasta"
+  },
+  "autonomyHint": {
+    "auto_merge": "Consolida y fusiona automáticamente sin aprobación humana.",
+    "consolidate": "Consolida las solicitudes de extracción, pero requiere aprobación humana antes de la fusión.",
+    "dry_run": "Permite previsualizar los planes de consolidación sin realizar ningún cambio.",
+    "off": "La corrección está deshabilitada para este ámbito."
+  },
+  "autonomyLevel": {
+    "auto_with_approval": "Automóvil con aprobación",
+    "dry_run_only": "Solo prueba en seco",
+    "fully_autonomous": "Totalmente autónomo",
+    "suggest_only": "Sugerir solamente"
+  },
+  "autonomyStop": {
+    "auto_merge": "Fusión automática",
+    "consolidate": "Consolidar únicamente",
+    "dry_run": "Ensayo general",
+    "off": "Apagado"
+  },
+  "ci": {
+    "columns": {
+      "check": "Controlar",
+      "status": "Estado",
+      "type": "Tipo"
+    },
+    "empty": "No hay información disponible sobre CI.",
+    "headSha": "Jefe SHA",
+    "logs": "Registros",
+    "optional": "Opcional",
+    "predictedConflict": "Conflicto previsto",
+    "required": "Requerido",
+    "statusCheck": "estado de CI",
+    "tableLabel": "matriz de verificación de CI",
+    "title": "comprobaciones de CI",
+    "tone": {
+      "green": "Paso",
+      "red": "Defecto",
+      "yellow": "Pendiente"
+    },
+    "viewLogs": "Ver registros"
+  },
+  "conflicts": {
+    "conflicted": "Conflicto",
+    "empty": "No hay conflictos ni solicitudes de extracción omitidas.",
+    "skipped": "Saltado",
+    "title": "Conflictos"
+  },
+  "disposition": {
+    "closedWithRef": "Cerrado (sustituido)",
+    "consolidated": "Consolidado",
+    "leftOpen": "Dejado abierto",
+    "skippedConflict": "Omitido (conflicto)"
+  },
+  "editor": {
+    "autonomy": "Nivel de autonomía",
+    "confirmAutoMerge": {
+      "confirm": "Habilitar la fusión automática",
+      "description": "La fusión automática consolida y combina las solicitudes de extracción automáticamente sin aprobación humana. Esto puede modificar tus repositorios. ¿Estás seguro?",
+      "previewRequired": "Antes de habilitar la fusión automática por primera vez, ejecute una vista previa de la flota para que pueda ver exactamente qué sucedería al ejecutarla.",
+      "title": "¿Activar la fusión automática?"
+    },
+    "createTitle": "Crear política",
+    "description": "Configure cómo se comporta la remediación para este ámbito.",
+    "editTitle": "Política de edición",
+    "enabled": "Activado",
+    "errors": {
+      "saveFailed": "No se pudo guardar la póliza.",
+      "scopeIdRequired": "Se requiere un ID de ámbito."
+    },
+    "maxPrsPerRun": "Máximo de récords personales por carrera",
+    "minOpenPrs": "PR abiertos mínimos",
+    "save": "Política de ahorro",
+    "saving": "Ahorro…",
+    "scopeId": "ID de alcance",
+    "scopeIdPlaceholder": "Introduzca el ID del repositorio, equipo, organización o usuario.",
+    "scopeType": "Tipo de alcance"
+  },
+  "fleet": {
+    "airGappedOff": "Conectado",
+    "airGappedOn": "Separado de aire",
+    "columns": {
+      "actions": "Comportamiento",
+      "airGapped": "espacio de aire",
+      "eligibility": "Elegibilidad",
+      "openPrs": "Relaciones públicas abiertas",
+      "policyState": "Política",
+      "repository": "Repositorio"
+    },
+    "description": "Requisitos de elegibilidad y política de remediación por repositorio.",
+    "eligible": "Elegible",
+    "empty": "No se encontraron repositorios.",
+    "error": "No se pudo cargar la descripción general de la flota.",
+    "notEligible": "No elegible",
+    "preview": "Avance",
+    "tableLabel": "Estado de remediación del repositorio",
+    "title": "Descripción general de la flota"
+  },
+  "killSwitch": {
+    "active": "Remediación activa",
+    "label": "Suspender todas las acciones correctivas.",
+    "noPolicy": "No hay ninguna política que se pueda pausar",
+    "paused": "Se suspendieron las labores de remediación."
   },
   "modelAccounts": {
-    "title": "Model Accounts",
-    "description": "Configure the AI model providers the agentic remediation tier uses to fix failing pull requests.",
-    "airGapNotice": "Air-gapped organizations may only use local providers (Ollama, ONNX). Adding an external provider (Claude, Gemini) to an air-gapped organization is rejected.",
-    "create": "Add model account",
-    "createTitle": "Add model account",
-    "providerKind": "Provider",
+    "airGapNotice": "Las organizaciones aisladas de la red solo pueden usar proveedores locales (Ollama, ONNX). No se permite agregar un proveedor externo (Claude, Gemini) a una organización aislada de la red.",
+    "apiKey": "clave API",
+    "apiKeyHint": "Se almacena encriptado y no se vuelve a mostrar. Déjelo en blanco para conservar la clave existente.",
+    "apiKeyPlaceholder": "Pegue la clave API del proveedor",
+    "create": "Agregar cuenta modelo",
+    "createTitle": "Agregar cuenta modelo",
+    "default": "Por defecto",
+    "description": "Configure los proveedores de modelos de IA que utiliza la capa de remediación agencial para corregir las solicitudes de extracción fallidas.",
+    "displayName": "Nombre para mostrar",
+    "displayNamePlaceholder": "Por ejemplo, la clave del equipo Claude",
+    "egress": {
+      "external": "Salida exterior",
+      "local_only": "Solo para residentes locales"
+    },
+    "empty": "Aún no hay cuentas modelo. Añada una para habilitar la remediación automatizada.",
+    "endpointUrl": "URL del punto final",
+    "endpointUrlPlaceholder": "http://localhost:11434",
+    "error": "No se pudieron cargar las cuentas del modelo.",
+    "errors": {
+      "airGapped": "Esta organización está aislada de la red: no se permiten proveedores de modelos de salida externa (Claude, Gemini).",
+      "createFailed": "No se pudo crear la cuenta modelo.",
+      "displayNameRequired": "Se requiere un nombre para mostrar."
+    },
+    "modelId": "ID del modelo",
+    "modelIdPlaceholder": "p. ej., soneto 4 de Claude",
+    "providerKind": "Proveedor",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Gemini",
+      "gemini": "Géminis",
       "ollama": "Ollama (local)",
       "onnx": "ONNX (local)"
     },
-    "displayName": "Display name",
-    "displayNamePlaceholder": "e.g. Team Claude key",
-    "apiKey": "API key",
-    "apiKeyPlaceholder": "Paste the provider API key",
-    "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
-    "endpointUrl": "Endpoint URL",
-    "endpointUrlPlaceholder": "http://localhost:11434",
-    "modelId": "Model ID",
-    "modelIdPlaceholder": "e.g. claude-sonnet-4",
-    "spendCap": "Spend cap (USD)",
-    "spend": "Spend",
-    "default": "Default",
-    "save": "Save account",
-    "saving": "Saving…",
-    "validate": "Validate",
-    "validating": "Validating…",
-    "empty": "No model accounts yet. Add one to enable agentic remediation.",
-    "error": "Failed to load model accounts.",
+    "save": "Guardar cuenta",
+    "saving": "Ahorro…",
+    "spend": "Gastar",
+    "spendCap": "Límite de gasto (USD)",
+    "title": "Modelos de cuentas",
+    "validate": "Validar",
+    "validating": "Validando…",
     "validationStatus": {
-      "unvalidated": "Unvalidated",
-      "valid": "Valid",
-      "invalid": "Invalid"
-    },
-    "egress": {
-      "external": "External egress",
-      "local_only": "Local only"
-    },
-    "errors": {
-      "displayNameRequired": "A display name is required.",
-      "createFailed": "Failed to create the model account.",
-      "airGapped": "This organization is air-gapped: external-egress model providers (Claude, Gemini) are not allowed."
+      "invalid": "Inválido",
+      "unvalidated": "No validado",
+      "valid": "Válido"
     }
   },
+  "nav": "Remediación",
   "playbooks": {
-    "title": "Playbooks",
-    "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
-    "create": "New playbook",
-    "playbookId": "Playbook ID",
-    "playbookIdPlaceholder": "e.g. custom-remediation",
-    "name": "Name",
-    "namePlaceholder": "Human-readable name",
-    "scopeType": "Scope type",
-    "scopeId": "Scope ID",
-    "scopeIdPlaceholder": "Owning team, org, or repository ID",
-    "content": "Playbook (YAML)",
-    "contentPlaceholder": "Enter the playbook YAML…",
-    "save": "Save playbook",
-    "saving": "Saving…",
-    "preview": "Validate / Preview",
-    "previewing": "Rendering…",
-    "renderedPrompt": "Rendered prompt",
-    "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
-    "error": "Failed to load playbooks.",
+    "content": "Manual de jugadas (YAML)",
+    "contentPlaceholder": "Introduzca el manual de procedimientos YAML…",
+    "create": "Nuevo manual de estrategias",
+    "description": "Personaliza las indicaciones de corrección que utiliza el agente. Valida un playbook para previsualizar la indicación renderizada sin realizar ninguna llamada al modelo.",
+    "empty": "Aún no hay playbooks. Se utiliza el playbook predeterminado integrado hasta que añadas uno.",
+    "error": "No se pudieron cargar los playbooks.",
     "errors": {
-      "playbookIdRequired": "A playbook ID is required.",
-      "nameRequired": "A name is required.",
-      "contentRequired": "Playbook content is required.",
-      "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
-    }
+      "contentRequired": "Se requiere el contenido del manual de jugadas.",
+      "nameRequired": "Se requiere un nombre.",
+      "playbookIdRequired": "Se requiere un ID de playbook.",
+      "previewFailed": "No se pudo generar el playbook. Compruebe el archivo YAML en busca de errores.",
+      "saveFailed": "No se pudo guardar el playbook. Compruebe el archivo YAML en busca de errores."
+    },
+    "name": "Nombre",
+    "namePlaceholder": "Nombre legible para humanos",
+    "playbookId": "ID del libro de jugadas",
+    "playbookIdPlaceholder": "p. ej., corrección personalizada",
+    "preview": "Validar / Vista previa",
+    "previewing": "Representación…",
+    "renderedPrompt": "Se generó rápidamente",
+    "save": "Guardar manual de jugadas",
+    "saving": "Ahorro…",
+    "scopeId": "ID de alcance",
+    "scopeIdPlaceholder": "ID del equipo, organización o repositorio propietario",
+    "scopeType": "Tipo de alcance",
+    "title": "Manuales de jugadas"
   },
-  "agentSession": {
-    "title": "Agent session",
-    "iterations": "Iterations",
-    "tokensUsed": "Tokens used",
-    "cost": "Cost",
-    "failureClass": "Failure class",
-    "classifier": "Classifier",
-    "transcript": "View transcript",
-    "status": {
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "failed": "Failed",
-      "handoff_human": "Handed off to human",
-      "budget_exceeded": "Budget exceeded"
-    }
-  }
+  "policies": {
+    "create": "Nueva política",
+    "description": "Políticas de remediación que usted administra en todos sus ámbitos.",
+    "disable": "Desactivar",
+    "empty": "Aún no hay políticas. Crea una para empezar.",
+    "enable": "Permitir",
+    "statusDisabled": "Desactivado",
+    "statusEnabled": "Activado",
+    "title": "Políticas"
+  },
+  "policyState": {
+    "auto_merge": "Fusión automática",
+    "auto_with_approval": "Automóvil (con aprobación)",
+    "disabled": "Desactivado",
+    "dry_run": "Ensayo general",
+    "none": "Ninguna política",
+    "suggest": "Sugerir"
+  },
+  "preview": {
+    "blockedByAirGap": "Este repositorio está aislado de la red; las acciones de proveedores externos estarían bloqueadas.",
+    "conflicts": "Conflictos previstos",
+    "description": "Proyección de solo lectura de lo que haría una ejecución de corrección. No se realizan cambios.",
+    "error": "No se pudo calcular la vista previa.",
+    "estimatedDuration": "Duración estimada",
+    "loading": "Vista previa de informática…",
+    "noneSelected": "No se seleccionará ninguna solicitud de extracción.",
+    "prCount": "Solicitudes de extracción seleccionadas",
+    "seconds": "{{count}}s",
+    "title": "Vista previa de prueba — {{repo}}",
+    "wouldSelect": "¿Elegiría?"
+  },
+  "runState": {
+    "agent_fixing": "Solución de problemas del agente",
+    "awaiting_approval": "Pendiente de aprobación",
+    "cancelled": "Cancelado",
+    "completed": "Terminado",
+    "consolidating": "Consolidación",
+    "created": "Creado",
+    "failed": "Fallido",
+    "finalizing": "Finalización",
+    "handoff_human": "Entregado a un humano",
+    "merging": "Fusión",
+    "no_op": "No funciona",
+    "selecting": "Selección de PR",
+    "verifying": "Verificando"
+  },
+  "runs": {
+    "approve": "Aprobar",
+    "back": "Volver a las carreras",
+    "columns": {
+      "actions": "Comportamiento",
+      "pr": "Relaciones públicas consolidadas",
+      "repository": "Repositorio",
+      "started": "Comenzó",
+      "state": "Estado"
+    },
+    "description": "El historial de correcciones se ejecuta con el estado actual, el estado de los elementos de configuración y los detalles de los conflictos.",
+    "dispositions": "Disposiciones de solicitudes de extracción",
+    "empty": "Aún no se han realizado ejecuciones de corrección.",
+    "error": "No se pudieron cargar las ejecuciones de corrección.",
+    "noDispositions": "Aún no se han registrado resoluciones.",
+    "reject": "Rechazar",
+    "tableLabel": "Historial de ejecución de la remediación",
+    "timeline": "Cronología",
+    "timelineLabel": "Cronograma estatal de ejecución",
+    "title": "Se realizan trabajos de remediación",
+    "view": "Vista"
+  },
+  "scopeType": {
+    "org": "Organización",
+    "repository": "Repositorio",
+    "team": "Equipo",
+    "user": "Usuario"
+  },
+  "subtitle": "Automatice la consolidación de solicitudes de extracción en todos sus repositorios con controles basados en políticas.",
+  "tabs": {
+    "audit": "Auditoría",
+    "fleet": "Flota",
+    "modelAccounts": "Modelos de cuentas",
+    "playbooks": "Manuales de jugadas",
+    "policies": "Políticas",
+    "runs": "Corre"
+  },
+  "title": "Remediación de flotas"
 }
