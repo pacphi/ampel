@@ -255,6 +255,9 @@ jobs:
           name: playwright-rtl-report
           path: frontend/playwright-report/
           retention-days: 7
+          # The report only exists when tests/visual/*.spec.ts are present;
+          # there are none today, so don't warn when there's nothing to upload.
+          if-no-files-found: ignore
 
       - name: Upload visual diffs
         if: failure()
@@ -263,6 +266,7 @@ jobs:
           name: visual-diffs
           path: frontend/test-results/
           retention-days: 7
+          if-no-files-found: ignore
 
   test-complex-scripts:
     name: Test Complex Scripts (Arabic, Thai, Korean)

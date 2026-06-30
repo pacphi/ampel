@@ -15,6 +15,12 @@ env:
   REGISTRY: ghcr.io
   IMAGE_PREFIX: ${{ github.repository_owner }}/ampel
 
+# Serialize releases; never cancel an in-flight release (tags/images must not
+# be left half-published).
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: write
   pull-requests: write
@@ -42,11 +48,15 @@ jobs:
           manifest-file: .release-please-manifest.json
 
   # ============================================
-  # Build and Push Docker Images
+  # Build per-arch images on NATIVE runners (no QEMU emulation).
+  # amd64 on ubuntu-latest, arm64 on the free public-repo ubuntu-24.04-arm
+  # runner. Each build pushes by digest only; the docker-merge job below
+  # assembles the multi-arch manifest and applies the semver tags.
+  # Pattern: https://docs.docker.com/build/ci/github-actions/multi-platform/
   # ============================================
-  docker-release:
-    name: Build & Push Docker Images
-    runs-on: ubuntu-latest
+  docker-build:
+    name: Build ${{ matrix.image }} (${{ matrix.platform }})
+    runs-on: ${{ matrix.runner }}
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'
     permissions:
@@ -54,14 +64,21 @@ jobs:
       packages: write
 
     strategy:
+      fail-fast: false
       matrix:
+        image: [api, worker, frontend]
+        platform: [linux/amd64, linux/arm64]
         include:
-          - dockerfile: docker/Dockerfile.api
-            image: api
-          - dockerfile: docker/Dockerfile.worker
-            image: worker
-          - dockerfile: docker/Dockerfile.frontend
-            image: frontend
+          - platform: linux/amd64
+            runner: ubuntu-latest
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm
+          - image: api
+            dockerfile: docker/Dockerfile.api
+          - image: worker
+            dockerfile: docker/Dockerfile.worker
+          - image: frontend
+            dockerfile: docker/Dockerfile.frontend
             build_args: VITE_API_URL=/api
 
     steps:
@@ -69,8 +86,10 @@ jobs:
         with:
           ref: ${{ needs.release-please.outputs.tag_name }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v4
+      - name: Prepare platform pair
+        env:
+          PLATFORM: ${{ matrix.platform }}
+        run: echo "PLATFORM_PAIR=${PLATFORM//\//-}" >> "$GITHUB_ENV"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
@@ -82,7 +101,76 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
+      - name: Docker labels metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.image }}
+
+      - name: Build and push by digest
+        id: build
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          platforms: ${{ matrix.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: ${{ matrix.build_args }}
+          outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.image }},push-by-digest=true,name-canonical=true,push=true
+          cache-from: type=gha,scope=${{ matrix.image }}-${{ env.PLATFORM_PAIR }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}-${{ env.PLATFORM_PAIR }}
+
+      - name: Export digest
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          mkdir -p "${{ runner.temp }}/digests"
+          touch "${{ runner.temp }}/digests/${DIGEST#sha256:}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v7
+        with:
+          name: digests-${{ matrix.image }}-${{ env.PLATFORM_PAIR }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  # ============================================
+  # Merge per-arch digests into a multi-arch manifest and tag it.
+  # ============================================
+  docker-merge:
+    name: Merge ${{ matrix.image }} manifest
+    runs-on: ubuntu-latest
+    needs: [release-please, docker-build]
+    if: needs.release-please.outputs.release_created == 'true'
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [api, worker, frontend]
+
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v7
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digests-${{ matrix.image }}-*
+          merge-multiple: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker tags metadata
         id: meta
         uses: docker/metadata-action@v6
         with:
@@ -92,18 +180,20 @@ jobs:
             type=semver,pattern={{major}}.{{minor}},value=${{ needs.release-please.outputs.tag_name }}
             type=semver,pattern={{major}},value=${{ needs.release-please.outputs.tag_name }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          file: ${{ matrix.dockerfile }}
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: ${{ matrix.build_args }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - name: Create and push manifest list
+        working-directory: ${{ runner.temp }}/digests
+        env:
+          IMAGE_REF: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.image }}
+        run: |
+          docker buildx imagetools create \
+            $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf "${IMAGE_REF}@sha256:%s " *)
+
+      - name: Inspect manifest
+        env:
+          IMAGE_REF: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-${{ matrix.image }}
+          VERSION: ${{ needs.release-please.outputs.version }}
+        run: docker buildx imagetools inspect "${IMAGE_REF}:${VERSION}"
 
   # ============================================
   # Build Release Binaries
@@ -188,7 +278,7 @@ jobs:
   notify:
     name: Notify Release Complete
     runs-on: ubuntu-latest
-    needs: [release-please, docker-release, binary-release, publish-crate]
+    needs: [release-please, docker-merge, binary-release, publish-crate]
     if: always() && needs.release-please.outputs.release_created == 'true'
 
     steps:
