@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FleetOverview } from './FleetOverview';
 import type { ConsolidationPlan, FleetRow } from '@/types/remediation';
@@ -60,10 +60,8 @@ const rows: FleetRow[] = [
   },
 ];
 
-const onlyWithPrsToggle = () =>
-  screen.getByLabelText('remediation:fleet.filters.onlyWithPrs');
-const onlyEligibleToggle = () =>
-  screen.getByLabelText('remediation:fleet.filters.onlyEligible');
+const onlyWithPrsToggle = () => screen.getByLabelText('remediation:fleet.filters.onlyWithPrs');
+const onlyEligibleToggle = () => screen.getByLabelText('remediation:fleet.filters.onlyEligible');
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -82,6 +80,35 @@ describe('FleetOverview', () => {
     expect(screen.queryByText('acme/lib')).not.toBeInTheDocument();
     expect(screen.queryByText('acme/tool')).not.toBeInTheDocument();
     expect(screen.queryByText('acme/old')).not.toBeInTheDocument();
+  });
+
+  it('should_showEveryActionableRow_when_multipleReposPassDefaults', () => {
+    // Two rows both satisfy the default filters (PRs > 0 AND eligible): both must show,
+    // guarding against a predicate that is accidentally too strict on a passing row.
+    const twoActionable: FleetRow[] = [
+      { ...rows[0], repositoryId: 'a', name: 'acme/one', openPrCount: 2, eligible: true },
+      { ...rows[0], repositoryId: 'b', name: 'acme/two', openPrCount: 9, eligible: true },
+    ];
+    mockUseFleet.mockReturnValue({ data: twoActionable, isLoading: false, isError: false });
+
+    render(<FleetOverview />);
+
+    expect(screen.getByText('acme/one')).toBeInTheDocument();
+    expect(screen.getByText('acme/two')).toBeInTheDocument();
+  });
+
+  it('should_reapplyFilter_when_toggledOffThenBackOn', async () => {
+    const user = userEvent.setup();
+    mockUseFleet.mockReturnValue({ data: rows, isLoading: false, isError: false });
+
+    render(<FleetOverview />);
+    // Off → the 0-PR eligible repo appears.
+    await user.click(onlyWithPrsToggle());
+    expect(screen.getByText('acme/lib')).toBeInTheDocument();
+    // On again → it is hidden once more (state round-trips correctly).
+    await user.click(onlyWithPrsToggle());
+    expect(screen.queryByText('acme/lib')).not.toBeInTheDocument();
+    expect(screen.getByText('acme/app')).toBeInTheDocument();
   });
 
   it('should_revealZeroPrRepo_when_onlyWithPrsToggledOff', async () => {
@@ -166,6 +193,22 @@ describe('FleetOverview', () => {
     expect(screen.queryByText('remediation:fleet.filters.noMatch')).not.toBeInTheDocument();
   });
 
+  it('should_escapeFilteredEmptyState_when_singleToggleFlippedOff', async () => {
+    const user = userEvent.setup();
+    // acme/tool: has PRs but ineligible → hidden only by onlyEligible.
+    mockUseFleet.mockReturnValue({ data: [rows[2]], isLoading: false, isError: false });
+
+    render(<FleetOverview />);
+    expect(screen.getByText('remediation:fleet.filters.noMatch')).toBeInTheDocument();
+
+    // The toggles remain available in the empty state; flipping the one filter that
+    // hides the row reveals it — no need for the nuclear "clear".
+    await user.click(onlyEligibleToggle());
+
+    expect(screen.getByText('acme/tool')).toBeInTheDocument();
+    expect(screen.queryByText('remediation:fleet.filters.noMatch')).not.toBeInTheDocument();
+  });
+
   it('should_renderEmptyState_when_noRepositories', () => {
     mockUseFleet.mockReturnValue({ data: [], isLoading: false, isError: false });
 
@@ -214,5 +257,20 @@ describe('FleetOverview', () => {
     await user.click(previewButtons[0]);
 
     await waitFor(() => expect(screen.getByText('Bump deps')).toBeInTheDocument());
+  });
+
+  it('should_previewRevealedRow_when_previewClickedAfterToggle', async () => {
+    const user = userEvent.setup();
+    mockUseFleet.mockReturnValue({ data: rows, isLoading: false, isError: false });
+
+    render(<FleetOverview />);
+    // acme/tool is hidden by default; widen the view so it renders, then preview it.
+    await user.click(onlyEligibleToggle());
+    const toolRow = screen.getByText('acme/tool').closest('tr') as HTMLElement;
+    await user.click(within(toolRow).getByRole('button', { name: /remediation:fleet.preview/ }));
+
+    await waitFor(() =>
+      expect(mockPreviewMutate).toHaveBeenCalledWith('repo-3', expect.anything())
+    );
   });
 });

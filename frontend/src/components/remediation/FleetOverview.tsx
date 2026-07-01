@@ -80,8 +80,7 @@ export function FleetOverview() {
   // Active filters AND together; toggling either off relaxes it. Purely client-side over
   // the already-fetched rows — no backend/API involvement.
   const filteredFleet = fleet.filter(
-    (row) =>
-      (!onlyWithPrs || row.openPrCount > 0) && (!onlyEligible || row.eligible)
+    (row) => (!onlyWithPrs || row.openPrCount > 0) && (!onlyEligible || row.eligible)
   );
 
   const clearFilters = () => {
@@ -90,7 +89,11 @@ export function FleetOverview() {
   };
 
   const filters = (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pb-4">
+    <div
+      role="group"
+      aria-label={t('remediation:fleet.filters.groupLabel')}
+      className="flex flex-wrap items-center gap-x-6 gap-y-2 pb-4"
+    >
       <div className="flex items-center gap-2">
         <Switch id="fleet-filter-open-prs" checked={onlyWithPrs} onCheckedChange={setOnlyWithPrs} />
         <Label htmlFor="fleet-filter-open-prs" className="cursor-pointer text-sm font-normal">
@@ -98,7 +101,11 @@ export function FleetOverview() {
         </Label>
       </div>
       <div className="flex items-center gap-2">
-        <Switch id="fleet-filter-eligible" checked={onlyEligible} onCheckedChange={setOnlyEligible} />
+        <Switch
+          id="fleet-filter-eligible"
+          checked={onlyEligible}
+          onCheckedChange={setOnlyEligible}
+        />
         <Label htmlFor="fleet-filter-eligible" className="cursor-pointer text-sm font-normal">
           {t('remediation:fleet.filters.onlyEligible')}
         </Label>
@@ -110,7 +117,7 @@ export function FleetOverview() {
     return (
       <>
         {filters}
-        <div className="text-center py-8 text-muted-foreground">
+        <div className="text-center py-8 text-muted-foreground" role="status" aria-live="polite">
           <p>{t('remediation:fleet.filters.noMatch')}</p>
           <Button variant="outline" size="sm" className="mt-3" onClick={clearFilters}>
             {t('remediation:fleet.filters.clear')}

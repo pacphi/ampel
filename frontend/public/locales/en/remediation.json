@@ -30,6 +30,7 @@
       "actions": "Actions"
     },
     "filters": {
+      "groupLabel": "Repository filters",
       "onlyWithPrs": "Only repos with open PRs",
       "onlyEligible": "Only eligible repos",
       "noMatch": "No repositories match the current filters.",
