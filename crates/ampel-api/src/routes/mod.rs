@@ -200,6 +200,11 @@ pub fn create_router(state: AppState) -> Router {
             "/api/remediation/playbooks",
             get(remediation_playbooks::list_playbooks).post(remediation_playbooks::create_playbook),
         )
+        // Built-in default (read-only, static segment before `{id}`).
+        .route(
+            "/api/remediation/playbooks/embedded",
+            get(remediation_playbooks::get_embedded_playbook),
+        )
         .route(
             "/api/remediation/playbooks/{id}",
             get(remediation_playbooks::get_playbook)

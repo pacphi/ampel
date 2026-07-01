@@ -35,7 +35,7 @@ use axum::{
     http::StatusCode,
     Json,
 };
-use chrono::Utc;
+use chrono::{DateTime, Utc};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, Condition, EntityTrait, PaginatorTrait, QueryFilter, Set,
 };
@@ -323,6 +323,47 @@ pub async fn list_playbooks(
     )))
 }
 
+/// GET /api/remediation/playbooks/embedded — the built-in default playbook
+/// (ADR-006), read-only.
+///
+/// Returns a [`PlaybookResponse`]-shaped view of the embedded default so the
+/// editor can offer it as a documented starting point. It is a **synthetic**
+/// (non-DB) row: `id` is nil, `source` is `builtin`, the scope is the global
+/// sentinel (`scopeId = null`), and the timestamps are the Unix epoch to signal
+/// it is not a stored record. Readable by any authenticated caller; there is no
+/// write path (the same ADR-006 resolution applies at run time via the resolver).
+pub async fn get_embedded_playbook(
+    _auth: AuthUser,
+) -> Result<Json<ApiResponse<PlaybookResponse>>, ApiError> {
+    let content = ampel_worker::services::playbook_resolver::embedded_default_yaml()
+        .map_err(|e| ApiError::internal(format!("embedded playbook unavailable: {e}")))?;
+    // Parse to surface the version and guarantee the shipped default is valid.
+    let parsed = ampel_worker::services::playbook::Playbook::from_yaml(&content)
+        .map_err(|e| ApiError::internal(format!("embedded playbook is invalid: {e}")))?;
+
+    let epoch = DateTime::<Utc>::from_timestamp(0, 0)
+        .expect("unix epoch is a valid timestamp")
+        .to_rfc3339();
+    Ok(Json(ApiResponse::success(PlaybookResponse {
+        id: Uuid::nil(),
+        playbook_id: "default".to_string(),
+        version: parsed.version as i32,
+        source: "builtin".to_string(),
+        name: "Default remediation playbook".to_string(),
+        description: Some(
+            "The built-in, fleet-wide default remediation playbook (ADR-006). \
+             Read-only — use it as a documented starting point for your own."
+                .to_string(),
+        ),
+        content,
+        enabled: true,
+        scope_type: "global".to_string(),
+        scope_id: None,
+        created_at: epoch.clone(),
+        updated_at: epoch,
+    })))
+}
+
 /// POST /api/remediation/playbooks — validates YAML before storing.
 pub async fn create_playbook(
     State(state): State<AppState>,
@@ -344,9 +385,11 @@ pub async fn create_playbook(
         ));
     }
 
-    // Lint: the YAML must parse into a valid Playbook (ADR-006 schema).
-    ampel_worker::services::playbook::Playbook::from_yaml(&req.content)
-        .map_err(|e| ApiError::unprocessable_entity(format!("invalid playbook YAML: {e}")))?;
+    // Lint: schema-aware validation with a field-path diagnostic (ADR-006), so
+    // the client learns *which* field is wrong (e.g. `loop.max_iterations`).
+    ampel_worker::services::playbook::Playbook::validate_yaml(&req.content).map_err(|e| {
+        ApiError::unprocessable_entity(format!("invalid playbook `{}`: {}", e.field, e.message))
+    })?;
 
     let now = Utc::now();
     let model = remediation_playbook::ActiveModel {
@@ -391,8 +434,9 @@ pub async fn update_playbook(
     let row = load_writable(&state, auth.user_id, id).await?;
 
     if let Some(content) = &req.content {
-        ampel_worker::services::playbook::Playbook::from_yaml(content)
-            .map_err(|e| ApiError::unprocessable_entity(format!("invalid playbook YAML: {e}")))?;
+        ampel_worker::services::playbook::Playbook::validate_yaml(content).map_err(|e| {
+            ApiError::unprocessable_entity(format!("invalid playbook `{}`: {}", e.field, e.message))
+        })?;
     }
 
     let mut active: remediation_playbook::ActiveModel = row.into();
