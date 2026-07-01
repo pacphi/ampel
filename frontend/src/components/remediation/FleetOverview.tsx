@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Eye, ShieldOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import {
   Dialog,
   DialogContent,
@@ -38,6 +40,10 @@ export function FleetOverview() {
   const previewMutation = usePreviewRepository();
   const [activeRepo, setActiveRepo] = useState<FleetRow | null>(null);
   const [plan, setPlan] = useState<ConsolidationPlan | null>(null);
+  // Default to the actionable rows: repos with open PRs that are remediation-eligible.
+  // Either filter can be toggled off independently to widen the view.
+  const [onlyWithPrs, setOnlyWithPrs] = useState(true);
+  const [onlyEligible, setOnlyEligible] = useState(true);
 
   const handlePreview = (row: FleetRow) => {
     setActiveRepo(row);
@@ -71,8 +77,52 @@ export function FleetOverview() {
     );
   }
 
+  // Active filters AND together; toggling either off relaxes it. Purely client-side over
+  // the already-fetched rows — no backend/API involvement.
+  const filteredFleet = fleet.filter(
+    (row) =>
+      (!onlyWithPrs || row.openPrCount > 0) && (!onlyEligible || row.eligible)
+  );
+
+  const clearFilters = () => {
+    setOnlyWithPrs(false);
+    setOnlyEligible(false);
+  };
+
+  const filters = (
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pb-4">
+      <div className="flex items-center gap-2">
+        <Switch id="fleet-filter-open-prs" checked={onlyWithPrs} onCheckedChange={setOnlyWithPrs} />
+        <Label htmlFor="fleet-filter-open-prs" className="cursor-pointer text-sm font-normal">
+          {t('remediation:fleet.filters.onlyWithPrs')}
+        </Label>
+      </div>
+      <div className="flex items-center gap-2">
+        <Switch id="fleet-filter-eligible" checked={onlyEligible} onCheckedChange={setOnlyEligible} />
+        <Label htmlFor="fleet-filter-eligible" className="cursor-pointer text-sm font-normal">
+          {t('remediation:fleet.filters.onlyEligible')}
+        </Label>
+      </div>
+    </div>
+  );
+
+  if (filteredFleet.length === 0) {
+    return (
+      <>
+        {filters}
+        <div className="text-center py-8 text-muted-foreground">
+          <p>{t('remediation:fleet.filters.noMatch')}</p>
+          <Button variant="outline" size="sm" className="mt-3" onClick={clearFilters}>
+            {t('remediation:fleet.filters.clear')}
+          </Button>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
+      {filters}
       <div className="overflow-x-auto">
         <table className="w-full text-sm" aria-label={t('remediation:fleet.tableLabel')}>
           <thead>
@@ -98,7 +148,7 @@ export function FleetOverview() {
             </tr>
           </thead>
           <tbody>
-            {fleet.map((row) => (
+            {filteredFleet.map((row) => (
               <tr key={row.repositoryId} className="border-b last:border-0">
                 <td className="py-2 pr-4 font-medium">{row.name}</td>
                 <td className="py-2 pr-4">{row.openPrCount}</td>

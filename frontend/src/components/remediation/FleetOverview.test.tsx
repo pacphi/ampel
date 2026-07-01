@@ -20,6 +20,11 @@ vi.mock('@/hooks/useFleetRemediation', () => ({
   usePreviewRepository: () => mockUsePreview(),
 }));
 
+// Fixture spans all four filter quadrants so each toggle can be proven independently:
+//   app  — has PRs + eligible      → visible by default (actionable)
+//   lib  — no PRs + eligible       → hidden only by "only with PRs"
+//   tool — has PRs + not eligible  → hidden only by "only eligible"
+//   old  — no PRs + not eligible   → hidden by both (also air-gapped)
 const rows: FleetRow[] = [
   {
     repositoryId: 'repo-1',
@@ -33,11 +38,32 @@ const rows: FleetRow[] = [
     repositoryId: 'repo-2',
     name: 'acme/lib',
     openPrCount: 0,
+    eligible: true,
+    policyState: 'suggest',
+    airGapped: false,
+  },
+  {
+    repositoryId: 'repo-3',
+    name: 'acme/tool',
+    openPrCount: 3,
+    eligible: false,
+    policyState: 'none',
+    airGapped: false,
+  },
+  {
+    repositoryId: 'repo-4',
+    name: 'acme/old',
+    openPrCount: 0,
     eligible: false,
     policyState: 'none',
     airGapped: true,
   },
 ];
+
+const onlyWithPrsToggle = () =>
+  screen.getByLabelText('remediation:fleet.filters.onlyWithPrs');
+const onlyEligibleToggle = () =>
+  screen.getByLabelText('remediation:fleet.filters.onlyEligible');
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -45,30 +71,99 @@ beforeEach(() => {
 });
 
 describe('FleetOverview', () => {
-  it('should_renderRepositoryRows_when_dataLoaded', () => {
+  it('should_showOnlyActionableRows_when_defaultFiltersActive', () => {
     mockUseFleet.mockReturnValue({ data: rows, isLoading: false, isError: false });
 
     render(<FleetOverview />);
+
+    // Default: both filters ON — only the has-PRs + eligible repo shows.
+    expect(screen.getByText('acme/app')).toBeInTheDocument();
+    // The 0-PR repo and the ineligible repo are hidden by default.
+    expect(screen.queryByText('acme/lib')).not.toBeInTheDocument();
+    expect(screen.queryByText('acme/tool')).not.toBeInTheDocument();
+    expect(screen.queryByText('acme/old')).not.toBeInTheDocument();
+  });
+
+  it('should_revealZeroPrRepo_when_onlyWithPrsToggledOff', async () => {
+    const user = userEvent.setup();
+    mockUseFleet.mockReturnValue({ data: rows, isLoading: false, isError: false });
+
+    render(<FleetOverview />);
+    await user.click(onlyWithPrsToggle());
+
+    // onlyWithPrs OFF, onlyEligible still ON → eligible repos regardless of PR count.
+    expect(screen.getByText('acme/app')).toBeInTheDocument();
+    expect(screen.getByText('acme/lib')).toBeInTheDocument();
+    // Still hidden: the ineligible ones (onlyEligible remains active).
+    expect(screen.queryByText('acme/tool')).not.toBeInTheDocument();
+    expect(screen.queryByText('acme/old')).not.toBeInTheDocument();
+  });
+
+  it('should_revealIneligibleRepo_when_onlyEligibleToggledOff', async () => {
+    const user = userEvent.setup();
+    mockUseFleet.mockReturnValue({ data: rows, isLoading: false, isError: false });
+
+    render(<FleetOverview />);
+    await user.click(onlyEligibleToggle());
+
+    // onlyEligible OFF, onlyWithPrs still ON → repos with PRs regardless of eligibility.
+    expect(screen.getByText('acme/app')).toBeInTheDocument();
+    expect(screen.getByText('acme/tool')).toBeInTheDocument();
+    // Still hidden: the 0-PR ones (onlyWithPrs remains active).
+    expect(screen.queryByText('acme/lib')).not.toBeInTheDocument();
+    expect(screen.queryByText('acme/old')).not.toBeInTheDocument();
+  });
+
+  it('should_showAllRows_when_bothFiltersToggledOff', async () => {
+    const user = userEvent.setup();
+    mockUseFleet.mockReturnValue({ data: rows, isLoading: false, isError: false });
+
+    render(<FleetOverview />);
+    await user.click(onlyWithPrsToggle());
+    await user.click(onlyEligibleToggle());
 
     expect(screen.getByText('acme/app')).toBeInTheDocument();
     expect(screen.getByText('acme/lib')).toBeInTheDocument();
-  });
-
-  it('should_renderEligibilityBadges_when_dataLoaded', () => {
-    mockUseFleet.mockReturnValue({ data: rows, isLoading: false, isError: false });
-
-    render(<FleetOverview />);
-
-    expect(screen.getByText('remediation:fleet.eligible')).toBeInTheDocument();
-    expect(screen.getByText('remediation:fleet.notEligible')).toBeInTheDocument();
-  });
-
-  it('should_renderAirGappedIndicator_when_repoAirGapped', () => {
-    mockUseFleet.mockReturnValue({ data: rows, isLoading: false, isError: false });
-
-    render(<FleetOverview />);
-
+    expect(screen.getByText('acme/tool')).toBeInTheDocument();
+    expect(screen.getByText('acme/old')).toBeInTheDocument();
+    // Both eligibility badges and the air-gapped indicator are now visible.
+    expect(screen.getAllByText('remediation:fleet.notEligible').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('remediation:fleet.eligible').length).toBeGreaterThan(0);
     expect(screen.getByText('remediation:fleet.airGappedOn')).toBeInTheDocument();
+  });
+
+  it('should_renderFilteredEmptyState_when_activeFiltersHideEveryRow', () => {
+    // A fleet with no actionable repos: default filters exclude everything.
+    mockUseFleet.mockReturnValue({
+      data: [rows[3]], // acme/old: 0 PRs + ineligible
+      isLoading: false,
+      isError: false,
+    });
+
+    render(<FleetOverview />);
+
+    expect(screen.getByText('remediation:fleet.filters.noMatch')).toBeInTheDocument();
+    // Distinct from the zero-repositories empty state.
+    expect(screen.queryByText('remediation:fleet.empty')).not.toBeInTheDocument();
+    expect(screen.queryByText('acme/old')).not.toBeInTheDocument();
+  });
+
+  it('should_restoreRows_when_filtersClearedFromEmptyState', async () => {
+    const user = userEvent.setup();
+    mockUseFleet.mockReturnValue({
+      data: [rows[3]], // acme/old: hidden by default filters
+      isLoading: false,
+      isError: false,
+    });
+
+    render(<FleetOverview />);
+    expect(screen.getByText('remediation:fleet.filters.noMatch')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /remediation:fleet.filters.clear/ }));
+
+    // Clearing the filters widens the view so the previously-hidden repo appears.
+    expect(screen.getByText('acme/old')).toBeInTheDocument();
+    expect(screen.queryByText('remediation:fleet.filters.noMatch')).not.toBeInTheDocument();
   });
 
   it('should_renderEmptyState_when_noRepositories', () => {
@@ -77,6 +172,8 @@ describe('FleetOverview', () => {
     render(<FleetOverview />);
 
     expect(screen.getByText('remediation:fleet.empty')).toBeInTheDocument();
+    // Not the filtered-empty state — there are genuinely zero repositories.
+    expect(screen.queryByText('remediation:fleet.filters.noMatch')).not.toBeInTheDocument();
   });
 
   it('should_invokePreview_when_previewClicked', async () => {
@@ -85,6 +182,7 @@ describe('FleetOverview', () => {
 
     render(<FleetOverview />);
 
+    // acme/app is visible under the default filters.
     const previewButtons = screen.getAllByRole('button', { name: /remediation:fleet.preview/ });
     await user.click(previewButtons[0]);
 
