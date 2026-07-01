@@ -5,6 +5,7 @@ pub mod bot_rules;
 pub mod bulk_merge;
 pub mod dashboard;
 pub mod model_accounts;
+pub mod model_catalog;
 pub mod notifications;
 pub mod pr_filters;
 pub mod pull_requests;
@@ -89,6 +90,13 @@ impl ApiError {
 
     pub fn unprocessable_entity(message: impl Into<String>) -> Self {
         Self::new(StatusCode::UNPROCESSABLE_ENTITY, message)
+    }
+
+    /// `502` for a failed upstream dependency (e.g. an unreachable local Ollama
+    /// server). Only a generic message should ever be passed here — upstream
+    /// error detail is logged server-side, never returned to the client.
+    pub fn bad_gateway(message: impl Into<String>) -> Self {
+        Self::new(StatusCode::BAD_GATEWAY, message)
     }
 }
 

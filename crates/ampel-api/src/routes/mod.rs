@@ -5,9 +5,9 @@ use axum::{
 };
 
 use crate::handlers::{
-    accounts, analytics, auth, bot_rules, bulk_merge, dashboard, model_accounts, notifications,
-    pr_filters, pull_requests, remediation, remediation_playbooks, remediation_runs, repositories,
-    teams, user_preferences, user_settings,
+    accounts, analytics, auth, bot_rules, bulk_merge, dashboard, model_accounts, model_catalog,
+    notifications, pr_filters, pull_requests, remediation, remediation_playbooks, remediation_runs,
+    repositories, teams, user_preferences, user_settings,
 };
 use crate::{
     health_handler, metrics_handler,
@@ -180,6 +180,20 @@ pub fn create_router(state: AppState) -> Router {
         .route(
             "/api/model-accounts/{id}/validate",
             post(model_accounts::validate_model_account),
+        )
+        // Model catalog + Ollama discovery/pull (Phase 5 — Agentic Remediation Tier)
+        .route("/api/model-catalog", get(model_catalog::get_model_catalog))
+        .route(
+            "/api/model-catalog/ollama/tags",
+            get(model_catalog::list_ollama_tags),
+        )
+        .route(
+            "/api/model-catalog/ollama/pull",
+            post(model_catalog::pull_ollama_model),
+        )
+        .route(
+            "/api/model-catalog/ollama/pull/{id}/status",
+            get(model_catalog::get_pull_status),
         )
         // Remediation playbooks (Phase 4 — ADR-006)
         .route(
