@@ -68,7 +68,10 @@ function providerModels(catalog: ModelCatalog | undefined, kind: ProviderKind): 
 }
 
 /** Resolve a catalog model by its id across every provider. */
-function resolveModel(catalog: ModelCatalog | undefined, modelId: string | null): CatalogModel | undefined {
+function resolveModel(
+  catalog: ModelCatalog | undefined,
+  modelId: string | null
+): CatalogModel | undefined {
   if (!modelId) return undefined;
   for (const provider of catalog?.providers ?? []) {
     const match = provider.models.find((m) => m.id === modelId);
@@ -84,7 +87,9 @@ function ModelOptionMeta({ model }: { model: CatalogModel }) {
   return (
     <span className="flex flex-wrap items-center gap-1.5">
       <span className="font-medium text-foreground">{model.name}</span>
-      <span className={pill}>{t('remediation:modelCatalog.contextWindow', { tokens: model.contextWindow })}</span>
+      <span className={pill}>
+        {t('remediation:modelCatalog.contextWindow', { tokens: model.contextWindow })}
+      </span>
       <span className={pill}>{formatCost(t, model.cost)}</span>
       {model.toolUse && <span className={pill}>{t('remediation:modelCatalog.toolUse')}</span>}
       <span className={pill}>{t(`remediation:modelAccounts.egress.${model.egress}`)}</span>
@@ -346,9 +351,7 @@ function OllamaPullControl({ account, ollamaTag }: { account: ModelAccount; olla
   const alreadyPresent = discovered.includes(ollamaTag);
 
   if (alreadyPresent) {
-    return (
-      <Badge variant="success">{t('remediation:modelCatalog.pull.status.ready')}</Badge>
-    );
+    return <Badge variant="success">{t('remediation:modelCatalog.pull.status.ready')}</Badge>;
   }
 
   const started = jobId !== null;
@@ -377,9 +380,7 @@ function OllamaPullControl({ account, ollamaTag }: { account: ModelAccount; olla
       {started && pullStatus && (
         <div role="status" aria-live="polite" className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
-            <Badge
-              variant={pullStatus.status === 'error' ? 'destructive' : 'secondary'}
-            >
+            <Badge variant={pullStatus.status === 'error' ? 'destructive' : 'secondary'}>
               {t(`remediation:modelCatalog.pull.status.${pullStatus.status}`)}
             </Badge>
             {pullStatus.detail && (
