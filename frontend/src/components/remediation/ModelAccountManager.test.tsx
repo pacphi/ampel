@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ModelAccountManager } from './ModelAccountManager';
@@ -64,6 +64,9 @@ const catalog: ModelCatalog = {
           egress: 'external',
           outputContract: 'text',
           cost: { kind: 'per_token', inputPer1k: 3, outputPer1k: 15 },
+          params: '',
+          quantization: '',
+          community: false,
         },
       ],
     },
@@ -84,6 +87,31 @@ const catalog: ModelCatalog = {
           egress: 'local_only',
           outputContract: 'text',
           cost: { kind: 'free' },
+          params: '8B',
+          quantization: 'Q4_K_M',
+          minRamGb: 16,
+          diskGb: '5',
+          hardwareTier: '16',
+          community: true,
+        },
+        {
+          id: 'qwen3-30b',
+          name: 'Qwen3 30B',
+          family: 'qwen',
+          quality: 'high',
+          ollamaTag: 'qwen3:30b',
+          contextWindow: 32768,
+          toolUse: true,
+          codeEdit: true,
+          egress: 'local_only',
+          outputContract: 'text',
+          cost: { kind: 'free' },
+          params: '30B MoE (A3B)',
+          quantization: 'Q4_K_M',
+          minRamGb: 64,
+          diskGb: '19',
+          hardwareTier: '64',
+          community: false,
         },
       ],
     },
@@ -292,6 +320,90 @@ describe('ModelAccountManager', () => {
       expect.objectContaining({ modelId: 'my-custom-model' }),
       expect.anything()
     );
+  });
+
+  it('should_renderHardwarePillsAndCommunityMarker_when_ollamaOptionShown', async () => {
+    const user = userEvent.setup();
+    renderManager();
+
+    await user.click(screen.getByRole('button', { name: 'remediation:modelAccounts.create' }));
+
+    // Switch to the local Ollama provider to surface hardware-bearing models.
+    const providerTrigger = screen.getByRole('combobox', {
+      name: 'remediation:modelAccounts.providerKind',
+    });
+    await user.click(providerTrigger);
+    await user.click(
+      await screen.findByRole('option', {
+        name: 'remediation:modelAccounts.providerKindLabel.ollama',
+      })
+    );
+
+    const modelTrigger = await screen.findByRole('combobox', {
+      name: 'remediation:modelCatalog.model',
+    });
+    await user.click(modelTrigger);
+
+    // The community tier-16 option renders params/quant/tier pills + community marker.
+    const communityOption = await screen.findByRole('option', { name: /Llama 3 8B/ });
+    expect(
+      within(communityOption).getByText('remediation:modelCatalog.hardware.params')
+    ).toBeInTheDocument();
+    expect(
+      within(communityOption).getByText('remediation:modelCatalog.hardware.quantization')
+    ).toBeInTheDocument();
+    expect(
+      within(communityOption).getByText('remediation:modelCatalog.hardware.ramTier')
+    ).toBeInTheDocument();
+    expect(
+      within(communityOption).getByText('remediation:modelCatalog.hardware.diskSize')
+    ).toBeInTheDocument();
+    expect(
+      within(communityOption).getByText('remediation:modelCatalog.hardware.community')
+    ).toBeInTheDocument();
+  });
+
+  it('should_narrowLocalOptionsToTier16_when_ramTierFilterSelected', async () => {
+    const user = userEvent.setup();
+    renderManager();
+
+    await user.click(screen.getByRole('button', { name: 'remediation:modelAccounts.create' }));
+
+    // Local provider so the RAM-tier filter applies.
+    await user.click(
+      screen.getByRole('combobox', { name: 'remediation:modelAccounts.providerKind' })
+    );
+    await user.click(
+      await screen.findByRole('option', {
+        name: 'remediation:modelAccounts.providerKindLabel.ollama',
+      })
+    );
+
+    // Choose the 16 GB tier.
+    await user.click(
+      screen.getByRole('combobox', { name: 'remediation:modelCatalog.hardware.filterLabel' })
+    );
+    await user.click(
+      await screen.findByRole('option', { name: 'remediation:modelCatalog.hardware.tier.16' })
+    );
+
+    // Only the tier-16 model remains; the tier-64 model is filtered out.
+    await user.click(screen.getByRole('combobox', { name: 'remediation:modelCatalog.model' }));
+    expect(await screen.findByRole('option', { name: /Llama 3 8B/ })).toBeInTheDocument();
+    expect(screen.queryByRole('option', { name: /Qwen3 30B/ })).not.toBeInTheDocument();
+
+    // Hosted models are unaffected by the filter.
+    await user.keyboard('{Escape}');
+    await user.click(
+      screen.getByRole('combobox', { name: 'remediation:modelAccounts.providerKind' })
+    );
+    await user.click(
+      await screen.findByRole('option', {
+        name: 'remediation:modelAccounts.providerKindLabel.claude',
+      })
+    );
+    await user.click(screen.getByRole('combobox', { name: 'remediation:modelCatalog.model' }));
+    expect(await screen.findByRole('option', { name: /Claude Sonnet 4/ })).toBeInTheDocument();
   });
 
   it('should_pullOllamaModel_when_tagNotDiscovered', async () => {

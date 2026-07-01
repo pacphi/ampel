@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Максимални бројеви пријава по трчању",
     "minOpenPrs": "Минимални отворени PR-ови",
+    "noScopes": "Још увек не управљате ниједним опсегом овог типа.",
     "save": "Сачувај политику",
     "saving": "Чување…",
     "scopeId": "ИД опсега",
     "scopeIdPlaceholder": "Унесите ИД спремишта, тима, организације или корисника",
-    "scopeType": "Тип опсега",
-    "noScopes": "Још увек не управљате ниједним опсегом овог типа."
+    "scopeType": "Тип опсега"
   },
   "fleet": {
     "airGappedOff": "Повезано",
@@ -168,10 +168,10 @@
     "modelIdPlaceholder": "нпр. Клод-сонет-4",
     "providerKind": "Провајдер",
     "providerKindLabel": {
-      "claude": "Клод",
-      "gemini": "Близанци",
-      "ollama": "Олама (локално)",
-      "onnx": "ONNX (локално)"
+      "claude": "Claude",
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Сачувај налог",
     "saving": "Чување…",
@@ -185,6 +185,52 @@
       "unvalidated": "Непотврђено",
       "valid": "Важи"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Напредно",
+    "codeEdit": "Измена кода",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Бесплатно",
+      "perToken": "${{input}} улаз · ${{output}} излаз / 1K"
+    },
+    "customModelId": "ИД прилагођеног модела",
+    "customModelIdHint": "Прилагођени ИД модела поништава горњи избор каталога.",
+    "customModelIdPlaceholder": "Замени са необјављеним ИД-ом модела",
+    "hardware": {
+      "community": "заједница",
+      "diskSize": "Диск од {{disk}} ГБ",
+      "filterHint": "Филтрира локалне (Ollama) моделе према системској RAM меморији. На системима са дискретним GPU-ом, VRAM — а не системска RAM меморија — је ограничење повезивања.",
+      "filterLabel": "Ниво РАМ-а",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} ГБ",
+      "tier": {
+        "128": "128 ГБ",
+        "16": "16 ГБ",
+        "32-36": "32–36 ГБ",
+        "64": "64 ГБ",
+        "all": "Сви"
+      }
+    },
+    "loadError": "Није успело учитавање каталога модела.",
+    "loading": "Учитавање модела…",
+    "model": "Модел",
+    "modelPlaceholder": "Изаберите модел",
+    "noModels": "За овог добављача нема доступних каталошких модела. Користите опцију „Напредно“ да бисте унели ИД модела.",
+    "pull": {
+      "notPulled": "Још није преузето на овај сервер.",
+      "pullModel": "Модел повлачења",
+      "pulling": "Вучење…",
+      "status": {
+        "downloading": "Преузимање",
+        "error": "Грешка",
+        "queued": "У реду чекања",
+        "ready": "Спреман"
+      },
+      "title": "Преузимање модела"
+    },
+    "toolUse": "Употреба алата"
   },
   "nav": "Санација",
   "playbooks": {
@@ -298,35 +344,5 @@
     "policies": "Политике",
     "runs": "Трчи"
   },
-  "title": "Санација возног парка",
-  "modelCatalog": {
-    "model": "Model",
-    "modelPlaceholder": "Select a model",
-    "loading": "Loading models…",
-    "loadError": "Failed to load the model catalog.",
-    "noModels": "No catalog models are available for this provider. Use Advanced to enter a model ID.",
-    "advanced": "Advanced",
-    "customModelId": "Custom model ID",
-    "customModelIdPlaceholder": "Override with an unlisted model ID",
-    "customModelIdHint": "A custom model ID overrides the catalog selection above.",
-    "toolUse": "Tool use",
-    "codeEdit": "Code edit",
-    "contextWindow": "{{tokens}} ctx",
-    "cost": {
-      "free": "Free",
-      "perToken": "${{input}} in · ${{output}} out / 1K"
-    },
-    "pull": {
-      "pullModel": "Pull model",
-      "pulling": "Pulling…",
-      "title": "Model download",
-      "notPulled": "Not downloaded on this server yet.",
-      "status": {
-        "queued": "Queued",
-        "downloading": "Downloading",
-        "ready": "Ready",
-        "error": "Error"
-      }
-    }
-  }
+  "title": "Санација возног парка"
 }

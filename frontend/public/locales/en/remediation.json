@@ -272,6 +272,22 @@
       "free": "Free",
       "perToken": "${{input}} in · ${{output}} out / 1K"
     },
+    "hardware": {
+      "community": "community",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "diskSize": "{{disk}} GB disk",
+      "filterLabel": "RAM tier",
+      "filterHint": "Filters local (Ollama) models by system RAM. On discrete-GPU systems, VRAM — not system RAM — is the binding constraint.",
+      "tier": {
+        "all": "All",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "128": "128 GB"
+      }
+    },
     "pull": {
       "pullModel": "Pull model",
       "pulling": "Pulling…",

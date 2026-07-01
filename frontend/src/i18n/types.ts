@@ -967,6 +967,22 @@ export interface RemediationTranslations {
     customModelId: string;
     customModelIdHint: string;
     customModelIdPlaceholder: string;
+    hardware: {
+      community: string;
+      diskSize: string;
+      filterHint: string;
+      filterLabel: string;
+      params: string;
+      quantization: string;
+      ramTier: string;
+      tier: {
+        '128': string;
+        '16': string;
+        '32-36': string;
+        '64': string;
+        all: string;
+      };
+    };
     loadError: string;
     loading: string;
     model: string;

@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Maximaal aantal PR's per run",
     "minOpenPrs": "Minimum aantal openstaande pull-requests",
+    "noScopes": "Je beheert nog geen bereiken van dit type.",
     "save": "Beleid opslaan",
     "saving": "Besparing…",
     "scopeId": "Bereik-ID",
     "scopeIdPlaceholder": "Voer de repository-, team-, organisatie- of gebruikers-ID in.",
-    "scopeType": "Bereiktype",
-    "noScopes": "Je beheert nog geen bereiken van dit type."
+    "scopeType": "Bereiktype"
   },
   "fleet": {
     "airGappedOff": "Aangesloten",
@@ -169,9 +169,9 @@
     "providerKind": "Aanbieder",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Tweeling",
-      "ollama": "Ollama (lokaal)",
-      "onnx": "ONNX (lokaal)"
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Account opslaan",
     "saving": "Besparing…",
@@ -185,6 +185,52 @@
       "unvalidated": "Niet gevalideerd",
       "valid": "Geldig"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Geavanceerd",
+    "codeEdit": "Code bewerken",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Vrij",
+      "perToken": "${{input}} in · ${{output}} uit / 1K"
+    },
+    "customModelId": "Aangepaste model-ID",
+    "customModelIdHint": "Een aangepaste model-ID overschrijft de bovenstaande catalogusselectie.",
+    "customModelIdPlaceholder": "Overschrijven met een niet-vermeld model-ID",
+    "hardware": {
+      "community": "gemeenschap",
+      "diskSize": "{{disk}} GB schijf",
+      "filterHint": "Filtert lokale (Ollama) modellen op basis van systeem-RAM. Op systemen met een discrete GPU is VRAM – en niet systeem-RAM – de beperkende factor.",
+      "filterLabel": "RAM-laag",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "Alle"
+      }
+    },
+    "loadError": "Het laden van de modelcatalogus is mislukt.",
+    "loading": "Modellen laden…",
+    "model": "Model",
+    "modelPlaceholder": "Selecteer een model",
+    "noModels": "Er zijn geen catalogusmodellen beschikbaar voor deze aanbieder. Gebruik de geavanceerde functie om een model-ID in te voeren.",
+    "pull": {
+      "notPulled": "Nog niet gedownload op deze server.",
+      "pullModel": "Trekmodel",
+      "pulling": "Trekken…",
+      "status": {
+        "downloading": "Downloaden",
+        "error": "Fout",
+        "queued": "In de wachtrij",
+        "ready": "Klaar"
+      },
+      "title": "Model downloaden"
+    },
+    "toolUse": "Gereedschapsgebruik"
   },
   "nav": "Sanering",
   "playbooks": {
@@ -298,35 +344,5 @@
     "policies": "Beleid",
     "runs": "Loopt"
   },
-  "title": "Vlootherstel",
-  "modelCatalog": {
-    "model": "Model",
-    "modelPlaceholder": "Select a model",
-    "loading": "Loading models…",
-    "loadError": "Failed to load the model catalog.",
-    "noModels": "No catalog models are available for this provider. Use Advanced to enter a model ID.",
-    "advanced": "Advanced",
-    "customModelId": "Custom model ID",
-    "customModelIdPlaceholder": "Override with an unlisted model ID",
-    "customModelIdHint": "A custom model ID overrides the catalog selection above.",
-    "toolUse": "Tool use",
-    "codeEdit": "Code edit",
-    "contextWindow": "{{tokens}} ctx",
-    "cost": {
-      "free": "Free",
-      "perToken": "${{input}} in · ${{output}} out / 1K"
-    },
-    "pull": {
-      "pullModel": "Pull model",
-      "pulling": "Pulling…",
-      "title": "Model download",
-      "notPulled": "Not downloaded on this server yet.",
-      "status": {
-        "queued": "Queued",
-        "downloading": "Downloading",
-        "ready": "Ready",
-        "error": "Error"
-      }
-    }
-  }
+  "title": "Vlootherstel"
 }

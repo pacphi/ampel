@@ -35,6 +35,22 @@ import type { CatalogModel, ModelCatalog, ModelCost } from '@/types/remediation'
 
 const PROVIDER_KINDS: ProviderKind[] = ['claude', 'gemini', 'ollama', 'onnx'];
 
+/** Hardware RAM tiers, smallest → largest. `'all'` disables filtering. */
+const RAM_TIERS = ['16', '32-36', '64', '128'] as const;
+type RamTier = (typeof RAM_TIERS)[number];
+type RamTierFilter = 'all' | RamTier;
+
+/**
+ * True when `modelTier` fits within `selected` (i.e. needs the same or less RAM).
+ * A model with no tier metadata (hosted models) always passes.
+ */
+function fitsRamTier(selected: RamTierFilter, modelTier: string | undefined): boolean {
+  if (selected === 'all' || !modelTier) return true;
+  const modelIdx = RAM_TIERS.indexOf(modelTier as RamTier);
+  if (modelIdx < 0) return true;
+  return modelIdx <= RAM_TIERS.indexOf(selected);
+}
+
 /** Local providers that take an endpoint URL rather than an API key. */
 function isLocalProvider(kind: ProviderKind): boolean {
   return kind === 'ollama' || kind === 'onnx';
@@ -93,6 +109,31 @@ function ModelOptionMeta({ model }: { model: CatalogModel }) {
       <span className={pill}>{formatCost(t, model.cost)}</span>
       {model.toolUse && <span className={pill}>{t('remediation:modelCatalog.toolUse')}</span>}
       <span className={pill}>{t(`remediation:modelAccounts.egress.${model.egress}`)}</span>
+      {model.params && (
+        <span className={pill}>
+          {t('remediation:modelCatalog.hardware.params', { params: model.params })}
+        </span>
+      )}
+      {model.quantization && (
+        <span className={pill}>
+          {t('remediation:modelCatalog.hardware.quantization', {
+            quantization: model.quantization,
+          })}
+        </span>
+      )}
+      {model.hardwareTier && (
+        <span className={pill}>
+          {t('remediation:modelCatalog.hardware.ramTier', { tier: model.hardwareTier })}
+        </span>
+      )}
+      {model.diskGb && (
+        <span className={pill}>
+          {t('remediation:modelCatalog.hardware.diskSize', { disk: model.diskGb })}
+        </span>
+      )}
+      {model.community && (
+        <span className={pill}>{t('remediation:modelCatalog.hardware.community')}</span>
+      )}
     </span>
   );
 }
@@ -113,11 +154,15 @@ function CreateForm({ onClose }: CreateFormProps) {
   const [catalogModelId, setCatalogModelId] = useState('');
   const [customModelId, setCustomModelId] = useState('');
   const [spendCapUsd, setSpendCapUsd] = useState('');
+  const [ramTier, setRamTier] = useState<RamTierFilter>('all');
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const local = isLocalProvider(providerKind);
-  const models = providerModels(catalog, providerKind);
+  const allModels = providerModels(catalog, providerKind);
+  // The RAM-tier filter narrows local (Ollama) options only; hosted models,
+  // which carry no hardware metadata, are unaffected.
+  const models = local ? allModels.filter((m) => fitsRamTier(ramTier, m.hardwareTier)) : allModels;
 
   const handleProviderChange = (v: string) => {
     setProviderKind(v as ProviderKind);
@@ -225,6 +270,27 @@ function CreateForm({ onClose }: CreateFormProps) {
           />
         </div>
       )}
+
+      {/* RAM-tier filter — narrows local (Ollama) options by hardware bucket. */}
+      <div className="space-y-2">
+        <Label htmlFor="model-ram-tier">{t('remediation:modelCatalog.hardware.filterLabel')}</Label>
+        <Select value={ramTier} onValueChange={(v) => setRamTier(v as RamTierFilter)}>
+          <SelectTrigger id="model-ram-tier" className="sm:max-w-[50%]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{t('remediation:modelCatalog.hardware.tier.all')}</SelectItem>
+            {RAM_TIERS.map((tier) => (
+              <SelectItem key={tier} value={tier}>
+                {t(`remediation:modelCatalog.hardware.tier.${tier}`)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-xs text-muted-foreground">
+          {t('remediation:modelCatalog.hardware.filterHint')}
+        </p>
+      </div>
 
       {/* Catalog-driven model picker. */}
       <div className="space-y-2">
@@ -426,6 +492,20 @@ function AccountRow({ account }: { account: ModelAccount }) {
                 {t('remediation:modelCatalog.contextWindow', { tokens: resolved.contextWindow })}
               </Badge>
               <Badge variant="outline">{formatCost(t, resolved.cost)}</Badge>
+              {resolved.hardwareTier && (
+                <Badge variant="outline">
+                  {t('remediation:modelCatalog.hardware.ramTier', {
+                    tier: resolved.hardwareTier,
+                  })}
+                </Badge>
+              )}
+              {resolved.quantization && (
+                <Badge variant="outline">
+                  {t('remediation:modelCatalog.hardware.quantization', {
+                    quantization: resolved.quantization,
+                  })}
+                </Badge>
+              )}
             </>
           )}
           {account.isDefault && (
