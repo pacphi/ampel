@@ -129,6 +129,13 @@
     "eligible": "有資格的",
     "empty": "未找到存儲庫。",
     "error": "無法載入艦隊概覽。",
+    "filters": {
+      "clear": "顯示所有儲存庫",
+      "groupLabel": "儲存庫過濾器",
+      "noMatch": "沒有符合目前篩選條件的儲存庫。",
+      "onlyEligible": "僅限符合條件的儲存庫",
+      "onlyWithPrs": "僅限有未完成拉取請求的倉庫"
+    },
     "notEligible": "不符合資格",
     "preview": "預覽",
     "tableLabel": "儲存庫修復狀態",

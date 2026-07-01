@@ -129,6 +129,13 @@
     "eligible": "Odpowiedni",
     "empty": "Nie znaleziono repozytoriów.",
     "error": "Nie udało się załadować przeglądu floty.",
+    "filters": {
+      "clear": "Pokaż wszystkie repozytoria",
+      "groupLabel": "Filtry repozytorium",
+      "noMatch": "Żadne repozytoria nie spełniają wymagań bieżących filtrów.",
+      "onlyEligible": "Tylko kwalifikujące się repozytoria",
+      "onlyWithPrs": "Tylko repozytoria z otwartymi prośbami o ściągnięcie"
+    },
     "notEligible": "Nie kwalifikuje się",
     "preview": "Zapowiedź",
     "tableLabel": "Status naprawy repozytorium",

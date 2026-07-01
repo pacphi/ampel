@@ -129,6 +129,13 @@
     "eligible": "Idoneo",
     "empty": "Nessun repository trovato.",
     "error": "Impossibile caricare la panoramica della flotta.",
+    "filters": {
+      "clear": "Mostra tutti i repository",
+      "groupLabel": "Filtri del repository",
+      "noMatch": "Nessun repository corrisponde ai filtri correnti.",
+      "onlyEligible": "Solo repository idonei",
+      "onlyWithPrs": "Solo repository con richieste di pull aperte"
+    },
     "notEligible": "Non idoneo",
     "preview": "Anteprima",
     "tableLabel": "Stato di bonifica del repository",

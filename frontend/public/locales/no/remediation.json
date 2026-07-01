@@ -129,6 +129,13 @@
     "eligible": "Berettiget",
     "empty": "Ingen arkiver funnet.",
     "error": "Kunne ikke laste inn flåteoversikten.",
+    "filters": {
+      "clear": "Vis alle arkiver",
+      "groupLabel": "Filtre for arkivet",
+      "noMatch": "Ingen arkiver samsvarer med de gjeldende filtrene.",
+      "onlyEligible": "Kun kvalifiserte arkiver",
+      "onlyWithPrs": "Bare arkiver med åpne pull-forespørsler"
+    },
     "notEligible": "Ikke kvalifisert",
     "preview": "Forhåndsvisning",
     "tableLabel": "Status for utbedring av repositoriet",

@@ -1,42 +1,44 @@
 # ACTIVE pipeline — promoted 2026-07-01 from .autopilot/queued/, retiring the prior (shipped)
-# remediation-model-catalog plan, which survives in git history and as the .autopilot/runs/
-# remediation-model-catalog.jsonl ledger. profile.yml is stack-level and shared — reused as-is.
+# playbooks-guidance plan, which survives in git history and as the .autopilot/runs/
+# playbooks-guidance.jsonl ledger. profile.yml is stack-level and shared — reused as-is.
 
-feature_id: "playbooks-guidance"
-goal: "Make the Remediation Playbook editor instructional — surface the embedded default as a documented, editable starting point, add field hints and 'what's possible' affordances (allowed fields/enums, the tool-ceiling rule), and give richer validation than parse/pass. Mirrors the model-catalog feature."
+feature_id: "fleet-overview-filters"
+goal: "Make the Remediation Fleet Overview default to actionable repos: two independent, combinable toggle filters — 'only repos with open PRs' (openPrCount > 0) and 'only eligible repos' (eligible === true), both ON by default — each switchable to show all, with a distinct empty state when the filters hide every row."
 spec: |
-  Today PlaybookEditor.tsx is effectively a raw YAML textarea: no schema/field reference, no
-  starter template from the embedded default, no affordances for what's possible (the tool-ceiling
-  concept, allowed fields, enums), and only parse-or-not validation. A user's only way to learn
-  "what does a playbook look like and what can I do" is to read the embedded default YAML in the
-  repo or ADR-006/007 — none of it is in the UI.
+  Today FleetOverview.tsx renders `const fleet = rows ?? []` straight into the table, so every repo
+  shows — including repos with zero open PRs and repos that are not remediation-eligible. Operators
+  want the table to default to the rows they can act on, while still being able to widen the view.
+
+  Two independent, combinable client-side toggle filters, both DEFAULT ON:
+    1. "Only repos with open PRs" — keeps rows where `openPrCount > 0`.
+    2. "Only eligible repos"      — keeps rows where `eligible === true`.
+  Toggling either OFF widens the view; any combination is allowed (active filters AND together). When
+  the fleet is non-empty but the active filters hide EVERY row, show a distinct "no repos match the
+  current filters" empty state with an affordance to clear/relax the filters — separate from the
+  existing "no repositories at all" (`remediation:fleet.empty`) state.
 
   Ground truth (from exploration):
-    - Embedded default: crates/ampel-worker/playbooks/default.yaml (single built-in, rust-embed,
-      ADR-006/007). Playbook schema (crates/ampel-worker/src/services/playbook.rs):
-      version:u32(default), role:String(req), tasks:HashMap<String,{instructions}>(req),
-      loop:{max_iterations:u32,max_seconds:u64,max_cost_usd:String-decimal}(req),
-      tools_policy:{allowed:Vec<String>}(the CEILING), context_spec:{blocks:Vec<String>}(opt),
-      output_contract:String(req), provider_overlays:HashMap<provider,{output_contract?,model?}>(opt).
-      minijinja templates use ONLY trusted vars repo_full_name/base_branch/failure_class; untrusted
-      CI data rides in separate context_blocks.
-    - Tool-ceiling rule (ADR-006, security): clamp_tools() in playbook.rs is pure set intersection —
-      an override may only REMOVE tools from the embedded/org ceiling, NEVER ADD. Enforced in
-      playbook_resolver.rs resolve() after every resolution step.
-    - API: crates/ampel-api/src/handlers/remediation_playbooks.rs — CRUD + POST /{id}/preview
-      (renders the assembled prompt, NO model call; returns role, system_instruction,
-      output_contract, allowed_tools after clamp). Create/update validate via Playbook::from_yaml
-      → 422 on invalid. There is NO endpoint returning the embedded default.
-    - Frontend: PlaybookEditor.tsx (raw YAML textarea; client-validates only non-empty
-      id/name/content; per-row Validate/Preview). api/playbooks.ts, hooks/usePlaybooks.ts,
-      types/playbook.ts. i18n namespace remediation:playbooks.
-    - Pattern to mirror: the just-shipped model-catalog (docs/features/MODEL_CATALOG.md;
-      handlers/model_catalog.rs; ModelAccountManager.tsx capability pills). No docs/features/PLAYBOOKS.md yet.
+    - FleetRow (frontend/src/types/remediation.ts): { repositoryId, name, openPrCount: number,
+      eligible: boolean, policyState, airGapped }. The list from useFleetRemediation() ALREADY carries
+      openPrCount and eligible, so this is PURELY client-side filtering — NO backend/API change.
+    - FleetOverview.tsx (frontend/src/components/remediation/FleetOverview.tsx) keeps its existing
+      loading / error / empty branches; add two boolean filter states (both default true), a derived
+      filtered list, toggle controls rendered above the table (shadcn/ui — mirror existing component
+      usage; a Switch or a toggled Button), and the new filtered-empty branch.
+    - Tests: FleetOverview.test.tsx already exists (vitest; mocks useFleetRemediation via mockUseFleet;
+      passthrough i18n where t() returns the key).
+    - i18n: fleet strings live under `remediation:fleet` in public/locales/*/remediation.json (existing:
+      title, description, tableLabel, error, empty, eligible, notEligible, airGappedOn, airGappedOff,
+      preview, columns). New keys: the two toggle labels + the filtered-empty message (+ a clear/relax
+      action label).
 
   i18n MUST be done via the ampel-i18n-builder `translate` util (real translations, not English
-  placeholders): source crates/ampel-i18n-builder/.env, `translate --lang <L>` per locale,
-  regenerate frontend/src/i18n/types.ts, and AFTER translating audit for the two known translator
-  pitfalls — corrupted {{interpolation}} vars and mistranslated brand/proper nouns — and repair.
+  placeholders): source crates/ampel-i18n-builder/.env, then a ZSH ARRAY loop
+  `LANGS=(ar cs …); for L in $LANGS` (NEVER `for L in $string` — zsh will not word-split it and creates
+  a bogus locale dir that generate-types then enumerates into types.ts). Regenerate
+  frontend/src/i18n/types.ts (CI "Verify types are up-to-date" hard-fails on any drift) and, after
+  translating, audit the two known translator pitfalls — corrupted {{interpolation}} vars and
+  mistranslated brand/proper nouns — and repair.
 
 references:
   prd:     "docs/planning/PRODUCT_SPEC.md"
@@ -44,13 +46,9 @@ references:
   adr_dir: "docs/architecture/adr"
   ddd_dir: "docs/architecture/ddd"
   extra:
-    - "docs/architecture/adr/ADR-006-playbook-format-storage.md"
-    - "docs/architecture/adr/ADR-007-model-provider-trait.md"
-    - "crates/ampel-worker/playbooks/default.yaml"
-    - "crates/ampel-worker/src/services/playbook.rs"
-    - "crates/ampel-api/src/handlers/remediation_playbooks.rs"
-    - "frontend/src/components/remediation/PlaybookEditor.tsx"
-    - "docs/features/MODEL_CATALOG.md"
+    - "frontend/src/components/remediation/FleetOverview.tsx"
+    - "frontend/src/components/remediation/FleetOverview.test.tsx"
+    - "frontend/src/types/remediation.ts"
 
 trunk: main
 base:  develop
@@ -58,72 +56,32 @@ autonomy: pr_ci
 
 fix_budget: 5
 
-# Read-only endpoint + write-time validation; no merge/auth/exec blast radius.
+# Presentation-layer only: client-side filtering over already-fetched data, no
+# merge/auth/exec/data-model blast radius.
 risk_phases: []
 
+# NOTE (2026-07-01): originally a 2-phase plan (phase 0 = filters + EN i18n; phase 1 =
+# translate all 27 locales). Ampel CI's i18n `missing` gate fails any PR with en-only keys,
+# so phase 0's PR (#75) had to carry the full 27-locale translation to go green. That
+# absorbed phase 1 entirely, so the plan was collapsed to this single phase to match what
+# actually shipped. The original 2-phase plan survives as ledger record 0.
 phases:
   - id: 0
-    goal: "Backend: expose the embedded default playbook over HTTP and give create/update schema-aware, field-path validation."
+    goal: "Default-actionable Fleet Overview: two combinable toggle filters (both ON by default) + a distinct filtered-empty state, with vitest specs and full 27-locale i18n."
     deliverables:
-      - "GET /api/remediation/playbooks/embedded → the parsed embedded default (read-only, PlaybookResponse-shaped) via the resolver's embedded_default_yaml(); registered in crates/ampel-api/src/routes/mod.rs next to the other playbook routes."
-      - "Schema-aware validation on create/update (crates/ampel-worker/src/services/playbook.rs and/or the handler): assert required keys role, tasks (non-empty), loop.{max_iterations,max_seconds,max_cost_usd}, tools_policy, output_contract; output_contract is a known enum; provider_overlays keys are known provider kinds. Return 422 with a field path (e.g. 'loop.max_iterations') rather than a bare parse error."
+      - "FleetOverview.tsx: two boolean filter states (onlyWithPrs, onlyEligible), both default true; a derived filtered list applying the ACTIVE filters (AND) over the fleet rows (openPrCount > 0; eligible === true)."
+      - "Two toggle controls rendered above the table (shadcn/ui, mirroring existing component usage), each labelled via i18n; toggling either widens the view."
+      - "A distinct filtered-empty branch: when the fleet is non-empty but the filtered list is empty, render a 'no repos match the current filters' message with a control to clear/relax the filters (restore both defaults or show all). The existing zero-repos `remediation:fleet.empty` branch is unchanged."
+      - "New i18n keys under remediation:fleet.filters (toggle labels, filtered-empty message, clear action, group label), translated into ALL 27 locales via the ampel-i18n-builder translate util (shell ARRAY loop; .env sourced), with frontend/src/i18n/types.ts regenerated via generate-types and a post-translate audit repairing any mistranslated domain/brand nouns."
     definition_of_done:
-      - "cmd: cargo test -p ampel-api playbooks passes (embedded endpoint returns the default; create/update returns field-path 422s for missing/invalid fields)."
-      - "cmd: cargo test -p ampel-worker playbook passes (schema validator unit tests)."
-      - "cmd: cargo build --workspace succeeds; cargo clippy --workspace --all-targets --all-features -- -D warnings clean."
-      - "cmd: make format-check passes."
-      - "grep: /api/remediation/playbooks/embedded in crates/ampel-api/src/routes/mod.rs"
-      - "prose: the tool-ceiling clamp and trusted-vars/untrusted-context split are unchanged; the new endpoint is read-only and applies the same ADR-006 resolution."
-    conventions: "Mirror handlers/model_catalog.rs (GET embedded default) and the existing remediation_playbooks.rs DTOs. Money stays Decimal-as-string. No secrets in logs."
+      - "cmd: make test-frontend passes, incl. new FleetOverview.test.tsx specs: default view hides a 0-PR repo AND an ineligible repo; toggling onlyWithPrs OFF reveals the 0-PR repo; toggling onlyEligible OFF reveals the ineligible repo; with both filters active and all rows excluded, the filtered-empty state renders; clearing filters restores rows."
+      - "cmd: make lint-frontend passes; make format-check passes; pnpm --dir frontend type-check passes."
+      - "cmd: ampel-i18n-builder `missing` reports no missing keys and `coverage --min-coverage 95` passes across all 27 locales; frontend/src/i18n/types.ts regenerated in sync (CI i18n-validation would pass)."
+      - "grep: onlyWithPrs in frontend/src/components/remediation/FleetOverview.tsx"
+      - "grep: fleet.filters in frontend/public/locales/en/remediation.json"
+      - "grep:absent: TODO|FIXME in frontend/src/components/remediation/FleetOverview.tsx"
+      - "prose: no backend/API change — the filtering is purely client-side over the existing useFleetRemediation() rows; the loading/error/zero-repos branches are unchanged. No raw i18n keys render; interpolation/brand-noun audit across locales is clean; no spaced locale directory exists."
+    conventions: "React 19 + TS + Vite + TanStack Query + shadcn/ui. Mirror the just-shipped playbooks-guidance frontend work (component/test/i18n style). Every user-facing string via i18n. Translate new keys into all 27 locales in the SAME PR (CI's `missing` gate fails en-only keys); source crates/ampel-i18n-builder/.env first; shell ARRAY loop, never `for L in $string`; run generate-types (CI hard-fails on types.ts drift). `make lint` does NOT run formatters — run `make format-check` (prettier) locally before pushing."
     depends_on: []
-    adrs:  ["ADR-006-playbook-format-storage"]
-    ddd:   ["RemediationPolicy aggregate", "Playbook"]
-
-  - id: 1
-    goal: "Frontend: load/duplicate the embedded default as a starting point and surface preview metadata, so users see a concrete playbook and what it grants."
-    deliverables:
-      - "PlaybookEditor 'Load built-in default' action: fetch GET .../embedded, prefill the form with a sanitized copy (fresh playbookId/name, cleared description, content = the default YAML)."
-      - "'Duplicate to customize' on existing playbook rows (prefill the form from that playbook)."
-      - "Surface the preview response metadata (allowedTools + outputContract + role) as pills/section on preview, mirroring ModelAccountManager capability pills."
-      - "api/playbooks.ts + usePlaybooks.ts + types/playbook.ts extended for the embedded endpoint; new EN i18n keys under remediation:playbooks."
-    definition_of_done:
-      - "cmd: make test-frontend passes, incl. new vitest specs: 'Load built-in default' prefills the form from the embedded endpoint (mocked); duplicate prefills from a row; preview renders allowedTools/outputContract pills."
-      - "cmd: make lint-frontend passes; make format-check passes."
-      - "grep: playbooks/embedded in frontend/src/api/playbooks.ts"
-      - "grep:absent: TODO|FIXME in frontend/src/components/remediation/PlaybookEditor.tsx"
-    conventions: "TanStack Query + shadcn/ui as in the model-catalog work. Every string via i18n (EN only here; other locales in phase 2)."
-    depends_on: [0]
-    adrs:  ["ADR-006-playbook-format-storage"]
-    ddd:   ["Playbook"]
-
-  - id: 2
-    goal: "Frontend: per-field schema reference/hints (including the tool-ceiling narrow-only rule and the trusted-vars/untrusted-context split) plus richer inline validation, fully internationalized."
-    deliverables:
-      - "Field hints/tooltips for each playbook field (role, tasks, loop budget, tools_policy CEILING with 'you may only narrow, never add', context_spec, output_contract enum, provider_overlays) — e.g. a PlaybookFieldHints module + help affordances next to the editor."
-      - "Richer validation feedback: render the phase-0 field-path 422 errors inline against the offending field rather than a single generic message."
-      - "i18n: all new remediation:playbooks.* keys translated into ALL 27 locales via the ampel-i18n-builder translate util; frontend/src/i18n/types.ts regenerated; post-translate audit repairs any corrupted {{interpolation}} vars and any mistranslated brand/proper nouns."
-    definition_of_done:
-      - "cmd: node scripts/i18n-coverage-report.js --check-missing reports no missing keys."
-      - "cmd: node scripts/i18n-coverage-report.js --check --min-coverage 95 passes."
-      - "cmd: make test-frontend passes (incl. a field-hint render + a field-path validation-error spec)."
-      - "cmd: make lint-frontend passes; make format-check passes."
-      - "prose: no raw i18n keys render; interpolation-variable audit across locales is clean; brand/proper nouns (Claude/Gemini/Ollama/ONNX, GitHub/GitLab/Bitbucket, Ampel) are not translated; types.ts regenerated in sync."
-    conventions: "Use the ampel-i18n-builder translate flow (source its .env first). Run make format-check locally — Prettier is not covered by make lint. Protect interpolation vars + brand nouns (known translator pitfalls)."
-    depends_on: [1]
-    adrs:  ["ADR-006-playbook-format-storage"]
-    ddd:   ["Playbook"]
-
-  - id: 3
-    goal: "Docs + end-to-end: document the playbook editing workflow and prove the guidance path with an integration test."
-    deliverables:
-      - "docs/features/PLAYBOOKS.md (mirror docs/features/MODEL_CATALOG.md): the schema and each field's meaning, the tool-ceiling narrow-only rule, the trusted-vars/untrusted-context split, the embedded default as the editable starting point, and the editing/validation/preview workflow."
-      - "Integration test(s) in crates/*/tests/: GET .../embedded returns the default; an invalid playbook create returns a field-path 422; preview still renders with no model call."
-    definition_of_done:
-      - "cmd: make test passes (full backend + frontend)."
-      - "cmd: make lint passes; make audit passes."
-      - "grep: PLAYBOOKS.md in docs OR grep: Playbook in docs/features/PLAYBOOKS.md (doc exists)."
-      - "prose: docs explain the tool-ceiling narrow-only rule and how to start from the embedded default, consistent with the implemented endpoints; markdownlint clean."
-    conventions: "Markdown through the repo's markdownlint authority. Integration tests mirror crates/ampel-api/tests/test_model_catalog.rs (Postgres-gated)."
-    depends_on: [2]
-    adrs:  ["ADR-006-playbook-format-storage"]
-    ddd:   ["Playbook"]
+    adrs:  []
+    ddd:   ["Fleet", "Repository"]

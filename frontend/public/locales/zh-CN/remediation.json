@@ -129,6 +129,13 @@
     "eligible": "有资格的",
     "empty": "未找到存储库。",
     "error": "无法加载舰队概览。",
+    "filters": {
+      "clear": "显示所有存储库",
+      "groupLabel": "存储库过滤器",
+      "noMatch": "没有符合当前筛选条件的存储库。",
+      "onlyEligible": "仅限符合条件的存储库",
+      "onlyWithPrs": "仅包含未关闭的拉取请求的仓库"
+    },
     "notEligible": "不符合资格",
     "preview": "预览",
     "tableLabel": "存储库修复状态",
