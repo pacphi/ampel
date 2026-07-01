@@ -239,14 +239,36 @@
     "contentPlaceholder": "Gå ind i YAML-håndbogen…",
     "create": "Ny håndbog",
     "description": "Tilpas de afhjælpningsprompter, som agenten bruger. Valider en playbook for at få vist en forhåndsvisning af den gengivne prompt uden modelkald.",
+    "duplicate": "Dupliker for at tilpasse",
     "empty": "Ingen playbooks endnu. Den indbyggede standard playbook bruges, indtil du tilføjer en.",
     "error": "Kunne ikke indlæse playbooks.",
     "errors": {
       "contentRequired": "Indhold i playbooken er påkrævet.",
+      "loadDefaultFailed": "Kunne ikke indlæse den indbyggede standardplaybook.",
       "nameRequired": "Et navn er påkrævet.",
       "playbookIdRequired": "Et playbook-ID er påkrævet.",
       "previewFailed": "Kunne ikke gengive playbooken. Tjek YAML for fejl.",
       "saveFailed": "Kunne ikke gemme playbooken. Tjek YAML for fejl."
+    },
+    "hints": {
+      "contextSpec": "Etiketter for de ikke-tillidlige kontekstblokke (CI-logfiler, diffs). Ikke-tillidligt indhold bevæger sig hertil som data, aldrig som instruktioner.",
+      "heading": "Playbook-feltguide",
+      "hide": "Skjul feltguide",
+      "loop": "Agentbudgettet: iterations-, tids- og forbrugslofter. Forbrugsloftet er en decimalstreng i anførselstegn, for eksempel \"2,00\".",
+      "outputContract": "En af: {{values}}.",
+      "providerOverlays": "Tilsidesættelser pr. udbyder, indtastet efter udbydertype: {{kinds}}.",
+      "role": "Pålidelig systemindramning for agenten. Placer aldrig useriøst indhold her.",
+      "show": "Vis feltguide",
+      "tasks": "Instruktionsskabeloner pr. fejlklasse. De må kun referere til disse betroede variabler: {{vars}}.",
+      "toolsPolicy": "Værktøjsloftet. Du kan kun indsnævre den tilladte liste – tilføj aldrig et værktøj, som den indbyggede standard ikke tillader."
+    },
+    "loadDefault": "Indlæs indbygget standard",
+    "loadingDefault": "Indlæser indbygget standard…",
+    "meta": {
+      "allowedTools": "Tilladte værktøjer",
+      "noTools": "Ingen",
+      "outputContract": "Outputkontrakt",
+      "role": "Rolle"
     },
     "name": "Navn",
     "namePlaceholder": "Menneskeligt læsbart navn",
@@ -260,7 +282,11 @@
     "scopeId": "Omfangs-ID",
     "scopeIdPlaceholder": "Ejerteam-, organisations- eller arkiv-ID",
     "scopeType": "Omfangstype",
-    "title": "Legebøger"
+    "title": "Legebøger",
+    "validationError": {
+      "document": "Problem med strukturen i playbooken",
+      "heading": "Problem med feltet {{field}}"
+    }
   },
   "policies": {
     "create": "Ny politik",

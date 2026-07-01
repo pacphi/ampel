@@ -16,7 +16,7 @@ use serde_json::{json, Value};
 use super::{compute_cost, delimit_block, UNTRUSTED_PREAMBLE};
 
 /// Default model id (ADR-009).
-pub const DEFAULT_MODEL: &str = "claude-sonnet-4-6";
+pub const DEFAULT_MODEL: &str = "claude-sonnet-5";
 const API_URL: &str = "https://api.anthropic.com/v1/messages";
 const API_VERSION: &str = "2023-06-01";
 

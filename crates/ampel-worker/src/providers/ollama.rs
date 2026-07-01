@@ -16,7 +16,7 @@ use serde_json::{json, Value};
 use super::{delimit_block, UNTRUSTED_PREAMBLE};
 
 /// Default model id (ADR-009).
-pub const DEFAULT_MODEL: &str = "qwen2.5-coder";
+pub const DEFAULT_MODEL: &str = "qwen3-coder:30b-a3b-q4_K_M";
 /// Default local endpoint (ADR-009).
 pub const DEFAULT_ENDPOINT: &str = "http://localhost:11434";
 

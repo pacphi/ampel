@@ -239,14 +239,36 @@
     "contentPlaceholder": "Aloita YAML:n käyttöohje…",
     "create": "Uusi pelisuunnitelma",
     "description": "Mukauta agentin käyttämiä korjauskehotteita. Vahvista toimintasuunnitelma esikatsellaksesi renderöityä kehotetta ilman mallikutsua.",
+    "duplicate": "Kopioi muokataksesi",
     "empty": "Ei vielä peliohjeita. Sisäänrakennettua oletuspeliohjetta käytetään, kunnes lisäät sellaisen.",
     "error": "Pelikirjojen lataaminen epäonnistui.",
     "errors": {
       "contentRequired": "Käsikirjan sisältö on pakollinen.",
+      "loadDefaultFailed": "Sisäänrakennetun oletuspelikirjan lataaminen epäonnistui.",
       "nameRequired": "Nimi vaaditaan.",
       "playbookIdRequired": "Pelikirjan tunnus vaaditaan.",
       "previewFailed": "Käsikirjan renderöinti epäonnistui. Tarkista YAML-tiedostosta virheet.",
       "saveFailed": "Käsikirjan tallennus epäonnistui. Tarkista YAML-tiedostosta virheet."
+    },
+    "hints": {
+      "contextSpec": "Epäluotettavien kontekstilohkojen (CI-lokit, vertailut) tunnisteet. Epäluotettava sisältö kulkee täällä datana, ei koskaan ohjeina.",
+      "heading": "Pelikirjan kenttäopas",
+      "hide": "Piilota kenttäopas",
+      "loop": "Agentin budjetti: iteraatio, aika ja kulutuskatot. Kulutuskatto on lainausmerkeissä oleva desimaalimerkkijono, esimerkiksi \"2,00\".",
+      "outputContract": "Yksi seuraavista: {{values}}.",
+      "providerOverlays": "Palveluntarjoajakohtaiset ohitukset, avaimennettuna palveluntarjoajan tyypin mukaan: {{kinds}}.",
+      "role": "Luotettava järjestelmäkehys agentille. Älä koskaan sijoita tänne epäluotettavaa sisältöä.",
+      "show": "Näytä kenttäopas",
+      "tasks": "Virhekohtaisia luokkakohtaisia käskymalleja. Ne saavat viitata vain näihin luotettuihin muuttujiin: {{vars}}.",
+      "toolsPolicy": "Työkalujen enimmäismäärä. Voit vain rajata sallittujen luetteloa — älä koskaan lisää työkalua, jota sisäänrakennettu oletusarvo ei salli."
+    },
+    "loadDefault": "Lataa sisäänrakennettu oletusarvo",
+    "loadingDefault": "Ladataan sisäänrakennettua oletusarvoa…",
+    "meta": {
+      "allowedTools": "Sallitut työkalut",
+      "noTools": "Ei mitään",
+      "outputContract": "Tuotantosopimus",
+      "role": "Rooli"
     },
     "name": "Nimi",
     "namePlaceholder": "Ihmisen luettavissa oleva nimi",
@@ -260,7 +282,11 @@
     "scopeId": "Vaikutusalueen tunnus",
     "scopeIdPlaceholder": "Omistavan tiimin, organisaation tai tietovaraston tunnus",
     "scopeType": "Laajuustyyppi",
-    "title": "Pelikirjat"
+    "title": "Pelikirjat",
+    "validationError": {
+      "document": "Ongelma pelisuunnitelman rakenteessa",
+      "heading": "Ongelma {{field}} -kentän kanssa"
+    }
   },
   "policies": {
     "create": "Uusi käytäntö",

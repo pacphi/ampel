@@ -15,6 +15,7 @@ vi.mock('react-i18next', () => ({
 const mockCreate = vi.fn();
 const mockDelete = vi.fn();
 const mockPreview = vi.fn();
+const mockLoadDefault = vi.fn();
 let playbooksData: Playbook[] = [];
 
 vi.mock('@/hooks/usePlaybooks', () => ({
@@ -22,6 +23,7 @@ vi.mock('@/hooks/usePlaybooks', () => ({
   useCreatePlaybook: () => ({ mutate: mockCreate, isPending: false }),
   useDeletePlaybook: () => ({ mutate: mockDelete, isPending: false }),
   usePreviewPlaybook: () => ({ mutate: mockPreview, isPending: false }),
+  useLoadEmbeddedPlaybook: () => ({ mutate: mockLoadDefault, isPending: false }),
 }));
 
 const samplePlaybook: Playbook = {
@@ -75,6 +77,74 @@ describe('PlaybookEditor', () => {
     expect(await screen.findByText('You are a careful build-fixing agent.')).toBeInTheDocument();
   });
 
+  it('should_renderCapabilityPills_when_previewSucceeds', async () => {
+    playbooksData = [samplePlaybook];
+    mockPreview.mockImplementation((_vars, options) => {
+      options.onSuccess({
+        failureClass: 'build_error',
+        role: 'fixer',
+        systemInstruction: 'You are a careful build-fixing agent.',
+        outputContract: 'unified_diff',
+        allowedTools: ['read_file', 'apply_patch'],
+      });
+    });
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.preview' }));
+
+    // The output-contract value and each allowed tool render as their own pills.
+    expect(await screen.findByText(/unified_diff/)).toBeInTheDocument();
+    expect(screen.getByText('read_file')).toBeInTheDocument();
+    expect(screen.getByText('apply_patch')).toBeInTheDocument();
+  });
+
+  it('should_prefillFormWithDefaultYaml_when_loadDefaultClicked', async () => {
+    mockLoadDefault.mockImplementation((_vars, options) => {
+      options.onSuccess({
+        id: '00000000-0000-0000-0000-000000000000',
+        playbookId: 'default',
+        version: 1,
+        source: 'builtin',
+        name: 'Default remediation playbook',
+        description: 'builtin default',
+        content: 'role: You are a remediation engineer.\ntasks: {}',
+        enabled: true,
+        scopeType: 'global',
+        scopeId: null,
+        createdAt: '1970-01-01T00:00:00+00:00',
+        updatedAt: '1970-01-01T00:00:00+00:00',
+      });
+    });
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.loadDefault' }));
+
+    // The form opens prefilled with the default YAML but a blank id/name (a
+    // sanitized copy that never collides with the built-in).
+    const content = await screen.findByLabelText('remediation:playbooks.content');
+    expect(content).toHaveValue('role: You are a remediation engineer.\ntasks: {}');
+    expect(screen.getByLabelText('remediation:playbooks.playbookId')).toHaveValue('');
+    expect(screen.getByLabelText('remediation:playbooks.name')).toHaveValue('');
+  });
+
+  it('should_prefillFormFromRow_when_duplicateClicked', async () => {
+    playbooksData = [samplePlaybook];
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.duplicate' }));
+
+    expect(await screen.findByLabelText('remediation:playbooks.content')).toHaveValue(
+      'role: fixer'
+    );
+    expect(screen.getByLabelText('remediation:playbooks.playbookId')).toHaveValue(
+      'custom-remediation-copy'
+    );
+    expect(screen.getByLabelText('remediation:playbooks.name')).toHaveValue('Custom Remediation');
+  });
+
   it('should_showError_when_previewFailsWithYamlError', async () => {
     playbooksData = [samplePlaybook];
     mockPreview.mockImplementation((_vars, options) => {
@@ -86,6 +156,65 @@ describe('PlaybookEditor', () => {
     await user.click(screen.getByRole('button', { name: 'remediation:playbooks.preview' }));
 
     expect(await screen.findByText('invalid playbook YAML: bad indent')).toBeInTheDocument();
+  });
+
+  it('should_renderFieldGuide_when_toggled', async () => {
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.create' }));
+    // The field guide is collapsed by default; expanding it reveals each schema field.
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.hints.show' }));
+
+    expect(screen.getByText('tools_policy')).toBeInTheDocument();
+    expect(screen.getByText('output_contract')).toBeInTheDocument();
+    expect(screen.getByText('provider_overlays')).toBeInTheDocument();
+  });
+
+  it('should_renderFieldPathError_when_saveFailsWithFieldPath', async () => {
+    mockCreate.mockImplementation((_payload, options) => {
+      options.onError({
+        response: { data: { error: 'invalid playbook `loop.max_iterations`: is required' } },
+      });
+    });
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.create' }));
+    await user.type(screen.getByLabelText('remediation:playbooks.playbookId'), 'my-pb');
+    await user.type(screen.getByLabelText('remediation:playbooks.name'), 'My Playbook');
+    await user.type(screen.getByLabelText('remediation:playbooks.content'), 'role: fixer');
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.save' }));
+
+    // The offending field path + message render inline against the field...
+    expect(await screen.findByText('loop.max_iterations')).toBeInTheDocument();
+    expect(screen.getByText('is required')).toBeInTheDocument();
+    // ...and the guide auto-expands so the highlighted `loop` field is visible.
+    expect(screen.getByText('loop')).toBeInTheDocument();
+  });
+
+  it('should_renderStructureError_when_saveFailsWithRootError', async () => {
+    mockCreate.mockImplementation((_payload, options) => {
+      options.onError({
+        response: { data: { error: 'invalid playbook `<root>`: invalid YAML: bad indent' } },
+      });
+    });
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.create' }));
+    await user.type(screen.getByLabelText('remediation:playbooks.playbookId'), 'my-pb');
+    await user.type(screen.getByLabelText('remediation:playbooks.name'), 'My Playbook');
+    await user.type(screen.getByLabelText('remediation:playbooks.content'), 'garbage-yaml');
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.save' }));
+
+    // A document-level (`<root>`) error is shown as a structure problem, not a
+    // field — the sentinel is never rendered as if it were a user field.
+    expect(
+      await screen.findByText('remediation:playbooks.validationError.document')
+    ).toBeInTheDocument();
+    expect(screen.getByText('invalid YAML: bad indent')).toBeInTheDocument();
+    expect(screen.queryByText('<root>')).not.toBeInTheDocument();
   });
 
   it('should_blockSave_when_requiredFieldsMissing', async () => {

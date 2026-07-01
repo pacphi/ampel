@@ -17,7 +17,7 @@ use serde_json::{json, Value};
 use super::{compute_cost, delimit_block, UNTRUSTED_PREAMBLE};
 
 /// Default model id (ADR-009).
-pub const DEFAULT_MODEL: &str = "gemini-2.0-flash";
+pub const DEFAULT_MODEL: &str = "gemini-2.5-flash";
 const API_BASE: &str = "https://generativelanguage.googleapis.com/v1beta";
 
 /// Google Generative AI provider. Inference-only, hosted, external egress.
@@ -39,10 +39,10 @@ impl GeminiProvider {
     }
 
     fn cost_model() -> CostModel {
-        // gemini-2.0-flash pricing: ~$0.10 / 1M input, ~$0.40 / 1M output.
+        // gemini-2.5-flash pricing: $0.30 / 1M input, $2.50 / 1M output → per-1k.
         CostModel::PerToken {
-            input_per_1k: Decimal::new(1, 4),
-            output_per_1k: Decimal::new(4, 4),
+            input_per_1k: Decimal::new(3, 4),
+            output_per_1k: Decimal::new(25, 4),
         }
     }
 }
@@ -298,15 +298,15 @@ mod tests {
 
     #[test]
     fn should_use_exact_gemini_per_token_rates() {
-        // Spend-cap integrity depends on these rates: ~$0.10 / 1M input,
-        // ~$0.40 / 1M output → 0.0001 / 1k and 0.0004 / 1k.
+        // Spend-cap integrity depends on these rates: $0.30 / 1M input,
+        // $2.50 / 1M output → 0.0003 / 1k and 0.0025 / 1k.
         match GeminiProvider::cost_model() {
             CostModel::PerToken {
                 input_per_1k,
                 output_per_1k,
             } => {
-                assert_eq!(input_per_1k, Decimal::new(1, 4));
-                assert_eq!(output_per_1k, Decimal::new(4, 4));
+                assert_eq!(input_per_1k, Decimal::new(3, 4));
+                assert_eq!(output_per_1k, Decimal::new(25, 4));
             }
             other => panic!("expected PerToken, got {other:?}"),
         }
@@ -324,8 +324,8 @@ mod tests {
             parse_response(&body, OutputContract::UnifiedDiff).unwrap();
         assert_eq!((input_tokens, output_tokens), (10_000, 5_000));
         let cost = compute_cost(&GeminiProvider::cost_model(), input_tokens, output_tokens);
-        // 10000 * 0.0001/1k + 5000 * 0.0004/1k = 0.001 + 0.002 = 0.003
-        assert_eq!(cost, Decimal::new(3, 3));
+        // 10000 * 0.0003/1k + 5000 * 0.0025/1k = 0.003 + 0.0125 = 0.0155
+        assert_eq!(cost, Decimal::new(155, 4));
         assert_eq!(input_tokens + output_tokens, 15_000);
     }
 }

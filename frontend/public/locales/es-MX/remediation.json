@@ -239,14 +239,36 @@
     "contentPlaceholder": "Introduzca el manual de procedimientos YAML…",
     "create": "Nuevo manual de estrategias",
     "description": "Personaliza las indicaciones de corrección que utiliza el agente. Valida un playbook para previsualizar la indicación renderizada sin realizar ninguna llamada al modelo.",
+    "duplicate": "Duplicar para personalizar",
     "empty": "Aún no hay playbooks. Se utiliza el playbook predeterminado integrado hasta que añadas uno.",
     "error": "No se pudieron cargar los playbooks.",
     "errors": {
       "contentRequired": "Se requiere el contenido del manual de jugadas.",
+      "loadDefaultFailed": "No se pudo cargar el playbook predeterminado integrado.",
       "nameRequired": "Se requiere un nombre.",
       "playbookIdRequired": "Se requiere un ID de playbook.",
       "previewFailed": "No se pudo generar el playbook. Compruebe el archivo YAML en busca de errores.",
       "saveFailed": "No se pudo guardar el playbook. Compruebe el archivo YAML en busca de errores."
+    },
+    "hints": {
+      "contextSpec": "Etiquetas para los bloques de contexto no confiables (registros de CI, diferencias). El contenido no confiable viaja aquí como datos, nunca como instrucciones.",
+      "heading": "Guía de campo del manual de jugadas",
+      "hide": "Ocultar guía de campo",
+      "loop": "Presupuesto del agente: iteración, tiempo y límites de gasto. El límite de gasto es una cadena decimal entre comillas, por ejemplo, \"2.00\".",
+      "outputContract": "Uno de: {{values}}.",
+      "providerOverlays": "Anulaciones por proveedor, indexadas por tipo de proveedor: {{kinds}}.",
+      "role": "Marco de sistema de confianza para el agente. Nunca coloque contenido no confiable aquí.",
+      "show": "Mostrar guía de campo",
+      "tasks": "Plantillas de instrucciones por clase de fallo. Solo pueden hacer referencia a estas variables de confianza: {{vars}}.",
+      "toolsPolicy": "El límite de herramientas. Solo puedes restringir la lista permitida; nunca añadas una herramienta que la configuración predeterminada integrada no permita."
+    },
+    "loadDefault": "Cargar configuración predeterminada integrada",
+    "loadingDefault": "Cargando valores predeterminados integrados…",
+    "meta": {
+      "allowedTools": "Herramientas permitidas",
+      "noTools": "Ninguno",
+      "outputContract": "contrato de producción",
+      "role": "Role"
     },
     "name": "Nombre",
     "namePlaceholder": "Nombre legible para humanos",
@@ -260,7 +282,11 @@
     "scopeId": "ID de alcance",
     "scopeIdPlaceholder": "ID del equipo, organización o repositorio propietario",
     "scopeType": "Tipo de alcance",
-    "title": "Manuales de jugadas"
+    "title": "Manuales de jugadas",
+    "validationError": {
+      "document": "Problema con la estructura del manual de jugadas",
+      "heading": "Problema con el campo {{field}}"
+    }
   },
   "policies": {
     "create": "Nueva política",

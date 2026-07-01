@@ -239,14 +239,36 @@
     "contentPlaceholder": "输入 YAML 剧本……",
     "create": "新策略手册",
     "description": "自定义代理使用的修复提示。验证剧本以预览渲染后的提示，无需调用模型。",
+    "duplicate": "复制以进行自定义",
     "empty": "目前还没有剧本。在您添加剧本之前，将使用内置的默认剧本。",
     "error": "剧本加载失败。",
     "errors": {
       "contentRequired": "需要提供操作手册内容。",
+      "loadDefaultFailed": "无法加载内置的默认剧本。",
       "nameRequired": "必须填写姓名。",
       "playbookIdRequired": "需要剧本ID。",
       "previewFailed": "剧本渲染失败。请检查 YAML 文件是否存在错误。",
       "saveFailed": "剧本保存失败。请检查 YAML 文件是否存在错误。"
+    },
+    "hints": {
+      "contextSpec": "用于标记不受信任的上下文块（CI 日志、差异）。不受信任的内容以数据的形式传输到此处，绝不会以指令的形式传输。",
+      "heading": "实战指南",
+      "hide": "隐藏野外指南",
+      "loop": "代理预算：迭代次数、时间和支出上限。支出上限是一个带引号的十进制字符串，例如“2.00”。",
+      "outputContract": "其中之一：{{values}}。",
+      "providerOverlays": "每个提供商的覆盖设置，按提供商类型进行键控：{{kinds}}。",
+      "role": "为代理设置可信系统框架。切勿在此处放置不受信任的内容。",
+      "show": "显示野外指南",
+      "tasks": "每个故障类的指令模板。它们只能引用以下受信任的变量：{{vars}}。",
+      "toolsPolicy": "工具上限。您只能缩小允许使用的工具列表——切勿添加内置默认工具未授予权限的工具。"
+    },
+    "loadDefault": "加载内置默认值",
+    "loadingDefault": "正在加载内置默认值…",
+    "meta": {
+      "allowedTools": "允许使用的工具",
+      "noTools": "没有任何",
+      "outputContract": "产出合同",
+      "role": "角色"
     },
     "name": "姓名",
     "namePlaceholder": "人类可读的名称",
@@ -260,7 +282,11 @@
     "scopeId": "范围 ID",
     "scopeIdPlaceholder": "所属团队、组织或仓库 ID",
     "scopeType": "范围类型",
-    "title": "剧本"
+    "title": "剧本",
+    "validationError": {
+      "document": "战术手册结构存在问题",
+      "heading": "{{field}} 字段存在问题"
+    }
   },
   "policies": {
     "create": "新政策",

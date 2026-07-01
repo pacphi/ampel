@@ -56,12 +56,12 @@ output_contract: unified_diff
 provider_overlays:
   claude:
     output_contract: tool_use
-    model: claude-sonnet-4-6
+    model: claude-sonnet-5
   gemini:
     output_contract: tool_use
-    model: gemini-2.0-flash
+    model: gemini-2.5-flash
   ollama:
     output_contract: unified_diff
-    model: qwen2.5-coder
+    model: qwen3-coder:30b-a3b-q4_K_M
   onnx:
     output_contract: classify_only

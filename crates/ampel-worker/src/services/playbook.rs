@@ -13,9 +13,10 @@
 #![allow(dead_code)] // wired into the worker binary in slice 3
 
 use std::collections::HashMap;
+use std::fmt;
 
 use ampel_core::errors::{AmpelError, AmpelResult};
-use ampel_core::remediation::{AgentBudget, FailureClass, OutputContract};
+use ampel_core::remediation::{AgentBudget, FailureClass, OutputContract, ProviderKind};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
@@ -110,6 +111,126 @@ impl Playbook {
             .map_err(|e| AmpelError::ConfigError(format!("playbook: invalid YAML: {e}")))
     }
 
+    /// Parse **and schema-validate** a playbook from YAML (ADR-006 schema),
+    /// returning a [`PlaybookSchemaError`] whose `field` names the first
+    /// offending field path rather than an opaque serde message. This is the
+    /// write-time validator behind create/update.
+    ///
+    /// Checks, in order: the document is a YAML mapping; `role` is a non-empty
+    /// string; `tasks` is a non-empty mapping and each task carries a non-empty
+    /// `instructions` string; `loop.{max_iterations,max_seconds}` are integers and
+    /// `loop.max_cost_usd` is a decimal string (exact money, never a float);
+    /// `tools_policy` is a mapping; `output_contract` is a known enum; and every
+    /// `provider_overlays` key is a known provider kind (with any overlay
+    /// `output_contract` also a known enum). A final strong-typed parse catches
+    /// any residual type mismatch.
+    pub fn validate_yaml(yaml: &str) -> Result<Self, PlaybookSchemaError> {
+        let value: serde_yaml::Value = serde_yaml::from_str(yaml)
+            .map_err(|e| field_err("<root>", &format!("invalid YAML: {e}")))?;
+        let root = value
+            .as_mapping()
+            .ok_or_else(|| field_err("<root>", "playbook must be a YAML mapping"))?;
+
+        // role — required, non-empty string.
+        if require_str(root, "role")?.trim().is_empty() {
+            return Err(field_err("role", "must not be empty"));
+        }
+
+        // tasks — required, non-empty mapping; each value carries `instructions`.
+        let tasks = require_mapping(root, "tasks")?;
+        if tasks.is_empty() {
+            return Err(field_err("tasks", "must define at least one task"));
+        }
+        for (k, v) in tasks {
+            let name = k
+                .as_str()
+                .ok_or_else(|| field_err("tasks", "task keys must be strings"))?;
+            let task = v
+                .as_mapping()
+                .ok_or_else(|| field_err(&format!("tasks.{name}"), "must be a mapping"))?;
+            let ok = task
+                .get("instructions")
+                .and_then(|i| i.as_str())
+                .is_some_and(|s| !s.trim().is_empty());
+            if !ok {
+                return Err(field_err(
+                    &format!("tasks.{name}.instructions"),
+                    "must be a non-empty string",
+                ));
+            }
+        }
+
+        // loop — required mapping with the three budget fields.
+        let loop_cfg = require_mapping(root, "loop")?;
+        require_uint(loop_cfg, "loop", "max_iterations")?;
+        require_uint(loop_cfg, "loop", "max_seconds")?;
+        // max_cost_usd — a quoted decimal string (exact money; never a float).
+        let cost = loop_cfg
+            .get("max_cost_usd")
+            .ok_or_else(|| field_err("loop.max_cost_usd", "is required"))?;
+        let cost_str = cost.as_str().ok_or_else(|| {
+            field_err(
+                "loop.max_cost_usd",
+                "must be a decimal string (quote it, e.g. \"2.00\")",
+            )
+        })?;
+        Decimal::from_str(cost_str)
+            .map_err(|_| field_err("loop.max_cost_usd", "must be a valid decimal amount"))?;
+
+        // tools_policy — required mapping (its `allowed` list may be empty/absent).
+        require_mapping(root, "tools_policy")?;
+
+        // output_contract — required, a known enum.
+        let oc = require_str(root, "output_contract")?;
+        OutputContract::from_str(oc).map_err(|_| {
+            field_err(
+                "output_contract",
+                "must be one of: tool_use, unified_diff, classify_only",
+            )
+        })?;
+
+        // provider_overlays — optional; keys must be known provider kinds, and any
+        // overlay `output_contract` must also be a known enum.
+        if let Some(po) = root.get("provider_overlays") {
+            if !po.is_null() {
+                let overlays = po
+                    .as_mapping()
+                    .ok_or_else(|| field_err("provider_overlays", "must be a mapping"))?;
+                for (k, v) in overlays {
+                    let key = k.as_str().ok_or_else(|| {
+                        field_err("provider_overlays", "overlay keys must be strings")
+                    })?;
+                    ProviderKind::from_str(key).map_err(|_| {
+                        field_err(
+                            &format!("provider_overlays.{key}"),
+                            "unknown provider kind (expected: claude, gemini, ollama, onnx)",
+                        )
+                    })?;
+                    // Each overlay is a typed object (ProviderOverlay), never a bare
+                    // scalar — validate that before reaching into its fields.
+                    let overlay = v.as_mapping().ok_or_else(|| {
+                        field_err(&format!("provider_overlays.{key}"), "must be a mapping")
+                    })?;
+                    if let Some(overlay_oc) =
+                        overlay.get("output_contract").and_then(|o| o.as_str())
+                    {
+                        OutputContract::from_str(overlay_oc).map_err(|_| {
+                            field_err(
+                                &format!("provider_overlays.{key}.output_contract"),
+                                "must be one of: tool_use, unified_diff, classify_only",
+                            )
+                        })?;
+                    }
+                }
+            }
+        }
+
+        // Final strong-typed parse — catches any residual type mismatch the
+        // structural checks above did not cover (the required fields are already
+        // guaranteed present, so this surfaces only deeper type errors).
+        Self::from_yaml(yaml).map_err(|e| field_err("<root>", &e.to_string()))
+    }
+
     /// Pick the task template for a failure class. `lockfile_conflict` maps to
     /// its own task; everything else falls back to `failed_ci`.
     pub fn select_task(&self, class: FailureClass) -> AmpelResult<&PlaybookTask> {
@@ -136,6 +257,74 @@ impl Playbook {
             .and_then(|o| o.output_contract.clone())
             .unwrap_or_else(|| self.output_contract.clone());
         OutputContract::from_str(&raw)
+    }
+}
+
+/// A schema-validation failure that names the offending field path (ADR-006).
+///
+/// Serde's own parse errors are opaque about *which* field is wrong, so
+/// [`Playbook::validate_yaml`] produces this instead: a `field` an operator can
+/// act on (e.g. `loop.max_iterations`) plus a human-readable `message`. The API
+/// layer maps it onto a `422`.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct PlaybookSchemaError {
+    /// Dotted path of the offending field, e.g. `loop.max_cost_usd`. `<root>`
+    /// denotes a document-level problem (not a mapping, or a residual type error).
+    pub field: String,
+    /// Human-readable reason the field is invalid.
+    pub message: String,
+}
+
+impl fmt::Display for PlaybookSchemaError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}: {}", self.field, self.message)
+    }
+}
+
+impl std::error::Error for PlaybookSchemaError {}
+
+fn field_err(field: &str, message: &str) -> PlaybookSchemaError {
+    PlaybookSchemaError {
+        field: field.to_string(),
+        message: message.to_string(),
+    }
+}
+
+/// Fetch a required string field from a YAML mapping, else a field-scoped error.
+fn require_str<'a>(
+    map: &'a serde_yaml::Mapping,
+    key: &str,
+) -> Result<&'a str, PlaybookSchemaError> {
+    match map.get(key) {
+        None => Err(field_err(key, "is required")),
+        Some(v) => v.as_str().ok_or_else(|| field_err(key, "must be a string")),
+    }
+}
+
+/// Fetch a required sub-mapping from a YAML mapping, else a field-scoped error.
+fn require_mapping<'a>(
+    map: &'a serde_yaml::Mapping,
+    key: &str,
+) -> Result<&'a serde_yaml::Mapping, PlaybookSchemaError> {
+    match map.get(key) {
+        None => Err(field_err(key, "is required")),
+        Some(v) => v
+            .as_mapping()
+            .ok_or_else(|| field_err(key, "must be a mapping")),
+    }
+}
+
+/// Assert `parent.key` is present and a non-negative integer.
+fn require_uint(
+    map: &serde_yaml::Mapping,
+    parent: &str,
+    key: &str,
+) -> Result<(), PlaybookSchemaError> {
+    let path = format!("{parent}.{key}");
+    match map.get(key) {
+        None => Err(field_err(&path, "is required")),
+        Some(v) if v.as_u64().is_some() => Ok(()),
+        Some(_) => Err(field_err(&path, "must be a non-negative integer")),
     }
 }
 
@@ -198,5 +387,180 @@ mod tests {
             max_cost_usd: "free".to_string(),
         };
         assert!(cfg.to_budget().is_err());
+    }
+
+    // ---- validate_yaml: schema-aware, field-path validation (ADR-006) --------
+
+    /// A minimal, well-formed playbook. Tests tweak/remove fields from this.
+    const VALID_YAML: &str = r#"
+version: 1
+role: "You are a remediation engineer."
+tasks:
+  failed_ci:
+    instructions: "Fix {{ repo_full_name }} on {{ base_branch }}."
+loop:
+  max_iterations: 4
+  max_seconds: 900
+  max_cost_usd: "2.00"
+tools_policy:
+  allowed: [read_file, apply_patch]
+output_contract: unified_diff
+provider_overlays:
+  claude:
+    output_contract: tool_use
+    model: claude-sonnet-4-6
+"#;
+
+    #[test]
+    fn should_accept_a_well_formed_playbook() {
+        let pb = Playbook::validate_yaml(VALID_YAML).expect("valid playbook");
+        assert_eq!(pb.role, "You are a remediation engineer.");
+        assert!(pb.tasks.contains_key("failed_ci"));
+    }
+
+    #[test]
+    fn should_validate_the_shipped_embedded_default() {
+        // The real embedded default must always satisfy the write-time validator,
+        // otherwise the editor's "load built-in default" round-trip would break.
+        let default_yaml = include_str!("../../playbooks/default.yaml");
+        assert!(Playbook::validate_yaml(default_yaml).is_ok());
+    }
+
+    #[test]
+    fn should_report_field_path_for_missing_role() {
+        let yaml = VALID_YAML.replace("role: \"You are a remediation engineer.\"", "");
+        let err = Playbook::validate_yaml(&yaml).unwrap_err();
+        assert_eq!(err.field, "role");
+    }
+
+    #[test]
+    fn should_report_field_path_for_empty_tasks() {
+        let yaml = r#"
+role: "r"
+tasks: {}
+loop:
+  max_iterations: 1
+  max_seconds: 1
+  max_cost_usd: "0.10"
+tools_policy:
+  allowed: []
+output_contract: unified_diff
+"#;
+        let err = Playbook::validate_yaml(yaml).unwrap_err();
+        assert_eq!(err.field, "tasks");
+    }
+
+    #[test]
+    fn should_report_field_path_for_task_missing_instructions() {
+        let yaml = r#"
+role: "r"
+tasks:
+  failed_ci:
+    notes: "no instructions here"
+loop:
+  max_iterations: 1
+  max_seconds: 1
+  max_cost_usd: "0.10"
+tools_policy:
+  allowed: []
+output_contract: unified_diff
+"#;
+        let err = Playbook::validate_yaml(yaml).unwrap_err();
+        assert_eq!(err.field, "tasks.failed_ci.instructions");
+    }
+
+    #[test]
+    fn should_report_field_path_for_missing_loop_max_iterations() {
+        let yaml = VALID_YAML.replace("  max_iterations: 4\n", "");
+        let err = Playbook::validate_yaml(&yaml).unwrap_err();
+        assert_eq!(err.field, "loop.max_iterations");
+    }
+
+    #[test]
+    fn should_report_field_path_for_non_decimal_cost() {
+        let yaml = VALID_YAML.replace("max_cost_usd: \"2.00\"", "max_cost_usd: \"free\"");
+        let err = Playbook::validate_yaml(&yaml).unwrap_err();
+        assert_eq!(err.field, "loop.max_cost_usd");
+    }
+
+    #[test]
+    fn should_report_field_path_for_unquoted_float_cost() {
+        // A bare float (not a quoted string) is exactly the money-precision
+        // footgun the schema forbids — must be flagged on the field, not panic.
+        let yaml = VALID_YAML.replace("max_cost_usd: \"2.00\"", "max_cost_usd: 2.00");
+        let err = Playbook::validate_yaml(&yaml).unwrap_err();
+        assert_eq!(err.field, "loop.max_cost_usd");
+    }
+
+    #[test]
+    fn should_report_field_path_for_unknown_output_contract() {
+        let yaml = VALID_YAML.replace("output_contract: unified_diff", "output_contract: magic");
+        let err = Playbook::validate_yaml(&yaml).unwrap_err();
+        assert_eq!(err.field, "output_contract");
+    }
+
+    #[test]
+    fn should_report_field_path_for_unknown_provider_overlay_kind() {
+        let yaml = VALID_YAML.replace("  claude:", "  banana:");
+        let err = Playbook::validate_yaml(&yaml).unwrap_err();
+        assert_eq!(err.field, "provider_overlays.banana");
+    }
+
+    #[test]
+    fn should_report_field_path_for_unknown_overlay_output_contract() {
+        let yaml = VALID_YAML.replace(
+            "  claude:\n    output_contract: tool_use",
+            "  claude:\n    output_contract: bogus",
+        );
+        let err = Playbook::validate_yaml(&yaml).unwrap_err();
+        assert_eq!(err.field, "provider_overlays.claude.output_contract");
+    }
+
+    #[test]
+    fn should_report_tasks_field_for_non_string_task_key() {
+        // A non-string task key must fail on `tasks` with a clear message, not
+        // defer to the opaque final serde parse.
+        let yaml = r#"
+role: "r"
+tasks:
+  123:
+    instructions: "do it"
+loop:
+  max_iterations: 1
+  max_seconds: 1
+  max_cost_usd: "0.10"
+tools_policy:
+  allowed: []
+output_contract: unified_diff
+"#;
+        let err = Playbook::validate_yaml(yaml).unwrap_err();
+        assert_eq!(err.field, "tasks");
+    }
+
+    #[test]
+    fn should_report_overlay_field_for_non_mapping_overlay_value() {
+        // A scalar where an overlay object is expected must fail on the overlay's
+        // own field path, not the opaque final parse.
+        let yaml = VALID_YAML.replace(
+            "  claude:\n    output_contract: tool_use\n    model: claude-sonnet-4-6",
+            "  claude: 42",
+        );
+        let err = Playbook::validate_yaml(&yaml).unwrap_err();
+        assert_eq!(err.field, "provider_overlays.claude");
+    }
+
+    #[test]
+    fn should_report_root_for_non_mapping_document() {
+        // A YAML sequence (or any non-mapping) is not a playbook — flagged at the
+        // document level, never a spurious per-field error.
+        let err = Playbook::validate_yaml("- a\n- b\n").unwrap_err();
+        assert_eq!(err.field, "<root>");
+    }
+
+    #[test]
+    fn should_report_root_for_unparseable_yaml() {
+        // Genuinely malformed YAML (unbalanced flow mapping) fails the parse.
+        let err = Playbook::validate_yaml("role: {unclosed").unwrap_err();
+        assert_eq!(err.field, "<root>");
     }
 }

@@ -239,14 +239,36 @@
     "contentPlaceholder": "Voer het playbook in (YAML-formaat) in...",
     "create": "Nieuw draaiboek",
     "description": "Pas de herstelprompts aan die de agent gebruikt. Valideer een playbook om een voorbeeld van de weergegeven prompt te bekijken zonder modelaanroep.",
+    "duplicate": "Dupliceer om aan te passen",
     "empty": "Er zijn nog geen playbooks beschikbaar. Het ingebouwde standaard playbook wordt gebruikt totdat u er zelf een toevoegt.",
     "error": "Het laden van de playbooks is mislukt.",
     "errors": {
       "contentRequired": "De inhoud van het draaiboek is vereist.",
+      "loadDefaultFailed": "Het laden van het ingebouwde standaard playbook is mislukt.",
       "nameRequired": "Een naam is vereist.",
       "playbookIdRequired": "Een playbook-ID is vereist.",
       "previewFailed": "Het is niet gelukt om het playbook te laden. Controleer het YAML-bestand op fouten.",
       "saveFailed": "Het opslaan van de playbook is mislukt. Controleer het YAML-bestand op fouten."
+    },
+    "hints": {
+      "contextSpec": "Labels voor de onbetrouwbare contextblokken (CI-logs, diffs). Onbetrouwbare inhoud wordt hier als data verwerkt, nooit als instructies.",
+      "heading": "Handleiding voor het uitvoeren van een actieplan",
+      "hide": "Veldgids verbergen",
+      "loop": "Het agentbudget: iteratie-, tijd- en bestedingslimieten. De bestedingslimiet is een decimale tekenreeks tussen aanhalingstekens, bijvoorbeeld \"2.00\".",
+      "outputContract": "Een van de volgende: {{values}}.",
+      "providerOverlays": "Overrides per provider, gekoppeld aan het type provider: {{kinds}}.",
+      "role": "Een betrouwbaar systeemkader voor de agent. Plaats hier nooit onbetrouwbare inhoud.",
+      "show": "Toon veldgids",
+      "tasks": "Instructiesjablonen per faalklasse. Ze mogen alleen verwijzen naar deze vertrouwde variabelen: {{vars}}.",
+      "toolsPolicy": "Het maximum aantal toegestane tools. U kunt de lijst met toegestane tools alleen beperken; voeg nooit een tool toe die niet standaard is ingebouwd."
+    },
+    "loadDefault": "Laad de ingebouwde standaard",
+    "loadingDefault": "De ingebouwde standaardinstellingen worden geladen…",
+    "meta": {
+      "allowedTools": "Toegestane gereedschappen",
+      "noTools": "Geen",
+      "outputContract": "Outputcontract",
+      "role": "Rol"
     },
     "name": "Naam",
     "namePlaceholder": "Menselijke leesbare naam",
@@ -260,7 +282,11 @@
     "scopeId": "Bereik-ID",
     "scopeIdPlaceholder": "Verantwoordelijke team-, organisatie- of repository-ID",
     "scopeType": "Bereiktype",
-    "title": "Speelboeken"
+    "title": "Speelboeken",
+    "validationError": {
+      "document": "Probleem met de structuur van het draaiboek",
+      "heading": "Probleem met het veld {{field}}"
+    }
   },
   "policies": {
     "create": "Nieuw beleid",

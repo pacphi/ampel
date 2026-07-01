@@ -1009,14 +1009,36 @@ export interface RemediationTranslations {
     contentPlaceholder: string;
     create: string;
     description: string;
+    duplicate: string;
     empty: string;
     error: string;
     errors: {
       contentRequired: string;
+      loadDefaultFailed: string;
       nameRequired: string;
       playbookIdRequired: string;
       previewFailed: string;
       saveFailed: string;
+    };
+    hints: {
+      contextSpec: string;
+      heading: string;
+      hide: string;
+      loop: string;
+      outputContract: string;
+      providerOverlays: string;
+      role: string;
+      show: string;
+      tasks: string;
+      toolsPolicy: string;
+    };
+    loadDefault: string;
+    loadingDefault: string;
+    meta: {
+      allowedTools: string;
+      noTools: string;
+      outputContract: string;
+      role: string;
     };
     name: string;
     namePlaceholder: string;
@@ -1031,6 +1053,10 @@ export interface RemediationTranslations {
     scopeIdPlaceholder: string;
     scopeType: string;
     title: string;
+    validationError: {
+      document: string;
+      heading: string;
+    };
   };
   policies: {
     create: string;

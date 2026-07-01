@@ -239,14 +239,36 @@
     "contentPlaceholder": "Geben Sie das Playbook-YAML ein…",
     "create": "Neues Drehbuch",
     "description": "Passen Sie die vom Agenten verwendeten Abhilfemaßnahmen an. Validieren Sie ein Playbook, um die gerenderte Absprache ohne Modellaufruf in einer Vorschau anzuzeigen.",
+    "duplicate": "Duplizieren, um anzupassen",
     "empty": "Noch keine Playbooks vorhanden. Das integrierte Standard-Playbook wird verwendet, bis Sie ein eigenes hinzufügen.",
     "error": "Playbooks konnten nicht geladen werden.",
     "errors": {
       "contentRequired": "Der Inhalt des Playbooks ist erforderlich.",
+      "loadDefaultFailed": "Das integrierte Standard-Playbook konnte nicht geladen werden.",
       "nameRequired": "Ein Name ist erforderlich.",
       "playbookIdRequired": "Eine Playbook-ID ist erforderlich.",
       "previewFailed": "Das Playbook konnte nicht gerendert werden. Überprüfen Sie die YAML-Datei auf Fehler.",
       "saveFailed": "Das Playbook konnte nicht gespeichert werden. Überprüfen Sie die YAML-Datei auf Fehler."
+    },
+    "hints": {
+      "contextSpec": "Bezeichnungen für die nicht vertrauenswürdigen Kontextblöcke (CI-Protokolle, Diffs). Nicht vertrauenswürdige Inhalte werden hier als Daten übertragen, niemals als Anweisungen.",
+      "heading": "Playbook-Feldhandbuch",
+      "hide": "Feldführer ausblenden",
+      "loop": "Das Agentenbudget: Iterations-, Zeit- und Ausgabenobergrenzen. Die Ausgabenobergrenze ist eine in Anführungszeichen gesetzte Dezimalzahl, zum Beispiel „2.00“.",
+      "outputContract": "Eines von: {{values}}.",
+      "providerOverlays": "Anbieterspezifische Überschreibungen, nach Anbieterart indiziert: {{kinds}}.",
+      "role": "Vertrauenswürdige Systemstruktur für den Agenten. Platzieren Sie hier niemals nicht vertrauenswürdige Inhalte.",
+      "show": "Feldführer anzeigen",
+      "tasks": "Anweisungsvorlagen pro Fehlerklasse. Sie dürfen nur auf diese vertrauenswürdigen Variablen verweisen: {{vars}}.",
+      "toolsPolicy": "Die Werkzeugbegrenzung. Sie können die zulässige Liste nur einschränken – fügen Sie niemals ein Werkzeug hinzu, das nicht durch die integrierten Standardeinstellungen abgedeckt ist."
+    },
+    "loadDefault": "Eingebaute Standardeinstellungen laden",
+    "loadingDefault": "Lade integrierte Standardeinstellungen…",
+    "meta": {
+      "allowedTools": "Zulässige Werkzeuge",
+      "noTools": "Keiner",
+      "outputContract": "Output-Vertrag",
+      "role": "Rolle"
     },
     "name": "Name",
     "namePlaceholder": "für Menschen lesbarer Name",
@@ -260,7 +282,11 @@
     "scopeId": "Bereichs-ID",
     "scopeIdPlaceholder": "Eigentümer-Team-, Organisations- oder Repository-ID",
     "scopeType": "Bereichstyp",
-    "title": "Spielbücher"
+    "title": "Spielbücher",
+    "validationError": {
+      "document": "Problem mit der Playbook-Struktur",
+      "heading": "Problem mit dem Feld {{field}}"
+    }
   },
   "policies": {
     "create": "Neue Richtlinie",

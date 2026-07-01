@@ -239,14 +239,36 @@
     "contentPlaceholder": "Gå in i YAML-spelboken…",
     "create": "Ny spelbok",
     "description": "Anpassa de åtgärdsfrågor som agenten använder. Validera en spelbok för att förhandsgranska den renderade frågan utan modellanrop.",
+    "duplicate": "Duplicera för att anpassa",
     "empty": "Inga spelböcker ännu. Den inbyggda standardspelboken används tills du lägger till en.",
     "error": "Misslyckades med att läsa in spelböcker.",
     "errors": {
       "contentRequired": "Innehåll i spelboken krävs.",
+      "loadDefaultFailed": "Det gick inte att läsa in den inbyggda standardspelboken.",
       "nameRequired": "Ett namn krävs.",
       "playbookIdRequired": "Ett playbook-ID krävs.",
       "previewFailed": "Misslyckades med att rendera spelboken. Kontrollera YAML för fel.",
       "saveFailed": "Det gick inte att spara spelboken. Kontrollera YAML för fel."
+    },
+    "hints": {
+      "contextSpec": "Etiketter för de otillförlitliga kontextblocken (CI-loggar, skillnader). Otillförlitligt innehåll färdas hit som data, aldrig som instruktioner.",
+      "heading": "Handledning för fältspel",
+      "hide": "Dölj fältguide",
+      "loop": "Agentbudgeten: iterations-, tids- och utgiftstak. Utgiftstaket är en decimalsträng i citattecken, till exempel \"2,00\".",
+      "outputContract": "En av: {{values}}.",
+      "providerOverlays": "Åsidosättningar per leverantör, nyckelordade efter leverantörstyp: {{kinds}}.",
+      "role": "Tillförlitligt system för agenten. Placera aldrig otillförlitligt innehåll här.",
+      "show": "Visa fältguide",
+      "tasks": "Instruktionsmallar per felklass. De får endast referera till dessa betrodda variabler: {{vars}}.",
+      "toolsPolicy": "Verktygstaket. Du kan bara begränsa listan över tillåtna verktyg – lägg aldrig till ett verktyg som den inbyggda standardinställningen inte tillåter."
+    },
+    "loadDefault": "Ladda inbyggd standard",
+    "loadingDefault": "Läser inbyggd standard…",
+    "meta": {
+      "allowedTools": "Tillåtna verktyg",
+      "noTools": "Ingen",
+      "outputContract": "Utgångskontrakt",
+      "role": "Roll"
     },
     "name": "Namn",
     "namePlaceholder": "Läsbart namn",
@@ -260,7 +282,11 @@
     "scopeId": "Omfattnings-ID",
     "scopeIdPlaceholder": "Ägar-ID för team, organisation eller arkiv",
     "scopeType": "Omfattningstyp",
-    "title": "Spelböcker"
+    "title": "Spelböcker",
+    "validationError": {
+      "document": "Problem med spelbokens struktur",
+      "heading": "Problem med fältet {{field}}"
+    }
   },
   "policies": {
     "create": "Ny policy",

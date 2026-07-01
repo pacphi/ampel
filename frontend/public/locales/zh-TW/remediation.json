@@ -239,14 +239,36 @@
     "contentPlaceholder": "輸入 YAML 劇本…",
     "create": "新策略手冊",
     "description": "自訂代理程式使用的修復提示。驗證劇本以預覽渲染後的提示，無需呼叫模型。",
+    "duplicate": "複製以進行自訂",
     "empty": "目前還沒有劇本。在您新增劇本之前，將使用內建的預設劇本。",
     "error": "劇本加載失敗。",
     "errors": {
       "contentRequired": "需提供操作手冊內容。",
+      "loadDefaultFailed": "無法載入內建的預設劇本。",
       "nameRequired": "必須填寫姓名。",
       "playbookIdRequired": "需要劇本ID。",
       "previewFailed": "劇本渲染失敗。請檢查 YAML 檔案是否有錯誤。",
       "saveFailed": "劇本保存失敗。請檢查 YAML 檔案是否有錯誤。"
+    },
+    "hints": {
+      "contextSpec": "用於標記不受信任的上下文區塊（CI 日誌、差異）。不受信任的內容以資料的形式傳輸到此處，絕不會以指令的形式傳輸。",
+      "heading": "實戰指南",
+      "hide": "隱藏野外指南",
+      "loop": "代理預算：迭代次數、時間和支出上限。支出上限是一個帶引號的十進位字串，例如“2.00”。",
+      "outputContract": "其中之一：{{values}}。",
+      "providerOverlays": "每個提供者的覆蓋設置，按提供者類型進行鍵控：{{kinds}}。",
+      "role": "為代理程式設定可信任系統框架。切勿在此放置不受信任的內容。",
+      "show": "顯示野外指南",
+      "tasks": "每個故障類別的指令模板。它們只能引用以下受信任的變數：{{vars}}。",
+      "toolsPolicy": "工具上限。您只能縮小允許使用的工具清單—切勿新增內建預設工具未授予權限的工具。"
+    },
+    "loadDefault": "載入內建預設值",
+    "loadingDefault": "正在載入內建預設值…",
+    "meta": {
+      "allowedTools": "允許使用的工具",
+      "noTools": "沒有任何",
+      "outputContract": "產出合約",
+      "role": "角色"
     },
     "name": "姓名",
     "namePlaceholder": "人類可讀的名稱",
@@ -260,7 +282,11 @@
     "scopeId": "範圍 ID",
     "scopeIdPlaceholder": "所屬團隊、組織或倉庫 ID",
     "scopeType": "範圍類型",
-    "title": "劇本"
+    "title": "劇本",
+    "validationError": {
+      "document": "戰術手冊結構存在問題",
+      "heading": "{{field}} 字段存在問題"
+    }
   },
   "policies": {
     "create": "新政策",

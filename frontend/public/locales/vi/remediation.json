@@ -239,14 +239,36 @@
     "contentPlaceholder": "Nhập tệp YAML của playbook…",
     "create": "Chiến lược mới",
     "description": "Tùy chỉnh các lời nhắc khắc phục sự cố mà tác nhân sử dụng. Xác thực một playbook để xem trước lời nhắc được hiển thị mà không cần gọi mô hình.",
+    "duplicate": "Sao chép để tùy chỉnh",
     "empty": "Hiện chưa có playbook nào. Playbook mặc định được tích hợp sẵn sẽ được sử dụng cho đến khi bạn thêm một playbook khác.",
     "error": "Không thể tải các tập lệnh chiến thuật.",
     "errors": {
       "contentRequired": "Nội dung trong cẩm nang là bắt buộc.",
+      "loadDefaultFailed": "Không thể tải tập lệnh mặc định tích hợp sẵn.",
       "nameRequired": "Cần phải nhập tên.",
       "playbookIdRequired": "Cần có mã định danh của sổ tay chiến thuật.",
       "previewFailed": "Không thể hiển thị playbook. Kiểm tra tệp YAML để tìm lỗi.",
       "saveFailed": "Không thể lưu tập lệnh. Kiểm tra tệp YAML để tìm lỗi."
+    },
+    "hints": {
+      "contextSpec": "Nhãn cho các khối ngữ cảnh không đáng tin cậy (nhật ký CI, sự khác biệt). Nội dung không đáng tin cậy được truyền đến đây dưới dạng dữ liệu, không bao giờ dưới dạng hướng dẫn.",
+      "heading": "Cẩm nang thực địa",
+      "hide": "Ẩn hướng dẫn thực địa",
+      "loop": "Ngân sách của tác nhân: số lần lặp, thời gian và giới hạn chi tiêu. Giới hạn chi tiêu được thể hiện bằng một chuỗi thập phân trong ngoặc kép, ví dụ: \"2.00\".",
+      "outputContract": "Một trong số: {{values}}.",
+      "providerOverlays": "Các thiết lập ghi đè cho từng nhà cung cấp, được phân loại theo loại nhà cung cấp: {{kinds}}.",
+      "role": "Khung hệ thống đáng tin cậy dành cho tác nhân. Tuyệt đối không đặt nội dung không đáng tin cậy ở đây.",
+      "show": "Hiển thị hướng dẫn thực địa",
+      "tasks": "Các mẫu hướng dẫn cho từng loại lỗi. Chúng chỉ có thể tham chiếu đến các biến đáng tin cậy này: {{vars}}.",
+      "toolsPolicy": "Giới hạn số lượng công cụ. Bạn chỉ có thể thu hẹp danh sách các công cụ được cho phép — tuyệt đối không được thêm công cụ nào mà hệ thống mặc định không cho phép."
+    },
+    "loadDefault": "Tải cài đặt mặc định tích hợp sẵn",
+    "loadingDefault": "Đang tải các cài đặt mặc định tích hợp sẵn…",
+    "meta": {
+      "allowedTools": "Các công cụ được phép",
+      "noTools": "Không có",
+      "outputContract": "Hợp đồng sản lượng",
+      "role": "Vai trò"
     },
     "name": "Tên",
     "namePlaceholder": "Tên dễ đọc đối với con người",
@@ -260,7 +282,11 @@
     "scopeId": "ID phạm vi",
     "scopeIdPlaceholder": "ID nhóm, tổ chức hoặc kho lưu trữ sở hữu",
     "scopeType": "Loại phạm vi",
-    "title": "Sổ tay chiến thuật"
+    "title": "Sổ tay chiến thuật",
+    "validationError": {
+      "document": "Vấn đề với cấu trúc của sách hướng dẫn",
+      "heading": "Lỗi với trường {{field}}"
+    }
   },
   "policies": {
     "create": "Chính sách mới",

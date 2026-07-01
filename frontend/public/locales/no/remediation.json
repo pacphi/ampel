@@ -239,14 +239,36 @@
     "contentPlaceholder": "Gå inn i YAML-håndboken…",
     "create": "Ny strategibok",
     "description": "Tilpass utbedringsforespørslene som agenten bruker. Valider en strategibok for å forhåndsvise den gjengitte forespørselen uten modellkall.",
+    "duplicate": "Dupliser for å tilpasse",
     "empty": "Ingen strategier ennå. Den innebygde standardstrategien brukes inntil du legger til en.",
     "error": "Kunne ikke laste inn spillbøkene.",
     "errors": {
       "contentRequired": "Innhold i spillboken er obligatorisk.",
+      "loadDefaultFailed": "Kunne ikke laste inn den innebygde standardspillboken.",
       "nameRequired": "Et navn er påkrevd.",
       "playbookIdRequired": "En playbook-ID er nødvendig.",
       "previewFailed": "Kunne ikke gjengi handlingsplanen. Sjekk YAML for feil.",
       "saveFailed": "Kunne ikke lagre handlingsplanen. Sjekk YAML for feil."
+    },
+    "hints": {
+      "contextSpec": "Etiketter for de upålitelige kontekstblokkene (CI-logger, differanser). Upålitelig innhold sendes hit som data, aldri som instruksjoner.",
+      "heading": "Spillebok feltguide",
+      "hide": "Skjul feltguide",
+      "loop": "Agentbudsjettet: iterasjon, tids- og forbruksgrenser. Forbruksgrensen er en desimalstreng i anførselstegn, for eksempel «2,00».",
+      "outputContract": "En av: {{values}}.",
+      "providerOverlays": "Overstyringer per leverandør, tastet inn etter leverandørtype: {{kinds}}.",
+      "role": "Klarert systeminnramming for agenten. Plasser aldri uklarert innhold her.",
+      "show": "Vis feltguide",
+      "tasks": "Instruksjonsmaler per feilklasse. De kan bare referere til disse klarerte variablene: {{vars}}.",
+      "toolsPolicy": "Verktøytaket. Du kan bare begrense den tillatte listen – legg aldri til et verktøy som den innebygde standarden ikke tillater."
+    },
+    "loadDefault": "Last inn innebygd standard",
+    "loadingDefault": "Laster inn innebygd standard …",
+    "meta": {
+      "allowedTools": "Tillatte verktøy",
+      "noTools": "Ingen",
+      "outputContract": "Utgangskontrakt",
+      "role": "Rolle"
     },
     "name": "Navn",
     "namePlaceholder": "Menneskelig lesbart navn",
@@ -260,7 +282,11 @@
     "scopeId": "Omfangs-ID",
     "scopeIdPlaceholder": "Eierteam-, organisasjons- eller repositorium-ID",
     "scopeType": "Omfangstype",
-    "title": "Spillebøker"
+    "title": "Spillebøker",
+    "validationError": {
+      "document": "Problem med strukturen i spillboken",
+      "heading": "Problem med {{field}}-feltet"
+    }
   },
   "policies": {
     "create": "Ny policy",
