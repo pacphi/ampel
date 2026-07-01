@@ -223,3 +223,65 @@ async fn playbooks_create_accepts_a_well_formed_playbook() {
 
     test_db.cleanup().await;
 }
+
+// ---------------------------------------------------------------------------
+// Case 5 — preview renders the assembled prompt with NO model call
+// ---------------------------------------------------------------------------
+
+#[tokio::test]
+async fn playbooks_preview_renders_prompt_without_a_model_call() {
+    if TestDb::skip_if_sqlite() {
+        return;
+    }
+    let test_db = TestDb::new().await.expect("create test DB");
+    test_db.run_migrations().await.expect("run migrations");
+    let app = create_test_app(test_db.connection().clone()).await;
+    let token = register_and_login(&app, "pb-preview@example.com").await;
+
+    // Create a valid playbook and capture its id.
+    let content = playbook_yaml("  max_iterations: 4\n", "unified_diff");
+    let create_resp = app
+        .clone()
+        .oneshot(post(
+            "/api/remediation/playbooks",
+            &token,
+            json!({ "playbookId": "prev", "name": "Prev", "content": content }),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(create_resp.status(), StatusCode::CREATED);
+    let created = parse_json(create_resp).await;
+    let id = created["data"]["id"].as_str().expect("created playbook id");
+
+    // Preview it. No model-provider account exists in this database, so a
+    // successful render proves the endpoint makes NO model call — it only
+    // assembles the trusted prompt with minijinja over trusted metadata.
+    let resp = app
+        .clone()
+        .oneshot(post(
+            &format!("/api/remediation/playbooks/{id}/preview"),
+            &token,
+            json!({ "repoFullName": "octo/ampel", "baseBranch": "main" }),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+
+    let body = parse_json(resp).await;
+    let data = &body["data"];
+    assert_eq!(data["role"].as_str(), Some("You are a remediation engineer."));
+    // The trusted metadata is rendered into the system instruction...
+    let system = data["systemInstruction"].as_str().expect("systemInstruction");
+    assert!(system.contains("octo/ampel"), "rendered prompt missing repo: {system}");
+    assert!(system.contains("main"), "rendered prompt missing branch: {system}");
+    // ...and the allow-list is clamped to the embedded ceiling (read_file survives).
+    let tools: Vec<&str> = data["allowedTools"]
+        .as_array()
+        .expect("allowedTools array")
+        .iter()
+        .map(|t| t.as_str().unwrap())
+        .collect();
+    assert!(tools.contains(&"read_file"), "expected read_file in {tools:?}");
+
+    test_db.cleanup().await;
+}
