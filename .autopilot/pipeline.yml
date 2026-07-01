@@ -131,3 +131,41 @@ phases:
     depends_on: [2]
     adrs:  ["ADR-014-air-gapped-governance", "ADR-008-model-provider-credentials"]
     ddd:   ["ModelProviderAccount aggregate"]
+
+  - id: 4
+    goal: "Refresh config/models.yaml with the current (mid-2026) best-performing models and extend the catalog schema with hardware-tier / quant metadata — backend only."
+    deliverables:
+      - "Extend CatalogModel in ampel-core (all #[serde(default)]): params, quantization, min_ram_gb (Option<u32>), disk_gb (Option<String>), hardware_tier (Option<String>: '16'|'32-36'|'64'|'128'), community (bool). These are display/selection metadata; ModelCaps mapping is unchanged."
+      - "Add the same fields to the ampel-api CatalogModelDto (from_model) so GET /api/model-catalog returns them."
+      - "Rewrite config/models.yaml with VERIFIED mid-2026 models: claude {opus-4-8, sonnet-5, haiku-4-5, fable-5}; gemini {2.5-pro, 2.5-flash, 2.5-flash-lite, 3.5-flash, 3.1-flash-lite}; ollama curated best-per-RAM-tier (qwen3:8b @16GB; qwen3-coder:30b-a3b-q4_K_M + glm-4.7-flash:q4_K_M + gemma4:31b-it-q4_K_M @32-36GB; qwen3-coder:30b-a3b-q8_0 + nemotron:70b-instruct-q4_K_M @64GB; nemotron-3-super:120b-a12b-q4_K_M @128GB official + MichelRosselli/GLM-4.5-Air:Q4_K_M @128GB community=true). onnx failure-classifier retained. Real Decimal costs per the researched table."
+    definition_of_done:
+      - "cmd: cargo test -p ampel-core remediation::model_catalog passes (incl. new-field defaults + parsing)."
+      - "cmd: cargo test -p ampel-api --lib model_catalog passes."
+      - "cmd: cargo build --workspace succeeds; cargo clippy --workspace --all-targets --all-features -- -D warnings clean."
+      - "cmd: make format-check passes."
+      - "grep: hardware_tier in crates/ampel-core/src/remediation/model_catalog.rs"
+      - "grep: qwen3-coder in config/models.yaml"
+      - "grep: community in config/models.yaml"
+      - "prose: money fields remain Decimal (ADR-008); the new hardware-tier fields are display metadata and do not alter ModelCaps."
+    conventions: "Reuse the existing serde-default + graceful-fallback pattern. Community-namespace Ollama models carry community: true. Costs are Decimal strings, never f64."
+    depends_on: [3]
+    adrs:  ["ADR-008-model-provider-credentials"]
+    ddd:   ["ModelProviderAccount aggregate"]
+
+  - id: 5
+    goal: "Surface the new hardware-tier / quant / community metadata in the Remediation Model tab and let users filter local models by what fits their machine."
+    deliverables:
+      - "frontend/src/types/remediation.ts: extend the catalog model type with params, quantization, minRamGb, diskGb, hardwareTier, community."
+      - "ModelAccountManager dropdown: show params/quant/RAM-tier badges and a 'community' marker; add a RAM-tier filter (16 / 32-36 / 64 / 128 GB / all) that narrows the local (ollama) model options to those that fit; a short note that on discrete-GPU systems VRAM is the binding constraint."
+      - "New i18n keys added to en/remediation.json and propagated to ALL 27 locales; i18n/types.ts regenerated."
+    definition_of_done:
+      - "cmd: node scripts/i18n-coverage-report.js --check-missing reports no missing keys."
+      - "cmd: node scripts/i18n-coverage-report.js --check --min-coverage 95 passes."
+      - "cmd: make test-frontend passes (incl. a new spec for the RAM-tier filter + badge render)."
+      - "cmd: make lint-frontend passes; make format-check passes."
+      - "grep: hardwareTier in frontend/src/types/remediation.ts"
+      - "prose: no raw i18n keys render; new modelCatalog.* keys present across all locales; types.ts regenerated in sync."
+    conventions: "TanStack Query + shadcn/ui as in phase 2. Every string via i18n. Run make format-check locally (prettier is not covered by make lint-frontend)."
+    depends_on: [4]
+    adrs:  ["ADR-014-air-gapped-governance"]
+    ddd:   ["ModelProviderAccount aggregate"]
