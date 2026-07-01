@@ -157,6 +157,7 @@
     },
     "empty": "Er zijn nog geen modelaccounts. Voeg er een toe om agentgebaseerde herstelacties mogelijk te maken.",
     "endpointUrl": "Eindpunt-URL",
+    "endpointUrlHint": "Als Ampel in Docker draait, verwijst localhost naar de container. Gebruik http://host.docker.internal:11434 om een Ollama-server op uw host te bereiken.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Het laden van modelaccounts is mislukt.",
     "errors": {

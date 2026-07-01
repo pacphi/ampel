@@ -157,6 +157,7 @@
     },
     "empty": "Brak jeszcze kont modelowych. Dodaj jedno, aby włączyć naprawę agentową.",
     "endpointUrl": "Adres URL punktu końcowego",
+    "endpointUrlHint": "Jeżeli Ampel działa w Dockerze, localhost wskazuje na kontener — użyj http://host.docker.internal:11434, aby nawiązać połączenie z serwerem Ollama na swoim hoście.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Nie udało się załadować kont modelowych.",
     "errors": {

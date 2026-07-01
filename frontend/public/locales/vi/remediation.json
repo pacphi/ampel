@@ -157,6 +157,7 @@
     },
     "empty": "Hiện chưa có tài khoản mẫu nào. Hãy thêm một tài khoản để kích hoạt tính năng khắc phục sự cố tự động.",
     "endpointUrl": "URL điểm cuối",
+    "endpointUrlHint": "Nếu Ampel chạy trong Docker, localhost sẽ trỏ đến container — hãy sử dụng http://host.docker.internal:11434 để truy cập máy chủ Ollama trên máy chủ của bạn.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Không thể tải tài khoản mẫu.",
     "errors": {

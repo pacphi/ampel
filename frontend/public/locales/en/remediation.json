@@ -229,6 +229,7 @@
     "apiKeyHint": "Stored encrypted and never displayed again. Leave blank to keep the existing key.",
     "endpointUrl": "Endpoint URL",
     "endpointUrlPlaceholder": "http://localhost:11434",
+    "endpointUrlHint": "If Ampel runs in Docker, localhost points at the container — use http://host.docker.internal:11434 to reach an Ollama server on your host.",
     "modelId": "Model ID",
     "modelIdPlaceholder": "e.g. claude-sonnet-4",
     "spendCap": "Spend cap (USD)",

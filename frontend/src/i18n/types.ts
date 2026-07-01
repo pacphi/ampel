@@ -927,6 +927,7 @@ export interface RemediationTranslations {
     };
     empty: string;
     endpointUrl: string;
+    endpointUrlHint: string;
     endpointUrlPlaceholder: string;
     error: string;
     errors: {

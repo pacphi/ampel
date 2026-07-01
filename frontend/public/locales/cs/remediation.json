@@ -157,6 +157,7 @@
     },
     "empty": "Zatím žádné modelové účty. Přidejte jeden, abyste povolili agentskou nápravu.",
     "endpointUrl": "URL koncového bodu",
+    "endpointUrlHint": "Pokud Ampel běží v Dockeru, localhost ukazuje na kontejner – pro spojení s Ollama serverem na vašem hostiteli použijte http://host.docker.internal:11434.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Načtení účtů modelů se nezdařilo.",
     "errors": {

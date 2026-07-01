@@ -268,6 +268,9 @@ function CreateForm({ onClose }: CreateFormProps) {
             onChange={(e) => setEndpointUrl(e.target.value)}
             placeholder={t('remediation:modelAccounts.endpointUrlPlaceholder')}
           />
+          <p className="text-xs text-muted-foreground">
+            {t('remediation:modelAccounts.endpointUrlHint')}
+          </p>
         </div>
       )}
 

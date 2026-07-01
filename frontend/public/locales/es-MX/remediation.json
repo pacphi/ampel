@@ -157,6 +157,7 @@
     },
     "empty": "Aún no hay cuentas modelo. Añada una para habilitar la remediación automatizada.",
     "endpointUrl": "URL del punto final",
+    "endpointUrlHint": "Si Ampel se ejecuta en Docker, localhost apunta al contenedor; utilice http://host.docker.internal:11434 para acceder a un servidor Ollama en su host.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "No se pudieron cargar las cuentas del modelo.",
     "errors": {

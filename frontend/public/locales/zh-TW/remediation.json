@@ -157,6 +157,7 @@
     },
     "empty": "暫無模型帳戶。新增一個以啟用代理修復功能。",
     "endpointUrl": "端點 URL",
+    "endpointUrlHint": "如果 Ampel 在 Docker 中執行，則 localhost 指向容器－使用 http://host.docker.internal:11434 可以存取主機上的 Ollama 伺服器。",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "模型帳戶載入失敗。",
     "errors": {

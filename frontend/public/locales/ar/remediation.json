@@ -157,6 +157,7 @@
     },
     "empty": "لا توجد حسابات نموذجية حتى الآن. أضف حسابًا واحدًا لتمكين المعالجة الآلية.",
     "endpointUrl": "عنوان URL لنقطة النهاية",
+    "endpointUrlHint": "إذا كان Ampel يعمل في Docker، فإن localhost يشير إلى الحاوية - استخدم http://host.docker.internal:11434 للوصول إلى خادم Ollama على مضيفك.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "فشل تحميل حسابات النموذج.",
     "errors": {

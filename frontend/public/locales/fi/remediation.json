@@ -157,6 +157,7 @@
     },
     "empty": "Ei vielä mallitilejä. Lisää yksi ottaaksesi agenttikohtaisen korjauksen käyttöön.",
     "endpointUrl": "Päätepisteen URL-osoite",
+    "endpointUrlHint": "Jos Ampel toimii Dockerissa, localhost osoittaa konttiin – käytä http://host.docker.internal:11434-osoitetta tavoittaaksesi Ollama-palvelimen isännässäsi.",
     "endpointUrlPlaceholder": "http://paikallinenhost:11434",
     "error": "Mallitilien lataaminen epäonnistui.",
     "errors": {
