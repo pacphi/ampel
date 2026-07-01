@@ -298,5 +298,35 @@
     "policies": "Politiche",
     "runs": "Corse"
   },
-  "title": "Risanamento della flotta"
+  "title": "Risanamento della flotta",
+  "modelCatalog": {
+    "model": "Model",
+    "modelPlaceholder": "Select a model",
+    "loading": "Loading models…",
+    "loadError": "Failed to load the model catalog.",
+    "noModels": "No catalog models are available for this provider. Use Advanced to enter a model ID.",
+    "advanced": "Advanced",
+    "customModelId": "Custom model ID",
+    "customModelIdPlaceholder": "Override with an unlisted model ID",
+    "customModelIdHint": "A custom model ID overrides the catalog selection above.",
+    "toolUse": "Tool use",
+    "codeEdit": "Code edit",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Free",
+      "perToken": "${{input}} in · ${{output}} out / 1K"
+    },
+    "pull": {
+      "pullModel": "Pull model",
+      "pulling": "Pulling…",
+      "title": "Model download",
+      "notPulled": "Not downloaded on this server yet.",
+      "status": {
+        "queued": "Queued",
+        "downloading": "Downloading",
+        "ready": "Ready",
+        "error": "Error"
+      }
+    }
+  }
 }
