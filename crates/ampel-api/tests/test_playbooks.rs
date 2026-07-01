@@ -269,11 +269,22 @@ async fn playbooks_preview_renders_prompt_without_a_model_call() {
 
     let body = parse_json(resp).await;
     let data = &body["data"];
-    assert_eq!(data["role"].as_str(), Some("You are a remediation engineer."));
+    assert_eq!(
+        data["role"].as_str(),
+        Some("You are a remediation engineer.")
+    );
     // The trusted metadata is rendered into the system instruction...
-    let system = data["systemInstruction"].as_str().expect("systemInstruction");
-    assert!(system.contains("octo/ampel"), "rendered prompt missing repo: {system}");
-    assert!(system.contains("main"), "rendered prompt missing branch: {system}");
+    let system = data["systemInstruction"]
+        .as_str()
+        .expect("systemInstruction");
+    assert!(
+        system.contains("octo/ampel"),
+        "rendered prompt missing repo: {system}"
+    );
+    assert!(
+        system.contains("main"),
+        "rendered prompt missing branch: {system}"
+    );
     // ...and the allow-list is clamped to the embedded ceiling (read_file survives).
     let tools: Vec<&str> = data["allowedTools"]
         .as_array()
@@ -281,7 +292,10 @@ async fn playbooks_preview_renders_prompt_without_a_model_call() {
         .iter()
         .map(|t| t.as_str().unwrap())
         .collect();
-    assert!(tools.contains(&"read_file"), "expected read_file in {tools:?}");
+    assert!(
+        tools.contains(&"read_file"),
+        "expected read_file in {tools:?}"
+    );
 
     test_db.cleanup().await;
 }
