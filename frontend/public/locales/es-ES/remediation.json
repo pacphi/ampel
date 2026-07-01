@@ -129,6 +129,13 @@
     "eligible": "Elegible",
     "empty": "No se encontraron repositorios.",
     "error": "No se pudo cargar la descripción general de la flota.",
+    "filters": {
+      "clear": "Mostrar todos los repositorios",
+      "groupLabel": "Filtros del repositorio",
+      "noMatch": "No se encontraron repositorios que coincidan con los filtros actuales.",
+      "onlyEligible": "Solo repositorios elegibles",
+      "onlyWithPrs": "Solo repositorios con solicitudes de extracción abiertas"
+    },
     "notEligible": "No elegible",
     "preview": "Avance",
     "tableLabel": "Estado de remediación del repositorio",

@@ -129,6 +129,13 @@
     "eligible": "Berättigad",
     "empty": "Inga arkiv hittades.",
     "error": "Det gick inte att läsa in översikten över flottan.",
+    "filters": {
+      "clear": "Visa alla arkiv",
+      "groupLabel": "Filter för arkivet",
+      "noMatch": "Inga arkiv matchar de aktuella filtren.",
+      "onlyEligible": "Endast behöriga arkiv",
+      "onlyWithPrs": "Endast arkiv med öppna pull requests"
+    },
     "notEligible": "Inte berättigad",
     "preview": "Förhandsvisning",
     "tableLabel": "Status för sanering av arkivet",

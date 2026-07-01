@@ -129,6 +129,13 @@
     "eligible": "Berettiget",
     "empty": "Ingen lagre fundet.",
     "error": "Flådeoversigten kunne ikke indlæses.",
+    "filters": {
+      "clear": "Vis alle arkiver",
+      "groupLabel": "Filtre til arkivet",
+      "noMatch": "Ingen arkiver matcher de nuværende filtre.",
+      "onlyEligible": "Kun berettigede lagre",
+      "onlyWithPrs": "Kun arkiver med åbne pull-anmodninger"
+    },
     "notEligible": "Ikke berettiget",
     "preview": "Forhåndsvisning",
     "tableLabel": "Status for afhjælpning af arkivet",

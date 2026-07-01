@@ -129,6 +129,13 @@
     "eligible": "Hak sahibi",
     "empty": "Hiçbir depo bulunamadı.",
     "error": "Filo genel görünümü yüklenemedi.",
+    "filters": {
+      "clear": "Tüm depoları göster",
+      "groupLabel": "Depo filtreleri",
+      "noMatch": "Mevcut filtrelere uyan hiçbir depo bulunamadı.",
+      "onlyEligible": "Yalnızca uygun depolar",
+      "onlyWithPrs": "Yalnızca açık çekme istekleri olan depolar"
+    },
     "notEligible": "Uygun değil",
     "preview": "Önizleme",
     "tableLabel": "Depo düzeltme durumu",

@@ -28,6 +28,13 @@
       "policyState": "Policy",
       "airGapped": "Air-gap",
       "actions": "Actions"
+    },
+    "filters": {
+      "groupLabel": "Repository filters",
+      "onlyWithPrs": "Only repositories with open pull requests",
+      "onlyEligible": "Only eligible repositories",
+      "noMatch": "No repositories match the current filters.",
+      "clear": "Show all repositories"
     }
   },
   "policyState": {

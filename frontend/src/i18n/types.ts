@@ -899,6 +899,13 @@ export interface RemediationTranslations {
     eligible: string;
     empty: string;
     error: string;
+    filters: {
+      clear: string;
+      groupLabel: string;
+      noMatch: string;
+      onlyEligible: string;
+      onlyWithPrs: string;
+    };
     notEligible: string;
     preview: string;
     tableLabel: string;

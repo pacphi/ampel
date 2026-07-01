@@ -129,6 +129,13 @@
     "eligible": "Eligible",
     "empty": "No repositories found.",
     "error": "Failed to load the fleet overview.",
+    "filters": {
+      "clear": "Show all repositories",
+      "groupLabel": "Repository filters",
+      "noMatch": "No repositories match the current filters.",
+      "onlyEligible": "Only eligible repositories",
+      "onlyWithPrs": "Only repositories with open pull requests"
+    },
     "notEligible": "Not eligible",
     "preview": "Preview",
     "tableLabel": "Repository remediation status",

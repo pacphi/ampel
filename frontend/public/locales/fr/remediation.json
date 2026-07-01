@@ -129,6 +129,13 @@
     "eligible": "Admissible",
     "empty": "Aucun dépôt trouvé.",
     "error": "Impossible de charger l'aperçu de la flotte.",
+    "filters": {
+      "clear": "Afficher tous les dépôts",
+      "groupLabel": "Filtres de dépôt",
+      "noMatch": "Aucun dépôt ne correspond aux filtres actuels.",
+      "onlyEligible": "Seuls les dépôts éligibles",
+      "onlyWithPrs": "Seuls les dépôts avec des demandes de fusion ouvertes"
+    },
     "notEligible": "Non admissible",
     "preview": "Aperçu",
     "tableLabel": "État de la correction du référentiel",

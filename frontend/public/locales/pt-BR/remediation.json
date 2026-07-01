@@ -129,6 +129,13 @@
     "eligible": "Elegível",
     "empty": "Nenhum repositório encontrado.",
     "error": "Falha ao carregar a visão geral da frota.",
+    "filters": {
+      "clear": "Mostrar todos os repositórios",
+      "groupLabel": "Filtros de repositório",
+      "noMatch": "Nenhum repositório corresponde aos filtros atuais.",
+      "onlyEligible": "Somente repositórios elegíveis",
+      "onlyWithPrs": "Apenas repositórios com solicitações de pull abertas"
+    },
     "notEligible": "Não elegível",
     "preview": "Pré-visualização",
     "tableLabel": "Status de remediação do repositório",

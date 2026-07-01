@@ -129,6 +129,13 @@
     "eligible": "Oprávněný",
     "empty": "Nenalezeny žádné repozitáře.",
     "error": "Nepodařilo se načíst přehled flotily.",
+    "filters": {
+      "clear": "Zobrazit všechny repozitáře",
+      "groupLabel": "Filtry repozitáře",
+      "noMatch": "Aktuálním filtrům neodpovídají žádné repozitáře.",
+      "onlyEligible": "Pouze způsobilé repozitáře",
+      "onlyWithPrs": "Pouze repozitáře s otevřenými pull requesty"
+    },
     "notEligible": "Nezpůsobilé",
     "preview": "Náhled",
     "tableLabel": "Stav sanace repozitáře",

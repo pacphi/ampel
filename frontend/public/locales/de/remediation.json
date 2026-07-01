@@ -129,6 +129,13 @@
     "eligible": "Berechtigt",
     "empty": "Keine Repositories gefunden.",
     "error": "Die Flottenübersicht konnte nicht geladen werden.",
+    "filters": {
+      "clear": "Alle Repositories anzeigen",
+      "groupLabel": "Repository-Filter",
+      "noMatch": "Es gibt keine Repositories, die den aktuellen Filtern entsprechen.",
+      "onlyEligible": "Nur berechtigte Repositorien",
+      "onlyWithPrs": "Nur Repositories mit offenen Pull-Anfragen"
+    },
     "notEligible": "Nicht berechtigt",
     "preview": "Vorschau",
     "tableLabel": "Repository-Sanierungsstatus",

@@ -129,6 +129,13 @@
     "eligible": "In aanmerking komend",
     "empty": "Geen repositories gevonden.",
     "error": "Het laden van het vlootoverzicht is mislukt.",
+    "filters": {
+      "clear": "Toon alle repositories",
+      "groupLabel": "Repositoryfilters",
+      "noMatch": "Er zijn geen repositories gevonden die aan de huidige filters voldoen.",
+      "onlyEligible": "Alleen in aanmerking komende repositories",
+      "onlyWithPrs": "Alleen repositories met openstaande pull requests"
+    },
     "notEligible": "Niet in aanmerking komend",
     "preview": "Voorbeeld",
     "tableLabel": "Status van de herstelwerkzaamheden aan de repository",
