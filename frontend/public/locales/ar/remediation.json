@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "الحد الأقصى للأرقام القياسية الشخصية لكل جولة",
     "minOpenPrs": "الحد الأدنى من طلبات السحب المفتوحة",
+    "noScopes": "أنت لا تدير أي نطاقات من هذا النوع حتى الآن.",
     "save": "سياسة الحفظ",
     "saving": "توفير…",
     "scopeId": "معرف النطاق",
     "scopeIdPlaceholder": "أدخل معرّف المستودع أو الفريق أو المؤسسة أو المستخدم",
-    "scopeType": "نوع النطاق",
-    "noScopes": "أنت لا تدير أي نطاقات من هذا النوع حتى الآن."
+    "scopeType": "نوع النطاق"
   },
   "fleet": {
     "airGappedOff": "متصل",
@@ -168,10 +168,10 @@
     "modelIdPlaceholder": "مثال: claude-sonnet-4",
     "providerKind": "مزود",
     "providerKindLabel": {
-      "claude": "كلود",
-      "gemini": "تَوأَم",
-      "ollama": "أولاما (محلي)",
-      "onnx": "ONNX (محلي)"
+      "claude": "Claude",
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "حفظ الحساب",
     "saving": "توفير…",
@@ -185,6 +185,52 @@
       "unvalidated": "غير موثق",
       "valid": "صالح"
     }
+  },
+  "modelCatalog": {
+    "advanced": "متقدم",
+    "codeEdit": "تعديل الكود",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "حر",
+      "perToken": "${{input}} دخل · ${{output}} خرج / 1K"
+    },
+    "customModelId": "معرّف النموذج المخصص",
+    "customModelIdHint": "يؤدي استخدام معرّف نموذج مخصص إلى تجاوز اختيار الكتالوج أعلاه.",
+    "customModelIdPlaceholder": "تجاوز باستخدام معرّف نموذج غير مدرج",
+    "hardware": {
+      "community": "مجتمع",
+      "diskSize": "قرص بسعة {{disk}} جيجابايت",
+      "filterHint": "تقوم المرشحات بتصفية النماذج المحلية (أولاما) حسب ذاكرة الوصول العشوائي للنظام. في أنظمة وحدة معالجة الرسومات المنفصلة، تكون ذاكرة الوصول العشوائي للفيديو - وليس ذاكرة الوصول العشوائي للنظام - هي القيد الأساسي.",
+      "filterLabel": "طبقة ذاكرة الوصول العشوائي",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 جيجابايت",
+        "16": "16 جيجابايت",
+        "32-36": "32-36 جيجابايت",
+        "64": "64 جيجابايت",
+        "all": "الجميع"
+      }
+    },
+    "loadError": "فشل تحميل كتالوج النماذج.",
+    "loading": "جارٍ تحميل النماذج…",
+    "model": "نموذج",
+    "modelPlaceholder": "اختر طرازًا",
+    "noModels": "لا تتوفر نماذج من هذا المورد في الكتالوج. استخدم خيار \"متقدم\" لإدخال معرّف النموذج.",
+    "pull": {
+      "notPulled": "لم يتم تنزيله على هذا الخادم بعد.",
+      "pullModel": "نموذج السحب",
+      "pulling": "سحب…",
+      "status": {
+        "downloading": "جارٍ التنزيل",
+        "error": "خطأ",
+        "queued": "تمت إضافته إلى قائمة الانتظار",
+        "ready": "مستعد"
+      },
+      "title": "تنزيل النموذج"
+    },
+    "toolUse": "استخدام الأداة"
   },
   "nav": "المعالجة",
   "playbooks": {
@@ -298,35 +344,5 @@
     "policies": "السياسات",
     "runs": "يركض"
   },
-  "title": "إصلاح الأسطول",
-  "modelCatalog": {
-    "model": "Model",
-    "modelPlaceholder": "Select a model",
-    "loading": "Loading models…",
-    "loadError": "Failed to load the model catalog.",
-    "noModels": "No catalog models are available for this provider. Use Advanced to enter a model ID.",
-    "advanced": "Advanced",
-    "customModelId": "Custom model ID",
-    "customModelIdPlaceholder": "Override with an unlisted model ID",
-    "customModelIdHint": "A custom model ID overrides the catalog selection above.",
-    "toolUse": "Tool use",
-    "codeEdit": "Code edit",
-    "contextWindow": "{{tokens}} ctx",
-    "cost": {
-      "free": "Free",
-      "perToken": "${{input}} in · ${{output}} out / 1K"
-    },
-    "pull": {
-      "pullModel": "Pull model",
-      "pulling": "Pulling…",
-      "title": "Model download",
-      "notPulled": "Not downloaded on this server yet.",
-      "status": {
-        "queued": "Queued",
-        "downloading": "Downloading",
-        "ready": "Ready",
-        "error": "Error"
-      }
-    }
-  }
+  "title": "إصلاح الأسطول"
 }

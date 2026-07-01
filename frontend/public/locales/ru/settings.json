@@ -71,7 +71,7 @@
   "profileUpdateSuccess": "Ваш профиль успешно сохранен.",
   "profileUpdated": "Профиль обновлен",
   "providers": {
-    "bitbucket": "Битбакет",
+    "bitbucket": "Bitbucket",
     "connect": "Подключить",
     "connected": "Подключено",
     "disconnect": "Отключить",

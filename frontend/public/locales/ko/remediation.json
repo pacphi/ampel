@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "달리기당 최대 개인 최고 기록",
     "minOpenPrs": "최소 열린 PR",
+    "noScopes": "아직 이 유형의 범위를 관리하고 있지 않습니다.",
     "save": "정책 저장",
     "saving": "절약…",
     "scopeId": "범위 ID",
     "scopeIdPlaceholder": "저장소, 팀, 조직 또는 사용자 ID를 입력하세요.",
-    "scopeType": "범위 유형",
-    "noScopes": "아직 이 유형의 범위를 관리하고 있지 않습니다."
+    "scopeType": "범위 유형"
   },
   "fleet": {
     "airGappedOff": "연결됨",
@@ -168,10 +168,10 @@
     "modelIdPlaceholder": "예: 클로드 소네트 4",
     "providerKind": "공급자",
     "providerKindLabel": {
-      "claude": "클로드",
-      "gemini": "쌍둥이자리",
-      "ollama": "올라마(현지)",
-      "onnx": "ONNX(로컬)"
+      "claude": "Claude",
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "저장 계정",
     "saving": "절약…",
@@ -185,6 +185,52 @@
       "unvalidated": "검증되지 않음",
       "valid": "유효한"
     }
+  },
+  "modelCatalog": {
+    "advanced": "고급의",
+    "codeEdit": "코드 편집",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "무료",
+      "perToken": "${{input}} 입력 · ${{output}} 출력 / 1K"
+    },
+    "customModelId": "사용자 정의 모델 ID",
+    "customModelIdHint": "사용자 지정 모델 ID는 위의 카탈로그 선택 사항을 재정의합니다.",
+    "customModelIdPlaceholder": "목록에 없는 모델 ID로 재정의합니다.",
+    "hardware": {
+      "community": "지역 사회",
+      "diskSize": "{{disk}} GB 디스크",
+      "filterHint": "시스템 RAM 용량에 따라 로컬(Ollama) 모델을 필터링합니다. 외장 GPU 시스템에서는 시스템 RAM이 아닌 VRAM이 제약 조건입니다.",
+      "filterLabel": "RAM 티어",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128GB",
+        "16": "16GB",
+        "32-36": "32~36GB",
+        "64": "64GB",
+        "all": "모두"
+      }
+    },
+    "loadError": "모델 카탈로그를 불러오는 데 실패했습니다.",
+    "loading": "모델을 불러오는 중…",
+    "model": "모델",
+    "modelPlaceholder": "모델을 선택하세요",
+    "noModels": "이 공급업체에 대한 카탈로그 모델이 없습니다. 고급 기능을 사용하여 모델 ID를 입력하십시오.",
+    "pull": {
+      "notPulled": "아직 이 서버에 다운로드되지 않았습니다.",
+      "pullModel": "풀 모델",
+      "pulling": "당기고…",
+      "status": {
+        "downloading": "다운로드 중",
+        "error": "오류",
+        "queued": "대기열에 있음",
+        "ready": "준비가 된"
+      },
+      "title": "모델 다운로드"
+    },
+    "toolUse": "도구 사용"
   },
   "nav": "교정",
   "playbooks": {
@@ -298,35 +344,5 @@
     "policies": "정책",
     "runs": "실행"
   },
-  "title": "함대 정비",
-  "modelCatalog": {
-    "model": "Model",
-    "modelPlaceholder": "Select a model",
-    "loading": "Loading models…",
-    "loadError": "Failed to load the model catalog.",
-    "noModels": "No catalog models are available for this provider. Use Advanced to enter a model ID.",
-    "advanced": "Advanced",
-    "customModelId": "Custom model ID",
-    "customModelIdPlaceholder": "Override with an unlisted model ID",
-    "customModelIdHint": "A custom model ID overrides the catalog selection above.",
-    "toolUse": "Tool use",
-    "codeEdit": "Code edit",
-    "contextWindow": "{{tokens}} ctx",
-    "cost": {
-      "free": "Free",
-      "perToken": "${{input}} in · ${{output}} out / 1K"
-    },
-    "pull": {
-      "pullModel": "Pull model",
-      "pulling": "Pulling…",
-      "title": "Model download",
-      "notPulled": "Not downloaded on this server yet.",
-      "status": {
-        "queued": "Queued",
-        "downloading": "Downloading",
-        "ready": "Ready",
-        "error": "Error"
-      }
-    }
-  }
+  "title": "함대 정비"
 }

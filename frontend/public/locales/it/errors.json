@@ -3,7 +3,7 @@
     "failedToCreateAccount": "Impossibile creare l'account",
     "forbidden": "Non hai l'autorizzazione per accedere a questa risorsa",
     "invalidCredentials": "Nome utente o password non validi",
-    "invalidEmailOrPassword": "Email o password non valide",
+    "invalidEmailOrPassword": "Indirizzo email o password non validi",
     "loginFailed": "Accesso non riuscito",
     "registrationFailed": "Registrazione fallita",
     "sessionExpired": "La tua sessione è scaduta. Effettua nuovamente l'accesso.",

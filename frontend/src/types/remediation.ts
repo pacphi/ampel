@@ -300,6 +300,18 @@ export interface CatalogModel {
   egress: CatalogEgress;
   outputContract: string;
   cost: ModelCost;
+  /** Parameter size/shape, e.g. "30B MoE (A3B)". */
+  params: string;
+  /** Quantization scheme, e.g. "Q4_K_M". */
+  quantization: string;
+  /** Minimum system RAM in GB (local models only). */
+  minRamGb?: number;
+  /** Approximate on-disk size in GB as a string, e.g. "19" (local models only). */
+  diskGb?: string;
+  /** Hardware RAM tier bucket: "16" | "32-36" | "64" | "128" (local models only). */
+  hardwareTier?: string;
+  /** Community-contributed (unofficial) catalog entry. */
+  community: boolean;
 }
 
 /** A provider grouping in the catalog (its `kind` matches `ProviderKind`). */
