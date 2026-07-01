@@ -21,6 +21,7 @@
 //! generic `502`.
 
 use std::collections::HashMap;
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{LazyLock, Mutex};
 use std::time::Duration;
 
@@ -307,12 +308,70 @@ struct PullJob {
     owner_user_id: Uuid,
     status: PullStatus,
     detail: Option<String>,
+    /// Monotonic insertion order, used for deterministic eviction (NOT
+    /// wall-clock, so the bounding policy is unit-testable).
+    seq: u64,
 }
+
+/// Hard ceiling on the number of retained pull jobs. The registry is advisory
+/// progress only, so once past this many entries the oldest are evicted
+/// (terminal jobs first) to keep memory bounded.
+const MAX_PULL_JOBS: usize = 256;
+
+/// Monotonic sequence source for [`PullJob::seq`]. Sequence-based (not
+/// wall-clock) so eviction ordering is deterministic and testable.
+static NEXT_SEQ: AtomicU64 = AtomicU64::new(0);
 
 /// Module-level registry, mirroring emailibrium's `DOWNLOADING` static. Keyed by
 /// a fresh job [`Uuid`]; contents are advisory progress only.
 static PULL_JOBS: LazyLock<Mutex<HashMap<Uuid, PullJob>>> =
     LazyLock::new(|| Mutex::new(HashMap::new()));
+
+/// Allocate the next monotonic insertion sequence for a new [`PullJob`].
+fn next_seq() -> u64 {
+    NEXT_SEQ.fetch_add(1, Ordering::Relaxed)
+}
+
+/// Bound `jobs` to [`MAX_PULL_JOBS`] after an insert. Eviction is deterministic
+/// and sequence-based: the oldest **terminal** (`Ready`/`Error`) jobs are
+/// removed first (lowest `seq`), and only if that is still not enough are the
+/// oldest jobs overall removed. `keep` (the just-inserted job) is never evicted.
+fn evict_over_cap(jobs: &mut HashMap<Uuid, PullJob>, keep: Uuid) {
+    if jobs.len() <= MAX_PULL_JOBS {
+        return;
+    }
+
+    // Pass 1: terminal jobs, oldest sequence first.
+    let mut terminal: Vec<(u64, Uuid)> = jobs
+        .iter()
+        .filter(|(id, job)| **id != keep && job.status.is_terminal())
+        .map(|(id, job)| (job.seq, *id))
+        .collect();
+    terminal.sort_unstable_by_key(|(seq, _)| *seq);
+    for (_, id) in terminal {
+        if jobs.len() <= MAX_PULL_JOBS {
+            break;
+        }
+        jobs.remove(&id);
+    }
+
+    // Pass 2: still over cap (all remaining are non-terminal) — drop the oldest
+    // overall, never the job we just inserted.
+    if jobs.len() > MAX_PULL_JOBS {
+        let mut all: Vec<(u64, Uuid)> = jobs
+            .iter()
+            .filter(|(id, _)| **id != keep)
+            .map(|(id, job)| (job.seq, *id))
+            .collect();
+        all.sort_unstable_by_key(|(seq, _)| *seq);
+        for (_, id) in all {
+            if jobs.len() <= MAX_PULL_JOBS {
+                break;
+            }
+            jobs.remove(&id);
+        }
+    }
+}
 
 /// Advance a job through the pure state machine and optionally record a detail
 /// string. Invalid transitions are ignored (status is left unchanged).
@@ -505,8 +564,11 @@ pub async fn pull_ollama_model(
                 owner_user_id: auth.user_id,
                 status: PullStatus::Queued,
                 detail: Some("queued".to_string()),
+                seq: next_seq(),
             },
         );
+        // Keep the registry bounded; never evict the job we just inserted.
+        evict_over_cap(&mut jobs, job_id);
     }
 
     let tag = req.model.clone();
@@ -703,6 +765,74 @@ mod tests {
         // than a bespoke copy.
         let allowed = assert_endpoint_safe("http://localhost:11434", Egress::LocalOnly).await;
         assert!(allowed.is_ok(), "local-only localhost must be allowed");
+    }
+
+    #[test]
+    fn should_evict_oldest_terminal_jobs_when_registry_is_full() {
+        // Arrange: insert well over the cap, all terminal, into a local map so
+        // the pure eviction policy is exercised without touching global state.
+        let mut jobs: HashMap<Uuid, PullJob> = HashMap::new();
+        let total = MAX_PULL_JOBS + 50;
+        let mut ids = Vec::with_capacity(total);
+        for seq in 0..total {
+            let id = Uuid::new_v4();
+            ids.push(id);
+            jobs.insert(
+                id,
+                PullJob {
+                    account_id: Uuid::new_v4(),
+                    owner_user_id: Uuid::new_v4(),
+                    status: PullStatus::Ready, // terminal
+                    detail: None,
+                    seq: seq as u64,
+                },
+            );
+            // Act: bound after every insert, mirroring the handler.
+            evict_over_cap(&mut jobs, id);
+        }
+
+        // Assert: registry stayed bounded and the newest jobs survived while the
+        // oldest were evicted first.
+        assert!(
+            jobs.len() <= MAX_PULL_JOBS,
+            "registry must stay bounded, got {}",
+            jobs.len()
+        );
+        assert!(
+            jobs.contains_key(ids.last().unwrap()),
+            "the newest job must survive eviction"
+        );
+        assert!(
+            !jobs.contains_key(&ids[0]),
+            "the oldest terminal job must be evicted first"
+        );
+    }
+
+    #[test]
+    fn should_keep_the_just_inserted_job_even_when_full() {
+        // Non-terminal (Queued) jobs force pass-2 eviction; the just-inserted
+        // job must never be the one removed.
+        let mut jobs: HashMap<Uuid, PullJob> = HashMap::new();
+        let mut last = Uuid::new_v4();
+        for seq in 0..(MAX_PULL_JOBS + 10) {
+            last = Uuid::new_v4();
+            jobs.insert(
+                last,
+                PullJob {
+                    account_id: Uuid::new_v4(),
+                    owner_user_id: Uuid::new_v4(),
+                    status: PullStatus::Queued, // non-terminal
+                    detail: None,
+                    seq: seq as u64,
+                },
+            );
+            evict_over_cap(&mut jobs, last);
+        }
+        assert!(jobs.len() <= MAX_PULL_JOBS);
+        assert!(
+            jobs.contains_key(&last),
+            "the just-inserted job must be retained"
+        );
     }
 
     #[test]
