@@ -239,14 +239,24 @@
     "contentPlaceholder": "Aloita YAML:n käyttöohje…",
     "create": "Uusi pelisuunnitelma",
     "description": "Mukauta agentin käyttämiä korjauskehotteita. Vahvista toimintasuunnitelma esikatsellaksesi renderöityä kehotetta ilman mallikutsua.",
+    "duplicate": "Kopioi muokataksesi",
     "empty": "Ei vielä peliohjeita. Sisäänrakennettua oletuspeliohjetta käytetään, kunnes lisäät sellaisen.",
     "error": "Pelikirjojen lataaminen epäonnistui.",
     "errors": {
       "contentRequired": "Käsikirjan sisältö on pakollinen.",
+      "loadDefaultFailed": "Sisäänrakennetun oletuspelikirjan lataaminen epäonnistui.",
       "nameRequired": "Nimi vaaditaan.",
       "playbookIdRequired": "Pelikirjan tunnus vaaditaan.",
       "previewFailed": "Käsikirjan renderöinti epäonnistui. Tarkista YAML-tiedostosta virheet.",
       "saveFailed": "Käsikirjan tallennus epäonnistui. Tarkista YAML-tiedostosta virheet."
+    },
+    "loadDefault": "Lataa sisäänrakennettu oletusarvo",
+    "loadingDefault": "Ladataan sisäänrakennettua oletusarvoa…",
+    "meta": {
+      "allowedTools": "Sallitut työkalut",
+      "noTools": "Ei mitään",
+      "outputContract": "Tuotantosopimus",
+      "role": "Rooli"
     },
     "name": "Nimi",
     "namePlaceholder": "Ihmisen luettavissa oleva nimi",

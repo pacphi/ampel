@@ -239,14 +239,24 @@
     "contentPlaceholder": "Gå inn i YAML-håndboken…",
     "create": "Ny strategibok",
     "description": "Tilpass utbedringsforespørslene som agenten bruker. Valider en strategibok for å forhåndsvise den gjengitte forespørselen uten modellkall.",
+    "duplicate": "Dupliser for å tilpasse",
     "empty": "Ingen strategier ennå. Den innebygde standardstrategien brukes inntil du legger til en.",
     "error": "Kunne ikke laste inn spillbøkene.",
     "errors": {
       "contentRequired": "Innhold i spillboken er obligatorisk.",
+      "loadDefaultFailed": "Kunne ikke laste inn den innebygde standardspillboken.",
       "nameRequired": "Et navn er påkrevd.",
       "playbookIdRequired": "En playbook-ID er nødvendig.",
       "previewFailed": "Kunne ikke gjengi handlingsplanen. Sjekk YAML for feil.",
       "saveFailed": "Kunne ikke lagre handlingsplanen. Sjekk YAML for feil."
+    },
+    "loadDefault": "Last inn innebygd standard",
+    "loadingDefault": "Laster inn innebygd standard …",
+    "meta": {
+      "allowedTools": "Tillatte verktøy",
+      "noTools": "Ingen",
+      "outputContract": "Utgangskontrakt",
+      "role": "Rolle"
     },
     "name": "Navn",
     "namePlaceholder": "Menneskelig lesbart navn",

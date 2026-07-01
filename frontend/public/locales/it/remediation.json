@@ -239,14 +239,24 @@
     "contentPlaceholder": "Ecco il playbook YAML…",
     "create": "Nuovo manuale di gioco",
     "description": "Personalizza i suggerimenti di correzione utilizzati dall'agente. Convalida un playbook per visualizzare in anteprima il suggerimento visualizzato senza chiamare il modello.",
+    "duplicate": "Duplica per personalizzare",
     "empty": "Nessun playbook ancora disponibile. Verrà utilizzato il playbook predefinito integrato finché non ne aggiungerai uno.",
     "error": "Impossibile caricare i playbook.",
     "errors": {
       "contentRequired": "È necessario il contenuto del manuale di gioco.",
+      "loadDefaultFailed": "Impossibile caricare il playbook predefinito integrato.",
       "nameRequired": "È necessario inserire un nome.",
       "playbookIdRequired": "È richiesto un ID del playbook.",
       "previewFailed": "Impossibile generare il playbook. Verificare la presenza di errori nel file YAML.",
       "saveFailed": "Impossibile salvare il playbook. Verificare la presenza di errori nel file YAML."
+    },
+    "loadDefault": "Carica predefinito integrato",
+    "loadingDefault": "Caricamento predefinito integrato…",
+    "meta": {
+      "allowedTools": "Strumenti consentiti",
+      "noTools": "Nessuno",
+      "outputContract": "Contratto di produzione",
+      "role": "Ruolo"
     },
     "name": "Nome",
     "namePlaceholder": "nome leggibile dall'uomo",

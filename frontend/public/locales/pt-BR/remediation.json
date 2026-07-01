@@ -239,14 +239,24 @@
     "contentPlaceholder": "Insira o playbook YAML…",
     "create": "Novo manual de estratégias",
     "description": "Personalize os prompts de correção que o agente utiliza. Valide um playbook para visualizar o prompt renderizado sem nenhuma chamada de modelo.",
+    "duplicate": "Duplique para personalizar",
     "empty": "Ainda não há playbooks. O playbook padrão integrado será usado até que você adicione um.",
     "error": "Falha ao carregar os playbooks.",
     "errors": {
       "contentRequired": "O conteúdo do manual é obrigatório.",
+      "loadDefaultFailed": "Falha ao carregar o playbook padrão integrado.",
       "nameRequired": "É necessário informar um nome.",
       "playbookIdRequired": "É necessário um ID de playbook.",
       "previewFailed": "Falha ao renderizar o playbook. Verifique o arquivo YAML em busca de erros.",
       "saveFailed": "Falha ao salvar o playbook. Verifique o arquivo YAML em busca de erros."
+    },
+    "loadDefault": "Carregar padrão integrado",
+    "loadingDefault": "Carregando configurações padrão integradas…",
+    "meta": {
+      "allowedTools": "Ferramentas permitidas",
+      "noTools": "Nenhum",
+      "outputContract": "Contrato de produção",
+      "role": "Papel"
     },
     "name": "Nome",
     "namePlaceholder": "Nome legível para humanos",

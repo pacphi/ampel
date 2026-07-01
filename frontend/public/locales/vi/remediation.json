@@ -239,14 +239,24 @@
     "contentPlaceholder": "Nhập tệp YAML của playbook…",
     "create": "Chiến lược mới",
     "description": "Tùy chỉnh các lời nhắc khắc phục sự cố mà tác nhân sử dụng. Xác thực một playbook để xem trước lời nhắc được hiển thị mà không cần gọi mô hình.",
+    "duplicate": "Sao chép để tùy chỉnh",
     "empty": "Hiện chưa có playbook nào. Playbook mặc định được tích hợp sẵn sẽ được sử dụng cho đến khi bạn thêm một playbook khác.",
     "error": "Không thể tải các tập lệnh chiến thuật.",
     "errors": {
       "contentRequired": "Nội dung trong cẩm nang là bắt buộc.",
+      "loadDefaultFailed": "Không thể tải tập lệnh mặc định tích hợp sẵn.",
       "nameRequired": "Cần phải nhập tên.",
       "playbookIdRequired": "Cần có mã định danh của sổ tay chiến thuật.",
       "previewFailed": "Không thể hiển thị playbook. Kiểm tra tệp YAML để tìm lỗi.",
       "saveFailed": "Không thể lưu tập lệnh. Kiểm tra tệp YAML để tìm lỗi."
+    },
+    "loadDefault": "Tải cài đặt mặc định tích hợp sẵn",
+    "loadingDefault": "Đang tải các cài đặt mặc định tích hợp sẵn…",
+    "meta": {
+      "allowedTools": "Các công cụ được phép",
+      "noTools": "Không có",
+      "outputContract": "Hợp đồng sản lượng",
+      "role": "Vai trò"
     },
     "name": "Tên",
     "namePlaceholder": "Tên dễ đọc đối với con người",

@@ -239,14 +239,24 @@
     "contentPlaceholder": "Entrez le playbook YAML…",
     "create": "Nouveau manuel de jeu",
     "description": "Personnalisez les messages de correction utilisés par l'agent. Validez un playbook pour prévisualiser le message rendu sans appel de modèle.",
+    "duplicate": "Dupliquez pour personnaliser",
     "empty": "Aucun scénario prédéfini pour le moment. Le scénario par défaut intégré sera utilisé jusqu'à ce que vous en ajoutiez un.",
     "error": "Échec du chargement des playbooks.",
     "errors": {
       "contentRequired": "Le contenu du manuel de jeu est obligatoire.",
+      "loadDefaultFailed": "Impossible de charger le playbook par défaut intégré.",
       "nameRequired": "Un nom est requis.",
       "playbookIdRequired": "Un identifiant de playbook est requis.",
       "previewFailed": "Impossible de générer le playbook. Vérifiez le fichier YAML pour détecter d'éventuelles erreurs.",
       "saveFailed": "Impossible d'enregistrer le playbook. Vérifiez le fichier YAML pour détecter d'éventuelles erreurs."
+    },
+    "loadDefault": "Charger la valeur par défaut intégrée",
+    "loadingDefault": "Chargement des paramètres par défaut intégrés…",
+    "meta": {
+      "allowedTools": "Outils autorisés",
+      "noTools": "Aucun",
+      "outputContract": "Contrat de production",
+      "role": "Rôle"
     },
     "name": "Nom",
     "namePlaceholder": "Nom lisible par l'homme",

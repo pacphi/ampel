@@ -306,6 +306,9 @@
     "title": "Playbooks",
     "description": "Customize the remediation prompts the agent uses. Validate a playbook to preview the rendered prompt with no model call.",
     "create": "New playbook",
+    "loadDefault": "Load built-in default",
+    "loadingDefault": "Loading built-in default…",
+    "duplicate": "Duplicate to customize",
     "playbookId": "Playbook ID",
     "playbookIdPlaceholder": "e.g. custom-remediation",
     "name": "Name",
@@ -320,6 +323,12 @@
     "preview": "Validate / Preview",
     "previewing": "Rendering…",
     "renderedPrompt": "Rendered prompt",
+    "meta": {
+      "role": "Role",
+      "outputContract": "Output contract",
+      "allowedTools": "Allowed tools",
+      "noTools": "None"
+    },
     "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
     "error": "Failed to load playbooks.",
     "errors": {
@@ -327,7 +336,8 @@
       "nameRequired": "A name is required.",
       "contentRequired": "Playbook content is required.",
       "saveFailed": "Failed to save the playbook. Check the YAML for errors.",
-      "previewFailed": "Failed to render the playbook. Check the YAML for errors."
+      "previewFailed": "Failed to render the playbook. Check the YAML for errors.",
+      "loadDefaultFailed": "Failed to load the built-in default playbook."
     }
   },
   "agentSession": {

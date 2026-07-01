@@ -15,6 +15,7 @@ vi.mock('react-i18next', () => ({
 const mockCreate = vi.fn();
 const mockDelete = vi.fn();
 const mockPreview = vi.fn();
+const mockLoadDefault = vi.fn();
 let playbooksData: Playbook[] = [];
 
 vi.mock('@/hooks/usePlaybooks', () => ({
@@ -22,6 +23,7 @@ vi.mock('@/hooks/usePlaybooks', () => ({
   useCreatePlaybook: () => ({ mutate: mockCreate, isPending: false }),
   useDeletePlaybook: () => ({ mutate: mockDelete, isPending: false }),
   usePreviewPlaybook: () => ({ mutate: mockPreview, isPending: false }),
+  useLoadEmbeddedPlaybook: () => ({ mutate: mockLoadDefault, isPending: false }),
 }));
 
 const samplePlaybook: Playbook = {
@@ -73,6 +75,74 @@ describe('PlaybookEditor', () => {
     await user.click(screen.getByRole('button', { name: 'remediation:playbooks.preview' }));
 
     expect(await screen.findByText('You are a careful build-fixing agent.')).toBeInTheDocument();
+  });
+
+  it('should_renderCapabilityPills_when_previewSucceeds', async () => {
+    playbooksData = [samplePlaybook];
+    mockPreview.mockImplementation((_vars, options) => {
+      options.onSuccess({
+        failureClass: 'build_error',
+        role: 'fixer',
+        systemInstruction: 'You are a careful build-fixing agent.',
+        outputContract: 'unified_diff',
+        allowedTools: ['read_file', 'apply_patch'],
+      });
+    });
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.preview' }));
+
+    // The output-contract value and each allowed tool render as their own pills.
+    expect(await screen.findByText(/unified_diff/)).toBeInTheDocument();
+    expect(screen.getByText('read_file')).toBeInTheDocument();
+    expect(screen.getByText('apply_patch')).toBeInTheDocument();
+  });
+
+  it('should_prefillFormWithDefaultYaml_when_loadDefaultClicked', async () => {
+    mockLoadDefault.mockImplementation((_vars, options) => {
+      options.onSuccess({
+        id: '00000000-0000-0000-0000-000000000000',
+        playbookId: 'default',
+        version: 1,
+        source: 'builtin',
+        name: 'Default remediation playbook',
+        description: 'builtin default',
+        content: 'role: You are a remediation engineer.\ntasks: {}',
+        enabled: true,
+        scopeType: 'global',
+        scopeId: null,
+        createdAt: '1970-01-01T00:00:00+00:00',
+        updatedAt: '1970-01-01T00:00:00+00:00',
+      });
+    });
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.loadDefault' }));
+
+    // The form opens prefilled with the default YAML but a blank id/name (a
+    // sanitized copy that never collides with the built-in).
+    const content = await screen.findByLabelText('remediation:playbooks.content');
+    expect(content).toHaveValue('role: You are a remediation engineer.\ntasks: {}');
+    expect(screen.getByLabelText('remediation:playbooks.playbookId')).toHaveValue('');
+    expect(screen.getByLabelText('remediation:playbooks.name')).toHaveValue('');
+  });
+
+  it('should_prefillFormFromRow_when_duplicateClicked', async () => {
+    playbooksData = [samplePlaybook];
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.duplicate' }));
+
+    expect(await screen.findByLabelText('remediation:playbooks.content')).toHaveValue(
+      'role: fixer'
+    );
+    expect(screen.getByLabelText('remediation:playbooks.playbookId')).toHaveValue(
+      'custom-remediation-copy'
+    );
+    expect(screen.getByLabelText('remediation:playbooks.name')).toHaveValue('Custom Remediation');
   });
 
   it('should_showError_when_previewFailsWithYamlError', async () => {

@@ -239,14 +239,24 @@
     "contentPlaceholder": "YAMLのプレイブックが登場…",
     "create": "新しいプレイブック",
     "description": "エージェントが使用する修復プロンプトをカスタマイズします。プレイブックを検証して、モデル呼び出しなしでレンダリングされたプロンプトをプレビューします。",
+    "duplicate": "複製してカスタマイズする",
     "empty": "プレイブックはまだ追加されていません。追加するまでは、組み込みのデフォルトプレイブックが使用されます。",
     "error": "プレイブックの読み込みに失敗しました。",
     "errors": {
       "contentRequired": "プレイブックの内容は必須です。",
+      "loadDefaultFailed": "組み込みのデフォルトプレイブックの読み込みに失敗しました。",
       "nameRequired": "名前は必須です。",
       "playbookIdRequired": "プレイブックIDが必要です。",
       "previewFailed": "プレイブックのレンダリングに失敗しました。YAMLファイルにエラーがないか確認してください。",
       "saveFailed": "プレイブックの保存に失敗しました。YAMLファイルにエラーがないか確認してください。"
+    },
+    "loadDefault": "組み込みのデフォルトを読み込む",
+    "loadingDefault": "組み込みのデフォルト設定を読み込んでいます…",
+    "meta": {
+      "allowedTools": "許可されているツール",
+      "noTools": "なし",
+      "outputContract": "出力契約",
+      "role": "役割"
     },
     "name": "名前",
     "namePlaceholder": "人間が読みやすい名前",

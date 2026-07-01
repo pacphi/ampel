@@ -26,6 +26,17 @@ export function usePlaybook(id: string) {
   });
 }
 
+/**
+ * On-demand fetch of the built-in default playbook (ADR-006). Modeled as a
+ * mutation so it fires on a user action (the editor's "Load built-in default"),
+ * not on mount.
+ */
+export function useLoadEmbeddedPlaybook() {
+  return useMutation({
+    mutationFn: () => playbooksApi.getEmbeddedPlaybook(),
+  });
+}
+
 export function useCreatePlaybook() {
   const queryClient = useQueryClient();
   return useMutation({
