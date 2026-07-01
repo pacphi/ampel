@@ -1,8 +1,15 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ModelAccountManager } from './ModelAccountManager';
 import type { ModelAccount } from '@/types/modelAccount';
+import type {
+  ModelCatalog,
+  OllamaPullResponse,
+  OllamaPullStatusResponse,
+  OllamaTagsResponse,
+} from '@/types/remediation';
 
 // Passthrough i18n: t() returns the key so assertions are stable.
 vi.mock('react-i18next', () => ({
@@ -23,6 +30,65 @@ vi.mock('@/hooks/useModelAccounts', () => ({
   useValidateModelAccount: () => ({ mutate: mockValidate, isPending: false }),
   useDeleteModelAccount: () => ({ mutate: mockDelete, isPending: false }),
 }));
+
+// Real catalog hooks run against this mocked client (network isolated).
+const mockGetCatalog = vi.fn();
+const mockGetOllamaTags = vi.fn();
+const mockPullOllamaModel = vi.fn();
+const mockGetPullStatus = vi.fn();
+
+vi.mock('@/api/modelCatalog', () => ({
+  modelCatalogApi: {
+    getCatalog: (...args: unknown[]) => mockGetCatalog(...args),
+    getOllamaTags: (...args: unknown[]) => mockGetOllamaTags(...args),
+    pullOllamaModel: (...args: unknown[]) => mockPullOllamaModel(...args),
+    getPullStatus: (...args: unknown[]) => mockGetPullStatus(...args),
+  },
+}));
+
+const catalog: ModelCatalog = {
+  providers: [
+    {
+      kind: 'claude',
+      description: 'Anthropic hosted models',
+      egress: 'external',
+      models: [
+        {
+          id: 'claude-sonnet-4',
+          name: 'Claude Sonnet 4',
+          family: 'claude',
+          quality: 'high',
+          contextWindow: 200000,
+          toolUse: true,
+          codeEdit: true,
+          egress: 'external',
+          outputContract: 'text',
+          cost: { kind: 'per_token', inputPer1k: 3, outputPer1k: 15 },
+        },
+      ],
+    },
+    {
+      kind: 'ollama',
+      description: 'Local Ollama models',
+      egress: 'local_only',
+      models: [
+        {
+          id: 'llama3-8b',
+          name: 'Llama 3 8B',
+          family: 'llama',
+          quality: 'medium',
+          ollamaTag: 'llama3:8b',
+          contextWindow: 8192,
+          toolUse: false,
+          codeEdit: true,
+          egress: 'local_only',
+          outputContract: 'text',
+          cost: { kind: 'free' },
+        },
+      ],
+    },
+  ],
+};
 
 const sampleAccount: ModelAccount = {
   id: 'acc-1',
@@ -46,15 +112,48 @@ const sampleAccount: ModelAccount = {
   updatedAt: '2026-01-01T00:00:00Z',
 };
 
+const ollamaAccount: ModelAccount = {
+  ...sampleAccount,
+  id: 'acc-ollama',
+  providerKind: 'ollama',
+  displayName: 'Local Ollama',
+  egressClass: 'local_only',
+  endpointUrl: 'http://localhost:11434',
+  modelId: 'llama3-8b',
+  authType: 'none',
+};
+
+function renderManager() {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false, gcTime: 0 } },
+  });
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <ModelAccountManager />
+    </QueryClientProvider>
+  );
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
   accountsData = [];
+  mockGetCatalog.mockResolvedValue(catalog);
+  mockGetOllamaTags.mockResolvedValue({ models: [] } as OllamaTagsResponse);
+  mockPullOllamaModel.mockResolvedValue({
+    jobId: 'job-1',
+    status: 'queued',
+  } as OllamaPullResponse);
+  mockGetPullStatus.mockResolvedValue({
+    jobId: 'job-1',
+    status: 'ready',
+    detail: 'Download complete',
+  } as OllamaPullStatusResponse);
 });
 
 describe('ModelAccountManager', () => {
   it('should_renderAccountList_when_accountsExist', () => {
     accountsData = [sampleAccount];
-    render(<ModelAccountManager />);
+    renderManager();
 
     expect(screen.getByText('My Claude key')).toBeInTheDocument();
     expect(
@@ -64,13 +163,13 @@ describe('ModelAccountManager', () => {
 
   it('should_renderEmptyState_when_noAccounts', () => {
     accountsData = [];
-    render(<ModelAccountManager />);
+    renderManager();
     expect(screen.getByText('remediation:modelAccounts.empty')).toBeInTheDocument();
   });
 
   it('should_renderApiKeyAsPasswordField_when_creatingHostedProvider', async () => {
     const user = userEvent.setup();
-    render(<ModelAccountManager />);
+    renderManager();
 
     await user.click(screen.getByRole('button', { name: 'remediation:modelAccounts.create' }));
 
@@ -80,7 +179,7 @@ describe('ModelAccountManager', () => {
 
   it('should_notEchoApiKeyValue_when_typed', async () => {
     const user = userEvent.setup();
-    render(<ModelAccountManager />);
+    renderManager();
 
     await user.click(screen.getByRole('button', { name: 'remediation:modelAccounts.create' }));
     const apiKeyInput = screen.getByLabelText(
@@ -88,15 +187,13 @@ describe('ModelAccountManager', () => {
     ) as HTMLInputElement;
     await user.type(apiKeyInput, 'sk-secret-123');
 
-    // The value lives in the field but the field never reveals it (type=password)
-    // and no element renders the secret text content.
     expect(apiKeyInput.type).toBe('password');
     expect(screen.queryByText('sk-secret-123')).not.toBeInTheDocument();
   });
 
   it('should_submitCreate_when_formFilled', async () => {
     const user = userEvent.setup();
-    render(<ModelAccountManager />);
+    renderManager();
 
     await user.click(screen.getByRole('button', { name: 'remediation:modelAccounts.create' }));
     await user.type(screen.getByLabelText('remediation:modelAccounts.displayName'), 'Prod Claude');
@@ -119,7 +216,7 @@ describe('ModelAccountManager', () => {
       options.onError({ response: { status: 422 } });
     });
     const user = userEvent.setup();
-    render(<ModelAccountManager />);
+    renderManager();
 
     await user.click(screen.getByRole('button', { name: 'remediation:modelAccounts.create' }));
     await user.type(
@@ -136,10 +233,87 @@ describe('ModelAccountManager', () => {
   it('should_callValidate_when_validateClicked', async () => {
     accountsData = [sampleAccount];
     const user = userEvent.setup();
-    render(<ModelAccountManager />);
+    renderManager();
 
     await user.click(screen.getByRole('button', { name: 'remediation:modelAccounts.validate' }));
 
     expect(mockValidate).toHaveBeenCalledWith('acc-1');
+  });
+
+  it('should_setModelIdFromCatalog_when_optionSelected', async () => {
+    const user = userEvent.setup();
+    renderManager();
+
+    await user.click(screen.getByRole('button', { name: 'remediation:modelAccounts.create' }));
+    await user.type(screen.getByLabelText('remediation:modelAccounts.displayName'), 'Prod Claude');
+
+    // Catalog dropdown renders options from the mocked GET /api/model-catalog.
+    const modelTrigger = await screen.findByRole('combobox', {
+      name: 'remediation:modelCatalog.model',
+    });
+    await user.click(modelTrigger);
+    await user.click(await screen.findByRole('option', { name: /Claude Sonnet 4/ }));
+
+    await user.type(screen.getByLabelText('remediation:modelAccounts.apiKey'), 'sk-abc');
+    await user.click(screen.getByRole('button', { name: 'remediation:modelAccounts.save' }));
+
+    await waitFor(() => expect(mockCreate).toHaveBeenCalled());
+    expect(mockCreate).toHaveBeenCalledWith(
+      expect.objectContaining({ modelId: 'claude-sonnet-4' }),
+      expect.anything()
+    );
+  });
+
+  it('should_overrideCatalogSelection_when_customModelIdProvided', async () => {
+    const user = userEvent.setup();
+    renderManager();
+
+    await user.click(screen.getByRole('button', { name: 'remediation:modelAccounts.create' }));
+    await user.type(screen.getByLabelText('remediation:modelAccounts.displayName'), 'Prod Claude');
+
+    const modelTrigger = await screen.findByRole('combobox', {
+      name: 'remediation:modelCatalog.model',
+    });
+    await user.click(modelTrigger);
+    await user.click(await screen.findByRole('option', { name: /Claude Sonnet 4/ }));
+
+    // Advanced escape hatch: the custom model id wins over the catalog selection.
+    await user.click(screen.getByRole('button', { name: 'remediation:modelCatalog.advanced' }));
+    await user.type(
+      screen.getByLabelText('remediation:modelCatalog.customModelId'),
+      'my-custom-model'
+    );
+
+    await user.type(screen.getByLabelText('remediation:modelAccounts.apiKey'), 'sk-abc');
+    await user.click(screen.getByRole('button', { name: 'remediation:modelAccounts.save' }));
+
+    await waitFor(() => expect(mockCreate).toHaveBeenCalled());
+    expect(mockCreate).toHaveBeenCalledWith(
+      expect.objectContaining({ modelId: 'my-custom-model' }),
+      expect.anything()
+    );
+  });
+
+  it('should_pullOllamaModel_when_tagNotDiscovered', async () => {
+    accountsData = [ollamaAccount];
+    const user = userEvent.setup();
+    renderManager();
+
+    // Tag not present on the server → the pull button is offered.
+    const pullButton = await screen.findByRole('button', {
+      name: 'remediation:modelCatalog.pull.pullModel',
+    });
+    await user.click(pullButton);
+
+    // Pull is POSTed with the resolved Ollama tag...
+    await waitFor(() =>
+      expect(mockPullOllamaModel).toHaveBeenCalledWith('acc-ollama', 'llama3:8b')
+    );
+
+    // ...and status is polled until it reaches `ready`.
+    await waitFor(() => expect(mockGetPullStatus).toHaveBeenCalledWith('job-1'));
+    expect(
+      await screen.findByText('remediation:modelCatalog.pull.status.ready')
+    ).toBeInTheDocument();
   });
 });

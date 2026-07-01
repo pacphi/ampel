@@ -956,6 +956,36 @@ export interface RemediationTranslations {
       valid: string;
     };
   };
+  modelCatalog: {
+    advanced: string;
+    codeEdit: string;
+    contextWindow: string;
+    cost: {
+      free: string;
+      perToken: string;
+    };
+    customModelId: string;
+    customModelIdHint: string;
+    customModelIdPlaceholder: string;
+    loadError: string;
+    loading: string;
+    model: string;
+    modelPlaceholder: string;
+    noModels: string;
+    pull: {
+      notPulled: string;
+      pullModel: string;
+      pulling: string;
+      status: {
+        downloading: string;
+        error: string;
+        queued: string;
+        ready: string;
+      };
+      title: string;
+    };
+    toolUse: string;
+  };
   nav: string;
   playbooks: {
     content: string;

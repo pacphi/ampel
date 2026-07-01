@@ -263,3 +263,83 @@ export interface RunFinishedEvent {
   outcome: string;
   ts: string;
 }
+
+/**
+ * Model Catalog DTOs (Phase 1 — catalog-driven model selection).
+ *
+ * Field naming matches the backend JSON contract (camelCase). Enum *values*
+ * (cost kind, egress, pull status) are snake_case where they mirror serde
+ * `rename_all = "snake_case"`.
+ */
+
+/** Egress class of a catalog entry: leaves the network or stays local. */
+export type CatalogEgress = 'external' | 'local_only';
+
+export type ModelCostKind = 'per_token' | 'free';
+
+/** Per-1K-token pricing, or a free/local model. */
+export interface ModelCost {
+  kind: ModelCostKind;
+  inputPer1k?: number | null;
+  outputPer1k?: number | null;
+}
+
+/** A single catalog model with its capability/cost metadata. */
+export interface CatalogModel {
+  id: string;
+  name: string;
+  family: string;
+  quality: string;
+  /** Ollama tag to `ollama pull`, present only for Ollama-served models. */
+  ollamaTag?: string | null;
+  /** Local file path, present only for file-served (e.g. ONNX) models. */
+  modelPath?: string | null;
+  contextWindow: number;
+  toolUse: boolean;
+  codeEdit: boolean;
+  egress: CatalogEgress;
+  outputContract: string;
+  cost: ModelCost;
+}
+
+/** A provider grouping in the catalog (its `kind` matches `ProviderKind`). */
+export interface CatalogProvider {
+  kind: string;
+  description: string;
+  egress: CatalogEgress;
+  models: CatalogModel[];
+}
+
+/** `GET /api/model-catalog` response envelope payload. */
+export interface ModelCatalog {
+  providers: CatalogProvider[];
+}
+
+/** A tag discovered on a running Ollama server. */
+export interface OllamaTag {
+  name: string;
+  size?: number | null;
+  digest?: string | null;
+  modifiedAt?: string | null;
+}
+
+/** `GET /api/model-catalog/ollama/tags` response payload. */
+export interface OllamaTagsResponse {
+  models: OllamaTag[];
+}
+
+/** Lifecycle of an Ollama model-pull job. */
+export type OllamaPullStatus = 'queued' | 'downloading' | 'ready' | 'error';
+
+/** `POST /api/model-catalog/ollama/pull` response payload. */
+export interface OllamaPullResponse {
+  jobId: string;
+  status: OllamaPullStatus;
+}
+
+/** `GET /api/model-catalog/ollama/pull/{id}/status` response payload. */
+export interface OllamaPullStatusResponse {
+  jobId: string;
+  status: OllamaPullStatus;
+  detail?: string | null;
+}
