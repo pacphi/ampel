@@ -18,24 +18,42 @@ providers:
     description: "Anthropic Claude — hosted agentic API with native tool use."
     egress: external
     models:
-      - id: claude-sonnet-4-6
-        name: "Claude Sonnet 4.6"
+      - id: claude-opus-4-8
+        name: "Claude Opus 4.8"
         family: claude
-        context_size: 200000
+        context_size: 1000000
+        tool_calling: true
+        code_edit: true
+        quality: excellent
+        cost_per_1k_input: "0.005"
+        cost_per_1k_output: "0.025"
+      - id: claude-sonnet-5
+        name: "Claude Sonnet 5"
+        family: claude
+        context_size: 1000000
         tool_calling: true
         code_edit: true
         quality: excellent
         cost_per_1k_input: "0.003"
         cost_per_1k_output: "0.015"
-      - id: claude-opus-4-6
-        name: "Claude Opus 4.6"
+      - id: claude-haiku-4-5
+        name: "Claude Haiku 4.5"
         family: claude
         context_size: 200000
         tool_calling: true
         code_edit: true
+        quality: good
+        cost_per_1k_input: "0.001"
+        cost_per_1k_output: "0.005"
+      - id: claude-fable-5
+        name: "Claude Fable 5"
+        family: claude
+        context_size: 1000000
+        tool_calling: true
+        code_edit: true
         quality: excellent
-        cost_per_1k_input: "0.015"
-        cost_per_1k_output: "0.075"
+        cost_per_1k_input: "0.010"
+        cost_per_1k_output: "0.050"
 
   gemini:
     description: "Google Gemini — hosted agentic API with native tool use."
@@ -44,33 +62,176 @@ providers:
       - id: gemini-2.5-pro
         name: "Gemini 2.5 Pro"
         family: gemini
-        context_size: 1000000
+        context_size: 1048576
         tool_calling: true
         code_edit: true
         quality: excellent
         cost_per_1k_input: "0.00125"
         cost_per_1k_output: "0.010"
+      - id: gemini-2.5-flash
+        name: "Gemini 2.5 Flash"
+        family: gemini
+        context_size: 1048576
+        tool_calling: true
+        code_edit: true
+        quality: good
+        cost_per_1k_input: "0.0003"
+        cost_per_1k_output: "0.0025"
+      - id: gemini-2.5-flash-lite
+        name: "Gemini 2.5 Flash-Lite"
+        family: gemini
+        context_size: 1048576
+        tool_calling: true
+        code_edit: true
+        quality: fair
+        cost_per_1k_input: "0.0001"
+        cost_per_1k_output: "0.0004"
+      - id: gemini-3.5-flash
+        name: "Gemini 3.5 Flash"
+        family: gemini
+        context_size: 1048576
+        tool_calling: true
+        code_edit: true
+        quality: excellent
+        cost_per_1k_input: "0.0015"
+        cost_per_1k_output: "0.009"
+      - id: gemini-3.1-flash-lite
+        name: "Gemini 3.1 Flash-Lite"
+        family: gemini
+        context_size: 1048576
+        tool_calling: true
+        code_edit: true
+        quality: good
+        cost_per_1k_input: "0.00025"
+        cost_per_1k_output: "0.0015"
 
   ollama:
     description: "Local Ollama server (OpenAI-compatible) — stays on the host/network."
     egress: local_only
+    # RAM figures below are unified-memory estimates (Apple-silicon style shared
+    # memory). On discrete-GPU systems VRAM — not system RAM — is the binding
+    # constraint; size against your GPU's memory instead. Community-namespace
+    # tags carry `community: true`; verify their chat templates / tool-calling
+    # support with `ollama show <tag>` before relying on them.
     models:
-      - id: qwen2.5-coder
-        name: "Qwen2.5 Coder 7B"
-        family: qwen
+      - id: qwen3-8b
+        name: "Qwen3 8B"
+        family: qwen3
+        params: "8B"
+        quantization: Q4_K_M
         context_size: 32768
         tool_calling: true
         code_edit: true
         quality: good
-        ollama_tag: "qwen2.5-coder:7b"
-      - id: deepseek-coder-v2
-        name: "DeepSeek Coder V2 16B"
-        family: deepseek
+        ollama_tag: "qwen3:8b"
+        disk_gb: "5.2"
+        min_ram_gb: 8
+        hardware_tier: "16"
+      - id: gemma4-12b-q4
+        name: "Gemma 4 12B (Q4)"
+        family: gemma4
+        params: "11.9B"
+        quantization: Q4_K_M
+        context_size: 131072
+        tool_calling: true
+        code_edit: true
+        quality: good
+        ollama_tag: "gemma4:12b-it-q4_K_M"
+        disk_gb: "7.6"
+        min_ram_gb: 12
+        hardware_tier: "16"
+      - id: qwen3-coder-30b-a3b-q4
+        name: "Qwen3 Coder 30B-A3B (Q4)"
+        family: qwen3-coder
+        params: "30B MoE (A3B)"
+        quantization: Q4_K_M
         context_size: 32768
         tool_calling: true
         code_edit: true
         quality: good
-        ollama_tag: "deepseek-coder-v2:16b"
+        ollama_tag: "qwen3-coder:30b-a3b-q4_K_M"
+        disk_gb: "19"
+        min_ram_gb: 24
+        hardware_tier: "32-36"
+      - id: glm-4.7-flash-q4
+        name: "GLM-4.7-Flash 30B-A3B (Q4)"
+        family: glm
+        params: "30B MoE (A3B)"
+        quantization: Q4_K_M
+        context_size: 131072
+        tool_calling: true
+        code_edit: true
+        quality: good
+        ollama_tag: "glm-4.7-flash:q4_K_M"
+        disk_gb: "19"
+        min_ram_gb: 24
+        hardware_tier: "32-36"
+      - id: gemma4-31b-q4
+        name: "Gemma 4 31B (Q4)"
+        family: gemma4
+        params: "31B"
+        quantization: Q4_K_M
+        context_size: 131072
+        tool_calling: true
+        code_edit: true
+        quality: good
+        ollama_tag: "gemma4:31b-it-q4_K_M"
+        disk_gb: "20"
+        min_ram_gb: 30
+        hardware_tier: "32-36"
+      - id: qwen3-coder-30b-a3b-q8
+        name: "Qwen3 Coder 30B-A3B (Q8)"
+        family: qwen3-coder
+        params: "30B MoE (A3B)"
+        quantization: Q8_0
+        context_size: 32768
+        tool_calling: true
+        code_edit: true
+        quality: excellent
+        ollama_tag: "qwen3-coder:30b-a3b-q8_0"
+        disk_gb: "32"
+        min_ram_gb: 40
+        hardware_tier: "64"
+      - id: nemotron-70b-q4
+        name: "Nemotron 70B Instruct (Q4)"
+        family: nemotron
+        params: "70B"
+        quantization: Q4_K_M
+        context_size: 131072
+        tool_calling: true
+        code_edit: true
+        quality: excellent
+        ollama_tag: "nemotron:70b-instruct-q4_K_M"
+        disk_gb: "43"
+        min_ram_gb: 52
+        hardware_tier: "64"
+      - id: nemotron-3-super-120b-q4
+        name: "Nemotron-3-Super 120B-A12B (Q4)"
+        family: nemotron
+        params: "120B MoE (A12B)"
+        quantization: Q4_K_M
+        context_size: 131072
+        tool_calling: true
+        code_edit: true
+        quality: excellent
+        ollama_tag: "nemotron-3-super:120b-a12b-q4_K_M"
+        disk_gb: "87"
+        min_ram_gb: 100
+        hardware_tier: "128"
+      - id: glm-4.5-air-q4
+        name: "GLM-4.5-Air 106B-A12B (Q4, community)"
+        family: glm
+        params: "106B MoE (A12B)"
+        quantization: Q4_K_M
+        context_size: 131072
+        tool_calling: true
+        code_edit: true
+        quality: excellent
+        ollama_tag: "MichelRosselli/GLM-4.5-Air:Q4_K_M"
+        disk_gb: "73"
+        min_ram_gb: 88
+        hardware_tier: "128"
+        community: true
 
   onnx:
     description: "In-process ONNX classifier — classify-only, no edit loop."

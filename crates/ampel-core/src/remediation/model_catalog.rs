@@ -92,6 +92,31 @@ pub struct CatalogModel {
     /// On-disk ONNX model path hint (not a secret) — only meaningful for ONNX.
     #[serde(default)]
     pub model_path: Option<String>,
+    /// Parameter count as a display string (e.g. `"8B"`, `"30B MoE (A3B)"`).
+    /// Display/selection metadata only — not part of capability mapping.
+    #[serde(default)]
+    pub params: String,
+    /// Quantization scheme as a display string (e.g. `"Q4_K_M"`, `"Q8_0"`).
+    /// Display/selection metadata only — not part of capability mapping.
+    #[serde(default)]
+    pub quantization: String,
+    /// Unified-memory (RAM) the model needs to run comfortably, in GB (with
+    /// headroom). Display/selection metadata only. `None` ⇒ unspecified.
+    #[serde(default)]
+    pub min_ram_gb: Option<u32>,
+    /// Download size as a display string in GB (e.g. `"5.2"`). Kept a `String`
+    /// to avoid `f64` (ADR-008). Display/selection metadata only.
+    #[serde(default)]
+    pub disk_gb: Option<String>,
+    /// Suggested hardware tier bucket (`"16"` | `"32-36"` | `"64"` | `"128"`),
+    /// the unified-memory class the model targets. Display/selection metadata only.
+    #[serde(default)]
+    pub hardware_tier: Option<String>,
+    /// Whether this is a community-namespace Ollama model (chat template /
+    /// tool-calling should be verified with `ollama show <tag>`).
+    /// Display/selection metadata only.
+    #[serde(default)]
+    pub community: bool,
 }
 
 impl ModelCatalog {
@@ -293,8 +318,38 @@ providers:
         assert_eq!(model.cost_per_1k_output, None);
         assert_eq!(model.ollama_tag, None);
         assert_eq!(model.model_path, None);
+        assert_eq!(model.params, "");
+        assert_eq!(model.quantization, "");
+        assert_eq!(model.min_ram_gb, None);
+        assert_eq!(model.disk_gb, None);
+        assert_eq!(model.hardware_tier, None);
+        assert!(!model.community);
         assert_eq!(provider.egress, None);
         assert_eq!(provider.description, "");
+    }
+
+    #[test]
+    fn should_parse_hardware_tier_metadata_fields() {
+        let yaml = r#"
+providers:
+  ollama:
+    models:
+      - id: glm-4.5-air-q4
+        params: "106B MoE (A12B)"
+        quantization: Q4_K_M
+        min_ram_gb: 88
+        disk_gb: "73"
+        hardware_tier: "128"
+        community: true
+"#;
+        let catalog = ModelCatalog::parse(yaml);
+        let model = &catalog.providers.get("ollama").unwrap().models[0];
+        assert_eq!(model.params, "106B MoE (A12B)");
+        assert_eq!(model.quantization, "Q4_K_M");
+        assert_eq!(model.min_ram_gb, Some(88));
+        assert_eq!(model.disk_gb, Some("73".to_string()));
+        assert_eq!(model.hardware_tier, Some("128".to_string()));
+        assert!(model.community);
     }
 
     #[test]

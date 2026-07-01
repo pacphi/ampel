@@ -74,6 +74,17 @@ pub struct CatalogModelDto {
     pub name: String,
     pub family: String,
     pub quality: String,
+    #[serde(skip_serializing_if = "str::is_empty")]
+    pub params: String,
+    #[serde(skip_serializing_if = "str::is_empty")]
+    pub quantization: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub min_ram_gb: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub disk_gb: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub hardware_tier: Option<String>,
+    pub community: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub ollama_tag: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -124,6 +135,12 @@ impl CatalogModelDto {
             name: model.name.clone(),
             family: model.family.clone(),
             quality: model.quality.clone(),
+            params: model.params.clone(),
+            quantization: model.quantization.clone(),
+            min_ram_gb: model.min_ram_gb,
+            disk_gb: model.disk_gb.clone(),
+            hardware_tier: model.hardware_tier.clone(),
+            community: model.community,
             ollama_tag: model.ollama_tag.clone(),
             model_path: model.model_path.clone(),
             context_window: caps.max_context_tokens,
