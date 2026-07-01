@@ -1,38 +1,42 @@
-# ACTIVE pipeline — retires the prior (shipped) app-version-footer plan, which survives in git
-# history and as record 0 of .autopilot/runs/app-version-footer.jsonl. profile.yml is stack-level
-# and shared — reused as-is.
+# ACTIVE pipeline — promoted 2026-07-01 from .autopilot/queued/, retiring the prior (shipped)
+# remediation-model-catalog plan, which survives in git history and as the .autopilot/runs/
+# remediation-model-catalog.jsonl ledger. profile.yml is stack-level and shared — reused as-is.
 
-feature_id: "remediation-model-catalog"
-goal: "Replace the blind free-text model_id entry in the Remediation Model Accounts tab with a checked-in YAML model catalog as the source of truth — exposed via a catalog API, driving capability-rich UI dropdowns, with live Ollama discovery and remote Ollama pull (trigger + progress polling)."
+feature_id: "playbooks-guidance"
+goal: "Make the Remediation Playbook editor instructional — surface the embedded default as a documented, editable starting point, add field hints and 'what's possible' affordances (allowed fields/enums, the tool-ceiling rule), and give richer validation than parse/pass. Mirrors the model-catalog feature."
 spec: |
-  Today the Remediation "Model" tab (ModelAccountManager.tsx) makes users type a bare model_id string
-  blind. emailibrium's pattern — which this feature ports — is a curated YAML catalog of selectable
-  models with rich metadata (context window, cost/1k, tool-use, egress), surfaced as catalog-driven
-  dropdowns, plus the ability to PULL local (Ollama) models that aren't present yet.
+  Today PlaybookEditor.tsx is effectively a raw YAML textarea: no schema/field reference, no
+  starter template from the embedded default, no affordances for what's possible (the tool-ceiling
+  concept, allowed fields, enums), and only parse-or-not validation. A user's only way to learn
+  "what does a playbook look like and what can I do" is to read the embedded default YAML in the
+  repo or ADR-006/007 — none of it is in the UI.
 
-  Decisions already made with the user:
-    - PULL SCOPE: Ollama REMOTE pull only. Ampel is a hosted multi-tenant server (Fly.io), NOT a local
-      desktop app. So "pull" means proxying POST {endpoint}/api/pull against the USER'S OWN Ollama
-      endpoint over HTTP with streamed progress polling — NOT shelling out, NOT downloading GGUF/ONNX to
-      Ampel's disk, NOT hardware/RAM-based filtering.
-    - CATALOG SOURCE: a single config/models.yaml checked into the repo, parsed with serde +
-      #[serde(default)] graceful fallback (mirrors emailibrium yaml_config.rs). NOT a DB-backed catalog.
-    - UI MIGRATION: catalog-driven primary flow (pick provider -> pick model from catalog showing
-      caps/cost) with an "Advanced / custom model ID" escape hatch that preserves today's free-text for
-      unlisted models. The account's stored model_id stays DECOUPLED from the catalog id so the escape
-      hatch keeps working.
+  Ground truth (from exploration):
+    - Embedded default: crates/ampel-worker/playbooks/default.yaml (single built-in, rust-embed,
+      ADR-006/007). Playbook schema (crates/ampel-worker/src/services/playbook.rs):
+      version:u32(default), role:String(req), tasks:HashMap<String,{instructions}>(req),
+      loop:{max_iterations:u32,max_seconds:u64,max_cost_usd:String-decimal}(req),
+      tools_policy:{allowed:Vec<String>}(the CEILING), context_spec:{blocks:Vec<String>}(opt),
+      output_contract:String(req), provider_overlays:HashMap<provider,{output_contract?,model?}>(opt).
+      minijinja templates use ONLY trusted vars repo_full_name/base_branch/failure_class; untrusted
+      CI data rides in separate context_blocks.
+    - Tool-ceiling rule (ADR-006, security): clamp_tools() in playbook.rs is pure set intersection —
+      an override may only REMOVE tools from the embedded/org ceiling, NEVER ADD. Enforced in
+      playbook_resolver.rs resolve() after every resolution step.
+    - API: crates/ampel-api/src/handlers/remediation_playbooks.rs — CRUD + POST /{id}/preview
+      (renders the assembled prompt, NO model call; returns role, system_instruction,
+      output_contract, allowed_tools after clamp). Create/update validate via Playbook::from_yaml
+      → 422 on invalid. There is NO endpoint returning the embedded default.
+    - Frontend: PlaybookEditor.tsx (raw YAML textarea; client-validates only non-empty
+      id/name/content; per-row Validate/Preview). api/playbooks.ts, hooks/usePlaybooks.ts,
+      types/playbook.ts. i18n namespace remediation:playbooks.
+    - Pattern to mirror: the just-shipped model-catalog (docs/features/MODEL_CATALOG.md;
+      handlers/model_catalog.rs; ModelAccountManager.tsx capability pills). No docs/features/PLAYBOOKS.md yet.
 
-  Every existing security gate is preserved unchanged and routes through the same code paths:
-  AES-256-GCM credential encryption, egress_class, ADR-014 air-gap enforcement, SSRF guard on endpoint
-  URLs, ADR-008 spend caps (Decimal, never f64), and multi-tenant account isolation. The new Ollama
-  discovery/pull endpoints MUST pass SSRF + air-gap gates on every call (defense in depth, like the
-  existing /model-accounts/{id}/validate handler).
-
-  Anchors:
-    - core: crates/ampel-core/src/remediation/model_provider.rs (ProviderKind, ModelCaps, Egress)
-    - api:  crates/ampel-api/src/handlers/model_accounts.rs; routes in crates/ampel-api/src/routes/mod.rs
-    - ui:   frontend/src/components/remediation/ModelAccountManager.tsx; types/remediation.ts
-    - i18n: frontend/public/locales/<lang>/remediation.json (key coverage is CI-enforced)
+  i18n MUST be done via the ampel-i18n-builder `translate` util (real translations, not English
+  placeholders): source crates/ampel-i18n-builder/.env, `translate --lang <L>` per locale,
+  regenerate frontend/src/i18n/types.ts, and AFTER translating audit for the two known translator
+  pitfalls — corrupted {{interpolation}} vars and mistranslated brand/proper nouns — and repair.
 
 references:
   prd:     "docs/planning/PRODUCT_SPEC.md"
@@ -40,12 +44,13 @@ references:
   adr_dir: "docs/architecture/adr"
   ddd_dir: "docs/architecture/ddd"
   extra:
-    - "docs/architecture/adr/ADR-008-model-provider-credentials.md"
-    - "docs/architecture/adr/ADR-014-air-gapped-governance.md"
-    - "docs/architecture/ddd/aggregate-model-provider-account.md"
-    - "crates/ampel-core/src/remediation/model_provider.rs"
-    - "crates/ampel-api/src/handlers/model_accounts.rs"
-    - "frontend/src/components/remediation/ModelAccountManager.tsx"
+    - "docs/architecture/adr/ADR-006-playbook-format-storage.md"
+    - "docs/architecture/adr/ADR-007-model-provider-trait.md"
+    - "crates/ampel-worker/playbooks/default.yaml"
+    - "crates/ampel-worker/src/services/playbook.rs"
+    - "crates/ampel-api/src/handlers/remediation_playbooks.rs"
+    - "frontend/src/components/remediation/PlaybookEditor.tsx"
+    - "docs/features/MODEL_CATALOG.md"
 
 trunk: main
 base:  develop
@@ -53,119 +58,72 @@ autonomy: pr_ci
 
 fix_budget: 5
 
-# Phase 1 has real blast radius: it adds endpoints that make outbound network calls to a user-supplied
-# Ollama endpoint — SSRF + air-gap egress surface. That's where the adversarial passes earn their cost.
-risk_phases: [1]
+# Read-only endpoint + write-time validation; no merge/auth/exec blast radius.
+risk_phases: []
 
 phases:
   - id: 0
-    goal: "A checked-in YAML model catalog is the parsed, validated source of truth in ampel-core, mapped onto the existing ModelCaps — no API or UI yet."
+    goal: "Backend: expose the embedded default playbook over HTTP and give create/update schema-aware, field-path validation."
     deliverables:
-      - "config/models.yaml: providers {claude, gemini, ollama, onnx}, each with a models list. Per model: id, name, family, context_size, tool_calling, code_edit, quality, cost_per_1k_input, cost_per_1k_output, egress, output_contract, plus ollama_tag (ollama) / model_path hint (onnx)."
-      - "crates/ampel-core/src/remediation/model_catalog.rs: serde structs (CatalogProvider, CatalogModel) with #[serde(default)] on every field; a load_catalog(path) -> AmpelResult<ModelCatalog> with graceful fallback to Default on missing/invalid YAML (warn, don't panic)."
-      - "A mapping from CatalogModel onto the existing ModelCaps struct (reuse, do not duplicate, the caps/egress/output_contract types in model_provider.rs)."
+      - "GET /api/remediation/playbooks/embedded → the parsed embedded default (read-only, PlaybookResponse-shaped) via the resolver's embedded_default_yaml(); registered in crates/ampel-api/src/routes/mod.rs next to the other playbook routes."
+      - "Schema-aware validation on create/update (crates/ampel-worker/src/services/playbook.rs and/or the handler): assert required keys role, tasks (non-empty), loop.{max_iterations,max_seconds,max_cost_usd}, tools_policy, output_contract; output_contract is a known enum; provider_overlays keys are known provider kinds. Return 422 with a field path (e.g. 'loop.max_iterations') rather than a bare parse error."
     definition_of_done:
-      - "cmd: cargo test -p ampel-core remediation::model_catalog passes covering serde round-trip, #[serde(default)] missing-field fallback, and invalid-YAML -> Default fallback."
-      - "cmd: cargo build -p ampel-core succeeds."
-      - "grep: providers in config/models.yaml"
-      - "grep: serde(default) in crates/ampel-core/src/remediation/model_catalog.rs"
-      - "grep:absent: TODO|FIXME|unimplemented! in crates/ampel-core/src/remediation/model_catalog.rs"
-      - "prose: CatalogModel maps onto the existing ModelCaps type in model_provider.rs rather than redefining capability/egress enums."
-    conventions: "Money/cost fields use Decimal-as-string or typed Decimal, never f64 (ADR-008). Reuse ProviderKind, Egress, OutputContract from model_provider.rs."
-    depends_on: []
-    adrs:  ["ADR-008-model-provider-credentials"]
-    ddd:   ["ModelProviderAccount aggregate"]
-
-  - id: 1
-    goal: "The catalog and Ollama discovery/pull are reachable over HTTP, with every call passing the existing SSRF + air-gap gates."
-    deliverables:
-      - "GET /api/model-catalog -> the catalog grouped by provider with caps/cost; org-aware filtering hides external-egress providers for air-gapped orgs (reuse ADR-014 logic from model_accounts.rs)."
-      - "GET /api/model-catalog/ollama/tags?account_id=... -> proxies the user's Ollama /api/tags through the SSRF guard for live discovery."
-      - "POST /api/model-catalog/ollama/pull -> proxies POST {endpoint}/api/pull behind the SSRF guard + air-gap check; returns a pull job/status handle."
-      - "GET /api/model-catalog/ollama/pull/{id}/status -> reports pull progress (state machine: queued|downloading|ready|error)."
-      - "Routes registered in crates/ampel-api/src/routes/mod.rs alongside the existing /api/model-accounts routes."
-    definition_of_done:
-      - "cmd: cargo test -p ampel-api model_catalog passes, including: air-gap org hides external providers, SSRF guard rejects internal/loopback endpoints on tags+pull, and the pull status state-machine transitions."
-      - "cmd: cargo build -p ampel-api succeeds."
-      - "grep: /api/model-catalog in crates/ampel-api/src/routes/mod.rs"
-      - "grep: ollama/pull in crates/ampel-api/src/routes/mod.rs"
-      - "prose: the new tags+pull handlers call the SAME ssrf guard and air-gap check used by validate_model_account in model_accounts.rs (defense in depth), not a bespoke copy."
-      - "grep:absent: reqwest::get\\(|Client::new\\(\\)\\.get without an SSRF check in the new handler module"
-    conventions: "Axum 0.8 handlers. Decrypt credentials at the call site only (never log). Mirror the structure of model_accounts.rs validate handler for the egress/SSRF/air-gap sequence."
-    depends_on: [0]
-    adrs:  ["ADR-014-air-gapped-governance", "ADR-008-model-provider-credentials"]
-    ddd:   ["ModelProviderAccount aggregate"]
-
-  - id: 2
-    goal: "The Model Accounts tab is catalog-driven: pick provider -> pick model from a metadata-rich dropdown, with an advanced custom-model escape hatch and an Ollama pull-progress flow — fully internationalized."
-    deliverables:
-      - "ModelAccountManager.tsx CreateForm: provider select -> model dropdown sourced from GET /api/model-catalog (TanStack Query), each option showing context window, $/1k, tool-use, egress badges; replaces the blind model_id text input."
-      - "An 'Advanced / custom model ID' disclosure restoring the current free-text entry for unlisted models; the submitted account model_id is set from EITHER the catalog selection or the custom field."
-      - "Ollama path: live discovered tags (GET .../ollama/tags); when the selected model's tag is absent, a 'Pull model' action that POSTs the pull and polls .../pull/{id}/status to completion with a progress component; surfaces ModelCaps on the existing AccountRow."
-      - "New i18n keys for all added strings added to frontend/public/locales/en/remediation.json AND propagated to every other locale (CI enforces key coverage)."
-      - "frontend/src/types/remediation.ts: types for the catalog response and pull status."
-    definition_of_done:
-      - "cmd: make test-frontend passes, including new vitest specs for catalog dropdown render+select, the custom escape hatch setting model_id, and the Ollama pull/poll-to-ready flow."
-      - "cmd: make lint-frontend passes."
-      - "grep: model-catalog in frontend/src/api"
-      - "prose: no raw i18n keys render — new keys exist in en/remediation.json and are present across all frontend/public/locales/*/remediation.json (key-coverage check is green)."
-      - "grep:absent: TODO|FIXME in ModelAccountManager.tsx"
-    conventions: "React 19 + TS, TanStack Query for the catalog/tags/status fetches, React Hook Form + Zod for the form. Co-locate vitest specs. Every user-facing string goes through i18n (t())."
-    depends_on: [1]
-    adrs:  ["ADR-014-air-gapped-governance"]
-    ddd:   ["ModelProviderAccount aggregate"]
-
-  - id: 3
-    goal: "End-to-end hardening and docs: the security gates are proven across the new surface, and the feature is documented."
-    deliverables:
-      - "Integration test(s) exercising the full path: air-gapped org cannot select/pull external models; SSRF guard blocks internal Ollama endpoints end-to-end; spend-cap accounting still applies to catalog-selected accounts (ADR-008)."
-      - "Docs: update the Remediation/model-accounts documentation (and any env-var docs) to describe the catalog, config/models.yaml editing, Ollama discovery, and remote pull."
-      - "config/models.yaml documented as the editable source of truth (how to add a model)."
-    definition_of_done:
-      - "cmd: make test passes (full backend + frontend suite)."
-      - "cmd: make lint passes."
-      - "cmd: make audit passes (no new advisories)."
-      - "grep: models.yaml in docs"
-      - "prose: docs explain how to add a model to config/models.yaml and how Ollama remote pull works, consistent with the implemented endpoints."
-    conventions: "Markdown docs go through the repo's markdownlint authority. Integration tests live in crates/*/tests/ and support both PostgreSQL and SQLite."
-    depends_on: [2]
-    adrs:  ["ADR-014-air-gapped-governance", "ADR-008-model-provider-credentials"]
-    ddd:   ["ModelProviderAccount aggregate"]
-
-  - id: 4
-    goal: "Refresh config/models.yaml with the current (mid-2026) best-performing models and extend the catalog schema with hardware-tier / quant metadata — backend only."
-    deliverables:
-      - "Extend CatalogModel in ampel-core (all #[serde(default)]): params, quantization, min_ram_gb (Option<u32>), disk_gb (Option<String>), hardware_tier (Option<String>: '16'|'32-36'|'64'|'128'), community (bool). These are display/selection metadata; ModelCaps mapping is unchanged."
-      - "Add the same fields to the ampel-api CatalogModelDto (from_model) so GET /api/model-catalog returns them."
-      - "Rewrite config/models.yaml with VERIFIED mid-2026 models: claude {opus-4-8, sonnet-5, haiku-4-5, fable-5}; gemini {2.5-pro, 2.5-flash, 2.5-flash-lite, 3.5-flash, 3.1-flash-lite}; ollama curated best-per-RAM-tier (qwen3:8b @16GB; qwen3-coder:30b-a3b-q4_K_M + glm-4.7-flash:q4_K_M + gemma4:31b-it-q4_K_M @32-36GB; qwen3-coder:30b-a3b-q8_0 + nemotron:70b-instruct-q4_K_M @64GB; nemotron-3-super:120b-a12b-q4_K_M @128GB official + MichelRosselli/GLM-4.5-Air:Q4_K_M @128GB community=true). onnx failure-classifier retained. Real Decimal costs per the researched table."
-    definition_of_done:
-      - "cmd: cargo test -p ampel-core remediation::model_catalog passes (incl. new-field defaults + parsing)."
-      - "cmd: cargo test -p ampel-api --lib model_catalog passes."
+      - "cmd: cargo test -p ampel-api playbooks passes (embedded endpoint returns the default; create/update returns field-path 422s for missing/invalid fields)."
+      - "cmd: cargo test -p ampel-worker playbook passes (schema validator unit tests)."
       - "cmd: cargo build --workspace succeeds; cargo clippy --workspace --all-targets --all-features -- -D warnings clean."
       - "cmd: make format-check passes."
-      - "grep: hardware_tier in crates/ampel-core/src/remediation/model_catalog.rs"
-      - "grep: qwen3-coder in config/models.yaml"
-      - "grep: community in config/models.yaml"
-      - "prose: money fields remain Decimal (ADR-008); the new hardware-tier fields are display metadata and do not alter ModelCaps."
-    conventions: "Reuse the existing serde-default + graceful-fallback pattern. Community-namespace Ollama models carry community: true. Costs are Decimal strings, never f64."
-    depends_on: [3]
-    adrs:  ["ADR-008-model-provider-credentials"]
-    ddd:   ["ModelProviderAccount aggregate"]
+      - "grep: /api/remediation/playbooks/embedded in crates/ampel-api/src/routes/mod.rs"
+      - "prose: the tool-ceiling clamp and trusted-vars/untrusted-context split are unchanged; the new endpoint is read-only and applies the same ADR-006 resolution."
+    conventions: "Mirror handlers/model_catalog.rs (GET embedded default) and the existing remediation_playbooks.rs DTOs. Money stays Decimal-as-string. No secrets in logs."
+    depends_on: []
+    adrs:  ["ADR-006-playbook-format-storage"]
+    ddd:   ["RemediationPolicy aggregate", "Playbook"]
 
-  - id: 5
-    goal: "Surface the new hardware-tier / quant / community metadata in the Remediation Model tab and let users filter local models by what fits their machine."
+  - id: 1
+    goal: "Frontend: load/duplicate the embedded default as a starting point and surface preview metadata, so users see a concrete playbook and what it grants."
     deliverables:
-      - "frontend/src/types/remediation.ts: extend the catalog model type with params, quantization, minRamGb, diskGb, hardwareTier, community."
-      - "ModelAccountManager dropdown: show params/quant/RAM-tier badges and a 'community' marker; add a RAM-tier filter (16 / 32-36 / 64 / 128 GB / all) that narrows the local (ollama) model options to those that fit; a short note that on discrete-GPU systems VRAM is the binding constraint."
-      - "New i18n keys added to en/remediation.json and propagated to ALL 27 locales; i18n/types.ts regenerated."
+      - "PlaybookEditor 'Load built-in default' action: fetch GET .../embedded, prefill the form with a sanitized copy (fresh playbookId/name, cleared description, content = the default YAML)."
+      - "'Duplicate to customize' on existing playbook rows (prefill the form from that playbook)."
+      - "Surface the preview response metadata (allowedTools + outputContract + role) as pills/section on preview, mirroring ModelAccountManager capability pills."
+      - "api/playbooks.ts + usePlaybooks.ts + types/playbook.ts extended for the embedded endpoint; new EN i18n keys under remediation:playbooks."
+    definition_of_done:
+      - "cmd: make test-frontend passes, incl. new vitest specs: 'Load built-in default' prefills the form from the embedded endpoint (mocked); duplicate prefills from a row; preview renders allowedTools/outputContract pills."
+      - "cmd: make lint-frontend passes; make format-check passes."
+      - "grep: playbooks/embedded in frontend/src/api/playbooks.ts"
+      - "grep:absent: TODO|FIXME in frontend/src/components/remediation/PlaybookEditor.tsx"
+    conventions: "TanStack Query + shadcn/ui as in the model-catalog work. Every string via i18n (EN only here; other locales in phase 2)."
+    depends_on: [0]
+    adrs:  ["ADR-006-playbook-format-storage"]
+    ddd:   ["Playbook"]
+
+  - id: 2
+    goal: "Frontend: per-field schema reference/hints (including the tool-ceiling narrow-only rule and the trusted-vars/untrusted-context split) plus richer inline validation, fully internationalized."
+    deliverables:
+      - "Field hints/tooltips for each playbook field (role, tasks, loop budget, tools_policy CEILING with 'you may only narrow, never add', context_spec, output_contract enum, provider_overlays) — e.g. a PlaybookFieldHints module + help affordances next to the editor."
+      - "Richer validation feedback: render the phase-0 field-path 422 errors inline against the offending field rather than a single generic message."
+      - "i18n: all new remediation:playbooks.* keys translated into ALL 27 locales via the ampel-i18n-builder translate util; frontend/src/i18n/types.ts regenerated; post-translate audit repairs any corrupted {{interpolation}} vars and any mistranslated brand/proper nouns."
     definition_of_done:
       - "cmd: node scripts/i18n-coverage-report.js --check-missing reports no missing keys."
       - "cmd: node scripts/i18n-coverage-report.js --check --min-coverage 95 passes."
-      - "cmd: make test-frontend passes (incl. a new spec for the RAM-tier filter + badge render)."
+      - "cmd: make test-frontend passes (incl. a field-hint render + a field-path validation-error spec)."
       - "cmd: make lint-frontend passes; make format-check passes."
-      - "grep: hardwareTier in frontend/src/types/remediation.ts"
-      - "prose: no raw i18n keys render; new modelCatalog.* keys present across all locales; types.ts regenerated in sync."
-    conventions: "TanStack Query + shadcn/ui as in phase 2. Every string via i18n. Run make format-check locally (prettier is not covered by make lint-frontend)."
-    depends_on: [4]
-    adrs:  ["ADR-014-air-gapped-governance"]
-    ddd:   ["ModelProviderAccount aggregate"]
+      - "prose: no raw i18n keys render; interpolation-variable audit across locales is clean; brand/proper nouns (Claude/Gemini/Ollama/ONNX, GitHub/GitLab/Bitbucket, Ampel) are not translated; types.ts regenerated in sync."
+    conventions: "Use the ampel-i18n-builder translate flow (source its .env first). Run make format-check locally — Prettier is not covered by make lint. Protect interpolation vars + brand nouns (known translator pitfalls)."
+    depends_on: [1]
+    adrs:  ["ADR-006-playbook-format-storage"]
+    ddd:   ["Playbook"]
+
+  - id: 3
+    goal: "Docs + end-to-end: document the playbook editing workflow and prove the guidance path with an integration test."
+    deliverables:
+      - "docs/features/PLAYBOOKS.md (mirror docs/features/MODEL_CATALOG.md): the schema and each field's meaning, the tool-ceiling narrow-only rule, the trusted-vars/untrusted-context split, the embedded default as the editable starting point, and the editing/validation/preview workflow."
+      - "Integration test(s) in crates/*/tests/: GET .../embedded returns the default; an invalid playbook create returns a field-path 422; preview still renders with no model call."
+    definition_of_done:
+      - "cmd: make test passes (full backend + frontend)."
+      - "cmd: make lint passes; make audit passes."
+      - "grep: PLAYBOOKS.md in docs OR grep: Playbook in docs/features/PLAYBOOKS.md (doc exists)."
+      - "prose: docs explain the tool-ceiling narrow-only rule and how to start from the embedded default, consistent with the implemented endpoints; markdownlint clean."
+    conventions: "Markdown through the repo's markdownlint authority. Integration tests mirror crates/ampel-api/tests/test_model_catalog.rs (Postgres-gated)."
+    depends_on: [2]
+    adrs:  ["ADR-006-playbook-format-storage"]
+    ddd:   ["Playbook"]
