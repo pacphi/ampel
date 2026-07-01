@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Maks. PR'er pr. løb",
     "minOpenPrs": "Minimum åbne PR'er",
+    "noScopes": "Du administrerer endnu ingen omfang af denne type.",
     "save": "Gem politik",
     "saving": "Gemmer…",
     "scopeId": "Omfangs-ID",
     "scopeIdPlaceholder": "Indtast arkiv-, team-, organisations- eller bruger-ID'et",
-    "scopeType": "Omfangstype",
-    "noScopes": "Du administrerer endnu ingen omfang af denne type."
+    "scopeType": "Omfangstype"
   },
   "fleet": {
     "airGappedOff": "Forbundet",
@@ -157,6 +157,7 @@
     },
     "empty": "Ingen modelkonti endnu. Tilføj en for at aktivere agentafhjælpning.",
     "endpointUrl": "Slutpunkts-URL",
+    "endpointUrlHint": "Hvis Ampel kører i Docker, peger localhost på containeren — brug http://host.docker.internal:11434 for at nå en Ollama-server på din vært.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Modelkonti kunne ikke indlæses.",
     "errors": {
@@ -169,9 +170,9 @@
     "providerKind": "Udbyder",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Tvillingerne",
-      "ollama": "Ollama (lokal)",
-      "onnx": "ONNX (lokal)"
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Gem konto",
     "saving": "Gemmer…",
@@ -185,6 +186,52 @@
       "unvalidated": "Uvalideret",
       "valid": "Gyldig"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Fremskreden",
+    "codeEdit": "Koderedigering",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Gratis",
+      "perToken": "${{input}} ind · ${{output}} ud / 1K"
+    },
+    "customModelId": "Brugerdefineret model-ID",
+    "customModelIdHint": "Et brugerdefineret model-ID tilsidesætter katalogvalget ovenfor.",
+    "customModelIdPlaceholder": "Tilsidesæt med et ikke-anført model-ID",
+    "hardware": {
+      "community": "fællesskab",
+      "diskSize": "{{disk}} GB disk",
+      "filterHint": "Filtrerer lokale (Ollama) modeller efter system-RAM. På diskrete GPU-systemer er VRAM – ikke system-RAM – bindingsbegrænsningen.",
+      "filterLabel": "RAM-niveau",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "Alle"
+      }
+    },
+    "loadError": "Modelkataloget kunne ikke indlæses.",
+    "loading": "Indlæser modeller…",
+    "model": "Model",
+    "modelPlaceholder": "Vælg en model",
+    "noModels": "Der er ingen katalogmodeller tilgængelige for denne udbyder. Brug Avanceret til at indtaste et model-ID.",
+    "pull": {
+      "notPulled": "Ikke downloadet på denne server endnu.",
+      "pullModel": "Trækmodel",
+      "pulling": "Trækker…",
+      "status": {
+        "downloading": "Downloader",
+        "error": "Fejl",
+        "queued": "I kø",
+        "ready": "Parat"
+      },
+      "title": "Modeldownload"
+    },
+    "toolUse": "Brug af værktøj"
   },
   "nav": "Afhjælpning",
   "playbooks": {

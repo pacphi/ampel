@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "PR-enimmäismäärä ajoa kohden",
     "minOpenPrs": "Avointen PR-pyyntöjen vähimmäismäärä",
+    "noScopes": "Et hallinnoi vielä tämän tyyppisiä laajuuksia.",
     "save": "Tallenna käytäntö",
     "saving": "Tallennetaan…",
     "scopeId": "Vaikutusalueen tunnus",
     "scopeIdPlaceholder": "Anna tietovaraston, tiimin, organisaation tai käyttäjätunnuksen nimi.",
-    "scopeType": "Laajuustyyppi",
-    "noScopes": "Et hallinnoi vielä tämän tyyppisiä laajuuksia."
+    "scopeType": "Laajuustyyppi"
   },
   "fleet": {
     "airGappedOff": "Yhdistetty",
@@ -157,6 +157,7 @@
     },
     "empty": "Ei vielä mallitilejä. Lisää yksi ottaaksesi agenttikohtaisen korjauksen käyttöön.",
     "endpointUrl": "Päätepisteen URL-osoite",
+    "endpointUrlHint": "Jos Ampel toimii Dockerissa, localhost osoittaa konttiin – käytä http://host.docker.internal:11434-osoitetta tavoittaaksesi Ollama-palvelimen isännässäsi.",
     "endpointUrlPlaceholder": "http://paikallinenhost:11434",
     "error": "Mallitilien lataaminen epäonnistui.",
     "errors": {
@@ -169,9 +170,9 @@
     "providerKind": "Palveluntarjoaja",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Kaksoset",
-      "ollama": "Ollama (paikallinen)",
-      "onnx": "ONNX (paikallinen)"
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Tallenna tili",
     "saving": "Tallennetaan…",
@@ -185,6 +186,52 @@
       "unvalidated": "Vahvistamaton",
       "valid": "Voimassa"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Edistynyt",
+    "codeEdit": "Koodin muokkaus",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Ilmainen",
+      "perToken": "${{input}} sisään · ${{output}} ulos / 1 000"
+    },
+    "customModelId": "Mukautettu mallitunnus",
+    "customModelIdHint": "Mukautettu mallitunnus ohittaa yllä olevan luettelovalinnan.",
+    "customModelIdPlaceholder": "Ohita listaamattomalla mallitunnuksella",
+    "hardware": {
+      "community": "yhteisö",
+      "diskSize": "{{disk}} Gt:n levy",
+      "filterHint": "Suodattaa paikallisia (Ollama) malleja järjestelmän RAM-muistin perusteella. Erillisissä GPU-järjestelmissä VRAM – ei järjestelmän RAM – on sitova rajoite.",
+      "filterLabel": "RAM-taso",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} Gt",
+      "tier": {
+        "128": "128 Gt",
+        "16": "16 Gt",
+        "32-36": "32–36 Gt",
+        "64": "64 Gt",
+        "all": "Kaikki"
+      }
+    },
+    "loadError": "Mallikuvakkeen lataus epäonnistui.",
+    "loading": "Ladataan malleja…",
+    "model": "Malli",
+    "modelPlaceholder": "Valitse malli",
+    "noModels": "Tälle toimittajalle ei ole saatavilla luettelomalleja. Syötä mallitunnus Lisäasetukset-valikon kautta.",
+    "pull": {
+      "notPulled": "Ei vielä ladattu tälle palvelimelle.",
+      "pullModel": "Vetomalli",
+      "pulling": "Vetäminen…",
+      "status": {
+        "downloading": "Ladataan",
+        "error": "Virhe",
+        "queued": "Jonossa",
+        "ready": "Valmis"
+      },
+      "title": "Mallin lataus"
+    },
+    "toolUse": "Työkalujen käyttö"
   },
   "nav": "Kunnostus",
   "playbooks": {

@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Maximální počet osobních rekordů na běh",
     "minOpenPrs": "Minimální otevřené PR",
+    "noScopes": "Zatím nespravujete žádné rozsahy tohoto typu.",
     "save": "Uložit zásady",
     "saving": "Ukládání…",
     "scopeId": "ID rozsahu",
     "scopeIdPlaceholder": "Zadejte ID úložiště, týmu, organizace nebo uživatele",
-    "scopeType": "Typ rozsahu",
-    "noScopes": "Zatím nespravujete žádné rozsahy tohoto typu."
+    "scopeType": "Typ rozsahu"
   },
   "fleet": {
     "airGappedOff": "Připojeno",
@@ -157,6 +157,7 @@
     },
     "empty": "Zatím žádné modelové účty. Přidejte jeden, abyste povolili agentskou nápravu.",
     "endpointUrl": "URL koncového bodu",
+    "endpointUrlHint": "Pokud Ampel běží v Dockeru, localhost ukazuje na kontejner – pro spojení s Ollama serverem na vašem hostiteli použijte http://host.docker.internal:11434.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Načtení účtů modelů se nezdařilo.",
     "errors": {
@@ -169,9 +170,9 @@
     "providerKind": "Poskytovatel",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Blíženci",
-      "ollama": "Ollama (místní)",
-      "onnx": "ONNX (místní)"
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Uložit účet",
     "saving": "Ukládání…",
@@ -185,6 +186,52 @@
       "unvalidated": "Neověřené",
       "valid": "Platný"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Moderní",
+    "codeEdit": "Úprava kódu",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Uvolnit",
+      "perToken": "${{input}} vstup · ${{output}} výstup / 1K"
+    },
+    "customModelId": "ID vlastního modelu",
+    "customModelIdHint": "Vlastní ID modelu přepíše výše uvedený výběr z katalogu.",
+    "customModelIdPlaceholder": "Přepsat neuvedeným ID modelu",
+    "hardware": {
+      "community": "společenství",
+      "diskSize": "{{disk}} GB disk",
+      "filterHint": "Filtruje lokální modely (Ollama) podle systémové paměti RAM. V systémech s diskrétní grafickou kartou je omezením vazby VRAM, nikoli systémová paměť RAM.",
+      "filterLabel": "Úroveň RAM",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "Vše"
+      }
+    },
+    "loadError": "Nepodařilo se načíst katalog modelů.",
+    "loading": "Načítání modelů…",
+    "model": "Model",
+    "modelPlaceholder": "Vyberte model",
+    "noModels": "Pro tohoto poskytovatele nejsou k dispozici žádné katalogové modely. Pro zadání ID modelu použijte možnost Rozšířené.",
+    "pull": {
+      "notPulled": "Zatím nebylo na tomto serveru staženo.",
+      "pullModel": "Model tažení",
+      "pulling": "Tahání…",
+      "status": {
+        "downloading": "Stahování",
+        "error": "Chyba",
+        "queued": "Zařazeno do fronty",
+        "ready": "Připraveno"
+      },
+      "title": "Stažení modelu"
+    },
+    "toolUse": "Použití nástroje"
   },
   "nav": "Sanace",
   "playbooks": {

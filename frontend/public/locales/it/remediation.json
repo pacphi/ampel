@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Numero massimo di PR per run",
     "minOpenPrs": "PR aperte minime",
+    "noScopes": "Non gestisci ancora alcun ambito di questo tipo.",
     "save": "Salva le politiche",
     "saving": "Risparmio…",
     "scopeId": "ID ambito",
     "scopeIdPlaceholder": "Inserisci l'ID del repository, del team, dell'organizzazione o dell'utente",
-    "scopeType": "Tipo di ambito",
-    "noScopes": "Non gestisci ancora alcun ambito di questo tipo."
+    "scopeType": "Tipo di ambito"
   },
   "fleet": {
     "airGappedOff": "Collegato",
@@ -157,6 +157,7 @@
     },
     "empty": "Nessun account modello ancora disponibile. Aggiungine uno per abilitare la correzione automatica.",
     "endpointUrl": "URL dell'endpoint",
+    "endpointUrlHint": "Se Ampel è in esecuzione in Docker, localhost punta al container; per raggiungere un server Ollama sul tuo host, usa http://host.docker.internal:11434.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Impossibile caricare gli account modello.",
     "errors": {
@@ -169,9 +170,9 @@
     "providerKind": "Fornitore",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Gemelli",
-      "ollama": "Ollama (locale)",
-      "onnx": "ONNX (locale)"
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Salva account",
     "saving": "Risparmio…",
@@ -185,6 +186,52 @@
       "unvalidated": "Non convalidato",
       "valid": "Valido"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Avanzato",
+    "codeEdit": "Modifica del codice",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Gratuito",
+      "perToken": "${{input}} in · ${{output}} out / 1K"
+    },
+    "customModelId": "ID modello personalizzato",
+    "customModelIdHint": "Un ID modello personalizzato sovrascrive la selezione del catalogo sopra indicata.",
+    "customModelIdPlaceholder": "Sovrascrivi con un ID modello non elencato",
+    "hardware": {
+      "community": "comunità",
+      "diskSize": "{{disk}} disco da GB",
+      "filterHint": "Filtra i modelli locali (Ollama) in base alla RAM di sistema. Nei sistemi con GPU dedicata, il vincolo di limitazione è la VRAM, non la RAM di sistema.",
+      "filterLabel": "Livello RAM",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "Tutto"
+      }
+    },
+    "loadError": "Impossibile caricare il catalogo dei modelli.",
+    "loading": "Caricamento dei modelli…",
+    "model": "Modello",
+    "modelPlaceholder": "Seleziona un modello",
+    "noModels": "Per questo fornitore non sono disponibili modelli a catalogo. Utilizzare la funzione Avanzate per inserire un ID modello.",
+    "pull": {
+      "notPulled": "Non ancora scaricato su questo server.",
+      "pullModel": "Modello di trazione",
+      "pulling": "Tirando…",
+      "status": {
+        "downloading": "Download",
+        "error": "Errore",
+        "queued": "In coda",
+        "ready": "Pronto"
+      },
+      "title": "Download del modello"
+    },
+    "toolUse": "Utilizzo degli strumenti"
   },
   "nav": "Bonifica",
   "playbooks": {

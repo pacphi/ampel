@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Max PRs per run",
     "minOpenPrs": "Minimum open PRs",
+    "noScopes": "You don't manage any scopes of this type yet.",
     "save": "Save policy",
     "saving": "Saving…",
     "scopeId": "Scope ID",
     "scopeIdPlaceholder": "Enter the repository, team, organization, or user ID",
-    "scopeType": "Scope type",
-    "noScopes": "You don't manage any scopes of this type yet."
+    "scopeType": "Scope type"
   },
   "fleet": {
     "airGappedOff": "Connected",
@@ -157,6 +157,7 @@
     },
     "empty": "No model accounts yet. Add one to enable agentic remediation.",
     "endpointUrl": "Endpoint URL",
+    "endpointUrlHint": "If Ampel runs in Docker, localhost points at the container — use http://host.docker.internal:11434 to reach an Ollama server on your host.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Failed to load model accounts.",
     "errors": {
@@ -185,6 +186,52 @@
       "unvalidated": "Unvalidated",
       "valid": "Valid"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Advanced",
+    "codeEdit": "Code edit",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Free",
+      "perToken": "${{input}} in · ${{output}} out / 1K"
+    },
+    "customModelId": "Custom model ID",
+    "customModelIdHint": "A custom model ID overrides the catalog selection above.",
+    "customModelIdPlaceholder": "Override with an unlisted model ID",
+    "hardware": {
+      "community": "community",
+      "diskSize": "{{disk}} GB disk",
+      "filterHint": "Filters local (Ollama) models by system RAM. On discrete-GPU systems, VRAM — not system RAM — is the binding constraint.",
+      "filterLabel": "RAM tier",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "All"
+      }
+    },
+    "loadError": "Failed to load the model catalog.",
+    "loading": "Loading models…",
+    "model": "Model",
+    "modelPlaceholder": "Select a model",
+    "noModels": "No catalog models are available for this provider. Use Advanced to enter a model ID.",
+    "pull": {
+      "notPulled": "Not downloaded on this server yet.",
+      "pullModel": "Pull model",
+      "pulling": "Pulling…",
+      "status": {
+        "downloading": "Downloading",
+        "error": "Error",
+        "queued": "Queued",
+        "ready": "Ready"
+      },
+      "title": "Model download"
+    },
+    "toolUse": "Tool use"
   },
   "nav": "Remediation",
   "playbooks": {

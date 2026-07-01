@@ -71,6 +71,7 @@ Open [http://localhost:3000](http://localhost:3000) and connect your first repos
 - [Multitenancy](docs/features/MULTITENANCY.md) - Organizations, teams, and access control
 - [Bulk Merge Operations](docs/features/BULK_MERGE.md) - Merge multiple PRs with progress tracking
 - [Health Scores](docs/features/HEALTH_SCORES.md) - Repository health scoring and trend analysis
+- [Model Catalog](docs/features/MODEL_CATALOG.md) - Catalog-driven remediation model selection and Ollama discovery
 
 ### 🌍 Internationalization (i18n)
 

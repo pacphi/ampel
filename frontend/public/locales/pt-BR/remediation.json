@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Recordes pessoais máximos por corrida",
     "minOpenPrs": "PRs mínimos abertos",
+    "noScopes": "Você ainda não gerencia nenhum escopo deste tipo.",
     "save": "Política de economia",
     "saving": "Salvando…",
     "scopeId": "ID do Escopo",
     "scopeIdPlaceholder": "Insira o ID do repositório, da equipe, da organização ou do usuário.",
-    "scopeType": "Tipo de escopo",
-    "noScopes": "Você ainda não gerencia nenhum escopo deste tipo."
+    "scopeType": "Tipo de escopo"
   },
   "fleet": {
     "airGappedOff": "Conectado",
@@ -157,6 +157,7 @@
     },
     "empty": "Ainda não existem contas de modelo. Adicione uma para habilitar a remediação por agentes.",
     "endpointUrl": "URL do ponto de extremidade",
+    "endpointUrlHint": "Se o Ampel estiver sendo executado no Docker, localhost aponta para o contêiner — use http://host.docker.internal:11434 para acessar um servidor Ollama em seu host.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Falha ao carregar as contas do modelo.",
     "errors": {
@@ -169,7 +170,7 @@
     "providerKind": "Fornecedor",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Gêmeos",
+      "gemini": "Gemini",
       "ollama": "Ollama (local)",
       "onnx": "ONNX (local)"
     },
@@ -185,6 +186,52 @@
       "unvalidated": "Não validado",
       "valid": "Válido"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Avançado",
+    "codeEdit": "Edição de código",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Livre",
+      "perToken": "${{input}} entrada · ${{output}} saída / 1K"
+    },
+    "customModelId": "ID do modelo personalizado",
+    "customModelIdHint": "Um ID de modelo personalizado substitui a seleção do catálogo acima.",
+    "customModelIdPlaceholder": "Substituir por um ID de modelo não listado",
+    "hardware": {
+      "community": "comunidade",
+      "diskSize": "{{disk}} Disco de GB",
+      "filterHint": "Filtra modelos locais (Ollama) pela RAM do sistema. Em sistemas com GPUs discretas, a VRAM — e não a RAM do sistema — é a restrição limitante.",
+      "filterLabel": "camada de RAM",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "Todos"
+      }
+    },
+    "loadError": "Falha ao carregar o catálogo de modelos.",
+    "loading": "Carregando modelos…",
+    "model": "Modelo",
+    "modelPlaceholder": "Selecione um modelo",
+    "noModels": "Não há modelos de catálogo disponíveis para este fornecedor. Use a opção Avançado para inserir um ID de modelo.",
+    "pull": {
+      "notPulled": "Ainda não foi baixado neste servidor.",
+      "pullModel": "Modelo de puxar",
+      "pulling": "Puxando…",
+      "status": {
+        "downloading": "Baixando",
+        "error": "Erro",
+        "queued": "Em fila",
+        "ready": "Preparar"
+      },
+      "title": "Download do modelo"
+    },
+    "toolUse": "Uso da ferramenta"
   },
   "nav": "Remediação",
   "playbooks": {

@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Maximale PRs pro Lauf",
     "minOpenPrs": "Mindestanzahl offener PRs",
+    "noScopes": "Sie verwalten noch keine Bereiche dieses Typs.",
     "save": "Speicherrichtlinie",
     "saving": "Speichern…",
     "scopeId": "Bereichs-ID",
     "scopeIdPlaceholder": "Geben Sie das Repository, das Team, die Organisation oder die Benutzer-ID ein.",
-    "scopeType": "Bereichstyp",
-    "noScopes": "Sie verwalten noch keine Bereiche dieses Typs."
+    "scopeType": "Bereichstyp"
   },
   "fleet": {
     "airGappedOff": "Verbunden",
@@ -157,6 +157,7 @@
     },
     "empty": "Es sind noch keine Modellkonten vorhanden. Fügen Sie eines hinzu, um die agentenbasierte Fehlerbehebung zu aktivieren.",
     "endpointUrl": "Endpunkt-URL",
+    "endpointUrlHint": "Wenn Ampel in Docker läuft, verweist localhost auf den Container – verwenden Sie http://host.docker.internal:11434, um einen Ollama-Server auf Ihrem Host zu erreichen.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Modellkonten konnten nicht geladen werden.",
     "errors": {
@@ -169,9 +170,9 @@
     "providerKind": "Anbieter",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Zwillinge",
-      "ollama": "Ollama (lokal)",
-      "onnx": "ONNX (lokal)"
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Konto speichern",
     "saving": "Speichern…",
@@ -185,6 +186,52 @@
       "unvalidated": "Nicht validiert",
       "valid": "Gültig"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Fortschrittlich",
+    "codeEdit": "Code bearbeiten",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Frei",
+      "perToken": "${{input}} in · ${{output}} out / 1K"
+    },
+    "customModelId": "Benutzerdefinierte Modell-ID",
+    "customModelIdHint": "Eine benutzerdefinierte Modell-ID überschreibt die oben festgelegte Katalogauswahl.",
+    "customModelIdPlaceholder": "Überschreiben mit einer nicht aufgeführten Modell-ID",
+    "hardware": {
+      "community": "Gemeinschaft",
+      "diskSize": "{{disk}} GB-Festplatte",
+      "filterHint": "Filtert lokale (Ollama-)Modelle anhand des System-RAMs. Bei Systemen mit diskreter GPU ist der VRAM – nicht der System-RAM – die bestimmende Einschränkung.",
+      "filterLabel": "RAM-Ebene",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "Alle"
+      }
+    },
+    "loadError": "Der Modellkatalog konnte nicht geladen werden.",
+    "loading": "Modelle werden geladen…",
+    "model": "Modell",
+    "modelPlaceholder": "Wählen Sie ein Modell aus",
+    "noModels": "Für diesen Anbieter sind keine Katalogmodelle verfügbar. Verwenden Sie die erweiterten Einstellungen, um eine Modell-ID einzugeben.",
+    "pull": {
+      "notPulled": "Auf diesem Server noch nicht heruntergeladen.",
+      "pullModel": "Zugmodell",
+      "pulling": "Ziehen…",
+      "status": {
+        "downloading": "Herunterladen",
+        "error": "Fehler",
+        "queued": "In der Warteschlange",
+        "ready": "Bereit"
+      },
+      "title": "Modell herunterladen"
+    },
+    "toolUse": "Werkzeugverwendung"
   },
   "nav": "Sanierung",
   "playbooks": {

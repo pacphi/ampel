@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Максимални бројеви пријава по трчању",
     "minOpenPrs": "Минимални отворени PR-ови",
+    "noScopes": "Још увек не управљате ниједним опсегом овог типа.",
     "save": "Сачувај политику",
     "saving": "Чување…",
     "scopeId": "ИД опсега",
     "scopeIdPlaceholder": "Унесите ИД спремишта, тима, организације или корисника",
-    "scopeType": "Тип опсега",
-    "noScopes": "Још увек не управљате ниједним опсегом овог типа."
+    "scopeType": "Тип опсега"
   },
   "fleet": {
     "airGappedOff": "Повезано",
@@ -157,6 +157,7 @@
     },
     "empty": "Још увек нема модел налога. Додајте један да бисте омогућили агентску санацију.",
     "endpointUrl": "URL крајње тачке",
+    "endpointUrlHint": "Ако се Ampel покреће у Docker-у, localhost указује на контејнер — користите http://host.docker.internal:11434 да бисте дошли до Ollama сервера на вашем хосту.",
     "endpointUrlPlaceholder": "хттп://лоцалхост:11434",
     "error": "Учитавање модела налога није успело.",
     "errors": {
@@ -168,10 +169,10 @@
     "modelIdPlaceholder": "нпр. Клод-сонет-4",
     "providerKind": "Провајдер",
     "providerKindLabel": {
-      "claude": "Клод",
-      "gemini": "Близанци",
-      "ollama": "Олама (локално)",
-      "onnx": "ONNX (локално)"
+      "claude": "Claude",
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Сачувај налог",
     "saving": "Чување…",
@@ -185,6 +186,52 @@
       "unvalidated": "Непотврђено",
       "valid": "Важи"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Напредно",
+    "codeEdit": "Измена кода",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Бесплатно",
+      "perToken": "${{input}} улаз · ${{output}} излаз / 1K"
+    },
+    "customModelId": "ИД прилагођеног модела",
+    "customModelIdHint": "Прилагођени ИД модела поништава горњи избор каталога.",
+    "customModelIdPlaceholder": "Замени са необјављеним ИД-ом модела",
+    "hardware": {
+      "community": "заједница",
+      "diskSize": "Диск од {{disk}} ГБ",
+      "filterHint": "Филтрира локалне (Ollama) моделе према системској RAM меморији. На системима са дискретним GPU-ом, VRAM — а не системска RAM меморија — је ограничење повезивања.",
+      "filterLabel": "Ниво РАМ-а",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} ГБ",
+      "tier": {
+        "128": "128 ГБ",
+        "16": "16 ГБ",
+        "32-36": "32–36 ГБ",
+        "64": "64 ГБ",
+        "all": "Сви"
+      }
+    },
+    "loadError": "Није успело учитавање каталога модела.",
+    "loading": "Учитавање модела…",
+    "model": "Модел",
+    "modelPlaceholder": "Изаберите модел",
+    "noModels": "За овог добављача нема доступних каталошких модела. Користите опцију „Напредно“ да бисте унели ИД модела.",
+    "pull": {
+      "notPulled": "Још није преузето на овај сервер.",
+      "pullModel": "Модел повлачења",
+      "pulling": "Вучење…",
+      "status": {
+        "downloading": "Преузимање",
+        "error": "Грешка",
+        "queued": "У реду чекања",
+        "ready": "Спреман"
+      },
+      "title": "Преузимање модела"
+    },
+    "toolUse": "Употреба алата"
   },
   "nav": "Санација",
   "playbooks": {

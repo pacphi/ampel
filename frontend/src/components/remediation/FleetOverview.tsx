@@ -157,9 +157,11 @@ export function FleetOverview() {
           }
         }}
       >
-        <DialogContent>
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>{t('remediation:preview.title', { repo: activeRepo?.name })}</DialogTitle>
+            <DialogTitle className="truncate pr-8">
+              {t('remediation:preview.title', { repo: activeRepo?.name })}
+            </DialogTitle>
             <DialogDescription>{t('remediation:preview.description')}</DialogDescription>
           </DialogHeader>
 
@@ -176,7 +178,7 @@ export function FleetOverview() {
           )}
 
           {plan && (
-            <div className="space-y-4">
+            <div className="max-h-[70vh] space-y-4 overflow-y-auto pr-1">
               {plan.blocked_by_air_gap && (
                 <div className="rounded-md bg-amber-500/10 p-3 text-sm text-amber-700 dark:text-amber-400">
                   {t('remediation:preview.blockedByAirGap')}
@@ -204,11 +206,13 @@ export function FleetOverview() {
                     {plan.would_select.map((pr) => (
                       <li
                         key={pr.number}
-                        className="flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm"
+                        className="flex items-center gap-2 overflow-hidden rounded-md border px-3 py-1.5 text-sm"
                       >
-                        <span className="text-muted-foreground">#{pr.number}</span>
-                        <span className="flex-1 truncate">{pr.title}</span>
-                        <span className="text-xs text-muted-foreground truncate">{pr.branch}</span>
+                        <span className="shrink-0 text-muted-foreground">#{pr.number}</span>
+                        <span className="min-w-0 flex-1 truncate">{pr.title}</span>
+                        <span className="min-w-0 max-w-[45%] shrink truncate text-xs text-muted-foreground">
+                          {pr.branch}
+                        </span>
                       </li>
                     ))}
                   </ul>

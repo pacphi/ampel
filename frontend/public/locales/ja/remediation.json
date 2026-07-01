@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "1回のランで獲得できる最大PR数",
     "minOpenPrs": "最低限のオープンPR",
+    "noScopes": "この種類のスコープはまだ管理していません。",
     "save": "保存ポリシー",
     "saving": "保存中…",
     "scopeId": "スコープID",
     "scopeIdPlaceholder": "リポジトリ、チーム、組織、またはユーザーIDを入力してください。",
-    "scopeType": "スコープタイプ",
-    "noScopes": "この種類のスコープはまだ管理していません。"
+    "scopeType": "スコープタイプ"
   },
   "fleet": {
     "airGappedOff": "接続済み",
@@ -157,6 +157,7 @@
     },
     "empty": "モデルアカウントはまだありません。エージェントによる修復を有効にするには、モデルアカウントを追加してください。",
     "endpointUrl": "エンドポイントURL",
+    "endpointUrlHint": "AmpelがDockerで実行されている場合、localhostはコンテナを指します。ホスト上のOllamaサーバーにアクセスするには、http://host.docker.internal:11434を使用してください。",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "モデルアカウントの読み込みに失敗しました。",
     "errors": {
@@ -168,10 +169,10 @@
     "modelIdPlaceholder": "例：クロード・ソネット4",
     "providerKind": "プロバイダー",
     "providerKindLabel": {
-      "claude": "クロード",
-      "gemini": "双子座",
-      "ollama": "オラマ（地元）",
-      "onnx": "ONNX（ローカル）"
+      "claude": "Claude",
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "アカウントを保存",
     "saving": "保存中…",
@@ -185,6 +186,52 @@
       "unvalidated": "未検証",
       "valid": "有効"
     }
+  },
+  "modelCatalog": {
+    "advanced": "高度な",
+    "codeEdit": "コード編集",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "無料",
+      "perToken": "${{input}} 入力 · ${{output}} 出力 / 1K"
+    },
+    "customModelId": "カスタムモデルID",
+    "customModelIdHint": "カスタムモデルIDは、上記のカタログ選択を上書きします。",
+    "customModelIdPlaceholder": "リストにないモデルIDで上書きする",
+    "hardware": {
+      "community": "コミュニティ",
+      "diskSize": "{{disk}} GBディスク",
+      "filterHint": "システムRAMに基づいてローカル（Ollama）モデルをフィルタリングします。ディスクリートGPUシステムでは、システムRAMではなくVRAMが制約となります。",
+      "filterLabel": "RAMティア",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16ギガバイト",
+        "32-36": "32～36GB",
+        "64": "64 GB",
+        "all": "全て"
+      }
+    },
+    "loadError": "モデルカタログの読み込みに失敗しました。",
+    "loading": "モデルを読み込んでいます…",
+    "model": "モデル",
+    "modelPlaceholder": "モデルを選択してください",
+    "noModels": "このプロバイダーのカタログモデルは利用できません。詳細設定を使用してモデルIDを入力してください。",
+    "pull": {
+      "notPulled": "このサーバーにはまだダウンロードされていません。",
+      "pullModel": "プルモデル",
+      "pulling": "引っ張る…",
+      "status": {
+        "downloading": "ダウンロード中",
+        "error": "エラー",
+        "queued": "キューに追加済み",
+        "ready": "準備ができて"
+      },
+      "title": "モデルのダウンロード"
+    },
+    "toolUse": "道具の使用"
   },
   "nav": "修復",
   "playbooks": {

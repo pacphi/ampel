@@ -1,20 +1,38 @@
-# ACTIVE pipeline — promoted from .autopilot/queued/ on run start (one active pipeline at a time).
-# profile.yml is stack-level and shared — reused as-is.
+# ACTIVE pipeline — retires the prior (shipped) app-version-footer plan, which survives in git
+# history and as record 0 of .autopilot/runs/app-version-footer.jsonl. profile.yml is stack-level
+# and shared — reused as-is.
 
-feature_id: "app-version-footer"
-goal: "Show the app version in the UI footer (bottom-left): the clean released version in production builds, and a SemVer pre-release form (e.g. v0.5.1-dev+<sha>) in dev to disambiguate development builds from releases."
+feature_id: "remediation-model-catalog"
+goal: "Replace the blind free-text model_id entry in the Remediation Model Accounts tab with a checked-in YAML model catalog as the source of truth — exposed via a catalog API, driving capability-rich UI dropdowns, with live Ollama discovery and remote Ollama pull (trigger + progress polling)."
 spec: |
-  Source of truth for the version is release-please: frontend/package.json `version` and the Cargo
-  workspace `version` (both marked `# x-release-please-version`) are bumped together on release —
-  currently 0.5.1. The frontend does NOT currently inject the version at build time (vite.config has no
-  `define`), and there is NO footer component (layout is Header.tsx / Layout.tsx / Sidebar.tsx).
-  Requirement: a footer, bottom-left preferred, that displays the version. Disambiguate dev vs release
-  per SemVer best practice:
-    - production build (`vite build`, import.meta.env.PROD): clean release version, e.g. "v0.5.1".
-    - dev (`vite dev` / make dev-frontend, import.meta.env.DEV): a pre-release identifier, e.g.
-      "v0.5.1-dev" or "v0.5.1-dev+<short-git-sha>" (prerelease per SemVer §9, sha as build metadata §10).
-  Pre-release versions sort BELOW the release, which is the correct signal that a dev build is "ahead of
-  but not yet" the next release.
+  Today the Remediation "Model" tab (ModelAccountManager.tsx) makes users type a bare model_id string
+  blind. emailibrium's pattern — which this feature ports — is a curated YAML catalog of selectable
+  models with rich metadata (context window, cost/1k, tool-use, egress), surfaced as catalog-driven
+  dropdowns, plus the ability to PULL local (Ollama) models that aren't present yet.
+
+  Decisions already made with the user:
+    - PULL SCOPE: Ollama REMOTE pull only. Ampel is a hosted multi-tenant server (Fly.io), NOT a local
+      desktop app. So "pull" means proxying POST {endpoint}/api/pull against the USER'S OWN Ollama
+      endpoint over HTTP with streamed progress polling — NOT shelling out, NOT downloading GGUF/ONNX to
+      Ampel's disk, NOT hardware/RAM-based filtering.
+    - CATALOG SOURCE: a single config/models.yaml checked into the repo, parsed with serde +
+      #[serde(default)] graceful fallback (mirrors emailibrium yaml_config.rs). NOT a DB-backed catalog.
+    - UI MIGRATION: catalog-driven primary flow (pick provider -> pick model from catalog showing
+      caps/cost) with an "Advanced / custom model ID" escape hatch that preserves today's free-text for
+      unlisted models. The account's stored model_id stays DECOUPLED from the catalog id so the escape
+      hatch keeps working.
+
+  Every existing security gate is preserved unchanged and routes through the same code paths:
+  AES-256-GCM credential encryption, egress_class, ADR-014 air-gap enforcement, SSRF guard on endpoint
+  URLs, ADR-008 spend caps (Decimal, never f64), and multi-tenant account isolation. The new Ollama
+  discovery/pull endpoints MUST pass SSRF + air-gap gates on every call (defense in depth, like the
+  existing /model-accounts/{id}/validate handler).
+
+  Anchors:
+    - core: crates/ampel-core/src/remediation/model_provider.rs (ProviderKind, ModelCaps, Egress)
+    - api:  crates/ampel-api/src/handlers/model_accounts.rs; routes in crates/ampel-api/src/routes/mod.rs
+    - ui:   frontend/src/components/remediation/ModelAccountManager.tsx; types/remediation.ts
+    - i18n: frontend/public/locales/<lang>/remediation.json (key coverage is CI-enforced)
 
 references:
   prd:     "docs/planning/PRODUCT_SPEC.md"
@@ -22,47 +40,132 @@ references:
   adr_dir: "docs/architecture/adr"
   ddd_dir: "docs/architecture/ddd"
   extra:
-    - "frontend/vite.config.ts"
-    - "frontend/src/components/layout/Layout.tsx"
+    - "docs/architecture/adr/ADR-008-model-provider-credentials.md"
+    - "docs/architecture/adr/ADR-014-air-gapped-governance.md"
+    - "docs/architecture/ddd/aggregate-model-provider-account.md"
+    - "crates/ampel-core/src/remediation/model_provider.rs"
+    - "crates/ampel-api/src/handlers/model_accounts.rs"
+    - "frontend/src/components/remediation/ModelAccountManager.tsx"
 
 trunk: main
 base:  develop
 autonomy: pr_ci
+
 fix_budget: 5
-risk_phases: []
+
+# Phase 1 has real blast radius: it adds endpoints that make outbound network calls to a user-supplied
+# Ollama endpoint — SSRF + air-gap egress surface. That's where the adversarial passes earn their cost.
+risk_phases: [1]
 
 phases:
   - id: 0
-    goal: "Expose the app version to the frontend at build time, with a SemVer-correct dev/release distinction — no UI yet."
+    goal: "A checked-in YAML model catalog is the parsed, validated source of truth in ampel-core, mapped onto the existing ModelCaps — no API or UI yet."
     deliverables:
-      - "vite.config.ts `define` injects the package.json `version` (e.g. as `__APP_VERSION__`) and the short git SHA (e.g. `__GIT_SHA__`) at build time; reads version from package.json (the release-please source of truth), not a hardcoded literal."
-      - "A small version helper (e.g. frontend/src/lib/version.ts) exporting a displayVersion() that returns `v<version>` when import.meta.env.PROD and `v<version>-dev+<sha>` (SemVer prerelease+build-metadata) when import.meta.env.DEV."
-      - "Unit test (vitest) covering both PROD and DEV branches of displayVersion()."
+      - "config/models.yaml: providers {claude, gemini, ollama, onnx}, each with a models list. Per model: id, name, family, context_size, tool_calling, code_edit, quality, cost_per_1k_input, cost_per_1k_output, egress, output_contract, plus ollama_tag (ollama) / model_path hint (onnx)."
+      - "crates/ampel-core/src/remediation/model_catalog.rs: serde structs (CatalogProvider, CatalogModel) with #[serde(default)] on every field; a load_catalog(path) -> AmpelResult<ModelCatalog> with graceful fallback to Default on missing/invalid YAML (warn, don't panic)."
+      - "A mapping from CatalogModel onto the existing ModelCaps struct (reuse, do not duplicate, the caps/egress/output_contract types in model_provider.rs)."
     definition_of_done:
-      - "grep: __APP_VERSION__ (or chosen token) defined in frontend/vite.config.ts via `define`, sourced from package.json version"
-      - "cmd: cd frontend && pnpm run type-check passes"
-      - "cmd: cd frontend && pnpm test -- --run src/lib/version (the helper's tests pass, covering PROD release form and DEV pre-release form)"
-      - "grep:absent: a hardcoded version string literal like \"0.5.1\" in version.ts (must derive from the injected define, so release-please bumps flow through automatically)"
-      - "prose: dev output is a valid SemVer pre-release (contains a `-dev` prerelease tag); prod output has no prerelease tag."
-    conventions: "Match existing frontend conventions (TS, vitest co-located or __tests__). Derive version from package.json so release-please bumps require no manual edits here. Use import.meta.env.PROD/DEV for the mode switch. Keep the helper pure/testable; inject env via the define, don't read process.env at runtime."
+      - "cmd: cargo test -p ampel-core remediation::model_catalog passes covering serde round-trip, #[serde(default)] missing-field fallback, and invalid-YAML -> Default fallback."
+      - "cmd: cargo build -p ampel-core succeeds."
+      - "grep: providers in config/models.yaml"
+      - "grep: serde(default) in crates/ampel-core/src/remediation/model_catalog.rs"
+      - "grep:absent: TODO|FIXME|unimplemented! in crates/ampel-core/src/remediation/model_catalog.rs"
+      - "prose: CatalogModel maps onto the existing ModelCaps type in model_provider.rs rather than redefining capability/egress enums."
+    conventions: "Money/cost fields use Decimal-as-string or typed Decimal, never f64 (ADR-008). Reuse ProviderKind, Egress, OutputContract from model_provider.rs."
     depends_on: []
-    adrs: []
-    ddd: []
+    adrs:  ["ADR-008-model-provider-credentials"]
+    ddd:   ["ModelProviderAccount aggregate"]
 
   - id: 1
-    goal: "Render the version in a footer (bottom-left) wired into the app layout."
+    goal: "The catalog and Ollama discovery/pull are reachable over HTTP, with every call passing the existing SSRF + air-gap gates."
     deliverables:
-      - "A Footer component (frontend/src/components/layout/Footer.tsx) that renders displayVersion() bottom-left, styled subtly (muted, small) with Tailwind, consistent with Header/Sidebar."
-      - "Footer wired into Layout.tsx so it appears app-wide at the bottom."
-      - "Any user-facing label text (if added beyond the version string) uses an i18n key that EXISTS in en/<ns>.json (no raw keys — do not reintroduce the key-coverage bug); prefer showing just the version string to keep it label-light."
-      - "Component test asserting the version string renders and is positioned in the footer."
+      - "GET /api/model-catalog -> the catalog grouped by provider with caps/cost; org-aware filtering hides external-egress providers for air-gapped orgs (reuse ADR-014 logic from model_accounts.rs)."
+      - "GET /api/model-catalog/ollama/tags?account_id=... -> proxies the user's Ollama /api/tags through the SSRF guard for live discovery."
+      - "POST /api/model-catalog/ollama/pull -> proxies POST {endpoint}/api/pull behind the SSRF guard + air-gap check; returns a pull job/status handle."
+      - "GET /api/model-catalog/ollama/pull/{id}/status -> reports pull progress (state machine: queued|downloading|ready|error)."
+      - "Routes registered in crates/ampel-api/src/routes/mod.rs alongside the existing /api/model-accounts routes."
     definition_of_done:
-      - "grep: Footer rendered in frontend/src/components/layout/Layout.tsx"
-      - "cmd: cd frontend && pnpm test -- --run Footer (component test passes, asserts version text present)"
-      - "cmd: cd frontend && pnpm run build succeeds and `grep -r __APP_VERSION__ dist` finds NO unreplaced token (the define actually substituted)"
-      - "cmd: cd frontend && pnpm exec prettier --check \"src/**/*.{ts,tsx,css,json}\" and pnpm run lint pass (the phase-2 docs-lint hard prettier gate is now active)"
-      - "prose: footer appears bottom-left; in a dev run it shows the -dev pre-release form, in a prod build the clean version (visual confirmation)."
-    conventions: "Bottom-left placement as requested. Keep it unobtrusive (muted foreground, small text). Reuse shadcn/Tailwind tokens already in the layout. If any label is added, add its i18n key to en first (lesson from i18n-key-coverage)."
+      - "cmd: cargo test -p ampel-api model_catalog passes, including: air-gap org hides external providers, SSRF guard rejects internal/loopback endpoints on tags+pull, and the pull status state-machine transitions."
+      - "cmd: cargo build -p ampel-api succeeds."
+      - "grep: /api/model-catalog in crates/ampel-api/src/routes/mod.rs"
+      - "grep: ollama/pull in crates/ampel-api/src/routes/mod.rs"
+      - "prose: the new tags+pull handlers call the SAME ssrf guard and air-gap check used by validate_model_account in model_accounts.rs (defense in depth), not a bespoke copy."
+      - "grep:absent: reqwest::get\\(|Client::new\\(\\)\\.get without an SSRF check in the new handler module"
+    conventions: "Axum 0.8 handlers. Decrypt credentials at the call site only (never log). Mirror the structure of model_accounts.rs validate handler for the egress/SSRF/air-gap sequence."
     depends_on: [0]
-    adrs: []
-    ddd: []
+    adrs:  ["ADR-014-air-gapped-governance", "ADR-008-model-provider-credentials"]
+    ddd:   ["ModelProviderAccount aggregate"]
+
+  - id: 2
+    goal: "The Model Accounts tab is catalog-driven: pick provider -> pick model from a metadata-rich dropdown, with an advanced custom-model escape hatch and an Ollama pull-progress flow — fully internationalized."
+    deliverables:
+      - "ModelAccountManager.tsx CreateForm: provider select -> model dropdown sourced from GET /api/model-catalog (TanStack Query), each option showing context window, $/1k, tool-use, egress badges; replaces the blind model_id text input."
+      - "An 'Advanced / custom model ID' disclosure restoring the current free-text entry for unlisted models; the submitted account model_id is set from EITHER the catalog selection or the custom field."
+      - "Ollama path: live discovered tags (GET .../ollama/tags); when the selected model's tag is absent, a 'Pull model' action that POSTs the pull and polls .../pull/{id}/status to completion with a progress component; surfaces ModelCaps on the existing AccountRow."
+      - "New i18n keys for all added strings added to frontend/public/locales/en/remediation.json AND propagated to every other locale (CI enforces key coverage)."
+      - "frontend/src/types/remediation.ts: types for the catalog response and pull status."
+    definition_of_done:
+      - "cmd: make test-frontend passes, including new vitest specs for catalog dropdown render+select, the custom escape hatch setting model_id, and the Ollama pull/poll-to-ready flow."
+      - "cmd: make lint-frontend passes."
+      - "grep: model-catalog in frontend/src/api"
+      - "prose: no raw i18n keys render — new keys exist in en/remediation.json and are present across all frontend/public/locales/*/remediation.json (key-coverage check is green)."
+      - "grep:absent: TODO|FIXME in ModelAccountManager.tsx"
+    conventions: "React 19 + TS, TanStack Query for the catalog/tags/status fetches, React Hook Form + Zod for the form. Co-locate vitest specs. Every user-facing string goes through i18n (t())."
+    depends_on: [1]
+    adrs:  ["ADR-014-air-gapped-governance"]
+    ddd:   ["ModelProviderAccount aggregate"]
+
+  - id: 3
+    goal: "End-to-end hardening and docs: the security gates are proven across the new surface, and the feature is documented."
+    deliverables:
+      - "Integration test(s) exercising the full path: air-gapped org cannot select/pull external models; SSRF guard blocks internal Ollama endpoints end-to-end; spend-cap accounting still applies to catalog-selected accounts (ADR-008)."
+      - "Docs: update the Remediation/model-accounts documentation (and any env-var docs) to describe the catalog, config/models.yaml editing, Ollama discovery, and remote pull."
+      - "config/models.yaml documented as the editable source of truth (how to add a model)."
+    definition_of_done:
+      - "cmd: make test passes (full backend + frontend suite)."
+      - "cmd: make lint passes."
+      - "cmd: make audit passes (no new advisories)."
+      - "grep: models.yaml in docs"
+      - "prose: docs explain how to add a model to config/models.yaml and how Ollama remote pull works, consistent with the implemented endpoints."
+    conventions: "Markdown docs go through the repo's markdownlint authority. Integration tests live in crates/*/tests/ and support both PostgreSQL and SQLite."
+    depends_on: [2]
+    adrs:  ["ADR-014-air-gapped-governance", "ADR-008-model-provider-credentials"]
+    ddd:   ["ModelProviderAccount aggregate"]
+
+  - id: 4
+    goal: "Refresh config/models.yaml with the current (mid-2026) best-performing models and extend the catalog schema with hardware-tier / quant metadata — backend only."
+    deliverables:
+      - "Extend CatalogModel in ampel-core (all #[serde(default)]): params, quantization, min_ram_gb (Option<u32>), disk_gb (Option<String>), hardware_tier (Option<String>: '16'|'32-36'|'64'|'128'), community (bool). These are display/selection metadata; ModelCaps mapping is unchanged."
+      - "Add the same fields to the ampel-api CatalogModelDto (from_model) so GET /api/model-catalog returns them."
+      - "Rewrite config/models.yaml with VERIFIED mid-2026 models: claude {opus-4-8, sonnet-5, haiku-4-5, fable-5}; gemini {2.5-pro, 2.5-flash, 2.5-flash-lite, 3.5-flash, 3.1-flash-lite}; ollama curated best-per-RAM-tier (qwen3:8b @16GB; qwen3-coder:30b-a3b-q4_K_M + glm-4.7-flash:q4_K_M + gemma4:31b-it-q4_K_M @32-36GB; qwen3-coder:30b-a3b-q8_0 + nemotron:70b-instruct-q4_K_M @64GB; nemotron-3-super:120b-a12b-q4_K_M @128GB official + MichelRosselli/GLM-4.5-Air:Q4_K_M @128GB community=true). onnx failure-classifier retained. Real Decimal costs per the researched table."
+    definition_of_done:
+      - "cmd: cargo test -p ampel-core remediation::model_catalog passes (incl. new-field defaults + parsing)."
+      - "cmd: cargo test -p ampel-api --lib model_catalog passes."
+      - "cmd: cargo build --workspace succeeds; cargo clippy --workspace --all-targets --all-features -- -D warnings clean."
+      - "cmd: make format-check passes."
+      - "grep: hardware_tier in crates/ampel-core/src/remediation/model_catalog.rs"
+      - "grep: qwen3-coder in config/models.yaml"
+      - "grep: community in config/models.yaml"
+      - "prose: money fields remain Decimal (ADR-008); the new hardware-tier fields are display metadata and do not alter ModelCaps."
+    conventions: "Reuse the existing serde-default + graceful-fallback pattern. Community-namespace Ollama models carry community: true. Costs are Decimal strings, never f64."
+    depends_on: [3]
+    adrs:  ["ADR-008-model-provider-credentials"]
+    ddd:   ["ModelProviderAccount aggregate"]
+
+  - id: 5
+    goal: "Surface the new hardware-tier / quant / community metadata in the Remediation Model tab and let users filter local models by what fits their machine."
+    deliverables:
+      - "frontend/src/types/remediation.ts: extend the catalog model type with params, quantization, minRamGb, diskGb, hardwareTier, community."
+      - "ModelAccountManager dropdown: show params/quant/RAM-tier badges and a 'community' marker; add a RAM-tier filter (16 / 32-36 / 64 / 128 GB / all) that narrows the local (ollama) model options to those that fit; a short note that on discrete-GPU systems VRAM is the binding constraint."
+      - "New i18n keys added to en/remediation.json and propagated to ALL 27 locales; i18n/types.ts regenerated."
+    definition_of_done:
+      - "cmd: node scripts/i18n-coverage-report.js --check-missing reports no missing keys."
+      - "cmd: node scripts/i18n-coverage-report.js --check --min-coverage 95 passes."
+      - "cmd: make test-frontend passes (incl. a new spec for the RAM-tier filter + badge render)."
+      - "cmd: make lint-frontend passes; make format-check passes."
+      - "grep: hardwareTier in frontend/src/types/remediation.ts"
+      - "prose: no raw i18n keys render; new modelCatalog.* keys present across all locales; types.ts regenerated in sync."
+    conventions: "TanStack Query + shadcn/ui as in phase 2. Every string via i18n. Run make format-check locally (prettier is not covered by make lint-frontend)."
+    depends_on: [4]
+    adrs:  ["ADR-014-air-gapped-governance"]
+    ddd:   ["ModelProviderAccount aggregate"]

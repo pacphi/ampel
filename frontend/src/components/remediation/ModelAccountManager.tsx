@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, ShieldAlert, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronRight, Download, Plus, ShieldAlert, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
 import {
   Select,
   SelectContent,
@@ -18,14 +19,37 @@ import {
   useModelAccounts,
   useValidateModelAccount,
 } from '@/hooks/useModelAccounts';
+import {
+  useModelCatalog,
+  useOllamaTags,
+  usePullOllamaModel,
+  usePullStatus,
+} from '@/hooks/useModelCatalog';
 import type {
   CreateModelAccountRequest,
   ModelAccount,
   ModelValidationStatus,
   ProviderKind,
 } from '@/types/modelAccount';
+import type { CatalogModel, ModelCatalog, ModelCost } from '@/types/remediation';
 
 const PROVIDER_KINDS: ProviderKind[] = ['claude', 'gemini', 'ollama', 'onnx'];
+
+/** Hardware RAM tiers, smallest → largest. `'all'` disables filtering. */
+const RAM_TIERS = ['16', '32-36', '64', '128'] as const;
+type RamTier = (typeof RAM_TIERS)[number];
+type RamTierFilter = 'all' | RamTier;
+
+/**
+ * True when `modelTier` fits within `selected` (i.e. needs the same or less RAM).
+ * A model with no tier metadata (hosted models) always passes.
+ */
+function fitsRamTier(selected: RamTierFilter, modelTier: string | undefined): boolean {
+  if (selected === 'all' || !modelTier) return true;
+  const modelIdx = RAM_TIERS.indexOf(modelTier as RamTier);
+  if (modelIdx < 0) return true;
+  return modelIdx <= RAM_TIERS.indexOf(selected);
+}
 
 /** Local providers that take an endpoint URL rather than an API key. */
 function isLocalProvider(kind: ProviderKind): boolean {
@@ -43,6 +67,77 @@ function validationVariant(status: ModelValidationStatus): 'success' | 'destruct
   }
 }
 
+type TFn = (key: string, opts?: Record<string, unknown>) => string;
+
+/** Human-readable price for a catalog model ("Free" or per-1K pricing). */
+function formatCost(t: TFn, cost: ModelCost): string {
+  if (cost.kind === 'free') return t('remediation:modelCatalog.cost.free');
+  return t('remediation:modelCatalog.cost.perToken', {
+    input: cost.inputPer1k ?? 0,
+    output: cost.outputPer1k ?? 0,
+  });
+}
+
+/** The models offered for a provider kind, or an empty list. */
+function providerModels(catalog: ModelCatalog | undefined, kind: ProviderKind): CatalogModel[] {
+  return catalog?.providers.find((p) => p.kind === kind)?.models ?? [];
+}
+
+/** Resolve a catalog model by its id across every provider. */
+function resolveModel(
+  catalog: ModelCatalog | undefined,
+  modelId: string | null
+): CatalogModel | undefined {
+  if (!modelId) return undefined;
+  for (const provider of catalog?.providers ?? []) {
+    const match = provider.models.find((m) => m.id === modelId);
+    if (match) return match;
+  }
+  return undefined;
+}
+
+/** Compact capability pills shown inside a catalog model option. */
+function ModelOptionMeta({ model }: { model: CatalogModel }) {
+  const { t } = useTranslation(['remediation']);
+  const pill = 'rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground';
+  return (
+    <span className="flex flex-wrap items-center gap-1.5">
+      <span className="font-medium text-foreground">{model.name}</span>
+      <span className={pill}>
+        {t('remediation:modelCatalog.contextWindow', { tokens: model.contextWindow })}
+      </span>
+      <span className={pill}>{formatCost(t, model.cost)}</span>
+      {model.toolUse && <span className={pill}>{t('remediation:modelCatalog.toolUse')}</span>}
+      <span className={pill}>{t(`remediation:modelAccounts.egress.${model.egress}`)}</span>
+      {model.params && (
+        <span className={pill}>
+          {t('remediation:modelCatalog.hardware.params', { params: model.params })}
+        </span>
+      )}
+      {model.quantization && (
+        <span className={pill}>
+          {t('remediation:modelCatalog.hardware.quantization', {
+            quantization: model.quantization,
+          })}
+        </span>
+      )}
+      {model.hardwareTier && (
+        <span className={pill}>
+          {t('remediation:modelCatalog.hardware.ramTier', { tier: model.hardwareTier })}
+        </span>
+      )}
+      {model.diskGb && (
+        <span className={pill}>
+          {t('remediation:modelCatalog.hardware.diskSize', { disk: model.diskGb })}
+        </span>
+      )}
+      {model.community && (
+        <span className={pill}>{t('remediation:modelCatalog.hardware.community')}</span>
+      )}
+    </span>
+  );
+}
+
 interface CreateFormProps {
   onClose: () => void;
 }
@@ -50,16 +145,30 @@ interface CreateFormProps {
 function CreateForm({ onClose }: CreateFormProps) {
   const { t } = useTranslation(['remediation', 'common']);
   const createMutation = useCreateModelAccount();
+  const { data: catalog, isLoading: catalogLoading, isError: catalogError } = useModelCatalog();
 
   const [providerKind, setProviderKind] = useState<ProviderKind>('claude');
   const [displayName, setDisplayName] = useState('');
   const [apiKey, setApiKey] = useState('');
   const [endpointUrl, setEndpointUrl] = useState('');
-  const [modelId, setModelId] = useState('');
+  const [catalogModelId, setCatalogModelId] = useState('');
+  const [customModelId, setCustomModelId] = useState('');
   const [spendCapUsd, setSpendCapUsd] = useState('');
+  const [ramTier, setRamTier] = useState<RamTierFilter>('all');
+  const [advancedOpen, setAdvancedOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const local = isLocalProvider(providerKind);
+  const allModels = providerModels(catalog, providerKind);
+  // The RAM-tier filter narrows local (Ollama) options only; hosted models,
+  // which carry no hardware metadata, are unaffected.
+  const models = local ? allModels.filter((m) => fitsRamTier(ramTier, m.hardwareTier)) : allModels;
+
+  const handleProviderChange = (v: string) => {
+    setProviderKind(v as ProviderKind);
+    // Catalog options differ per provider; clear the stale selection.
+    setCatalogModelId('');
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,13 +178,16 @@ function CreateForm({ onClose }: CreateFormProps) {
       return;
     }
 
+    // Custom (Advanced) model id wins over the catalog selection when set.
+    const modelId = customModelId.trim() || catalogModelId;
+
     const payload: CreateModelAccountRequest = {
       providerKind,
       displayName: displayName.trim(),
     };
     if (!local && apiKey) payload.apiKey = apiKey;
     if (local && endpointUrl.trim()) payload.endpointUrl = endpointUrl.trim();
-    if (modelId.trim()) payload.modelId = modelId.trim();
+    if (modelId) payload.modelId = modelId;
     if (spendCapUsd.trim()) payload.spendCapUsd = spendCapUsd.trim();
 
     createMutation.mutate(payload, {
@@ -103,7 +215,7 @@ function CreateForm({ onClose }: CreateFormProps) {
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="model-provider-kind">{t('remediation:modelAccounts.providerKind')}</Label>
-          <Select value={providerKind} onValueChange={(v) => setProviderKind(v as ProviderKind)}>
+          <Select value={providerKind} onValueChange={handleProviderChange}>
             <SelectTrigger id="model-provider-kind">
               <SelectValue />
             </SelectTrigger>
@@ -156,31 +268,100 @@ function CreateForm({ onClose }: CreateFormProps) {
             onChange={(e) => setEndpointUrl(e.target.value)}
             placeholder={t('remediation:modelAccounts.endpointUrlPlaceholder')}
           />
+          <p className="text-xs text-muted-foreground">
+            {t('remediation:modelAccounts.endpointUrlHint')}
+          </p>
         </div>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="model-model-id">{t('remediation:modelAccounts.modelId')}</Label>
-          <Input
-            id="model-model-id"
-            value={modelId}
-            onChange={(e) => setModelId(e.target.value)}
-            placeholder={t('remediation:modelAccounts.modelIdPlaceholder')}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="model-spend-cap">{t('remediation:modelAccounts.spendCap')}</Label>
-          <Input
-            id="model-spend-cap"
-            type="number"
-            min={0}
-            step="0.01"
-            value={spendCapUsd}
-            onChange={(e) => setSpendCapUsd(e.target.value)}
-            placeholder="0.00"
-          />
-        </div>
+      {/* RAM-tier filter — narrows local (Ollama) options by hardware bucket. */}
+      <div className="space-y-2">
+        <Label htmlFor="model-ram-tier">{t('remediation:modelCatalog.hardware.filterLabel')}</Label>
+        <Select value={ramTier} onValueChange={(v) => setRamTier(v as RamTierFilter)}>
+          <SelectTrigger id="model-ram-tier" className="sm:max-w-[50%]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{t('remediation:modelCatalog.hardware.tier.all')}</SelectItem>
+            {RAM_TIERS.map((tier) => (
+              <SelectItem key={tier} value={tier}>
+                {t(`remediation:modelCatalog.hardware.tier.${tier}`)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-xs text-muted-foreground">
+          {t('remediation:modelCatalog.hardware.filterHint')}
+        </p>
+      </div>
+
+      {/* Catalog-driven model picker. */}
+      <div className="space-y-2">
+        <Label htmlFor="model-catalog-select">{t('remediation:modelCatalog.model')}</Label>
+        {catalogLoading ? (
+          <p className="text-xs text-muted-foreground">{t('remediation:modelCatalog.loading')}</p>
+        ) : catalogError ? (
+          <p className="text-xs text-destructive">{t('remediation:modelCatalog.loadError')}</p>
+        ) : models.length === 0 ? (
+          <p className="text-xs text-muted-foreground">{t('remediation:modelCatalog.noModels')}</p>
+        ) : (
+          <Select value={catalogModelId} onValueChange={setCatalogModelId}>
+            <SelectTrigger id="model-catalog-select">
+              <SelectValue placeholder={t('remediation:modelCatalog.modelPlaceholder')} />
+            </SelectTrigger>
+            <SelectContent>
+              {models.map((m) => (
+                <SelectItem key={m.id} value={m.id} textValue={m.name}>
+                  <ModelOptionMeta model={m} />
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+      </div>
+
+      {/* Advanced: custom / unlisted model id (overrides the catalog selection). */}
+      <div className="space-y-2">
+        <button
+          type="button"
+          onClick={() => setAdvancedOpen((o) => !o)}
+          aria-expanded={advancedOpen}
+          className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground"
+        >
+          {advancedOpen ? (
+            <ChevronDown className="h-4 w-4" aria-hidden="true" />
+          ) : (
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+          )}
+          {t('remediation:modelCatalog.advanced')}
+        </button>
+        {advancedOpen && (
+          <div className="space-y-2">
+            <Label htmlFor="model-model-id">{t('remediation:modelCatalog.customModelId')}</Label>
+            <Input
+              id="model-model-id"
+              value={customModelId}
+              onChange={(e) => setCustomModelId(e.target.value)}
+              placeholder={t('remediation:modelCatalog.customModelIdPlaceholder')}
+            />
+            <p className="text-xs text-muted-foreground">
+              {t('remediation:modelCatalog.customModelIdHint')}
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-2 sm:max-w-[50%]">
+        <Label htmlFor="model-spend-cap">{t('remediation:modelAccounts.spendCap')}</Label>
+        <Input
+          id="model-spend-cap"
+          type="number"
+          min={0}
+          step="0.01"
+          value={spendCapUsd}
+          onChange={(e) => setSpendCapUsd(e.target.value)}
+          placeholder="0.00"
+        />
       </div>
 
       {error && (
@@ -208,10 +389,87 @@ function CreateForm({ onClose }: CreateFormProps) {
   );
 }
 
+/** Percentage for the small pull-progress bar, by lifecycle status. */
+function pullPercent(status: string): number {
+  switch (status) {
+    case 'queued':
+      return 10;
+    case 'downloading':
+      return 60;
+    case 'ready':
+      return 100;
+    case 'error':
+      return 100;
+    default:
+      return 0;
+  }
+}
+
+/**
+ * Ollama discovery + pull for a saved account. Shows a "Pull model" button when
+ * the resolved catalog tag is not yet present on the server, then polls to done.
+ */
+function OllamaPullControl({ account, ollamaTag }: { account: ModelAccount; ollamaTag: string }) {
+  const { t } = useTranslation(['remediation']);
+  const { data: tags } = useOllamaTags(account.id);
+  const pullMutation = usePullOllamaModel();
+  const [jobId, setJobId] = useState<string | null>(null);
+  const { data: pullStatus } = usePullStatus(jobId ?? undefined);
+
+  const discovered = tags?.models.map((m) => m.name) ?? [];
+  const alreadyPresent = discovered.includes(ollamaTag);
+
+  if (alreadyPresent) {
+    return <Badge variant="success">{t('remediation:modelCatalog.pull.status.ready')}</Badge>;
+  }
+
+  const started = jobId !== null;
+
+  return (
+    <div className="flex w-full flex-col gap-1">
+      {!started && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={pullMutation.isPending}
+          onClick={() =>
+            pullMutation.mutate(
+              { accountId: account.id, model: ollamaTag },
+              { onSuccess: (res) => setJobId(res.jobId) }
+            )
+          }
+        >
+          <Download className="mr-1.5 h-4 w-4" aria-hidden="true" />
+          {pullMutation.isPending
+            ? t('remediation:modelCatalog.pull.pulling')
+            : t('remediation:modelCatalog.pull.pullModel')}
+        </Button>
+      )}
+      {started && pullStatus && (
+        <div role="status" aria-live="polite" className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <Badge variant={pullStatus.status === 'error' ? 'destructive' : 'secondary'}>
+              {t(`remediation:modelCatalog.pull.status.${pullStatus.status}`)}
+            </Badge>
+            {pullStatus.detail && (
+              <span className="text-xs text-muted-foreground">{pullStatus.detail}</span>
+            )}
+          </div>
+          <Progress value={pullPercent(pullStatus.status)} className="h-2" />
+        </div>
+      )}
+    </div>
+  );
+}
+
 function AccountRow({ account }: { account: ModelAccount }) {
   const { t } = useTranslation(['remediation', 'common']);
   const validateMutation = useValidateModelAccount();
   const deleteMutation = useDeleteModelAccount();
+  const { data: catalog } = useModelCatalog();
+
+  const resolved = resolveModel(catalog, account.modelId);
 
   const spend = account.spendCapUsd
     ? `$${account.spendUsedUsd} / $${account.spendCapUsd}`
@@ -231,6 +489,28 @@ function AccountRow({ account }: { account: ModelAccount }) {
           <Badge variant="secondary">
             {t(`remediation:modelAccounts.egress.${account.egressClass}`)}
           </Badge>
+          {resolved && (
+            <>
+              <Badge variant="outline">
+                {t('remediation:modelCatalog.contextWindow', { tokens: resolved.contextWindow })}
+              </Badge>
+              <Badge variant="outline">{formatCost(t, resolved.cost)}</Badge>
+              {resolved.hardwareTier && (
+                <Badge variant="outline">
+                  {t('remediation:modelCatalog.hardware.ramTier', {
+                    tier: resolved.hardwareTier,
+                  })}
+                </Badge>
+              )}
+              {resolved.quantization && (
+                <Badge variant="outline">
+                  {t('remediation:modelCatalog.hardware.quantization', {
+                    quantization: resolved.quantization,
+                  })}
+                </Badge>
+              )}
+            </>
+          )}
           {account.isDefault && (
             <Badge variant="default">{t('remediation:modelAccounts.default')}</Badge>
           )}
@@ -238,6 +518,11 @@ function AccountRow({ account }: { account: ModelAccount }) {
         <p className="text-xs text-muted-foreground">
           {account.modelId ?? '—'} · {t('remediation:modelAccounts.spend')}: {spend}
         </p>
+        {account.providerKind === 'ollama' && resolved?.ollamaTag && (
+          <div className="mt-2">
+            <OllamaPullControl account={account} ollamaTag={resolved.ollamaTag} />
+          </div>
+        )}
       </div>
       <Button
         variant="outline"

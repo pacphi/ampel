@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "מקסימום יחסי ציבור לריצה",
     "minOpenPrs": "יחסי ציבור פתוחים מינימליים",
+    "noScopes": "אינך מנהל עדיין אף היקף מסוג זה.",
     "save": "שמירת מדיניות",
     "saving": "חִסָכוֹן…",
     "scopeId": "מזהה היקף",
     "scopeIdPlaceholder": "הזן את מזהה המאגר, הצוות, הארגון או המשתמש",
-    "scopeType": "סוג היקף",
-    "noScopes": "אינך מנהל עדיין אף היקף מסוג זה."
+    "scopeType": "סוג היקף"
   },
   "fleet": {
     "airGappedOff": "מְחוּבָּר",
@@ -157,6 +157,7 @@
     },
     "empty": "אין עדיין חשבונות מודל. הוסף אחד כדי לאפשר תיקון סוכני.",
     "endpointUrl": "כתובת אתר של נקודת הקצה",
+    "endpointUrlHint": "אם Ampel רץ ב-Docker, localhost מצביע על הקונטיינר — השתמש ב-http://host.docker.internal:11434 כדי להגיע לשרת Ollama במארח שלך.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "טעינת חשבונות המודל נכשלה.",
     "errors": {
@@ -168,10 +169,10 @@
     "modelIdPlaceholder": "לדוגמה קלוד-סונטה-4",
     "providerKind": "ספק",
     "providerKindLabel": {
-      "claude": "קלוד",
-      "gemini": "מַזַל תְאוּמִים",
-      "ollama": "אולמה (מקומי)",
-      "onnx": "ONNX (מקומי)"
+      "claude": "Claude",
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "שמור חשבון",
     "saving": "חִסָכוֹן…",
@@ -185,6 +186,52 @@
       "unvalidated": "לא מאומת",
       "valid": "תָקֵף"
     }
+  },
+  "modelCatalog": {
+    "advanced": "מִתקַדֵם",
+    "codeEdit": "עריכת קוד",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "לְשַׁחְרֵר",
+      "perToken": "${{input}} בפנים · ${{output}} בחוץ / 1,000"
+    },
+    "customModelId": "מזהה מודל מותאם אישית",
+    "customModelIdHint": "מזהה מודל מותאם אישית גובר על בחירת הקטלוג לעיל.",
+    "customModelIdPlaceholder": "עקיפה עם מזהה מודל לא רשום",
+    "hardware": {
+      "community": "קהילה",
+      "diskSize": "דיסק בנפח {{disk}} ג'יגה-בייט",
+      "filterHint": "מסנן מודלים מקומיים (אולמה) לפי זיכרון RAM של המערכת. במערכות בעלות GPU נפרד, VRAM - ולא זיכרון RAM של המערכת - הוא אילוץ הקישור.",
+      "filterLabel": "רמת זיכרון RAM",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} ג'יגה-בייט",
+      "tier": {
+        "128": "128 ג'יגה-בייט",
+        "16": "16 ג'יגה-בייט",
+        "32-36": "32–36 ג'יגה-בייט",
+        "64": "64 ג'יגה-בייט",
+        "all": "כֹּל"
+      }
+    },
+    "loadError": "טעינת קטלוג הדגמים נכשלה.",
+    "loading": "טוען מודלים…",
+    "model": "דֶגֶם",
+    "modelPlaceholder": "בחר דגם",
+    "noModels": "אין דגמי קטלוג זמינים עבור ספק זה. השתמש באפשרות מתקדם כדי להזין מזהה דגם.",
+    "pull": {
+      "notPulled": "עדיין לא הורד בשרת הזה.",
+      "pullModel": "מודל משיכה",
+      "pulling": "משיכה…",
+      "status": {
+        "downloading": "הורדה",
+        "error": "שְׁגִיאָה",
+        "queued": "בתור",
+        "ready": "מוּכָן"
+      },
+      "title": "הורדת מודל"
+    },
+    "toolUse": "שימוש בכלים"
   },
   "nav": "תיקון",
   "playbooks": {

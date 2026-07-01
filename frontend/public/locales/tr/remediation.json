@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Koşu başına maksimum kişisel rekor",
     "minOpenPrs": "Minimum açık PR'ler",
+    "noScopes": "Bu türde henüz hiçbir kapsamı yönetmiyorsunuz.",
     "save": "Kaydetme politikası",
     "saving": "Tasarruf…",
     "scopeId": "Kapsam Kimliği",
     "scopeIdPlaceholder": "Depo, ekip, kuruluş veya kullanıcı kimliğini girin.",
-    "scopeType": "Kapsam türü",
-    "noScopes": "Bu türde henüz hiçbir kapsamı yönetmiyorsunuz."
+    "scopeType": "Kapsam türü"
   },
   "fleet": {
     "airGappedOff": "Bağlı",
@@ -157,6 +157,7 @@
     },
     "empty": "Henüz model hesap yok. Aracılı düzeltmeyi etkinleştirmek için bir tane ekleyin.",
     "endpointUrl": "Uç nokta URL'si",
+    "endpointUrlHint": "Ampel Docker'da çalışıyorsa, localhost konteyneri işaret eder; ana bilgisayarınızdaki bir Ollama sunucusuna ulaşmak için http://host.docker.internal:11434 adresini kullanın.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Model hesapları yüklenemedi.",
     "errors": {
@@ -169,9 +170,9 @@
     "providerKind": "Sağlayıcı",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "İkizler burcu",
-      "ollama": "Ollama (yerel)",
-      "onnx": "ONNX (yerel)"
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Hesabı kaydet",
     "saving": "Tasarruf…",
@@ -185,6 +186,52 @@
       "unvalidated": "Doğrulanmamış",
       "valid": "Geçerli"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Gelişmiş",
+    "codeEdit": "Kod düzenleme",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Özgür",
+      "perToken": "${{input}} giriş · ${{output}} çıkış / 1K"
+    },
+    "customModelId": "Özel model kimliği",
+    "customModelIdHint": "Özel bir model kimliği, yukarıdaki katalog seçimini geçersiz kılar.",
+    "customModelIdPlaceholder": "Listelenmemiş bir model kimliğiyle geçersiz kılın",
+    "hardware": {
+      "community": "toplum",
+      "diskSize": "{{disk}} GB disk",
+      "filterHint": "Yerel (Ollama) modelleri sistem RAM'ine göre filtreler. Ayrık GPU sistemlerinde, bağlayıcı kısıtlama sistem RAM'i değil, VRAM'dir.",
+      "filterLabel": "RAM katmanı",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "Tüm"
+      }
+    },
+    "loadError": "Model kataloğu yüklenemedi.",
+    "loading": "Modeller yükleniyor…",
+    "model": "Model",
+    "modelPlaceholder": "Bir model seçin",
+    "noModels": "Bu sağlayıcı için katalogda hiçbir model bulunmamaktadır. Model kimliği girmek için Gelişmiş seçeneğini kullanın.",
+    "pull": {
+      "notPulled": "Henüz bu sunucuya indirilmedi.",
+      "pullModel": "Çekme modeli",
+      "pulling": "Çekiliyor…",
+      "status": {
+        "downloading": "İndiriliyor",
+        "error": "Hata",
+        "queued": "Sıraya alınmış",
+        "ready": "Hazır"
+      },
+      "title": "Model indirme"
+    },
+    "toolUse": "Alet kullanımı"
   },
   "nav": "İyileştirme",
   "playbooks": {

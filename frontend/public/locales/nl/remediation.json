@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Maximaal aantal PR's per run",
     "minOpenPrs": "Minimum aantal openstaande pull-requests",
+    "noScopes": "Je beheert nog geen bereiken van dit type.",
     "save": "Beleid opslaan",
     "saving": "Besparing…",
     "scopeId": "Bereik-ID",
     "scopeIdPlaceholder": "Voer de repository-, team-, organisatie- of gebruikers-ID in.",
-    "scopeType": "Bereiktype",
-    "noScopes": "Je beheert nog geen bereiken van dit type."
+    "scopeType": "Bereiktype"
   },
   "fleet": {
     "airGappedOff": "Aangesloten",
@@ -157,6 +157,7 @@
     },
     "empty": "Er zijn nog geen modelaccounts. Voeg er een toe om agentgebaseerde herstelacties mogelijk te maken.",
     "endpointUrl": "Eindpunt-URL",
+    "endpointUrlHint": "Als Ampel in Docker draait, verwijst localhost naar de container. Gebruik http://host.docker.internal:11434 om een Ollama-server op uw host te bereiken.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Het laden van modelaccounts is mislukt.",
     "errors": {
@@ -169,9 +170,9 @@
     "providerKind": "Aanbieder",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Tweeling",
-      "ollama": "Ollama (lokaal)",
-      "onnx": "ONNX (lokaal)"
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Account opslaan",
     "saving": "Besparing…",
@@ -185,6 +186,52 @@
       "unvalidated": "Niet gevalideerd",
       "valid": "Geldig"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Geavanceerd",
+    "codeEdit": "Code bewerken",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Vrij",
+      "perToken": "${{input}} in · ${{output}} uit / 1K"
+    },
+    "customModelId": "Aangepaste model-ID",
+    "customModelIdHint": "Een aangepaste model-ID overschrijft de bovenstaande catalogusselectie.",
+    "customModelIdPlaceholder": "Overschrijven met een niet-vermeld model-ID",
+    "hardware": {
+      "community": "gemeenschap",
+      "diskSize": "{{disk}} GB schijf",
+      "filterHint": "Filtert lokale (Ollama) modellen op basis van systeem-RAM. Op systemen met een discrete GPU is VRAM – en niet systeem-RAM – de beperkende factor.",
+      "filterLabel": "RAM-laag",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "Alle"
+      }
+    },
+    "loadError": "Het laden van de modelcatalogus is mislukt.",
+    "loading": "Modellen laden…",
+    "model": "Model",
+    "modelPlaceholder": "Selecteer een model",
+    "noModels": "Er zijn geen catalogusmodellen beschikbaar voor deze aanbieder. Gebruik de geavanceerde functie om een model-ID in te voeren.",
+    "pull": {
+      "notPulled": "Nog niet gedownload op deze server.",
+      "pullModel": "Trekmodel",
+      "pulling": "Trekken…",
+      "status": {
+        "downloading": "Downloaden",
+        "error": "Fout",
+        "queued": "In de wachtrij",
+        "ready": "Klaar"
+      },
+      "title": "Model downloaden"
+    },
+    "toolUse": "Gereedschapsgebruik"
   },
   "nav": "Sanering",
   "playbooks": {

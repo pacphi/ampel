@@ -927,6 +927,7 @@ export interface RemediationTranslations {
     };
     empty: string;
     endpointUrl: string;
+    endpointUrlHint: string;
     endpointUrlPlaceholder: string;
     error: string;
     errors: {
@@ -955,6 +956,52 @@ export interface RemediationTranslations {
       unvalidated: string;
       valid: string;
     };
+  };
+  modelCatalog: {
+    advanced: string;
+    codeEdit: string;
+    contextWindow: string;
+    cost: {
+      free: string;
+      perToken: string;
+    };
+    customModelId: string;
+    customModelIdHint: string;
+    customModelIdPlaceholder: string;
+    hardware: {
+      community: string;
+      diskSize: string;
+      filterHint: string;
+      filterLabel: string;
+      params: string;
+      quantization: string;
+      ramTier: string;
+      tier: {
+        '128': string;
+        '16': string;
+        '32-36': string;
+        '64': string;
+        all: string;
+      };
+    };
+    loadError: string;
+    loading: string;
+    model: string;
+    modelPlaceholder: string;
+    noModels: string;
+    pull: {
+      notPulled: string;
+      pullModel: string;
+      pulling: string;
+      status: {
+        downloading: string;
+        error: string;
+        queued: string;
+        ready: string;
+      };
+      title: string;
+    };
+    toolUse: string;
   };
   nav: string;
   playbooks: {

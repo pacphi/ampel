@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "สถิติส่วนตัวสูงสุดต่อการวิ่งแต่ละครั้ง",
     "minOpenPrs": "จำนวน PR ขั้นต่ำที่เปิดอยู่",
+    "noScopes": "คุณยังไม่ได้จัดการขอบเขตประเภทนี้",
     "save": "นโยบายการบันทึก",
     "saving": "ประหยัด…",
     "scopeId": "รหัสขอบเขต",
     "scopeIdPlaceholder": "ป้อนรหัสที่เก็บข้อมูล ทีม องค์กร หรือผู้ใช้",
-    "scopeType": "ประเภทขอบเขต",
-    "noScopes": "คุณยังไม่ได้จัดการขอบเขตประเภทนี้"
+    "scopeType": "ประเภทขอบเขต"
   },
   "fleet": {
     "airGappedOff": "เชื่อมต่อแล้ว",
@@ -157,6 +157,7 @@
     },
     "empty": "ยังไม่มีบัญชีตัวอย่าง เพิ่มบัญชีตัวอย่างเพื่อเปิดใช้งานการแก้ไขปัญหาโดยตัวแทน",
     "endpointUrl": "URL ปลายทาง",
+    "endpointUrlHint": "หาก Ampel ทำงานบน Docker นั้น localhost จะชี้ไปยังคอนเทนเนอร์ หากต้องการเข้าถึงเซิร์ฟเวอร์ Ollama บนโฮสต์ของคุณ ให้ใช้ http://host.docker.internal:11434",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "ไม่สามารถโหลดบัญชีโมเดลได้",
     "errors": {
@@ -168,10 +169,10 @@
     "modelIdPlaceholder": "เช่น claude-sonnet-4",
     "providerKind": "ผู้ให้บริการ",
     "providerKindLabel": {
-      "claude": "คล็อด",
-      "gemini": "ราศีเมถุน",
-      "ollama": "โอลาม่า (ท้องถิ่น)",
-      "onnx": "ONNX (ท้องถิ่น)"
+      "claude": "Claude",
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "บันทึกบัญชี",
     "saving": "ประหยัด…",
@@ -185,6 +186,52 @@
       "unvalidated": "ไม่ได้รับการตรวจสอบ",
       "valid": "ถูกต้อง"
     }
+  },
+  "modelCatalog": {
+    "advanced": "ขั้นสูง",
+    "codeEdit": "แก้ไขโค้ด",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "ฟรี",
+      "perToken": "${{input}} เข้า · ${{output}} ออก / 1K"
+    },
+    "customModelId": "รหัสโมเดลแบบกำหนดเอง",
+    "customModelIdHint": "รหัสรุ่นที่กำหนดเองจะแทนที่การเลือกจากแคตตาล็อกด้านบน",
+    "customModelIdPlaceholder": "แทนที่ด้วยรหัสโมเดลที่ไม่ได้ระบุไว้",
+    "hardware": {
+      "community": "ชุมชน",
+      "diskSize": "ดิสก์ {{disk}} GB",
+      "filterHint": "กรองโมเดลโลคอล (Ollama) โดยใช้ RAM ของระบบ ในระบบที่มี GPU แยกต่างหาก VRAM ไม่ใช่ RAM ของระบบ คือข้อจำกัดที่สำคัญ",
+      "filterLabel": "ระดับ RAM",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "ทั้งหมด"
+      }
+    },
+    "loadError": "ไม่สามารถโหลดแคตตาล็อกโมเดลได้",
+    "loading": "กำลังโหลดโมเดล…",
+    "model": "แบบอย่าง",
+    "modelPlaceholder": "เลือกโมเดล",
+    "noModels": "ไม่มีรุ่นสินค้าในแคตตาล็อกสำหรับผู้ให้บริการรายนี้ กรุณาใช้ฟังก์ชันขั้นสูงเพื่อป้อนรหัสรุ่นสินค้า",
+    "pull": {
+      "notPulled": "ยังไม่ได้ดาวน์โหลดลงในเซิร์ฟเวอร์นี้",
+      "pullModel": "ดึงโมเดล",
+      "pulling": "กำลังดึง…",
+      "status": {
+        "downloading": "กำลังดาวน์โหลด",
+        "error": "ข้อผิดพลาด",
+        "queued": "เข้าคิว",
+        "ready": "พร้อม"
+      },
+      "title": "ดาวน์โหลดโมเดล"
+    },
+    "toolUse": "การใช้งานเครื่องมือ"
   },
   "nav": "การแก้ไข",
   "playbooks": {

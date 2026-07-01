@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Max PR per körning",
     "minOpenPrs": "Minsta öppna PR:er",
+    "noScopes": "Du hanterar ännu inga omfattningar av den här typen.",
     "save": "Spara policy",
     "saving": "Sparande…",
     "scopeId": "Omfattnings-ID",
     "scopeIdPlaceholder": "Ange arkivet, teamet, organisationen eller användar-ID:t",
-    "scopeType": "Omfattningstyp",
-    "noScopes": "Du hanterar ännu inga omfattningar av den här typen."
+    "scopeType": "Omfattningstyp"
   },
   "fleet": {
     "airGappedOff": "Ansluten",
@@ -157,6 +157,7 @@
     },
     "empty": "Inga modellkonton ännu. Lägg till ett för att aktivera agentremediering.",
     "endpointUrl": "Slutpunkts-URL",
+    "endpointUrlHint": "Om Ampel körs i Docker pekar localhost på containern — använd http://host.docker.internal:11434 för att nå en Ollama-server på din värd.",
     "endpointUrlPlaceholder": "http://lokalvärd:11434",
     "error": "Misslyckades med att läsa in modellkonton.",
     "errors": {
@@ -169,9 +170,9 @@
     "providerKind": "Leverantör",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Tvillingarna",
-      "ollama": "Ollama (lokal)",
-      "onnx": "ONNX (lokal)"
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Spara konto",
     "saving": "Sparande…",
@@ -185,6 +186,52 @@
       "unvalidated": "Ogiltigförklarad",
       "valid": "Giltig"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Avancerad",
+    "codeEdit": "Kodredigering",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Gratis",
+      "perToken": "${{input}} in · ${{output}} ut / 1K"
+    },
+    "customModelId": "Anpassat modell-ID",
+    "customModelIdHint": "Ett anpassat modell-ID åsidosätter katalogvalet ovan.",
+    "customModelIdPlaceholder": "Åsidosätt med ett olistat modell-ID",
+    "hardware": {
+      "community": "gemenskap",
+      "diskSize": "{{disk}} GB-disk",
+      "filterHint": "Filtrerar lokala (Ollama) modeller efter system-RAM. På system med diskreta GPU:er är VRAM – inte system-RAM – bindningsbegränsningen.",
+      "filterLabel": "RAM-nivå",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "Alla"
+      }
+    },
+    "loadError": "Det gick inte att läsa in modellkatalogen.",
+    "loading": "Laddar modeller…",
+    "model": "Modell",
+    "modelPlaceholder": "Välj en modell",
+    "noModels": "Inga katalogmodeller finns tillgängliga för den här leverantören. Använd Avancerat för att ange ett modell-ID.",
+    "pull": {
+      "notPulled": "Inte nedladdad på den här servern än.",
+      "pullModel": "Dragmodell",
+      "pulling": "Dragande…",
+      "status": {
+        "downloading": "Nedladdning",
+        "error": "Fel",
+        "queued": "I kö",
+        "ready": "Redo"
+      },
+      "title": "Modellnedladdning"
+    },
+    "toolUse": "Verktygsanvändning"
   },
   "nav": "Sanering",
   "playbooks": {

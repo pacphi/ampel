@@ -107,12 +107,12 @@
     },
     "maxPrsPerRun": "Số lần chạy tối đa mỗi lần",
     "minOpenPrs": "Số lượng yêu cầu kéo (PR) đang mở tối thiểu",
+    "noScopes": "Bạn chưa quản lý phạm vi nào thuộc loại này.",
     "save": "Lưu chính sách",
     "saving": "Đang lưu…",
     "scopeId": "ID phạm vi",
     "scopeIdPlaceholder": "Nhập ID kho lưu trữ, nhóm, tổ chức hoặc người dùng.",
-    "scopeType": "Loại phạm vi",
-    "noScopes": "Bạn chưa quản lý phạm vi nào thuộc loại này."
+    "scopeType": "Loại phạm vi"
   },
   "fleet": {
     "airGappedOff": "Đã kết nối",
@@ -157,6 +157,7 @@
     },
     "empty": "Hiện chưa có tài khoản mẫu nào. Hãy thêm một tài khoản để kích hoạt tính năng khắc phục sự cố tự động.",
     "endpointUrl": "URL điểm cuối",
+    "endpointUrlHint": "Nếu Ampel chạy trong Docker, localhost sẽ trỏ đến container — hãy sử dụng http://host.docker.internal:11434 để truy cập máy chủ Ollama trên máy chủ của bạn.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Không thể tải tài khoản mẫu.",
     "errors": {
@@ -169,9 +170,9 @@
     "providerKind": "Nhà cung cấp",
     "providerKindLabel": {
       "claude": "Claude",
-      "gemini": "Song Tử",
-      "ollama": "Ollama (người địa phương)",
-      "onnx": "ONNX (địa phương)"
+      "gemini": "Gemini",
+      "ollama": "Ollama (local)",
+      "onnx": "ONNX (local)"
     },
     "save": "Lưu tài khoản",
     "saving": "Đang lưu…",
@@ -185,6 +186,52 @@
       "unvalidated": "Chưa được xác thực",
       "valid": "Có hiệu lực"
     }
+  },
+  "modelCatalog": {
+    "advanced": "Trình độ cao",
+    "codeEdit": "Chỉnh sửa mã",
+    "contextWindow": "{{tokens}} ctx",
+    "cost": {
+      "free": "Miễn phí",
+      "perToken": "${{input}} vào · ${{output}} ra / 1K"
+    },
+    "customModelId": "ID mô hình tùy chỉnh",
+    "customModelIdHint": "Mã định danh mẫu tùy chỉnh sẽ ghi đè lên lựa chọn trong danh mục ở trên.",
+    "customModelIdPlaceholder": "Ghi đè bằng ID kiểu máy không được liệt kê",
+    "hardware": {
+      "community": "cộng đồng",
+      "diskSize": "{{disk}} Đĩa GB",
+      "filterHint": "Lọc các mô hình cục bộ (Ollama) theo RAM hệ thống. Trên các hệ thống GPU rời, VRAM — chứ không phải RAM hệ thống — là yếu tố ràng buộc.",
+      "filterLabel": "Cấp RAM",
+      "params": "{{params}}",
+      "quantization": "{{quantization}}",
+      "ramTier": "{{tier}} GB",
+      "tier": {
+        "128": "128 GB",
+        "16": "16 GB",
+        "32-36": "32–36 GB",
+        "64": "64 GB",
+        "all": "Tất cả"
+      }
+    },
+    "loadError": "Không thể tải danh mục mô hình.",
+    "loading": "Đang tải mô hình…",
+    "model": "Người mẫu",
+    "modelPlaceholder": "Chọn một mẫu",
+    "noModels": "Không có mẫu sản phẩm nào trong danh mục của nhà cung cấp này. Sử dụng chức năng Nâng cao để nhập ID mẫu sản phẩm.",
+    "pull": {
+      "notPulled": "Chưa được tải xuống trên máy chủ này.",
+      "pullModel": "Mô hình kéo",
+      "pulling": "Kéo…",
+      "status": {
+        "downloading": "Đang tải xuống",
+        "error": "Lỗi",
+        "queued": "Đã xếp hàng",
+        "ready": "Sẵn sàng"
+      },
+      "title": "Tải xuống mô hình"
+    },
+    "toolUse": "Sử dụng công cụ"
   },
   "nav": "Khắc phục hậu quả",
   "playbooks": {
