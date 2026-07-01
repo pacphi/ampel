@@ -158,6 +158,65 @@ describe('PlaybookEditor', () => {
     expect(await screen.findByText('invalid playbook YAML: bad indent')).toBeInTheDocument();
   });
 
+  it('should_renderFieldGuide_when_toggled', async () => {
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.create' }));
+    // The field guide is collapsed by default; expanding it reveals each schema field.
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.hints.show' }));
+
+    expect(screen.getByText('tools_policy')).toBeInTheDocument();
+    expect(screen.getByText('output_contract')).toBeInTheDocument();
+    expect(screen.getByText('provider_overlays')).toBeInTheDocument();
+  });
+
+  it('should_renderFieldPathError_when_saveFailsWithFieldPath', async () => {
+    mockCreate.mockImplementation((_payload, options) => {
+      options.onError({
+        response: { data: { error: 'invalid playbook `loop.max_iterations`: is required' } },
+      });
+    });
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.create' }));
+    await user.type(screen.getByLabelText('remediation:playbooks.playbookId'), 'my-pb');
+    await user.type(screen.getByLabelText('remediation:playbooks.name'), 'My Playbook');
+    await user.type(screen.getByLabelText('remediation:playbooks.content'), 'role: fixer');
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.save' }));
+
+    // The offending field path + message render inline against the field...
+    expect(await screen.findByText('loop.max_iterations')).toBeInTheDocument();
+    expect(screen.getByText('is required')).toBeInTheDocument();
+    // ...and the guide auto-expands so the highlighted `loop` field is visible.
+    expect(screen.getByText('loop')).toBeInTheDocument();
+  });
+
+  it('should_renderStructureError_when_saveFailsWithRootError', async () => {
+    mockCreate.mockImplementation((_payload, options) => {
+      options.onError({
+        response: { data: { error: 'invalid playbook `<root>`: invalid YAML: bad indent' } },
+      });
+    });
+    const user = userEvent.setup();
+    render(<PlaybookEditor />);
+
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.create' }));
+    await user.type(screen.getByLabelText('remediation:playbooks.playbookId'), 'my-pb');
+    await user.type(screen.getByLabelText('remediation:playbooks.name'), 'My Playbook');
+    await user.type(screen.getByLabelText('remediation:playbooks.content'), 'garbage-yaml');
+    await user.click(screen.getByRole('button', { name: 'remediation:playbooks.save' }));
+
+    // A document-level (`<root>`) error is shown as a structure problem, not a
+    // field — the sentinel is never rendered as if it were a user field.
+    expect(
+      await screen.findByText('remediation:playbooks.validationError.document')
+    ).toBeInTheDocument();
+    expect(screen.getByText('invalid YAML: bad indent')).toBeInTheDocument();
+    expect(screen.queryByText('<root>')).not.toBeInTheDocument();
+  });
+
   it('should_blockSave_when_requiredFieldsMissing', async () => {
     const user = userEvent.setup();
     render(<PlaybookEditor />);

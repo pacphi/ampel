@@ -250,6 +250,18 @@
       "previewFailed": "Kunne ikke gengive playbooken. Tjek YAML for fejl.",
       "saveFailed": "Kunne ikke gemme playbooken. Tjek YAML for fejl."
     },
+    "hints": {
+      "contextSpec": "Etiketter for de ikke-tillidlige kontekstblokke (CI-logfiler, diffs). Ikke-tillidligt indhold bevæger sig hertil som data, aldrig som instruktioner.",
+      "heading": "Playbook-feltguide",
+      "hide": "Skjul feltguide",
+      "loop": "Agentbudgettet: iterations-, tids- og forbrugslofter. Forbrugsloftet er en decimalstreng i anførselstegn, for eksempel \"2,00\".",
+      "outputContract": "En af: {{values}}.",
+      "providerOverlays": "Tilsidesættelser pr. udbyder, indtastet efter udbydertype: {{kinds}}.",
+      "role": "Pålidelig systemindramning for agenten. Placer aldrig useriøst indhold her.",
+      "show": "Vis feltguide",
+      "tasks": "Instruktionsskabeloner pr. fejlklasse. De må kun referere til disse betroede variabler: {{vars}}.",
+      "toolsPolicy": "Værktøjsloftet. Du kan kun indsnævre den tilladte liste – tilføj aldrig et værktøj, som den indbyggede standard ikke tillader."
+    },
     "loadDefault": "Indlæs indbygget standard",
     "loadingDefault": "Indlæser indbygget standard…",
     "meta": {
@@ -270,7 +282,11 @@
     "scopeId": "Omfangs-ID",
     "scopeIdPlaceholder": "Ejerteam-, organisations- eller arkiv-ID",
     "scopeType": "Omfangstype",
-    "title": "Legebøger"
+    "title": "Legebøger",
+    "validationError": {
+      "document": "Problem med strukturen i playbooken",
+      "heading": "Problem med feltet {{field}}"
+    }
   },
   "policies": {
     "create": "Ny politik",

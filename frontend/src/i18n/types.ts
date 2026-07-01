@@ -1020,6 +1020,18 @@ export interface RemediationTranslations {
       previewFailed: string;
       saveFailed: string;
     };
+    hints: {
+      contextSpec: string;
+      heading: string;
+      hide: string;
+      loop: string;
+      outputContract: string;
+      providerOverlays: string;
+      role: string;
+      show: string;
+      tasks: string;
+      toolsPolicy: string;
+    };
     loadDefault: string;
     loadingDefault: string;
     meta: {
@@ -1041,6 +1053,10 @@ export interface RemediationTranslations {
     scopeIdPlaceholder: string;
     scopeType: string;
     title: string;
+    validationError: {
+      document: string;
+      heading: string;
+    };
   };
   policies: {
     create: string;

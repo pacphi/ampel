@@ -250,6 +250,18 @@
       "previewFailed": "Nie udało się wyrenderować playbooka. Sprawdź plik YAML pod kątem błędów.",
       "saveFailed": "Nie udało się zapisać podręcznika. Sprawdź plik YAML pod kątem błędów."
     },
+    "hints": {
+      "contextSpec": "Etykiety dla bloków kontekstu, którym nie można zaufać (logi CI, różnice). Treści, którym nie można zaufać, są tu przesyłane jako dane, a nie jako instrukcje.",
+      "heading": "Podręcznik terenowy",
+      "hide": "Ukryj przewodnik terenowy",
+      "loop": "Budżet agenta: iteracja, czas i limity wydatków. Limit wydatków to ciąg znaków w cudzysłowie, na przykład „2,00”.",
+      "outputContract": "Jeden z: {{values}}.",
+      "providerOverlays": "Nadpisania dla poszczególnych dostawców, oparte na rodzaju dostawcy: {{kinds}}.",
+      "role": "Zaufana struktura systemowa dla agenta. Nigdy nie umieszczaj tutaj niezaufanych treści.",
+      "show": "Pokaż przewodnik terenowy",
+      "tasks": "Szablony instrukcji dla każdej klasy awarii. Mogą odwoływać się tylko do tych zaufanych zmiennych: {{vars}}.",
+      "toolsPolicy": "Pułap narzędzi. Możesz jedynie zawęzić listę dozwolonych narzędzi — nigdy nie dodawaj narzędzia, którego domyślne ustawienia nie zezwalają."
+    },
     "loadDefault": "Załaduj wbudowane domyślne",
     "loadingDefault": "Ładowanie wbudowanego domyślnego…",
     "meta": {
@@ -270,7 +282,11 @@
     "scopeId": "Identyfikator zakresu",
     "scopeIdPlaceholder": "Identyfikator zespołu, organizacji lub repozytorium",
     "scopeType": "Typ zakresu",
-    "title": "Podręczniki"
+    "title": "Podręczniki",
+    "validationError": {
+      "document": "Problem ze strukturą podręcznika",
+      "heading": "Problem z polem {{field}}"
+    }
   },
   "policies": {
     "create": "Nowa polityka",

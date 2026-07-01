@@ -250,6 +250,18 @@
       "previewFailed": "Impossibile generare il playbook. Verificare la presenza di errori nel file YAML.",
       "saveFailed": "Impossibile salvare il playbook. Verificare la presenza di errori nel file YAML."
     },
+    "hints": {
+      "contextSpec": "Etichette per i blocchi di contesto non attendibili (log CI, differenze). Il contenuto non attendibile viaggia qui come dati, mai come istruzioni.",
+      "heading": "Manuale operativo - Guida pratica",
+      "hide": "Guida da campo",
+      "loop": "Il budget dell'agente: iterazioni, tempo e limiti di spesa. Il limite di spesa è una stringa decimale tra virgolette, ad esempio \"2.00\".",
+      "outputContract": "Uno dei seguenti: {{values}}.",
+      "providerOverlays": "Sovrascritture per singolo fornitore, indicizzate per tipo di fornitore: {{kinds}}.",
+      "role": "Struttura di sistema affidabile per l'agente. Non inserire mai contenuti non affidabili in questa sezione.",
+      "show": "Mostra la guida sul campo",
+      "tasks": "Modelli di istruzioni per classe di errore. Possono fare riferimento solo a queste variabili attendibili: {{vars}}.",
+      "toolsPolicy": "Il limite massimo degli strumenti. È possibile solo restringere l'elenco degli strumenti consentiti: non aggiungere mai uno strumento che non sia già incluso nell'impostazione predefinita."
+    },
     "loadDefault": "Carica predefinito integrato",
     "loadingDefault": "Caricamento predefinito integrato…",
     "meta": {
@@ -270,7 +282,11 @@
     "scopeId": "ID ambito",
     "scopeIdPlaceholder": "ID del team, dell'organizzazione o del repository proprietario",
     "scopeType": "Tipo di ambito",
-    "title": "Manuali di gioco"
+    "title": "Manuali di gioco",
+    "validationError": {
+      "document": "Problema con la struttura del playbook",
+      "heading": "Problema con il campo {{field}}"
+    }
   },
   "policies": {
     "create": "Nuova politica",
