@@ -250,6 +250,18 @@
       "previewFailed": "Impossible de générer le playbook. Vérifiez le fichier YAML pour détecter d'éventuelles erreurs.",
       "saveFailed": "Impossible d'enregistrer le playbook. Vérifiez le fichier YAML pour détecter d'éventuelles erreurs."
     },
+    "hints": {
+      "contextSpec": "Étiquettes pour les blocs de contexte non fiables (journaux CI, différences). Le contenu non fiable y transite sous forme de données, jamais sous forme d'instructions.",
+      "heading": "Guide pratique du playbook",
+      "hide": "Guide de terrain caché",
+      "loop": "Budget de l'agent : limites d'itération, de temps et de dépenses. La limite de dépenses est une chaîne décimale entre guillemets, par exemple « 2.00 ».",
+      "outputContract": "L'un des : {{values}}.",
+      "providerOverlays": "Remplacements par fournisseur, indexés par type de fournisseur : {{kinds}}.",
+      "role": "Cadre système de confiance pour l'agent. Ne placez jamais de contenu non fiable ici.",
+      "show": "Afficher le guide de terrain",
+      "tasks": "Modèles d'instructions par classe de défaillance. Ils ne peuvent référencer que ces variables de confiance : {{vars}}.",
+      "toolsPolicy": "Limite d'outils. Vous pouvez seulement restreindre la liste des outils autorisés ; n'ajoutez jamais un outil que la configuration par défaut intégrée n'autorise pas."
+    },
     "loadDefault": "Charger la valeur par défaut intégrée",
     "loadingDefault": "Chargement des paramètres par défaut intégrés…",
     "meta": {
@@ -270,7 +282,11 @@
     "scopeId": "ID de portée",
     "scopeIdPlaceholder": "ID de l'équipe, de l'organisation ou du dépôt propriétaire",
     "scopeType": "Type de portée",
-    "title": "Manuels de jeu"
+    "title": "Manuels de jeu",
+    "validationError": {
+      "document": "Problème avec la structure du plan de jeu",
+      "heading": "Problème avec le champ {{field}}"
+    }
   },
   "policies": {
     "create": "Nouvelle politique",

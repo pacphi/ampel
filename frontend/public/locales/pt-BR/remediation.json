@@ -250,6 +250,18 @@
       "previewFailed": "Falha ao renderizar o playbook. Verifique o arquivo YAML em busca de erros.",
       "saveFailed": "Falha ao salvar o playbook. Verifique o arquivo YAML em busca de erros."
     },
+    "hints": {
+      "contextSpec": "Rótulos para os blocos de contexto não confiáveis (logs de CI, diffs). Conteúdo não confiável trafega aqui como dados, nunca como instruções.",
+      "heading": "Guia de campo do Playbook",
+      "hide": "Ocultar guia de campo",
+      "loop": "O orçamento do agente: iterações, tempo e limites de gastos. O limite de gastos é uma sequência decimal entre aspas, por exemplo, \"2,00\".",
+      "outputContract": "Um dos seguintes: {{values}}.",
+      "providerOverlays": "Substituições por provedor, indexadas por tipo de provedor: {{kinds}}.",
+      "role": "Sistema de enquadramento confiável para o agente. Nunca coloque conteúdo não confiável aqui.",
+      "show": "Mostrar guia de campo",
+      "tasks": "Modelos de instruções por classe de falha. Eles podem referenciar apenas estas variáveis confiáveis: {{vars}}.",
+      "toolsPolicy": "Limite de ferramentas. Você só pode restringir a lista de ferramentas permitidas — nunca adicione uma ferramenta que o padrão integrado não permita."
+    },
     "loadDefault": "Carregar padrão integrado",
     "loadingDefault": "Carregando configurações padrão integradas…",
     "meta": {
@@ -270,7 +282,11 @@
     "scopeId": "ID do Escopo",
     "scopeIdPlaceholder": "ID da equipe, organização ou repositório proprietário",
     "scopeType": "Tipo de escopo",
-    "title": "Manuais de instruções"
+    "title": "Manuais de instruções",
+    "validationError": {
+      "document": "Problema com a estrutura do playbook",
+      "heading": "Problema com o campo {{field}}"
+    }
   },
   "policies": {
     "create": "Nova política",

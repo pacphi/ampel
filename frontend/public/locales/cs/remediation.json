@@ -250,6 +250,18 @@
       "previewFailed": "Nepodařilo se vykreslit playbook. Zkontrolujte YAML, zda neobsahuje chyby.",
       "saveFailed": "Uložení playbooku se nezdařilo. Zkontrolujte YAML, zda neobsahuje chyby."
     },
+    "hints": {
+      "contextSpec": "Štítky pro nedůvěryhodné kontextové bloky (protokoly CI, rozdíly). Nedůvěryhodný obsah se sem přenáší jako data, nikdy jako instrukce.",
+      "heading": "Průvodce herními pravidly",
+      "hide": "Skrýt průvodce po polích",
+      "loop": "Rozpočet agenta: iterace, čas a limity výdajů. Limit výdajů je řetězec v desítkovém čísle v uvozovkách, například „2,00“.",
+      "outputContract": "Jeden z: {{values}}.",
+      "providerOverlays": "Přepsání pro jednotlivé poskytovatele, klíčovaná podle druhu poskytovatele: {{kinds}}.",
+      "role": "Důvěryhodný systém pro agenta. Nikdy sem nevkládejte nedůvěryhodný obsah.",
+      "show": "Zobrazit průvodce terénem",
+      "tasks": "Šablony instrukcí pro jednotlivé třídy selhání. Mohou odkazovat pouze na tyto důvěryhodné proměnné: {{vars}}.",
+      "toolsPolicy": "Strop nástrojů. Seznam povolených nástrojů můžete pouze zúžit – nikdy nepřidávejte nástroj, který vestavěná výchozí hodnota nepovoluje."
+    },
     "loadDefault": "Načíst vestavěné výchozí nastavení",
     "loadingDefault": "Načítání vestavěného výchozího nastavení…",
     "meta": {
@@ -270,7 +282,11 @@
     "scopeId": "ID rozsahu",
     "scopeIdPlaceholder": "ID vlastnícího týmu, organizace nebo repozitáře",
     "scopeType": "Typ rozsahu",
-    "title": "Příručky"
+    "title": "Příručky",
+    "validationError": {
+      "document": "Problém se strukturou playbooku",
+      "heading": "Problém s polem {{field}}"
+    }
   },
   "policies": {
     "create": "Nová politika",

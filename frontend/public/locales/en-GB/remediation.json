@@ -250,6 +250,18 @@
       "previewFailed": "Failed to render the playbook. Check the YAML for errors.",
       "saveFailed": "Failed to save the playbook. Check the YAML for errors."
     },
+    "hints": {
+      "contextSpec": "Labels for the untrusted context blocks (CI logs, diffs). Untrusted content travels here as data, never as instructions.",
+      "heading": "Playbook field guide",
+      "hide": "Hide field guide",
+      "loop": "The agent budget: iteration, time, and spend caps. The spend cap is a quoted decimal string, for example \"2.00\".",
+      "outputContract": "One of: {{values}}.",
+      "providerOverlays": "Per-provider overrides, keyed by provider kind: {{kinds}}.",
+      "role": "Trusted system framing for the agent. Never place untrusted content here.",
+      "show": "Show field guide",
+      "tasks": "Per-failure-class instruction templates. They may reference only these trusted variables: {{vars}}.",
+      "toolsPolicy": "The tool ceiling. You may only narrow the allowed list — never add a tool the built-in default does not grant."
+    },
     "loadDefault": "Load built-in default",
     "loadingDefault": "Loading built-in default…",
     "meta": {
@@ -270,7 +282,11 @@
     "scopeId": "Scope ID",
     "scopeIdPlaceholder": "Owning team, org, or repository ID",
     "scopeType": "Scope type",
-    "title": "Playbooks"
+    "title": "Playbooks",
+    "validationError": {
+      "document": "Problem with the playbook structure",
+      "heading": "Problem with the {{field}} field"
+    }
   },
   "policies": {
     "create": "New policy",

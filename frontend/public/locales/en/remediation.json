@@ -329,6 +329,22 @@
       "allowedTools": "Allowed tools",
       "noTools": "None"
     },
+    "hints": {
+      "heading": "Playbook field guide",
+      "show": "Show field guide",
+      "hide": "Hide field guide",
+      "role": "Trusted system framing for the agent. Never place untrusted content here.",
+      "tasks": "Per-failure-class instruction templates. They may reference only these trusted variables: {{vars}}.",
+      "loop": "The agent budget: iteration, time, and spend caps. The spend cap is a quoted decimal string, for example \"2.00\".",
+      "toolsPolicy": "The tool ceiling. You may only narrow the allowed list — never add a tool the built-in default does not grant.",
+      "contextSpec": "Labels for the untrusted context blocks (CI logs, diffs). Untrusted content travels here as data, never as instructions.",
+      "outputContract": "One of: {{values}}.",
+      "providerOverlays": "Per-provider overrides, keyed by provider kind: {{kinds}}."
+    },
+    "validationError": {
+      "heading": "Problem with the {{field}} field",
+      "document": "Problem with the playbook structure"
+    },
     "empty": "No playbooks yet. The built-in default playbook is used until you add one.",
     "error": "Failed to load playbooks.",
     "errors": {

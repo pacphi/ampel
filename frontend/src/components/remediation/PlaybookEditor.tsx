@@ -22,8 +22,24 @@ import {
 import type { CreatePlaybookRequest, Playbook } from '@/types/playbook';
 import type { PlaybookPreviewResponse } from '@/types/playbook';
 import type { ScopeType } from '@/types/remediation';
+import { PlaybookFieldHints } from './PlaybookFieldHints';
 
 const SCOPE_TYPES: ScopeType[] = ['user', 'team', 'org', 'repository'];
+
+/**
+ * Parse a backend playbook validation error ("invalid playbook `<field>`:
+ * <message>", produced by the phase-0 field-path validator) into its offending
+ * field path and message, or `null` if it is not that shape.
+ */
+function parsePlaybookError(raw: string): { field: string; message: string } | null {
+  const match = raw.match(/invalid playbook `([^`]+)`:\s*(.*)/);
+  return match ? { field: match[1], message: match[2].trim() } : null;
+}
+
+/** Top-level YAML field (before the first dot) — used to highlight the guide. */
+function topLevelField(field: string): string {
+  return field.split('.')[0];
+}
 
 /** Initial values a form is opened with (blank create, loaded default, or duplicate). */
 interface PlaybookFormSeed {
@@ -60,13 +76,16 @@ function PlaybookForm({ initial, onClose }: PlaybookFormProps) {
   const [scopeId, setScopeId] = useState('');
   const [content, setContent] = useState(initial.content);
   const [error, setError] = useState<string | null>(null);
+  const [fieldError, setFieldError] = useState<{ field: string; message: string } | null>(null);
 
   // Validate/Preview renders a SAVED playbook (the API operates on a stored row),
   // so it lives on each list row below. The create form surfaces server-side YAML
-  // parse errors (422, now with a field path) inline on save.
+  // validation errors (422) inline — field-path errors against the offending
+  // field, everything else as a generic message.
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setFieldError(null);
     if (!playbookId.trim()) {
       setError(t('remediation:playbooks.errors.playbookIdRequired'));
       return;
@@ -92,10 +111,22 @@ function PlaybookForm({ initial, onClose }: PlaybookFormProps) {
       onSuccess: () => onClose(),
       onError: (err: unknown) => {
         const axiosError = err as { response?: { data?: { error?: string } } };
-        setError(axiosError.response?.data?.error ?? t('remediation:playbooks.errors.saveFailed'));
+        const raw = axiosError.response?.data?.error;
+        const parsed = raw ? parsePlaybookError(raw) : null;
+        if (parsed) {
+          setFieldError(parsed);
+        } else {
+          setError(raw ?? t('remediation:playbooks.errors.saveFailed'));
+        }
       },
     });
   };
+
+  // `<root>` is the validator's document-level sentinel (malformed YAML, not a
+  // mapping, or a residual type error) — it is not a user field, so present it
+  // as a structure problem and don't highlight a specific guide row.
+  const isDocumentError = fieldError?.field === '<root>';
+  const hintField = fieldError && !isDocumentError ? topLevelField(fieldError.field) : undefined;
 
   return (
     <form onSubmit={handleSave} className="space-y-4 rounded-lg border p-4">
@@ -146,6 +177,8 @@ function PlaybookForm({ initial, onClose }: PlaybookFormProps) {
         )}
       </div>
 
+      <PlaybookFieldHints errorField={hintField} />
+
       <div className="space-y-2">
         <Label htmlFor="playbook-content">{t('remediation:playbooks.content')}</Label>
         <Textarea
@@ -158,6 +191,25 @@ function PlaybookForm({ initial, onClose }: PlaybookFormProps) {
           placeholder={t('remediation:playbooks.contentPlaceholder')}
         />
       </div>
+
+      {fieldError && (
+        <div
+          role="alert"
+          className="space-y-0.5 rounded-md border border-destructive/50 bg-destructive/10 p-2"
+        >
+          <p className="text-sm font-medium text-destructive">
+            {isDocumentError
+              ? t('remediation:playbooks.validationError.document')
+              : t('remediation:playbooks.validationError.heading', { field: fieldError.field })}
+          </p>
+          {!isDocumentError && (
+            <p className="text-xs text-destructive">
+              <code className="font-semibold">{fieldError.field}</code>
+            </p>
+          )}
+          <p className="text-xs text-destructive">{fieldError.message}</p>
+        </div>
+      )}
 
       {error && (
         <p role="alert" className="text-sm text-destructive">

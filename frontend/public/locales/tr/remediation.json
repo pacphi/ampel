@@ -250,6 +250,18 @@
       "previewFailed": "Playbook oluşturulamadı. Hata olup olmadığını kontrol etmek için YAML dosyasını inceleyin.",
       "saveFailed": "Oyun kitabı kaydedilemedi. Hata olup olmadığını kontrol etmek için YAML dosyasını inceleyin."
     },
+    "hints": {
+      "contextSpec": "Güvenilmeyen bağlam blokları için etiketler (CI günlükleri, farklar). Güvenilmeyen içerik buraya veri olarak iletilir, asla talimat olarak değil.",
+      "heading": "Oyun kitabı saha kılavuzu",
+      "hide": "Alan kılavuzunu gizle",
+      "loop": "Ajan bütçesi: yineleme, süre ve harcama limitleri. Harcama limiti, tırnak içinde belirtilen ondalık bir sayıdır, örneğin \"2.00\".",
+      "outputContract": "Şunlardan biri: {{values}}.",
+      "providerOverlays": "Sağlayıcı türüne göre anahtarlanmış, sağlayıcıya özel geçersiz kılmalar: {{kinds}}.",
+      "role": "Aracı için güvenilir sistem çerçevesi. Güvenilmeyen içeriği asla buraya yerleştirmeyin.",
+      "show": "Alan kılavuzunu göster",
+      "tasks": "Başarısızlık durumuna göre sınıf içi talimat şablonları. Yalnızca şu güvenilir değişkenlere başvurabilirler: {{vars}}.",
+      "toolsPolicy": "Araç sınırı. Yalnızca izin verilen listeyi daraltabilirsiniz; yerleşik varsayılan ayarların izin vermediği bir aracı asla eklemeyin."
+    },
     "loadDefault": "Dahili varsayılanı yükle",
     "loadingDefault": "Dahili varsayılan ayarlar yükleniyor…",
     "meta": {
@@ -270,7 +282,11 @@
     "scopeId": "Kapsam Kimliği",
     "scopeIdPlaceholder": "Sorumlu ekip, kuruluş veya depo kimliği",
     "scopeType": "Kapsam türü",
-    "title": "Oyun kılavuzları"
+    "title": "Oyun kılavuzları",
+    "validationError": {
+      "document": "Oyun planı yapısında sorun var.",
+      "heading": "{{field}} alanıyla ilgili sorun"
+    }
   },
   "policies": {
     "create": "Yeni politika",

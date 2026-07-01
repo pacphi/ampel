@@ -250,6 +250,18 @@
       "previewFailed": "Kunne ikke gjengi handlingsplanen. Sjekk YAML for feil.",
       "saveFailed": "Kunne ikke lagre handlingsplanen. Sjekk YAML for feil."
     },
+    "hints": {
+      "contextSpec": "Etiketter for de upålitelige kontekstblokkene (CI-logger, differanser). Upålitelig innhold sendes hit som data, aldri som instruksjoner.",
+      "heading": "Spillebok feltguide",
+      "hide": "Skjul feltguide",
+      "loop": "Agentbudsjettet: iterasjon, tids- og forbruksgrenser. Forbruksgrensen er en desimalstreng i anførselstegn, for eksempel «2,00».",
+      "outputContract": "En av: {{values}}.",
+      "providerOverlays": "Overstyringer per leverandør, tastet inn etter leverandørtype: {{kinds}}.",
+      "role": "Klarert systeminnramming for agenten. Plasser aldri uklarert innhold her.",
+      "show": "Vis feltguide",
+      "tasks": "Instruksjonsmaler per feilklasse. De kan bare referere til disse klarerte variablene: {{vars}}.",
+      "toolsPolicy": "Verktøytaket. Du kan bare begrense den tillatte listen – legg aldri til et verktøy som den innebygde standarden ikke tillater."
+    },
     "loadDefault": "Last inn innebygd standard",
     "loadingDefault": "Laster inn innebygd standard …",
     "meta": {
@@ -270,7 +282,11 @@
     "scopeId": "Omfangs-ID",
     "scopeIdPlaceholder": "Eierteam-, organisasjons- eller repositorium-ID",
     "scopeType": "Omfangstype",
-    "title": "Spillebøker"
+    "title": "Spillebøker",
+    "validationError": {
+      "document": "Problem med strukturen i spillboken",
+      "heading": "Problem med {{field}}-feltet"
+    }
   },
   "policies": {
     "create": "Ny policy",
