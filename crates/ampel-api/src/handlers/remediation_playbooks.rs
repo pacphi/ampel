@@ -141,6 +141,13 @@ pub struct PreviewResponse {
     pub allowed_tools: Vec<String>,
 }
 
+/// Map a playbook schema-validation failure to a `422` naming the offending
+/// field path (ADR-006). Shared by create and update so the wire format stays a
+/// single source of truth.
+fn invalid_playbook(e: ampel_worker::services::playbook::PlaybookSchemaError) -> ApiError {
+    ApiError::unprocessable_entity(format!("invalid playbook `{}`: {}", e.field, e.message))
+}
+
 // ============================================================================
 // Scope / ownership authorization
 // ============================================================================
@@ -387,9 +394,8 @@ pub async fn create_playbook(
 
     // Lint: schema-aware validation with a field-path diagnostic (ADR-006), so
     // the client learns *which* field is wrong (e.g. `loop.max_iterations`).
-    ampel_worker::services::playbook::Playbook::validate_yaml(&req.content).map_err(|e| {
-        ApiError::unprocessable_entity(format!("invalid playbook `{}`: {}", e.field, e.message))
-    })?;
+    ampel_worker::services::playbook::Playbook::validate_yaml(&req.content)
+        .map_err(invalid_playbook)?;
 
     let now = Utc::now();
     let model = remediation_playbook::ActiveModel {
@@ -434,9 +440,8 @@ pub async fn update_playbook(
     let row = load_writable(&state, auth.user_id, id).await?;
 
     if let Some(content) = &req.content {
-        ampel_worker::services::playbook::Playbook::validate_yaml(content).map_err(|e| {
-            ApiError::unprocessable_entity(format!("invalid playbook `{}`: {}", e.field, e.message))
-        })?;
+        ampel_worker::services::playbook::Playbook::validate_yaml(content)
+            .map_err(invalid_playbook)?;
     }
 
     let mut active: remediation_playbook::ActiveModel = row.into();
