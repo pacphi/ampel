@@ -129,6 +129,13 @@
     "eligible": "Tukikelpoinen",
     "empty": "Ei löytynyt arkistoja.",
     "error": "Kaluston yleiskatsauksen lataaminen epäonnistui.",
+    "filters": {
+      "clear": "Näytä kaikki tietovarastot",
+      "groupLabel": "Tietovaraston suodattimet",
+      "noMatch": "Yksikään arkisto ei vastaa nykyisiä suodattimia.",
+      "onlyEligible": "Vain kelvolliset arkistot",
+      "onlyWithPrs": "Vain avoimia pull-pyyntöjä sisältävät tietovarastot"
+    },
     "notEligible": "Ei kelvollinen",
     "preview": "Esikatselu",
     "tableLabel": "Arkiston kunnostuksen tila",

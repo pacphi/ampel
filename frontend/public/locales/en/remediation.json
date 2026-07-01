@@ -31,8 +31,8 @@
     },
     "filters": {
       "groupLabel": "Repository filters",
-      "onlyWithPrs": "Only repos with open PRs",
-      "onlyEligible": "Only eligible repos",
+      "onlyWithPrs": "Only repositories with open pull requests",
+      "onlyEligible": "Only eligible repositories",
       "noMatch": "No repositories match the current filters.",
       "clear": "Show all repositories"
     }

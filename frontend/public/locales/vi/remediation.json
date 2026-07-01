@@ -129,6 +129,13 @@
     "eligible": "Đạt chuẩn",
     "empty": "Không tìm thấy kho lưu trữ nào.",
     "error": "Không thể tải thông tin tổng quan về đội xe.",
+    "filters": {
+      "clear": "Hiển thị tất cả kho lưu trữ",
+      "groupLabel": "Bộ lọc kho lưu trữ",
+      "noMatch": "Không có kho lưu trữ nào phù hợp với các bộ lọc hiện tại.",
+      "onlyEligible": "Chỉ các kho lưu trữ đủ điều kiện",
+      "onlyWithPrs": "Chỉ những kho lưu trữ có yêu cầu kéo (pull request) đang mở mới được chấp nhận."
+    },
     "notEligible": "Không đủ điều kiện",
     "preview": "Xem trước",
     "tableLabel": "Trạng thái khắc phục kho lưu trữ",
