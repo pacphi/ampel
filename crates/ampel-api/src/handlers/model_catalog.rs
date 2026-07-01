@@ -36,9 +36,10 @@ use uuid::Uuid;
 use ampel_core::remediation::{
     CatalogModel, CostModel, Egress, ModelCaps, ModelCatalog, ProviderKind,
 };
-use ampel_db::entities::{model_provider_account, organization};
+use ampel_db::entities::organization;
 
 use crate::extractors::AuthUser;
+use crate::handlers::model_accounts::load_authorized_account;
 use crate::handlers::security::assert_endpoint_safe;
 use crate::handlers::{ApiError, ApiResponse};
 use crate::AppState;
@@ -385,46 +386,6 @@ fn advance_job(job_id: Uuid, to: PullStatus, detail: Option<String>) {
             job.detail = Some(d);
         }
     }
-}
-
-// ============================================================================
-// Authz helpers (replicated from model_accounts — same scope rules)
-// ============================================================================
-
-/// Assert `user_id` may access `account` (user-scoped self, or owns the org).
-/// Denial returns `404` so resource existence is never leaked.
-async fn assert_account_access(
-    state: &AppState,
-    user_id: Uuid,
-    account: &model_provider_account::Model,
-) -> Result<(), ApiError> {
-    if account.user_id == Some(user_id) {
-        return Ok(());
-    }
-    if let Some(org_id) = account.organization_id {
-        let owns = organization::Entity::find_by_id(org_id)
-            .one(&state.db)
-            .await?
-            .map(|o| o.owner_id == user_id)
-            .unwrap_or(false);
-        if owns {
-            return Ok(());
-        }
-    }
-    Err(ApiError::not_found("Model provider account not found"))
-}
-
-async fn load_authorized_account(
-    state: &AppState,
-    user_id: Uuid,
-    account_id: Uuid,
-) -> Result<model_provider_account::Model, ApiError> {
-    let account = model_provider_account::Entity::find_by_id(account_id)
-        .one(&state.db)
-        .await?
-        .ok_or_else(|| ApiError::not_found("Model provider account not found"))?;
-    assert_account_access(state, user_id, &account).await?;
-    Ok(account)
 }
 
 /// Load an authorized account, assert it is an Ollama account, and resolve the

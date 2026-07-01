@@ -328,7 +328,9 @@ pub async fn create_model_account(
     ))
 }
 
-async fn load_authorized_account(
+/// Load an account by id and assert the caller may access it. `pub(crate)` so
+/// sibling handlers (e.g. `model_catalog`) reuse the exact same scope check.
+pub(crate) async fn load_authorized_account(
     state: &AppState,
     user_id: Uuid,
     account_id: Uuid,
