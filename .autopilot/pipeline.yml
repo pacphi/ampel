@@ -60,39 +60,28 @@ fix_budget: 5
 # merge/auth/exec/data-model blast radius.
 risk_phases: []
 
+# NOTE (2026-07-01): originally a 2-phase plan (phase 0 = filters + EN i18n; phase 1 =
+# translate all 27 locales). Ampel CI's i18n `missing` gate fails any PR with en-only keys,
+# so phase 0's PR (#75) had to carry the full 27-locale translation to go green. That
+# absorbed phase 1 entirely, so the plan was collapsed to this single phase to match what
+# actually shipped. The original 2-phase plan survives as ledger record 0.
 phases:
   - id: 0
-    goal: "Default-actionable Fleet Overview: two combinable toggle filters (both ON by default) + a distinct filtered-empty state, with vitest specs and EN i18n."
+    goal: "Default-actionable Fleet Overview: two combinable toggle filters (both ON by default) + a distinct filtered-empty state, with vitest specs and full 27-locale i18n."
     deliverables:
       - "FleetOverview.tsx: two boolean filter states (onlyWithPrs, onlyEligible), both default true; a derived filtered list applying the ACTIVE filters (AND) over the fleet rows (openPrCount > 0; eligible === true)."
       - "Two toggle controls rendered above the table (shadcn/ui, mirroring existing component usage), each labelled via i18n; toggling either widens the view."
       - "A distinct filtered-empty branch: when the fleet is non-empty but the filtered list is empty, render a 'no repos match the current filters' message with a control to clear/relax the filters (restore both defaults or show all). The existing zero-repos `remediation:fleet.empty` branch is unchanged."
-      - "New EN i18n keys under remediation:fleet for the two toggle labels, the filtered-empty message, and the clear/relax action."
+      - "New i18n keys under remediation:fleet.filters (toggle labels, filtered-empty message, clear action, group label), translated into ALL 27 locales via the ampel-i18n-builder translate util (shell ARRAY loop; .env sourced), with frontend/src/i18n/types.ts regenerated via generate-types and a post-translate audit repairing any mistranslated domain/brand nouns."
     definition_of_done:
       - "cmd: make test-frontend passes, incl. new FleetOverview.test.tsx specs: default view hides a 0-PR repo AND an ineligible repo; toggling onlyWithPrs OFF reveals the 0-PR repo; toggling onlyEligible OFF reveals the ineligible repo; with both filters active and all rows excluded, the filtered-empty state renders; clearing filters restores rows."
       - "cmd: make lint-frontend passes; make format-check passes; pnpm --dir frontend type-check passes."
+      - "cmd: ampel-i18n-builder `missing` reports no missing keys and `coverage --min-coverage 95` passes across all 27 locales; frontend/src/i18n/types.ts regenerated in sync (CI i18n-validation would pass)."
       - "grep: onlyWithPrs in frontend/src/components/remediation/FleetOverview.tsx"
       - "grep: fleet.filters in frontend/public/locales/en/remediation.json"
       - "grep:absent: TODO|FIXME in frontend/src/components/remediation/FleetOverview.tsx"
-      - "prose: no backend/API change — the filtering is purely client-side over the existing useFleetRemediation() rows; the loading/error/zero-repos branches are unchanged."
-    conventions: "React 19 + TS + Vite + TanStack Query + shadcn/ui. Mirror the just-shipped playbooks-guidance frontend work (component/test/i18n style). Every user-facing string via i18n (EN only in this phase; other locales in phase 1). `make lint` does NOT run formatters — run `make format-check` (prettier) locally before pushing."
+      - "prose: no backend/API change — the filtering is purely client-side over the existing useFleetRemediation() rows; the loading/error/zero-repos branches are unchanged. No raw i18n keys render; interpolation/brand-noun audit across locales is clean; no spaced locale directory exists."
+    conventions: "React 19 + TS + Vite + TanStack Query + shadcn/ui. Mirror the just-shipped playbooks-guidance frontend work (component/test/i18n style). Every user-facing string via i18n. Translate new keys into all 27 locales in the SAME PR (CI's `missing` gate fails en-only keys); source crates/ampel-i18n-builder/.env first; shell ARRAY loop, never `for L in $string`; run generate-types (CI hard-fails on types.ts drift). `make lint` does NOT run formatters — run `make format-check` (prettier) locally before pushing."
     depends_on: []
     adrs:  []
     ddd:   ["Fleet", "Repository"]
-
-  - id: 1
-    goal: "Internationalize the new fleet-filter keys across all 27 locales and keep the generated types in sync."
-    deliverables:
-      - "All new remediation:fleet.* keys translated into ALL 27 locales via the ampel-i18n-builder translate util (zsh ARRAY loop; .env sourced)."
-      - "frontend/src/i18n/types.ts regenerated via `generate-types`."
-      - "Post-translate audit: repair any corrupted {{interpolation}} vars and any mistranslated brand/proper nouns; verify no bogus (spaced) locale directory was created."
-    definition_of_done:
-      - "cmd: node scripts/i18n-coverage-report.js --check-missing reports no missing keys."
-      - "cmd: node scripts/i18n-coverage-report.js --check --min-coverage 95 passes."
-      - "cmd: make test-frontend passes (incl. the i18n translation-keys suite)."
-      - "cmd: make lint-frontend passes; make format-check passes."
-      - "prose: no raw i18n keys render; interpolation-variable audit across locales is clean; brand/proper nouns are not translated; frontend/src/i18n/types.ts is regenerated in sync (CI 'Verify types are up-to-date' would pass) and no spaced locale directory exists."
-    conventions: "Use the ampel-i18n-builder translate flow (source crates/ampel-i18n-builder/.env first; ZSH ARRAY loop, never `for L in $string`). Always run `generate-types` after adding keys — CI hard-fails on types.ts drift. Protect interpolation vars + brand nouns (known translator pitfalls)."
-    depends_on: [0]
-    adrs:  []
-    ddd:   ["Fleet"]
