@@ -218,6 +218,26 @@ so there is no runtime dependency on the file's presence and **no new environmen
 variable**. `load_catalog` falls back to the embedded default when an on-disk path
 is missing or unreadable.
 
+## Troubleshooting
+
+### Ollama pull/discovery fails with "could not reach the Ollama server"
+
+The tags and pull proxies run **inside the API container**. From there, `localhost`
+resolves to the container itself — not your host — so an account whose `endpointUrl`
+is `http://localhost:11434` cannot reach an Ollama server running on your machine.
+
+Set the account's **Endpoint URL** to reach the host instead:
+
+- **Docker (macOS / Windows / Linux):** `http://host.docker.internal:11434`
+  (the compose file maps `host.docker.internal` to the host gateway, so this works
+  on Linux too).
+- **Ollama in its own container on the same compose network:** use the service name,
+  e.g. `http://ollama:11434`.
+- **API running natively (not in Docker):** `http://localhost:11434` is correct.
+
+The pull job's `detail` now names the failure (e.g. the unreachable endpoint), and
+the SSRF guard still exempts local-only providers, so these host targets are allowed.
+
 ## Related Files
 
 - `config/models.yaml` — the editable catalog source of truth

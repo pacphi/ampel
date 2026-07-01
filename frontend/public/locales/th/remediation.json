@@ -157,6 +157,7 @@
     },
     "empty": "ยังไม่มีบัญชีตัวอย่าง เพิ่มบัญชีตัวอย่างเพื่อเปิดใช้งานการแก้ไขปัญหาโดยตัวแทน",
     "endpointUrl": "URL ปลายทาง",
+    "endpointUrlHint": "หาก Ampel ทำงานบน Docker นั้น localhost จะชี้ไปยังคอนเทนเนอร์ หากต้องการเข้าถึงเซิร์ฟเวอร์ Ollama บนโฮสต์ของคุณ ให้ใช้ http://host.docker.internal:11434",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "ไม่สามารถโหลดบัญชีโมเดลได้",
     "errors": {

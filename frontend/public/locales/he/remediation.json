@@ -157,6 +157,7 @@
     },
     "empty": "אין עדיין חשבונות מודל. הוסף אחד כדי לאפשר תיקון סוכני.",
     "endpointUrl": "כתובת אתר של נקודת הקצה",
+    "endpointUrlHint": "אם Ampel רץ ב-Docker, localhost מצביע על הקונטיינר — השתמש ב-http://host.docker.internal:11434 כדי להגיע לשרת Ollama במארח שלך.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "טעינת חשבונות המודל נכשלה.",
     "errors": {

@@ -157,6 +157,7 @@
     },
     "empty": "Henüz model hesap yok. Aracılı düzeltmeyi etkinleştirmek için bir tane ekleyin.",
     "endpointUrl": "Uç nokta URL'si",
+    "endpointUrlHint": "Ampel Docker'da çalışıyorsa, localhost konteyneri işaret eder; ana bilgisayarınızdaki bir Ollama sunucusuna ulaşmak için http://host.docker.internal:11434 adresini kullanın.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Model hesapları yüklenemedi.",
     "errors": {

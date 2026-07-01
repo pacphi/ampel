@@ -157,6 +157,7 @@
     },
     "empty": "Inga modellkonton ännu. Lägg till ett för att aktivera agentremediering.",
     "endpointUrl": "Slutpunkts-URL",
+    "endpointUrlHint": "Om Ampel körs i Docker pekar localhost på containern — använd http://host.docker.internal:11434 för att nå en Ollama-server på din värd.",
     "endpointUrlPlaceholder": "http://lokalvärd:11434",
     "error": "Misslyckades med att läsa in modellkonton.",
     "errors": {

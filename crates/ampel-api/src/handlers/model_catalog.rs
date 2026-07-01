@@ -636,7 +636,11 @@ async fn run_pull(job_id: Uuid, endpoint: String, tag: String) {
         Ok(c) => c,
         Err(e) => {
             tracing::warn!(job_id = %job_id, error = %e, "failed to build ollama pull client");
-            advance_job(job_id, PullStatus::Error, Some("pull failed".to_string()));
+            advance_job(
+                job_id,
+                PullStatus::Error,
+                Some("could not initialize the Ollama client".to_string()),
+            );
             return;
         }
     };
@@ -648,13 +652,21 @@ async fn run_pull(job_id: Uuid, endpoint: String, tag: String) {
         Ok(r) => r,
         Err(e) => {
             tracing::warn!(job_id = %job_id, error = %e, "ollama pull request failed");
-            advance_job(job_id, PullStatus::Error, Some("pull failed".to_string()));
+            advance_job(
+                job_id,
+                PullStatus::Error,
+                Some(format!("could not reach the Ollama server at {endpoint}")),
+            );
             return;
         }
     };
     if !resp.status().is_success() {
         tracing::warn!(job_id = %job_id, status = %resp.status(), "ollama pull returned non-success");
-        advance_job(job_id, PullStatus::Error, Some("pull failed".to_string()));
+        advance_job(
+            job_id,
+            PullStatus::Error,
+            Some("the Ollama server rejected the pull (check the model tag)".to_string()),
+        );
         return;
     }
 
@@ -672,7 +684,11 @@ async fn run_pull(job_id: Uuid, endpoint: String, tag: String) {
                 match drain_ndjson(&mut buf) {
                     NdjsonProgress::Error => {
                         tracing::warn!(job_id = %job_id, "ollama pull stream reported an error");
-                        advance_job(job_id, PullStatus::Error, Some("pull failed".to_string()));
+                        advance_job(
+                            job_id,
+                            PullStatus::Error,
+                            Some("the Ollama server reported a pull error".to_string()),
+                        );
                         return;
                     }
                     NdjsonProgress::Status(s) => {
@@ -684,7 +700,11 @@ async fn run_pull(job_id: Uuid, endpoint: String, tag: String) {
             Ok(None) => break,
             Err(e) => {
                 tracing::warn!(job_id = %job_id, error = %e, "ollama pull stream failed");
-                advance_job(job_id, PullStatus::Error, Some("pull failed".to_string()));
+                advance_job(
+                    job_id,
+                    PullStatus::Error,
+                    Some("the Ollama pull stream was interrupted".to_string()),
+                );
                 return;
             }
         }

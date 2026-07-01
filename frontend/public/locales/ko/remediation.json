@@ -157,6 +157,7 @@
     },
     "empty": "아직 모델 계정이 없습니다. 에이전트 기반 문제 해결을 활성화하려면 모델 계정을 추가하세요.",
     "endpointUrl": "엔드포인트 URL",
+    "endpointUrlHint": "Ampel이 Docker에서 실행되는 경우 localhost는 컨테이너를 가리킵니다. 호스트의 Ollama 서버에 접속하려면 http://host.docker.internal:11434를 사용하십시오.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "모델 계정을 불러오는 데 실패했습니다.",
     "errors": {

@@ -157,6 +157,7 @@
     },
     "empty": "Ainda não existem contas de modelo. Adicione uma para habilitar a remediação por agentes.",
     "endpointUrl": "URL do ponto de extremidade",
+    "endpointUrlHint": "Se o Ampel estiver sendo executado no Docker, localhost aponta para o contêiner — use http://host.docker.internal:11434 para acessar um servidor Ollama em seu host.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Falha ao carregar as contas do modelo.",
     "errors": {

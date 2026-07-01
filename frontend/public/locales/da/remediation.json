@@ -157,6 +157,7 @@
     },
     "empty": "Ingen modelkonti endnu. Tilføj en for at aktivere agentafhjælpning.",
     "endpointUrl": "Slutpunkts-URL",
+    "endpointUrlHint": "Hvis Ampel kører i Docker, peger localhost på containeren — brug http://host.docker.internal:11434 for at nå en Ollama-server på din vært.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Modelkonti kunne ikke indlæses.",
     "errors": {

@@ -157,6 +157,7 @@
     },
     "empty": "Nessun account modello ancora disponibile. Aggiungine uno per abilitare la correzione automatica.",
     "endpointUrl": "URL dell'endpoint",
+    "endpointUrlHint": "Se Ampel è in esecuzione in Docker, localhost punta al container; per raggiungere un server Ollama sul tuo host, usa http://host.docker.internal:11434.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Impossibile caricare gli account modello.",
     "errors": {

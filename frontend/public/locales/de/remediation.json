@@ -157,6 +157,7 @@
     },
     "empty": "Es sind noch keine Modellkonten vorhanden. Fügen Sie eines hinzu, um die agentenbasierte Fehlerbehebung zu aktivieren.",
     "endpointUrl": "Endpunkt-URL",
+    "endpointUrlHint": "Wenn Ampel in Docker läuft, verweist localhost auf den Container – verwenden Sie http://host.docker.internal:11434, um einen Ollama-Server auf Ihrem Host zu erreichen.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Modellkonten konnten nicht geladen werden.",
     "errors": {

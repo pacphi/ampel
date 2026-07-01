@@ -157,6 +157,7 @@
     },
     "empty": "Пока нет учетных записей моделей. Добавьте одну, чтобы включить автоматическое исправление ошибок.",
     "endpointUrl": "URL конечной точки",
+    "endpointUrlHint": "Если Ampel работает в Docker, localhost указывает на контейнер — используйте http://host.docker.internal:11434 для доступа к серверу Ollama на вашем хосте.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Не удалось загрузить учетные записи модели.",
     "errors": {

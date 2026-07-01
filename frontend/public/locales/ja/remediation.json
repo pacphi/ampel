@@ -157,6 +157,7 @@
     },
     "empty": "モデルアカウントはまだありません。エージェントによる修復を有効にするには、モデルアカウントを追加してください。",
     "endpointUrl": "エンドポイントURL",
+    "endpointUrlHint": "AmpelがDockerで実行されている場合、localhostはコンテナを指します。ホスト上のOllamaサーバーにアクセスするには、http://host.docker.internal:11434を使用してください。",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "モデルアカウントの読み込みに失敗しました。",
     "errors": {

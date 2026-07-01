@@ -157,6 +157,7 @@
     },
     "empty": "No model accounts yet. Add one to enable agentic remediation.",
     "endpointUrl": "Endpoint URL",
+    "endpointUrlHint": "If Ampel runs in Docker, localhost points at the container — use http://host.docker.internal:11434 to reach an Ollama server on your host.",
     "endpointUrlPlaceholder": "http://localhost:11434",
     "error": "Failed to load model accounts.",
     "errors": {
