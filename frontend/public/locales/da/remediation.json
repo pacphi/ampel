@@ -239,14 +239,24 @@
     "contentPlaceholder": "Gå ind i YAML-håndbogen…",
     "create": "Ny håndbog",
     "description": "Tilpas de afhjælpningsprompter, som agenten bruger. Valider en playbook for at få vist en forhåndsvisning af den gengivne prompt uden modelkald.",
+    "duplicate": "Dupliker for at tilpasse",
     "empty": "Ingen playbooks endnu. Den indbyggede standard playbook bruges, indtil du tilføjer en.",
     "error": "Kunne ikke indlæse playbooks.",
     "errors": {
       "contentRequired": "Indhold i playbooken er påkrævet.",
+      "loadDefaultFailed": "Kunne ikke indlæse den indbyggede standardplaybook.",
       "nameRequired": "Et navn er påkrævet.",
       "playbookIdRequired": "Et playbook-ID er påkrævet.",
       "previewFailed": "Kunne ikke gengive playbooken. Tjek YAML for fejl.",
       "saveFailed": "Kunne ikke gemme playbooken. Tjek YAML for fejl."
+    },
+    "loadDefault": "Indlæs indbygget standard",
+    "loadingDefault": "Indlæser indbygget standard…",
+    "meta": {
+      "allowedTools": "Tilladte værktøjer",
+      "noTools": "Ingen",
+      "outputContract": "Outputkontrakt",
+      "role": "Rolle"
     },
     "name": "Navn",
     "namePlaceholder": "Menneskeligt læsbart navn",

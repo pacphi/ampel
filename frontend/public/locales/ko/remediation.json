@@ -239,14 +239,24 @@
     "contentPlaceholder": "플레이북 YAML 파일을 입력하세요…",
     "create": "새로운 플레이북",
     "description": "상담원이 사용하는 문제 해결 프롬프트를 사용자 지정합니다. 모델 호출 없이 렌더링된 프롬프트를 미리 보려면 플레이북을 검증합니다.",
+    "duplicate": "복제하여 사용자 정의하세요",
     "empty": "아직 플레이북이 없습니다. 플레이북을 추가하기 전까지는 기본 플레이북이 사용됩니다.",
     "error": "플레이북을 불러오는 데 실패했습니다.",
     "errors": {
       "contentRequired": "플레이북 콘텐츠가 필요합니다.",
+      "loadDefaultFailed": "내장된 기본 플레이북을 로드하는 데 실패했습니다.",
       "nameRequired": "이름은 필수 입력 사항입니다.",
       "playbookIdRequired": "플레이북 ID가 필요합니다.",
       "previewFailed": "플레이북 렌더링에 실패했습니다. YAML 파일에서 오류를 확인하세요.",
       "saveFailed": "플레이북 저장에 실패했습니다. YAML 파일에서 오류를 확인하세요."
+    },
+    "loadDefault": "내장 기본값을 불러오기",
+    "loadingDefault": "내장 기본 설정 불러오는 중…",
+    "meta": {
+      "allowedTools": "허용된 도구",
+      "noTools": "없음",
+      "outputContract": "생산 계약",
+      "role": "역할"
     },
     "name": "이름",
     "namePlaceholder": "사람이 읽을 수 있는 이름",

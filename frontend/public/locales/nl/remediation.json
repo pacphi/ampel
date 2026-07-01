@@ -239,14 +239,24 @@
     "contentPlaceholder": "Voer het playbook in (YAML-formaat) in...",
     "create": "Nieuw draaiboek",
     "description": "Pas de herstelprompts aan die de agent gebruikt. Valideer een playbook om een voorbeeld van de weergegeven prompt te bekijken zonder modelaanroep.",
+    "duplicate": "Dupliceer om aan te passen",
     "empty": "Er zijn nog geen playbooks beschikbaar. Het ingebouwde standaard playbook wordt gebruikt totdat u er zelf een toevoegt.",
     "error": "Het laden van de playbooks is mislukt.",
     "errors": {
       "contentRequired": "De inhoud van het draaiboek is vereist.",
+      "loadDefaultFailed": "Het laden van het ingebouwde standaard playbook is mislukt.",
       "nameRequired": "Een naam is vereist.",
       "playbookIdRequired": "Een playbook-ID is vereist.",
       "previewFailed": "Het is niet gelukt om het playbook te laden. Controleer het YAML-bestand op fouten.",
       "saveFailed": "Het opslaan van de playbook is mislukt. Controleer het YAML-bestand op fouten."
+    },
+    "loadDefault": "Laad de ingebouwde standaard",
+    "loadingDefault": "De ingebouwde standaardinstellingen worden geladen…",
+    "meta": {
+      "allowedTools": "Toegestane gereedschappen",
+      "noTools": "Geen",
+      "outputContract": "Outputcontract",
+      "role": "Rol"
     },
     "name": "Naam",
     "namePlaceholder": "Menselijke leesbare naam",

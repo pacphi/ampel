@@ -239,14 +239,24 @@
     "contentPlaceholder": "Geben Sie das Playbook-YAML ein…",
     "create": "Neues Drehbuch",
     "description": "Passen Sie die vom Agenten verwendeten Abhilfemaßnahmen an. Validieren Sie ein Playbook, um die gerenderte Absprache ohne Modellaufruf in einer Vorschau anzuzeigen.",
+    "duplicate": "Duplizieren, um anzupassen",
     "empty": "Noch keine Playbooks vorhanden. Das integrierte Standard-Playbook wird verwendet, bis Sie ein eigenes hinzufügen.",
     "error": "Playbooks konnten nicht geladen werden.",
     "errors": {
       "contentRequired": "Der Inhalt des Playbooks ist erforderlich.",
+      "loadDefaultFailed": "Das integrierte Standard-Playbook konnte nicht geladen werden.",
       "nameRequired": "Ein Name ist erforderlich.",
       "playbookIdRequired": "Eine Playbook-ID ist erforderlich.",
       "previewFailed": "Das Playbook konnte nicht gerendert werden. Überprüfen Sie die YAML-Datei auf Fehler.",
       "saveFailed": "Das Playbook konnte nicht gespeichert werden. Überprüfen Sie die YAML-Datei auf Fehler."
+    },
+    "loadDefault": "Eingebaute Standardeinstellungen laden",
+    "loadingDefault": "Lade integrierte Standardeinstellungen…",
+    "meta": {
+      "allowedTools": "Zulässige Werkzeuge",
+      "noTools": "Keiner",
+      "outputContract": "Output-Vertrag",
+      "role": "Rolle"
     },
     "name": "Name",
     "namePlaceholder": "für Menschen lesbarer Name",

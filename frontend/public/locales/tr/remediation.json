@@ -239,14 +239,24 @@
     "contentPlaceholder": "YAML oyun kılavuzuna girin…",
     "create": "Yeni strateji kitabı",
     "description": "Aracının kullandığı düzeltme istemlerini özelleştirin. Model çağrısı olmadan oluşturulan istemi önizlemek için bir playbook'u doğrulayın.",
+    "duplicate": "Özelleştirmek için çoğaltın",
     "empty": "Henüz hiçbir playbook yok. Siz bir playbook ekleyene kadar yerleşik varsayılan playbook kullanılır.",
     "error": "Oyun kitapçıkları yüklenemedi.",
     "errors": {
       "contentRequired": "Oyun planı içeriği gereklidir.",
+      "loadDefaultFailed": "Dahili varsayılan playbook yüklenemedi.",
       "nameRequired": "Bir isim gereklidir.",
       "playbookIdRequired": "Bir oyun kitabı kimliği gereklidir.",
       "previewFailed": "Playbook oluşturulamadı. Hata olup olmadığını kontrol etmek için YAML dosyasını inceleyin.",
       "saveFailed": "Oyun kitabı kaydedilemedi. Hata olup olmadığını kontrol etmek için YAML dosyasını inceleyin."
+    },
+    "loadDefault": "Dahili varsayılanı yükle",
+    "loadingDefault": "Dahili varsayılan ayarlar yükleniyor…",
+    "meta": {
+      "allowedTools": "İzin verilen araçlar",
+      "noTools": "Hiçbiri",
+      "outputContract": "Üretim sözleşmesi",
+      "role": "Rol"
     },
     "name": "İsim",
     "namePlaceholder": "İnsan tarafından okunabilir isim",

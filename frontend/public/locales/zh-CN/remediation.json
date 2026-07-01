@@ -239,14 +239,24 @@
     "contentPlaceholder": "输入 YAML 剧本……",
     "create": "新策略手册",
     "description": "自定义代理使用的修复提示。验证剧本以预览渲染后的提示，无需调用模型。",
+    "duplicate": "复制以进行自定义",
     "empty": "目前还没有剧本。在您添加剧本之前，将使用内置的默认剧本。",
     "error": "剧本加载失败。",
     "errors": {
       "contentRequired": "需要提供操作手册内容。",
+      "loadDefaultFailed": "无法加载内置的默认剧本。",
       "nameRequired": "必须填写姓名。",
       "playbookIdRequired": "需要剧本ID。",
       "previewFailed": "剧本渲染失败。请检查 YAML 文件是否存在错误。",
       "saveFailed": "剧本保存失败。请检查 YAML 文件是否存在错误。"
+    },
+    "loadDefault": "加载内置默认值",
+    "loadingDefault": "正在加载内置默认值…",
+    "meta": {
+      "allowedTools": "允许使用的工具",
+      "noTools": "没有任何",
+      "outputContract": "产出合同",
+      "role": "角色"
     },
     "name": "姓名",
     "namePlaceholder": "人类可读的名称",

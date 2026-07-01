@@ -239,14 +239,24 @@
     "contentPlaceholder": "Vstupte do YAML scénáře…",
     "create": "Nová příručka",
     "description": "Přizpůsobte si výzvy k nápravě, které agent používá. Ověřte si playbook pro zobrazení náhledu vykreslené výzvy bez volání modelu.",
+    "duplicate": "Duplikovat pro přizpůsobení",
     "empty": "Zatím žádné playbooky. Dokud nový nepřidáte, používá se vestavěný výchozí playbook.",
     "error": "Načtení herních příruček se nezdařilo.",
     "errors": {
       "contentRequired": "Obsah herní příručky je povinný.",
+      "loadDefaultFailed": "Nepodařilo se načíst vestavěný výchozí playbook.",
       "nameRequired": "Je vyžadováno jméno.",
       "playbookIdRequired": "Je vyžadováno ID playbooku.",
       "previewFailed": "Nepodařilo se vykreslit playbook. Zkontrolujte YAML, zda neobsahuje chyby.",
       "saveFailed": "Uložení playbooku se nezdařilo. Zkontrolujte YAML, zda neobsahuje chyby."
+    },
+    "loadDefault": "Načíst vestavěné výchozí nastavení",
+    "loadingDefault": "Načítání vestavěného výchozího nastavení…",
+    "meta": {
+      "allowedTools": "Povolené nástroje",
+      "noTools": "Žádný",
+      "outputContract": "Výstupní smlouva",
+      "role": "Role"
     },
     "name": "Jméno",
     "namePlaceholder": "Člověkem čitelný název",

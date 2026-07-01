@@ -239,14 +239,24 @@
     "contentPlaceholder": "Gå in i YAML-spelboken…",
     "create": "Ny spelbok",
     "description": "Anpassa de åtgärdsfrågor som agenten använder. Validera en spelbok för att förhandsgranska den renderade frågan utan modellanrop.",
+    "duplicate": "Duplicera för att anpassa",
     "empty": "Inga spelböcker ännu. Den inbyggda standardspelboken används tills du lägger till en.",
     "error": "Misslyckades med att läsa in spelböcker.",
     "errors": {
       "contentRequired": "Innehåll i spelboken krävs.",
+      "loadDefaultFailed": "Det gick inte att läsa in den inbyggda standardspelboken.",
       "nameRequired": "Ett namn krävs.",
       "playbookIdRequired": "Ett playbook-ID krävs.",
       "previewFailed": "Misslyckades med att rendera spelboken. Kontrollera YAML för fel.",
       "saveFailed": "Det gick inte att spara spelboken. Kontrollera YAML för fel."
+    },
+    "loadDefault": "Ladda inbyggd standard",
+    "loadingDefault": "Läser inbyggd standard…",
+    "meta": {
+      "allowedTools": "Tillåtna verktyg",
+      "noTools": "Ingen",
+      "outputContract": "Utgångskontrakt",
+      "role": "Roll"
     },
     "name": "Namn",
     "namePlaceholder": "Läsbart namn",

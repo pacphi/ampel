@@ -22,6 +22,15 @@ export const playbooksApi = {
     return response.data.data!;
   },
 
+  /**
+   * The built-in default playbook (ADR-006), read-only. Used as a documented
+   * starting point the editor can load and customize.
+   */
+  async getEmbeddedPlaybook(): Promise<Playbook> {
+    const response = await apiClient.get<ApiResponse<Playbook>>('/remediation/playbooks/embedded');
+    return response.data.data!;
+  },
+
   async createPlaybook(data: CreatePlaybookRequest): Promise<Playbook> {
     const response = await apiClient.post<ApiResponse<Playbook>>('/remediation/playbooks', data);
     return response.data.data!;

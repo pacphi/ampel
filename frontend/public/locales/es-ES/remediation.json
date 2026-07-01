@@ -239,14 +239,24 @@
     "contentPlaceholder": "Introduzca el manual de procedimientos YAML…",
     "create": "Nuevo manual de estrategias",
     "description": "Personaliza las indicaciones de corrección que utiliza el agente. Valida un playbook para previsualizar la indicación renderizada sin realizar ninguna llamada al modelo.",
+    "duplicate": "Duplicar para personalizar",
     "empty": "Aún no hay playbooks. Se utiliza el playbook predeterminado integrado hasta que añadas uno.",
     "error": "No se pudieron cargar los playbooks.",
     "errors": {
       "contentRequired": "El contenido del manual es obligatorio.",
+      "loadDefaultFailed": "No se pudo cargar el playbook predeterminado integrado.",
       "nameRequired": "Se requiere un nombre.",
       "playbookIdRequired": "Se requiere un ID de playbook.",
       "previewFailed": "No se pudo generar el playbook. Compruebe el archivo YAML en busca de errores.",
       "saveFailed": "No se pudo guardar el playbook. Compruebe el archivo YAML en busca de errores."
+    },
+    "loadDefault": "Cargar configuración predeterminada integrada",
+    "loadingDefault": "Cargando valores predeterminados integrados…",
+    "meta": {
+      "allowedTools": "Herramientas permitidas",
+      "noTools": "Ninguno",
+      "outputContract": "contrato de producción",
+      "role": "Role"
     },
     "name": "Nombre",
     "namePlaceholder": "Nombre legible para humanos",

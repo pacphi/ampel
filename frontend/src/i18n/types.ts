@@ -1009,14 +1009,24 @@ export interface RemediationTranslations {
     contentPlaceholder: string;
     create: string;
     description: string;
+    duplicate: string;
     empty: string;
     error: string;
     errors: {
       contentRequired: string;
+      loadDefaultFailed: string;
       nameRequired: string;
       playbookIdRequired: string;
       previewFailed: string;
       saveFailed: string;
+    };
+    loadDefault: string;
+    loadingDefault: string;
+    meta: {
+      allowedTools: string;
+      noTools: string;
+      outputContract: string;
+      role: string;
     };
     name: string;
     namePlaceholder: string;

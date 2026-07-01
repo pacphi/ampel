@@ -239,14 +239,24 @@
     "contentPlaceholder": "Poznaj podręcznik YAML…",
     "create": "Nowy podręcznik",
     "description": "Dostosuj monity naprawcze używane przez agenta. Zweryfikuj playbook, aby wyświetlić podgląd wyrenderowanego monitu bez wywoływania modelu.",
+    "duplicate": "Duplikuj, aby dostosować",
     "empty": "Brak podręczników. Domyślny, wbudowany podręcznik będzie używany, dopóki go nie dodasz.",
     "error": "Nie udało się załadować podręczników.",
     "errors": {
       "contentRequired": "Treść podręcznika jest wymagana.",
+      "loadDefaultFailed": "Nie udało się załadować domyślnego, wbudowanego podręcznika.",
       "nameRequired": "Nazwa jest wymagana.",
       "playbookIdRequired": "Wymagany jest identyfikator podręcznika.",
       "previewFailed": "Nie udało się wyrenderować playbooka. Sprawdź plik YAML pod kątem błędów.",
       "saveFailed": "Nie udało się zapisać podręcznika. Sprawdź plik YAML pod kątem błędów."
+    },
+    "loadDefault": "Załaduj wbudowane domyślne",
+    "loadingDefault": "Ładowanie wbudowanego domyślnego…",
+    "meta": {
+      "allowedTools": "Dozwolone narzędzia",
+      "noTools": "Nic",
+      "outputContract": "Kontrakt wyjściowy",
+      "role": "Rola"
     },
     "name": "Nazwa",
     "namePlaceholder": "Nazwa czytelna dla człowieka",
