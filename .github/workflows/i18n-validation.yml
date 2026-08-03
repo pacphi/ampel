@@ -15,6 +15,18 @@ on:
     paths:
       - 'crates/ampel-api/locales/**'
       - 'frontend/public/locales/**'
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: 'Translation provider to use (requires its matching *_API_KEY repository secret)'
+        type: choice
+        required: true
+        default: deepl
+        options:
+          - deepl
+          - google
+          - openai
+          - systran
 
 env:
   COVERAGE_THRESHOLD: 95
@@ -452,7 +464,7 @@ jobs:
   translation-api:
     name: Test Translation API Integration
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch'
     permissions:
       contents: write
       pull-requests: write
@@ -462,20 +474,91 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Run translation update (dry-run)
+      - name: Build ampel-i18n-builder
+        run: cargo build --package ampel-i18n-builder --release
+
+      - name: Run translation update (all languages)
+        id: translate
         env:
-          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+          PROVIDER: ${{ inputs.provider }}
+          # Inject only the selected provider's secret. The fallback router
+          # initializes whichever *_API_KEY is present in the environment, so
+          # exposing exactly one key pins translation to the chosen provider.
+          PROVIDER_API_KEY: >-
+            ${{ inputs.provider == 'deepl' && secrets.DEEPL_API_KEY
+            || inputs.provider == 'google' && secrets.GOOGLE_API_KEY
+            || inputs.provider == 'openai' && secrets.OPENAI_API_KEY
+            || inputs.provider == 'systran' && secrets.SYSTRAN_API_KEY }}
         run: |
-          cargo run --package ampel-i18n-builder --release -- translate --dry-run
+          set -euo pipefail
+
+          if [ -z "${PROVIDER_API_KEY:-}" ]; then
+            echo "::error::No API key configured for provider '$PROVIDER'. Add the matching repository secret (DEEPL_API_KEY / GOOGLE_API_KEY / OPENAI_API_KEY / SYSTRAN_API_KEY)."
+            exit 1
+          fi
+
+          # Expose the key under the env var the selected provider reads.
+          case "$PROVIDER" in
+            deepl)   export DEEPL_API_KEY="$PROVIDER_API_KEY" ;;
+            google)  export GOOGLE_API_KEY="$PROVIDER_API_KEY" ;;
+            openai)  export OPENAI_API_KEY="$PROVIDER_API_KEY" ;;
+            systran) export SYSTRAN_API_KEY="$PROVIDER_API_KEY" ;;
+            *) echo "::error::Unknown provider '$PROVIDER'"; exit 1 ;;
+          esac
+          echo "Using translation provider: $PROVIDER"
+
+          BIN=./target/release/ampel-i18n
+          LOCALES_DIR=frontend/public/locales
+          failed=()
+
+          # Translate missing keys for every locale, deriving the target list from
+          # the locale directories (English is the source and is skipped).
+          for dir in "$LOCALES_DIR"/*/; do
+            lang="$(basename "$dir")"
+            [ "$lang" = "en" ] && continue
+            echo "::group::Translating $lang"
+            if "$BIN" translate --lang "$lang"; then
+              echo "✓ $lang complete"
+            else
+              echo "::warning::Translation failed for $lang"
+              failed+=("$lang")
+            fi
+            echo "::endgroup::"
+          done
+
+          # Determine which locales actually changed (strip the porcelain status
+          # prefix, then reduce each path to its top-level locale directory).
+          changed_langs="$(git status --porcelain -- "$LOCALES_DIR" \
+            | sed -E 's/^...//' \
+            | sed -E "s#^${LOCALES_DIR}/([^/]+)/.*#\1#" \
+            | sort -u \
+            | paste -sd, -)"
+
+          if [ -n "$changed_langs" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "languages=$changed_langs" >> "$GITHUB_OUTPUT"
+            echo "Changed languages: $changed_langs"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No translation changes detected."
+          fi
+
+          # Fail the job if any language errored, but only after recording the
+          # outputs so partial translations can still be opened as a PR.
+          if [ "${#failed[@]}" -gt 0 ]; then
+            echo "::error::Translation failed for: ${failed[*]}"
+            exit 1
+          fi
 
       - name: Create translation PR if needed
         if: steps.translate.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v8
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'chore(i18n): automated translation updates'
           title: '[i18n] Automated Translation Updates'
           body: |
-            Automated translation updates from DeepL API.
+            Automated translation updates via the `${{ inputs.provider }}` provider.
 
             **Changes:**
             - Updated translations for missing keys
