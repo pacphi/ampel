@@ -7,4 +7,10 @@
 # This is a transitive dependency from sqlx-mysql (via sea-orm's sqlx feature).
 # Since this project uses PostgreSQL (not MySQL), this vulnerability does not
 # affect the application. Ignoring until an upstream fix is available.
-ignore = ["RUSTSEC-2023-0071"]
+# RUSTSEC-2026-0235: rkyv archive validation out-of-bounds reads
+# Status: Fixed only in rkyv >=0.8.17 (no patched 0.7.x release)
+# The workspace's only rkyv 0.7 entry comes from rust_decimal's OPTIONAL
+# legacy `rkyv` feature, which this project never enables — the crate is
+# locked but never compiled. rkyv 0.8.x is kept at >=0.8.17 (patched).
+# Remove when rust_decimal drops its optional rkyv 0.7 dependency.
+ignore = ["RUSTSEC-2023-0071", "RUSTSEC-2026-0235"]
