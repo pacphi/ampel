@@ -33,6 +33,10 @@ ignore = [
     # proc-macro-error2 unmaintained. Transitive proc-macro dependency.
     "RUSTSEC-2026-0173",
 ]
+# NOTE: RUSTSEC-2026-0235 (rkyv OOB reads) is ignored in .cargo/audit.toml
+# only: cargo-deny resolves the real feature graph and never sees the
+# vulnerable rkyv 0.7 (rust_decimal's unused optional legacy feature),
+# while cargo-audit scans the raw lockfile and does.
 
 [licenses]
 # Allow common open-source licenses used in the Rust ecosystem
