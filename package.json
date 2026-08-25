@@ -7,17 +7,17 @@
     "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\""
   },
   "devDependencies": {
-    "@secretlint/secretlint-rule-aws": "^13.0.2",
-    "@secretlint/secretlint-rule-basicauth": "^13.0.2",
-    "@secretlint/secretlint-rule-gcp": "^13.0.2",
-    "@secretlint/secretlint-rule-npm": "^13.0.2",
-    "@secretlint/secretlint-rule-preset-recommend": "^13.0.2",
-    "@secretlint/secretlint-rule-privatekey": "^13.0.2",
-    "@secretlint/secretlint-rule-sendgrid": "^13.0.2",
-    "@secretlint/secretlint-rule-slack": "^13.0.2",
+    "@secretlint/secretlint-rule-aws": "^13.0.4",
+    "@secretlint/secretlint-rule-basicauth": "^13.0.4",
+    "@secretlint/secretlint-rule-gcp": "^13.0.4",
+    "@secretlint/secretlint-rule-npm": "^13.0.4",
+    "@secretlint/secretlint-rule-preset-recommend": "^13.0.4",
+    "@secretlint/secretlint-rule-privatekey": "^13.0.4",
+    "@secretlint/secretlint-rule-sendgrid": "^13.0.4",
+    "@secretlint/secretlint-rule-slack": "^13.0.4",
     "markdownlint-cli2": "^0.22.1",
-    "prettier": "^3.9.1",
-    "secretlint": "^13.0.2"
+    "prettier": "^3.9.6",
+    "secretlint": "^13.0.4"
   },
   "packageManager": "pnpm@11.1.3"
 }
