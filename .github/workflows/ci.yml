@@ -16,7 +16,7 @@ env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: 1
   RUSTFLAGS: "-D warnings"
-  PNPM_VERSION: 11.1.3
+  PNPM_VERSION: 11.28.6
   # NOTE: keep in sync with rust-toolchain.toml (the canonical pin for local dev).
   RUST_VERSION: "1.95.0"
   # CI build hygiene (see corrode.dev "faster CI builds"):
