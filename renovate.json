@@ -1,0 +1,237 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Managed from pacphi/mise-dotfiles. Replaces Dependabot version updates (2026-10-21).",
+  "extends": [
+    "config:recommended"
+  ],
+  "minimumReleaseAge": "3 days",
+  "internalChecksFilter": "strict",
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": [
+      "security"
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "cargo: settings",
+      "matchCategories": [
+        "rust"
+      ],
+      "schedule": [
+        "* 0-5 * * 1"
+      ],
+      "labels": [
+        "dependencies",
+        "rust"
+      ],
+      "commitMessagePrefix": "deps(rust):"
+    },
+    {
+      "description": "cargo: group rust-minor",
+      "matchCategories": [
+        "rust"
+      ],
+      "groupName": "rust-minor",
+      "matchPackageNames": [
+        "*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ]
+    },
+    {
+      "description": "cargo: group rust-major",
+      "matchCategories": [
+        "rust"
+      ],
+      "groupName": "rust-major",
+      "matchPackageNames": [
+        "*"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ]
+    },
+    {
+      "description": "npm: settings",
+      "matchCategories": [
+        "js"
+      ],
+      "schedule": [
+        "* 0-5 * * 1"
+      ],
+      "labels": [
+        "dependencies",
+        "tooling"
+      ],
+      "commitMessagePrefix": "deps(tooling):"
+    },
+    {
+      "description": "npm frontend/**: settings",
+      "matchCategories": [
+        "js"
+      ],
+      "matchFileNames": [
+        "frontend/**"
+      ],
+      "schedule": [
+        "* 0-5 * * 1"
+      ],
+      "labels": [
+        "dependencies",
+        "frontend"
+      ],
+      "commitMessagePrefix": "deps(frontend):"
+    },
+    {
+      "description": "npm frontend/**: group react",
+      "matchCategories": [
+        "js"
+      ],
+      "matchFileNames": [
+        "frontend/**"
+      ],
+      "groupName": "react",
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "react-router*",
+        "@types/react*"
+      ]
+    },
+    {
+      "description": "npm frontend/**: group tanstack",
+      "matchCategories": [
+        "js"
+      ],
+      "matchFileNames": [
+        "frontend/**"
+      ],
+      "groupName": "tanstack",
+      "matchPackageNames": [
+        "@tanstack/*"
+      ]
+    },
+    {
+      "description": "npm frontend/**: group testing",
+      "matchCategories": [
+        "js"
+      ],
+      "matchFileNames": [
+        "frontend/**"
+      ],
+      "groupName": "testing",
+      "matchPackageNames": [
+        "vitest",
+        "@testing-library/*",
+        "@vitest/*",
+        "jsdom"
+      ]
+    },
+    {
+      "description": "npm frontend/**: group build-tools",
+      "matchCategories": [
+        "js"
+      ],
+      "matchFileNames": [
+        "frontend/**"
+      ],
+      "groupName": "build-tools",
+      "matchPackageNames": [
+        "vite",
+        "@vitejs/*",
+        "typescript",
+        "tailwindcss",
+        "postcss",
+        "autoprefixer"
+      ]
+    },
+    {
+      "description": "npm frontend/**: group linting",
+      "matchCategories": [
+        "js"
+      ],
+      "matchFileNames": [
+        "frontend/**"
+      ],
+      "groupName": "linting",
+      "matchPackageNames": [
+        "eslint*",
+        "@eslint/*",
+        "prettier",
+        "@typescript-eslint/*"
+      ]
+    },
+    {
+      "description": "npm frontend/**: group npm-minor",
+      "matchCategories": [
+        "js"
+      ],
+      "matchFileNames": [
+        "frontend/**"
+      ],
+      "groupName": "npm-minor",
+      "matchPackageNames": [
+        "!react*",
+        "!@tanstack/*",
+        "!vitest",
+        "!@testing-library/*",
+        "!vite",
+        "!eslint*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ]
+    },
+    {
+      "description": "docker docker/**: settings",
+      "matchCategories": [
+        "docker"
+      ],
+      "matchFileNames": [
+        "docker/**"
+      ],
+      "schedule": [
+        "* 0-5 * * 1"
+      ],
+      "labels": [
+        "dependencies",
+        "docker"
+      ],
+      "commitMessagePrefix": "deps(docker):"
+    },
+    {
+      "description": "github-actions: settings",
+      "matchCategories": [
+        "ci"
+      ],
+      "schedule": [
+        "* 0-5 * * 1"
+      ],
+      "labels": [
+        "dependencies",
+        "ci"
+      ],
+      "commitMessagePrefix": "deps(actions):"
+    },
+    {
+      "description": "github-actions: group github-actions",
+      "matchCategories": [
+        "ci"
+      ],
+      "groupName": "github-actions",
+      "matchPackageNames": [
+        "*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ]
+    }
+  ],
+  "prConcurrentLimit": 35
+}
