@@ -32,6 +32,15 @@ ignore = [
     "RUSTSEC-2025-0119",
     # proc-macro-error2 unmaintained. Transitive proc-macro dependency.
     "RUSTSEC-2026-0173",
+    # unsafe-libyaml unmaintained (repo archived 2024-03; no CVE, no safe
+    # upgrade). Pulled by serde_yaml 0.9 (deprecated), used directly by
+    # ampel-api/-core/-worker/-i18n-builder and by rust-i18n 3.x
+    # (rust-i18n-macro/-support hard-depend on serde_yaml ^0.9.33). It parses
+    # repo-owned locale files, the model catalog and worker playbooks.
+    # Dropping it needs rust-i18n 3 -> 4 (major) plus replacing serde_yaml
+    # (e.g. serde-saphyr) in the four workspace crates.
+    # Remove once that migration lands.
+    "RUSTSEC-2024-0449",
 ]
 # NOTE: RUSTSEC-2026-0235 (rkyv OOB reads) is ignored in .cargo/audit.toml
 # only: cargo-deny resolves the real feature graph and never sees the

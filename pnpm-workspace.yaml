@@ -2,5 +2,6 @@
 # Overrides force patched versions of transitive dependencies pulled in by markdownlint-cli2
 # to resolve Dependabot security advisories (dev-only markdown tooling).
 overrides:
-  markdown-it: ^14.2.0
-  js-yaml: ^4.3.0
+  markdown-it: ^14.3.3
+  js-yaml: ^4.3.2
+  smol-toml: ^1.9.1
