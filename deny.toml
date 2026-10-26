@@ -25,6 +25,15 @@ ignore = [
     # which would add the aws-lc-sys C dependency; not worth it for dead code.
     # Remove when jsonwebtoken/rsa ship a mitigated release.
     "RUSTSEC-2023-0071",
+    # crypto-bigint 0.5.5 timing variability in operations meant to be constant-time
+    # (RUSTSEC-2026-0387, 2026-10-23). Patched only in 0.7.6+, a 0.x major; no 0.5 release
+    # will be patched. Same path as rsa above: jsonwebtoken's `rust_crypto` backend ->
+    # p256/p384 -> elliptic-curve 0.13 -> crypto-bigint 0.5. Ampel signs and verifies JWTs
+    # with HS256 only (EncodingKey/DecodingKey::from_secret), so no ECDSA operation ever runs
+    # on a secret and the affected arithmetic is never reached. Remove when jsonwebtoken's
+    # RustCrypto backend moves to p256 0.14 / crypto-bigint >= 0.7.6, or if ampel switches to
+    # the `aws_lc_rs` backend.
+    "RUSTSEC-2026-0387",
     # bincode unmaintained. Transitive via ruvector-core -> hnsw_rs -> bincode.
     # Remove when the dependency chain drops bincode or it is re-adopted.
     "RUSTSEC-2025-0141",

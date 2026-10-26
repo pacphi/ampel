@@ -13,4 +13,4 @@
 # legacy `rkyv` feature, which this project never enables — the crate is
 # locked but never compiled. rkyv 0.8.x is kept at >=0.8.17 (patched).
 # Remove when rust_decimal drops its optional rkyv 0.7 dependency.
-ignore = ["RUSTSEC-2023-0071", "RUSTSEC-2026-0235"]
+ignore = ["RUSTSEC-2023-0071", "RUSTSEC-2026-0235", "RUSTSEC-2026-0387"]  # see deny.toml for each rationale
