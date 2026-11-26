@@ -2,6 +2,10 @@
 # Overrides force patched versions of transitive dependencies pulled in by markdownlint-cli2
 # to resolve Dependabot security advisories (dev-only markdown tooling).
 overrides:
+  # GHSA-238p-pmpm-9mq7: katex (dev only, via markdownlint > micromark-extension-math) is fixed in 0.18.2,
+  # a 0.x minor approved on the dashboard. Markdown linting never renders math. Remove when markdownlint
+  # requires katex 0.18.2 or later itself.
+  katex@0.16.47: 0.18.2
   markdown-it: ^14.3.3
   js-yaml: ^4.3.2
   smol-toml: ^1.9.1
